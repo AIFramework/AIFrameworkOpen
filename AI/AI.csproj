@@ -30,8 +30,4 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Statistics\MixtureModeling\" />
-  </ItemGroup>
-
 </Project>

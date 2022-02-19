@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>net472</TargetFrameworks>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<Copyright>Copyright © AIFramework 2.2 Free 2021</Copyright>
+	<AssemblyVersion>2.2.0.0</AssemblyVersion>
+	<FileVersion>2.2.0.0</FileVersion>
+	<Company>AIFramework</Company>
+	<Authors />
+	<PackageProjectUrl>https://t.me/ai_prog_math</PackageProjectUrl>
+	<Description>Framework for easy development of signal processing systems, texts, time series, etc. using machine learning methods</Description>
+	<Version>2.2</Version>
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Statistics\MixtureModeling\" />
+  </ItemGroup>
+
+</Project>

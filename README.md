@@ -119,4 +119,4 @@
 
 ---
 * #### [Информация о лицензиях](https://github.com/AIFramework/AIFrameworkOpen/blob/main/Docs/INFO.md)
-* #### [Лицензия Apach 2.0](https://github.com/AIFramework/AIFrameworkOpen/blob/main/LICENSE)
+* #### [Лицензия Apache 2.0](https://github.com/AIFramework/AIFrameworkOpen/blob/main/LICENSE)

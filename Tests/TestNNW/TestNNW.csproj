@@ -4,14 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4EBCB595-D56D-40C9-87F1-7167A32BA479}</ProjectGuid>
+    <ProjectGuid>{B3C00735-4C22-4501-ACFE-FA07B846372C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MLTest</RootNamespace>
-    <AssemblyName>MLTest</AssemblyName>
+    <RootNamespace>TestNNW</RootNamespace>
+    <AssemblyName>TestNNW</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,12 +45,18 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDataSets.cs" />
+    <Compile Include="TestIO.cs" />
+    <Compile Include="TestLayersToString.cs" />
+    <Compile Include="TestNNW.cs" />
+    <Compile Include="TestParse.cs" />
+    <Compile Include="TestShapes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AI\AI.csproj">
+    <ProjectReference Include="..\..\AI\AI.csproj">
       <Project>{a18e36a4-6d0a-44c9-84ab-4a26b4940e7b}</Project>
       <Name>AI</Name>
     </ProjectReference>

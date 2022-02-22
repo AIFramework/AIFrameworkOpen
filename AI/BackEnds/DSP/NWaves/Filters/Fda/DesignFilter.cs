@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using AI.BackEnds.DSP.NWaves.Filters.Base;
+﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
 using AI.BackEnds.DSP.NWaves.Windows;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 {
@@ -26,15 +26,15 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             Guard.AgainstEvenNumber(order, "The order of the filter");
 
-            var kernel = new double[order];
+            double[] kernel = new double[order];
 
-            var middle = order / 2;
-            var freq2Pi = 2 * Math.PI * freq;
+            int middle = order / 2;
+            double freq2Pi = 2 * Math.PI * freq;
 
             kernel[middle] = 2 * freq;
-            for (var i = 1; i <= middle; i++)
+            for (int i = 1; i <= middle; i++)
             {
-                kernel[middle - i] = 
+                kernel[middle - i] =
                 kernel[middle + i] = Math.Sin(freq2Pi * i) / (Math.PI * i);
             }
 
@@ -54,13 +54,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             Guard.AgainstEvenNumber(order, "The order of the filter");
 
-            var kernel = new double[order];
+            double[] kernel = new double[order];
 
-            var middle = order / 2;
-            var freq2Pi = 2 * Math.PI * freq;
+            int middle = order / 2;
+            double freq2Pi = 2 * Math.PI * freq;
 
             kernel[middle] = 2 * (0.5 - freq);
-            for (var i = 1; i <= middle; i++)
+            for (int i = 1; i <= middle; i++)
             {
                 kernel[middle - i] =
                 kernel[middle + i] = -Math.Sin(freq2Pi * i) / (Math.PI * i);
@@ -84,14 +84,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             Guard.AgainstEvenNumber(order, "The order of the filter");
             Guard.AgainstInvalidRange(freq1, freq2, "lower frequency", "upper frequency");
 
-            var kernel = new double[order];
+            double[] kernel = new double[order];
 
-            var middle = order / 2;
-            var freq12Pi = 2 * Math.PI * freq1;
-            var freq22Pi = 2 * Math.PI * freq2;
+            int middle = order / 2;
+            double freq12Pi = 2 * Math.PI * freq1;
+            double freq22Pi = 2 * Math.PI * freq2;
 
             kernel[middle] = 2 * (freq2 - freq1);
-            for (var i = 1; i <= middle; i++)
+            for (int i = 1; i <= middle; i++)
             {
                 kernel[middle - i] =
                 kernel[middle + i] = (Math.Sin(freq22Pi * i) - Math.Sin(freq12Pi * i)) / (Math.PI * i);
@@ -115,14 +115,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             Guard.AgainstEvenNumber(order, "The order of the filter");
             Guard.AgainstInvalidRange(freq1, freq2, "lower frequency", "upper frequency");
 
-            var kernel = new double[order];
+            double[] kernel = new double[order];
 
-            var middle = order / 2;
-            var freq12Pi = 2 * Math.PI * freq1;
-            var freq22Pi = 2 * Math.PI * freq2;
+            int middle = order / 2;
+            double freq12Pi = 2 * Math.PI * freq1;
+            double freq22Pi = 2 * Math.PI * freq2;
 
             kernel[middle] = 2 * (0.5 - freq2 + freq1);
-            for (var i = 1; i <= middle; i++)
+            for (int i = 1; i <= middle; i++)
             {
                 kernel[middle - i] =
                 kernel[middle + i] = (Math.Sin(freq12Pi * i) - Math.Sin(freq22Pi * i)) / (Math.PI * i);
@@ -210,24 +210,24 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             Guard.AgainstEvenNumber(order, "The order of the filter");
 
-            var fftSize = MathUtils.NextPowerOfTwo(magnitudeResponse.Length);
+            int fftSize = MathUtils.NextPowerOfTwo(magnitudeResponse.Length);
 
-            var real = phaseResponse == null ?
+            double[] real = phaseResponse == null ?
                        magnitudeResponse.PadZeros(fftSize) :
                        magnitudeResponse.Zip(phaseResponse, (m, p) => m * Math.Cos(p)).ToArray();
 
-            var imag = phaseResponse == null ?
+            double[] imag = phaseResponse == null ?
                        new double[fftSize] :
                        magnitudeResponse.Zip(phaseResponse, (m, p) => m * Math.Sin(p)).ToArray();
 
-            var fft = new Fft64(fftSize);
+            Fft64 fft = new Fft64(fftSize);
             fft.Inverse(real, imag);
 
-            var kernel = new double[order];
+            double[] kernel = new double[order];
 
-            var compensation = 2.0 / fftSize;
-            var middle = order / 2;
-            for (var i = 0; i <= middle; i++)
+            double compensation = 2.0 / fftSize;
+            int middle = order / 2;
+            for (int i = 0; i <= middle; i++)
             {
                 kernel[i] = real[middle - i] * compensation;
                 kernel[i + middle] = real[i] * compensation;
@@ -265,24 +265,24 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             Guard.AgainstEvenNumber(order, "The order of the filter");
 
-            var fftSize = MathUtils.NextPowerOfTwo(magnitudeResponse.Length);
+            int fftSize = MathUtils.NextPowerOfTwo(magnitudeResponse.Length);
 
-            var real = phaseResponse == null ?
+            float[] real = phaseResponse == null ?
                        magnitudeResponse.PadZeros(fftSize) :
                        magnitudeResponse.Zip(phaseResponse, (m, p) => (float)(m * Math.Cos(p))).ToArray();
 
-            var imag = phaseResponse == null ?
+            float[] imag = phaseResponse == null ?
                        new float[fftSize] :
                        magnitudeResponse.Zip(phaseResponse, (m, p) => (float)(m * Math.Sin(p))).ToArray();
 
-            var fft = new Fft(fftSize);
+            Fft fft = new Fft(fftSize);
             fft.Inverse(real, imag);
 
-            var kernel = new double[order];
+            double[] kernel = new double[order];
 
-            var compensation = 2.0 / fftSize;
-            var middle = order / 2;
-            for (var i = 0; i <= middle; i++)
+            double compensation = 2.0 / fftSize;
+            int middle = order / 2;
+            for (int i = 0; i <= middle; i++)
             {
                 kernel[i] = real[middle - i] * compensation;
                 kernel[i + middle] = real[i] * compensation;
@@ -305,7 +305,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             Guard.AgainstEvenNumber(kernel.Length, "The order of the filter");
 
-            var kernelHp = kernel.Select(k => -k).ToArray();
+            double[] kernelHp = kernel.Select(k => -k).ToArray();
             kernelHp[kernelHp.Length / 2] += 1.0;
             return kernelHp;
         }
@@ -316,7 +316,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// </summary>
         /// <param name="kernel"></param>
         /// <returns></returns>
-        public static double[] FirHpToLp(double[] kernel) => FirLpToHp(kernel);
+        public static double[] FirHpToLp(double[] kernel)
+        {
+            return FirLpToHp(kernel);
+        }
 
         /// <summary>
         /// Method for making BS filter from the linear-phase BP filter
@@ -324,7 +327,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// </summary>
         /// <param name="kernel"></param>
         /// <returns></returns>
-        public static double[] FirBpToBs(double[] kernel) => FirLpToHp(kernel);
+        public static double[] FirBpToBs(double[] kernel)
+        {
+            return FirLpToHp(kernel);
+        }
 
         /// <summary>
         /// Method for making BP filter from the linear-phase BS filter
@@ -332,7 +338,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// </summary>
         /// <param name="kernel"></param>
         /// <returns></returns>
-        public static double[] FirBsToBp(double[] kernel) => FirLpToHp(kernel);
+        public static double[] FirBsToBp(double[] kernel)
+        {
+            return FirLpToHp(kernel);
+        }
 
         #endregion
 
@@ -349,16 +358,16 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns>Transfer function</returns>
         public static TransferFunction IirLpTf(double freq, Complex[] poles, Complex[] zeros = null)
         {
-            var pre = new double[poles.Length];
-            var pim = new double[poles.Length];
-            
-            var warpedFreq = Math.Tan(Math.PI * freq);
+            double[] pre = new double[poles.Length];
+            double[] pim = new double[poles.Length];
+
+            double warpedFreq = Math.Tan(Math.PI * freq);
 
             // 1) poles of analog filter (scaled)
 
-            for (var k = 0; k < poles.Length; k++)
+            for (int k = 0; k < poles.Length; k++)
             {
-                var p = warpedFreq * poles[k];
+                Complex p = warpedFreq * poles[k];
                 pre[k] = p.Real;
                 pim[k] = p.Imaginary;
             }
@@ -377,9 +386,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 zre = new double[zeros.Length];
                 zim = new double[zeros.Length];
 
-                for (var k = 0; k < zeros.Length; k++)
+                for (int k = 0; k < zeros.Length; k++)
                 {
-                    var z = warpedFreq * zeros[k];
+                    Complex z = warpedFreq * zeros[k];
                     zre[k] = z.Real;
                     zim[k] = z.Imaginary;
                 }
@@ -399,7 +408,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             // 3) return TF with normalized coefficients
 
-            var tf = new TransferFunction(new ComplexDiscreteSignal(1, zre, zim),
+            TransferFunction tf = new TransferFunction(new ComplexDiscreteSignal(1, zre, zim),
                                           new ComplexDiscreteSignal(1, pre, pim));
             tf.NormalizeAt(0);
 
@@ -415,16 +424,16 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns>Transfer function</returns>
         public static TransferFunction IirHpTf(double freq, Complex[] poles, Complex[] zeros = null)
         {
-            var pre = new double[poles.Length];
-            var pim = new double[poles.Length];
+            double[] pre = new double[poles.Length];
+            double[] pim = new double[poles.Length];
 
-            var warpedFreq = Math.Tan(Math.PI * freq);
+            double warpedFreq = Math.Tan(Math.PI * freq);
 
             // 1) poles of analog filter (scaled)
 
-            for (var k = 0; k < poles.Length; k++)
+            for (int k = 0; k < poles.Length; k++)
             {
-                var p = warpedFreq / poles[k];
+                Complex p = warpedFreq / poles[k];
                 pre[k] = p.Real;
                 pim[k] = p.Imaginary;
             }
@@ -443,9 +452,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 zre = new double[zeros.Length];
                 zim = new double[zeros.Length];
 
-                for (var k = 0; k < zeros.Length; k++)
+                for (int k = 0; k < zeros.Length; k++)
                 {
-                    var z = warpedFreq / zeros[k];
+                    Complex z = warpedFreq / zeros[k];
                     zre[k] = z.Real;
                     zim[k] = z.Imaginary;
                 }
@@ -464,7 +473,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             // 3) return TF with normalized coefficients
 
-            var tf = new TransferFunction(new ComplexDiscreteSignal(1, zre, zim),
+            TransferFunction tf = new TransferFunction(new ComplexDiscreteSignal(1, zre, zim),
                                           new ComplexDiscreteSignal(1, pre, pim));
             tf.NormalizeAt(Math.PI);
 
@@ -483,29 +492,29 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             Guard.AgainstInvalidRange(freq1, freq2, "lower frequency", "upper frequency");
 
-            var pre = new double[poles.Length * 2];
-            var pim = new double[poles.Length * 2];
+            double[] pre = new double[poles.Length * 2];
+            double[] pim = new double[poles.Length * 2];
 
-            var centerFreq = 2 * Math.PI * (freq1 + freq2) / 2;
+            double centerFreq = 2 * Math.PI * (freq1 + freq2) / 2;
 
-            var warpedFreq1 = Math.Tan(Math.PI * freq1);
-            var warpedFreq2 = Math.Tan(Math.PI * freq2);
+            double warpedFreq1 = Math.Tan(Math.PI * freq1);
+            double warpedFreq2 = Math.Tan(Math.PI * freq2);
 
-            var f0 = Math.Sqrt(warpedFreq1 * warpedFreq2);
-            var bw = warpedFreq2 - warpedFreq1;
+            double f0 = Math.Sqrt(warpedFreq1 * warpedFreq2);
+            double bw = warpedFreq2 - warpedFreq1;
 
             // 1) poles of analog filter (scaled)
 
-            for (var k = 0; k < poles.Length; k++)
+            for (int k = 0; k < poles.Length; k++)
             {
-                var alpha = bw / 2 * poles[k];
-                var beta = Complex.Sqrt(1 - Complex.Pow(f0 / alpha, 2));
+                Complex alpha = bw / 2 * poles[k];
+                Complex beta = Complex.Sqrt(1 - Complex.Pow(f0 / alpha, 2));
 
-                var p1 = alpha * (1 + beta);
+                Complex p1 = alpha * (1 + beta);
                 pre[k] = p1.Real;
                 pim[k] = p1.Imaginary;
 
-                var p2 = alpha * (1 - beta);
+                Complex p2 = alpha * (1 - beta);
                 pre[poles.Length + k] = p2.Real;
                 pim[poles.Length + k] = p2.Imaginary;
             }
@@ -524,16 +533,16 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 zre = new double[zeros.Length * 2];
                 zim = new double[zeros.Length * 2];
 
-                for (var k = 0; k < zeros.Length; k++)
+                for (int k = 0; k < zeros.Length; k++)
                 {
-                    var alpha = bw / 2 * zeros[k];
-                    var beta = Complex.Sqrt(1 - Complex.Pow(f0 / alpha, 2));
+                    Complex alpha = bw / 2 * zeros[k];
+                    Complex beta = Complex.Sqrt(1 - Complex.Pow(f0 / alpha, 2));
 
-                    var z1 = alpha * (1 + beta);
+                    Complex z1 = alpha * (1 + beta);
                     zre[k] = z1.Real;
                     zim[k] = z1.Imaginary;
 
-                    var z2 = alpha * (1 - beta);
+                    Complex z2 = alpha * (1 - beta);
                     zre[zeros.Length + k] = z2.Real;
                     zim[zeros.Length + k] = z2.Imaginary;
                 }
@@ -550,11 +559,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             }
 
             // ===
-            
+
 
             // 3) return TF with normalized coefficients
 
-            var tf = new TransferFunction(new ComplexDiscreteSignal(1, zre, zim),
+            TransferFunction tf = new TransferFunction(new ComplexDiscreteSignal(1, zre, zim),
                                           new ComplexDiscreteSignal(1, pre, pim));
             tf.NormalizeAt(centerFreq);
 
@@ -576,29 +585,29 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             // Calculation of filter coefficients is based on Neil Robertson's post:
             // https://www.dsprelated.com/showarticle/1131.php
 
-            var pre = new double[poles.Length * 2];
-            var pim = new double[poles.Length * 2];
-            
-            var f1 = Math.Tan(Math.PI * freq1);
-            var f2 = Math.Tan(Math.PI * freq2);
-            var f0 = Math.Sqrt(f1 * f2);
-            var bw = f2 - f1;
+            double[] pre = new double[poles.Length * 2];
+            double[] pim = new double[poles.Length * 2];
 
-            var centerFreq = 2 * Math.Atan(f0);
+            double f1 = Math.Tan(Math.PI * freq1);
+            double f2 = Math.Tan(Math.PI * freq2);
+            double f0 = Math.Sqrt(f1 * f2);
+            double bw = f2 - f1;
+
+            double centerFreq = 2 * Math.Atan(f0);
 
 
             // 1) poles and zeros of analog filter (scaled)
 
-            for (var k = 0; k < poles.Length; k++)
+            for (int k = 0; k < poles.Length; k++)
             {
-                var alpha = bw / 2 / poles[k];
-                var beta = Complex.Sqrt(1 - Complex.Pow(f0 / alpha, 2));
+                Complex alpha = bw / 2 / poles[k];
+                Complex beta = Complex.Sqrt(1 - Complex.Pow(f0 / alpha, 2));
 
-                var p1 = alpha * (1 + beta);
+                Complex p1 = alpha * (1 + beta);
                 pre[k] = p1.Real;
                 pim[k] = p1.Imaginary;
 
-                var p2 = alpha * (1 - beta);
+                Complex p2 = alpha * (1 - beta);
                 pre[poles.Length + k] = p2.Real;
                 pim[poles.Length + k] = p2.Imaginary;
             }
@@ -617,16 +626,16 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 zre = new double[zeros.Length * 2];
                 zim = new double[zeros.Length * 2];
 
-                for (var k = 0; k < zeros.Length; k++)
+                for (int k = 0; k < zeros.Length; k++)
                 {
-                    var alpha = bw / 2 / zeros[k];
-                    var beta = Complex.Sqrt(1 - Complex.Pow(f0 / alpha, 2));
+                    Complex alpha = bw / 2 / zeros[k];
+                    Complex beta = Complex.Sqrt(1 - Complex.Pow(f0 / alpha, 2));
 
-                    var z1 = alpha * (1 + beta);
+                    Complex z1 = alpha * (1 + beta);
                     zre[k] = z1.Real;
                     zim[k] = z1.Imaginary;
 
-                    var z2 = alpha * (1 - beta);
+                    Complex z2 = alpha * (1 - beta);
                     zre[zeros.Length + k] = z2.Real;
                     zim[zeros.Length + k] = z2.Imaginary;
                 }
@@ -639,7 +648,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 zre = new double[poles.Length * 2];
                 zim = new double[poles.Length * 2];
 
-                for (var k = 0; k < poles.Length; k++)
+                for (int k = 0; k < poles.Length; k++)
                 {
                     zre[k] = Math.Cos(centerFreq);
                     zim[k] = Math.Sin(centerFreq);
@@ -653,7 +662,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             // 3) return TF with normalized coefficients
 
-            var tf = new TransferFunction(new ComplexDiscreteSignal(1, zre, zim),
+            TransferFunction tf = new TransferFunction(new ComplexDiscreteSignal(1, zre, zim),
                                           new ComplexDiscreteSignal(1, pre, pim));
             tf.NormalizeAt(0);
 
@@ -682,16 +691,23 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns>Array of SOS transfer functions</returns>
         public static TransferFunction[] TfToSos(TransferFunction tf)
         {
-            var zeros = tf.Zeros.ToComplexNumbers().ToList();
-            var poles = tf.Poles.ToComplexNumbers().ToList();
+            List<Complex> zeros = tf.Zeros.ToComplexNumbers().ToList();
+            List<Complex> poles = tf.Poles.ToComplexNumbers().ToList();
 
             if (zeros.Count != poles.Count)
             {
-                if (zeros.Count > poles.Count) poles.AddRange(new Complex[zeros.Count - poles.Count]);
-                if (zeros.Count < poles.Count) zeros.AddRange(new Complex[poles.Count - zeros.Count]);
+                if (zeros.Count > poles.Count)
+                {
+                    poles.AddRange(new Complex[zeros.Count - poles.Count]);
+                }
+
+                if (zeros.Count < poles.Count)
+                {
+                    zeros.AddRange(new Complex[poles.Count - zeros.Count]);
+                }
             }
-            
-            var sosCount = (poles.Count + 1) / 2;
+
+            int sosCount = (poles.Count + 1) / 2;
 
             if (poles.Count % 2 == 1)
             {
@@ -702,21 +718,24 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             RemoveConjugated(zeros);
             RemoveConjugated(poles);
 
-            var gains = new double[sosCount];
+            double[] gains = new double[sosCount];
             gains[0] = tf.Gain;
-            for (var i = 1; i < gains.Length; i++) gains[i] = 1;
+            for (int i = 1; i < gains.Length; i++)
+            {
+                gains[i] = 1;
+            }
 
-            var sos = new TransferFunction[sosCount];
+            TransferFunction[] sos = new TransferFunction[sosCount];
 
             // reverse order of sections
 
-            for (var i = sosCount - 1; i >= 0; i--)
+            for (int i = sosCount - 1; i >= 0; i--)
             {
                 Complex z1, z2, p1, p2;
 
                 // Select the next pole closest to unit circle
 
-                var pos = ClosestToUnitCircle(poles, Any);
+                int pos = ClosestToUnitCircle(poles, Any);
                 p1 = poles[pos];
                 poles.RemoveAt(pos);
 
@@ -742,7 +761,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
                     z1 = zeros[pos];
                     zeros.RemoveAt(pos);
-                    
+
                     if (IsComplex(p1))
                     {
                         p2 = Complex.Conjugate(p1);
@@ -781,8 +800,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                     }
                 }
 
-                var zs = new ComplexDiscreteSignal(1, new[] { z1.Real, z2.Real }, new[] { z1.Imaginary, z2.Imaginary });
-                var ps = new ComplexDiscreteSignal(1, new[] { p1.Real, p2.Real }, new[] { p1.Imaginary, p2.Imaginary });
+                ComplexDiscreteSignal zs = new ComplexDiscreteSignal(1, new[] { z1.Real, z2.Real }, new[] { z1.Imaginary, z2.Imaginary });
+                ComplexDiscreteSignal ps = new ComplexDiscreteSignal(1, new[] { p1.Real, p2.Real }, new[] { p1.Imaginary, p2.Imaginary });
 
                 sos[i] = new TransferFunction(zs, ps, gains[i]);
             }
@@ -796,14 +815,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
         private static int ClosestToComplexValue(List<Complex> arr, Complex value, Func<Complex, bool> condition)
         {
-            var pos = 0;
-            var minDistance = double.MaxValue;
+            int pos = 0;
+            double minDistance = double.MaxValue;
 
-            for (var i = 0; i < arr.Count; i++)
+            for (int i = 0; i < arr.Count; i++)
             {
-                if (!condition(arr[i])) continue;
+                if (!condition(arr[i]))
+                {
+                    continue;
+                }
 
-                var distance = Complex.Abs(arr[i] - value);
+                double distance = Complex.Abs(arr[i] - value);
 
                 if (distance < minDistance)
                 {
@@ -817,14 +839,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
         private static int ClosestToUnitCircle(List<Complex> arr, Func<Complex, bool> condition)
         {
-            var pos = 0;
-            var minDistance = double.MaxValue;
+            int pos = 0;
+            double minDistance = double.MaxValue;
 
-            for (var i = 0; i < arr.Count; i++)
+            for (int i = 0; i < arr.Count; i++)
             {
-                if (!condition(arr[i])) continue;
+                if (!condition(arr[i]))
+                {
+                    continue;
+                }
 
-                var distance = Complex.Abs(Complex.Abs(arr[i]) - 1.0);
+                double distance = Complex.Abs(Complex.Abs(arr[i]) - 1.0);
 
                 if (distance < minDistance)
                 {
@@ -842,11 +867,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="arr"></param>
         private static void RemoveConjugated(List<Complex> c)
         {
-            for (var i = 0; i < c.Count; i++)
+            for (int i = 0; i < c.Count; i++)
             {
-                if (IsReal(c[i])) continue;
+                if (IsReal(c[i]))
+                {
+                    continue;
+                }
 
-                var j = i + 1;
+                int j = i + 1;
                 for (; j < c.Count; j++)
                 {
                     if (Math.Abs(c[i].Real - c[j].Real) < 1e-10 &&

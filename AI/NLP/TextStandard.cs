@@ -128,7 +128,7 @@ namespace AI.NLP
             return output;
         }
 
-        private static bool IsRusLeter(char ch) 
+        private static bool IsRusLeter(char ch)
         {
             return ch >= 'а' && ch <= 'я';
         }

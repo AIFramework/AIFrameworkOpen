@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Statistics;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -41,10 +41,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Normal : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _mean;
-        readonly double _stdDev;
+        private System.Random _random;
+        private readonly double _mean;
+        private readonly double _stdDev;
 
         /// <summary>
         /// Initializes a new instance of the Normal class. This is a normal distribution with mean 0.0
@@ -137,7 +136,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>A normal distribution.</returns>
         public static Normal WithMeanPrecision(double mean, double precision, System.Random randomSource = null)
         {
-            return new Normal(mean, 1.0/Math.Sqrt(precision), randomSource);
+            return new Normal(mean, 1.0 / Math.Sqrt(precision), randomSource);
         }
 
         /// <summary>
@@ -149,7 +148,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <remarks>MATLAB: normfit</remarks>
         public static Normal Estimate(IEnumerable<double> samples, System.Random randomSource = null)
         {
-            var meanStdDev = samples.MeanStandardDeviation();
+            (double Mean, double StandardDeviation) meanStdDev = samples.MeanStandardDeviation();
             return new Normal(meanStdDev.Item1, meanStdDev.Item2, randomSource);
         }
 
@@ -185,12 +184,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the variance of the normal distribution.
         /// </summary>
-        public double Variance => _stdDev*_stdDev;
+        public double Variance => _stdDev * _stdDev;
 
         /// <summary>
         /// Gets the precision of the normal distribution.
         /// </summary>
-        public double Precision => 1.0/(_stdDev*_stdDev);
+        public double Precision => 1.0 / (_stdDev * _stdDev);
 
         /// <summary>
         /// Gets the random number generator which is used to draw random samples.
@@ -239,8 +238,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDF"/>
         public double Density(double x)
         {
-            var d = (x - _mean)/_stdDev;
-            return Math.Exp(-0.5*d*d)/(Constants.Sqrt2Pi*_stdDev);
+            double d = (x - _mean) / _stdDev;
+            return Math.Exp(-0.5 * d * d) / (Constants.Sqrt2Pi * _stdDev);
         }
 
         /// <summary>
@@ -251,8 +250,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDFLn"/>
         public double DensityLn(double x)
         {
-            var d = (x - _mean)/_stdDev;
-            return (-0.5*d*d) - Math.Log(_stdDev) - Constants.LogSqrt2Pi;
+            double d = (x - _mean) / _stdDev;
+            return (-0.5 * d * d) - Math.Log(_stdDev) - Constants.LogSqrt2Pi;
         }
 
         /// <summary>
@@ -263,7 +262,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="CDF"/>
         public double CumulativeDistribution(double x)
         {
-            return 0.5*SpecialFunctions.Erfc((_mean - x)/(_stdDev*Constants.Sqrt2));
+            return 0.5 * SpecialFunctions.Erfc((_mean - x) / (_stdDev * Constants.Sqrt2));
         }
 
         /// <summary>
@@ -275,7 +274,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="InvCDF"/>
         public double InverseCumulativeDistribution(double p)
         {
-            return _mean - (_stdDev*Constants.Sqrt2*SpecialFunctions.ErfcInv(2.0*p));
+            return _mean - (_stdDev * Constants.Sqrt2 * SpecialFunctions.ErfcInv(2.0 * p));
         }
 
         /// <summary>
@@ -311,20 +310,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
             }
 
-            return mean + (stddev*x);
+            return mean + (stddev * x);
         }
 
         internal static IEnumerable<double> SamplesUnchecked(System.Random rnd, double mean, double stddev)
         {
             while (true)
             {
-                if (!PolarTransform(rnd.NextDouble(), rnd.NextDouble(), out var x, out var y))
+                if (!PolarTransform(rnd.NextDouble(), rnd.NextDouble(), out double x, out double y))
                 {
                     continue;
                 }
 
-                yield return mean + (stddev*x);
-                yield return mean + (stddev*y);
+                yield return mean + (stddev * x);
+                yield return mean + (stddev * y);
             }
         }
 
@@ -337,13 +336,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             // Since we only accept points within the unit circle
             // we need to generate roughly 4/pi=1.27 times the numbers needed.
-            int n = (int)Math.Ceiling(values.Length*4*Constants.InvPi);
+            int n = (int)Math.Ceiling(values.Length * 4 * Constants.InvPi);
             if (n.IsOdd())
             {
                 n++;
             }
 
-            var uniform = rnd.NextDoubles(n);
+            double[] uniform = rnd.NextDoubles(n);
 
             // Polar transform
             double x, y;
@@ -355,13 +354,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     continue;
                 }
 
-                values[index++] = mean + stddev*x;
+                values[index++] = mean + stddev * x;
                 if (index == values.Length)
                 {
                     return;
                 }
 
-                values[index++] = mean + stddev*y;
+                values[index++] = mean + stddev * y;
                 if (index == values.Length)
                 {
                     return;
@@ -376,13 +375,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     continue;
                 }
 
-                values[index++] = mean + stddev*x;
+                values[index++] = mean + stddev * x;
                 if (index == values.Length)
                 {
                     return;
                 }
 
-                values[index++] = mean + stddev*y;
+                values[index++] = mean + stddev * y;
                 if (index == values.Length)
                 {
                     return;
@@ -390,11 +389,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
         }
 
-        static bool PolarTransform(double a, double b, out double x, out double y)
+        private static bool PolarTransform(double a, double b, out double x, out double y)
         {
-            var v1 = (2.0*a) - 1.0;
-            var v2 = (2.0*b) - 1.0;
-            var r = (v1*v1) + (v2*v2);
+            double v1 = (2.0 * a) - 1.0;
+            double v2 = (2.0 * b) - 1.0;
+            double r = (v1 * v1) + (v2 * v2);
             if (r >= 1.0 || r == 0.0)
             {
                 x = 0;
@@ -402,9 +401,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return false;
             }
 
-            var fac = Math.Sqrt(-2.0*Math.Log(r)/r);
-            x = v1*fac;
-            y = v2*fac;
+            double fac = Math.Sqrt(-2.0 * Math.Log(r) / r);
+            x = v1 * fac;
+            y = v2 * fac;
             return true;
         }
 
@@ -424,8 +423,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var d = (x - mean)/stddev;
-            return Math.Exp(-0.5*d*d)/(Constants.Sqrt2Pi*stddev);
+            double d = (x - mean) / stddev;
+            return Math.Exp(-0.5 * d * d) / (Constants.Sqrt2Pi * stddev);
         }
 
         /// <summary>
@@ -443,8 +442,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var d = (x - mean)/stddev;
-            return (-0.5*d*d) - Math.Log(stddev) - Constants.LogSqrt2Pi;
+            double d = (x - mean) / stddev;
+            return (-0.5 * d * d) - Math.Log(stddev) - Constants.LogSqrt2Pi;
         }
 
         /// <summary>
@@ -463,7 +462,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return 0.5*SpecialFunctions.Erfc((mean - x)/(stddev*Constants.Sqrt2));
+            return 0.5 * SpecialFunctions.Erfc((mean - x) / (stddev * Constants.Sqrt2));
         }
 
         /// <summary>
@@ -483,7 +482,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return mean - (stddev*Constants.Sqrt2*SpecialFunctions.ErfcInv(2.0*p));
+            return mean - (stddev * Constants.Sqrt2 * SpecialFunctions.ErfcInv(2.0 * p));
         }
 
         /// <summary>

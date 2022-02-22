@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 {
@@ -118,13 +118,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         /// </returns>
         public override int GetHashCode()
         {
-            var hashNum = Math.Min(Data.Length, 25);
+            int hashNum = Math.Min(Data.Length, 25);
             int hash = 17;
             unchecked
             {
-                for (var i = 0; i < hashNum; i++)
+                for (int i = 0; i < hashNum; i++)
                 {
-                    hash = hash*31 + Data[i].GetHashCode();
+                    hash = hash * 31 + Data[i].GetHashCode();
                 }
             }
             return hash;
@@ -139,8 +139,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         internal override void ClearUnchecked(int rowIndex, int rowCount, int columnIndex, int columnCount)
         {
-            var beginInclusive = Math.Max(rowIndex, columnIndex);
-            var endExclusive = Math.Min(rowIndex + rowCount, columnIndex + columnCount);
+            int beginInclusive = Math.Max(rowIndex, columnIndex);
+            int endExclusive = Math.Min(rowIndex + rowCount, columnIndex + columnCount);
             if (endExclusive > beginInclusive)
             {
                 Array.Clear(Data, beginInclusive, endExclusive - beginInclusive);
@@ -167,17 +167,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DiagonalMatrixStorage<T> OfMatrix(MatrixStorage<T> matrix)
         {
-            var storage = new DiagonalMatrixStorage<T>(matrix.RowCount, matrix.ColumnCount);
+            DiagonalMatrixStorage<T> storage = new DiagonalMatrixStorage<T>(matrix.RowCount, matrix.ColumnCount);
             matrix.CopyToUnchecked(storage, ExistingData.AssumeZeros);
             return storage;
         }
 
         public static DiagonalMatrixStorage<T> OfArray(T[,] array)
         {
-            var storage = new DiagonalMatrixStorage<T>(array.GetLength(0), array.GetLength(1));
-            for (var i = 0; i < storage.RowCount; i++)
+            DiagonalMatrixStorage<T> storage = new DiagonalMatrixStorage<T>(array.GetLength(0), array.GetLength(1));
+            for (int i = 0; i < storage.RowCount; i++)
             {
-                for (var j = 0; j < storage.ColumnCount; j++)
+                for (int j = 0; j < storage.ColumnCount; j++)
                 {
                     if (i == j)
                     {
@@ -194,8 +194,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DiagonalMatrixStorage<T> OfValue(int rows, int columns, T diagonalValue)
         {
-            var storage = new DiagonalMatrixStorage<T>(rows, columns);
-            for (var i = 0; i < storage.Data.Length; i++)
+            DiagonalMatrixStorage<T> storage = new DiagonalMatrixStorage<T>(rows, columns);
+            for (int i = 0; i < storage.Data.Length; i++)
             {
                 storage.Data[i] = diagonalValue;
             }
@@ -204,8 +204,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DiagonalMatrixStorage<T> OfInit(int rows, int columns, Func<int, T> init)
         {
-            var storage = new DiagonalMatrixStorage<T>(rows, columns);
-            for (var i = 0; i < storage.Data.Length; i++)
+            DiagonalMatrixStorage<T> storage = new DiagonalMatrixStorage<T>(rows, columns);
+            for (int i = 0; i < storage.Data.Length; i++)
             {
                 storage.Data[i] = init(i);
             }
@@ -221,7 +221,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (data is T[] arrayData)
             {
-                var copy = new T[arrayData.Length];
+                T[] copy = new T[arrayData.Length];
                 Array.Copy(arrayData, 0, copy, 0, arrayData.Length);
                 return new DiagonalMatrixStorage<T>(rows, columns, copy);
             }
@@ -236,8 +236,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentNullException(nameof(data));
             }
 
-            var storage = new DiagonalMatrixStorage<T>(rows, columns);
-            foreach (var (i,x) in data)
+            DiagonalMatrixStorage<T> storage = new DiagonalMatrixStorage<T>(rows, columns);
+            foreach ((int i, T x) in data)
             {
                 storage.Data[i] = x;
             }
@@ -251,8 +251,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentNullException(nameof(data));
             }
 
-            var storage = new DiagonalMatrixStorage<T>(rows, columns);
-            foreach (var (i,x) in data)
+            DiagonalMatrixStorage<T> storage = new DiagonalMatrixStorage<T>(rows, columns);
+            foreach ((int i, T x) in data)
             {
                 storage.Data[i] = x;
             }
@@ -294,13 +294,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void CopyToUnchecked(DiagonalMatrixStorage<T> target)
+        private void CopyToUnchecked(DiagonalMatrixStorage<T> target)
         {
             //Buffer.BlockCopy(Data, 0, target.Data, 0, Data.Length * System.Runtime.InteropServices.Marshal.SizeOf(typeof(T)));
             Array.Copy(Data, 0, target.Data, 0, Data.Length);
         }
 
-        void CopyToUnchecked(SparseCompressedRowMatrixStorage<T> target, ExistingData existingData)
+        private void CopyToUnchecked(SparseCompressedRowMatrixStorage<T> target, ExistingData existingData)
         {
             if (existingData == ExistingData.Clear)
             {
@@ -313,7 +313,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void CopyToUnchecked(DenseColumnMajorMatrixStorage<T> target, ExistingData existingData)
+        private void CopyToUnchecked(DenseColumnMajorMatrixStorage<T> target, ExistingData existingData)
         {
             if (existingData == ExistingData.Clear)
             {
@@ -322,7 +322,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             for (int i = 0; i < Data.Length; i++)
             {
-                target.Data[i*(target.RowCount + 1)] = Data[i];
+                target.Data[i * (target.RowCount + 1)] = Data[i];
             }
         }
 
@@ -354,7 +354,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (sourceRowIndex == sourceColumnIndex)
             {
-                for (var i = 0; i < Math.Min(columnCount, rowCount); i++)
+                for (int i = 0; i < Math.Min(columnCount, rowCount); i++)
                 {
                     target.At(targetRowIndex + i, targetColumnIndex + i, Data[sourceRowIndex + i]);
                 }
@@ -363,7 +363,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 // column by column, but skip resulting zero columns at the beginning
                 int columnInit = sourceRowIndex - sourceColumnIndex;
-                for (var i = 0; i < Math.Min(columnCount - columnInit, rowCount); i++)
+                for (int i = 0; i < Math.Min(columnCount - columnInit, rowCount); i++)
                 {
                     target.At(targetRowIndex + i, columnInit + targetColumnIndex + i, Data[sourceRowIndex + i]);
                 }
@@ -372,14 +372,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 // row by row, but skip resulting zero rows at the beginning
                 int rowInit = sourceColumnIndex - sourceRowIndex;
-                for (var i = 0; i < Math.Min(columnCount, rowCount - rowInit); i++)
+                for (int i = 0; i < Math.Min(columnCount, rowCount - rowInit); i++)
                 {
                     target.At(rowInit + targetRowIndex + i, targetColumnIndex + i, Data[sourceColumnIndex + i]);
                 }
             }
         }
 
-        void CopySubMatrixToUnchecked(DiagonalMatrixStorage<T> target,
+        private void CopySubMatrixToUnchecked(DiagonalMatrixStorage<T> target,
             int sourceRowIndex, int targetRowIndex, int rowCount,
             int sourceColumnIndex, int targetColumnIndex, int columnCount)
         {
@@ -394,16 +394,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 return;
             }
 
-            var beginInclusive = Math.Max(sourceRowIndex, sourceColumnIndex);
-            var endExclusive = Math.Min(sourceRowIndex + rowCount, sourceColumnIndex + columnCount);
+            int beginInclusive = Math.Max(sourceRowIndex, sourceColumnIndex);
+            int endExclusive = Math.Min(sourceRowIndex + rowCount, sourceColumnIndex + columnCount);
             if (endExclusive > beginInclusive)
             {
-                var beginTarget = Math.Max(targetRowIndex, targetColumnIndex);
+                int beginTarget = Math.Max(targetRowIndex, targetColumnIndex);
                 Array.Copy(Data, beginInclusive, target.Data, beginTarget, endExclusive - beginInclusive);
             }
         }
 
-        void CopySubMatrixToUnchecked(DenseColumnMajorMatrixStorage<T> target,
+        private void CopySubMatrixToUnchecked(DenseColumnMajorMatrixStorage<T> target,
             int sourceRowIndex, int targetRowIndex, int rowCount,
             int sourceColumnIndex, int targetColumnIndex, int columnCount,
             ExistingData existingData)
@@ -418,7 +418,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 // column by column, but skip resulting zero columns at the beginning
 
                 int columnInit = sourceRowIndex - sourceColumnIndex;
-                int offset = (columnInit + targetColumnIndex)*target.RowCount + targetRowIndex;
+                int offset = (columnInit + targetColumnIndex) * target.RowCount + targetRowIndex;
                 int step = target.RowCount + 1;
                 int end = Math.Min(columnCount - columnInit, rowCount) + sourceRowIndex;
 
@@ -432,7 +432,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 // row by row, but skip resulting zero rows at the beginning
 
                 int rowInit = sourceColumnIndex - sourceRowIndex;
-                int offset = targetColumnIndex*target.RowCount + rowInit + targetRowIndex;
+                int offset = targetColumnIndex * target.RowCount + rowInit + targetRowIndex;
                 int step = target.RowCount + 1;
                 int end = Math.Min(columnCount, rowCount - rowInit) + sourceColumnIndex;
 
@@ -443,9 +443,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
             else
             {
-                int offset = targetColumnIndex*target.RowCount + targetRowIndex;
+                int offset = targetColumnIndex * target.RowCount + targetRowIndex;
                 int step = target.RowCount + 1;
-                var end = Math.Min(columnCount, rowCount) + sourceRowIndex;
+                int end = Math.Min(columnCount, rowCount) + sourceRowIndex;
 
                 for (int i = sourceRowIndex, j = offset; i < end; i++, j += step)
                 {
@@ -502,29 +502,29 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public override T[] ToRowMajorArray()
         {
-            var ret = new T[RowCount*ColumnCount];
-            var stride = ColumnCount + 1;
+            T[] ret = new T[RowCount * ColumnCount];
+            int stride = ColumnCount + 1;
             for (int i = 0; i < Data.Length; i++)
             {
-                ret[i*stride] = Data[i];
+                ret[i * stride] = Data[i];
             }
             return ret;
         }
 
         public override T[] ToColumnMajorArray()
         {
-            var ret = new T[RowCount*ColumnCount];
-            var stride = RowCount + 1;
+            T[] ret = new T[RowCount * ColumnCount];
+            int stride = RowCount + 1;
             for (int i = 0; i < Data.Length; i++)
             {
-                ret[i*stride] = Data[i];
+                ret[i * stride] = Data[i];
             }
             return ret;
         }
 
         public override T[][] ToRowArrays()
         {
-            var ret = new T[RowCount][];
+            T[][] ret = new T[RowCount][];
             for (int i = 0; i < RowCount; i++)
             {
                 ret[i] = new T[ColumnCount];
@@ -538,7 +538,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public override T[][] ToColumnArrays()
         {
-            var ret = new T[ColumnCount][];
+            T[][] ret = new T[ColumnCount][];
             for (int j = 0; j < ColumnCount; j++)
             {
                 ret[j] = new T[RowCount];
@@ -552,7 +552,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public override T[,] ToArray()
         {
-            var ret = new T[RowCount, ColumnCount];
+            T[,] ret = new T[RowCount, ColumnCount];
             for (int i = 0; i < Data.Length; i++)
             {
                 ret[i, i] = Data[i];
@@ -673,9 +673,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 for (int row = 0; row < RowCount; row++)
                 {
                     bool diagonal = false;
-                    var startIndex = otherRowPointers[row];
-                    var endIndex = otherRowPointers[row + 1];
-                    for (var j = startIndex; j < endIndex; j++)
+                    int startIndex = otherRowPointers[row];
+                    int endIndex = otherRowPointers[row + 1];
+                    for (int j = startIndex; j < endIndex; j++)
                     {
                         if (otherColumnIndices[j] == row)
                         {
@@ -767,7 +767,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         internal override void MapToUnchecked<TU>(MatrixStorage<TU> target, Func<T, TU> f,
             Zeros zeros, ExistingData existingData)
         {
-            var processZeros = zeros == Zeros.Include || !Zero.Equals(f(Zero));
+            bool processZeros = zeros == Zeros.Include || !Zero.Equals(f(Zero));
 
             if (target is DiagonalMatrixStorage<TU> diagonalTarget)
             {
@@ -815,7 +815,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         internal override void MapIndexedToUnchecked<TU>(MatrixStorage<TU> target, Func<int, int, T, TU> f,
             Zeros zeros, ExistingData existingData)
         {
-            var processZeros = zeros == Zeros.Include || !Zero.Equals(f(0, 1, Zero));
+            bool processZeros = zeros == Zeros.Include || !Zero.Equals(f(0, 1, Zero));
 
             if (target is DiagonalMatrixStorage<TU> diagonalTarget)
             {
@@ -890,7 +890,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 int targetRow = targetRowIndex;
                 int targetColumn = targetColumnIndex;
-                for (var i = 0; i < Math.Min(columnCount, rowCount); i++)
+                for (int i = 0; i < Math.Min(columnCount, rowCount); i++)
                 {
                     target.At(targetRow, targetColumn, f(targetRow, targetColumn, Data[sourceRowIndex + i]));
                     targetRow++;
@@ -903,7 +903,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 int columnInit = sourceRowIndex - sourceColumnIndex;
                 int targetRow = targetRowIndex;
                 int targetColumn = targetColumnIndex + columnInit;
-                for (var i = 0; i < Math.Min(columnCount - columnInit, rowCount); i++)
+                for (int i = 0; i < Math.Min(columnCount - columnInit, rowCount); i++)
                 {
                     target.At(targetRow, targetColumn, f(targetRow, targetColumn, Data[sourceRowIndex + i]));
                     targetRow++;
@@ -916,7 +916,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 int rowInit = sourceColumnIndex - sourceRowIndex;
                 int targetRow = targetRowIndex + rowInit;
                 int targetColumn = targetColumnIndex;
-                for (var i = 0; i < Math.Min(columnCount, rowCount - rowInit); i++)
+                for (int i = 0; i < Math.Min(columnCount, rowCount - rowInit); i++)
                 {
                     target.At(targetRow, targetColumn, f(targetRow, targetColumn, Data[sourceColumnIndex + i]));
                     targetRow++;
@@ -925,23 +925,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void MapSubMatrixIndexedToUnchecked<TU>(DiagonalMatrixStorage<TU> target, Func<int, int, T, TU> f,
+        private void MapSubMatrixIndexedToUnchecked<TU>(DiagonalMatrixStorage<TU> target, Func<int, int, T, TU> f,
             int sourceRowIndex, int targetRowIndex, int rowCount,
             int sourceColumnIndex, int targetColumnIndex, int columnCount,
             Zeros zeros)
             where TU : struct, IEquatable<TU>, IFormattable
         {
-            var processZeros = zeros == Zeros.Include || !Zero.Equals(f(0, 1, Zero));
+            bool processZeros = zeros == Zeros.Include || !Zero.Equals(f(0, 1, Zero));
             if (processZeros || sourceRowIndex - sourceColumnIndex != targetRowIndex - targetColumnIndex)
             {
                 throw new NotSupportedException("Cannot map non-zero off-diagonal values into a diagonal matrix");
             }
 
-            var beginInclusive = Math.Max(sourceRowIndex, sourceColumnIndex);
-            var count = Math.Min(sourceRowIndex + rowCount, sourceColumnIndex + columnCount) - beginInclusive;
+            int beginInclusive = Math.Max(sourceRowIndex, sourceColumnIndex);
+            int count = Math.Min(sourceRowIndex + rowCount, sourceColumnIndex + columnCount) - beginInclusive;
             if (count > 0)
             {
-                var beginTarget = Math.Max(targetRowIndex, targetColumnIndex);
+                int beginTarget = Math.Max(targetRowIndex, targetColumnIndex);
                 CommonParallel.For(0, count, 4096, (a, b) =>
                 {
                     int targetIndex = beginTarget + a;
@@ -954,13 +954,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void MapSubMatrixIndexedToUnchecked<TU>(DenseColumnMajorMatrixStorage<TU> target, Func<int, int, T, TU> f,
+        private void MapSubMatrixIndexedToUnchecked<TU>(DenseColumnMajorMatrixStorage<TU> target, Func<int, int, T, TU> f,
             int sourceRowIndex, int targetRowIndex, int rowCount,
             int sourceColumnIndex, int targetColumnIndex, int columnCount,
             Zeros zeros, ExistingData existingData)
             where TU : struct, IEquatable<TU>, IFormattable
         {
-            var processZeros = zeros == Zeros.Include || !Zero.Equals(f(0, 1, Zero));
+            bool processZeros = zeros == Zeros.Include || !Zero.Equals(f(0, 1, Zero));
             if (existingData == ExistingData.Clear && !processZeros)
             {
                 target.ClearUnchecked(targetRowIndex, rowCount, targetColumnIndex, columnCount);
@@ -968,23 +968,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (processZeros)
             {
-                CommonParallel.For(0, columnCount, Math.Max(4096/rowCount, 32), (a, b) =>
-                {
-                    int sourceColumn = sourceColumnIndex + a;
-                    int targetColumn = targetColumnIndex + a;
-                    for (int j = a; j < b; j++)
-                    {
-                        int targetIndex = targetRowIndex + (j + targetColumnIndex)*target.RowCount;
-                        int sourceRow = sourceRowIndex;
-                        int targetRow = targetRowIndex;
-                        for (int i = 0; i < rowCount; i++)
-                        {
-                            target.Data[targetIndex++] = f(targetRow++, targetColumn, sourceRow++ == sourceColumn ? Data[sourceColumn] : Zero);
-                        }
-                        sourceColumn++;
-                        targetColumn++;
-                    }
-                });
+                CommonParallel.For(0, columnCount, Math.Max(4096 / rowCount, 32), (a, b) =>
+                  {
+                      int sourceColumn = sourceColumnIndex + a;
+                      int targetColumn = targetColumnIndex + a;
+                      for (int j = a; j < b; j++)
+                      {
+                          int targetIndex = targetRowIndex + (j + targetColumnIndex) * target.RowCount;
+                          int sourceRow = sourceRowIndex;
+                          int targetRow = targetRowIndex;
+                          for (int i = 0; i < rowCount; i++)
+                          {
+                              target.Data[targetIndex++] = f(targetRow++, targetColumn, sourceRow++ == sourceColumn ? Data[sourceColumn] : Zero);
+                          }
+                          sourceColumn++;
+                          targetColumn++;
+                      }
+                  });
             }
             else
             {
@@ -993,7 +993,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                     // column by column, but skip resulting zero columns at the beginning
 
                     int columnInit = sourceRowIndex - sourceColumnIndex;
-                    int offset = (columnInit + targetColumnIndex)*target.RowCount + targetRowIndex;
+                    int offset = (columnInit + targetColumnIndex) * target.RowCount + targetRowIndex;
                     int step = target.RowCount + 1;
                     int count = Math.Min(columnCount - columnInit, rowCount);
 
@@ -1007,7 +1007,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                     // row by row, but skip resulting zero rows at the beginning
 
                     int rowInit = sourceColumnIndex - sourceRowIndex;
-                    int offset = targetColumnIndex*target.RowCount + rowInit + targetRowIndex;
+                    int offset = targetColumnIndex * target.RowCount + rowInit + targetRowIndex;
                     int step = target.RowCount + 1;
                     int count = Math.Min(columnCount, rowCount - rowInit);
 
@@ -1018,9 +1018,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 }
                 else
                 {
-                    int offset = targetColumnIndex*target.RowCount + targetRowIndex;
+                    int offset = targetColumnIndex * target.RowCount + targetRowIndex;
                     int step = target.RowCount + 1;
-                    var count = Math.Min(columnCount, rowCount);
+                    int count = Math.Min(columnCount, rowCount);
 
                     for (int k = 0, j = offset; k < count; j += step, k++)
                     {
@@ -1117,7 +1117,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 if (zeros == Zeros.Include)
                 {
                     TOther otherZero = BuilderInstance<TOther>.Matrix.Zero;
-                    int count = RowCount*ColumnCount - Data.Length;
+                    int count = RowCount * ColumnCount - Data.Length;
                     for (int i = 0; i < count; i++)
                     {
                         state = f(state, Zero, otherZero);
@@ -1158,9 +1158,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 {
                     bool diagonal = false;
 
-                    var startIndex = otherRowPointers[row];
-                    var endIndex = otherRowPointers[row + 1];
-                    for (var j = startIndex; j < endIndex; j++)
+                    int startIndex = otherRowPointers[row];
+                    int endIndex = otherRowPointers[row + 1];
+                    for (int j = startIndex; j < endIndex; j++)
                     {
                         if (otherColumnIndices[j] == row)
                         {

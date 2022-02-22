@@ -37,7 +37,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
     public class InverseGaussian : IContinuousDistribution
     {
-        System.Random _random;
+        private System.Random _random;
 
         /// <summary>
         /// Gets the mean (μ) of the distribution. Range: μ > 0.
@@ -82,7 +82,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="lambda">The shape (λ) of the distribution. Range: λ > 0.</param>
         public static bool IsValidParameterSet(double mu, double lambda)
         {
-            var allFinite = mu.IsFinite() && lambda.IsFinite();
+            bool allFinite = mu.IsFinite() && lambda.IsFinite();
             return allFinite && mu > 0.0 && lambda > 0.0;
         }
 
@@ -221,14 +221,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(rnd, mu, lambda);
         }
 
-        static double SampleUnchecked(System.Random rnd, double mu, double lambda)
+        private static double SampleUnchecked(System.Random rnd, double mu, double lambda)
         {
             double v = Normal.Sample(rnd, 0, 1);
             double test = rnd.NextDouble();
             return InverseGaussianSampleImpl(mu, lambda, v, test);
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double mu, double lambda)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double mu, double lambda)
         {
             if (values.Length == 0)
             {
@@ -237,13 +237,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             double[] v = new double[values.Length];
             Normal.Samples(rnd, v, 0, 1);
             double[] test = rnd.NextDoubles(values.Length);
-            for (var j = 0; j < values.Length; ++j)
+            for (int j = 0; j < values.Length; ++j)
             {
                 values[j] = InverseGaussianSampleImpl(mu, lambda, v[j], test[j]);
             }
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double mu, double lambda)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double mu, double lambda)
         {
             while (true)
             {
@@ -251,14 +251,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
         }
 
-        static double InverseGaussianSampleImpl(double mu, double lambda, double normalSample, double uniformSample)
+        private static double InverseGaussianSampleImpl(double mu, double lambda, double normalSample, double uniformSample)
         {
             double y = normalSample * normalSample;
             double x = mu + (mu * mu * y) / (2 * lambda) - (mu / (2 * lambda)) * Math.Sqrt(4 * mu * lambda * y + mu * mu * y * y);
             if (uniformSample <= mu / (mu + x))
+            {
                 return x;
+            }
             else
+            {
                 return mu * mu / x;
+            }
         }
 
         /// <summary>
@@ -301,9 +305,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the inverse cumulative distribution at location <paramref name="p"/>.</returns>
         public double InvCDF(double p)
         {
-            double EquationToSolve(double x) => CumulativeDistribution(x) - p;
+            double EquationToSolve(double x)
+            {
+                return CumulativeDistribution(x) - p;
+            }
+
             if (!RootFinding.NewtonRaphson.TryFindRoot(EquationToSolve, Density, Mode, 0, double.PositiveInfinity, 1e-8, 100, out double quantile))
+            {
                 throw new NonConvergenceException("Numerical estimation of the statistic has failed. The used solver did not succeed in finding a root.");
+            }
+
             return quantile;
         }
 
@@ -372,7 +383,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
-            var igDist = new InverseGaussian(mu, lambda);
+            InverseGaussian igDist = new InverseGaussian(mu, lambda);
             return igDist.InvCDF(p);
         }
 
@@ -384,23 +395,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>An Inverse Gaussian distribution.</returns>
         public static InverseGaussian Estimate(IEnumerable<double> samples, System.Random randomSource = null)
         {
-            var samplesArray = samples.ToArray();
-            var muHat = samplesArray.Mean();
-            var lambdaHat = 1 / (1 / samplesArray.HarmonicMean() - 1 / muHat);
+            double[] samplesArray = samples.ToArray();
+            double muHat = samplesArray.Mean();
+            double lambdaHat = 1 / (1 / samplesArray.HarmonicMean() - 1 / muHat);
             return new InverseGaussian(muHat, lambdaHat, randomSource);
         }
 
-        static double DensityImpl(double mu, double lambda, double x)
+        private static double DensityImpl(double mu, double lambda, double x)
         {
             return Math.Sqrt(lambda / (2 * Math.PI * Math.Pow(x, 3))) * Math.Exp(-((lambda * Math.Pow(x - mu, 2)) / (2 * mu * mu * x)));
         }
 
-        static double DensityLnImpl(double mu, double lambda, double x)
+        private static double DensityLnImpl(double mu, double lambda, double x)
         {
             return Math.Log(Math.Sqrt(lambda / (2 * Math.PI * Math.Pow(x, 3)))) - ((lambda * Math.Pow(x - mu, 2)) / (2 * mu * mu * x));
         }
 
-        static double CumulativeDistributionImpl(double mu, double lambda, double x)
+        private static double CumulativeDistributionImpl(double mu, double lambda, double x)
         {
             return Normal.CDF(0, 1, Math.Sqrt(lambda / x) * (x / mu - 1)) + Math.Exp(2 * lambda / mu) * Normal.CDF(0, 1, -Math.Sqrt(lambda / x) * (x / mu + 1));
         }

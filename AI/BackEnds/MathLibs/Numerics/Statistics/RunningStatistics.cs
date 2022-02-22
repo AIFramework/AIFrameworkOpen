@@ -50,25 +50,25 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
     public class RunningStatistics
     {
         [DataMember(Order = 1)]
-        long _n;
+        private long _n;
 
         [DataMember(Order = 2)]
-        double _min = double.PositiveInfinity;
+        private double _min = double.PositiveInfinity;
 
         [DataMember(Order = 3)]
-        double _max = double.NegativeInfinity;
+        private double _max = double.NegativeInfinity;
 
         [DataMember(Order = 4)]
-        double _m1;
+        private double _m1;
 
         [DataMember(Order = 5)]
-        double _m2;
+        private double _m2;
 
         [DataMember(Order = 6)]
-        double _m3;
+        private double _m3;
 
         [DataMember(Order = 7)]
-        double _m4;
+        private double _m4;
 
         public RunningStatistics()
         {
@@ -107,56 +107,56 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// On a dataset of size N will use an N-1 normalizer (Bessel's correction).
         /// Returns NaN if data has less than two entries or if any entry is NaN.
         /// </summary>
-        public double Variance => _n < 2 ? double.NaN : _m2/(_n - 1);
+        public double Variance => _n < 2 ? double.NaN : _m2 / (_n - 1);
 
         /// <summary>
         /// Evaluates the variance from the provided full population.
         /// On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset.
         /// Returns NaN if data is empty or if any entry is NaN.
         /// </summary>
-        public double PopulationVariance => _n < 2 ? double.NaN : _m2/_n;
+        public double PopulationVariance => _n < 2 ? double.NaN : _m2 / _n;
 
         /// <summary>
         /// Estimates the unbiased population standard deviation from the provided samples.
         /// On a dataset of size N will use an N-1 normalizer (Bessel's correction).
         /// Returns NaN if data has less than two entries or if any entry is NaN.
         /// </summary>
-        public double StandardDeviation => _n < 2 ? double.NaN : Math.Sqrt(_m2/(_n - 1));
+        public double StandardDeviation => _n < 2 ? double.NaN : Math.Sqrt(_m2 / (_n - 1));
 
         /// <summary>
         /// Evaluates the standard deviation from the provided full population.
         /// On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset.
         /// Returns NaN if data is empty or if any entry is NaN.
         /// </summary>
-        public double PopulationStandardDeviation => _n < 2 ? double.NaN : Math.Sqrt(_m2/_n);
+        public double PopulationStandardDeviation => _n < 2 ? double.NaN : Math.Sqrt(_m2 / _n);
 
         /// <summary>
         /// Estimates the unbiased population skewness from the provided samples.
         /// Uses a normalizer (Bessel's correction; type 2).
         /// Returns NaN if data has less than three entries or if any entry is NaN.
         /// </summary>
-        public double Skewness => _n < 3 ? double.NaN : (_n*_m3*Math.Sqrt(_m2/(_n - 1))/(_m2*_m2*(_n - 2)))*(_n - 1);
+        public double Skewness => _n < 3 ? double.NaN : (_n * _m3 * Math.Sqrt(_m2 / (_n - 1)) / (_m2 * _m2 * (_n - 2))) * (_n - 1);
 
         /// <summary>
         /// Evaluates the population skewness from the full population.
         /// Does not use a normalizer and would thus be biased if applied to a subset (type 1).
         /// Returns NaN if data has less than two entries or if any entry is NaN.
         /// </summary>
-        public double PopulationSkewness => _n < 2 ? double.NaN : Math.Sqrt(_n)*_m3/Math.Pow(_m2, 1.5);
+        public double PopulationSkewness => _n < 2 ? double.NaN : Math.Sqrt(_n) * _m3 / Math.Pow(_m2, 1.5);
 
         /// <summary>
         /// Estimates the unbiased population kurtosis from the provided samples.
         /// Uses a normalizer (Bessel's correction; type 2).
         /// Returns NaN if data has less than four entries or if any entry is NaN.
         /// </summary>
-        public double Kurtosis => _n < 4 ? double.NaN : ((double)_n*_n - 1)/((_n - 2)*(_n - 3))*(_n*_m4/(_m2*_m2) - 3 + 6.0/(_n + 1));
+        public double Kurtosis => _n < 4 ? double.NaN : ((double)_n * _n - 1) / ((_n - 2) * (_n - 3)) * (_n * _m4 / (_m2 * _m2) - 3 + 6.0 / (_n + 1));
 
         /// <summary>
         /// Evaluates the population kurtosis from the full population.
         /// Does not use a normalizer and would thus be biased if applied to a subset (type 1).
         /// Returns NaN if data has less than three entries or if any entry is NaN.
         /// </summary>
-        public double PopulationKurtosis => _n < 3 ? double.NaN : _n*_m4/(_m2*_m2) - 3.0;
+        public double PopulationKurtosis => _n < 3 ? double.NaN : _n * _m4 / (_m2 * _m2) - 3.0;
 
         /// <summary>
         /// Update the running statistics by adding another observed sample (in-place).
@@ -165,13 +165,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         {
             _n++;
             double d = value - _m1;
-            double s = d/_n;
-            double s2 = s*s;
-            double t = d*s*(_n - 1);
+            double s = d / _n;
+            double s2 = s * s;
+            double t = d * s * (_n - 1);
 
             _m1 += s;
-            _m4 += t*s2*(_n*_n - 3*_n + 3) + 6*s2*_m2 - 4*s*_m3;
-            _m3 += t*s*(_n - 2) - 3*s*_m2;
+            _m4 += t * s2 * (_n * _n - 3 * _n + 3) + 6 * s2 * _m2 - 4 * s * _m3;
+            _m3 += t * s * (_n - 2) - 3 * s * _m2;
             _m2 += t;
 
             if (value < _min || double.IsNaN(value))
@@ -212,16 +212,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
 
             long n = a._n + b._n;
             double d = b._m1 - a._m1;
-            double d2 = d*d;
-            double d3 = d2*d;
-            double d4 = d2*d2;
+            double d2 = d * d;
+            double d3 = d2 * d;
+            double d4 = d2 * d2;
 
-            double m1 = (a._n*a._m1 + b._n*b._m1)/n;
-            double m2 = a._m2 + b._m2 + d2*a._n*b._n/n;
-            double m3 = a._m3 + b._m3 + d3*a._n*b._n*(a._n - b._n)/(n*n)
-                        + 3*d*(a._n*b._m2 - b._n*a._m2)/n;
-            double m4 = a._m4 + b._m4 + d4*a._n*b._n*(a._n*a._n - a._n*b._n + b._n*b._n)/(n*n*n)
-                        + 6*d2*(a._n*a._n*b._m2 + b._n*b._n*a._m2)/(n*n) + 4*d*(a._n*b._m3 - b._n*a._m3)/n;
+            double m1 = (a._n * a._m1 + b._n * b._m1) / n;
+            double m2 = a._m2 + b._m2 + d2 * a._n * b._n / n;
+            double m3 = a._m3 + b._m3 + d3 * a._n * b._n * (a._n - b._n) / (n * n)
+                        + 3 * d * (a._n * b._m2 - b._n * a._m2) / n;
+            double m4 = a._m4 + b._m4 + d4 * a._n * b._n * (a._n * a._n - a._n * b._n + b._n * b._n) / (n * n * n)
+                        + 6 * d2 * (a._n * a._n * b._m2 + b._n * b._n * a._m2) / (n * n) + 4 * d * (a._n * b._m3 - b._n * a._m3) / n;
 
             double min = Math.Min(a._min, b._min);
             double max = Math.Max(a._max, b._max);

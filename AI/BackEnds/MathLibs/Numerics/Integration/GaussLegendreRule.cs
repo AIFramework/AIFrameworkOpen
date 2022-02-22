@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule;
 using System;
 using System.Numerics;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
 {
@@ -38,7 +38,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
     /// </summary>
     public class GaussLegendreRule
     {
-        readonly GaussPoint _gaussLegendrePoint;
+        private readonly GaussPoint _gaussLegendrePoint;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GaussLegendreRule"/> class.
@@ -112,16 +112,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
             int i;
             int m = (order + 1) >> 1;
 
-            double a = 0.5*(invervalEnd - invervalBegin);
-            double b = 0.5*(invervalEnd + invervalBegin);
+            double a = 0.5 * (invervalEnd - invervalBegin);
+            double b = 0.5 * (invervalEnd + invervalBegin);
 
             if (order.IsOdd())
             {
-                sum = gaussLegendrePoint.Weights[0]*f(b);
+                sum = gaussLegendrePoint.Weights[0] * f(b);
                 for (i = 1; i < m; i++)
                 {
-                    ax = a*gaussLegendrePoint.Abscissas[i];
-                    sum += gaussLegendrePoint.Weights[i]*(f(b + ax) + f(b - ax));
+                    ax = a * gaussLegendrePoint.Abscissas[i];
+                    sum += gaussLegendrePoint.Weights[i] * (f(b + ax) + f(b - ax));
                 }
             }
             else
@@ -129,12 +129,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                 sum = 0.0;
                 for (i = 0; i < m; i++)
                 {
-                    ax = a*gaussLegendrePoint.Abscissas[i];
-                    sum += gaussLegendrePoint.Weights[i]*(f(b + ax) + f(b - ax));
+                    ax = a * gaussLegendrePoint.Abscissas[i];
+                    sum += gaussLegendrePoint.Weights[i] * (f(b + ax) + f(b - ax));
                 }
             }
 
-            return a*sum;
+            return a * sum;
         }
 
         /// <summary>
@@ -197,39 +197,39 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
             int i, j;
             int m = (order + 1) >> 1;
 
-            double a = 0.5*(invervalEndA - invervalBeginA);
-            double b = 0.5*(invervalEndA + invervalBeginA);
-            double c = 0.5*(invervalEndB - invervalBeginB);
-            double d = 0.5*(invervalEndB + invervalBeginB);
+            double a = 0.5 * (invervalEndA - invervalBeginA);
+            double b = 0.5 * (invervalEndA + invervalBeginA);
+            double c = 0.5 * (invervalEndB - invervalBeginB);
+            double d = 0.5 * (invervalEndB + invervalBeginB);
 
             if (order.IsOdd())
             {
-                sum = gaussLegendrePoint.Weights[0]*gaussLegendrePoint.Weights[0]*f(b, d);
+                sum = gaussLegendrePoint.Weights[0] * gaussLegendrePoint.Weights[0] * f(b, d);
 
                 double t;
                 for (j = 1, t = 0.0; j < m; j++)
                 {
-                    cy = c*gaussLegendrePoint.Abscissas[j];
-                    t += gaussLegendrePoint.Weights[j]*(f(b, d + cy) + f(b, d - cy));
+                    cy = c * gaussLegendrePoint.Abscissas[j];
+                    t += gaussLegendrePoint.Weights[j] * (f(b, d + cy) + f(b, d - cy));
                 }
 
-                sum += gaussLegendrePoint.Weights[0]*t;
+                sum += gaussLegendrePoint.Weights[0] * t;
 
                 for (i = 1, t = 0.0; i < m; i++)
                 {
-                    ax = a*gaussLegendrePoint.Abscissas[i];
-                    t += gaussLegendrePoint.Weights[i]*(f(b + ax, d) + f(b - ax, d));
+                    ax = a * gaussLegendrePoint.Abscissas[i];
+                    t += gaussLegendrePoint.Weights[i] * (f(b + ax, d) + f(b - ax, d));
                 }
 
-                sum += gaussLegendrePoint.Weights[0]*t;
+                sum += gaussLegendrePoint.Weights[0] * t;
 
                 for (i = 1; i < m; i++)
                 {
-                    ax = a*gaussLegendrePoint.Abscissas[i];
+                    ax = a * gaussLegendrePoint.Abscissas[i];
                     for (j = 1; j < m; j++)
                     {
-                        cy = c*gaussLegendrePoint.Abscissas[j];
-                        sum += gaussLegendrePoint.Weights[i]*gaussLegendrePoint.Weights[j]*(f(b + ax, d + cy) + f(ax + b, d - cy) + f(b - ax, d + cy) + f(b - ax, d - cy));
+                        cy = c * gaussLegendrePoint.Abscissas[j];
+                        sum += gaussLegendrePoint.Weights[i] * gaussLegendrePoint.Weights[j] * (f(b + ax, d + cy) + f(ax + b, d - cy) + f(b - ax, d + cy) + f(b - ax, d - cy));
                     }
                 }
             }
@@ -238,16 +238,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                 sum = 0.0;
                 for (i = 0; i < m; i++)
                 {
-                    ax = a*gaussLegendrePoint.Abscissas[i];
+                    ax = a * gaussLegendrePoint.Abscissas[i];
                     for (j = 0; j < m; j++)
                     {
-                        cy = c*gaussLegendrePoint.Abscissas[j];
-                        sum += gaussLegendrePoint.Weights[i]*gaussLegendrePoint.Weights[j]*(f(b + ax, d + cy) + f(ax + b, d - cy) + f(b - ax, d + cy) + f(b - ax, d - cy));
+                        cy = c * gaussLegendrePoint.Abscissas[j];
+                        sum += gaussLegendrePoint.Weights[i] * gaussLegendrePoint.Weights[j] * (f(b + ax, d + cy) + f(ax + b, d - cy) + f(b - ax, d + cy) + f(b - ax, d - cy));
                     }
                 }
             }
 
-            return c*a*sum;
+            return c * a * sum;
         }
     }
 }

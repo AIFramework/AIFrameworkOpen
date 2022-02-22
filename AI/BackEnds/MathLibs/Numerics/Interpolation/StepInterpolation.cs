@@ -41,9 +41,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
     /// <remarks>Supports both differentiation and integration.</remarks>
     public class StepInterpolation : IInterpolation
     {
-        readonly double[] _x;
-        readonly double[] _y;
-        readonly Lazy<double[]> _indefiniteIntegral;
+        private readonly double[] _x;
+        private readonly double[] _y;
+        private readonly Lazy<double[]> _indefiniteIntegral;
 
         /// <param name="x">Sample points (N), sorted ascending</param>
         /// <param name="sy">Samples values (N) of each segment starting at the corresponding sample point.</param>
@@ -137,7 +137,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// </summary>
         /// <param name="t">Point t to interpolate at.</param>
         /// <returns>Interpolated second derivative at point t.</returns>
-        public double Differentiate2(double t) => Differentiate(t);
+        public double Differentiate2(double t)
+        {
+            return Differentiate(t);
+        }
 
         /// <summary>
         /// Indefinite integral at point t.
@@ -151,8 +154,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
             }
 
             int k = LeftBracketIndex(t);
-            var x = t - _x[k];
-            return _indefiniteIntegral.Value[k] + x*_y[k];
+            double x = t - _x[k];
+            return _indefiniteIntegral.Value[k] + x * _y[k];
         }
 
         /// <summary>
@@ -160,14 +163,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// </summary>
         /// <param name="a">Left bound of the integration interval [a,b].</param>
         /// <param name="b">Right bound of the integration interval [a,b].</param>
-        public double Integrate(double a, double b) => Integrate(b) - Integrate(a);
-
-        double[] ComputeIndefiniteIntegral()
+        public double Integrate(double a, double b)
         {
-            var integral = new double[_x.Length];
+            return Integrate(b) - Integrate(a);
+        }
+
+        private double[] ComputeIndefiniteIntegral()
+        {
+            double[] integral = new double[_x.Length];
             for (int i = 0; i < integral.Length - 1; i++)
             {
-                integral[i + 1] = integral[i] + (_x[i + 1] - _x[i])*_y[i];
+                integral[i + 1] = integral[i] + (_x[i + 1] - _x[i]) * _y[i];
             }
 
             return integral;
@@ -176,7 +182,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// <summary>
         /// Find the index of the greatest sample point smaller than t.
         /// </summary>
-        int LeftBracketIndex(double t)
+        private int LeftBracketIndex(double t)
         {
             int index = Array.BinarySearch(_x, t);
             return index >= 0 ? index : ~index - 1;

@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -42,10 +42,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class NegativeBinomial : IDiscreteDistribution
     {
-        System.Random _random;
-
-        readonly double _r;
-        readonly double _p;
+        private System.Random _random;
+        private readonly double _r;
+        private readonly double _p;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NegativeBinomial"/> class.
@@ -83,10 +82,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="string"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -125,17 +124,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => _r*(1.0 - _p)/_p;
+        public double Mean => _r * (1.0 - _p) / _p;
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => _r*(1.0 - _p)/(_p*_p);
+        public double Variance => _r * (1.0 - _p) / (_p * _p);
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => Math.Sqrt(_r*(1.0 - _p))/_p;
+        public double StdDev => Math.Sqrt(_r * (1.0 - _p)) / _p;
 
         /// <summary>
         /// Gets the entropy of the distribution.
@@ -145,12 +144,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the skewness of the distribution.
         /// </summary>
-        public double Skewness => (2.0 - _p)/Math.Sqrt(_r*(1.0 - _p));
+        public double Skewness => (2.0 - _p) / Math.Sqrt(_r * (1.0 - _p));
 
         /// <summary>
         /// Gets the mode of the distribution
         /// </summary>
-        public int Mode => _r > 1.0 ? (int)Math.Floor((_r - 1.0)*(1.0 - _p)/_p) : 0;
+        public int Mode => _r > 1.0 ? (int)Math.Floor((_r - 1.0) * (1.0 - _p) / _p) : 0;
 
         /// <summary>
         /// Gets the median of the distribution.
@@ -226,8 +225,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SpecialFunctions.GammaLn(r + k)
                    - SpecialFunctions.GammaLn(r)
                    - SpecialFunctions.GammaLn(k + 1.0)
-                   + (r*Math.Log(p))
-                   + (k*Math.Log(1.0 - p));
+                   + (r * Math.Log(p))
+                   + (k * Math.Log(1.0 - p));
         }
 
         /// <summary>
@@ -255,22 +254,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="r">The number of successes (r) required to stop the experiment. Range: r ≥ 0.</param>
         /// <param name="p">The probability (p) of a trial resulting in success. Range: 0 ≤ p ≤ 1.</param>
         /// <returns>a sample from the distribution.</returns>
-        static int SampleUnchecked(System.Random rnd, double r, double p)
+        private static int SampleUnchecked(System.Random rnd, double r, double p)
         {
-            var lambda = Gamma.SampleUnchecked(rnd, r, p);
-            var c = Math.Exp(-lambda);
-            var p1 = 1.0;
-            var k = 0;
+            double lambda = Gamma.SampleUnchecked(rnd, r, p);
+            double c = Math.Exp(-lambda);
+            double p1 = 1.0;
+            int k = 0;
             do
             {
                 k = k + 1;
-                p1 = p1*rnd.NextDouble();
+                p1 = p1 * rnd.NextDouble();
             }
             while (p1 >= c);
             return k - 1;
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, double r, double p)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, double r, double p)
         {
             for (int i = 0; i < values.Length; i++)
             {
@@ -278,7 +277,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, double r, double p)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, double r, double p)
         {
             while (true)
             {

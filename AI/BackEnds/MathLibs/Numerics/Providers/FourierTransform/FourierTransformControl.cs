@@ -33,13 +33,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
 {
     public static class FourierTransformControl
     {
-        const string EnvVarFFTProvider = "MathNetNumericsFFTProvider";
-
-        static IFourierTransformProvider _fourierTransformProvider;
-        static readonly object StaticLock = new object();
-
-        const string MklTypeName = "AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL.FourierTransform.MklFourierTransformControl, AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL";
-        static readonly ProviderProbe<IFourierTransformProvider> MklProbe = new ProviderProbe<IFourierTransformProvider>(MklTypeName, AppSwitches.DisableMklNativeProvider);
+        private const string EnvVarFFTProvider = "MathNetNumericsFFTProvider";
+        private static IFourierTransformProvider _fourierTransformProvider;
+        private static readonly object StaticLock = new object();
+        private const string MklTypeName = "AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL.FourierTransform.MklFourierTransformControl, AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL";
+        private static readonly ProviderProbe<IFourierTransformProvider> MklProbe = new ProviderProbe<IFourierTransformProvider>(MklTypeName, AppSwitches.DisableMklNativeProvider);
 
         /// <summary>
         /// Optional path to try to load native provider binaries from,
@@ -79,10 +77,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
             }
         }
 
-        public static void UseManaged() => Provider = ManagedFourierTransformProvider.Instance;
+        public static void UseManaged()
+        {
+            Provider = ManagedFourierTransformProvider.Instance;
+        }
 
-        public static void UseNativeMKL() => Provider = MklProbe.Create();
-        public static bool TryUseNativeMKL() => TryUse(MklProbe.TryCreate());
+        public static void UseNativeMKL()
+        {
+            Provider = MklProbe.Create();
+        }
+
+        public static bool TryUseNativeMKL()
+        {
+            return TryUse(MklProbe.TryCreate());
+        }
 
 
         /// <summary>
@@ -147,7 +155,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
                 return;
             }
 
-            var value = Environment.GetEnvironmentVariable(EnvVarFFTProvider);
+            string value = Environment.GetEnvironmentVariable(EnvVarFFTProvider);
             switch (value != null ? value.ToUpperInvariant() : string.Empty)
             {
 
@@ -161,6 +169,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
             }
         }
 
-        public static void FreeResources() => Provider.FreeResources();
+        public static void FreeResources()
+        {
+            Provider.FreeResources();
+        }
     }
 }

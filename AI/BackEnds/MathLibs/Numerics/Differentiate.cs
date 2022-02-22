@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics
 {
@@ -50,8 +50,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static NumericalDerivative Order(int order)
         {
-            var points = order + (order.IsEven() ? 1 : 2);
-            return new NumericalDerivative(points, points/2);
+            int points = order + (order.IsEven() ? 1 : 2);
+            return new NumericalDerivative(points, points / 2);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="order">Derivative order.</param>
         public static Func<double, double, double> PartialDerivative2Func(Func<double, double, double> f, int parameterIndex, int order)
         {
-            var handle = Order(order).CreatePartialDerivativeFunctionHandle(array => f(array[0], array[1]), parameterIndex, order);
+            Func<double[], double> handle = Order(order).CreatePartialDerivativeFunctionHandle(array => f(array[0], array[1]), parameterIndex, order);
             return (x, y) => handle(new[] { x, y });
         }
 

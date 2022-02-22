@@ -45,11 +45,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
     public abstract class LU<T> : ISolver<T>
         where T : struct, IEquatable<T>, IFormattable
     {
-        static readonly T One = BuilderInstance<T>.Matrix.One;
-
-        readonly Lazy<MatrixMathNet<T>> _lazyL;
-        readonly Lazy<MatrixMathNet<T>> _lazyU;
-        readonly Lazy<Permutation> _lazyP;
+        private static readonly T One = BuilderInstance<T>.Matrix.One;
+        private readonly Lazy<MatrixMathNet<T>> _lazyL;
+        private readonly Lazy<MatrixMathNet<T>> _lazyU;
+        private readonly Lazy<Permutation> _lazyP;
 
         protected readonly MatrixMathNet<T> Factors;
         protected readonly int[] Pivots;
@@ -64,10 +63,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
             _lazyP = new Lazy<Permutation>(() => Permutation.FromInversions(Pivots));
         }
 
-        MatrixMathNet<T> ComputeL()
+        private MatrixMathNet<T> ComputeL()
         {
-            var result = Factors.LowerTriangle();
-            for (var i = 0; i < result.RowCount; i++)
+            MatrixMathNet<T> result = Factors.LowerTriangle();
+            for (int i = 0; i < result.RowCount; i++)
             {
                 result.At(i, i, One);
             }
@@ -101,7 +100,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
         /// <returns>The left hand side <see cref="MatrixMathNet{T}"/>, <b>X</b>.</returns>
         public virtual MatrixMathNet<T> Solve(MatrixMathNet<T> input)
         {
-            var x = MatrixMathNet<T>.Build.SameAs(input, input.RowCount, input.ColumnCount, fullyMutable: true);
+            MatrixMathNet<T> x = MatrixMathNet<T>.Build.SameAs(input, input.RowCount, input.ColumnCount, fullyMutable: true);
             Solve(input, x);
             return x;
         }
@@ -120,7 +119,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
         /// <returns>The left hand side <see cref="VectorMathNet{T}"/>, <b>x</b>.</returns>
         public virtual VectorMathNet<T> Solve(VectorMathNet<T> input)
         {
-            var x = VectorMathNet<T>.Build.SameAs(input, input.Count);
+            VectorMathNet<T> x = VectorMathNet<T>.Build.SameAs(input, input.Count);
             Solve(input, x);
             return x;
         }

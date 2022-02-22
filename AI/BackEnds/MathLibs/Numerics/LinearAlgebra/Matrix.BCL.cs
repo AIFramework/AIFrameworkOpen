@@ -54,11 +54,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
         /// <returns>
-        ///     <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -116,7 +116,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             bool colEllipsis = ColumnCount > left + right;
             int cols = colEllipsis ? left + right + 1 : left + right;
 
-            var array = new string[rows, cols];
+            string[,] array = new string[rows, cols];
             for (int i = 0; i < upper; i++)
             {
                 for (int j = 0; j < left; j++)
@@ -192,13 +192,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             int left = ColumnCount <= minLeftColumns ? ColumnCount : minLeftColumns;
             int right = ColumnCount <= minLeftColumns ? 0 : ColumnCount <= minLeftColumns + rightColumns ? ColumnCount - minLeftColumns : rightColumns;
 
-            var columnsLeft = new List<Tuple<int, string[]>>();
+            List<Tuple<int, string[]>> columnsLeft = new List<Tuple<int, string[]>>();
             for (int j = 0; j < left; j++)
             {
                 columnsLeft.Add(FormatColumn(j, rows, upper, lower, rowEllipsis, verticalEllipsis, formatValue));
             }
 
-            var columnsRight = new List<Tuple<int, string[]>>();
+            List<Tuple<int, string[]>> columnsRight = new List<Tuple<int, string[]>>();
             for (int j = 0; j < right; j++)
             {
                 columnsRight.Add(FormatColumn(ColumnCount - right + j, rows, upper, lower, rowEllipsis, verticalEllipsis, formatValue));
@@ -207,7 +207,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             int chars = columnsLeft.Sum(t => t.Item1 + padding) + columnsRight.Sum(t => t.Item1 + padding);
             for (int j = left; j < ColumnCount - right; j++)
             {
-                var candidate = FormatColumn(j, rows, upper, lower, rowEllipsis, verticalEllipsis, formatValue);
+                Tuple<int, string[]> candidate = FormatColumn(j, rows, upper, lower, rowEllipsis, verticalEllipsis, formatValue);
                 chars += candidate.Item1 + padding;
                 if (chars > maxWidth)
                 {
@@ -223,9 +223,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 cols++;
             }
 
-            var array = new string[rows, cols];
+            string[,] array = new string[rows, cols];
             int colIndex = 0;
-            foreach (var column in columnsLeft)
+            foreach (Tuple<int, string[]> column in columnsLeft)
             {
                 for (int i = 0; i < column.Item2.Length; i++)
                 {
@@ -236,7 +236,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             if (colEllipsis)
             {
                 int rowIndex = 0;
-                for (var row = 0; row < upper; row++)
+                for (int row = 0; row < upper; row++)
                 {
                     array[rowIndex++, colIndex] = horizontalEllipsis;
                 }
@@ -244,13 +244,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 {
                     array[rowIndex++, colIndex] = diagonalEllipsis;
                 }
-                for (var row = RowCount - lower; row < RowCount; row++)
+                for (int row = RowCount - lower; row < RowCount; row++)
                 {
                     array[rowIndex++, colIndex] = horizontalEllipsis;
                 }
                 colIndex++;
             }
-            foreach (var column in columnsRight)
+            foreach (Tuple<int, string[]> column in columnsRight)
             {
                 for (int i = 0; i < column.Item2.Length; i++)
                 {
@@ -261,11 +261,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             return array;
         }
 
-        Tuple<int, string[]> FormatColumn(int column, int height, int upper, int lower, bool withEllipsis, string ellipsis, Func<T, string> formatValue)
+        private Tuple<int, string[]> FormatColumn(int column, int height, int upper, int lower, bool withEllipsis, string ellipsis, Func<T, string> formatValue)
         {
-            var c = new string[height];
+            string[] c = new string[height];
             int index = 0;
-            for (var row = 0; row < upper; row++)
+            for (int row = 0; row < upper; row++)
             {
                 c[index++] = formatValue(At(row, column));
             }
@@ -273,7 +273,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             {
                 c[index++] = "";
             }
-            for (var row = RowCount - lower; row < RowCount; row++)
+            for (int row = RowCount - lower; row < RowCount; row++)
             {
                 c[index++] = formatValue(At(row, column));
             }
@@ -285,12 +285,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             return new Tuple<int, string[]>(w, c);
         }
 
-        static string FormatStringArrayToString(string[,] array, string columnSeparator, string rowSeparator)
+        private static string FormatStringArrayToString(string[,] array, string columnSeparator, string rowSeparator)
         {
-            var rows = array.GetLength(0);
-            var cols = array.GetLength(1);
+            int rows = array.GetLength(0);
+            int cols = array.GetLength(1);
 
-            var widths = new int[cols];
+            int[] widths = new int[cols];
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < cols; j++)
@@ -299,7 +299,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 }
             }
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < rows; i++)
             {
                 sb.Append(array[i, 0].PadLeft(widths[0]));

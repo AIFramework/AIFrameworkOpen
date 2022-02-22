@@ -30,10 +30,10 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             _expScale = new float[outputSize];
 
-            var cur = -(float)Math.Log(outputSize);
-            var step = -cur / outputSize;
+            float cur = -(float)Math.Log(outputSize);
+            float step = -cur / outputSize;
 
-            for (var i = 0; i < _expScale.Length; i++, cur += step)
+            for (int i = 0; i < _expScale.Length; i++, cur += step)
             {
                 _expScale[i] = (float)Math.Exp(cur);
             }
@@ -50,7 +50,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             MathUtils.InterpolateLinear(_linScale, input, _expScale, outputRe);
 
-            for (var i = 0; i < outputRe.Length; i++)
+            for (int i = 0; i < outputRe.Length; i++)
             {
                 outputRe[i] *= (float)Math.Pow(_expScale[i], 0.5);
                 outputIm[i] = 0;
@@ -63,9 +63,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                 return;
             }
 
-            var norm = (float)(1 / Math.Sqrt(outputRe.Length));
+            float norm = (float)(1 / Math.Sqrt(outputRe.Length));
 
-            for (var i = 0; i < outputRe.Length; i++)
+            for (int i = 0; i < outputRe.Length; i++)
             {
                 outputRe[i] *= norm;
                 outputIm[i] *= norm;

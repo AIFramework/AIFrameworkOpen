@@ -26,9 +26,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Runtime.CompilerServices;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using Complex = System.Numerics.Complex;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
@@ -40,19 +40,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// </summary>
         /// <typeparam name="T">Sample type</typeparam>
         /// <param name="samples">Sample vector</param>
-        static void Radix2Reorder<T>(T[] samples)
+        private static void Radix2Reorder<T>(T[] samples)
         {
-            var j = 0;
-            for (var i = 0; i < samples.Length - 1; i++)
+            int j = 0;
+            for (int i = 0; i < samples.Length - 1; i++)
             {
                 if (i < j)
                 {
-                    var temp = samples[i];
+                    T temp = samples[i];
                     samples[i] = samples[j];
                     samples[j] = temp;
                 }
 
-                var m = samples.Length;
+                int m = samples.Length;
 
                 do
                 {
@@ -72,18 +72,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// <param name="k">Index inside of the level.</param>
 #if !NET40
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private
 #endif
         static void Radix2Step(Complex32[] samples, int exponentSign, int levelSize, int k)
         {
             // Twiddle Factor
-            var exponent = (exponentSign * k) * Constants.Pi / levelSize;
-            var w = new Complex32((float)Math.Cos(exponent), (float)Math.Sin(exponent));
+            double exponent = (exponentSign * k) * Constants.Pi / levelSize;
+            Complex32 w = new Complex32((float)Math.Cos(exponent), (float)Math.Sin(exponent));
 
-            var step = levelSize << 1;
-            for (var i = k; i < samples.Length; i += step)
+            int step = levelSize << 1;
+            for (int i = k; i < samples.Length; i += step)
             {
-                var ai = samples[i];
-                var t = w * samples[i + levelSize];
+                Complex32 ai = samples[i];
+                Complex32 t = w * samples[i + levelSize];
                 samples[i] = ai + t;
                 samples[i + levelSize] = ai - t;
             }
@@ -98,18 +99,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// <param name="k">Index inside of the level.</param>
 #if !NET40
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private
 #endif
         static void Radix2Step(Complex[] samples, int exponentSign, int levelSize, int k)
         {
             // Twiddle Factor
-            var exponent = (exponentSign * k) * Constants.Pi / levelSize;
-            var w = new Complex(Math.Cos(exponent), Math.Sin(exponent));
+            double exponent = (exponentSign * k) * Constants.Pi / levelSize;
+            Complex w = new Complex(Math.Cos(exponent), Math.Sin(exponent));
 
-            var step = levelSize << 1;
-            for (var i = k; i < samples.Length; i += step)
+            int step = levelSize << 1;
+            for (int i = k; i < samples.Length; i += step)
             {
-                var ai = samples[i];
-                var t = w * samples[i + levelSize];
+                Complex ai = samples[i];
+                Complex t = w * samples[i + levelSize];
                 samples[i] = ai + t;
                 samples[i + levelSize] = ai - t;
             }
@@ -118,12 +120,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// <summary>
         /// Radix-2 generic FFT for power-of-two sized sample vectors.
         /// </summary>
-        static void Radix2Forward(Complex32[] data)
+        private static void Radix2Forward(Complex32[] data)
         {
             Radix2Reorder(data);
-            for (var levelSize = 1; levelSize < data.Length; levelSize *= 2)
+            for (int levelSize = 1; levelSize < data.Length; levelSize *= 2)
             {
-                for (var k = 0; k < levelSize; k++)
+                for (int k = 0; k < levelSize; k++)
                 {
                     Radix2Step(data, -1, levelSize, k);
                 }
@@ -133,12 +135,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// <summary>
         /// Radix-2 generic FFT for power-of-two sized sample vectors.
         /// </summary>
-        static void Radix2Forward(Complex[] data)
+        private static void Radix2Forward(Complex[] data)
         {
             Radix2Reorder(data);
-            for (var levelSize = 1; levelSize < data.Length; levelSize *= 2)
+            for (int levelSize = 1; levelSize < data.Length; levelSize *= 2)
             {
-                for (var k = 0; k < levelSize; k++)
+                for (int k = 0; k < levelSize; k++)
                 {
                     Radix2Step(data, -1, levelSize, k);
                 }
@@ -148,12 +150,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// <summary>
         /// Radix-2 generic FFT for power-of-two sized sample vectors.
         /// </summary>
-        static void Radix2Inverse(Complex32[] data)
+        private static void Radix2Inverse(Complex32[] data)
         {
             Radix2Reorder(data);
-            for (var levelSize = 1; levelSize < data.Length; levelSize *= 2)
+            for (int levelSize = 1; levelSize < data.Length; levelSize *= 2)
             {
-                for (var k = 0; k < levelSize; k++)
+                for (int k = 0; k < levelSize; k++)
                 {
                     Radix2Step(data, 1, levelSize, k);
                 }
@@ -163,12 +165,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// <summary>
         /// Radix-2 generic FFT for power-of-two sized sample vectors.
         /// </summary>
-        static void Radix2Inverse(Complex[] data)
+        private static void Radix2Inverse(Complex[] data)
         {
             Radix2Reorder(data);
-            for (var levelSize = 1; levelSize < data.Length; levelSize *= 2)
+            for (int levelSize = 1; levelSize < data.Length; levelSize *= 2)
             {
-                for (var k = 0; k < levelSize; k++)
+                for (int k = 0; k < levelSize; k++)
                 {
                     Radix2Step(data, 1, levelSize, k);
                 }
@@ -178,12 +180,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// <summary>
         /// Radix-2 generic FFT for power-of-two sample vectors (Parallel Version).
         /// </summary>
-        static void Radix2ForwardParallel(Complex32[] data)
+        private static void Radix2ForwardParallel(Complex32[] data)
         {
             Radix2Reorder(data);
-            for (var levelSize = 1; levelSize < data.Length; levelSize *= 2)
+            for (int levelSize = 1; levelSize < data.Length; levelSize *= 2)
             {
-                var size = levelSize;
+                int size = levelSize;
 
                 CommonParallel.For(0, size, 64, (u, v) =>
                 {
@@ -198,12 +200,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// <summary>
         /// Radix-2 generic FFT for power-of-two sample vectors (Parallel Version).
         /// </summary>
-        static void Radix2ForwardParallel(Complex[] data)
+        private static void Radix2ForwardParallel(Complex[] data)
         {
             Radix2Reorder(data);
-            for (var levelSize = 1; levelSize < data.Length; levelSize *= 2)
+            for (int levelSize = 1; levelSize < data.Length; levelSize *= 2)
             {
-                var size = levelSize;
+                int size = levelSize;
 
                 CommonParallel.For(0, size, 64, (u, v) =>
                 {
@@ -218,12 +220,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// <summary>
         /// Radix-2 generic FFT for power-of-two sample vectors (Parallel Version).
         /// </summary>
-        static void Radix2InverseParallel(Complex32[] data)
+        private static void Radix2InverseParallel(Complex32[] data)
         {
             Radix2Reorder(data);
-            for (var levelSize = 1; levelSize < data.Length; levelSize *= 2)
+            for (int levelSize = 1; levelSize < data.Length; levelSize *= 2)
             {
-                var size = levelSize;
+                int size = levelSize;
 
                 CommonParallel.For(0, size, 64, (u, v) =>
                 {
@@ -238,12 +240,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// <summary>
         /// Radix-2 generic FFT for power-of-two sample vectors (Parallel Version).
         /// </summary>
-        static void Radix2InverseParallel(Complex[] data)
+        private static void Radix2InverseParallel(Complex[] data)
         {
             Radix2Reorder(data);
-            for (var levelSize = 1; levelSize < data.Length; levelSize *= 2)
+            for (int levelSize = 1; levelSize < data.Length; levelSize *= 2)
             {
-                var size = levelSize;
+                int size = levelSize;
 
                 CommonParallel.For(0, size, 64, (u, v) =>
                 {

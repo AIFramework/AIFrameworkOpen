@@ -26,17 +26,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
         /// <returns></returns>
         public static Complex[] Poles(int order)
         {
-            var a = Enumerable.Range(0, order + 1)
+            double[] a = Enumerable.Range(0, order + 1)
                               .Select(i => Reverse(order - i, order))
                               .ToArray();
 
-            var poles = MathUtils.PolynomialRoots(a);
+            Complex[] poles = MathUtils.PolynomialRoots(a);
 
             // ...and normalize
 
-            var norm = Math.Pow(10, -Math.Log10(a[order - 1]) / order);
+            double norm = Math.Pow(10, -Math.Log10(a[order - 1]) / order);
 
-            for (var i = 0; i < poles.Length; i++)
+            for (int i = 0; i < poles.Length; i++)
             {
                 poles[i] *= norm;
             }

@@ -38,10 +38,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <returns></returns>
         public override float Process(float sample)
         {
-            var b0 = _b[0];
-            var am = _a[_delay];
+            float b0 = _b[0];
+            float am = _a[_delay];
 
-            var output = b0 * sample - am * _delayLineA[_delayLineOffsetA];
+            float output = b0 * sample - am * _delayLineA[_delayLineOffsetA];
 
             _delayLineA[_delayLineOffsetA] = output;
 
@@ -67,11 +67,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters
                 return base.ApplyTo(signal, method);
             }
 
-            var input = signal.Samples;
-            var output = new float[input.Length];
+            float[] input = signal.Samples;
+            float[] output = new float[input.Length];
 
-            var b0 = _b[0];
-            var am = _a[_delay];
+            float b0 = _b[0];
+            float am = _a[_delay];
 
             for (int i = 0; i < _delay; i++)
             {

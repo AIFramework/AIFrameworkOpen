@@ -27,21 +27,20 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
     public class BetaScaled : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _shapeA;
-        readonly double _shapeB;
-        readonly double _location;
-        readonly double _scale;
+        private System.Random _random;
+        private readonly double _shapeA;
+        private readonly double _shapeB;
+        private readonly double _location;
+        private readonly double _scale;
 
         /// <summary>
         /// Initializes a new instance of the BetaScaled class.
@@ -201,7 +200,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return _location;
                 }
 
-                return (_shapeB*_location + _shapeA*(_location + _scale))/(_shapeA + _shapeB);
+                return (_shapeB * _location + _shapeA * (_location + _scale)) / (_shapeA + _shapeB);
             }
         }
 
@@ -213,7 +212,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             get
             {
                 double sum = _shapeA + _shapeB;
-                return (_shapeA*_shapeB*_scale*_scale)/(sum*sum*(1.0 + sum));
+                return (_shapeA * _shapeB * _scale * _scale) / (sum * sum * (1.0 + sum));
             }
         }
 
@@ -241,17 +240,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
                 if (double.IsPositiveInfinity(_shapeA))
                 {
-                    return -2.0*_scale/Math.Sqrt(_shapeB*_scale*_scale);
+                    return -2.0 * _scale / Math.Sqrt(_shapeB * _scale * _scale);
                 }
 
                 if (double.IsPositiveInfinity(_shapeB))
                 {
-                    return 2.0*_scale/Math.Sqrt(_shapeA*_scale*_scale);
+                    return 2.0 * _scale / Math.Sqrt(_shapeA * _scale * _scale);
                 }
 
                 double sum = _shapeA + _shapeB;
                 double variance = (_shapeA * _shapeB * _scale * _scale) / (sum * sum * (1.0 + sum));
-                return 2.0*(_shapeB - _shapeA)*_scale/(sum*(2.0 + sum)*Math.Sqrt(variance));
+                return 2.0 * (_shapeB - _shapeA) * _scale / (sum * (2.0 + sum) * Math.Sqrt(variance));
             }
         }
 
@@ -282,7 +281,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return _location + 0.5 * _scale;
                 }
 
-                return ((_shapeA - 1)/(_shapeA + _shapeB - 2))*_scale + _location;
+                return ((_shapeA - 1) / (_shapeA + _shapeB - 2)) * _scale + _location;
             }
         }
 
@@ -373,24 +372,24 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _shapeA, _shapeB, _location, _scale);
         }
 
-        static double SampleUnchecked(System.Random rnd, double a, double b, double location, double scale)
+        private static double SampleUnchecked(System.Random rnd, double a, double b, double location, double scale)
         {
-            return Beta.SampleUnchecked(rnd, a, b)*scale + location;
+            return Beta.SampleUnchecked(rnd, a, b) * scale + location;
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double a, double b, double location, double scale)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double a, double b, double location, double scale)
         {
             Beta.SamplesUnchecked(rnd, values, a, b);
             CommonParallel.For(0, values.Length, 4096, (aa, bb) =>
             {
                 for (int i = aa; i < bb; i++)
                 {
-                    values[i] = values[i]*scale + location;
+                    values[i] = values[i] * scale + location;
                 }
             });
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double a, double b, double location, double scale)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double a, double b, double location, double scale)
         {
             while (true)
             {
@@ -415,7 +414,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return Beta.PDF(a, b, (x - location)/scale)/Math.Abs(scale);
+            return Beta.PDF(a, b, (x - location) / scale) / Math.Abs(scale);
         }
 
         /// <summary>
@@ -435,7 +434,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return Beta.PDFLn(a, b, (x - location)/scale) - Math.Log(Math.Abs(scale));
+            return Beta.PDFLn(a, b, (x - location) / scale) - Math.Log(Math.Abs(scale));
         }
 
         /// <summary>
@@ -477,7 +476,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return Beta.InvCDF(a, b, p)*scale + location;
+            return Beta.InvCDF(a, b, p) * scale + location;
         }
 
         /// <summary>

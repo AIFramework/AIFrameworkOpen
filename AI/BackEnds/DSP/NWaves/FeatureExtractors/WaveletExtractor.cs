@@ -51,7 +51,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             _waveletName = options.WaveletName;
             _level = options.FwtLevel;
             _fwt = new Fwt(_blockSize, new Wavelet(_waveletName));
-            
+
             _coeffs = new float[_blockSize];
         }
 
@@ -72,25 +72,30 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// True if computations can be done in parallel
         /// </summary>
         /// <returns></returns>
-        public override bool IsParallelizable() => true;
+        public override bool IsParallelizable()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
         /// </summary>
         /// <returns></returns>
-        public override FeatureExtractor ParallelCopy() =>
-            new WaveletExtractor(
-                new WaveletOptions
-                {
-                    SamplingRate = SamplingRate,
-                    FrameDuration = FrameDuration,
-                    HopDuration = HopDuration,
-                    WaveletName = _waveletName,
-                    FeatureCount = FeatureCount,
-                    FwtSize = _blockSize,
-                    FwtLevel = _level,
-                    PreEmphasis = _preEmphasis,
-                    Window = _window
-                });
+        public override FeatureExtractor ParallelCopy()
+        {
+            return new WaveletExtractor(
+new WaveletOptions
+{
+    SamplingRate = SamplingRate,
+    FrameDuration = FrameDuration,
+    HopDuration = HopDuration,
+    WaveletName = _waveletName,
+    FeatureCount = FeatureCount,
+    FwtSize = _blockSize,
+    FwtLevel = _level,
+    PreEmphasis = _preEmphasis,
+    Window = _window
+});
+        }
     }
 }

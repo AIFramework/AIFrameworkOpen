@@ -38,8 +38,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
     /// </summary>
     public sealed class CancellationStopCriterion<T> : IIterationStopCriterion<T> where T : struct, IEquatable<T>, IFormattable
     {
-        readonly CancellationToken _masterToken;
-        CancellationTokenSource _currentTcs;
+        private readonly CancellationToken _masterToken;
+        private CancellationTokenSource _currentTcs;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IterationCountStopCriterion{T}"/> class.

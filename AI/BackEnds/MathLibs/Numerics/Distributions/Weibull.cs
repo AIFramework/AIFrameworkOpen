@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -45,10 +45,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </remarks>
     public class Weibull : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _shape;
-        readonly double _scale;
+        private System.Random _random;
+        private readonly double _shape;
+        private readonly double _scale;
 
         /// <summary>
         /// Reusable intermediate result 1 / (_scale ^ _shape)
@@ -57,7 +56,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// By caching this parameter we can get slightly better numerics precision
         /// in certain constellations without any additional computations.
         /// </remarks>
-        readonly double _scalePowShapeInv;
+        private readonly double _scalePowShapeInv;
 
         /// <summary>
         /// Initializes a new instance of the Weibull class.
@@ -137,12 +136,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the Weibull distribution.
         /// </summary>
-        public double Mean => _scale*SpecialFunctions.Gamma(1.0 + (1.0/_shape));
+        public double Mean => _scale * SpecialFunctions.Gamma(1.0 + (1.0 / _shape));
 
         /// <summary>
         /// Gets the variance of the Weibull distribution.
         /// </summary>
-        public double Variance => (_scale*_scale*SpecialFunctions.Gamma(1.0 + (2.0/_shape))) - (Mean*Mean);
+        public double Variance => (_scale * _scale * SpecialFunctions.Gamma(1.0 + (2.0 / _shape))) - (Mean * Mean);
 
         /// <summary>
         /// Gets the standard deviation of the Weibull distribution.
@@ -152,7 +151,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the entropy of the Weibull distribution.
         /// </summary>
-        public double Entropy => (Constants.EulerMascheroni*(1.0 - (1.0/_shape))) + Math.Log(_scale/_shape) + 1.0;
+        public double Entropy => (Constants.EulerMascheroni * (1.0 - (1.0 / _shape))) + Math.Log(_scale / _shape) + 1.0;
 
         /// <summary>
         /// Gets the skewness of the Weibull distribution.
@@ -163,9 +162,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 double mu = Mean;
                 double sigma = StdDev;
-                double sigma2 = sigma*sigma;
-                double sigma3 = sigma2*sigma;
-                return ((_scale*_scale*_scale*SpecialFunctions.Gamma(1.0 + (3.0/_shape))) - (3.0*sigma2*mu) - (mu*mu*mu))/sigma3;
+                double sigma2 = sigma * sigma;
+                double sigma3 = sigma2 * sigma;
+                return ((_scale * _scale * _scale * SpecialFunctions.Gamma(1.0 + (3.0 / _shape))) - (3.0 * sigma2 * mu) - (mu * mu * mu)) / sigma3;
             }
         }
 
@@ -181,14 +180,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return 0.0;
                 }
 
-                return _scale*Math.Pow((_shape - 1.0)/_shape, 1.0/_shape);
+                return _scale * Math.Pow((_shape - 1.0) / _shape, 1.0 / _shape);
             }
         }
 
         /// <summary>
         /// Gets the median of the Weibull distribution.
         /// </summary>
-        public double Median => _scale*Math.Pow(Constants.Ln2, 1.0/_shape);
+        public double Median => _scale * Math.Pow(Constants.Ln2, 1.0 / _shape);
 
         /// <summary>
         /// Gets the minimum of the Weibull distribution.
@@ -211,10 +210,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 if (x == 0.0 && _shape == 1.0)
                 {
-                    return _shape/_scale;
+                    return _shape / _scale;
                 }
 
-                return _shape*Math.Pow(x/_scale, _shape - 1.0)*Math.Exp(-Math.Pow(x, _shape)*_scalePowShapeInv)/_scale;
+                return _shape * Math.Pow(x / _scale, _shape - 1.0) * Math.Exp(-Math.Pow(x, _shape) * _scalePowShapeInv) / _scale;
             }
 
             return 0.0;
@@ -234,7 +233,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return Math.Log(_shape) - Math.Log(_scale);
                 }
 
-                return Math.Log(_shape) + ((_shape - 1.0)*Math.Log(x/_scale)) - (Math.Pow(x, _shape)*_scalePowShapeInv) - Math.Log(_scale);
+                return Math.Log(_shape) + ((_shape - 1.0) * Math.Log(x / _scale)) - (Math.Pow(x, _shape) * _scalePowShapeInv) - Math.Log(_scale);
             }
 
             return double.NegativeInfinity;
@@ -252,7 +251,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            return -SpecialFunctions.ExponentialMinusOne(-Math.Pow(x, _shape)*_scalePowShapeInv);
+            return -SpecialFunctions.ExponentialMinusOne(-Math.Pow(x, _shape) * _scalePowShapeInv);
         }
 
         /// <summary>
@@ -281,27 +280,27 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _shape, _scale);
         }
 
-        static double SampleUnchecked(System.Random rnd, double shape, double scale)
+        private static double SampleUnchecked(System.Random rnd, double shape, double scale)
         {
-            var x = rnd.NextDouble();
-            return scale*Math.Pow(-Math.Log(x), 1.0/shape);
+            double x = rnd.NextDouble();
+            return scale * Math.Pow(-Math.Log(x), 1.0 / shape);
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double shape, double scale)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double shape, double scale)
         {
-            var exponent = 1.0/shape;
-            return rnd.NextDoubleSequence().Select(x => scale*Math.Pow(-Math.Log(x), exponent));
+            double exponent = 1.0 / shape;
+            return rnd.NextDoubleSequence().Select(x => scale * Math.Pow(-Math.Log(x), exponent));
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double shape, double scale)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double shape, double scale)
         {
-            var exponent = 1.0/shape;
+            double exponent = 1.0 / shape;
             rnd.NextDoubles(values);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    values[i] = scale*Math.Pow(-Math.Log(values[i]), exponent);
+                    values[i] = scale * Math.Pow(-Math.Log(values[i]), exponent);
                 }
             });
         }
@@ -325,13 +324,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 if (x == 0.0 && shape == 1.0)
                 {
-                    return shape/scale;
+                    return shape / scale;
                 }
 
                 return shape
-                       *Math.Pow(x/scale, shape - 1.0)
-                       *Math.Exp(-Math.Pow(x, shape)*Math.Pow(scale, -shape))
-                       /scale;
+                       * Math.Pow(x / scale, shape - 1.0)
+                       * Math.Exp(-Math.Pow(x, shape) * Math.Pow(scale, -shape))
+                       / scale;
             }
 
             return 0.0;
@@ -360,8 +359,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 }
 
                 return Math.Log(shape)
-                       + ((shape - 1.0)*Math.Log(x/scale))
-                       - (Math.Pow(x, shape)*Math.Pow(scale, -shape))
+                       + ((shape - 1.0) * Math.Log(x / scale))
+                       - (Math.Pow(x, shape) * Math.Pow(scale, -shape))
                        - Math.Log(scale);
             }
 
@@ -388,7 +387,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            return -SpecialFunctions.ExponentialMinusOne(-Math.Pow(x, shape)*Math.Pow(scale, -shape));
+            return -SpecialFunctions.ExponentialMinusOne(-Math.Pow(x, shape) * Math.Pow(scale, -shape));
         }
 
         /// <summary>
@@ -399,10 +398,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>Returns a Weibull distribution.</returns>
         public static Weibull Estimate(IEnumerable<double> samples, System.Random randomSource = null)
         {
-            var samp = samples as double[] ?? samples.ToArray();
-            double n = samp.Length, s1 = 0, s2 = 0, s3 = 0, previousC = Int32.MinValue, QofC = 0;
+            double[] samp = samples as double[] ?? samples.ToArray();
+            double n = samp.Length, s1 = 0, s2 = 0, s3 = 0, previousC = int.MinValue, QofC = 0;
 
-            if (n <= 1) throw new Exception("Observations not sufficient");
+            if (n <= 1)
+            {
+                throw new Exception("Observations not sufficient");
+            }
 
             // Start values
             double c = 10; double b = 0;

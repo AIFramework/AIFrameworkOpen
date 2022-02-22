@@ -27,12 +27,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using BigInteger = System.Numerics.BigInteger;
 using Complex = System.Numerics.Complex;
 
@@ -45,7 +45,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static T[] Map<TA, T>(TA[] points, Func<TA, T> map)
         {
-            var res = new T[points.Length];
+            T[] res = new T[points.Length];
             for (int i = 0; i < points.Length; i++)
             {
                 res[i] = map(points[i]);
@@ -71,7 +71,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentException("The array arguments must have the same length.", nameof(pointsB));
             }
 
-            var res = new T[pointsA.Length];
+            T[] res = new T[pointsA.Length];
             for (int i = 0; i < res.Length; i++)
             {
                 res[i] = map(pointsA[i], pointsB[i]);
@@ -98,15 +98,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            if (length == 0) return new double[0];
-            if (length == 1) return new[] { stop };
+            if (length == 0)
+            {
+                return new double[0];
+            }
 
-            double step = (stop - start)/(length - 1);
+            if (length == 1)
+            {
+                return new[] { stop };
+            }
 
-            var data = new double[length];
+            double step = (stop - start) / (length - 1);
+
+            double[] data = new double[length];
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = start + i*step;
+                data[i] = start + i * step;
             }
             data[data.Length - 1] = stop;
             return data;
@@ -122,15 +129,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            if (length == 0) return new T[0];
-            if (length == 1) return new[] { map(stop) };
+            if (length == 0)
+            {
+                return new T[0];
+            }
 
-            double step = (stop - start)/(length - 1);
+            if (length == 1)
+            {
+                return new[] { map(stop) };
+            }
 
-            var data = new T[length];
+            double step = (stop - start) / (length - 1);
+
+            T[] data = new T[length];
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = map(start + i*step);
+                data[i] = map(start + i * step);
             }
             data[data.Length - 1] = map(stop);
             return data;
@@ -147,15 +161,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            if (length == 0) return new double[0];
-            if (length == 1) return new[] { Math.Pow(10, stopExponent) };
+            if (length == 0)
+            {
+                return new double[0];
+            }
 
-            double step = (stopExponent - startExponent)/(length - 1);
+            if (length == 1)
+            {
+                return new[] { Math.Pow(10, stopExponent) };
+            }
 
-            var data = new double[length];
+            double step = (stopExponent - startExponent) / (length - 1);
+
+            double[] data = new double[length];
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = Math.Pow(10, startExponent + i*step);
+                data[i] = Math.Pow(10, startExponent + i * step);
             }
             data[data.Length - 1] = Math.Pow(10, stopExponent);
             return data;
@@ -171,15 +192,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            if (length == 0) return new T[0];
-            if (length == 1) return new[] { map(Math.Pow(10, stopExponent)) };
+            if (length == 0)
+            {
+                return new T[0];
+            }
 
-            double step = (stopExponent - startExponent)/(length - 1);
+            if (length == 1)
+            {
+                return new[] { map(Math.Pow(10, stopExponent)) };
+            }
 
-            var data = new T[length];
+            double step = (stopExponent - startExponent) / (length - 1);
+
+            T[] data = new T[length];
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = map(Math.Pow(10, startExponent + i*step));
+                data[i] = map(Math.Pow(10, startExponent + i * step));
             }
             data[data.Length - 1] = map(Math.Pow(10, stopExponent));
             return data;
@@ -191,10 +219,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double[] LinearRange(int start, int stop)
         {
-            if (start == stop) return new double[] { start };
+            if (start == stop)
+            {
+                return new double[] { start };
+            }
+
             if (start < stop)
             {
-                var data = new double[stop - start + 1];
+                double[] data = new double[stop - start + 1];
                 for (int i = 0; i < data.Length; i++)
                 {
                     data[i] = start + i;
@@ -203,7 +235,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
             else
             {
-                var data = new double[start - stop + 1];
+                double[] data = new double[start - stop + 1];
                 for (int i = 0; i < data.Length; i++)
                 {
                     data[i] = start - i;
@@ -218,10 +250,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static int[] LinearRangeInt32(int start, int stop)
         {
-            if (start == stop) return new int[] { start };
+            if (start == stop)
+            {
+                return new int[] { start };
+            }
+
             if (start < stop)
             {
-                var data = new int[stop - start + 1];
+                int[] data = new int[stop - start + 1];
                 for (int i = 0; i < data.Length; i++)
                 {
                     data[i] = start + i;
@@ -230,7 +266,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
             else
             {
-                var data = new int[start - stop + 1];
+                int[] data = new int[start - stop + 1];
                 for (int i = 0; i < data.Length; i++)
                 {
                     data[i] = start - i;
@@ -246,16 +282,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double[] LinearRange(int start, int step, int stop)
         {
-            if (start == stop) return new double[] { start };
+            if (start == stop)
+            {
+                return new double[] { start };
+            }
+
             if (start < stop && step < 0 || start > stop && step > 0 || step == 0d)
             {
                 return new double[0];
             }
 
-            var data = new double[(stop - start)/step + 1];
+            double[] data = new double[(stop - start) / step + 1];
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = start + i*step;
+                data[i] = start + i * step;
             }
             return data;
         }
@@ -267,13 +307,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static int[] LinearRangeInt32(int start, int step, int stop)
         {
-            if (start == stop) return new int[] { start };
+            if (start == stop)
+            {
+                return new int[] { start };
+            }
+
             if (start < stop && step < 0 || start > stop && step > 0 || step == 0d)
             {
                 return new int[0];
             }
 
-            var data = new int[(stop - start) / step + 1];
+            int[] data = new int[(stop - start) / step + 1];
             for (int i = 0; i < data.Length; i++)
             {
                 data[i] = start + i * step;
@@ -288,16 +332,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double[] LinearRange(double start, double step, double stop)
         {
-            if (start == stop) return new[] { start };
+            if (start == stop)
+            {
+                return new[] { start };
+            }
+
             if (start < stop && step < 0 || start > stop && step > 0 || step == 0d)
             {
                 return new double[0];
             }
 
-            var data = new double[(int)Math.Floor((stop - start)/step + 1d)];
+            double[] data = new double[(int)Math.Floor((stop - start) / step + 1d)];
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = start + i*step;
+                data[i] = start + i * step;
             }
             return data;
         }
@@ -308,16 +356,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static T[] LinearRangeMap<T>(double start, double step, double stop, Func<double, T> map)
         {
-            if (start == stop) return new[] { map(start) };
+            if (start == stop)
+            {
+                return new[] { map(start) };
+            }
+
             if (start < stop && step < 0 || start > stop && step > 0 || step == 0d)
             {
                 return new T[0];
             }
 
-            var data = new T[(int)Math.Floor((stop - start)/step + 1d)];
+            T[] data = new T[(int)Math.Floor((stop - start) / step + 1d)];
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = map(start + i*step);
+                data[i] = map(start + i * step);
             }
             return data;
         }
@@ -338,13 +390,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            double step = frequency/samplingRate*amplitude;
-            phase = Euclid.Modulus(phase - delay*step, amplitude);
+            double step = frequency / samplingRate * amplitude;
+            phase = Euclid.Modulus(phase - delay * step, amplitude);
 
-            var data = new double[length];
+            double[] data = new double[length];
             for (int i = 0, k = 0; i < data.Length; i++, k++)
             {
-                var x = phase + k*step;
+                double x = phase + k * step;
                 if (x >= amplitude)
                 {
                     x %= amplitude;
@@ -374,13 +426,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            double step = frequency/samplingRate*amplitude;
-            phase = Euclid.Modulus(phase - delay*step, amplitude);
+            double step = frequency / samplingRate * amplitude;
+            phase = Euclid.Modulus(phase - delay * step, amplitude);
 
-            var data = new T[length];
+            T[] data = new T[length];
             for (int i = 0, k = 0; i < data.Length; i++, k++)
             {
-                var x = phase + k*step;
+                double x = phase + k * step;
                 if (x >= amplitude)
                 {
                     x %= amplitude;
@@ -403,13 +455,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="delay">Optional delay, relative to the phase.</param>
         public static IEnumerable<double> PeriodicSequence(double samplingRate, double frequency, double amplitude = 1.0, double phase = 0.0, int delay = 0)
         {
-            double step = frequency/samplingRate*amplitude;
-            phase = Euclid.Modulus(phase - delay*step, amplitude);
+            double step = frequency / samplingRate * amplitude;
+            phase = Euclid.Modulus(phase - delay * step, amplitude);
 
             int k = 0;
             while (true)
             {
-                var x = phase + (k++)*step;
+                double x = phase + (k++) * step;
                 if (x >= amplitude)
                 {
                     x %= amplitude;
@@ -432,13 +484,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="delay">Optional delay, relative to the phase.</param>
         public static IEnumerable<T> PeriodicMapSequence<T>(Func<double, T> map, double samplingRate, double frequency, double amplitude = 1.0, double phase = 0.0, int delay = 0)
         {
-            double step = frequency/samplingRate*amplitude;
-            phase = Euclid.Modulus(phase - delay*step, amplitude);
+            double step = frequency / samplingRate * amplitude;
+            phase = Euclid.Modulus(phase - delay * step, amplitude);
 
             int k = 0;
             while (true)
             {
-                var x = phase + (k++)*step;
+                double x = phase + (k++) * step;
                 if (x >= amplitude)
                 {
                     x %= amplitude;
@@ -467,13 +519,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            double step = frequency/samplingRate*Constants.Pi2;
-            phase = (phase - delay*step)%Constants.Pi2;
+            double step = frequency / samplingRate * Constants.Pi2;
+            phase = (phase - delay * step) % Constants.Pi2;
 
-            var data = new double[length];
+            double[] data = new double[length];
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = mean + amplitude*Math.Sin(phase + i*step);
+                data[i] = mean + amplitude * Math.Sin(phase + i * step);
             }
             return data;
         }
@@ -489,16 +541,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="delay">Optional delay, relative to the phase.</param>
         public static IEnumerable<double> SinusoidalSequence(double samplingRate, double frequency, double amplitude, double mean = 0.0, double phase = 0.0, int delay = 0)
         {
-            double step = frequency/samplingRate*Constants.Pi2;
-            phase = (phase - delay*step)%Constants.Pi2;
+            double step = frequency / samplingRate * Constants.Pi2;
+            phase = (phase - delay * step) % Constants.Pi2;
 
             while (true)
             {
                 for (int i = 0; i < 1000; i++)
                 {
-                    yield return mean + amplitude*Math.Sin(phase + i*step);
+                    yield return mean + amplitude * Math.Sin(phase + i * step);
                 }
-                phase = (phase + 1000*step)%Constants.Pi2;
+                phase = (phase + 1000 * step) % Constants.Pi2;
             }
         }
 
@@ -513,8 +565,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="delay">Optional delay.</param>
         public static double[] Square(int length, int highDuration, int lowDuration, double lowValue, double highValue, int delay = 0)
         {
-            var duration = highDuration + lowDuration;
-            return PeriodicMap(length, x => x < highDuration ? highValue : lowValue, 1.0, 1.0/duration, duration, 0.0, delay);
+            int duration = highDuration + lowDuration;
+            return PeriodicMap(length, x => x < highDuration ? highValue : lowValue, 1.0, 1.0 / duration, duration, 0.0, delay);
         }
 
         /// <summary>
@@ -527,8 +579,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="delay">Optional delay.</param>
         public static IEnumerable<double> SquareSequence(int highDuration, int lowDuration, double lowValue, double highValue, int delay = 0)
         {
-            var duration = highDuration + lowDuration;
-            return PeriodicMapSequence(x => x < highDuration ? highValue : lowValue, 1.0, 1.0/duration, duration, 0.0, delay);
+            int duration = highDuration + lowDuration;
+            return PeriodicMapSequence(x => x < highDuration ? highValue : lowValue, 1.0, 1.0 / duration, duration, 0.0, delay);
         }
 
         /// <summary>
@@ -542,11 +594,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="delay">Optional delay.</param>
         public static double[] Triangle(int length, int raiseDuration, int fallDuration, double lowValue, double highValue, int delay = 0)
         {
-            var duration = raiseDuration + fallDuration;
-            var height = highValue - lowValue;
-            var raise = height / raiseDuration;
-            var fall = height / fallDuration;
-            return PeriodicMap(length, x => x < raiseDuration ? lowValue + x*raise : highValue - (x-raiseDuration)*fall, 1.0, 1.0/duration, duration, 0.0, delay);
+            int duration = raiseDuration + fallDuration;
+            double height = highValue - lowValue;
+            double raise = height / raiseDuration;
+            double fall = height / fallDuration;
+            return PeriodicMap(length, x => x < raiseDuration ? lowValue + x * raise : highValue - (x - raiseDuration) * fall, 1.0, 1.0 / duration, duration, 0.0, delay);
         }
 
         /// <summary>
@@ -559,11 +611,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="delay">Optional delay.</param>
         public static IEnumerable<double> TriangleSequence(int raiseDuration, int fallDuration, double lowValue, double highValue, int delay = 0)
         {
-            var duration = raiseDuration + fallDuration;
-            var height = highValue - lowValue;
-            var raise = height / raiseDuration;
-            var fall = height / fallDuration;
-            return PeriodicMapSequence(x => x < raiseDuration ? lowValue + x*raise : highValue - (x-raiseDuration)*fall, 1.0, 1.0/duration, duration, 0.0, delay);
+            int duration = raiseDuration + fallDuration;
+            double height = highValue - lowValue;
+            double raise = height / raiseDuration;
+            double fall = height / fallDuration;
+            return PeriodicMapSequence(x => x < raiseDuration ? lowValue + x * raise : highValue - (x - raiseDuration) * fall, 1.0, 1.0 / duration, duration, 0.0, delay);
         }
 
         /// <summary>
@@ -576,8 +628,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="delay">Optional delay.</param>
         public static double[] Sawtooth(int length, int period, double lowValue, double highValue, int delay = 0)
         {
-            var height = highValue - lowValue;
-            return PeriodicMap(length, x => x + lowValue, 1.0, 1.0/period, height*period/(period-1), 0.0, delay);
+            double height = highValue - lowValue;
+            return PeriodicMap(length, x => x + lowValue, 1.0, 1.0 / period, height * period / (period - 1), 0.0, delay);
         }
 
         /// <summary>
@@ -589,8 +641,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="delay">Optional delay.</param>
         public static IEnumerable<double> SawtoothSequence(int period, double lowValue, double highValue, int delay = 0)
         {
-            var height = highValue - lowValue;
-            return PeriodicMapSequence(x => x + lowValue, 1.0, 1.0/period, height*period/(period-1), 0.0, delay);
+            double height = highValue - lowValue;
+            return PeriodicMapSequence(x => x + lowValue, 1.0, 1.0 / period, height * period / (period - 1), 0.0, delay);
         }
 
         /// <summary>
@@ -605,7 +657,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var data = new T[length];
+            T[] data = new T[length];
             CommonParallel.For(0, data.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
@@ -641,7 +693,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var data = new double[length];
+            double[] data = new double[length];
             for (int i = Math.Max(0, delay); i < data.Length; i++)
             {
                 data[i] = amplitude;
@@ -680,7 +732,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var data = new double[length];
+            double[] data = new double[length];
             if (delay >= 0 && delay < length)
             {
                 data[delay] = amplitude;
@@ -725,7 +777,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var data = new double[length];
+            double[] data = new double[length];
             delay = Euclid.Modulus(delay, period);
             while (delay < length)
             {
@@ -771,7 +823,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var data = new T[length];
+            T[] data = new T[length];
             for (int i = 0; i < data.Length; i++)
             {
                 (data[i], state) = f(state);
@@ -789,7 +841,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var data = new T[length];
+            T[] data = new T[length];
             for (int i = 0; i < data.Length; i++)
             {
                 (data[i], state) = f(state);
@@ -804,7 +856,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         {
             while (true)
             {
-                var (item, nextState) = f(state);
+                (T item, TState nextState) = f(state);
                 state = nextState;
                 yield return item;
             }
@@ -817,7 +869,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         {
             while (true)
             {
-                var (item, nextState) = f(state);
+                (T item, TState nextState) = f(state);
                 state = nextState;
                 yield return item;
             }
@@ -833,7 +885,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var data = new BigInteger[length];
+            BigInteger[] data = new BigInteger[length];
             if (data.Length > 0)
             {
                 data[0] = BigInteger.Zero;
@@ -905,7 +957,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var samples = SystemRandomSource.FastDoubles(length);
+            double[] samples = SystemRandomSource.FastDoubles(length);
             return Map(samples, map);
         }
 
@@ -929,8 +981,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var samples1 = SystemRandomSource.FastDoubles(length);
-            var samples2 = SystemRandomSource.FastDoubles(length);
+            double[] samples1 = SystemRandomSource.FastDoubles(length);
+            double[] samples2 = SystemRandomSource.FastDoubles(length);
             return Map2(samples1, samples2, map);
         }
 
@@ -940,13 +992,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static IEnumerable<T> UniformMap2Sequence<T>(Func<double, double, T> map)
         {
-            var rnd1 = SystemRandomSource.Default;
+            SystemRandomSource rnd1 = SystemRandomSource.Default;
             for (int i = 0; i < 128; i++)
             {
                 yield return map(rnd1.NextDouble(), rnd1.NextDouble());
             }
 
-            var rnd2 = new System.Random(RandomSeed.Robust());
+            System.Random rnd2 = new System.Random(RandomSeed.Robust());
             while (true)
             {
                 yield return map(rnd2.NextDouble(), rnd2.NextDouble());
@@ -979,7 +1031,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var samples = new double[length];
+            double[] samples = new double[length];
             Distributions.Normal.Samples(SystemRandomSource.Default, samples, mean, standardDeviation);
             return samples;
         }
@@ -1002,7 +1054,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var samples = new double[length];
+            double[] samples = new double[length];
             distribution.Samples(samples);
             return samples;
         }
@@ -1025,7 +1077,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var samples = new double[length];
+            double[] samples = new double[length];
             distribution.Samples(samples);
             return Map(samples, v => (float)v);
         }
@@ -1080,7 +1132,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var samples = new double[length];
+            double[] samples = new double[length];
             distribution.Samples(samples);
             return Map(samples, map);
         }
@@ -1103,8 +1155,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var samples1 = new double[length];
-            var samples2 = new double[length];
+            double[] samples1 = new double[length];
+            double[] samples2 = new double[length];
             distribution.Samples(samples1);
             distribution.Samples(samples2);
             return Map2(samples1, samples2, map);

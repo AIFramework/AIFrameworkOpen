@@ -43,16 +43,16 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
             Filters = new FirFilter[filterCount];
             MultirateFilters = new FirFilter[filterCount];
 
-            var len = (kernel.Length + 1) / filterCount;
+            int len = (kernel.Length + 1) / filterCount;
 
-            for (var i = 0; i < Filters.Length; i++)
+            for (int i = 0; i < Filters.Length; i++)
             {
-                var filterKernel = new double[kernel.Length];
-                var mrFilterKernel = new double[len];
+                double[] filterKernel = new double[kernel.Length];
+                double[] mrFilterKernel = new double[len];
 
-                for (var j = 0; j < len; j++)
+                for (int j = 0; j < len; j++)
                 {
-                    var kernelPos = i + filterCount * j;
+                    int kernelPos = i + filterCount * j;
 
                     if (kernelPos < kernel.Length)
                     {
@@ -69,9 +69,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
 
             if (type == 2)
             {
-                for (var i = 0; i < Filters.Length / 2; i++)
+                for (int i = 0; i < Filters.Length / 2; i++)
                 {
-                    var tmp = Filters[i];
+                    FirFilter tmp = Filters[i];
                     Filters[i] = Filters[filterCount - 1 - i];
                     Filters[filterCount - 1 - i] = tmp;
 
@@ -89,15 +89,15 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
         /// <returns></returns>
         public DiscreteSignal Decimate(DiscreteSignal signal)
         {
-            var resampledRate = signal.SamplingRate / MultirateFilters.Length;
-            var resampledLength = signal.Length / MultirateFilters.Length;
-            var resampled = new DiscreteSignal(resampledRate, resampledLength);
+            int resampledRate = signal.SamplingRate / MultirateFilters.Length;
+            int resampledLength = signal.Length / MultirateFilters.Length;
+            DiscreteSignal resampled = new DiscreteSignal(resampledRate, resampledLength);
 
-            var acc = 0f;
+            float acc = 0f;
 
             // process first K samples separately
 
-            for (var i = MultirateFilters.Length - 1; i >= 1 ; i--)
+            for (int i = MultirateFilters.Length - 1; i >= 1; i--)
             {
                 acc += MultirateFilters[i].Process(0);
             }
@@ -106,12 +106,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
 
             // rest of the samples are processed very simply by each filter
 
-            var si = 1;
-            for (var i = 1; i < resampled.Length; i++)
+            int si = 1;
+            for (int i = 1; i < resampled.Length; i++)
             {
                 acc = 0f;
 
-                for (var j = MultirateFilters.Length - 1; j >= 0; j--)
+                for (int j = MultirateFilters.Length - 1; j >= 0; j--)
                 {
                     acc += MultirateFilters[j].Process(signal[si++]);
                 }
@@ -129,15 +129,15 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
         /// <returns></returns>
         public DiscreteSignal Interpolate(DiscreteSignal signal)
         {
-            var k = MultirateFilters.Length;
-            var resampledRate = signal.SamplingRate * k;
-            var resampledLength = signal.Length * k;
-            var resampled = new DiscreteSignal(resampledRate, resampledLength);
+            int k = MultirateFilters.Length;
+            int resampledRate = signal.SamplingRate * k;
+            int resampledLength = signal.Length * k;
+            DiscreteSignal resampled = new DiscreteSignal(resampledRate, resampledLength);
 
-            var ri = 0;
-            for (var i = 0; i < signal.Length; i++)
+            int ri = 0;
+            for (int i = 0; i < signal.Length; i++)
             {
-                for (var j = MultirateFilters.Length - 1; j >= 0; j--)
+                for (int j = MultirateFilters.Length - 1; j >= 0; j--)
                 {
                     resampled[ri++] = k * MultirateFilters[j].Process(signal[i]);
                 }
@@ -157,9 +157,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
         /// <returns></returns>
         public float Process(float sample)
         {
-            var output = 0f;
+            float output = 0f;
 
-            foreach (var filter in Filters)
+            foreach (FirFilter filter in Filters)
             {
                 output += filter.Process(sample);
             }
@@ -172,12 +172,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
         /// </summary>
         public void Reset()
         {
-            foreach (var filter in Filters)
+            foreach (FirFilter filter in Filters)
             {
                 filter.Reset();
             }
 
-            foreach (var filter in MultirateFilters)
+            foreach (FirFilter filter in MultirateFilters)
             {
                 filter.Reset();
             }

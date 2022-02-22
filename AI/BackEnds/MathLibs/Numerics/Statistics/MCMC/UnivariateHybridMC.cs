@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
 {
@@ -41,13 +41,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// Distribution to sample momentum from.
         /// </summary>
-        readonly Normal _distribution;
+        private readonly Normal _distribution;
 
         /// <summary>
         /// Standard deviations used in the sampling of the
         /// momentum.
         /// </summary>
-        double _sdv;
+        private double _sdv;
 
         /// <summary>
         /// Gets or sets the standard deviation used in the sampling of the
@@ -184,7 +184,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <param name="function">Function for which the derivative is to be evaluated.</param>
         /// <param name="x">The location where the derivative is to be evaluated.</param>
         /// <returns>The derivative of the function at the point x.</returns>
-        static double Grad(DensityLn<double> function, double x)
+        private static double Grad(DensityLn<double> function, double x)
         {
             double h = Math.Max(10e-4, (10e-7) * x);
             double increment = x + h;

@@ -46,18 +46,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// <summary>
         /// Q and R are transformed variables.
         /// </summary>
-        static void QR(double a2, double a1, double a0, out double Q, out double R)
+        private static void QR(double a2, double a1, double a0, out double Q, out double R)
         {
-            Q = (3*a1 - a2*a2)/9.0;
-            R = (9.0*a2*a1 - 27*a0 - 2*a2*a2*a2)/54.0;
+            Q = (3 * a1 - a2 * a2) / 9.0;
+            R = (9.0 * a2 * a1 - 27 * a0 - 2 * a2 * a2 * a2) / 54.0;
         }
 
         /// <summary>
         /// n^(1/3) - work around a negative double raised to (1/3)
         /// </summary>
-        static double PowThird(double n)
+        private static double PowThird(double n)
         {
-            return Math.Pow(Math.Abs(n), 1d/3d)*Math.Sign(n);
+            return Math.Pow(Math.Abs(n), 1d / 3d) * Math.Sign(n);
         }
 
         /// <summary>
@@ -66,12 +66,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// </summary>
         public static (double, double, double) RealRoots(double a0, double a1, double a2)
         {
-            double Q, R;
-            QR(a2, a1, a0, out Q, out R);
+            QR(a2, a1, a0, out double Q, out double R);
 
-            var Q3 = Q*Q*Q;
-            var D = Q3 + R*R;
-            var shift = -a2/3d;
+            double Q3 = Q * Q * Q;
+            double D = Q3 + R * R;
+            double shift = -a2 / 3d;
 
             double x1;
             double x2 = double.NaN;
@@ -92,10 +91,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
             else
             {
                 // 3 real roots, use eqn (70)-(73) to calculate the real roots
-                double theta = Math.Acos(R/Math.Sqrt(-Q3));
-                x1 = 2d*Math.Sqrt(-Q)*Math.Cos(theta/3.0) + shift;
-                x2 = 2d*Math.Sqrt(-Q)*Math.Cos((theta + Constants.Pi2)/3d) + shift;
-                x3 = 2d*Math.Sqrt(-Q)*Math.Cos((theta - Constants.Pi2)/3d) + shift;
+                double theta = Math.Acos(R / Math.Sqrt(-Q3));
+                x1 = 2d * Math.Sqrt(-Q) * Math.Cos(theta / 3.0) + shift;
+                x2 = 2d * Math.Sqrt(-Q) * Math.Cos((theta + Constants.Pi2) / 3d) + shift;
+                x3 = 2d * Math.Sqrt(-Q) * Math.Cos((theta - Constants.Pi2) / 3d) + shift;
             }
 
             return (x1, x2, x3);
@@ -107,29 +106,29 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// </summary>
         public static (Complex, Complex, Complex) Roots(double d, double c, double b, double a)
         {
-            double A = b*b - 3*a*c;
-            double B = 2*b*b*b - 9*a*b*c + 27*a*a*d;
-            double s = -1/(3*a);
+            double A = b * b - 3 * a * c;
+            double B = 2 * b * b * b - 9 * a * b * c + 27 * a * a * d;
+            double s = -1 / (3 * a);
 
-            double D = (B*B - 4*A*A*A)/(-27*a*a);
+            double D = (B * B - 4 * A * A * A) / (-27 * a * a);
             if (D == 0d)
             {
                 if (A == 0d)
                 {
-                    var u = new Complex(s*b, 0d);
+                    Complex u = new Complex(s * b, 0d);
                     return (u, u, u);
                 }
 
-                var v = new Complex((9*a*d - b*c)/(2*A), 0d);
-                var w = new Complex((4*a*b*c - 9*a*a*d - b*b*b)/(a*A), 0d);
+                Complex v = new Complex((9 * a * d - b * c) / (2 * A), 0d);
+                Complex w = new Complex((4 * a * b * c - 9 * a * a * d - b * b * b) / (a * A), 0d);
                 return (v, v, w);
             }
 
-            var C = (A == 0)
+            (Complex, Complex, Complex) C = (A == 0)
                 ? new Complex(B, 0d).CubicRoots()
-                : ((B + Complex.Sqrt(B*B - 4*A*A*A))/2).CubicRoots();
+                : ((B + Complex.Sqrt(B * B - 4 * A * A * A)) / 2).CubicRoots();
 
-            return (s*(b + C.Item1 + A/C.Item1), s*(b + C.Item2 + A/C.Item2), s*(b + C.Item3 + A/C.Item3));
+            return (s * (b + C.Item1 + A / C.Item1), s * (b + C.Item2 + A / C.Item2), s * (b + C.Item3 + A / C.Item3));
         }
     }
 }

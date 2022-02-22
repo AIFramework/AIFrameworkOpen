@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -56,14 +56,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// whether they are in the allowed range.</para></remarks>
     public class SkewedGeneralizedT : IContinuousDistribution
     {
-        System.Random _random;
+        private System.Random _random;
 
         // If the given parameterization is one of the recognized special cases, then
         // this variable is non-null and the special case is used for all functions.
         // Else this value is null and the full formulation of the generalized distribution is used.
-        IContinuousDistribution _d;
-
-        readonly double _skewness;
+        private readonly IContinuousDistribution _d;
+        private readonly double _skewness;
 
         /// <summary>
         /// Initializes a new instance of the SkewedGeneralizedT class. This is a skewed generalized t-distribution
@@ -130,7 +129,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             if (q == double.PositiveInfinity)
+            {
                 return new SkewedGeneralizedError(location, scale, skew, p);
+            }
 
             return null;
         }
@@ -163,7 +164,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="q">Second parameter that controls kurtosis. Range: q > 0</param>
         public static bool IsValidParameterSet(double location, double scale, double skew, double p, double q)
         {
-            return scale > 0.0 && skew > -1.0 && skew < 1.0 && p > 0.0 && q > 0.0 && p*q> 2.0 && !double.IsNaN(location);
+            return scale > 0.0 && skew > -1.0 && skew < 1.0 && p > 0.0 && q > 0.0 && p * q > 2.0 && !double.IsNaN(location);
         }
 
         /// <summary>
@@ -214,49 +215,49 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         // Else find it via the point where CDF gives 0.5
         public double Median => _d?.Median ?? (Skew == 0 ? Mean : InverseCumulativeDistribution(0.5));
 
-        double CalculateSkewness()
+        private double CalculateSkewness()
         {
             if (P * Q <= 3 || Skew == 0)
             {
                 return 0.0;
             }
 
-            var scale = AdjustScale(Scale, Skew, P, Q);
-            var b1 = SpecialFunctions.Beta(1.0 / P, Q);
-            var b2 = SpecialFunctions.Beta(2.0 / P, Q - 1.0 / P);
-            var b3 = SpecialFunctions.Beta(3.0 / P, Q - 2.0 / P);
-            var b4 = SpecialFunctions.Beta(4.0 / P, Q - 3.0 / P);
+            double scale = AdjustScale(Scale, Skew, P, Q);
+            double b1 = SpecialFunctions.Beta(1.0 / P, Q);
+            double b2 = SpecialFunctions.Beta(2.0 / P, Q - 1.0 / P);
+            double b3 = SpecialFunctions.Beta(3.0 / P, Q - 2.0 / P);
+            double b4 = SpecialFunctions.Beta(4.0 / P, Q - 3.0 / P);
 
-            var t1 = (2.0 * Math.Pow(Q, 3.0 / P) * Skew * Math.Pow(scale, 3.0)) / Math.Pow(b1, 3.0);
-            var t2 = 8.0 * Skew * Skew * Math.Pow(b2, 3.0);
-            var t3 = 3.0 * (1.0 + 3.0 * Skew * Skew) * b1;
-            var t4 = b2 * b3;
-            var t5 = 2.0 * (1.0 + Skew * Skew) * Math.Pow(b1, 2.0) * b4;
+            double t1 = (2.0 * Math.Pow(Q, 3.0 / P) * Skew * Math.Pow(scale, 3.0)) / Math.Pow(b1, 3.0);
+            double t2 = 8.0 * Skew * Skew * Math.Pow(b2, 3.0);
+            double t3 = 3.0 * (1.0 + 3.0 * Skew * Skew) * b1;
+            double t4 = b2 * b3;
+            double t5 = 2.0 * (1.0 + Skew * Skew) * Math.Pow(b1, 2.0) * b4;
 
             return t1 * (t2 - t3 * t4 + t5);
         }
 
-        static double AdjustScale(double scale, double skew, double p, double q)
+        private static double AdjustScale(double scale, double skew, double p, double q)
         {
-            var b1 = SpecialFunctions.Beta(3.0 / p, q - 2.0 / p);
-            var b2 = SpecialFunctions.Beta(1.0 / p, q);
-            var b3 = SpecialFunctions.Beta(2.0 / p, q - 1.0 / p);
-            var b4 = SpecialFunctions.Beta(1.0 / p, q);
+            double b1 = SpecialFunctions.Beta(3.0 / p, q - 2.0 / p);
+            double b2 = SpecialFunctions.Beta(1.0 / p, q);
+            double b3 = SpecialFunctions.Beta(2.0 / p, q - 1.0 / p);
+            double b4 = SpecialFunctions.Beta(1.0 / p, q);
 
             return scale / (Math.Pow(q, 1.0 / p) * Math.Sqrt((3.0 * skew * skew + 1.0) * b1 / b2 - 4.0 * skew * skew * ((b3 / b4) * (b3 / b4))));
         }
 
         // Note: Scale is assumed to be adjusted already when calling this function.
-        static double AdjustX(double x, double scale, double skew, double p, double q)
+        private static double AdjustX(double x, double scale, double skew, double p, double q)
         {
             return x + AdjustAddend(scale, skew, p, q);
         }
 
         // Note: Scale is assumed to be adjusted already when calling this function.
-        static double AdjustAddend(double scale, double skew, double p, double q)
+        private static double AdjustAddend(double scale, double skew, double p, double q)
         {
-            var b1 = SpecialFunctions.Beta(2.0 / p, q - 1.0 / p);
-            var b2 = SpecialFunctions.Beta(1.0 / p, q);
+            double b1 = SpecialFunctions.Beta(2.0 / p, q - 1.0 / p);
+            double b2 = SpecialFunctions.Beta(1.0 / p, q);
 
             return (2.0 * scale * skew * Math.Pow(q, 1.0 / p) * b1) / b2;
         }
@@ -279,7 +280,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var fn = PDFunc(location, scale, skew, p, q, false);
+            Func<double, double> fn = PDFunc(location, scale, skew, p, q, false);
             return fn(x);
         }
 
@@ -301,30 +302,30 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var fn = PDFunc(location, scale, skew, p, q, true);
+            Func<double, double> fn = PDFunc(location, scale, skew, p, q, true);
             return fn(x);
         }
 
-        static double PDFull(double location, double scale, double skew, double p, double q, double x)
+        private static double PDFull(double location, double scale, double skew, double p, double q, double x)
         {
             scale = AdjustScale(scale, skew, p, q);
             x = AdjustX(x, scale, skew, p, q);
 
-            var b = SpecialFunctions.Beta(1.0 / p, q);
-            var skewSign = Math.Sign(x - location);
-            var d1 = Math.Pow(Math.Abs(x - location), p);
-            var d2 = q * Math.Pow(scale, p) * Math.Pow(skew * skewSign + 1.0, p);
+            double b = SpecialFunctions.Beta(1.0 / p, q);
+            int skewSign = Math.Sign(x - location);
+            double d1 = Math.Pow(Math.Abs(x - location), p);
+            double d2 = q * Math.Pow(scale, p) * Math.Pow(skew * skewSign + 1.0, p);
 
-            var denominator = 2.0 * scale * Math.Pow(q, 1.0 / p) * b * Math.Pow(d1 / d2 + 1.0, 1.0 / p + q);
+            double denominator = 2.0 * scale * Math.Pow(q, 1.0 / p) * b * Math.Pow(d1 / d2 + 1.0, 1.0 / p + q);
             return p / denominator;
         }
 
-        static double PDFullLn(double location, double scale, double skew, double p, double q, double x)
+        private static double PDFullLn(double location, double scale, double skew, double p, double q, double x)
         {
             scale = AdjustScale(scale, skew, p, q);
             x = AdjustX(x, scale, skew, p, q);
 
-            var bLn = SpecialFunctions.BetaLn(1.0 / p, q);
+            double bLn = SpecialFunctions.BetaLn(1.0 / p, q);
             return Math.Log(p) - Math.Log(2.0) - Math.Log(scale) - Math.Log(q) / p - bLn - (1.0 / p + q) *
                 Math.Log(1.0 + Math.Pow(Math.Abs(x - location), p) /
                 (q * Math.Pow(scale, p) * Math.Pow(1.0 + skew * Math.Sign(x - location), p)));
@@ -334,7 +335,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         // by Hansen, McDonald and Newey (2010).
         // Note that, for all cases where skew is required to be 0, if skew is non-zero, this
         // simply gives the corresponding skewed version of the distribution.
-        static Func<double, double> PDFunc(double location, double scale, double skew, double p, double q, bool ln)
+        private static Func<double, double> PDFunc(double location, double scale, double skew, double p, double q, bool ln)
         {
             if (p == double.PositiveInfinity)
             {
@@ -343,8 +344,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     ContinuousUniform.PDF(-1.0 * (Math.Sqrt(3.0) * scale + location), Math.Sqrt(3.0) * scale + location, x);
             }
             if (q == double.PositiveInfinity)
+            {
                 return x => ln ? SkewedGeneralizedError.PDFLn(location, scale, skew, p, x) :
                     SkewedGeneralizedError.PDF(location, scale, skew, p, x);
+            }
 
             return x => ln ? PDFullLn(location, scale, skew, p, q, x) :
                 PDFull(location, scale, skew, p, q, x);
@@ -375,14 +378,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             scale = AdjustScale(scale, skew, p, q);
             x = AdjustX(x, scale, skew, p, q) - location;
 
-            var flip = x > 0;
+            bool flip = x > 0;
             if (flip)
             {
                 skew = -skew;
                 x = -x;
             }
 
-            var res = (1.0 - skew) / 2.0 + (skew - 1.0) / 2.0 * Beta.CDF(1.0 / p, q, 1.0 / (1.0 + q * Math.Pow(scale * (1.0 - skew) / -x, p)));
+            double res = (1.0 - skew) / 2.0 + (skew - 1.0) / 2.0 * Beta.CDF(1.0 / p, q, 1.0 / (1.0 + q * Math.Pow(scale * (1.0 - skew) / -x, p)));
             return flip ? 1.0 - res : res;
         }
 
@@ -407,7 +410,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             // If parameters represent a specialized distribution, then we use that distribution to avoid
             // problems with infinite p or q parameters.
-            var d = FindSpecializedDistribution(location, scale, skew, p, q);
+            IContinuousDistribution d = FindSpecializedDistribution(location, scale, skew, p, q);
             // InverseCumulativeDistribution is not a part of the interface, so resort to type-checking.
             if (d != null)
             {
@@ -426,18 +429,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             scale = AdjustScale(scale, skew, p, q);
 
-            var flip = pr > (1.0 - skew) / 2.0;
-            var lambda = skew;
+            bool flip = pr > (1.0 - skew) / 2.0;
+            double lambda = skew;
             if (flip)
             {
                 pr = 1.0 - pr;
                 lambda = -lambda;
             }
 
-            var res = scale * (lambda - 1.0) * Math.Pow(1.0 / (q * Beta.InvCDF(1.0 / p, q, 1.0 - 2.0 * pr / (1.0 - lambda))) - 1.0 / q, -1.0 / p);
+            double res = scale * (lambda - 1.0) * Math.Pow(1.0 / (q * Beta.InvCDF(1.0 / p, q, 1.0 - 2.0 * pr / (1.0 - lambda))) - 1.0 / q, -1.0 / p);
 
             if (flip)
+            {
                 res = -res;
+            }
+
             res += location;
             return res - AdjustAddend(scale, skew, p, q);
         }
@@ -496,13 +502,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, Location, Scale, Skew, P, Q);
         }
 
-        static double SampleUnchecked(System.Random rnd, double location, double scale, double skew, double p, double q)
+        private static double SampleUnchecked(System.Random rnd, double location, double scale, double skew, double p, double q)
         {
-            var u = ContinuousUniform.Sample(rnd, 0, 1);
+            double u = ContinuousUniform.Sample(rnd, 0, 1);
             return InvCDF(location, scale, skew, p, q, u);
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double location, double scale, double skew, double p, double q)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double location, double scale, double skew, double p, double q)
         {
             for (int i = 0; i < values.Length; i++)
             {
@@ -510,7 +516,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double location, double scale, double skew, double p, double q)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double location, double scale, double skew, double p, double q)
         {
             while (true)
             {

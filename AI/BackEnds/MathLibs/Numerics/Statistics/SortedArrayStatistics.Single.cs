@@ -88,10 +88,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 return float.NaN;
             }
 
-            var k = data.Length/2;
+            int k = data.Length / 2;
             return data.Length.IsOdd()
                 ? data[k]
-                : (data[k - 1] + data[k])/2.0f;
+                : (data[k - 1] + data[k]) / 2.0f;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <param name="p">Percentile selector, between 0 and 100 (inclusive).</param>
         public static float Percentile(float[] data, int p)
         {
-            return Quantile(data, p/100d);
+            return Quantile(data, p / 100d);
         }
 
         /// <summary>
@@ -181,13 +181,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 return data[data.Length - 1];
             }
 
-            double h = (data.Length + 1/3d)*tau + 1/3d;
-            var hf = (int)h;
+            double h = (data.Length + 1 / 3d) * tau + 1 / 3d;
+            int hf = (int)h;
             return hf < 1
                 ? data[0]
                 : hf >= data.Length
                     ? data[data.Length - 1]
-                    : (float)(data[hf - 1] + (h - hf)*(data[hf] - data[hf - 1]));
+                    : (float)(data[hf - 1] + (h - hf) * (data[hf] - data[hf - 1]));
         }
 
         /// <summary>
@@ -209,18 +209,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 return float.NaN;
             }
 
-            var x = a + (data.Length + b)*tau - 1;
-            var ip = Math.Truncate(x);
-            var fp = x - ip;
+            double x = a + (data.Length + b) * tau - 1;
+            double ip = Math.Truncate(x);
+            double fp = x - ip;
 
             if (Math.Abs(fp) < 1e-9)
             {
                 return data[Math.Min(Math.Max((int)ip, 0), data.Length - 1)];
             }
 
-            var lower = data[Math.Max((int)Math.Floor(x), 0)];
-            var upper = data[Math.Min((int)Math.Ceiling(x), data.Length - 1)];
-            return (float)(lower + (upper - lower)*(c + d*fp));
+            float lower = data[Math.Max((int)Math.Floor(x), 0)];
+            float upper = data[Math.Min((int)Math.Ceiling(x), data.Length - 1)];
+            return (float)(lower + (upper - lower) * (c + d * fp));
         }
 
         /// <summary>
@@ -252,76 +252,76 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             switch (definition)
             {
                 case QuantileDefinition.R1:
-                {
-                    double h = data.Length*tau + 0.5d;
-                    return data[(int)Math.Ceiling(h - 0.5d) - 1];
-                }
+                    {
+                        double h = data.Length * tau + 0.5d;
+                        return data[(int)Math.Ceiling(h - 0.5d) - 1];
+                    }
 
                 case QuantileDefinition.R2:
-                {
-                    double h = data.Length*tau + 0.5d;
-                    return (data[(int)Math.Ceiling(h - 0.5d) - 1] + data[(int)(h + 0.5d) - 1])*0.5f;
-                }
+                    {
+                        double h = data.Length * tau + 0.5d;
+                        return (data[(int)Math.Ceiling(h - 0.5d) - 1] + data[(int)(h + 0.5d) - 1]) * 0.5f;
+                    }
 
                 case QuantileDefinition.R3:
-                {
-                    double h = data.Length*tau;
-                    return data[Math.Max((int)Math.Round(h) - 1, 0)];
-                }
+                    {
+                        double h = data.Length * tau;
+                        return data[Math.Max((int)Math.Round(h) - 1, 0)];
+                    }
 
                 case QuantileDefinition.R4:
-                {
-                    double h = data.Length*tau;
-                    var hf = (int)h;
-                    var lower = data[Math.Max(hf - 1, 0)];
-                    var upper = data[Math.Min(hf, data.Length - 1)];
-                    return (float)(lower + (h - hf)*(upper - lower));
-                }
+                    {
+                        double h = data.Length * tau;
+                        int hf = (int)h;
+                        float lower = data[Math.Max(hf - 1, 0)];
+                        float upper = data[Math.Min(hf, data.Length - 1)];
+                        return (float)(lower + (h - hf) * (upper - lower));
+                    }
 
                 case QuantileDefinition.R5:
-                {
-                    double h = data.Length*tau + 0.5d;
-                    var hf = (int)h;
-                    var lower = data[Math.Max(hf - 1, 0)];
-                    var upper = data[Math.Min(hf, data.Length - 1)];
-                    return (float)(lower + (h - hf)*(upper - lower));
-                }
+                    {
+                        double h = data.Length * tau + 0.5d;
+                        int hf = (int)h;
+                        float lower = data[Math.Max(hf - 1, 0)];
+                        float upper = data[Math.Min(hf, data.Length - 1)];
+                        return (float)(lower + (h - hf) * (upper - lower));
+                    }
 
                 case QuantileDefinition.R6:
-                {
-                    double h = (data.Length + 1)*tau;
-                    var hf = (int)h;
-                    var lower = data[Math.Max(hf - 1, 0)];
-                    var upper = data[Math.Min(hf, data.Length - 1)];
-                    return (float)(lower + (h - hf)*(upper - lower));
-                }
+                    {
+                        double h = (data.Length + 1) * tau;
+                        int hf = (int)h;
+                        float lower = data[Math.Max(hf - 1, 0)];
+                        float upper = data[Math.Min(hf, data.Length - 1)];
+                        return (float)(lower + (h - hf) * (upper - lower));
+                    }
 
                 case QuantileDefinition.R7:
-                {
-                    double h = (data.Length - 1)*tau + 1d;
-                    var hf = (int)h;
-                    var lower = data[Math.Max(hf - 1, 0)];
-                    var upper = data[Math.Min(hf, data.Length - 1)];
-                    return (float)(lower + (h - hf)*(upper - lower));
-                }
+                    {
+                        double h = (data.Length - 1) * tau + 1d;
+                        int hf = (int)h;
+                        float lower = data[Math.Max(hf - 1, 0)];
+                        float upper = data[Math.Min(hf, data.Length - 1)];
+                        return (float)(lower + (h - hf) * (upper - lower));
+                    }
 
                 case QuantileDefinition.R8:
-                {
-                    double h = (data.Length + 1/3d)*tau + 1/3d;
-                    var hf = (int)h;
-                    var lower = data[Math.Max(hf - 1, 0)];
-                    var upper = data[Math.Min(hf, data.Length - 1)];
-                    return (float)(lower + (h - hf)*(upper - lower));
-                }
+                    {
+                        double h = (data.Length + 1 / 3d) * tau + 1 / 3d;
+                        int hf = (int)h;
+                        float lower = data[Math.Max(hf - 1, 0)];
+                        float upper = data[Math.Min(hf, data.Length - 1)];
+                        return (float)(lower + (h - hf) * (upper - lower));
+                    }
 
                 case QuantileDefinition.R9:
-                {
-                    double h = (data.Length + 0.25d)*tau + 0.375d;
-                    var hf = (int)h;
-                    var lower = data[Math.Max(hf - 1, 0)];
-                    var upper = data[Math.Min(hf, data.Length - 1)];
-                    return (float)(lower + (h - hf)*(upper - lower));
-                }
+                    {
+                        double h = (data.Length + 0.25d) * tau + 0.375d;
+                        int hf = (int)h;
+                        float lower = data[Math.Max(hf - 1, 0)];
+                        float upper = data[Math.Min(hf, data.Length - 1)];
+                        return (float)(lower + (h - hf) * (upper - lower));
+                    }
 
                 default:
                     throw new NotSupportedException();
@@ -353,10 +353,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                     right++;
                 }
 
-                return (right + 1)/(double)data.Length;
+                return (right + 1) / (double)data.Length;
             }
 
-            return (~right)/(double)data.Length;
+            return (~right) / (double)data.Length;
         }
 
         /// <summary>
@@ -398,16 +398,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 switch (definition)
                 {
                     case RankDefinition.EmpiricalCDF:
-                        return (right + 1)/(double)data.Length;
+                        return (right + 1) / (double)data.Length;
 
                     case RankDefinition.Max:
-                        return right/(double)(data.Length - 1);
+                        return right / (double)(data.Length - 1);
 
                     case RankDefinition.Min:
-                        return left/(double)(data.Length - 1);
+                        return left / (double)(data.Length - 1);
 
                     case RankDefinition.Average:
-                        return (left/(double)(data.Length - 1) + right/(double)(data.Length - 1))/2;
+                        return (left / (double)(data.Length - 1) + right / (double)(data.Length - 1)) / 2;
 
                     default:
                         throw new NotSupportedException();
@@ -421,14 +421,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 switch (definition)
                 {
                     case RankDefinition.EmpiricalCDF:
-                        return (left + 1)/(double)data.Length;
+                        return (left + 1) / (double)data.Length;
 
                     default:
-                    {
-                        var a = left/(double)(data.Length - 1);
-                        var b = right/(double)(data.Length - 1);
-                        return ((data[right] - x)*a + (x - data[left])*b)/(data[right] - data[left]);
-                    }
+                        {
+                            double a = left / (double)(data.Length - 1);
+                            double b = right / (double)(data.Length - 1);
+                            return ((data[right] - x) * a + (x - data[left]) * b) / (data[right] - data[left]);
+                        }
                 }
             }
         }
@@ -440,7 +440,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// </summary>
         public static double[] Ranks(float[] data, RankDefinition definition = RankDefinition.Default)
         {
-            var ranks = new double[data.Length];
+            double[] ranks = new double[data.Length];
 
             if (definition == RankDefinition.First)
             {

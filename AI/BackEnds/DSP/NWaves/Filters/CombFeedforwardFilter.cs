@@ -38,20 +38,20 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <param name="normalize"></param>
         private static float[] MakeKernel(int m, double b0, double bm, bool normalize)
         {
-            var kernel = new float[m + 1];
+            float[] kernel = new float[m + 1];
             kernel[0] = (float)b0;
             kernel[m] = (float)bm;
 
             if (normalize)
             {
-                var sum = (float)(b0 + bm);
+                float sum = (float)(b0 + bm);
                 kernel[0] /= sum;
                 kernel[m] /= sum;
             }
 
             return kernel;
         }
-        
+
         /// <summary>
         /// Online filtering (sample-by-sample)
         /// </summary>
@@ -59,10 +59,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <returns></returns>
         public override float Process(float sample)
         {
-            var b0 = _b[0];
-            var bm = _b[_delay];
+            float b0 = _b[0];
+            float bm = _b[_delay];
 
-            var output = b0 * sample + bm * _delayLine[_delayLineOffset];
+            float output = b0 * sample + bm * _delayLine[_delayLineOffset];
 
             _delayLine[_delayLineOffset] = sample;
 
@@ -88,11 +88,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters
                 return base.ApplyTo(signal, method);
             }
 
-            var input = signal.Samples;
-            var output = new float[input.Length + _kernelSize - 1];
+            float[] input = signal.Samples;
+            float[] output = new float[input.Length + _kernelSize - 1];
 
-            var b0 = _b[0];
-            var bm = _b[_delay];
+            float b0 = _b[0];
+            float bm = _b[_delay];
 
             int i = 0, j = 0;
 

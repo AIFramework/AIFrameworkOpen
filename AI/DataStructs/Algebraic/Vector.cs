@@ -475,7 +475,7 @@ namespace AI.DataStructs.Algebraic
 
         public static explicit operator float[](Vector data)
         {
-            return  Vector2SingleArray(data);
+            return Vector2SingleArray(data);
         }
 
         public static explicit operator int[](Vector vector)
@@ -793,7 +793,9 @@ namespace AI.DataStructs.Algebraic
             Vector C = (Count % n == 0) ? new Vector(Count / n) : new Vector(Count / n + 1);
 
             for (int i = 0, j = 0; i < Count; i += n, j++)
+            {
                 C[j] = this[i];
+            }
 
             return C;
         }
@@ -806,7 +808,7 @@ namespace AI.DataStructs.Algebraic
         public Vector Decimation(int n)
         {
             DiscreteSignal ds = new DiscreteSignal(Count, (float[])this);
-            var outSignal = Operation.Decimate(ds, n);
+            DiscreteSignal outSignal = Operation.Decimate(ds, n);
             return outSignal.Samples;
         }
         /// <summary>
@@ -1309,23 +1311,26 @@ namespace AI.DataStructs.Algebraic
         #endregion
 
         #region Статические методы
-        static float[] Vector2SingleArray(Vector vector)
+        private static float[] Vector2SingleArray(Vector vector)
         {
             float[] array = new float[vector.Count];
 
             for (int i = 0; i < vector.Count; i++)
+            {
                 array[i] = (float)vector[i];
+            }
 
             return array;
         }
 
-
-        static Vector SingleArray2Vector(float[] array)
+        private static Vector SingleArray2Vector(float[] array)
         {
             Vector vector = new Vector(array.Length);
 
             for (int i = 0; i < vector.Count; i++)
+            {
                 vector[i] = array[i];
+            }
 
             return vector;
         }
@@ -1710,7 +1715,7 @@ namespace AI.DataStructs.Algebraic
 
                 res.Add(num);
             }
-            
+
             result = res;
             return true;
         }

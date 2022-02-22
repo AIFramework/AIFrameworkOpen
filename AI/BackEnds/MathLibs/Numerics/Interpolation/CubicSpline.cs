@@ -39,12 +39,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
     /// <remarks>Supports both differentiation and integration.</remarks>
     public class CubicSpline : IInterpolation
     {
-        readonly double[] _x;
-        readonly double[] _c0;
-        readonly double[] _c1;
-        readonly double[] _c2;
-        readonly double[] _c3;
-        readonly Lazy<double[]> _indefiniteIntegral;
+        private readonly double[] _x;
+        private readonly double[] _c0;
+        private readonly double[] _c1;
+        private readonly double[] _c2;
+        private readonly double[] _c3;
+        private readonly Lazy<double[]> _indefiniteIntegral;
 
         /// <param name="x">sample points (N+1), sorted ascending</param>
         /// <param name="c0">Zero order spline coefficients (N)</param>
@@ -86,18 +86,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                 throw new ArgumentException("The given array is too small. It must be at least 2 long.", nameof(x));
             }
 
-            var c0 = new double[x.Length - 1];
-            var c1 = new double[x.Length - 1];
-            var c2 = new double[x.Length - 1];
-            var c3 = new double[x.Length - 1];
+            double[] c0 = new double[x.Length - 1];
+            double[] c1 = new double[x.Length - 1];
+            double[] c2 = new double[x.Length - 1];
+            double[] c3 = new double[x.Length - 1];
             for (int i = 0; i < c1.Length; i++)
             {
                 double w = x[i + 1] - x[i];
-                double w2 = w*w;
+                double w2 = w * w;
                 c0[i] = y[i];
                 c1[i] = firstDerivatives[i];
-                c2[i] = (3*(y[i + 1] - y[i])/w - 2*firstDerivatives[i] - firstDerivatives[i + 1])/w;
-                c3[i] = (2*(y[i] - y[i + 1])/w + firstDerivatives[i] + firstDerivatives[i + 1])/w2;
+                c2[i] = (3 * (y[i + 1] - y[i]) / w - 2 * firstDerivatives[i] - firstDerivatives[i + 1]) / w;
+                c3[i] = (2 * (y[i] - y[i + 1]) / w + firstDerivatives[i] + firstDerivatives[i + 1]) / w2;
             }
 
             return new CubicSpline(x, c0, c1, c2, c3);
@@ -150,12 +150,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
 
             /* Prepare divided differences (diff) and weights (w) */
 
-            var diff = new double[x.Length - 1];
-            var weights = new double[x.Length - 1];
+            double[] diff = new double[x.Length - 1];
+            double[] weights = new double[x.Length - 1];
 
             for (int i = 0; i < diff.Length; i++)
             {
-                diff[i] = (y[i + 1] - y[i])/(x[i + 1] - x[i]);
+                diff[i] = (y[i + 1] - y[i]) / (x[i + 1] - x[i]);
             }
 
             for (int i = 1; i < weights.Length; i++)
@@ -165,13 +165,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
 
             /* Prepare Hermite interpolation scheme */
 
-            var dd = new double[x.Length];
+            double[] dd = new double[x.Length];
 
             for (int i = 2; i < dd.Length - 2; i++)
             {
                 dd[i] = weights[i - 1].AlmostEqual(0.0) && weights[i + 1].AlmostEqual(0.0)
-                    ? (((x[i + 1] - x[i])*diff[i - 1]) + ((x[i] - x[i - 1])*diff[i]))/(x[i + 1] - x[i - 1])
-                    : ((weights[i + 1]*diff[i - 1]) + (weights[i - 1]*diff[i]))/(weights[i + 1] + weights[i - 1]);
+                    ? (((x[i + 1] - x[i]) * diff[i - 1]) + ((x[i] - x[i - 1]) * diff[i])) / (x[i + 1] - x[i - 1])
+                    : ((weights[i + 1] * diff[i - 1]) + (weights[i - 1] * diff[i])) / (weights[i + 1] + weights[i - 1]);
             }
 
             dd[0] = DifferentiateThreePoint(x, y, 0, 0, 1, 2);
@@ -228,21 +228,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                 throw new ArgumentException("The given array is too small. It must be at least 3 long.", nameof(x));
             }
 
-            var m = new double[x.Length - 1];
+            double[] m = new double[x.Length - 1];
 
             for (int i = 0; i < m.Length; i++)
             {
-                m[i] = (y[i + 1] - y[i])/(x[i + 1] - x[i]);
+                m[i] = (y[i + 1] - y[i]) / (x[i + 1] - x[i]);
             }
 
-            var dd = new double[x.Length];
-            var hPrev = x[1] - x[0];
-            var mPrevIs0 = m[0].AlmostEqual(0.0);
+            double[] dd = new double[x.Length];
+            double hPrev = x[1] - x[0];
+            bool mPrevIs0 = m[0].AlmostEqual(0.0);
 
-            for (var i = 1; i < x.Length - 1; ++i)
+            for (int i = 1; i < x.Length - 1; ++i)
             {
-                var h = x[i + 1] - x[i];
-                var mIs0 = m[i].AlmostEqual(0.0);
+                double h = x[i + 1] - x[i];
+                bool mIs0 = m[i].AlmostEqual(0.0);
 
                 if (mIs0 || mPrevIs0 || Math.Sign(m[i]) != Math.Sign(m[i - 1]))
                 {
@@ -251,8 +251,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                 else
                 {
                     // Weighted harmonic mean of each slope.
-                    var w1 = 2 * h + hPrev;
-                    var w2 = h + 2 * hPrev;
+                    double w1 = 2 * h + hPrev;
+                    double w2 = h + 2 * hPrev;
                     dd[i] = (w1 + w2) / (w1 / m[i - 1] + w2 / m[i]);
                 }
 
@@ -269,10 +269,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
             return InterpolateHermiteSorted(x, y, dd);
         }
 
-        static double PchipEndPoints(double h0, double h1, double m0, double m1)
+        private static double PchipEndPoints(double h0, double h1, double m0, double m1)
         {
             // One-sided, shape-preserving, three-point estimate for the derivative.
-            var d = ((2 * h0 + h1) * m0 - h0 * m1) / (h0 + h1);
+            double d = ((2 * h0 + h1) * m0 - h0 * m1) / (h0 + h1);
 
             if (Math.Sign(d) != Math.Sign(m0))
             {
@@ -356,10 +356,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                 rightBoundary = 0d;
             }
 
-            var a1 = new double[n];
-            var a2 = new double[n];
-            var a3 = new double[n];
-            var b = new double[n];
+            double[] a1 = new double[n];
+            double[] a2 = new double[n];
+            double[] a3 = new double[n];
+            double[] b = new double[n];
 
             // Left Boundary
             switch (leftBoundaryCondition)
@@ -368,7 +368,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                     a1[0] = 0;
                     a2[0] = 1;
                     a3[0] = 1;
-                    b[0] = 2*(y[1] - y[0])/(x[1] - x[0]);
+                    b[0] = 2 * (y[1] - y[0]) / (x[1] - x[0]);
                     break;
                 case SplineBoundaryCondition.FirstDerivative:
                     a1[0] = 0;
@@ -380,7 +380,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                     a1[0] = 0;
                     a2[0] = 2;
                     a3[0] = 1;
-                    b[0] = (3*((y[1] - y[0])/(x[1] - x[0]))) - (0.5*leftBoundary*(x[1] - x[0]));
+                    b[0] = (3 * ((y[1] - y[0]) / (x[1] - x[0]))) - (0.5 * leftBoundary * (x[1] - x[0]));
                     break;
                 default:
                     throw new NotSupportedException("Invalid Left Boundary Condition.");
@@ -390,9 +390,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
             for (int i = 1; i < x.Length - 1; i++)
             {
                 a1[i] = x[i + 1] - x[i];
-                a2[i] = 2*(x[i + 1] - x[i - 1]);
+                a2[i] = 2 * (x[i + 1] - x[i - 1]);
                 a3[i] = x[i] - x[i - 1];
-                b[i] = (3*(y[i] - y[i - 1])/(x[i] - x[i - 1])*(x[i + 1] - x[i])) + (3*(y[i + 1] - y[i])/(x[i + 1] - x[i])*(x[i] - x[i - 1]));
+                b[i] = (3 * (y[i] - y[i - 1]) / (x[i] - x[i - 1]) * (x[i + 1] - x[i])) + (3 * (y[i + 1] - y[i]) / (x[i + 1] - x[i]) * (x[i] - x[i - 1]));
             }
 
             // Right Boundary
@@ -402,7 +402,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                     a1[n - 1] = 1;
                     a2[n - 1] = 1;
                     a3[n - 1] = 0;
-                    b[n - 1] = 2*(y[n - 1] - y[n - 2])/(x[n - 1] - x[n - 2]);
+                    b[n - 1] = 2 * (y[n - 1] - y[n - 2]) / (x[n - 1] - x[n - 2]);
                     break;
                 case SplineBoundaryCondition.FirstDerivative:
                     a1[n - 1] = 0;
@@ -414,7 +414,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                     a1[n - 1] = 1;
                     a2[n - 1] = 2;
                     a3[n - 1] = 0;
-                    b[n - 1] = (3*(y[n - 1] - y[n - 2])/(x[n - 1] - x[n - 2])) + (0.5*rightBoundary*(x[n - 1] - x[n - 2]));
+                    b[n - 1] = (3 * (y[n - 1] - y[n - 2]) / (x[n - 1] - x[n - 2])) + (0.5 * rightBoundary * (x[n - 1] - x[n - 2]));
                     break;
                 default:
                     throw new NotSupportedException("Invalid Right Boundary Condition.");
@@ -491,7 +491,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// <param name="index1">Index of the second sample.</param>
         /// <param name="index2">Index of the third sample.</param>
         /// <returns>The derivative approximation.</returns>
-        static double DifferentiateThreePoint(double[] xx, double[] yy, int indexT, int index0, int index1, int index2)
+        private static double DifferentiateThreePoint(double[] xx, double[] yy, int indexT, int index0, int index1, int index2)
         {
             double x0 = yy[index0];
             double x1 = yy[index1];
@@ -501,9 +501,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
             double t1 = xx[index1] - xx[index0];
             double t2 = xx[index2] - xx[index0];
 
-            double a = (x2 - x0 - (t2/t1*(x1 - x0)))/(t2*(t2 - t1));
-            double b = (x1 - x0 - a*t1*t1)/t1;
-            return (2*a*t) + b;
+            double a = (x2 - x0 - (t2 / t1 * (x1 - x0))) / (t2 * (t2 - t1));
+            double b = (x1 - x0 - a * t1 * t1) / t1;
+            return (2 * a * t) + b;
         }
 
         /// <summary>
@@ -514,20 +514,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// <param name="c">The c-vector[n].</param>
         /// <param name="d">The d-vector[n], will be modified by this function.</param>
         /// <returns>The x-vector[n]</returns>
-        static double[] SolveTridiagonal(double[] a, double[] b, double[] c, double[] d)
+        private static double[] SolveTridiagonal(double[] a, double[] b, double[] c, double[] d)
         {
             for (int k = 1; k < a.Length; k++)
             {
-                double t = a[k]/b[k - 1];
-                b[k] = b[k] - (t*c[k - 1]);
-                d[k] = d[k] - (t*d[k - 1]);
+                double t = a[k] / b[k - 1];
+                b[k] = b[k] - (t * c[k - 1]);
+                d[k] = d[k] - (t * d[k - 1]);
             }
 
-            var x = new double[a.Length];
-            x[x.Length - 1] = d[d.Length - 1]/b[b.Length - 1];
+            double[] x = new double[a.Length];
+            x[x.Length - 1] = d[d.Length - 1] / b[b.Length - 1];
             for (int k = x.Length - 2; k >= 0; k--)
             {
-                x[k] = (d[k] - (c[k]*x[k + 1]))/b[k];
+                x[k] = (d[k] - (c[k] * x[k + 1])) / b[k];
             }
 
             return x;
@@ -551,8 +551,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         public double Interpolate(double t)
         {
             int k = LeftSegmentIndex(t);
-            var x = t - _x[k];
-            return _c0[k] + x*(_c1[k] + x*(_c2[k] + x*_c3[k]));
+            double x = t - _x[k];
+            return _c0[k] + x * (_c1[k] + x * (_c2[k] + x * _c3[k]));
         }
 
         /// <summary>
@@ -563,8 +563,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         public double Differentiate(double t)
         {
             int k = LeftSegmentIndex(t);
-            var x = t - _x[k];
-            return _c1[k] + x*(2*_c2[k] + x*3*_c3[k]);
+            double x = t - _x[k];
+            return _c1[k] + x * (2 * _c2[k] + x * 3 * _c3[k]);
         }
 
         /// <summary>
@@ -575,8 +575,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         public double Differentiate2(double t)
         {
             int k = LeftSegmentIndex(t);
-            var x = t - _x[k];
-            return 2*_c2[k] + x*6*_c3[k];
+            double x = t - _x[k];
+            return 2 * _c2[k] + x * 6 * _c3[k];
         }
 
         /// <summary>
@@ -586,8 +586,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         public double Integrate(double t)
         {
             int k = LeftSegmentIndex(t);
-            var x = t - _x[k];
-            return _indefiniteIntegral.Value[k] + x*(_c0[k] + x*(_c1[k]/2 + x*(_c2[k]/3 + x*_c3[k]/4)));
+            double x = t - _x[k];
+            return _indefiniteIntegral.Value[k] + x * (_c0[k] + x * (_c1[k] / 2 + x * (_c2[k] / 3 + x * _c3[k] / 4)));
         }
 
         /// <summary>
@@ -595,15 +595,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// </summary>
         /// <param name="a">Left bound of the integration interval [a,b].</param>
         /// <param name="b">Right bound of the integration interval [a,b].</param>
-        public double Integrate(double a, double b) => Integrate(b) - Integrate(a);
-
-        double[] ComputeIndefiniteIntegral()
+        public double Integrate(double a, double b)
         {
-            var integral = new double[_c1.Length];
+            return Integrate(b) - Integrate(a);
+        }
+
+        private double[] ComputeIndefiniteIntegral()
+        {
+            double[] integral = new double[_c1.Length];
             for (int i = 0; i < integral.Length - 1; i++)
             {
                 double w = _x[i + 1] - _x[i];
-                integral[i + 1] = integral[i] + w*(_c0[i] + w*(_c1[i]/2 + w*(_c2[i]/3 + w*_c3[i]/4)));
+                integral[i + 1] = integral[i] + w * (_c0[i] + w * (_c1[i] / 2 + w * (_c2[i] / 3 + w * _c3[i] / 4)));
             }
 
             return integral;
@@ -613,7 +616,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// Find the index of the greatest sample point smaller than t,
         /// or the left index of the closest segment for extrapolation.
         /// </summary>
-        int LeftSegmentIndex(double t)
+        private int LeftSegmentIndex(double t)
         {
             int index = Array.BinarySearch(_x, t);
             if (index < 0)

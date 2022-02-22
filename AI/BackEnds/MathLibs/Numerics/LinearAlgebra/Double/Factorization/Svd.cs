@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using System;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorization
 {
@@ -62,7 +62,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
         {
             get
             {
-                double tolerance = Precision.EpsilonOf(S.Maximum())*Math.Max(U.RowCount, VT.RowCount);
+                double tolerance = Precision.EpsilonOf(S.Maximum()) * Math.Max(U.RowCount, VT.RowCount);
                 return S.Count(t => Math.Abs(t) > tolerance);
             }
         }
@@ -81,7 +81,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
         {
             get
             {
-                var tmp = Math.Min(U.RowCount, VT.ColumnCount) - 1;
+                int tmp = Math.Min(U.RowCount, VT.ColumnCount) - 1;
                 return Math.Abs(S[0]) / Math.Abs(S[tmp]);
             }
         }
@@ -98,8 +98,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
                     throw new ArgumentException("Matrix must be square.");
                 }
 
-                var det = 1.0;
-                foreach (var value in S)
+                double det = 1.0;
+                foreach (double value in S)
                 {
                     det *= value;
                     if (Math.Abs(value).AlmostEqual(0.0))

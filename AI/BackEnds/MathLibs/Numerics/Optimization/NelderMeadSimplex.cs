@@ -29,8 +29,8 @@
 
 // Converted from code released with a MIT license available at https://code.google.com/p/nelder-mead-simplex/
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -43,7 +43,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
     /// </summary>
     public sealed class NelderMeadSimplex : IUnconstrainedMinimizer
     {
-        static readonly double JITTER = 1e-10d;           // a small value used to protect against floating point noise
+        private static readonly double JITTER = 1e-10d;           // a small value used to protect against floating point noise
 
         public double ConvergenceTolerance { get; set; }
         public int MaximumIterations { get; set; }
@@ -87,9 +87,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// <param name="objectiveFunction">The objective function, no gradient or hessian needed</param>
         /// <param name="initialGuess">The initial guess</param>
         /// <returns>The minimum point</returns>
-        public static MinimizationResult Minimum(IObjectiveFunction objectiveFunction, VectorMathNet<double> initialGuess, double convergenceTolerance=1e-8, int maximumIterations=1000)
+        public static MinimizationResult Minimum(IObjectiveFunction objectiveFunction, VectorMathNet<double> initialGuess, double convergenceTolerance = 1e-8, int maximumIterations = 1000)
         {
-            var initalPertubation = new LinearAlgebra.Double.DenseVector(initialGuess.Count);
+            LinearAlgebra.Double.DenseVector initalPertubation = new LinearAlgebra.Double.DenseVector(initialGuess.Count);
             for (int i = 0; i < initialGuess.Count; i++)
             {
                 initalPertubation[i] = initialGuess[i] == 0.0 ? 0.00025 : initialGuess[i] * 0.05;
@@ -104,19 +104,25 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// <param name="initialGuess">The initial guess</param>
         /// <param name="initalPertubation">The initial perturbation</param>
         /// <returns>The minimum point</returns>
-        public static MinimizationResult Minimum(IObjectiveFunction objectiveFunction, VectorMathNet<double> initialGuess, VectorMathNet<double> initalPertubation, double convergenceTolerance=1e-8, int maximumIterations=1000)
+        public static MinimizationResult Minimum(IObjectiveFunction objectiveFunction, VectorMathNet<double> initialGuess, VectorMathNet<double> initalPertubation, double convergenceTolerance = 1e-8, int maximumIterations = 1000)
         {
             // confirm that we are in a position to commence
             if (objectiveFunction == null)
-                throw new ArgumentNullException(nameof(objectiveFunction),"ObjectiveFunction must be set to a valid ObjectiveFunctionDelegate");
+            {
+                throw new ArgumentNullException(nameof(objectiveFunction), "ObjectiveFunction must be set to a valid ObjectiveFunctionDelegate");
+            }
 
             if (initialGuess == null)
+            {
                 throw new ArgumentNullException(nameof(initialGuess), "initialGuess must be initialized");
+            }
 
             if (initalPertubation == null)
+            {
                 throw new ArgumentNullException(nameof(initalPertubation), "initalPertubation must be initialized, if unknown use overloaded version of FindMinimum()");
+            }
 
-            SimplexConstant[] simplexConstants = SimplexConstant.CreateSimplexConstantsFromVectors(initialGuess,initalPertubation);
+            SimplexConstant[] simplexConstants = SimplexConstant.CreateSimplexConstantsFromVectors(initialGuess, initalPertubation);
 
             // create the initial simplex
             int numDimensions = simplexConstants.Length;
@@ -183,7 +189,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 }
             }
             objectiveFunction.EvaluateAt(vertices[errorProfile.LowestIndex]);
-            var regressionResult = new MinimizationResult(objectiveFunction, evaluationCount, exitCondition);
+            MinimizationResult regressionResult = new MinimizationResult(objectiveFunction, evaluationCount, exitCondition);
             return regressionResult;
         }
 
@@ -194,7 +200,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// <param name="vertices"></param>
         /// <param name="objectiveFunction"></param>
         /// <returns></returns>
-        static double[] InitializeErrorValues(VectorMathNet<double>[] vertices, IObjectiveFunction objectiveFunction)
+        private static double[] InitializeErrorValues(VectorMathNet<double>[] vertices, IObjectiveFunction objectiveFunction)
         {
             double[] errorValues = new double[vertices.Length];
             for (int i = 0; i < vertices.Length; i++)
@@ -213,7 +219,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// <param name="errorProfile"></param>
         /// <param name="errorValues"></param>
         /// <returns></returns>
-        static bool HasConverged(double convergenceTolerance, ErrorProfile errorProfile, double[] errorValues)
+        private static bool HasConverged(double convergenceTolerance, ErrorProfile errorProfile, double[] errorValues)
         {
             double range = 2 * Math.Abs(errorValues[errorProfile.HighestIndex] - errorValues[errorProfile.LowestIndex]) /
                 (Math.Abs(errorValues[errorProfile.HighestIndex]) + Math.Abs(errorValues[errorProfile.LowestIndex]) + JITTER);
@@ -226,7 +232,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// </summary>
         /// <param name="errorValues"></param>
         /// <returns></returns>
-        static ErrorProfile EvaluateSimplex(double[] errorValues)
+        private static ErrorProfile EvaluateSimplex(double[] errorValues)
         {
             ErrorProfile errorProfile = new ErrorProfile();
             if (errorValues[0] > errorValues[1])
@@ -267,13 +273,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// </summary>
         /// <param name="simplexConstants"></param>
         /// <returns></returns>
-        static VectorMathNet<double>[] InitializeVertices(SimplexConstant[] simplexConstants)
+        private static VectorMathNet<double>[] InitializeVertices(SimplexConstant[] simplexConstants)
         {
             int numDimensions = simplexConstants.Length;
             VectorMathNet<double>[] vertices = new VectorMathNet<double>[numDimensions + 1];
 
             // define one point of the simplex as the given initial guesses
-            var p0 = new LinearAlgebra.Double.DenseVector(numDimensions);
+            LinearAlgebra.Double.DenseVector p0 = new LinearAlgebra.Double.DenseVector(numDimensions);
             for (int i = 0; i < numDimensions; i++)
             {
                 p0[i] = simplexConstants[i].Value;
@@ -285,8 +291,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             for (int i = 0; i < numDimensions; i++)
             {
                 double scale = simplexConstants[i].InitialPerturbation;
-                VectorMathNet<double> unitVector = new LinearAlgebra.Double.DenseVector(numDimensions);
-                unitVector[i] = 1;
+                VectorMathNet<double> unitVector = new LinearAlgebra.Double.DenseVector(numDimensions)
+                {
+                    [i] = 1
+                };
                 vertices[i + 1] = p0.Add(unitVector.Multiply(scale));
             }
             return vertices;
@@ -301,7 +309,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// <param name="errorValues"></param>
         /// <param name="objectiveFunction"></param>
         /// <returns></returns>
-        static double TryToScaleSimplex(double scaleFactor, ref ErrorProfile errorProfile, VectorMathNet<double>[] vertices,
+        private static double TryToScaleSimplex(double scaleFactor, ref ErrorProfile errorProfile, VectorMathNet<double>[] vertices,
                                           double[] errorValues, IObjectiveFunction objectiveFunction)
         {
             // find the centroid through which we will reflect
@@ -334,7 +342,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// <param name="vertices"></param>
         /// <param name="errorValues"></param>
         /// <param name="objectiveFunction"></param>
-        static void ShrinkSimplex(ErrorProfile errorProfile, VectorMathNet<double>[] vertices, double[] errorValues,
+        private static void ShrinkSimplex(ErrorProfile errorProfile, VectorMathNet<double>[] vertices, double[] errorValues,
                                       IObjectiveFunction objectiveFunction)
         {
             VectorMathNet<double> lowestVertex = vertices[errorProfile.LowestIndex];
@@ -355,7 +363,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// <param name="vertices"></param>
         /// <param name="errorProfile"></param>
         /// <returns></returns>
-        static VectorMathNet<double> ComputeCentroid(VectorMathNet<double>[] vertices, ErrorProfile errorProfile)
+        private static VectorMathNet<double> ComputeCentroid(VectorMathNet<double>[] vertices, ErrorProfile errorProfile)
         {
             int numVertices = vertices.Length;
             // find the centroid of all points except the worst one
@@ -370,9 +378,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             return centroid.Multiply(1.0d / (numVertices - 1));
         }
 
-        sealed class SimplexConstant
+        private sealed class SimplexConstant
         {
-            SimplexConstant(double value, double initialPerturbation)
+            private SimplexConstant(double value, double initialPerturbation)
             {
                 Value = value;
                 InitialPerturbation = initialPerturbation;
@@ -388,8 +396,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 
             public static SimplexConstant[] CreateSimplexConstantsFromVectors(VectorMathNet<double> initialGuess, VectorMathNet<double> initialPertubation)
             {
-                var constants = new SimplexConstant[initialGuess.Count];
-                for (int i = 0; i < constants.Length;i++ )
+                SimplexConstant[] constants = new SimplexConstant[initialGuess.Count];
+                for (int i = 0; i < constants.Length; i++)
                 {
                     constants[i] = new SimplexConstant(initialGuess[i], initialPertubation[i]);
                 }
@@ -397,7 +405,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             }
         }
 
-        sealed class ErrorProfile
+        private sealed class ErrorProfile
         {
             public int HighestIndex { get; set; }
             public int NextHighestIndex { get; set; }

@@ -24,13 +24,16 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
         [DataMember]
         public float LogFloor { get; set; } = float.Epsilon;
 
-        public FilterbankOptions() => Window = WindowTypes.Hamming;
+        public FilterbankOptions()
+        {
+            Window = WindowTypes.Hamming;
+        }
 
         public override List<string> Errors
         {
             get
             {
-                var errors = base.Errors;
+                List<string> errors = base.Errors;
 
                 if (FilterBank == null && FilterBankSize <= 0)
                 {

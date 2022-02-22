@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -43,10 +43,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class InverseGamma : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _shape;
-        readonly double _scale;
+        private System.Random _random;
+        private readonly double _shape;
+        private readonly double _scale;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InverseGamma"/> class.
@@ -133,7 +132,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                return _scale/(_shape - 1.0);
+                return _scale / (_shape - 1.0);
             }
         }
 
@@ -149,19 +148,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                return _scale*_scale/((_shape - 1.0)*(_shape - 1.0)*(_shape - 2.0));
+                return _scale * _scale / ((_shape - 1.0) * (_shape - 1.0) * (_shape - 2.0));
             }
         }
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => _scale/(Math.Abs(_shape - 1.0)*Math.Sqrt(_shape - 2.0));
+        public double StdDev => _scale / (Math.Abs(_shape - 1.0) * Math.Sqrt(_shape - 2.0));
 
         /// <summary>
         /// Gets the entropy of the distribution.
         /// </summary>
-        public double Entropy => _shape + Math.Log(_scale) + SpecialFunctions.GammaLn(_shape) - ((1 + _shape)*SpecialFunctions.DiGamma(_shape));
+        public double Entropy => _shape + Math.Log(_scale) + SpecialFunctions.GammaLn(_shape) - ((1 + _shape) * SpecialFunctions.DiGamma(_shape));
 
         /// <summary>
         /// Gets the skewness of the distribution.
@@ -175,14 +174,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                return (4*Math.Sqrt(_shape - 2))/(_shape - 3);
+                return (4 * Math.Sqrt(_shape - 2)) / (_shape - 3);
             }
         }
 
         /// <summary>
         /// Gets the mode of the distribution.
         /// </summary>
-        public double Mode => _scale/(_shape + 1.0);
+        public double Mode => _scale / (_shape + 1.0);
 
         /// <summary>
         /// Gets the median of the distribution.
@@ -208,7 +207,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDF"/>
         public double Density(double x)
         {
-            return x < 0.0 ? 0.0 : Math.Pow(_scale, _shape)*Math.Pow(x, -_shape - 1.0)*Math.Exp(-_scale/x)/SpecialFunctions.Gamma(_shape);
+            return x < 0.0 ? 0.0 : Math.Pow(_scale, _shape) * Math.Pow(x, -_shape - 1.0) * Math.Exp(-_scale / x) / SpecialFunctions.Gamma(_shape);
         }
 
         /// <summary>
@@ -230,7 +229,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="CDF"/>
         public double CumulativeDistribution(double x)
         {
-            return SpecialFunctions.GammaUpperRegularized(_shape, _scale/x);
+            return SpecialFunctions.GammaUpperRegularized(_shape, _scale / x);
         }
 
         /// <summary>
@@ -259,26 +258,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _shape, _scale);
         }
 
-        static double SampleUnchecked(System.Random rnd, double shape, double scale)
+        private static double SampleUnchecked(System.Random rnd, double shape, double scale)
         {
-            return 1.0/Gamma.SampleUnchecked(rnd, shape, scale);
+            return 1.0 / Gamma.SampleUnchecked(rnd, shape, scale);
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double shape, double scale)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double shape, double scale)
         {
             Gamma.SamplesUnchecked(rnd, values, shape, scale);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    values[i] = 1.0/values[i];
+                    values[i] = 1.0 / values[i];
                 }
             });
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double shape, double scale)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double shape, double scale)
         {
-            return Gamma.SamplesUnchecked(rnd, shape, scale).Select(z => 1.0/z);
+            return Gamma.SamplesUnchecked(rnd, shape, scale).Select(z => 1.0 / z);
         }
 
         /// <summary>
@@ -296,7 +295,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return x < 0.0 ? 0.0 : Math.Pow(scale, shape)*Math.Pow(x, -shape - 1.0)*Math.Exp(-scale/x)/SpecialFunctions.Gamma(shape);
+            return x < 0.0 ? 0.0 : Math.Pow(scale, shape) * Math.Pow(x, -shape - 1.0) * Math.Exp(-scale / x) / SpecialFunctions.Gamma(shape);
         }
 
         /// <summary>
@@ -327,7 +326,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return SpecialFunctions.GammaUpperRegularized(shape, scale/x);
+            return SpecialFunctions.GammaUpperRegularized(shape, scale / x);
         }
 
         /// <summary>

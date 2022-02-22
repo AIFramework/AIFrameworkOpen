@@ -27,16 +27,16 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 {
@@ -52,20 +52,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         /// <remarks>Using this instead of the RowCount property to speed up calculating
         /// a matrix index in the data array.</remarks>
-        readonly int _rowCount;
+        private readonly int _rowCount;
 
         /// <summary>
         /// Number of columns.
         /// </summary>
         /// <remarks>Using this instead of the ColumnCount property to speed up calculating
         /// a matrix index in the data array.</remarks>
-        readonly int _columnCount;
+        private readonly int _columnCount;
 
         /// <summary>
         /// Gets the matrix's data.
         /// </summary>
         /// <value>The matrix's data.</value>
-        readonly float[] _values;
+        private readonly float[] _values;
 
         /// <summary>
         /// Create a new dense matrix straight from an initialized matrix storage instance.
@@ -214,7 +214,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrix OfColumnVectors(params VectorMathNet<float>[] columns)
         {
-            var storage = new VectorStorage<float>[columns.Length];
+            VectorStorage<float>[] storage = new VectorStorage<float>[columns.Length];
             for (int i = 0; i < columns.Length; i++)
             {
                 storage[i] = columns[i].Storage;
@@ -281,7 +281,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrix OfRowVectors(params VectorMathNet<float>[] rows)
         {
-            var storage = new VectorStorage<float>[rows.Length];
+            VectorStorage<float>[] storage = new VectorStorage<float>[rows.Length];
             for (int i = 0; i < rows.Length; i++)
             {
                 storage[i] = rows[i].Storage;
@@ -306,7 +306,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrix OfDiagonalVector(VectorMathNet<float> diagonal)
         {
-            var m = new DenseMatrix(diagonal.Count, diagonal.Count);
+            DenseMatrix m = new DenseMatrix(diagonal.Count, diagonal.Count);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -318,7 +318,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrix OfDiagonalVector(int rows, int columns, VectorMathNet<float> diagonal)
         {
-            var m = new DenseMatrix(rows, columns);
+            DenseMatrix m = new DenseMatrix(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -330,7 +330,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrix OfDiagonalArray(float[] diagonal)
         {
-            var m = new DenseMatrix(diagonal.Length, diagonal.Length);
+            DenseMatrix m = new DenseMatrix(diagonal.Length, diagonal.Length);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -342,7 +342,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrix OfDiagonalArray(int rows, int columns, float[] diagonal)
         {
-            var m = new DenseMatrix(rows, columns);
+            DenseMatrix m = new DenseMatrix(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -352,7 +352,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrix Create(int rows, int columns, float value)
         {
-            if (value == 0f) return new DenseMatrix(rows, columns);
+            if (value == 0f)
+            {
+                return new DenseMatrix(rows, columns);
+            }
+
             return new DenseMatrix(DenseColumnMajorMatrixStorage<float>.OfValue(rows, columns, value));
         }
 
@@ -369,7 +373,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrix CreateDiagonal(int rows, int columns, float value)
         {
-            if (value == 0f) return new DenseMatrix(rows, columns);
+            if (value == 0f)
+            {
+                return new DenseMatrix(rows, columns);
+            }
+
             return new DenseMatrix(DenseColumnMajorMatrixStorage<float>.OfDiagonalInit(rows, columns, i => value));
         }
 
@@ -394,7 +402,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseMatrix CreateRandom(int rows, int columns, IContinuousDistribution distribution)
         {
-            return new DenseMatrix(new DenseColumnMajorMatrixStorage<float>(rows, columns, Generate.RandomSingle(rows*columns, distribution)));
+            return new DenseMatrix(new DenseColumnMajorMatrixStorage<float>(rows, columns, Generate.RandomSingle(rows * columns, distribution)));
         }
 
         /// <summary>
@@ -450,7 +458,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             {
                 CommonParallel.For(0, _values.Length, 4096, (a, b) =>
                 {
-                    var v = denseResult._values;
+                    float[] v = denseResult._values;
                     for (int i = a; i < b; i++)
                     {
                         v[i] = _values[i] + scalar;
@@ -483,7 +491,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             if (other.Storage is DiagonalMatrixStorage<float> diagonalOther)
             {
                 Storage.CopyToUnchecked(result.Storage, ExistingData.Clear);
-                var diagonal = diagonalOther.Data;
+                float[] diagonal = diagonalOther.Data;
                 for (int i = 0; i < diagonal.Length; i++)
                 {
                     result.At(i, i, result.At(i, i) + diagonal[i]);
@@ -505,7 +513,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             {
                 CommonParallel.For(0, _values.Length, 4096, (a, b) =>
                 {
-                    var v = denseResult._values;
+                    float[] v = denseResult._values;
                     for (int i = a; i < b; i++)
                     {
                         v[i] = _values[i] - scalar;
@@ -536,7 +544,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             if (other.Storage is DiagonalMatrixStorage<float> diagonalOther)
             {
                 CopyTo(result);
-                var diagonal = diagonalOther.Data;
+                float[] diagonal = diagonalOther.Data;
                 for (int i = 0; i < diagonal.Length; i++)
                 {
                     result.At(i, i, result.At(i, i) - diagonal[i]);
@@ -610,8 +618,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
             if (other.Storage is DiagonalMatrixStorage<float> diagonalOther)
             {
-                var diagonal = diagonalOther.Data;
-                var d = Math.Min(ColumnCount, other.ColumnCount);
+                float[] diagonal = diagonalOther.Data;
+                int d = Math.Min(ColumnCount, other.ColumnCount);
                 if (d < other.ColumnCount)
                 {
                     result.ClearSubMatrix(0, RowCount, ColumnCount, other.ColumnCount - ColumnCount);
@@ -621,7 +629,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 {
                     for (int i = 0; i < RowCount; i++)
                     {
-                        result.At(i, j, _values[index]*diagonal[j]);
+                        result.At(i, j, _values[index] * diagonal[j]);
                         index++;
                     }
                 }
@@ -657,8 +665,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
             if (other.Storage is DiagonalMatrixStorage<float> diagonalOther)
             {
-                var diagonal = diagonalOther.Data;
-                var d = Math.Min(ColumnCount, other.RowCount);
+                float[] diagonal = diagonalOther.Data;
+                int d = Math.Min(ColumnCount, other.RowCount);
                 if (d < other.RowCount)
                 {
                     result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
@@ -668,7 +676,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 {
                     for (int i = 0; i < RowCount; i++)
                     {
-                        result.At(i, j, _values[index]*diagonal[j]);
+                        result.At(i, j, _values[index] * diagonal[j]);
                         index++;
                     }
                 }
@@ -732,8 +740,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
             if (other.Storage is DiagonalMatrixStorage<float> diagonalOther)
             {
-                var diagonal = diagonalOther.Data;
-                var d = Math.Min(RowCount, other.ColumnCount);
+                float[] diagonal = diagonalOther.Data;
+                int d = Math.Min(RowCount, other.ColumnCount);
                 if (d < other.ColumnCount)
                 {
                     result.ClearSubMatrix(0, ColumnCount, RowCount, other.ColumnCount - RowCount);
@@ -743,7 +751,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 {
                     for (int j = 0; j < d; j++)
                     {
-                        result.At(i, j, _values[index]*diagonal[j]);
+                        result.At(i, j, _values[index] * diagonal[j]);
                         index++;
                     }
                     index += (RowCount - d);
@@ -839,7 +847,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
                 CommonParallel.For(0, _values.Length, (a, b) =>
                 {
-                    var v = denseResult._values;
+                    float[] v = denseResult._values;
                     for (int i = a; i < b; i++)
                     {
                         v[i] = Euclid.Modulus(v[i], divisor);
@@ -864,7 +872,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             {
                 CommonParallel.For(0, _values.Length, 4096, (a, b) =>
                 {
-                    var v = denseResult._values;
+                    float[] v = denseResult._values;
                     for (int i = a; i < b; i++)
                     {
                         v[i] = Euclid.Modulus(dividend, _values[i]);
@@ -894,7 +902,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
                 CommonParallel.For(0, _values.Length, (a, b) =>
                 {
-                    var v = denseResult._values;
+                    float[] v = denseResult._values;
                     for (int i = a; i < b; i++)
                     {
                         v[i] %= divisor;
@@ -919,7 +927,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             {
                 CommonParallel.For(0, _values.Length, 4096, (a, b) =>
                 {
-                    var v = denseResult._values;
+                    float[] v = denseResult._values;
                     for (int i = a; i < b; i++)
                     {
                         v[i] = dividend % _values[i];
@@ -944,8 +952,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 throw new ArgumentException("Matrix must be square.");
             }
 
-            var sum = 0.0f;
-            for (var i = 0; i < _rowCount; i++)
+            float sum = 0.0f;
+            for (int i = 0; i < _rowCount; i++)
             {
                 sum += _values[(i * _rowCount) + i];
             }
@@ -1173,12 +1181,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 return false;
             }
 
-            for (var j = 0; j < ColumnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                var index = j * RowCount;
-                for (var i = j + 1; i < RowCount; i++)
+                int index = j * RowCount;
+                for (int i = j + 1; i < RowCount; i++)
                 {
-                    if (_values[(i*ColumnCount) + j] != _values[index + i])
+                    if (_values[(i * ColumnCount) + j] != _values[index + i])
                     {
                         return false;
                     }

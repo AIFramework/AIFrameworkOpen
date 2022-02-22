@@ -27,13 +27,13 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Statistics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -48,17 +48,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </remarks>
     public class Multinomial : IDistribution
     {
-        System.Random _random;
+        private System.Random _random;
 
         /// <summary>
         /// Stores the normalized multinomial probabilities.
         /// </summary>
-        readonly double[] _p;
+        private readonly double[] _p;
 
         /// <summary>
         /// The number of trials.
         /// </summary>
-        readonly int _trials;
+        private readonly int _trials;
 
         /// <summary>
         /// Initializes a new instance of the Multinomial class.
@@ -117,10 +117,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             // The probability distribution vector.
-            var p = new double[h.BucketCount];
+            double[] p = new double[h.BucketCount];
 
             // Fill in the distribution vector.
-            for (var i = 0; i < h.BucketCount; i++)
+            for (int i = 0; i < h.BucketCount; i++)
             {
                 p[i] = h[i].Count;
             }
@@ -154,8 +154,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// if the sum of parameters is 0.0, or if the number of trials is negative; otherwise <c>true</c>.</returns>
         public static bool IsValidParameterSet(IEnumerable<double> p, int n)
         {
-            var sum = 0.0;
-            foreach (var t in p)
+            double sum = 0.0;
+            foreach (double t in p)
             {
                 if (t < 0.0 || double.IsNaN(t))
                 {
@@ -195,7 +195,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public VectorMathNet<double> Mean => _trials*(DenseVector)P;
+        public VectorMathNet<double> Mean => _trials * (DenseVector)P;
 
         /// <summary>
         /// Gets the variance of the distribution.
@@ -205,10 +205,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             get
             {
                 // Do not use _p, because operations below will modify _p array. Use P or _p.Clone().
-                var res = (DenseVector)P;
-                for (var i = 0; i < res.Count; i++)
+                DenseVector res = P;
+                for (int i = 0; i < res.Count; i++)
                 {
-                    res[i] *= _trials*(1 - res[i]);
+                    res[i] *= _trials * (1 - res[i]);
                 }
 
                 return res;
@@ -223,10 +223,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             get
             {
                 // Do not use _p, because operations below will modify _p array. Use P or _p.Clone().
-                var res = (DenseVector)P;
-                for (var i = 0; i < res.Count; i++)
+                DenseVector res = P;
+                for (int i = 0; i < res.Count; i++)
                 {
-                    res[i] = (1.0 - (2.0*res[i]))/Math.Sqrt(_trials*(1.0 - res[i])*res[i]);
+                    res[i] = (1.0 - (2.0 * res[i])) / Math.Sqrt(_trials * (1.0 - res[i]) * res[i]);
                 }
 
                 return res;
@@ -254,14 +254,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (x.Sum() == _trials)
             {
-                var coef = SpecialFunctions.Multinomial(_trials, x);
-                var num = 1.0;
-                for (var i = 0; i < x.Length; i++)
+                double coef = SpecialFunctions.Multinomial(_trials, x);
+                double num = 1.0;
+                for (int i = 0; i < x.Length; i++)
                 {
                     num *= Math.Pow(_p[i], x[i]);
                 }
 
-                return coef*num;
+                return coef * num;
             }
 
             return 0.0;
@@ -288,8 +288,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (x.Sum() == _trials)
             {
-                var coef = Math.Log(SpecialFunctions.Multinomial(_trials, x));
-                var num = x.Select((t, i) => t*Math.Log(_p[i])).Sum();
+                double coef = Math.Log(SpecialFunctions.Multinomial(_trials, x));
+                double num = x.Select((t, i) => t * Math.Log(_p[i])).Sum();
                 return coef + num;
             }
 
@@ -333,12 +333,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             // The cumulative density of p.
-            var cp = Categorical.ProbabilityMassToCumulativeDistribution(p);
+            double[] cp = Categorical.ProbabilityMassToCumulativeDistribution(p);
 
             // The variable that stores the counts.
-            var ret = new int[p.Length];
+            int[] ret = new int[p.Length];
 
-            for (var i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
             {
                 ret[Categorical.SampleUnchecked(rnd, cp)]++;
             }
@@ -362,14 +362,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             // The cumulative density of p.
-            var cp = Categorical.ProbabilityMassToCumulativeDistribution(p);
+            double[] cp = Categorical.ProbabilityMassToCumulativeDistribution(p);
 
             while (true)
             {
                 // The variable that stores the counts.
-                var ret = new int[p.Length];
+                int[] ret = new int[p.Length];
 
-                for (var i = 0; i < n; i++)
+                for (int i = 0; i < n; i++)
                 {
                     ret[Categorical.SampleUnchecked(rnd, cp)]++;
                 }

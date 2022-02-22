@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -44,10 +44,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </remarks>
     public class Binomial : IDiscreteDistribution
     {
-        System.Random _random;
-
-        readonly double _p;
-        readonly int _trials;
+        private System.Random _random;
+        private readonly double _p;
+        private readonly int _trials;
 
         /// <summary>
         /// Initializes a new instance of the Binomial class.
@@ -129,17 +128,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => _p*_trials;
+        public double Mean => _p * _trials;
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => Math.Sqrt(_p*(1.0 - _p)*_trials);
+        public double StdDev => Math.Sqrt(_p * (1.0 - _p) * _trials);
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => _p*(1.0 - _p)*_trials;
+        public double Variance => _p * (1.0 - _p) * _trials;
 
         /// <summary>
         /// Gets the entropy of the distribution.
@@ -153,11 +152,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return 0.0;
                 }
 
-                var e = 0.0;
-                for (var i = 0; i <= _trials; i++)
+                double e = 0.0;
+                for (int i = 0; i <= _trials; i++)
                 {
-                    var p = Probability(i);
-                    e -= p*Math.Log(p);
+                    double p = Probability(i);
+                    e -= p * Math.Log(p);
                 }
 
                 return e;
@@ -167,7 +166,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the skewness of the distribution.
         /// </summary>
-        public double Skewness => (1.0 - (2.0*_p))/Math.Sqrt(_trials*_p*(1.0 - _p));
+        public double Skewness => (1.0 - (2.0 * _p)) / Math.Sqrt(_trials * _p * (1.0 - _p));
 
         /// <summary>
         /// Gets the smallest element in the domain of the distributions which can be represented by an integer.
@@ -196,7 +195,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return 0;
                 }
 
-                return (int)Math.Floor((_trials + 1)*_p);
+                return (int)Math.Floor((_trials + 1) * _p);
             }
         }
 
@@ -217,7 +216,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return new[] { 0 };
                 }
 
-                double td = (_trials + 1)*_p;
+                double td = (_trials + 1) * _p;
                 int t = (int)Math.Floor(td);
                 return t != td ? new[] { t } : new[] { t, t - 1 };
             }
@@ -226,7 +225,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the median of the distribution.
         /// </summary>
-        public double Median => Math.Floor(_p*_trials);
+        public double Median => Math.Floor(_p * _trials);
 
         /// <summary>
         /// Computes the probability mass (PMF) at k, i.e. P(X = k).
@@ -287,7 +286,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return k == n ? 1.0 : 0.0;
             }
 
-            return Math.Exp(SpecialFunctions.BinomialLn(n, k) + (k*Math.Log(p)) + ((n - k)*Math.Log(1.0 - p)));
+            return Math.Exp(SpecialFunctions.BinomialLn(n, k) + (k * Math.Log(p)) + ((n - k) * Math.Log(1.0 - p)));
         }
 
         /// <summary>
@@ -319,7 +318,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return k == n ? 0.0 : double.NegativeInfinity;
             }
 
-            return SpecialFunctions.BinomialLn(n, k) + (k*Math.Log(p)) + ((n - k)*Math.Log(1.0 - p));
+            return SpecialFunctions.BinomialLn(n, k) + (k * Math.Log(p)) + ((n - k) * Math.Log(1.0 - p));
         }
 
         /// <summary>
@@ -360,8 +359,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>The number of successful trials.</returns>
         internal static int SampleUnchecked(System.Random rnd, double p, int n)
         {
-            var k = 0;
-            for (var i = 0; i < n; i++)
+            int k = 0;
+            for (int i = 0; i < n; i++)
             {
                 k += rnd.NextDouble() < p ? 1 : 0;
             }
@@ -369,14 +368,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return k;
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, double p, int n)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, double p, int n)
         {
-            var uniform = rnd.NextDoubles(values.Length*n);
+            double[] uniform = rnd.NextDoubles(values.Length * n);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    int k = i*n;
+                    int k = i * n;
                     int sum = 0;
                     for (int j = 0; j < n; j++)
                     {
@@ -388,7 +387,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             });
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, double p, int n)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, double p, int n)
         {
             while (true)
             {

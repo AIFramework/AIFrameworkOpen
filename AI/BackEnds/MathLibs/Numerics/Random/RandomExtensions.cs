@@ -55,7 +55,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 return;
             }
 
-            for (var i = 0; i < values.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 values[i] = rnd.NextDouble();
             }
@@ -72,7 +72,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </remarks>
         public static double[] NextDoubles(this System.Random rnd, int count)
         {
-            var values = new double[count];
+            double[] values = new double[count];
             NextDoubles(rnd, values);
             return values;
         }
@@ -94,7 +94,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             return NextDoubleSequenceEnumerable(rnd);
         }
 
-        static IEnumerable<double> NextDoubleSequenceEnumerable(System.Random rnd)
+        private static IEnumerable<double> NextDoubleSequenceEnumerable(System.Random rnd)
         {
             while (true)
             {
@@ -113,7 +113,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </remarks>
         public static byte[] NextBytes(this System.Random rnd, int count)
         {
-            var values = new byte[count];
+            byte[] values = new byte[count];
             rnd.NextBytes(values);
             return values;
         }
@@ -135,7 +135,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 return;
             }
 
-            for (var i = 0; i < values.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 values[i] = rnd.Next();
             }
@@ -160,7 +160,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 return;
             }
 
-            for (var i = 0; i < values.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 values[i] = rnd.Next(minInclusive, maxExclusive);
             }
@@ -183,7 +183,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             return NextInt32SequenceEnumerable(rnd, minInclusive, maxExclusive);
         }
 
-        static IEnumerable<int> NextInt32SequenceEnumerable(System.Random rnd, int minInclusive, int maxExclusive)
+        private static IEnumerable<int> NextInt32SequenceEnumerable(System.Random rnd, int minInclusive, int maxExclusive)
         {
             while (true)
             {
@@ -192,12 +192,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         }
 
         /// <summary>
-        /// Returns a nonnegative random number less than <see cref="Int64.MaxValue"/>.
+        /// Returns a nonnegative random number less than <see cref="long.MaxValue"/>.
         /// </summary>
         /// <param name="rnd">The random number generator.</param>
         /// <returns>
-        /// A 64-bit signed integer greater than or equal to 0, and less than <see cref="Int64.MaxValue"/>; that is,
-        /// the range of return values includes 0 but not <see cref="Int64.MaxValue"/>.
+        /// A 64-bit signed integer greater than or equal to 0, and less than <see cref="long.MaxValue"/>; that is,
+        /// the range of return values includes 0 but not <see cref="long.MaxValue"/>.
         /// </returns>
         /// <seealso cref="NextFullRangeInt64"/>
         /// <remarks>
@@ -206,10 +206,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </remarks>
         public static long NextInt64(this System.Random rnd)
         {
-            var buffer = new byte[8];
+            byte[] buffer = new byte[8];
 
             rnd.NextBytes(buffer);
-            var candidate = BitConverter.ToInt64(buffer, 0);
+            long candidate = BitConverter.ToInt64(buffer, 0);
 
             // wrap negative numbers around, mapping every negative number to a distinct nonnegative number
             // MinValue -> 0, -1 -> MaxValue
@@ -225,7 +225,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <param name="rnd">The random number generator.</param>
         /// <returns>
         /// A 32-bit signed integer of the full range, including 0, negative numbers,
-        /// <see cref="Int32.MaxValue"/> and <see cref="Int32.MinValue"/>.
+        /// <see cref="int.MaxValue"/> and <see cref="int.MinValue"/>.
         /// </returns>
         /// <seealso cref="System.Random.Next()"/>
         /// <remarks>
@@ -234,7 +234,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </remarks>
         public static int NextFullRangeInt32(this System.Random rnd)
         {
-            var buffer = new byte[4];
+            byte[] buffer = new byte[4];
             rnd.NextBytes(buffer);
             return BitConverter.ToInt32(buffer, 0);
         }
@@ -245,7 +245,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <param name="rnd">The random number generator.</param>
         /// <returns>
         /// A 64-bit signed integer of the full range, including 0, negative numbers,
-        /// <see cref="Int64.MaxValue"/> and <see cref="Int64.MinValue"/>.
+        /// <see cref="long.MaxValue"/> and <see cref="long.MinValue"/>.
         /// </returns>
         /// <seealso cref="NextInt64"/>
         /// <remarks>
@@ -254,7 +254,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </remarks>
         public static long NextFullRangeInt64(this System.Random rnd)
         {
-            var buffer = new byte[8];
+            byte[] buffer = new byte[8];
             rnd.NextBytes(buffer);
             return BitConverter.ToInt64(buffer, 0);
         }

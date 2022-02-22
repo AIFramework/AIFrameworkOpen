@@ -33,24 +33,24 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             _dctSize = dctSize;
             _dctMtx = new float[dctSize][];
             _dctMtxInv = new float[dctSize][];
-            
-            var m = Math.PI / (dctSize << 1);
 
-            for (var k = 0; k < dctSize; k++)
+            double m = Math.PI / (dctSize << 1);
+
+            for (int k = 0; k < dctSize; k++)
             {
                 _dctMtx[k] = new float[dctSize];
 
-                for (var n = 1; n < dctSize; n++)
+                for (int n = 1; n < dctSize; n++)
                 {
                     _dctMtx[k][n] = 2 * (float)Math.Cos(((k << 1) + 1) * n * m);
                 }
             }
 
-            for (var k = 0; k < dctSize; k++)
+            for (int k = 0; k < dctSize; k++)
             {
                 _dctMtxInv[k] = new float[dctSize];
 
-                for (var n = 0; n < dctSize; n++)
+                for (int n = 0; n < dctSize; n++)
                 {
                     _dctMtxInv[k][n] = 2 * (float)Math.Cos(((n << 1) + 1) * k * m);
                 }
@@ -64,11 +64,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="output"></param>
         public void Direct(float[] input, float[] output)
         {
-            for (var k = 0; k < output.Length; k++)
+            for (int k = 0; k < output.Length; k++)
             {
                 output[k] = input[0];
 
-                for (var n = 1; n < input.Length; n++)
+                for (int n = 1; n < input.Length; n++)
                 {
                     output[k] += input[n] * _dctMtx[k][n];
                 }
@@ -82,14 +82,14 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="output"></param>
         public void DirectNorm(float[] input, float[] output)
         {
-            var norm0 = (float)(1 / Math.Sqrt(_dctSize));
-            var norm = (float)Math.Sqrt(0.5 / _dctSize);
+            float norm0 = (float)(1 / Math.Sqrt(_dctSize));
+            float norm = (float)Math.Sqrt(0.5 / _dctSize);
 
-            for (var k = 0; k < output.Length; k++)
+            for (int k = 0; k < output.Length; k++)
             {
                 output[k] = 0f;
 
-                for (var n = 1; n < input.Length; n++)
+                for (int n = 1; n < input.Length; n++)
                 {
                     output[k] += input[n] * _dctMtx[k][n];
                 }
@@ -106,11 +106,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="output"></param>
         public void Inverse(float[] input, float[] output)
         {
-            for (var k = 0; k < output.Length; k++)
+            for (int k = 0; k < output.Length; k++)
             {
                 output[k] = 0.0f;
 
-                for (var n = 0; n < input.Length; n++)
+                for (int n = 0; n < input.Length; n++)
                 {
                     output[k] += input[n] * _dctMtxInv[k][n];
                 }
@@ -124,14 +124,14 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="output"></param>
         public void InverseNorm(float[] input, float[] output)
         {
-            var norm0 = (float)Math.Sqrt(0.5);
-            var norm = (float)Math.Sqrt(0.5 / _dctSize);
+            float norm0 = (float)Math.Sqrt(0.5);
+            float norm = (float)Math.Sqrt(0.5 / _dctSize);
 
-            for (var k = 0; k < output.Length; k++)
+            for (int k = 0; k < output.Length; k++)
             {
                 output[k] = 0;
 
-                for (var n = 0; n < input.Length; n++)
+                for (int n = 0; n < input.Length; n++)
                 {
                     output[k] += input[n] * _dctMtxInv[k][n];
                 }

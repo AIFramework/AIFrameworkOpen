@@ -24,7 +24,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         private AdsrState _state;
         public AdsrState State
         {
-            get { return _state; }
+            get => _state;
             private set
             {
                 _state = value;

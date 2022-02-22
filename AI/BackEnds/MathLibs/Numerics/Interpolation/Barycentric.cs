@@ -39,9 +39,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
     /// <remarks>Supports neither differentiation nor integration.</remarks>
     public class Barycentric : IInterpolation
     {
-        readonly double[] _x;
-        readonly double[] _y;
-        readonly double[] _w;
+        private readonly double[] _x;
+        private readonly double[] _y;
+        private readonly double[] _w;
 
         /// <param name="x">Sample points (N), sorted ascendingly.</param>
         /// <param name="y">Sample values (N), sorted ascendingly by x.</param>
@@ -78,11 +78,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                 throw new ArgumentException("The given array is too small. It must be at least 1 long.", nameof(x));
             }
 
-            var weights = new double[x.Length];
+            double[] weights = new double[x.Length];
             weights[0] = 1.0;
             for (int i = 1; i < weights.Length; i++)
             {
-                weights[i] = -(weights[i - 1]*(weights.Length - i))/i;
+                weights[i] = -(weights[i - 1] * (weights.Length - i)) / i;
             }
 
             return new Barycentric(x, y, weights);
@@ -117,8 +117,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// </summary>
         public static Barycentric InterpolatePolynomialEquidistant(double leftBound, double rightBound, IEnumerable<double> y)
         {
-            var yy = (y as double[]) ?? y.ToArray();
-            var xx = Generate.LinearSpaced(yy.Length, leftBound, rightBound);
+            double[] yy = (y as double[]) ?? y.ToArray();
+            double[] xx = Generate.LinearSpaced(yy.Length, leftBound, rightBound);
             return InterpolatePolynomialEquidistantSorted(xx, yy);
         }
 
@@ -149,7 +149,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                 throw new ArgumentOutOfRangeException(nameof(order));
             }
 
-            var weights = new double[x.Length];
+            double[] weights = new double[x.Length];
 
             // order: odd -> negative, even -> positive
             double sign = ((order & 0x1) == 0x1) ? -1.0 : 1.0;
@@ -165,14 +165,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                     {
                         if (j != k)
                         {
-                            v = v/Math.Abs(x[k] - x[j]);
+                            v = v / Math.Abs(x[k] - x[j]);
                         }
                     }
 
                     s = s + v;
                 }
 
-                weights[k] = sign*s;
+                weights[k] = sign * s;
                 sign = -sign;
             }
 
@@ -245,8 +245,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         public static Barycentric InterpolateRationalFloaterHormann(IEnumerable<double> x, IEnumerable<double> y)
         {
             // note: we must make a copy, even if the input was arrays already
-            var xx = x.ToArray();
-            var order = Math.Min(3, xx.Length - 1);
+            double[] xx = x.ToArray();
+            int order = Math.Min(3, xx.Length - 1);
             return InterpolateRationalFloaterHormannInplace(xx, y.ToArray(), order);
         }
 
@@ -305,19 +305,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
             {
                 if (i != closestPoint)
                 {
-                    double v = offset*_w[i]/(t - _x[i]);
-                    s1 = s1 + (v*_y[i]);
+                    double v = offset * _w[i] / (t - _x[i]);
+                    s1 = s1 + (v * _y[i]);
                     s2 = s2 + v;
                 }
                 else
                 {
                     double v = _w[i];
-                    s1 = s1 + (v*_y[i]);
+                    s1 = s1 + (v * _y[i]);
                     s2 = s2 + v;
                 }
             }
 
-            return s1/s2;
+            return s1 / s2;
         }
 
         /// <summary>
@@ -325,26 +325,38 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// </summary>
         /// <param name="t">Point t to interpolate at.</param>
         /// <returns>Interpolated first derivative at point t.</returns>
-        double IInterpolation.Differentiate(double t) => throw new NotSupportedException();
+        double IInterpolation.Differentiate(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Differentiate twice at point t. NOT SUPPORTED.
         /// </summary>
         /// <param name="t">Point t to interpolate at.</param>
         /// <returns>Interpolated second derivative at point t.</returns>
-        double IInterpolation.Differentiate2(double t) => throw new NotSupportedException();
+        double IInterpolation.Differentiate2(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Indefinite integral at point t. NOT SUPPORTED.
         /// </summary>
         /// <param name="t">Point t to integrate at.</param>
-        double IInterpolation.Integrate(double t) => throw new NotSupportedException();
+        double IInterpolation.Integrate(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Definite integral between points a and b. NOT SUPPORTED.
         /// </summary>
         /// <param name="a">Left bound of the integration interval [a,b].</param>
         /// <param name="b">Right bound of the integration interval [a,b].</param>
-        double IInterpolation.Integrate(double a, double b) => throw new NotSupportedException();
+        double IInterpolation.Integrate(double a, double b)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

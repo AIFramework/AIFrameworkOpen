@@ -51,7 +51,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <summary>
         /// This <c>IComparer</c> performs comparisons between a point and a bucket.
         /// </summary>
-        sealed class PointComparer : IComparer<Bucket>
+        private sealed class PointComparer : IComparer<Bucket>
         {
             /// <summary>
             /// Compares a point and a bucket. The point will be encapsulated in a bucket with width 0.
@@ -67,7 +67,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             }
         }
 
-        static readonly PointComparer Comparer = new PointComparer();
+        private static readonly PointComparer Comparer = new PointComparer();
 
         /// <summary>
         /// Lower Bound of the Bucket.
@@ -140,7 +140,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// True if this is a single point argument for <see cref="IComparer{Bucket}"/>
         /// when performing a Binary search.
         /// </summary>
-        bool IsSinglePoint => double.IsNaN(Count);
+        private bool IsSinglePoint => double.IsNaN(Count);
 
         /// <summary>
         /// Default comparer.
@@ -213,7 +213,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 return false;
             }
 
-            var bucket = (Bucket) obj;
+            Bucket bucket = (Bucket)obj;
             return LowerBound.Equals(bucket.LowerBound)
                 && UpperBound.Equals(bucket.UpperBound)
                 && Count.AlmostEqual(bucket.Count);
@@ -247,13 +247,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// Contains all the <c>Bucket</c>s of the <c>Histogram</c>.
         /// </summary>
         [DataMember(Order = 1)]
-        readonly List<Bucket> _buckets;
+        private readonly List<Bucket> _buckets;
 
         /// <summary>
         /// Indicates whether the elements of <c>buckets</c> are currently sorted.
         /// </summary>
         [DataMember(Order = 2)]
-        bool _areBucketsSorted;
+        private bool _areBucketsSorted;
 
         /// <summary>
         /// Initializes a new instance of the Histogram class.
@@ -280,7 +280,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
 
             double lower = data.Minimum();
             double upper = data.Maximum();
-            double width = (upper - lower)/nbuckets;
+            double width = (upper - lower) / nbuckets;
 
             if (double.IsNaN(width))
             {
@@ -384,7 +384,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <summary>
         /// Sort the buckets if needed.
         /// </summary>
-        void LazySort()
+        private void LazySort()
         {
             if (!_areBucketsSorted)
             {
@@ -400,7 +400,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <returns>A copy of the bucket containing point <paramref name="v"/>.</returns>
         public Bucket GetBucketOf(double v)
         {
-            return (Bucket) _buckets[GetBucketIndexOf(v)].Clone();
+            return (Bucket)_buckets[GetBucketIndexOf(v)].Clone();
         }
 
         /// <summary>
@@ -459,7 +459,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             get
             {
                 LazySort();
-                return (Bucket) _buckets[n].Clone();
+                return (Bucket)_buckets[n].Clone();
             }
         }
 
@@ -491,7 +491,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// </summary>
         public override string ToString()
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             foreach (Bucket b in _buckets)
             {
                 sb.Append(b);

@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
 {
@@ -60,7 +60,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
         /// <param name="residual">Residual values in <see cref="VectorMathNet"/>.</param>
         /// <param name="x">Instance of the <see cref="VectorMathNet"/> x.</param>
         /// <param name="b">Instance of the <see cref="VectorMathNet"/> b.</param>
-        static void CalculateTrueResidual(MatrixMathNet<Complex> matrix, VectorMathNet<Complex> residual, VectorMathNet<Complex> x, VectorMathNet<Complex> b)
+        private static void CalculateTrueResidual(MatrixMathNet<Complex> matrix, VectorMathNet<Complex> residual, VectorMathNet<Complex> x, VectorMathNet<Complex> b)
         {
             // -Ax = residual
             matrix.Multiply(x, residual);
@@ -75,7 +75,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
         /// </summary>
         /// <param name="number">Number to check</param>
         /// <returns><c>true</c> if <paramref name="number"/> even, otherwise <c>false</c></returns>
-        static bool IsEven(int number)
+        private static bool IsEven(int number)
         {
             return number % 2 == 0;
         }
@@ -113,23 +113,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
 
             preconditioner.Initialize(matrix);
 
-            var d = new DenseVector(input.Count);
-            var r = DenseVector.OfVector(input);
+            DenseVector d = new DenseVector(input.Count);
+            DenseVector r = DenseVector.OfVector(input);
 
-            var uodd = new DenseVector(input.Count);
-            var ueven = new DenseVector(input.Count);
+            DenseVector uodd = new DenseVector(input.Count);
+            DenseVector ueven = new DenseVector(input.Count);
 
-            var v = new DenseVector(input.Count);
-            var pseudoResiduals = DenseVector.OfVector(input);
+            DenseVector v = new DenseVector(input.Count);
+            DenseVector pseudoResiduals = DenseVector.OfVector(input);
 
-            var x = new DenseVector(input.Count);
-            var yodd = new DenseVector(input.Count);
-            var yeven = DenseVector.OfVector(input);
+            DenseVector x = new DenseVector(input.Count);
+            DenseVector yodd = new DenseVector(input.Count);
+            DenseVector yeven = DenseVector.OfVector(input);
 
             // Temp vectors
-            var temp = new DenseVector(input.Count);
-            var temp1 = new DenseVector(input.Count);
-            var temp2 = new DenseVector(input.Count);
+            DenseVector temp = new DenseVector(input.Count);
+            DenseVector temp1 = new DenseVector(input.Count);
+            DenseVector temp2 = new DenseVector(input.Count);
 
             // Define the scalars
             Complex alpha = 0;
@@ -137,8 +137,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
             double theta = 0;
 
             // Initialize
-            var tau = input.L2Norm();
-            Complex rho = tau*tau;
+            double tau = input.L2Norm();
+            Complex rho = tau * tau;
 
             // Calculate the initial values for v
             // M temp = yEven
@@ -151,14 +151,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
             v.CopyTo(ueven);
 
             // Start the iteration
-            var iterationNumber = 0;
+            int iterationNumber = 0;
             while (iterator.DetermineStatus(iterationNumber, result, input, pseudoResiduals) == IterationStatus.Continue)
             {
                 // First part of the step, the even bit
                 if (IsEven(iterationNumber))
                 {
                     // sigma = (v, r)
-                    var sigma = r.ConjugateDotProduct(v);
+                    Complex sigma = r.ConjugateDotProduct(v);
                     if (sigma.Real.AlmostEqualNumbersBetween(0, 1) && sigma.Imaginary.AlmostEqualNumbersBetween(0, 1))
                     {
                         // FAIL HERE
@@ -167,7 +167,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
                     }
 
                     // alpha = rho / sigma
-                    alpha = rho/sigma;
+                    alpha = rho / sigma;
 
                     // yOdd = yEven - alpha * v
                     v.Multiply(-alpha, temp1);
@@ -183,8 +183,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
                 // The intermediate step which is equal for both even and
                 // odd iteration steps.
                 // Select the correct vector
-                var uinternal = IsEven(iterationNumber) ? ueven : uodd;
-                var yinternal = IsEven(iterationNumber) ? yeven : yodd;
+                DenseVector uinternal = IsEven(iterationNumber) ? ueven : uodd;
+                DenseVector yinternal = IsEven(iterationNumber) ? yeven : yodd;
 
                 // pseudoResiduals = pseudoResiduals - alpha * uOdd
                 uinternal.Multiply(-alpha, temp1);
@@ -192,18 +192,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
                 temp2.CopyTo(pseudoResiduals);
 
                 // d = yOdd + theta * theta * eta / alpha * d
-                d.Multiply(theta*theta*eta/alpha, temp);
+                d.Multiply(theta * theta * eta / alpha, temp);
                 yinternal.Add(temp, d);
 
                 // theta = ||pseudoResiduals||_2 / tau
-                theta = pseudoResiduals.L2Norm()/tau;
-                var c = 1/Math.Sqrt(1 + (theta*theta));
+                theta = pseudoResiduals.L2Norm() / tau;
+                double c = 1 / Math.Sqrt(1 + (theta * theta));
 
                 // tau = tau * theta * c
-                tau *= theta*c;
+                tau *= theta * c;
 
                 // eta = c^2 * alpha
-                eta = c*c*alpha;
+                eta = c * c * alpha;
 
                 // x = x + eta * d
                 d.Multiply(eta, temp1);
@@ -239,8 +239,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
                         break;
                     }
 
-                    var rhoNew = r.ConjugateDotProduct(pseudoResiduals);
-                    var beta = rhoNew/rho;
+                    Complex rhoNew = r.ConjugateDotProduct(pseudoResiduals);
+                    Complex beta = rhoNew / rho;
 
                     // Update rho for the next loop
                     rho = rhoNew;

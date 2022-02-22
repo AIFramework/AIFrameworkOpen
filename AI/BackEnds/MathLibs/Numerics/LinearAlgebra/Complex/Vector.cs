@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 {
@@ -142,7 +142,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </param>
         protected override void DoMultiply(Complex scalar, VectorMathNet<Complex> result)
         {
-            Map(x => x*scalar, result, Zeros.AllowSkip);
+            Map(x => x * scalar, result, Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </param>
         protected override void DoDivide(Complex divisor, VectorMathNet<Complex> result)
         {
-            Map(x => x/divisor, result, divisor.IsZero() ? Zeros.Include : Zeros.AllowSkip);
+            Map(x => x / divisor, result, divisor.IsZero() ? Zeros.Include : Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The vector to store the result of the division.</param>
         protected override void DoDivideByThis(Complex dividend, VectorMathNet<Complex> result)
         {
-            Map(x => dividend/x, result, Zeros.Include);
+            Map(x => dividend / x, result, Zeros.Include);
         }
 
         /// <summary>
@@ -329,8 +329,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The sum of a[i]*b[i] for all i.</returns>
         protected override Complex DoDotProduct(VectorMathNet<Complex> other)
         {
-            var dot = Complex.Zero;
-            for (var i = 0; i < Count; i++)
+            Complex dot = Complex.Zero;
+            for (int i = 0; i < Count; i++)
             {
                 dot += At(i) * other.At(i);
             }
@@ -344,8 +344,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The sum of conj(a[i])*b[i] for all i.</returns>
         protected override Complex DoConjugateDotProduct(VectorMathNet<Complex> other)
         {
-            var dot = Complex.Zero;
-            for (var i = 0; i < Count; i++)
+            Complex dot = Complex.Zero;
+            for (int i = 0; i < Count; i++)
             {
                 dot += At(i).Conjugate() * other.At(i);
             }
@@ -453,11 +453,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The index of absolute minimum element.</returns>
         public override int AbsoluteMinimumIndex()
         {
-            var index = 0;
-            var min = At(index).Magnitude;
-            for (var i = 1; i < Count; i++)
+            int index = 0;
+            double min = At(index).Magnitude;
+            for (int i = 1; i < Count; i++)
             {
-                var test = At(i).Magnitude;
+                double test = At(i).Magnitude;
                 if (test < min)
                 {
                     index = i;
@@ -483,11 +483,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The index of absolute maximum element.</returns>
         public override int AbsoluteMaximumIndex()
         {
-            var index = 0;
-            var max = At(index).Magnitude;
-            for (var i = 1; i < Count; i++)
+            int index = 0;
+            double max = At(index).Magnitude;
+            for (int i = 1; i < Count; i++)
             {
-                var test = At(i).Magnitude;
+                double test = At(i).Magnitude;
                 if (test > max)
                 {
                     index = i;
@@ -504,8 +504,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The sum of the vector's elements.</returns>
         public override Complex Sum()
         {
-            var sum = Complex.Zero;
-            for (var i = 0; i < Count; i++)
+            Complex sum = Complex.Zero;
+            for (int i = 0; i < Count; i++)
             {
                 sum += At(i);
             }
@@ -519,7 +519,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         public override double L1Norm()
         {
             double sum = 0d;
-            for (var i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 sum += At(i).Magnitude;
             }
@@ -555,18 +555,32 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </returns>
         public override double Norm(double p)
         {
-            if (p < 0d) throw new ArgumentOutOfRangeException(nameof(p));
+            if (p < 0d)
+            {
+                throw new ArgumentOutOfRangeException(nameof(p));
+            }
 
-            if (p == 1d) return L1Norm();
-            if (p == 2d) return L2Norm();
-            if (double.IsPositiveInfinity(p)) return InfinityNorm();
+            if (p == 1d)
+            {
+                return L1Norm();
+            }
+
+            if (p == 2d)
+            {
+                return L2Norm();
+            }
+
+            if (double.IsPositiveInfinity(p))
+            {
+                return InfinityNorm();
+            }
 
             double sum = 0d;
-            for (var index = 0; index < Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 sum += Math.Pow(At(index).Magnitude, p);
             }
-            return Math.Pow(sum, 1.0/p);
+            return Math.Pow(sum, 1.0 / p);
         }
 
         /// <summary>
@@ -604,7 +618,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             }
 
             double norm = Norm(p);
-            var clone = Clone();
+            VectorMathNet<Complex> clone = Clone();
             if (norm == 0d)
             {
                 return clone;

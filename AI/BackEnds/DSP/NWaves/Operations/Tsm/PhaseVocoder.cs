@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.Filters.Base;
+﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
 using AI.BackEnds.DSP.NWaves.Windows;
+using System;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 {
@@ -85,7 +85,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
             _hopAnalysis = hopAnalysis;
             _hopSynthesis = (int)(hopAnalysis * stretch);
             _fftSize = (fftSize > 0) ? fftSize : 8 * Math.Max(_hopAnalysis, _hopSynthesis);
-            
+
             _fft = new RealFft(_fftSize);
 
             _window = Window.OfType(WindowTypes.Hann, _fftSize);
@@ -112,11 +112,11 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         public DiscreteSignal ApplyTo(DiscreteSignal signal,
                                       FilteringMethod method = FilteringMethod.Auto)
         {
-            var input = signal.Samples;
-            var output = new float[(int)(input.Length * _stretch) + _fftSize];
+            float[] input = signal.Samples;
+            float[] output = new float[(int)(input.Length * _stretch) + _fftSize];
 
-            var posSynthesis = 0;
-            for (var posAnalysis = 0; posAnalysis + _fftSize < input.Length; posAnalysis += _hopAnalysis)
+            int posSynthesis = 0;
+            for (int posAnalysis = 0; posAnalysis + _fftSize < input.Length; posAnalysis += _hopAnalysis)
             {
                 input.FastCopyTo(_re, _fftSize, posAnalysis);
 
@@ -133,12 +133,12 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 
                 _fft.Inverse(_re, _im, _re);
 
-                for (var j = 0; j < _re.Length; j++)
+                for (int j = 0; j < _re.Length; j++)
                 {
                     output[posSynthesis + j] += _re[j] * _window[j];
                 }
 
-                for (var j = 0; j < _hopSynthesis; j++)
+                for (int j = 0; j < _hopSynthesis; j++)
                 {
                     output[posSynthesis + j] *= _gain;
                 }
@@ -160,17 +160,17 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         /// </summary>
         public virtual void ProcessSpectrum()
         {
-            for (var j = 1; j <= _fftSize / 2; j++)
+            for (int j = 1; j <= _fftSize / 2; j++)
             {
-                var mag = Math.Sqrt(_re[j] * _re[j] + _im[j] * _im[j]);
-                var phase = Math.Atan2(_im[j], _re[j]);
+                double mag = Math.Sqrt(_re[j] * _re[j] + _im[j] * _im[j]);
+                double phase = Math.Atan2(_im[j], _re[j]);
 
-                var delta = phase - _prevPhase[j];
+                double delta = phase - _prevPhase[j];
 
-                var deltaUnwrapped = delta - _hopAnalysis * _omega[j];
-                var deltaWrapped = MathUtils.Mod(deltaUnwrapped + Math.PI, 2 * Math.PI) - Math.PI;
+                double deltaUnwrapped = delta - _hopAnalysis * _omega[j];
+                double deltaWrapped = MathUtils.Mod(deltaUnwrapped + Math.PI, 2 * Math.PI) - Math.PI;
 
-                var freq = _omega[j] + deltaWrapped / _hopAnalysis;
+                double freq = _omega[j] + deltaWrapped / _hopAnalysis;
 
                 _phaseTotal[j] += _hopSynthesis * freq;
                 _prevPhase[j] = phase;

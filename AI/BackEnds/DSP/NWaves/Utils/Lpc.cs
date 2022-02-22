@@ -20,23 +20,23 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>Prediction error</returns>
         public static float LevinsonDurbin(float[] input, float[] a, int order, int offset = 0)
         {
-            var err = input[offset];
+            float err = input[offset];
 
             a[0] = 1.0f;
 
-            for (var i = 1; i <= order; i++)
+            for (int i = 1; i <= order; i++)
             {
-                var lambda = 0.0f;
-                for (var j = 0; j < i; j++)
+                float lambda = 0.0f;
+                for (int j = 0; j < i; j++)
                 {
                     lambda -= a[j] * input[offset + i - j];
                 }
 
                 lambda /= err;
 
-                for (var n = 0; n <= i / 2; n++)
+                for (int n = 0; n <= i / 2; n++)
                 {
-                    var tmp = a[i - n] + lambda * a[n];
+                    float tmp = a[i - n] + lambda * a[n];
                     a[n] = a[n] + lambda * a[i - n];
                     a[i - n] = tmp;
                 }
@@ -55,25 +55,25 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <param name="lpcc"></param>
         public static void ToCepstrum(float[] lpc, float gain, float[] lpcc)
         {
-            var n = lpcc.Length;
-            var p = lpc.Length;     // must be lpcOrder + 1 (!)
+            int n = lpcc.Length;
+            int p = lpc.Length;     // must be lpcOrder + 1 (!)
 
             lpcc[0] = (float)Math.Log(gain);
 
-            for (var m = 1; m < Math.Min(n, p); m++)
+            for (int m = 1; m < Math.Min(n, p); m++)
             {
-                var acc = 0.0f;
-                for (var k = 1; k < m; k++)
+                float acc = 0.0f;
+                for (int k = 1; k < m; k++)
                 {
                     acc += k * lpcc[k] * lpc[m - k];
                 }
                 lpcc[m] = -lpc[m] - acc / m;
             }
 
-            for (var m = p; m < n; m++)
+            for (int m = p; m < n; m++)
             {
-                var acc = 0.0f;
-                for (var k = 1; k < p; k++)
+                float acc = 0.0f;
+                for (int k = 1; k < p; k++)
                 {
                     acc += (m - k) * lpcc[m - k] * lpc[k];
                 }
@@ -92,15 +92,15 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static float FromCepstrum(float[] lpcc, float[] lpc)
         {
-            var n = lpcc.Length;
-            var p = lpc.Length;     // must be lpcOrder + 1 (!)
+            int n = lpcc.Length;
+            int p = lpc.Length;     // must be lpcOrder + 1 (!)
 
             lpc[0] = 1;
 
-            for (var m = 1; m < p; m++)
+            for (int m = 1; m < p; m++)
             {
-                var acc = 0.0f;
-                for (var k = 1; k < m; k++)
+                float acc = 0.0f;
+                for (int k = 1; k < m; k++)
                 {
                     acc += k * lpcc[k] * lpc[m - k];
                 }
@@ -128,19 +128,22 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <param name="lsf">The length must be equal to lpc length. Last element will be PI</param>
         public static void ToLsf(float[] lpc, float[] lsf)
         {
-            var first = lpc[0];
+            float first = lpc[0];
 
             if (Math.Abs(first - 1) > 1e-10)
             {
-                for (var i = 0; i < lpc.Length; lpc[i] /= first, i++) ;
+                for (int i = 0; i < lpc.Length; lpc[i] /= first, i++)
+                {
+                    ;
+                }
             }
 
-            var p = new float[lpc.Length + 1];
-            var q = new float[lpc.Length + 1];
+            float[] p = new float[lpc.Length + 1];
+            float[] q = new float[lpc.Length + 1];
 
             p[0] = q[0] = 1;
 
-            for (var i = 1; i < p.Length - 1; i++)
+            for (int i = 1; i < p.Length - 1; i++)
             {
                 p[i] = lpc[i] - lpc[p.Length - i - 1];
                 q[i] = lpc[i] + lpc[p.Length - i - 1];
@@ -149,20 +152,26 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             p[p.Length - 1] = -1;
             q[q.Length - 1] = 1;
 
-            var pRoots = MathUtils.PolynomialRoots(p.ToDoubles()).Select(r => r.Phase).ToArray();
-            var qRoots = MathUtils.PolynomialRoots(q.ToDoubles()).Select(r => r.Phase).ToArray();
+            double[] pRoots = MathUtils.PolynomialRoots(p.ToDoubles()).Select(r => r.Phase).ToArray();
+            double[] qRoots = MathUtils.PolynomialRoots(q.ToDoubles()).Select(r => r.Phase).ToArray();
 
             Array.Sort(pRoots);
             Array.Sort(qRoots);
 
-            var k = 0;
-            for (var i = 0; i < qRoots.Length; i++)
+            int k = 0;
+            for (int i = 0; i < qRoots.Length; i++)
             {
-                if (qRoots[i] > 0) lsf[k++] = (float)qRoots[i];
+                if (qRoots[i] > 0)
+                {
+                    lsf[k++] = (float)qRoots[i];
+                }
             }
-            for (var i = 0; i < pRoots.Length; i++)
+            for (int i = 0; i < pRoots.Length; i++)
             {
-                if (pRoots[i] > 0) lsf[k++] = (float)pRoots[i];
+                if (pRoots[i] > 0)
+                {
+                    lsf[k++] = (float)pRoots[i];
+                }
             }
 
             Array.Sort(lsf);
@@ -175,25 +184,25 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <param name="lpc"></param>
         public static void FromLsf(float[] lsf, float[] lpc)
         {
-            var n = lsf.Length - 1;
-            var halfOrder = n / 2;
+            int n = lsf.Length - 1;
+            int halfOrder = n / 2;
 
-            var pPoles = new ComplexDiscreteSignal(1, n);
-            var qPoles = new ComplexDiscreteSignal(1, n + 2 * (n % 2));
+            ComplexDiscreteSignal pPoles = new ComplexDiscreteSignal(1, n);
+            ComplexDiscreteSignal qPoles = new ComplexDiscreteSignal(1, n + 2 * (n % 2));
 
-            var k = 0;
-            for (var i = 0; k < halfOrder; i += 2, k++)
+            int k = 0;
+            for (int i = 0; k < halfOrder; i += 2, k++)
             {
                 qPoles.Real[k] = Math.Cos(lsf[i]);
                 qPoles.Imag[k] = Math.Sin(lsf[i]);
                 pPoles.Real[k] = Math.Cos(lsf[i + 1]);
                 pPoles.Imag[k] = Math.Sin(lsf[i + 1]);
             }
-            for (var i = 0; k < 2 * halfOrder; i += 2, k++)
+            for (int i = 0; k < 2 * halfOrder; i += 2, k++)
             {
-                qPoles.Real[k] = Math.Cos( lsf[i]);
+                qPoles.Real[k] = Math.Cos(lsf[i]);
                 qPoles.Imag[k] = Math.Sin(-lsf[i]);
-                pPoles.Real[k] = Math.Cos( lsf[i + 1]);
+                pPoles.Real[k] = Math.Cos(lsf[i + 1]);
                 pPoles.Imag[k] = Math.Sin(-lsf[i + 1]);
             }
 
@@ -201,12 +210,12 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             {
                 qPoles.Real[n] = Math.Cos(lsf[n - 1]);
                 qPoles.Imag[n] = Math.Sin(lsf[n - 1]);
-                qPoles.Real[n + 1] = Math.Cos( lsf[n - 1]);
+                qPoles.Real[n + 1] = Math.Cos(lsf[n - 1]);
                 qPoles.Imag[n + 1] = Math.Sin(-lsf[n - 1]);
             }
 
-            var ps = new ComplexDiscreteSignal(1, TransferFunction.ZpToTf(pPoles));
-            var qs = new ComplexDiscreteSignal(1, TransferFunction.ZpToTf(qPoles));
+            ComplexDiscreteSignal ps = new ComplexDiscreteSignal(1, TransferFunction.ZpToTf(pPoles));
+            ComplexDiscreteSignal qs = new ComplexDiscreteSignal(1, TransferFunction.ZpToTf(qPoles));
 
             if (n % 2 == 1)
             {
@@ -215,10 +224,10 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             else
             {
                 ps = Operation.Convolve(ps, new ComplexDiscreteSignal(1, new[] { 1.0, -1.0 }));
-                qs = Operation.Convolve(qs, new ComplexDiscreteSignal(1, new[] { 1.0,  1.0 }));
+                qs = Operation.Convolve(qs, new ComplexDiscreteSignal(1, new[] { 1.0, 1.0 }));
             }
 
-            for (var i = 0; i < lpc.Length; i++)
+            for (int i = 0; i < lpc.Length; i++)
             {
                 lpc[i] = (float)(0.5 * (ps.Real[i] + qs.Real[i]));
             }

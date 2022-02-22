@@ -63,7 +63,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
     public abstract class QR<T> : ISolver<T>
         where T : struct, IEquatable<T>, IFormattable
     {
-        readonly Lazy<MatrixMathNet<T>> _lazyR;
+        private readonly Lazy<MatrixMathNet<T>> _lazyR;
 
         protected readonly MatrixMathNet<T> FullR;
         protected readonly QRMethod Method;
@@ -105,7 +105,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
         /// <returns>The left hand side <see cref="MatrixMathNet{T}"/>, <b>X</b>.</returns>
         public virtual MatrixMathNet<T> Solve(MatrixMathNet<T> input)
         {
-            var x = MatrixMathNet<T>.Build.SameAs(input, FullR.ColumnCount, input.ColumnCount, fullyMutable: true);
+            MatrixMathNet<T> x = MatrixMathNet<T>.Build.SameAs(input, FullR.ColumnCount, input.ColumnCount, fullyMutable: true);
             Solve(input, x);
             return x;
         }
@@ -124,7 +124,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
         /// <returns>The left hand side <see cref="VectorMathNet{T}"/>, <b>x</b>.</returns>
         public virtual VectorMathNet<T> Solve(VectorMathNet<T> input)
         {
-            var x = VectorMathNet<T>.Build.SameAs(input, FullR.ColumnCount);
+            VectorMathNet<T> x = VectorMathNet<T>.Build.SameAs(input, FullR.ColumnCount);
             Solve(input, x);
             return x;
         }

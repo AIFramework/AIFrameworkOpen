@@ -42,7 +42,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         /// </summary>
         public int FunctionEvaluations => _df.Evaluations;
 
-        readonly NumericalDerivative _df;
+        private readonly NumericalDerivative _df;
 
         /// <summary>
         /// Creates a numerical Jacobian object with a three point central difference method.
@@ -81,10 +81,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         /// <returns>Jacobian vector.</returns>
         public double[] Evaluate(Func<double[], double> f, double[] x)
         {
-            var jacobian = new double[x.Length];
+            double[] jacobian = new double[x.Length];
 
-            for (var i = 0; i < jacobian.Length; i++)
+            for (int i = 0; i < jacobian.Length; i++)
+            {
                 jacobian[i] = _df.EvaluatePartialDerivative(f, x, i, 1);
+            }
 
             return jacobian;
         }
@@ -104,10 +106,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         /// <returns>Jacobian vector.</returns>
         public double[] Evaluate(Func<double[], double> f, double[] x, double currentValue)
         {
-            var jacobian = new double[x.Length];
+            double[] jacobian = new double[x.Length];
 
-            for (var i = 0; i < jacobian.Length; i++)
+            for (int i = 0; i < jacobian.Length; i++)
+            {
                 jacobian[i] = _df.EvaluatePartialDerivative(f, x, i, 1, currentValue);
+            }
 
             return jacobian;
         }
@@ -120,12 +124,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         /// <returns>Jacobian matrix.</returns>
         public double[,] Evaluate(Func<double[], double>[] f, double[] x)
         {
-            var jacobian = new double[f.Length, x.Length];
+            double[,] jacobian = new double[f.Length, x.Length];
             for (int i = 0; i < f.Length; i++)
             {
-                var gradient = Evaluate(f[i], x);
+                double[] gradient = Evaluate(f[i], x);
                 for (int j = 0; j < gradient.Length; j++)
+                {
                     jacobian[i, j] = gradient[j];
+                }
             }
 
             return jacobian;
@@ -146,12 +152,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         /// <returns>Jacobian matrix.</returns>
         public double[,] Evaluate(Func<double[], double>[] f, double[] x, double[] currentValues)
         {
-            var jacobian = new double[f.Length, x.Length];
+            double[,] jacobian = new double[f.Length, x.Length];
             for (int i = 0; i < f.Length; i++)
             {
-                var gradient = Evaluate(f[i], x, currentValues[i]);
+                double[] gradient = Evaluate(f[i], x, currentValues[i]);
                 for (int j = 0; j < gradient.Length; j++)
+                {
                     jacobian[i, j] = gradient[j];
+                }
             }
 
             return jacobian;

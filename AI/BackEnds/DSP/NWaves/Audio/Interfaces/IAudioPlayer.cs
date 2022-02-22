@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using AI.BackEnds.DSP.NWaves.Signals;
+﻿using AI.BackEnds.DSP.NWaves.Signals;
+using System.Threading.Tasks;
 
 namespace AI.BackEnds.DSP.NWaves.Audio.Interfaces
 {

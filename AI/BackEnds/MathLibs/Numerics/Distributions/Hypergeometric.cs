@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -42,11 +42,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Hypergeometric : IDiscreteDistribution
     {
-        System.Random _random;
-
-        readonly int _population;
-        readonly int _success;
-        readonly int _draws;
+        private System.Random _random;
+        private readonly int _population;
+        private readonly int _success;
+        private readonly int _draws;
 
         /// <summary>
         /// Initializes a new instance of the Hypergeometric class.
@@ -88,10 +87,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="string"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -136,12 +135,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => (double)_success*_draws/_population;
+        public double Mean => (double)_success * _draws / _population;
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => _draws*_success*(_population - _draws)*(_population - _success)/(_population*_population*(_population - 1.0));
+        public double Variance => _draws * _success * (_population - _draws) * (_population - _success) / (_population * _population * (_population - 1.0));
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
@@ -156,12 +155,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the skewness of the distribution.
         /// </summary>
-        public double Skewness => (Math.Sqrt(_population - 1.0)*(_population - (2*_draws))*(_population - (2*_success)))/(Math.Sqrt(_draws*_success*(_population - _success)*(_population - _draws))*(_population - 2.0));
+        public double Skewness => (Math.Sqrt(_population - 1.0) * (_population - (2 * _draws)) * (_population - (2 * _success))) / (Math.Sqrt(_draws * _success * (_population - _success) * (_population - _draws)) * (_population - 2.0));
 
         /// <summary>
         /// Gets the mode of the distribution.
         /// </summary>
-        public int Mode => (_draws + 1)*(_success + 1)/(_population + 2);
+        public int Mode => (_draws + 1) * (_success + 1) / (_population + 2);
 
         /// <summary>
         /// Gets the median of the distribution.
@@ -185,7 +184,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the probability mass at location <paramref name="k"/>.</returns>
         public double Probability(int k)
         {
-            return SpecialFunctions.Binomial(_success, k)*SpecialFunctions.Binomial(_population - _success, _draws - k)/SpecialFunctions.Binomial(_population, _draws);
+            return SpecialFunctions.Binomial(_success, k) * SpecialFunctions.Binomial(_population - _success, _draws - k) / SpecialFunctions.Binomial(_population, _draws);
         }
 
         /// <summary>
@@ -223,7 +222,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return SpecialFunctions.Binomial(success, k)*SpecialFunctions.Binomial(population - success, draws - k)/SpecialFunctions.Binomial(population, draws);
+            return SpecialFunctions.Binomial(success, k) * SpecialFunctions.Binomial(population - success, draws - k) / SpecialFunctions.Binomial(population, draws);
         }
 
         /// <summary>
@@ -270,10 +269,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 1.0;
             }
 
-            var k = (int)Math.Floor(x);
-            var denominatorLn = SpecialFunctions.BinomialLn(population, draws);
-            var sum = 0.0;
-            for (var i = 0; i <= k; i++)
+            int k = (int)Math.Floor(x);
+            double denominatorLn = SpecialFunctions.BinomialLn(population, draws);
+            double sum = 0.0;
+            for (int i = 0; i <= k; i++)
             {
                 sum += Math.Exp(SpecialFunctions.BinomialLn(success, i) + SpecialFunctions.BinomialLn(population - success, draws - i) - denominatorLn);
             }
@@ -289,14 +288,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="success">The number successes within the population (K, M).</param>
         /// <param name="draws">The n parameter of the distribution.</param>
         /// <returns>a random number from the Hypergeometric distribution.</returns>
-        static int SampleUnchecked(System.Random rnd, int population, int success, int draws)
+        private static int SampleUnchecked(System.Random rnd, int population, int success, int draws)
         {
-            var x = 0;
+            int x = 0;
 
             do
             {
-                var p = (double)success/population;
-                var r = rnd.NextDouble();
+                double p = (double)success / population;
+                double r = rnd.NextDouble();
                 if (r < p)
                 {
                     x++;
@@ -311,7 +310,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return x;
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, int population, int success, int draws)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, int population, int success, int draws)
         {
             for (int i = 0; i < values.Length; i++)
             {
@@ -319,7 +318,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, int population, int success, int draws)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, int population, int success, int draws)
         {
             while (true)
             {

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Collections.Generic;
-using AI.BackEnds.DSP.NWaves.Utils;
 
 namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 {
@@ -60,11 +60,11 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         private double GenerateSample(double x)
         {
-            var i1 = (int)x < x ? (int)x : (int)x - 1;
-            var i2 = (i1 + 1) & 0xff;
-            var f1 = x - i1;
-            var f2 = f1 - 1.0;
-            
+            int i1 = (int)x < x ? (int)x : (int)x - 1;
+            int i2 = (i1 + 1) & 0xff;
+            double f1 = x - i1;
+            double f2 = f1 - 1.0;
+
             i1 &= 0xff;
 
             return 0.188 * Lerp(Fade(f1), Gradient(_permutation[i1], f1),
@@ -79,8 +79,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         private double Gradient(int hash, double x)
         {
-            var h = hash & 15;
-            var g = 1.0 + (h & 7);
+            int h = hash & 15;
+            double g = 1.0 + (h & 7);
             return ((h & 8) == 0) ? g * x : -g * x;
         }
 
@@ -112,7 +112,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         public override float NextSample()
         {
-            var sample = GenerateSample(_n * _scale) * (_high - _low) / 2 + (_high + _low) / 2;
+            double sample = GenerateSample(_n * _scale) * (_high - _low) / 2 + (_high + _low) / 2;
             _n++;
             return (float)sample;
         }
@@ -131,6 +131,6 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 
         private int _n;
 
-        private Random _rand = new Random();
+        private readonly Random _rand = new Random();
     }
 }

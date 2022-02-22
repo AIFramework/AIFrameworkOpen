@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -41,10 +41,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class ContinuousUniform : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _lower;
-        readonly double _upper;
+        private System.Random _random;
+        private readonly double _lower;
+        private readonly double _upper;
 
         /// <summary>
         /// Initializes a new instance of the ContinuousUniform class with lower bound 0 and upper bound 1.
@@ -131,17 +130,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => (_lower + _upper)/2.0;
+        public double Mean => (_lower + _upper) / 2.0;
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => (_upper - _lower)*(_upper - _lower)/12.0;
+        public double Variance => (_upper - _lower) * (_upper - _lower) / 12.0;
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => (_upper - _lower)/Math.Sqrt(12.0);
+        public double StdDev => (_upper - _lower) / Math.Sqrt(12.0);
 
         /// <summary>
         /// Gets the entropy of the distribution.
@@ -158,13 +157,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// Gets the mode of the distribution.
         /// </summary>
         /// <value></value>
-        public double Mode => (_lower + _upper)/2.0;
+        public double Mode => (_lower + _upper) / 2.0;
 
         /// <summary>
         /// Gets the median of the distribution.
         /// </summary>
         /// <value></value>
-        public double Median => (_lower + _upper)/2.0;
+        public double Median => (_lower + _upper) / 2.0;
 
         /// <summary>
         /// Gets the minimum of the distribution.
@@ -184,7 +183,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDF"/>
         public double Density(double x)
         {
-            return x < _lower || x > _upper ? 0.0 : 1.0/(_upper - _lower);
+            return x < _lower || x > _upper ? 0.0 : 1.0 / (_upper - _lower);
         }
 
         /// <summary>
@@ -206,7 +205,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="CDF"/>
         public double CumulativeDistribution(double x)
         {
-            return x <= _lower ? 0.0 : x >= _upper ? 1.0 : (x - _lower)/(_upper - _lower);
+            return x <= _lower ? 0.0 : x >= _upper ? 1.0 : (x - _lower) / (_upper - _lower);
         }
 
         /// <summary>
@@ -218,7 +217,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="InvCDF"/>
         public double InverseCumulativeDistribution(double p)
         {
-            return p <= 0.0 ? _lower : p >= 1.0 ? _upper : _lower*(1.0 - p) + _upper*p;
+            return p <= 0.0 ? _lower : p >= 1.0 ? _upper : _lower * (1.0 - p) + _upper * p;
         }
 
         /// <summary>
@@ -247,29 +246,29 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _lower, _upper);
         }
 
-        static double SampleUnchecked(System.Random rnd, double lower, double upper)
+        private static double SampleUnchecked(System.Random rnd, double lower, double upper)
         {
-            return lower + rnd.NextDouble()*(upper - lower);
+            return lower + rnd.NextDouble() * (upper - lower);
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double lower, double upper)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double lower, double upper)
         {
             double difference = upper - lower;
             while (true)
             {
-                yield return lower + rnd.NextDouble()*difference;
+                yield return lower + rnd.NextDouble() * difference;
             }
         }
 
         internal static void SamplesUnchecked(System.Random rnd, double[] values, double lower, double upper)
         {
             rnd.NextDoubles(values);
-            var difference = upper - lower;
+            double difference = upper - lower;
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    values[i] = lower + values[i]*difference;
+                    values[i] = lower + values[i] * difference;
                 }
             });
         }
@@ -289,7 +288,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return x < lower || x > upper ? 0.0 : 1.0/(upper - lower);
+            return x < lower || x > upper ? 0.0 : 1.0 / (upper - lower);
         }
 
         /// <summary>
@@ -325,7 +324,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return x <= lower ? 0.0 : x >= upper ? 1.0 : (x - lower)/(upper - lower);
+            return x <= lower ? 0.0 : x >= upper ? 1.0 : (x - lower) / (upper - lower);
         }
 
         /// <summary>
@@ -344,7 +343,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return p <= 0.0 ? lower : p >= 1.0 ? upper : lower*(1.0 - p) + upper*p;
+            return p <= 0.0 ? lower : p >= 1.0 ? upper : lower * (1.0 - p) + upper * p;
         }
 
         /// <summary>

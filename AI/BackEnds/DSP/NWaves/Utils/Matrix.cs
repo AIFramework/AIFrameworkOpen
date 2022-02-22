@@ -19,14 +19,17 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <param name="columns"></param>
         public MatrixNWaves(int rows, int columns = 0)
         {
-            if (columns == 0) columns = rows;
+            if (columns == 0)
+            {
+                columns = rows;
+            }
 
             Guard.AgainstNonPositive(rows, "Number of rows");
             Guard.AgainstNonPositive(columns, "Number of columns");
 
             _matrix = new double[rows][];
 
-            for (var i = 0; i < rows; i++)
+            for (int i = 0; i < rows; i++)
             {
                 _matrix[i] = new double[columns];
             }
@@ -39,7 +42,10 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// Get 2d array reference
         /// </summary>
         /// <returns></returns>
-        public double[][] As2dArray() => _matrix;
+        public double[][] As2dArray()
+        {
+            return _matrix;
+        }
 
         /// <summary>
         /// Transposed matrix
@@ -48,11 +54,11 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         {
             get
             {
-                var transposed = new MatrixNWaves(Columns, Rows);
+                MatrixNWaves transposed = new MatrixNWaves(Columns, Rows);
 
-                for (var i = 0; i < Columns; i++)
+                for (int i = 0; i < Columns; i++)
                 {
-                    for (var j = 0; j < Rows; j++)
+                    for (int j = 0; j < Rows; j++)
                     {
                         transposed[i][j] = _matrix[j][i];
                     }
@@ -79,16 +85,16 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                 throw new ArgumentException("The first coefficient must not be zero!");
             }
 
-            var size = a.Length - 1;
+            int size = a.Length - 1;
 
-            var companion = new MatrixNWaves(size);
+            MatrixNWaves companion = new MatrixNWaves(size);
 
-            for (var i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
                 companion[0][i] = -a[i + 1] / a[0];
             }
 
-            for (var i = 1; i < size; i++)
+            for (int i = 1; i < size; i++)
             {
                 companion[i][i - 1] = 1;
             }
@@ -103,9 +109,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static MatrixNWaves Eye(int size)
         {
-            var eye = new MatrixNWaves(size);
+            MatrixNWaves eye = new MatrixNWaves(size);
 
-            for (var i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
                 eye[i][i] = 1;
             }
@@ -118,11 +124,11 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             Guard.AgainstInequality(m1.Rows, m2.Rows, "Number of rows in first matrix", "number of rows in second matrix");
             Guard.AgainstInequality(m1.Columns, m2.Columns, "Number of columns in first matrix", "number of columns in second matrix");
 
-            var result = new MatrixNWaves(m1.Rows, m1.Columns);
+            MatrixNWaves result = new MatrixNWaves(m1.Rows, m1.Columns);
 
-            for (var i = 0; i < m1.Rows; i++)
+            for (int i = 0; i < m1.Rows; i++)
             {
-                for (var j = 0; j < m1.Columns; j++)
+                for (int j = 0; j < m1.Columns; j++)
                 {
                     result[i][j] = m1[i][j] + m2[i][j];
                 }
@@ -136,11 +142,11 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             Guard.AgainstInequality(m1.Rows, m2.Rows, "Number of rows in first matrix", "number of rows in second matrix");
             Guard.AgainstInequality(m1.Columns, m2.Columns, "Number of columns in first matrix", "number of columns in second matrix");
 
-            var result = new MatrixNWaves(m1.Rows, m1.Columns);
+            MatrixNWaves result = new MatrixNWaves(m1.Rows, m1.Columns);
 
-            for (var i = 0; i < m1.Rows; i++)
+            for (int i = 0; i < m1.Rows; i++)
             {
-                for (var j = 0; j < m1.Columns; j++)
+                for (int j = 0; j < m1.Columns; j++)
                 {
                     result[i][j] = m1[i][j] - m2[i][j];
                 }

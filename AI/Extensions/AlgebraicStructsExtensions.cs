@@ -51,12 +51,12 @@ namespace AI.Extensions
         {
             return new Vector(array.ToDoubleArray());
         }
-        
+
         public static Vector ToVector(this short[] array)
         {
             return new Vector(array.ToDoubleArray());
         }
-        
+
         public static Vector ToVector(this byte[] array)
         {
             return new Vector(array.ToDoubleArray());

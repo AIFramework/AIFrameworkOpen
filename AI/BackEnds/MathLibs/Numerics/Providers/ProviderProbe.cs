@@ -34,15 +34,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers
 {
     public class ProviderProbe<T> where T : class
     {
-        readonly bool _disabled;
-        readonly Lazy<IProviderCreator<T>> _creator;
+        private readonly bool _disabled;
+        private readonly Lazy<IProviderCreator<T>> _creator;
 
         public ProviderProbe(string typeName, bool disabled = false)
         {
             _disabled = disabled;
             _creator = new Lazy<IProviderCreator<T>>(() =>
             {
-                var type = Type.GetType(typeName);
+                Type type = Type.GetType(typeName);
                 return type is null ? null : Activator.CreateInstance(type) as IProviderCreator<T>;
             }, LazyThreadSafetyMode.ExecutionAndPublication);
         }
@@ -64,7 +64,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers
                 throw new NotSupportedException("Native Provider Probing is disabled by an application switch");
             }
 
-            var creator = _creator.Value;
+            IProviderCreator<T> creator = _creator.Value;
             if (creator is null)
             {
                 throw new NotSupportedException("Native Provider Probing failed to resolve creator");

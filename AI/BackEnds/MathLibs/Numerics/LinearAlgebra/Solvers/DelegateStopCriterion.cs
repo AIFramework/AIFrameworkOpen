@@ -37,8 +37,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
     public class DelegateStopCriterion<T> : IIterationStopCriterion<T>
         where T : struct, IEquatable<T>, IFormattable
     {
-        readonly Func<int, VectorMathNet<T>, VectorMathNet<T>, VectorMathNet<T>, IterationStatus> _determine;
-        IterationStatus _status = IterationStatus.Continue;
+        private readonly Func<int, VectorMathNet<T>, VectorMathNet<T>, VectorMathNet<T>, IterationStatus> _determine;
+        private IterationStatus _status = IterationStatus.Continue;
 
         /// <summary>
         /// Create a new instance of this criterion with a custom implementation.

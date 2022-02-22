@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -42,15 +42,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class InverseWishart : IDistribution
     {
-        System.Random _random;
-
-        readonly double _freedom;
-        readonly MatrixMathNet<double> _scale;
+        private System.Random _random;
+        private readonly double _freedom;
+        private readonly MatrixMathNet<double> _scale;
 
         /// <summary>
         /// Caches the Cholesky factorization of the scale matrix.
         /// </summary>
-        readonly Cholesky<double> _chol;
+        private readonly Cholesky<double> _chol;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InverseWishart"/> class.
@@ -110,7 +109,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return false;
             }
 
-            for (var i = 0; i < scale.RowCount; i++)
+            for (int i = 0; i < scale.RowCount; i++)
             {
                 if (scale.At(i, i) <= 0.0)
                 {
@@ -144,32 +143,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// Gets the mean.
         /// </summary>
         /// <value>The mean of the distribution.</value>
-        public MatrixMathNet<double> Mean => _scale*(1.0/(_freedom - _scale.RowCount - 1.0));
+        public MatrixMathNet<double> Mean => _scale * (1.0 / (_freedom - _scale.RowCount - 1.0));
 
         /// <summary>
         /// Gets the mode of the distribution.
         /// </summary>
         /// <value>The mode of the distribution.</value>
         /// <remarks>A. O'Hagan, and J. J. Forster (2004). Kendall's Advanced Theory of Statistics: Bayesian Inference. 2B (2 ed.). Arnold. ISBN 0-340-80752-0.</remarks>
-        public MatrixMathNet<double> Mode => _scale*(1.0/(_freedom + _scale.RowCount + 1.0));
+        public MatrixMathNet<double> Mode => _scale * (1.0 / (_freedom + _scale.RowCount + 1.0));
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
         /// <value>The variance  of the distribution.</value>
         /// <remarks>Kanti V. Mardia, J. T. Kent and J. M. Bibby (1979). Multivariate Analysis.</remarks>
-        public MatrixMathNet<double> Variance
-        {
-            get
-            {
-                return MatrixMathNet<double>.Build.Dense(_scale.RowCount, _scale.ColumnCount, (i, j) =>
-                {
-                    var num1 = ((_freedom - _scale.RowCount + 1)*_scale.At(i, j)*_scale.At(i, j)) + ((_freedom - _scale.RowCount - 1)*_scale.At(i, i)*_scale.At(j, j));
-                    var num2 = (_freedom - _scale.RowCount)*(_freedom - _scale.RowCount - 1)*(_freedom - _scale.RowCount - 1)*(_freedom - _scale.RowCount - 3);
-                    return num1/num2;
-                });
-            }
-        }
+        public MatrixMathNet<double> Variance => MatrixMathNet<double>.Build.Dense(_scale.RowCount, _scale.ColumnCount, (i, j) =>
+                                                               {
+                                                                   double num1 = ((_freedom - _scale.RowCount + 1) * _scale.At(i, j) * _scale.At(i, j)) + ((_freedom - _scale.RowCount - 1) * _scale.At(i, i) * _scale.At(j, j));
+                                                                   double num2 = (_freedom - _scale.RowCount) * (_freedom - _scale.RowCount - 1) * (_freedom - _scale.RowCount - 1) * (_freedom - _scale.RowCount - 3);
+                                                                   return num1 / num2;
+                                                               });
 
         /// <summary>
         /// Evaluates the probability density function for the inverse Wishart distribution.
@@ -179,29 +172,29 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the density at <paramref name="x"/>.</returns>
         public double Density(MatrixMathNet<double> x)
         {
-            var p = _scale.RowCount;
+            int p = _scale.RowCount;
 
             if (x.RowCount != p || x.ColumnCount != p)
             {
                 throw new ArgumentOutOfRangeException(nameof(x), "Matrix dimensions must agree.");
             }
 
-            var chol = x.Cholesky();
-            var dX = chol.Determinant;
-            var sXi = chol.Solve(Scale);
+            Cholesky<double> chol = x.Cholesky();
+            double dX = chol.Determinant;
+            MatrixMathNet<double> sXi = chol.Solve(Scale);
 
             // Compute the multivariate Gamma function.
-            var gp = Math.Pow(Constants.Pi, p*(p - 1.0)/4.0);
-            for (var j = 1; j <= p; j++)
+            double gp = Math.Pow(Constants.Pi, p * (p - 1.0) / 4.0);
+            for (int j = 1; j <= p; j++)
             {
-                gp *= SpecialFunctions.Gamma((_freedom + 1.0 - j)/2.0);
+                gp *= SpecialFunctions.Gamma((_freedom + 1.0 - j) / 2.0);
             }
 
-            return Math.Pow(dX, -(_freedom + p + 1.0)/2.0)
-                   *Math.Exp(-0.5*sXi.Trace())
-                   *Math.Pow(_chol.Determinant, _freedom/2.0)
-                   /Math.Pow(2.0, _freedom*p/2.0)
-                   /gp;
+            return Math.Pow(dX, -(_freedom + p + 1.0) / 2.0)
+                   * Math.Exp(-0.5 * sXi.Trace())
+                   * Math.Pow(_chol.Determinant, _freedom / 2.0)
+                   / Math.Pow(2.0, _freedom * p / 2.0)
+                   / gp;
         }
 
         /// <summary>
@@ -229,7 +222,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var r = Wishart.Sample(rnd, degreesOfFreedom, scale.Inverse());
+            MatrixMathNet<double> r = Wishart.Sample(rnd, degreesOfFreedom, scale.Inverse());
             return r.PseudoInverse();
         }
     }

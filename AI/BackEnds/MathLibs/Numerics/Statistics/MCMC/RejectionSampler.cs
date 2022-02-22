@@ -42,17 +42,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// Evaluates the density function of the sampling distribution.
         /// </summary>
-        readonly Density<T> _pdfP;
+        private readonly Density<T> _pdfP;
 
         /// <summary>
         /// Evaluates the density function of the proposal distribution.
         /// </summary>
-        readonly Density<T> _pdfQ;
+        private readonly Density<T> _pdfQ;
 
         /// <summary>
         /// A function which samples from a proposal distribution.
         /// </summary>
-        readonly GlobalProposalSampler<T> _proposal;
+        private readonly GlobalProposalSampler<T> _proposal;
 
         /// <summary>
         /// Constructs a new rejection sampler using the default <see cref="System.Random"/> random number generator.

@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
 {
@@ -65,13 +65,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
         /// Indicates the number of <c>BiCGStab</c> steps should be taken
         /// before switching.
         /// </summary>
-        int _numberOfBiCgStabSteps = 1;
+        private int _numberOfBiCgStabSteps = 1;
 
         /// <summary>
         /// Indicates the number of <c>GPBiCG</c> steps should be taken
         /// before switching.
         /// </summary>
-        int _numberOfGpbiCgSteps = 4;
+        private int _numberOfGpbiCgSteps = 4;
 
         /// <summary>
         /// Gets or sets the number of steps taken with the <c>BiCgStab</c> algorithm
@@ -118,7 +118,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
         /// <param name="residual">Residual values in <see cref="VectorMathNet"/>.</param>
         /// <param name="x">Instance of the <see cref="VectorMathNet"/> x.</param>
         /// <param name="b">Instance of the <see cref="VectorMathNet"/> b.</param>
-        static void CalculateTrueResidual(MatrixMathNet<Numerics.Complex32> matrix, VectorMathNet<Numerics.Complex32> residual, VectorMathNet<Numerics.Complex32> x, VectorMathNet<Numerics.Complex32> b)
+        private static void CalculateTrueResidual(MatrixMathNet<Numerics.Complex32> matrix, VectorMathNet<Numerics.Complex32> residual, VectorMathNet<Numerics.Complex32> x, VectorMathNet<Numerics.Complex32> b)
         {
             // -Ax = residual
             matrix.Multiply(x, residual);
@@ -133,11 +133,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
         /// </summary>
         /// <param name="iterationNumber">Number of iteration</param>
         /// <returns><c>true</c> if yes, otherwise <c>false</c></returns>
-        bool ShouldRunBiCgStabSteps(int iterationNumber)
+        private bool ShouldRunBiCgStabSteps(int iterationNumber)
         {
             // Run the first steps as BiCGStab
             // The number of steps past a whole iteration set
-            var difference = iterationNumber % (_numberOfBiCgStabSteps + _numberOfGpbiCgSteps);
+            int difference = iterationNumber % (_numberOfBiCgStabSteps + _numberOfGpbiCgSteps);
 
             // Do steps with BiCGStab if:
             // - The difference is zero or more (i.e. we have done zero or more complete cycles)
@@ -185,11 +185,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
 
             // x_0 is initial guess
             // Take x_0 = 0
-            var xtemp = new DenseVector(input.Count);
+            DenseVector xtemp = new DenseVector(input.Count);
 
             // r_0 = b - Ax_0
             // This is basically a SAXPY so it could be made a lot faster
-            var residuals = new DenseVector(matrix.RowCount);
+            DenseVector residuals = new DenseVector(matrix.RowCount);
             CalculateTrueResidual(matrix, residuals, xtemp, input);
 
             // Define the temporary scalars
@@ -197,29 +197,29 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
 
             // Define the temporary vectors
             // rDash_0 = r_0
-            var rdash = DenseVector.OfVector(residuals);
+            DenseVector rdash = DenseVector.OfVector(residuals);
 
             // t_-1 = 0
-            var t = new DenseVector(residuals.Count);
-            var t0 = new DenseVector(residuals.Count);
+            DenseVector t = new DenseVector(residuals.Count);
+            DenseVector t0 = new DenseVector(residuals.Count);
 
             // w_-1 = 0
-            var w = new DenseVector(residuals.Count);
+            DenseVector w = new DenseVector(residuals.Count);
 
             // Define the remaining temporary vectors
-            var c = new DenseVector(residuals.Count);
-            var p = new DenseVector(residuals.Count);
-            var s = new DenseVector(residuals.Count);
-            var u = new DenseVector(residuals.Count);
-            var y = new DenseVector(residuals.Count);
-            var z = new DenseVector(residuals.Count);
+            DenseVector c = new DenseVector(residuals.Count);
+            DenseVector p = new DenseVector(residuals.Count);
+            DenseVector s = new DenseVector(residuals.Count);
+            DenseVector u = new DenseVector(residuals.Count);
+            DenseVector y = new DenseVector(residuals.Count);
+            DenseVector z = new DenseVector(residuals.Count);
 
-            var temp = new DenseVector(residuals.Count);
-            var temp2 = new DenseVector(residuals.Count);
-            var temp3 = new DenseVector(residuals.Count);
+            DenseVector temp = new DenseVector(residuals.Count);
+            DenseVector temp2 = new DenseVector(residuals.Count);
+            DenseVector temp3 = new DenseVector(residuals.Count);
 
             // for (k = 0, 1, .... )
-            var iterationNumber = 0;
+            int iterationNumber = 0;
             while (iterator.DetermineStatus(iterationNumber, xtemp, input, residuals) == IterationStatus.Continue)
             {
                 // p_k = r_k + beta_(k-1) * (p_(k-1) - u_(k-1))
@@ -235,7 +235,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                 matrix.Multiply(temp, s);
 
                 // alpha_k = (r*_0 * r_k) / (r*_0 * s_k)
-                var alpha = rdash.ConjugateDotProduct(residuals)/rdash.ConjugateDotProduct(s);
+                Numerics.Complex32 alpha = rdash.ConjugateDotProduct(residuals) / rdash.ConjugateDotProduct(s);
 
                 // y_k = t_(k-1) - r_k - alpha_k * w_(k-1) + alpha_k s_k
                 s.Subtract(w, temp);
@@ -257,7 +257,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
 
                 // c_k = A d_k
                 matrix.Multiply(temp, c);
-                var cdot = c.ConjugateDotProduct(c);
+                Numerics.Complex32 cdot = c.ConjugateDotProduct(c);
 
                 // cDot can only be zero if c is a zero vector
                 // We'll set cDot to 1 if it is zero to prevent NaN's
@@ -272,20 +272,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                 // to do at least one at the start to initialize the
                 // system, but we'll only have to take special measures
                 // if we don't do any so ...
-                var ctdot = c.ConjugateDotProduct(t);
+                Numerics.Complex32 ctdot = c.ConjugateDotProduct(t);
                 Numerics.Complex32 eta;
                 Numerics.Complex32 sigma;
                 if (((_numberOfBiCgStabSteps == 0) && (iterationNumber == 0)) || ShouldRunBiCgStabSteps(iterationNumber))
                 {
                     // sigma_k = (c_k * t_k) / (c_k * c_k)
-                    sigma = ctdot/cdot;
+                    sigma = ctdot / cdot;
 
                     // eta_k = 0
                     eta = 0;
                 }
                 else
                 {
-                    var ydot = y.ConjugateDotProduct(y);
+                    Numerics.Complex32 ydot = y.ConjugateDotProduct(y);
 
                     // yDot can only be zero if y is a zero vector
                     // We'll set yDot to 1 if it is zero to prevent NaN's
@@ -296,16 +296,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                         ydot = 1.0f;
                     }
 
-                    var ytdot = y.ConjugateDotProduct(t);
-                    var cydot = c.ConjugateDotProduct(y);
+                    Numerics.Complex32 ytdot = y.ConjugateDotProduct(t);
+                    Numerics.Complex32 cydot = c.ConjugateDotProduct(y);
 
-                    var denom = (cdot*ydot) - (cydot*cydot);
+                    Numerics.Complex32 denom = (cdot * ydot) - (cydot * cydot);
 
                     // sigma_k = ((y_k * y_k)(c_k * t_k) - (y_k * t_k)(c_k * y_k)) / ((c_k * c_k)(y_k * y_k) - (y_k * c_k)(c_k * y_k))
-                    sigma = ((ydot*ctdot) - (ytdot*cydot))/denom;
+                    sigma = ((ydot * ctdot) - (ytdot * cydot)) / denom;
 
                     // eta_k = ((c_k * c_k)(y_k * t_k) - (y_k * c_k)(c_k * t_k)) / ((c_k * c_k)(y_k * y_k) - (y_k * c_k)(c_k * y_k))
-                    eta = ((cdot*ytdot) - (cydot*ctdot))/denom;
+                    eta = ((cdot * ytdot) - (cydot * ctdot)) / denom;
                 }
 
                 // u_k = sigma_k s_k + eta_k (t_(k-1) - r_k + beta_(k-1) u_(k-1))
@@ -351,7 +351,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
 
                 // beta_k = alpha_k / sigma_k * (r*_0 * r_(k+1)) / (r*_0 * r_k)
                 // But first we check if there is a possible NaN. If so just reset beta to zero.
-                beta = (!sigma.Real.AlmostEqualNumbersBetween(0, 1) || !sigma.Imaginary.AlmostEqualNumbersBetween(0, 1)) ? alpha/sigma*rdash.ConjugateDotProduct(residuals)/rdash.ConjugateDotProduct(t0) : 0;
+                beta = (!sigma.Real.AlmostEqualNumbersBetween(0, 1) || !sigma.Imaginary.AlmostEqualNumbersBetween(0, 1)) ? alpha / sigma * rdash.ConjugateDotProduct(residuals) / rdash.ConjugateDotProduct(t0) : 0;
 
                 // w_k = c_k + beta_k s_k
                 s.Multiply(beta, temp2);

@@ -27,12 +27,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
 {
@@ -64,17 +64,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
         /// <summary>
         /// The default number of starting vectors.
         /// </summary>
-        const int DefaultNumberOfStartingVectors = 50;
+        private const int DefaultNumberOfStartingVectors = 50;
 
         /// <summary>
         /// The collection of starting vectors which are used as the basis for the Krylov sub-space.
         /// </summary>
-        IList<VectorMathNet<Numerics.Complex32>> _startingVectors;
+        private IList<VectorMathNet<Numerics.Complex32>> _startingVectors;
 
         /// <summary>
         /// The number of starting vectors used by the algorithm
         /// </summary>
-        int _numberOfStartingVectors = DefaultNumberOfStartingVectors;
+        private int _numberOfStartingVectors = DefaultNumberOfStartingVectors;
 
         /// <summary>
         /// Gets or sets the number of starting vectors.
@@ -137,7 +137,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
         /// <param name="maximumNumberOfStartingVectors">Maximum number</param>
         /// <param name="numberOfVariables">Number of variables</param>
         /// <returns>Number of starting vectors to create</returns>
-        static int NumberOfStartingVectorsToCreate(int maximumNumberOfStartingVectors, int numberOfVariables)
+        private static int NumberOfStartingVectorsToCreate(int maximumNumberOfStartingVectors, int numberOfVariables)
         {
             // Create no more starting vectors than the size of the problem - 1
             return Math.Min(maximumNumberOfStartingVectors, (numberOfVariables - 1));
@@ -154,23 +154,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
         ///  the <paramref name="numberOfVariables"/> is smaller than
         ///  the <paramref name="maximumNumberOfStartingVectors"/>.
         /// </returns>
-        static IList<VectorMathNet<Numerics.Complex32>> CreateStartingVectors(int maximumNumberOfStartingVectors, int numberOfVariables)
+        private static IList<VectorMathNet<Numerics.Complex32>> CreateStartingVectors(int maximumNumberOfStartingVectors, int numberOfVariables)
         {
             // Create no more starting vectors than the size of the problem - 1
             // Get random values and then orthogonalize them with
             // modified Gramm - Schmidt
-            var count = NumberOfStartingVectorsToCreate(maximumNumberOfStartingVectors, numberOfVariables);
+            int count = NumberOfStartingVectorsToCreate(maximumNumberOfStartingVectors, numberOfVariables);
 
             // Get a random set of samples based on the standard normal distribution with
             // mean = 0 and sd = 1
-            var distribution = new Normal();
+            Normal distribution = new Normal();
 
-            var matrix = new DenseMatrix(numberOfVariables, count);
-            for (var i = 0; i < matrix.ColumnCount; i++)
+            DenseMatrix matrix = new DenseMatrix(numberOfVariables, count);
+            for (int i = 0; i < matrix.ColumnCount; i++)
             {
-                var samples = new Numerics.Complex32[matrix.RowCount];
-                var samplesRe = distribution.Samples().Take(matrix.RowCount).ToArray();
-                var samplesIm = distribution.Samples().Take(matrix.RowCount).ToArray();
+                Numerics.Complex32[] samples = new Numerics.Complex32[matrix.RowCount];
+                double[] samplesRe = distribution.Samples().Take(matrix.RowCount).ToArray();
+                double[] samplesIm = distribution.Samples().Take(matrix.RowCount).ToArray();
                 for (int j = 0; j < matrix.RowCount; j++)
                 {
                     samples[j] = new Numerics.Complex32((float)samplesRe[j], (float)samplesIm[j]);
@@ -181,17 +181,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
             }
 
             // Compute the orthogonalization.
-            var gs = matrix.GramSchmidt();
-            var orthogonalMatrix = gs.Q;
+            LinearAlgebra.Factorization.GramSchmidt<Numerics.Complex32> gs = matrix.GramSchmidt();
+            MatrixMathNet<Numerics.Complex32> orthogonalMatrix = gs.Q;
 
             // Now transfer this to vectors
-            var result = new List<VectorMathNet<Numerics.Complex32>>(orthogonalMatrix.ColumnCount);
-            for (var i = 0; i < orthogonalMatrix.ColumnCount; i++)
+            List<VectorMathNet<Numerics.Complex32>> result = new List<VectorMathNet<Numerics.Complex32>>(orthogonalMatrix.ColumnCount);
+            for (int i = 0; i < orthogonalMatrix.ColumnCount; i++)
             {
                 result.Add(orthogonalMatrix.Column(i));
 
                 // Normalize the result vector
-                result[i].Multiply(1/(float) result[i].L2Norm(), result[i]);
+                result[i].Multiply(1 / (float)result[i].L2Norm(), result[i]);
             }
 
             return result;
@@ -203,10 +203,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
         /// <param name="arraySize">Number of vectors</param>
         /// <param name="vectorSize">Size of each vector</param>
         /// <returns>Array of random vectors</returns>
-        static VectorMathNet<Numerics.Complex32>[] CreateVectorArray(int arraySize, int vectorSize)
+        private static VectorMathNet<Numerics.Complex32>[] CreateVectorArray(int arraySize, int vectorSize)
         {
-            var result = new VectorMathNet<Numerics.Complex32>[arraySize];
-            for (var i = 0; i < result.Length; i++)
+            VectorMathNet<Numerics.Complex32>[] result = new VectorMathNet<Numerics.Complex32>[arraySize];
+            for (int i = 0; i < result.Length; i++)
             {
                 result[i] = new DenseVector(vectorSize);
             }
@@ -221,7 +221,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
         /// <param name="residual">Residual <see cref="VectorMathNet"/> data.</param>
         /// <param name="x">x <see cref="VectorMathNet"/> data.</param>
         /// <param name="b">b <see cref="VectorMathNet"/> data.</param>
-        static void CalculateTrueResidual(MatrixMathNet<Numerics.Complex32> matrix, VectorMathNet<Numerics.Complex32> residual, VectorMathNet<Numerics.Complex32> x, VectorMathNet<Numerics.Complex32> b)
+        private static void CalculateTrueResidual(MatrixMathNet<Numerics.Complex32> matrix, VectorMathNet<Numerics.Complex32> residual, VectorMathNet<Numerics.Complex32> x, VectorMathNet<Numerics.Complex32> b)
         {
             // -Ax = residual
             matrix.Multiply(x, residual);
@@ -271,14 +271,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
 
             // Choose an initial guess x_0
             // Take x_0 = 0
-            var xtemp = new DenseVector(input.Count);
+            DenseVector xtemp = new DenseVector(input.Count);
 
             // Choose k vectors q_1, q_2, ..., q_k
             // Build a new set if:
             // a) the stored set doesn't exist (i.e. == null)
             // b) Is of an incorrect length (i.e. too long)
             // c) The vectors are of an incorrect length (i.e. too long or too short)
-            var useOld = false;
+            bool useOld = false;
             if (_startingVectors != null)
             {
                 // We don't accept collections with zero starting vectors so ...
@@ -296,39 +296,39 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
             _startingVectors = useOld ? _startingVectors : CreateStartingVectors(_numberOfStartingVectors, input.Count);
 
             // Store the number of starting vectors. Not really necessary but easier to type :)
-            var k = _startingVectors.Count;
+            int k = _startingVectors.Count;
 
             // r_0 = b - Ax_0
             // This is basically a SAXPY so it could be made a lot faster
-            var residuals = new DenseVector(matrix.RowCount);
+            DenseVector residuals = new DenseVector(matrix.RowCount);
             CalculateTrueResidual(matrix, residuals, xtemp, input);
 
             // Define the temporary values
-            var c = new Numerics.Complex32[k];
+            Numerics.Complex32[] c = new Numerics.Complex32[k];
 
             // Define the temporary vectors
-            var gtemp = new DenseVector(residuals.Count);
+            DenseVector gtemp = new DenseVector(residuals.Count);
 
-            var u = new DenseVector(residuals.Count);
-            var utemp = new DenseVector(residuals.Count);
-            var temp = new DenseVector(residuals.Count);
-            var temp1 = new DenseVector(residuals.Count);
-            var temp2 = new DenseVector(residuals.Count);
+            DenseVector u = new DenseVector(residuals.Count);
+            DenseVector utemp = new DenseVector(residuals.Count);
+            DenseVector temp = new DenseVector(residuals.Count);
+            DenseVector temp1 = new DenseVector(residuals.Count);
+            DenseVector temp2 = new DenseVector(residuals.Count);
 
-            var zd = new DenseVector(residuals.Count);
-            var zg = new DenseVector(residuals.Count);
-            var zw = new DenseVector(residuals.Count);
+            DenseVector zd = new DenseVector(residuals.Count);
+            DenseVector zg = new DenseVector(residuals.Count);
+            DenseVector zw = new DenseVector(residuals.Count);
 
-            var d = CreateVectorArray(_startingVectors.Count, residuals.Count);
+            VectorMathNet<Numerics.Complex32>[] d = CreateVectorArray(_startingVectors.Count, residuals.Count);
 
             // g_0 = r_0
-            var g = CreateVectorArray(_startingVectors.Count, residuals.Count);
+            VectorMathNet<Numerics.Complex32>[] g = CreateVectorArray(_startingVectors.Count, residuals.Count);
             residuals.CopyTo(g[k - 1]);
 
-            var w = CreateVectorArray(_startingVectors.Count, residuals.Count);
+            VectorMathNet<Numerics.Complex32>[] w = CreateVectorArray(_startingVectors.Count, residuals.Count);
 
             // FOR (j = 0, 1, 2 ....)
-            var iterationNumber = 0;
+            int iterationNumber = 0;
             while (iterator.DetermineStatus(iterationNumber, xtemp, input, residuals) == IterationStatus.Continue)
             {
                 // SOLVE M g~_((j-1)k+k) = g_((j-1)k+k)
@@ -345,7 +345,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                 }
 
                 // alpha_(jk+1) = q^T_1 r_((j-1)k+k) / c_((j-1)k+k)
-                var alpha = _startingVectors[0].ConjugateDotProduct(residuals)/c[k - 1];
+                Numerics.Complex32 alpha = _startingVectors[0].ConjugateDotProduct(residuals) / c[k - 1];
 
                 // u_(jk+1) = r_((j-1)k+k) - alpha_(jk+1) w_((j-1)k+k)
                 w[k - 1].Multiply(-alpha, temp);
@@ -357,7 +357,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
 
                 // rho_(j+1) = -u^t_(jk+1) A u~_(jk+1) / ||A u~_(jk+1)||^2
                 matrix.Multiply(temp1, temp);
-                var rho = temp.ConjugateDotProduct(temp);
+                Numerics.Complex32 rho = temp.ConjugateDotProduct(temp);
 
                 // If rho is zero then temp is a zero vector and we're probably
                 // about to have zero residuals (i.e. an exact solution).
@@ -367,7 +367,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                     rho = 1.0f;
                 }
 
-                rho = -u.ConjugateDotProduct(temp)/rho;
+                rho = -u.ConjugateDotProduct(temp) / rho;
 
                 // r_(jk+1) = rho_(j+1) A u~_(jk+1) + u_(jk+1)
                 u.CopyTo(residuals);
@@ -402,7 +402,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                 }
 
                 // FOR (i = 1,2, ...., k)
-                for (var i = 0; i < k; i++)
+                for (int i = 0; i < k; i++)
                 {
                     // z_d = u_(jk+1)
                     u.CopyTo(zd);
@@ -417,10 +417,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                     Numerics.Complex32 beta;
                     if (iterationNumber >= 1)
                     {
-                        for (var s = i; s < k - 1; s++)
+                        for (int s = i; s < k - 1; s++)
                         {
                             // beta^(jk+i)_((j-1)k+s) = -q^t_(s+1) z_d / c_((j-1)k+s)
-                            beta = -_startingVectors[s + 1].ConjugateDotProduct(zd)/c[s];
+                            beta = -_startingVectors[s + 1].ConjugateDotProduct(zd) / c[s];
 
                             // z_d = z_d + beta^(jk+i)_((j-1)k+s) d_((j-1)k+s)
                             d[s].Multiply(beta, temp);
@@ -439,7 +439,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                         }
                     }
 
-                    beta = rho*c[k - 1];
+                    beta = rho * c[k - 1];
                     if (beta.Real.AlmostEqualNumbersBetween(0, 1) && beta.Imaginary.AlmostEqualNumbersBetween(0, 1))
                     {
                         throw new NumericalBreakdownException();
@@ -448,7 +448,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                     // beta^(jk+i)_((j-1)k+k) = -(q^T_1 (r_(jk+1) + rho_(j+1) z_w)) / (rho_(j+1) c_((j-1)k+k))
                     zw.Multiply(rho, temp2);
                     residuals.Add(temp2, temp);
-                    beta = -_startingVectors[0].ConjugateDotProduct(temp)/beta;
+                    beta = -_startingVectors[0].ConjugateDotProduct(temp) / beta;
 
                     // z_g = z_g + beta^(jk+i)_((j-1)k+k) g_((j-1)k+k)
                     g[k - 1].Multiply(beta, temp);
@@ -465,10 +465,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                     residuals.Add(zw, zd);
 
                     // FOR (s = 1, ... i - 1)
-                    for (var s = 0; s < i - 1; s++)
+                    for (int s = 0; s < i - 1; s++)
                     {
                         // beta^(jk+i)_(jk+s) = -q^T_s+1 z_d / c_(jk+s)
-                        beta = -_startingVectors[s + 1].ConjugateDotProduct(zd)/c[s];
+                        beta = -_startingVectors[s + 1].ConjugateDotProduct(zd) / c[s];
 
                         // z_d = z_d + beta^(jk+i)_(jk+s) * d_(jk+s)
                         d[s].Multiply(beta, temp);
@@ -498,7 +498,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                         }
 
                         // alpha_(jk+i+1) = q^T_(i+1) u_(jk+i) / c_(jk+i)
-                        alpha = _startingVectors[i + 1].ConjugateDotProduct(u)/c[i];
+                        alpha = _startingVectors[i + 1].ConjugateDotProduct(u) / c[i];
 
                         // u_(jk+i+1) = u_(jk+i) - alpha_(jk+i+1) d_(jk+i)
                         d[i].Multiply(-alpha, temp);
@@ -509,7 +509,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                         preconditioner.Approximate(g[i], gtemp);
 
                         // x_(jk+i+1) = x_(jk+i) + rho_(j+1) alpha_(jk+i+1) g~_(jk+i)
-                        gtemp.Multiply(rho*alpha, temp);
+                        gtemp.Multiply(rho * alpha, temp);
                         xtemp.Add(temp, temp2);
                         temp2.CopyTo(xtemp);
 
@@ -517,7 +517,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                         matrix.Multiply(gtemp, w[i]);
 
                         // r_(jk+i+1) = r_(jk+i) - rho_(j+1) alpha_(jk+i+1) w_(jk+i)
-                        w[i].Multiply(-rho*alpha, temp);
+                        w[i].Multiply(-rho * alpha, temp);
                         residuals.Add(temp, temp2);
                         temp2.CopyTo(residuals);
 

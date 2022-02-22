@@ -29,8 +29,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Runtime;
+using System.Runtime.Serialization;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
@@ -46,57 +46,57 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <summary>
         /// The default value for X1.
         /// </summary>
-        const uint YSeed = 362436069;
+        private const uint YSeed = 362436069;
 
         /// <summary>
         /// The default value for X2.
         /// </summary>
-        const uint ZSeed = 77465321;
+        private const uint ZSeed = 77465321;
 
         /// <summary>
         /// The default value for the multiplier.
         /// </summary>
-        const uint ASeed = 916905990;
+        private const uint ASeed = 916905990;
 
         /// <summary>
         /// The default value for the carry over.
         /// </summary>
-        const uint CSeed = 13579;
+        private const uint CSeed = 13579;
 
         /// <summary>
         /// The multiplier to compute a double-precision floating point number [0, 1)
         /// </summary>
-        const double UlongToDoubleMultiplier = 1.0/4294967296.0; // 1.0/(uint.MaxValue + 1.0)
+        private const double UlongToDoubleMultiplier = 1.0 / 4294967296.0; // 1.0/(uint.MaxValue + 1.0)
 
         /// <summary>
         /// Seed or last but three unsigned random number.
         /// </summary>
         [DataMember(Order = 1)]
-        ulong _x;
+        private ulong _x;
 
         /// <summary>
         /// Last but two unsigned random number.
         /// </summary>
         [DataMember(Order = 2)]
-        ulong _y;
+        private ulong _y;
 
         /// <summary>
         /// Last but one unsigned random number.
         /// </summary>
         [DataMember(Order = 3)]
-        ulong _z;
+        private ulong _z;
 
         /// <summary>
         /// The value of the carry over.
         /// </summary>
         [DataMember(Order = 4)]
-        ulong _c;
+        private ulong _c;
 
         /// <summary>
         /// The multiplier.
         /// </summary>
         [DataMember(Order = 5)]
-        readonly ulong _a;
+        private readonly ulong _a;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Xorshift"/> class using
@@ -259,12 +259,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected sealed override double DoSample()
         {
-            var t = (_a*_x) + _c;
+            ulong t = (_a * _x) + _c;
             _x = _y;
             _y = _z;
             _c = t >> 32;
             _z = t & 0xffffffff;
-            return _z*UlongToDoubleMultiplier;
+            return _z * UlongToDoubleMultiplier;
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected sealed override int DoSampleInteger()
         {
-            var t = (_a * _x) + _c;
+            ulong t = (_a * _x) + _c;
             _x = _y;
             _y = _z;
             _c = t >> 32;
@@ -292,9 +292,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected sealed override void DoSampleBytes(byte[] buffer)
         {
-            for (var i = 0; i < buffer.Length; i++)
+            for (int i = 0; i < buffer.Length; i++)
             {
-                var t = (_a * _x) + _c;
+                ulong t = (_a * _x) + _c;
                 _x = _y;
                 _y = _z;
                 _c = t >> 32;
@@ -324,12 +324,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 
             for (int i = 0; i < values.Length; i++)
             {
-                var t = (a*x) + c;
+                ulong t = (a * x) + c;
                 x = x1;
                 x1 = x2;
                 c = t >> 32;
                 x2 = t & 0xffffffff;
-                values[i] = x2*UlongToDoubleMultiplier;
+                values[i] = x2 * UlongToDoubleMultiplier;
             }
         }
 
@@ -341,7 +341,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] Doubles(int length, int seed, ulong a = ASeed, ulong c = CSeed, ulong x1 = YSeed, ulong x2 = ZSeed)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             Doubles(data, seed, a, c, x1, x2);
             return data;
         }
@@ -367,12 +367,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 
             while (true)
             {
-                var t = (a*x) + c;
+                ulong t = (a * x) + c;
                 x = x1;
                 x1 = x2;
                 c = t >> 32;
                 x2 = t & 0xffffffff;
-                yield return x2*UlongToDoubleMultiplier;
+                yield return x2 * UlongToDoubleMultiplier;
             }
         }
     }

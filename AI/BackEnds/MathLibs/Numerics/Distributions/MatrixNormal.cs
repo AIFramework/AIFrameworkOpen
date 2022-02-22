@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -42,22 +42,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class MatrixNormal : IDistribution
     {
-        System.Random _random;
+        private System.Random _random;
 
         /// <summary>
         /// The mean of the matrix normal distribution.
         /// </summary>
-        readonly MatrixMathNet<double> _m;
+        private readonly MatrixMathNet<double> _m;
 
         /// <summary>
         /// The covariance matrix for the rows.
         /// </summary>
-        readonly MatrixMathNet<double> _v;
+        private readonly MatrixMathNet<double> _v;
 
         /// <summary>
         /// The covariance matrix for the columns.
         /// </summary>
-        readonly MatrixMathNet<double> _k;
+        private readonly MatrixMathNet<double> _k;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MatrixNormal"/> class.
@@ -101,10 +101,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="string"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -119,8 +119,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="k">The covariance matrix for the columns.</param>
         public static bool IsValidParameterSet(MatrixMathNet<double> m, MatrixMathNet<double> v, MatrixMathNet<double> k)
         {
-            var n = m.RowCount;
-            var p = m.ColumnCount;
+            int n = m.RowCount;
+            int p = m.ColumnCount;
             if (v.ColumnCount != n || v.RowCount != n)
             {
                 return false;
@@ -131,7 +131,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return false;
             }
 
-            for (var i = 0; i < v.RowCount; i++)
+            for (int i = 0; i < v.RowCount; i++)
             {
                 if (v.At(i, i) <= 0)
                 {
@@ -139,7 +139,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 }
             }
 
-            for (var i = 0; i < k.RowCount; i++)
+            for (int i = 0; i < k.RowCount; i++)
             {
                 if (k.At(i, i) <= 0)
                 {
@@ -190,14 +190,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentOutOfRangeException>(x, _m, "x");
             }
 
-            var a = x - _m;
-            var cholV = _v.Cholesky();
-            var cholK = _k.Cholesky();
+            MatrixMathNet<double> a = x - _m;
+            LinearAlgebra.Factorization.Cholesky<double> cholV = _v.Cholesky();
+            LinearAlgebra.Factorization.Cholesky<double> cholK = _k.Cholesky();
 
-            return Math.Exp(-0.5*cholK.Solve(a.Transpose()*cholV.Solve(a)).Trace())
-                   /Math.Pow(Constants.Pi2, x.RowCount*x.ColumnCount/2.0)
-                   /Math.Pow(cholK.Determinant, x.RowCount/2.0)
-                   /Math.Pow(cholV.Determinant, x.ColumnCount/2.0);
+            return Math.Exp(-0.5 * cholK.Solve(a.Transpose() * cholV.Solve(a)).Trace())
+                   / Math.Pow(Constants.Pi2, x.RowCount * x.ColumnCount / 2.0)
+                   / Math.Pow(cholK.Determinant, x.RowCount / 2.0)
+                   / Math.Pow(cholV.Determinant, x.ColumnCount / 2.0);
         }
 
         /// <summary>
@@ -225,22 +225,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var n = m.RowCount;
-            var p = m.ColumnCount;
+            int n = m.RowCount;
+            int p = m.ColumnCount;
 
             // Compute the Kronecker product of V and K, this is the covariance matrix for the stacked matrix.
-            var vki = v.KroneckerProduct(k.Inverse());
+            MatrixMathNet<double> vki = v.KroneckerProduct(k.Inverse());
 
             // Sample a vector valued random variable with VKi as the covariance.
-            var vector = SampleVectorNormal(rnd, new DenseVector(n*p), vki);
+            VectorMathNet<double> vector = SampleVectorNormal(rnd, new DenseVector(n * p), vki);
 
             // Unstack the vector v and add the mean.
-            var r = m.Clone();
-            for (var i = 0; i < n; i++)
+            MatrixMathNet<double> r = m.Clone();
+            for (int i = 0; i < n; i++)
             {
-                for (var j = 0; j < p; j++)
+                for (int j = 0; j < p; j++)
                 {
-                    r.At(i, j, r.At(i, j) + vector[(j*n) + i]);
+                    r.At(i, j, r.At(i, j) + vector[(j * n) + i]);
                 }
             }
 
@@ -254,15 +254,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="mean">The mean of the vector normal distribution.</param>
         /// <param name="covariance">The covariance matrix of the vector normal distribution.</param>
         /// <returns>a sequence of samples from defined distribution.</returns>
-        static VectorMathNet<double> SampleVectorNormal(System.Random rnd, VectorMathNet<double> mean, MatrixMathNet<double> covariance)
+        private static VectorMathNet<double> SampleVectorNormal(System.Random rnd, VectorMathNet<double> mean, MatrixMathNet<double> covariance)
         {
-            var chol = covariance.Cholesky();
+            LinearAlgebra.Factorization.Cholesky<double> chol = covariance.Cholesky();
 
             // Sample a standard normal variable.
-            var v = VectorMathNet<double>.Build.Random(mean.Count, new Normal(rnd));
+            VectorMathNet<double> v = VectorMathNet<double>.Build.Random(mean.Count, new Normal(rnd));
 
             // Return the transformed variable.
-            return mean + (chol.Factor*v);
+            return mean + (chol.Factor * v);
         }
     }
 }

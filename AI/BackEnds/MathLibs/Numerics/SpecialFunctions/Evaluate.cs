@@ -106,11 +106,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             {
                 b2 = b1;
                 b1 = b0;
-                b0 = x*b1 - b2 + coefficients[p++];
+                b0 = x * b1 - b2 + coefficients[p++];
             }
             while (--i > 0);
 
-            return 0.5*(b0 - b2);
+            return 0.5 * (b0 - b2);
         }
 
         /// <summary>
@@ -142,10 +142,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 {
                     u2 = u1;
                     u1 = u0;
-                    u0 = xx*u1 + coefficients[i] - u2;
+                    u0 = xx * u1 + coefficients[i] - u2;
                 }
 
-                return (u0 - u2)/2.0;
+                return (u0 - u2) / 2.0;
             }
 
             // If ABS ( T )  > =  0.6 use the Reinsch modification
@@ -162,11 +162,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 {
                     d2 = d1;
                     double u2 = u1;
-                    d1 = xx*u2 + coefficients[i] + d2;
+                    d1 = xx * u2 + coefficients[i] + d2;
                     u1 = d1 + u2;
                 }
 
-                return (d1 + d2)/2.0;
+                return (d1 + d2) / 2.0;
             }
             else
             {
@@ -181,11 +181,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 {
                     d2 = d1;
                     double u2 = u1;
-                    d1 = xx*u2 + coefficients[i] - d2;
+                    d1 = xx * u2 + coefficients[i] - d2;
                     u1 = d1 - u2;
                 }
 
-                return (d1 - d2)/2.0;
+                return (d1 - d2) / 2.0;
             }
         }
     }

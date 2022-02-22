@@ -86,14 +86,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 
             _b = new double[_numeratorSize * 2];
 
-            for (var i = 0; i < _numeratorSize; i++)
+            for (int i = 0; i < _numeratorSize; i++)
             {
                 _b[i] = _b[_numeratorSize + i] = b.ElementAt(i);
             }
 
             _a = new double[_denominatorSize * 2];
 
-            for (var i = 0; i < _denominatorSize; i++)
+            for (int i = 0; i < _denominatorSize; i++)
             {
                 _a[i] = _a[_denominatorSize + i] = a.ElementAt(i);
             }
@@ -130,9 +130,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
                 case FilteringMethod.OverlapAdd:       // are you sure you wanna do this? It's IIR filter!
                 case FilteringMethod.OverlapSave:
                     {
-                        var length = Math.Max(DefaultImpulseResponseLength, _denominatorSize + _numeratorSize);
-                        var fftSize = MathUtils.NextPowerOfTwo(4 * length);
-                        var ir = Tf.ImpulseResponse(length);
+                        int length = Math.Max(DefaultImpulseResponseLength, _denominatorSize + _numeratorSize);
+                        int fftSize = MathUtils.NextPowerOfTwo(4 * length);
+                        double[] ir = Tf.ImpulseResponse(length);
                         return new OlsBlockConvolver64(ir, fftSize).ApplyTo(signal);
                     }
                 default:
@@ -149,7 +149,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// <returns></returns>
         public virtual double Process(double sample)
         {
-            var output = 0.0;
+            double output = 0.0;
 
             _delayLineB[_delayLineOffsetB] = sample;
             _delayLineA[_delayLineOffsetA] = 0;
@@ -187,7 +187,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         {
             if (b.Length == _numeratorSize)
             {
-                for (var i = 0; i < _numeratorSize; i++)
+                for (int i = 0; i < _numeratorSize; i++)
                 {
                     _b[i] = _b[_numeratorSize + i] = b[i];
                 }
@@ -202,7 +202,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         {
             if (a.Length == _denominatorSize)
             {
-                for (var i = 0; i < _denominatorSize; i++)
+                for (int i = 0; i < _denominatorSize; i++)
                 {
                     _a[i] = _a[_denominatorSize + i] = a[i];
                 }
@@ -217,8 +217,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
             _delayLineOffsetB = _numeratorSize - 1;
             _delayLineOffsetA = _denominatorSize - 1;
 
-            for (var i = 0; i < _delayLineB.Length; _delayLineB[i++] = 0) { }
-            for (var i = 0; i < _delayLineA.Length; _delayLineA[i++] = 0) { }
+            for (int i = 0; i < _delayLineB.Length; _delayLineB[i++] = 0) { }
+            for (int i = 0; i < _delayLineA.Length; _delayLineA[i++] = 0) { }
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// </summary>
         public void Normalize()
         {
-            var a0 = _a[0];
+            double a0 = _a[0];
 
             if (Math.Abs(a0 - 1) < 1e-10)
             {
@@ -238,8 +238,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
                 throw new ArgumentException("The coefficient a[0] can not be zero!");
             }
 
-            for (var i = 0; i < _a.Length; _a[i++] /= a0) { }
-            for (var i = 0; i < _b.Length; _b[i++] /= a0) { }
+            for (int i = 0; i < _a.Length; _a[i++] /= a0) { }
+            for (int i = 0; i < _b.Length; _b[i++] /= a0) { }
 
             _tf?.Normalize();
         }

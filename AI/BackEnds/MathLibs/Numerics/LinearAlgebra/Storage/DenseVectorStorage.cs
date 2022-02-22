@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 {
@@ -104,7 +104,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DenseVectorStorage<T> OfVector(VectorStorage<T> vector)
         {
-            var storage = new DenseVectorStorage<T>(vector.Length);
+            DenseVectorStorage<T> storage = new DenseVectorStorage<T>(vector.Length);
             vector.CopyToUnchecked(storage, ExistingData.AssumeZeros);
             return storage;
         }
@@ -116,7 +116,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentOutOfRangeException(nameof(length), "Value must not be negative (zero is ok).");
             }
 
-            var data = new T[length];
+            T[] data = new T[length];
             CommonParallel.For(0, data.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
@@ -134,7 +134,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentOutOfRangeException(nameof(length), "Value must not be negative (zero is ok).");
             }
 
-            var data = new T[length];
+            T[] data = new T[length];
             CommonParallel.For(0, data.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
@@ -154,12 +154,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (data is T[] arrayData)
             {
-                var copy = new T[arrayData.Length];
+                T[] copy = new T[arrayData.Length];
                 Array.Copy(arrayData, 0, copy, 0, arrayData.Length);
                 return new DenseVectorStorage<T>(copy.Length, copy);
             }
 
-            var array = data.ToArray();
+            T[] array = data.ToArray();
             return new DenseVectorStorage<T>(array.Length, array);
         }
 
@@ -170,8 +170,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentNullException(nameof(data));
             }
 
-            var array = new T[length];
-            foreach (var (index, value) in data)
+            T[] array = new T[length];
+            foreach ((int index, T value) in data)
             {
                 array[index] = value;
             }
@@ -185,8 +185,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentNullException(nameof(data));
             }
 
-            var array = new T[length];
-            foreach (var (index, value) in data)
+            T[] array = new T[length];
+            foreach ((int index, T value) in data)
             {
                 array[index] = value;
             }
@@ -209,12 +209,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (target is SparseVectorStorage<T> sparseTarget)
             {
-                var indices = new List<int>();
-                var values = new List<T>();
+                List<int> indices = new List<int>();
+                List<T> values = new List<T>();
 
                 for (int i = 0; i < Data.Length; i++)
                 {
-                    var item = Data[i];
+                    T item = Data[i];
                     if (!Zero.Equals(item))
                     {
                         values.Add(item);
@@ -244,7 +244,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 for (int j = 0; j < Data.Length; j++)
                 {
-                    denseTarget.Data[j*target.RowCount + rowIndex] = Data[j];
+                    denseTarget.Data[j * target.RowCount + rowIndex] = Data[j];
                 }
                 return;
             }
@@ -263,7 +263,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             if (target is DenseColumnMajorMatrixStorage<T> denseTarget)
             {
-                Array.Copy(Data, 0, denseTarget.Data, columnIndex*denseTarget.RowCount, Data.Length);
+                Array.Copy(Data, 0, denseTarget.Data, columnIndex * denseTarget.RowCount, Data.Length);
                 return;
             }
 
@@ -300,7 +300,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 for (int j = 0; j < Data.Length; j++)
                 {
-                    denseTarget.Data[(j + targetColumnIndex)*target.RowCount + rowIndex] = Data[j + sourceColumnIndex];
+                    denseTarget.Data[(j + targetColumnIndex) * target.RowCount + rowIndex] = Data[j + sourceColumnIndex];
                 }
                 return;
             }
@@ -320,7 +320,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             if (target is DenseColumnMajorMatrixStorage<T> denseTarget)
             {
-                Array.Copy(Data, sourceRowIndex, denseTarget.Data, columnIndex*denseTarget.RowCount + targetRowIndex, rowCount);
+                Array.Copy(Data, sourceRowIndex, denseTarget.Data, columnIndex * denseTarget.RowCount + targetRowIndex, rowCount);
                 return;
             }
 
@@ -336,7 +336,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public override T[] ToArray()
         {
-            var ret = new T[Data.Length];
+            T[] ret = new T[Data.Length];
             Array.Copy(Data, 0, ret, 0, Data.Length);
             return ret;
         }
@@ -365,7 +365,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public override IEnumerable<(int, T)> EnumerateNonZeroIndexed()
         {
-            for (var i = 0; i < Data.Length; i++)
+            for (int i = 0; i < Data.Length; i++)
             {
                 if (!Zero.Equals(Data[i]))
                 {
@@ -511,13 +511,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 // Recursive to dense target at first, since the operation is
                 // effectively dense anyway because at least one operand is dense
-                var intermediate = new DenseVectorStorage<T>(target.Length);
+                DenseVectorStorage<T> intermediate = new DenseVectorStorage<T>(target.Length);
                 Map2ToUnchecked(intermediate, other, f, zeros, ExistingData.AssumeZeros);
                 intermediate.CopyTo(target, existingData);
                 return;
             }
 
-            var denseTarget = target as DenseVectorStorage<T>;
+            DenseVectorStorage<T> denseTarget = target as DenseVectorStorage<T>;
             if (denseTarget != null && other is DenseVectorStorage<T> denseOther)
             {
                 CommonParallel.For(0, Data.Length, 4096, (a, b) =>
@@ -564,7 +564,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             if (other is DenseVectorStorage<TOther> denseOther)
             {
-                var otherData = denseOther.Data;
+                TOther[] otherData = denseOther.Data;
                 for (int i = 0; i < Data.Length; i++)
                 {
                     state = f(state, Data[i], otherData[i]);

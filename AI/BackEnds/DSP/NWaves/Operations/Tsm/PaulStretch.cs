@@ -5,7 +5,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     /// <summary>
     /// TSM processor based on Paul stretch algorithm
     /// </summary>
-    class PaulStretch : PhaseVocoder
+    internal class PaulStretch : PhaseVocoder
     {
         /// <summary>
         /// Randomizer for phases
@@ -28,10 +28,10 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         /// </summary>
         public override void ProcessSpectrum()
         {
-            for (var j = 1; j <= _fftSize / 2; j++)
+            for (int j = 1; j <= _fftSize / 2; j++)
             {
-                var mag = Math.Sqrt(_re[j] * _re[j] + _im[j] * _im[j]);
-                var phase = 2 * Math.PI * _rand.NextDouble();
+                double mag = Math.Sqrt(_re[j] * _re[j] + _im[j] * _im[j]);
+                double phase = 2 * Math.PI * _rand.NextDouble();
 
                 _re[j] = (float)(mag * Math.Cos(phase));
                 _im[j] = (float)(mag * Math.Sin(phase));

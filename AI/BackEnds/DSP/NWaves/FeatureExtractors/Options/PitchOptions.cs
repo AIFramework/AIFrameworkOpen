@@ -15,8 +15,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
         {
             get
             {
-                var errors = base.Errors;
-                if (LowFrequency >= HighFrequency) errors.Add("Upper frequency must be greater than lower frequency");
+                List<string> errors = base.Errors;
+                if (LowFrequency >= HighFrequency)
+                {
+                    errors.Add("Upper frequency must be greater than lower frequency");
+                }
+
                 return errors;
             }
         }

@@ -49,7 +49,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// <exception cref="NonConvergenceException"></exception>
         public static double FindRoot(Func<double, double> f, Func<double, double> df, double lowerBound, double upperBound, double accuracy = 1e-8, int maxIterations = 100)
         {
-            if (TryFindRoot(f, df, 0.5 * (lowerBound + upperBound), lowerBound, upperBound, accuracy, maxIterations, out var root))
+            if (TryFindRoot(f, df, 0.5 * (lowerBound + upperBound), lowerBound, upperBound, accuracy, maxIterations, out double root))
             {
                 return root;
             }
@@ -69,7 +69,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// <exception cref="NonConvergenceException"></exception>
         public static double FindRootNearGuess(Func<double, double> f, Func<double, double> df, double initialGuess, double lowerBound = double.MinValue, double upperBound = double.MaxValue, double accuracy = 1e-8, int maxIterations = 100)
         {
-            if (TryFindRoot(f, df, initialGuess, lowerBound, upperBound, accuracy, maxIterations, out var root))
+            if (TryFindRoot(f, df, initialGuess, lowerBound, upperBound, accuracy, maxIterations, out double root))
             {
                 return root;
             }
@@ -107,7 +107,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
                 double dfx = df(root);
 
                 // Netwon-Raphson step
-                double step = fx/dfx;
+                double step = fx / dfx;
                 root -= step;
 
                 if (Math.Abs(step) < accuracy && Math.Abs(fx) < accuracy)

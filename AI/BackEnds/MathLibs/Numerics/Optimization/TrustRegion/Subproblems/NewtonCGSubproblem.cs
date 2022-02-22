@@ -1,5 +1,5 @@
-﻿using System;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+﻿using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion.Subproblems
 {
@@ -11,44 +11,44 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion.Subprob
 
         public void Solve(IObjectiveModel objective, double delta)
         {
-            var Gradient = objective.Gradient;
-            var Hessian = objective.Hessian;
+            VectorMathNet<double> Gradient = objective.Gradient;
+            MatrixMathNet<double> Hessian = objective.Hessian;
 
             // define tolerance
-            var gnorm = Gradient.L2Norm();
-            var tolerance = Math.Min(0.5, Math.Sqrt(gnorm)) * gnorm;
+            double gnorm = Gradient.L2Norm();
+            double tolerance = Math.Min(0.5, Math.Sqrt(gnorm)) * gnorm;
 
             // initialize internal variables
-            var z = VectorMathNet<double>.Build.Dense(Hessian.RowCount);
-            var r = Gradient;
-            var d = -r;
+            VectorMathNet<double> z = VectorMathNet<double>.Build.Dense(Hessian.RowCount);
+            VectorMathNet<double> r = Gradient;
+            VectorMathNet<double> d = -r;
 
             while (true)
             {
-                var Bd = Hessian * d;
-                var dBd = d.DotProduct(Bd);
+                VectorMathNet<double> Bd = Hessian * d;
+                double dBd = d.DotProduct(Bd);
 
                 if (dBd <= 0)
                 {
-                    var t = Util.FindBeta(1, z, d, delta);
+                    (double, double) t = Util.FindBeta(1, z, d, delta);
                     Pstep = z + t.Item1 * d;
                     HitBoundary = true;
                     return;
                 }
 
-                var r_sq = r.DotProduct(r);
-                var alpha = r_sq / dBd;
-                var znext = z + alpha * d;
-                if(znext.L2Norm() >= delta)
+                double r_sq = r.DotProduct(r);
+                double alpha = r_sq / dBd;
+                VectorMathNet<double> znext = z + alpha * d;
+                if (znext.L2Norm() >= delta)
                 {
-                    var t = Util.FindBeta(1, z, d, delta);
+                    (double, double) t = Util.FindBeta(1, z, d, delta);
                     Pstep = z + t.Item2 * d;
                     HitBoundary = true;
                     return;
                 }
 
-                var rnext = r + alpha * Bd;
-                var rnext_sq = rnext.DotProduct(rnext);
+                VectorMathNet<double> rnext = r + alpha * Bd;
+                double rnext_sq = rnext.DotProduct(rnext);
                 if (Math.Sqrt(rnext_sq) < tolerance)
                 {
                     Pstep = znext;

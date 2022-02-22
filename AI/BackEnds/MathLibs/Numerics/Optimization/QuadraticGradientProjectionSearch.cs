@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -44,38 +44,51 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 breakpoint.Add(0.0);
                 isFixed.Add(false);
                 if (gradient[ii] < 0)
+                {
                     breakpoint[ii] = (x0[ii] - upperBound[ii]) / gradient[ii];
+                }
                 else if (gradient[ii] > 0)
+                {
                     breakpoint[ii] = (x0[ii] - lowerBound[ii]) / gradient[ii];
+                }
                 else
                 {
-                    if (Math.Abs(x0[ii] - upperBound[ii]) < 100 * Double.Epsilon || Math.Abs(x0[ii] - lowerBound[ii]) < 100 * Double.Epsilon)
+                    if (Math.Abs(x0[ii] - upperBound[ii]) < 100 * double.Epsilon || Math.Abs(x0[ii] - lowerBound[ii]) < 100 * double.Epsilon)
+                    {
                         breakpoint[ii] = 0.0;
+                    }
                     else
-                        breakpoint[ii] = Double.PositiveInfinity;
+                    {
+                        breakpoint[ii] = double.PositiveInfinity;
+                    }
                 }
             }
 
-            var orderedBreakpoint = new List<double>(x0.Count);
+            List<double> orderedBreakpoint = new List<double>(x0.Count);
             orderedBreakpoint.AddRange(breakpoint);
             orderedBreakpoint.Sort();
 
             // Compute initial state variables
-            var d = -gradient;
+            VectorMathNet<double> d = -gradient;
             for (int ii = 0; ii < d.Count; ++ii)
+            {
                 if (breakpoint[ii] <= 0.0)
+                {
                     d[ii] *= 0.0;
-
+                }
+            }
 
             int jj = -1;
-            var x = x0;
-            var f1 = gradient * d;
-            var f2 = 0.5 * d * hessian * d;
-            var sMin = -f1 / f2;
-            var maxS = orderedBreakpoint[0];
+            VectorMathNet<double> x = x0;
+            double f1 = gradient * d;
+            double f2 = 0.5 * d * hessian * d;
+            double sMin = -f1 / f2;
+            double maxS = orderedBreakpoint[0];
 
             if (sMin < maxS)
-                return new GradientProjectionResult(x + sMin * d, 0,isFixed);
+            {
+                return new GradientProjectionResult(x + sMin * d, 0, isFixed);
+            }
 
             // while minimum of the last quadratic piece observed is beyond the interval searched
             while (true)
@@ -83,19 +96,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 // update data to the beginning of the interval we're searching
                 jj += 1;
                 x = x + d * maxS;
-                maxS = orderedBreakpoint[jj+1] - orderedBreakpoint[jj];
+                maxS = orderedBreakpoint[jj + 1] - orderedBreakpoint[jj];
 
                 int fixedCount = 0;
                 for (int ii = 0; ii < d.Count; ++ii)
+                {
                     if (orderedBreakpoint[jj] >= breakpoint[ii])
                     {
                         d[ii] *= 0.0;
                         isFixed[ii] = true;
                         fixedCount += 1;
                     }
+                }
 
-                if (Double.IsPositiveInfinity(orderedBreakpoint[jj + 1]))
+                if (double.IsPositiveInfinity(orderedBreakpoint[jj + 1]))
+                {
                     return new GradientProjectionResult(x, fixedCount, isFixed);
+                }
 
                 f1 = gradient * d + (x - x0) * hessian * d;
                 f2 = d * hessian * d;
@@ -103,7 +120,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 sMin = -f1 / f2;
 
                 if (sMin < maxS)
+                {
                     return new GradientProjectionResult(x + sMin * d, fixedCount, isFixed);
+                }
                 else if (jj + 1 >= orderedBreakpoint.Count - 1)
                 {
                     isFixed[isFixed.Count - 1] = true;

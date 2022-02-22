@@ -34,7 +34,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
     // ReSharper disable UnusedParameter.Global
     public partial class VectorStorage<T>
     {
-        void ValidateRange(int index)
+        private void ValidateRange(int index)
         {
             if ((uint)index >= (uint)Length)
             {
@@ -42,7 +42,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void ValidateSubVectorRange(VectorStorage<T> target,
+        private void ValidateSubVectorRange(VectorStorage<T> target,
             int sourceIndex, int targetIndex, int count)
         {
             if (count < 1)
@@ -57,7 +57,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentOutOfRangeException(nameof(sourceIndex));
             }
 
-            var sourceMax = sourceIndex + count;
+            int sourceMax = sourceIndex + count;
 
             if (sourceMax > Length)
             {
@@ -71,7 +71,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentOutOfRangeException(nameof(targetIndex));
             }
 
-            var targetMax = targetIndex + count;
+            int targetMax = targetIndex + count;
 
             if (targetMax > target.Length)
             {
@@ -79,7 +79,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void ValidateRowRange(MatrixStorage<T> target, int rowIndex)
+        private void ValidateRowRange(MatrixStorage<T> target, int rowIndex)
         {
             if ((uint)rowIndex >= (uint)target.RowCount)
             {
@@ -92,7 +92,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void ValidateColumnRange(MatrixStorage<T> target, int columnIndex)
+        private void ValidateColumnRange(MatrixStorage<T> target, int columnIndex)
         {
             if ((uint)columnIndex >= (uint)target.ColumnCount)
             {
@@ -105,7 +105,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void ValidateSubRowRange(MatrixStorage<T> target, int rowIndex,
+        private void ValidateSubRowRange(MatrixStorage<T> target, int rowIndex,
             int sourceColumnIndex, int targetColumnIndex, int columnCount)
         {
             if (columnCount < 1)
@@ -143,7 +143,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void ValidateSubColumnRange(MatrixStorage<T> target, int columnIndex,
+        private void ValidateSubColumnRange(MatrixStorage<T> target, int columnIndex,
             int sourceRowIndex, int targetRowIndex, int rowCount)
         {
             if (rowCount < 1)

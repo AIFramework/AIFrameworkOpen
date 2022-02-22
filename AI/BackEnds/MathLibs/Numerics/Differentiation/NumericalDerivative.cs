@@ -67,12 +67,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
     /// </summary>
     public class NumericalDerivative
     {
-        readonly int _points;
-        int _center;
-        double _stepSize = Math.Pow(2, -10);
-        double _epsilon = Precision.PositiveMachineEpsilon;
-        double _baseStepSize = Math.Pow(2, -26);
-        readonly FiniteDifferenceCoefficients _coefficients;
+        private readonly int _points;
+        private int _center;
+        private double _stepSize = Math.Pow(2, -10);
+        private double _epsilon = Precision.PositiveMachineEpsilon;
+        private double _baseStepSize = Math.Pow(2, -26);
+        private readonly FiniteDifferenceCoefficients _coefficients;
 
         /// <summary>
         /// Initializes a NumericalDerivative class with the default 3 point center difference method.
@@ -113,7 +113,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
             set
             {
                 //Base 2 yields more accurate results...
-                var p = Math.Log(Math.Abs(value))/Math.Log(2);
+                double p = Math.Log(Math.Abs(value)) / Math.Log(2);
                 _stepSize = Math.Pow(2, Math.Round(p));
             }
         }
@@ -128,7 +128,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
             set
             {
                 //Base 2 yields more accurate results...
-                var p = Math.Log(Math.Abs(value)) / Math.Log(2);
+                double p = Math.Log(Math.Abs(value)) / Math.Log(2);
                 _baseStepSize = Math.Pow(2, Math.Round(p));
             }
         }
@@ -143,7 +143,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
             set
             {
                 //Base 2 yields more accurate results...
-                var p = Math.Log(Math.Abs(value)) / Math.Log(2);
+                double p = Math.Log(Math.Abs(value)) / Math.Log(2);
                 _epsilon = Math.Pow(2, Math.Round(p));
             }
         }
@@ -157,7 +157,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
             set
             {
                 if (value >= _points || value < 0)
+                {
                     throw new ArgumentOutOfRangeException(nameof(value), "Center must lie between 0 and points -1");
+                }
+
                 _center = value;
             }
         }
@@ -184,13 +187,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         public double EvaluateDerivative(double[] points, int order, double stepSize)
         {
             if (points == null)
+            {
                 throw new ArgumentNullException(nameof(points));
+            }
 
             if (order >= _points || order < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(order), "Order must be between zero and points-1.");
+            }
 
-            var c = _coefficients.GetCoefficients(Center, order);
-            var result = c.Select((t, i) => t*points[i]).Sum();
+            double[] c = _coefficients.GetCoefficients(Center, order);
+            double result = c.Select((t, i) => t * points[i]).Sum();
             result /= Math.Pow(stepSize, order);
             return result;
         }
@@ -209,15 +216,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         /// <returns>Function derivative at x of the specified order.</returns>
         public double EvaluateDerivative(Func<double, double> f, double x, int order, double? currentValue = null)
         {
-            var c = _coefficients.GetCoefficients(Center, order);
-            var h = CalculateStepSize(_points, x, order);
+            double[] c = _coefficients.GetCoefficients(Center, order);
+            double h = CalculateStepSize(_points, x, order);
 
-            var points = new double[_points];
+            double[] points = new double[_points];
             for (int i = 0; i < _points; i++)
             {
                 if (i == Center && currentValue.HasValue)
+                {
                     points[i] = currentValue.Value;
-                else if(c[i] != 0) // Only evaluate function if it will actually be used.
+                }
+                else if (c[i] != 0) // Only evaluate function if it will actually be used.
                 {
                     points[i] = f(x + (i - Center) * h);
                     Evaluations++;
@@ -249,16 +258,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         /// <returns>Function partial derivative at x of the specified order.</returns>
         public double EvaluatePartialDerivative(Func<double[], double> f, double[] x, int parameterIndex, int order, double? currentValue = null)
         {
-            var xi = x[parameterIndex];
-            var c = _coefficients.GetCoefficients(Center, order);
-            var h = CalculateStepSize(_points, x[parameterIndex], order);
+            double xi = x[parameterIndex];
+            double[] c = _coefficients.GetCoefficients(Center, order);
+            double h = CalculateStepSize(_points, x[parameterIndex], order);
 
-            var points = new double[_points];
+            double[] points = new double[_points];
             for (int i = 0; i < _points; i++)
             {
                 if (i == Center && currentValue.HasValue)
+                {
                     points[i] = currentValue.Value;
-                else if(c[i] != 0) // Only evaluate function if it will actually be used.
+                }
+                else if (c[i] != 0) // Only evaluate function if it will actually be used.
                 {
                     x[parameterIndex] = xi + (i - Center) * h;
                     points[i] = f(x);
@@ -285,13 +296,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         /// <returns>Vector of functions partial derivatives at x of the specified order.</returns>
         public double[] EvaluatePartialDerivative(Func<double[], double>[] f, double[] x, int parameterIndex, int order, double?[] currentValue = null)
         {
-            var df = new double[f.Length];
+            double[] df = new double[f.Length];
             for (int i = 0; i < f.Length; i++)
             {
-                if(currentValue != null && currentValue[i].HasValue)
+                if (currentValue != null && currentValue[i].HasValue)
+                {
                     df[i] = EvaluatePartialDerivative(f[i], x, parameterIndex, order, currentValue[i].Value);
+                }
                 else
+                {
                     df[i] = EvaluatePartialDerivative(f[i], x, parameterIndex, order);
+                }
             }
 
             return df;
@@ -342,24 +357,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
                                                      int order, double? currentValue = null)
         {
             if (parameterIndex.Length != order)
+            {
                 throw new ArgumentOutOfRangeException(nameof(parameterIndex),
                                                       "The number of parameters must match derivative order.");
+            }
 
             if (order == 1)
+            {
                 return EvaluatePartialDerivative(f, x, parameterIndex[0], order, currentValue);
+            }
 
             int reducedOrder = order - 1;
-            var reducedParameterIndex = new int[reducedOrder];
+            int[] reducedParameterIndex = new int[reducedOrder];
             Array.Copy(parameterIndex, 0, reducedParameterIndex, 0, reducedOrder);
 
-            var points = new double[_points];
-            var currentParameterIndex = parameterIndex[order - 1];
-            var h = CalculateStepSize(_points, x[currentParameterIndex], order);
+            double[] points = new double[_points];
+            int currentParameterIndex = parameterIndex[order - 1];
+            double h = CalculateStepSize(_points, x[currentParameterIndex], order);
 
-            var xi = x[currentParameterIndex];
+            double xi = x[currentParameterIndex];
             for (int i = 0; i < _points; i++)
             {
-                x[currentParameterIndex] = xi + (i - Center)*h;
+                x[currentParameterIndex] = xi + (i - Center) * h;
                 points[i] = EvaluateMixedPartialDerivative(f, x, reducedParameterIndex, reducedOrder);
             }
 
@@ -387,13 +406,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         public double[] EvaluateMixedPartialDerivative(Func<double[], double>[] f, double[] x, int[] parameterIndex,
                                                        int order, double?[] currentValue = null)
         {
-            var df = new double[f.Length];
+            double[] df = new double[f.Length];
             for (int i = 0; i < f.Length; i++)
             {
-                if(currentValue != null && currentValue[i].HasValue)
+                if (currentValue != null && currentValue[i].HasValue)
+                {
                     df[i] = EvaluateMixedPartialDerivative(f[i], x, parameterIndex, order, currentValue[i].Value);
+                }
                 else
+                {
                     df[i] = EvaluateMixedPartialDerivative(f[i], x, parameterIndex, order);
+                }
             }
 
             return df;
@@ -433,19 +456,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
             Evaluations = 0;
         }
 
-        double CalculateStepSize(int points, double x, double order)
+        private double CalculateStepSize(int points, double x, double order)
         {
             // Step size relative to function input parameter
             if (StepType == StepType.RelativeX)
             {
-                StepSize = BaseStepSize*(1 + Math.Abs(x));
+                StepSize = BaseStepSize * (1 + Math.Abs(x));
             }
             // Step size relative to function input parameter and order
             else if (StepType == StepType.Relative)
             {
-                var accuracy = points - order;
-                BaseStepSize = Math.Pow(Epsilon,(1/(accuracy + order)));
-                StepSize = BaseStepSize*(1 + Math.Abs(x));
+                double accuracy = points - order;
+                BaseStepSize = Math.Pow(Epsilon, (1 / (accuracy + order)));
+                StepSize = BaseStepSize * (1 + Math.Abs(x));
             }
             // Do nothing for absolute step size.
 

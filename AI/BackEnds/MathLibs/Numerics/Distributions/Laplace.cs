@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -43,10 +43,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Laplace : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _location;
-        readonly double _scale;
+        private System.Random _random;
+        private readonly double _location;
+        private readonly double _scale;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Laplace"/> class (location = 0, scale = 1).
@@ -139,17 +138,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => 2.0*_scale*_scale;
+        public double Variance => 2.0 * _scale * _scale;
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => Constants.Sqrt2*_scale;
+        public double StdDev => Constants.Sqrt2 * _scale;
 
         /// <summary>
         /// Gets the entropy of the distribution.
         /// </summary>
-        public double Entropy => Math.Log(2.0*Constants.E*_scale);
+        public double Entropy => Math.Log(2.0 * Constants.E * _scale);
 
         /// <summary>
         /// Gets the skewness of the distribution.
@@ -184,7 +183,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDF"/>
         public double Density(double x)
         {
-            return Math.Exp(-Math.Abs(x - _location)/_scale)/(2.0*_scale);
+            return Math.Exp(-Math.Abs(x - _location) / _scale) / (2.0 * _scale);
         }
 
         /// <summary>
@@ -195,7 +194,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDFLn"/>
         public double DensityLn(double x)
         {
-            return -Math.Abs(x - _location)/_scale - Math.Log(2.0*_scale);
+            return -Math.Abs(x - _location) / _scale - Math.Log(2.0 * _scale);
         }
 
         /// <summary>
@@ -206,7 +205,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="CDF"/>
         public double CumulativeDistribution(double x)
         {
-            return 0.5*(1.0 + (Math.Sign(x - _location)*(1.0 - Math.Exp(-Math.Abs(x - _location)/_scale))));
+            return 0.5 * (1.0 + (Math.Sign(x - _location) * (1.0 - Math.Exp(-Math.Abs(x - _location) / _scale))));
         }
 
         /// <summary>
@@ -235,26 +234,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _location, _scale);
         }
 
-        static double SampleUnchecked(System.Random rnd, double location, double scale)
+        private static double SampleUnchecked(System.Random rnd, double location, double scale)
         {
-            var u = rnd.NextDouble() - 0.5;
-            return location - (scale*Math.Sign(u)*Math.Log(1.0 - (2.0*Math.Abs(u))));
+            double u = rnd.NextDouble() - 0.5;
+            return location - (scale * Math.Sign(u) * Math.Log(1.0 - (2.0 * Math.Abs(u))));
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double location, double scale)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double location, double scale)
         {
             rnd.NextDoubles(values);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    var u = values[i] - 0.5;
-                    values[i] = location - (scale*Math.Sign(u)*Math.Log(1.0 - (2.0*Math.Abs(u))));
+                    double u = values[i] - 0.5;
+                    values[i] = location - (scale * Math.Sign(u) * Math.Log(1.0 - (2.0 * Math.Abs(u))));
                 }
             });
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double location, double scale)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double location, double scale)
         {
             while (true)
             {
@@ -277,7 +276,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return Math.Exp(-Math.Abs(x - location)/scale)/(2.0*scale);
+            return Math.Exp(-Math.Abs(x - location) / scale) / (2.0 * scale);
         }
 
         /// <summary>
@@ -295,7 +294,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return -Math.Abs(x - location)/scale - Math.Log(2.0*scale);
+            return -Math.Abs(x - location) / scale - Math.Log(2.0 * scale);
         }
 
         /// <summary>
@@ -313,7 +312,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return 0.5*(1.0 + (Math.Sign(x - location)*(1.0 - Math.Exp(-Math.Abs(x - location)/scale))));
+            return 0.5 * (1.0 + (Math.Sign(x - location) * (1.0 - Math.Exp(-Math.Abs(x - location) / scale))));
         }
 
         /// <summary>

@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorization
 {
@@ -66,12 +66,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
                 throw new ArgumentException("Matrix must be square.");
             }
 
-            var order = matrix.RowCount;
+            int order = matrix.RowCount;
 
             // Initialize matrices for eigenvalues and eigenvectors
-            var eigenVectors = new DenseMatrix(order);
-            var blockDiagonal = new DenseMatrix(order);
-            var eigenValues = new LinearAlgebra.Complex.DenseVector(order);
+            DenseMatrix eigenVectors = new DenseMatrix(order);
+            DenseMatrix blockDiagonal = new DenseMatrix(order);
+            LinearAlgebra.Complex.DenseVector eigenValues = new LinearAlgebra.Complex.DenseVector(order);
 
             bool isSymmetric;
             switch (symmetricity)
@@ -93,7 +93,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
             return new DenseEvd(eigenVectors, eigenValues, blockDiagonal, isSymmetric);
         }
 
-        DenseEvd(MatrixMathNet<double> eigenVectors, VectorMathNet<Complex> eigenValues, MatrixMathNet<double> blockDiagonal, bool isSymmetric)
+        private DenseEvd(MatrixMathNet<double> eigenVectors, VectorMathNet<Complex> eigenValues, MatrixMathNet<double> blockDiagonal, bool isSymmetric)
             : base(eigenVectors, eigenValues, blockDiagonal, isSymmetric)
         {
         }
@@ -125,19 +125,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
 
             if (IsSymmetric)
             {
-                var order = EigenValues.Count;
-                var tmp = new double[order];
+                int order = EigenValues.Count;
+                double[] tmp = new double[order];
 
-                for (var k = 0; k < order; k++)
+                for (int k = 0; k < order; k++)
                 {
-                    for (var j = 0; j < order; j++)
+                    for (int j = 0; j < order; j++)
                     {
                         double value = 0;
                         if (j < order)
                         {
-                            for (var i = 0; i < order; i++)
+                            for (int i = 0; i < order; i++)
                             {
-                                value += ((DenseMatrix) EigenVectors).Values[(j*order) + i]*input.At(i, k);
+                                value += ((DenseMatrix)EigenVectors).Values[(j * order) + i] * input.At(i, k);
                             }
 
                             value /= EigenValues[j].Real;
@@ -146,12 +146,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
                         tmp[j] = value;
                     }
 
-                    for (var j = 0; j < order; j++)
+                    for (int j = 0; j < order; j++)
                     {
                         double value = 0;
-                        for (var i = 0; i < order; i++)
+                        for (int i = 0; i < order; i++)
                         {
-                            value += ((DenseMatrix) EigenVectors).Values[(i*order) + j]*tmp[i];
+                            value += ((DenseMatrix)EigenVectors).Values[(i * order) + j] * tmp[i];
                         }
 
                         result.At(j, k, value);
@@ -187,18 +187,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
             if (IsSymmetric)
             {
                 // Symmetric case -> x = V * inv(λ) * VT * b;
-                var order = EigenValues.Count;
-                var tmp = new double[order];
+                int order = EigenValues.Count;
+                double[] tmp = new double[order];
                 double value;
 
-                for (var j = 0; j < order; j++)
+                for (int j = 0; j < order; j++)
                 {
                     value = 0;
                     if (j < order)
                     {
-                        for (var i = 0; i < order; i++)
+                        for (int i = 0; i < order; i++)
                         {
-                            value += ((DenseMatrix) EigenVectors).Values[(j*order) + i]*input[i];
+                            value += ((DenseMatrix)EigenVectors).Values[(j * order) + i] * input[i];
                         }
 
                         value /= EigenValues[j].Real;
@@ -207,12 +207,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
                     tmp[j] = value;
                 }
 
-                for (var j = 0; j < order; j++)
+                for (int j = 0; j < order; j++)
                 {
                     value = 0;
-                    for (var i = 0; i < order; i++)
+                    for (int i = 0; i < order; i++)
                     {
-                        value += ((DenseMatrix) EigenVectors).Values[(i*order) + j]*tmp[i];
+                        value += ((DenseMatrix)EigenVectors).Values[(i * order) + j] * tmp[i];
                     }
 
                     result[j] = value;

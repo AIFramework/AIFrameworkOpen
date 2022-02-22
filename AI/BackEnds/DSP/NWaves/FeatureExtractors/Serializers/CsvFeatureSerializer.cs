@@ -58,31 +58,31 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Serializers
         /// <returns></returns>
         public async Task SerializeAsync(Stream stream, string format = "0.00000", string timeFormat = "0.000")
         {
-            var comma = _delimiter.ToString();
+            string comma = _delimiter.ToString();
 
-            using (var writer = new StreamWriter(stream))
+            using (StreamWriter writer = new StreamWriter(stream))
             {
                 if (_names != null)
                 {
-                    var names = string.Join(comma, _names);
-                    var header = _timeMarkers == null ? $"{names}" : $"time_pos{comma}{names}";
+                    string names = string.Join(comma, _names);
+                    string header = _timeMarkers == null ? $"{names}" : $"time_pos{comma}{names}";
                     await writer.WriteLineAsync(header).ConfigureAwait(false);
                 }
 
                 if (_timeMarkers == null)
                 {
-                    foreach (var vector in _vectors)
+                    foreach (float[] vector in _vectors)
                     {
-                        var line = string.Join(comma, vector.Select(f => f.ToString(format, CultureInfo.InvariantCulture)));
+                        string line = string.Join(comma, vector.Select(f => f.ToString(format, CultureInfo.InvariantCulture)));
 
                         await writer.WriteLineAsync(line).ConfigureAwait(false);
                     }
                 }
                 else
                 {
-                    for (var i = 0; i < _vectors.Count; i++)
+                    for (int i = 0; i < _vectors.Count; i++)
                     {
-                        var line = string.Format("{0}{1}{2}",
+                        string line = string.Format("{0}{1}{2}",
                                              _timeMarkers[i].ToString(timeFormat, CultureInfo.InvariantCulture),
                                              comma,
                                              string.Join(comma, _vectors[i].Select(f => f.ToString(format, CultureInfo.InvariantCulture))));

@@ -68,9 +68,12 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static double Factorial(int n)
         {
-            var f = 1.0;
+            double f = 1.0;
 
-            for (var i = 2; i <= n; f *= i++) ;
+            for (int i = 2; i <= n; f *= i++)
+            {
+                ;
+            }
 
             return f;
         }
@@ -95,7 +98,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         {
             diff[0] = samples[0];
 
-            for (var i = 1; i < samples.Length; i++)
+            for (int i = 1; i < samples.Length; i++)
             {
                 diff[i] = samples[i] - samples[i - 1];
             }
@@ -111,10 +114,10 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static void InterpolateLinear(float[] x, float[] y, float[] arg, float[] interp)
         {
-            var left = 0;
-            var right = 1;
+            int left = 0;
+            int right = 1;
 
-            for (var i = 0; i < arg.Length; i++)
+            for (int i = 0; i < arg.Length; i++)
             {
                 while (arg[i] > x[right] && right < x.Length - 1)
                 {
@@ -133,9 +136,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <param name="im"></param>
         public static void BilinearTransform(double[] re, double[] im)
         {
-            for (var k = 0; k < re.Length; k++)
+            for (int k = 0; k < re.Length; k++)
             {
-                var den = (1 - re[k]) * (1 - re[k]) + im[k] * im[k];
+                double den = (1 - re[k]) * (1 - re[k]) + im[k] * im[k];
                 re[k] = (1 - re[k] * re[k] - im[k] * im[k]) / den;
                 im[k] = 2 * im[k] / den;
             }
@@ -161,13 +164,13 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static double[] Unwrap(double[] phase, double tolerance = Math.PI)
         {
-            var unwrapped = phase.FastCopy();
+            double[] unwrapped = phase.FastCopy();
 
-            var offset = 0.0;
+            double offset = 0.0;
 
-            for (var n = 1; n < phase.Length; n++)
+            for (int n = 1; n < phase.Length; n++)
             {
-                var delta = phase[n] - phase[n - 1];
+                double delta = phase[n] - phase[n - 1];
 
                 if (delta > tolerance)
                 {
@@ -192,11 +195,11 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static double[] Wrap(double[] phase, double tolerance = Math.PI)
         {
-            var wrapped = phase.FastCopy();
+            double[] wrapped = phase.FastCopy();
 
-            for (var n = 0; n < phase.Length; n++)
+            for (int n = 0; n < phase.Length; n++)
             {
-                var offset = phase[n] % (tolerance * 2);
+                double offset = phase[n] % (tolerance * 2);
 
                 if (offset > tolerance)
                 {
@@ -226,24 +229,24 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             while (true)
             {
                 // ============== Partitioning =============
-                var pivotElem = a[end];
-                var pivot = start - 1;
-                for (var i = start; i < end; i++)
+                float pivotElem = a[end];
+                int pivot = start - 1;
+                for (int i = start; i < end; i++)
                 {
                     if (a[i] <= pivotElem)
                     {
                         pivot++;
-                        var temp = a[i];
+                        float temp = a[i];
                         a[i] = a[pivot];
                         a[pivot] = temp;
                     }
                 }
                 pivot++;
-                var tmp = a[end];
+                float tmp = a[end];
                 a[end] = a[pivot];
                 a[pivot] = tmp;
                 // ========================================
-                
+
                 if (pivot == n)
                 {
                     return a[pivot];
@@ -270,7 +273,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             double prev = 1.0;
             double summand = 0;
 
-            var i = 1;
+            int i = 1;
 
             while (Math.Abs(prev) > 1e-20)
             {
@@ -296,26 +299,26 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static Complex[] PolynomialRoots(double[] a, int maxIterations = PolyRootsIterations)
         {
-            var n = a.Length;
+            int n = a.Length;
             if (n <= 1)
             {
                 return null;
             }
 
-            var c1 = Complex.One;
+            Complex c1 = Complex.One;
 
-            var rootsPrev = new Complex[a.Length - 1];
-            var roots = new Complex[a.Length - 1];
+            Complex[] rootsPrev = new Complex[a.Length - 1];
+            Complex[] roots = new Complex[a.Length - 1];
 
-            var result = new Complex(0.4, 0.9);
+            Complex result = new Complex(0.4, 0.9);
             rootsPrev[0] = c1;
 
-            for (var i = 1; i < rootsPrev.Length; i++)
+            for (int i = 1; i < rootsPrev.Length; i++)
             {
                 rootsPrev[i] = rootsPrev[i - 1] * result;
             }
 
-            var iter = 0;
+            int iter = 0;
             while (true)
             {
                 for (int i = 0; i < rootsPrev.Length; i++)
@@ -353,7 +356,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>true if arrays are equal</returns>
         private static bool ArraysAreEqual(Complex[] a, Complex[] b, double tolerance = 1e-16)
         {
-            for (var i = 0; i < a.Length; i++)
+            for (int i = 0; i < a.Length; i++)
             {
                 if (Complex.Abs(a[i] - b[i]) > tolerance)
                 {
@@ -372,9 +375,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>The value of polynomial</returns>
         public static Complex EvaluatePolynomial(double[] a, Complex x)
         {
-            var res = new Complex(a[0], 0);
+            Complex res = new Complex(a[0], 0);
 
-            for (var i = 1; i < a.Length; i++)
+            for (int i = 1; i < a.Length; i++)
             {
                 res *= x;
                 res += a[i];
@@ -391,12 +394,12 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static Complex[] MultiplyPolynomials(Complex[] poly1, Complex[] poly2)
         {
-            var length = poly1.Length + poly2.Length - 1;
-            var result = new Complex[length];
+            int length = poly1.Length + poly2.Length - 1;
+            Complex[] result = new Complex[length];
 
-            for (var i = 0; i < poly1.Length; i++)
+            for (int i = 0; i < poly1.Length; i++)
             {
-                for (var j = 0; j < poly2.Length; j++)
+                for (int j = 0; j < poly2.Length; j++)
                 {
                     result[i + j] += poly1[i] * poly2[j];
                 }
@@ -413,32 +416,32 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static Complex[][] DividePolynomial(Complex[] dividend, Complex[] divisor)
         {
-            var output = (Complex[])dividend.Clone();
-            var normalizer = divisor[0];
+            Complex[] output = (Complex[])dividend.Clone();
+            Complex normalizer = divisor[0];
 
-            for (var i = 0; i < dividend.Length - divisor.Length + 1; i++)
+            for (int i = 0; i < dividend.Length - divisor.Length + 1; i++)
             {
                 output[i] /= normalizer;
 
-                var coeff = output[i];
+                Complex coeff = output[i];
                 if (Math.Abs(coeff.Real) > 1e-10 || Math.Abs(coeff.Imaginary) > 1e-10)
                 {
-                    for (var j = 1; j < divisor.Length; j++)
+                    for (int j = 1; j < divisor.Length; j++)
                     {
                         output[i + j] -= divisor[j] * coeff;
                     }
                 }
             }
 
-            var separator = output.Length - divisor.Length + 1;
+            int separator = output.Length - divisor.Length + 1;
 
-            var q = new Complex[separator];
-            var r = new Complex[output.Length - separator];
+            Complex[] q = new Complex[separator];
+            Complex[] r = new Complex[output.Length - separator];
 
             Array.Copy(output, 0, q, 0, separator);
             Array.Copy(output, separator, r, 0, output.Length - separator);
 
-            return new [] { q, r };
+            return new[] { q, r };
         }
 
         #endregion

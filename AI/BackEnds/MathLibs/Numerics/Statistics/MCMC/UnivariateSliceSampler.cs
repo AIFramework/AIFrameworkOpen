@@ -43,27 +43,27 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// Evaluates the log density function of the target distribution.
         /// </summary>
-        readonly DensityLn<double> _pdfLnP;
+        private readonly DensityLn<double> _pdfLnP;
 
         /// <summary>
         /// The current location of the sampler.
         /// </summary>
-        double _current;
+        private double _current;
 
         /// <summary>
         /// The log density at the current location.
         /// </summary>
-        double _currentDensityLn;
+        private double _currentDensityLn;
 
         /// <summary>
         /// The number of burn iterations between two samples.
         /// </summary>
-        int _burnInterval;
+        private int _burnInterval;
 
         /// <summary>
         /// The scale of the slice sampler.
         /// </summary>
-        double _scale;
+        private double _scale;
 
         /// <summary>
         /// Constructs a new Slice sampler using the default <see cref="System.Random"/> random
@@ -135,7 +135,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// This method runs the sampler for a number of iterations without returning a sample
         /// </summary>
-        void Burn(int n)
+        private void Burn(int n)
         {
             for (int i = 0; i < n; i++)
             {

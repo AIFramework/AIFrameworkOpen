@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using Complex = System.Numerics.Complex;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics
@@ -917,7 +917,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             return true;
         }
 
-        static bool ListForAll<T,TP>(IList<T> a, IList<T> b, Func<T, T, TP, bool> predicate, TP parameter)
+        private static bool ListForAll<T, TP>(IList<T> a, IList<T> b, Func<T, T, TP, bool> predicate, TP parameter)
         {
             if (a == null && b == null)
             {
@@ -1040,14 +1040,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             return AlmostEqualNormRelative(a.L2Norm(), b.L2Norm(), (a - b).L2Norm(), decimalPlaces);
         }
 
-        static readonly double[] NegativePowersOf10 = new double[]
+        private static readonly double[] NegativePowersOf10 = new double[]
         {
             1, 0.1, 0.01, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9,
             1e-10, 1e-11, 1e-12, 1e-13, 1e-14, 1e-15, 1e-16,
             1e-17, 1e-18, 1e-19, 1e-20
         };
 
-        static double Pow10(int y)
+        private static double Pow10(int y)
         {
             return -NegativePowersOf10.Length < y && y <= 0
                ? NegativePowersOf10[-y]

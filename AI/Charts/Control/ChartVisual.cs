@@ -155,8 +155,11 @@ namespace AI.Charts.Control
         {
             Plot plot = new Plot(chart1, name) { IsSpline = isSpline };
             plot.LoadData(x, y);
-            if(color != null)
-            plot.SetColor(color.Value);
+            if (color != null)
+            {
+                plot.SetColor(color.Value);
+            }
+
             plot.SetWidth(width);
             chartElements.Add(plot);
             AutoScale();

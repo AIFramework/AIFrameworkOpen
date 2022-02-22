@@ -41,8 +41,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         public DiscreteSignal ApplyTo(DiscreteSignal signal,
                                       FilteringMethod method = FilteringMethod.Auto)
         {
-            var input = signal.Samples;
-            var output = new float[input.Length];
+            float[] input = signal.Samples;
+            float[] output = new float[input.Length];
 
             int i = 0, j = 0;
 
@@ -90,7 +90,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         {
             _n = Size / 2;
 
-            for (var i = 0; i < _buf.Length; i++)
+            for (int i = 0; i < _buf.Length; i++)
             {
                 _buf[i] = 0;
             }
@@ -98,7 +98,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
 
         private int _n;
 
-        private float[] _buf;
-        private float[] _tmp;
+        private readonly float[] _buf;
+        private readonly float[] _tmp;
     }
 }

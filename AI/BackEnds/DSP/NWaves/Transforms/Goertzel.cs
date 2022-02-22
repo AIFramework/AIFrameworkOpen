@@ -31,11 +31,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns>nth component of a complex spectrum</returns>
         public Complex Direct(float[] input, int n)
         {
-            var f = (float)(2 * Math.Cos(2 * Math.PI * n / _fftSize));
+            float f = (float)(2 * Math.Cos(2 * Math.PI * n / _fftSize));
 
             float s1 = 0, s2 = 0, s = 0;
 
-            for (var i = 0; i < _fftSize; i++)
+            for (int i = 0; i < _fftSize; i++)
             {
                 s = input[i] + s1 * f - s2;
 
@@ -43,7 +43,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                 s1 = s;
             }
 
-            var c = Complex.FromPolarCoordinates(1, 2 * Math.PI * n / _fftSize);
+            Complex c = Complex.FromPolarCoordinates(1, 2 * Math.PI * n / _fftSize);
 
             c *= s;
             c -= s1;

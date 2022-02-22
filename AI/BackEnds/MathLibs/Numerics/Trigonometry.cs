@@ -40,7 +40,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <summary>
         /// Constant to convert a degree to grad.
         /// </summary>
-        const double DegreeToGradConstant = 10.0 / 9.0;
+        private const double DegreeToGradConstant = 10.0 / 9.0;
 
         /// <summary>
         /// Converts a degree (360-periodic) angle to a grad (400-periodic) angle.
@@ -108,8 +108,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double Sinc(double x)
         {
-            double z = Math.PI*x;
-            return z.AlmostEqual(0.0, 15) ? 1.0 : Math.Sin(z)/z;
+            double z = Math.PI * x;
+            return z.AlmostEqual(0.0, 15) ? 1.0 : Math.Sin(z) / z;
         }
 
 
@@ -245,9 +245,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return new Complex(Sec(value.Real), 0d);
             }
 
-            var cosr = Cos(value.Real);
-            var sinhi = Sinh(value.Imaginary);
-            var denom = (cosr * cosr) + (sinhi * sinhi);
+            double cosr = Cos(value.Real);
+            double sinhi = Sinh(value.Imaginary);
+            double denom = (cosr * cosr) + (sinhi * sinhi);
 
             return new Complex(cosr * Cosh(value.Imaginary) / denom, Sin(value.Real) * sinhi / denom);
         }
@@ -274,9 +274,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return new Complex(Csc(value.Real), 0d);
             }
 
-            var sinr = Sin(value.Real);
-            var sinhi = Sinh(value.Imaginary);
-            var denom = (sinr * sinr) + (sinhi * sinhi);
+            double sinr = Sin(value.Real);
+            double sinhi = Sinh(value.Imaginary);
+            double denom = (sinr * sinr) + (sinhi * sinhi);
 
             return new Complex(sinr * Cosh(value.Imaginary) / denom, -Cos(value.Real) * sinhi / denom);
         }
@@ -349,7 +349,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>The arc tangent of a complex number.</returns>
         public static Complex Atan(this Complex value)
         {
-            var iz = new Complex(-value.Imaginary, value.Real); // I*this
+            Complex iz = new Complex(-value.Imaginary, value.Real); // I*this
             return new Complex(0, 0.5) * ((1 - iz).Ln() - (1 + iz).Ln());
         }
 
@@ -375,7 +375,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return Constants.PiOver2;
             }
 
-            var inv = Complex.ImaginaryOne / value;
+            Complex inv = Complex.ImaginaryOne / value;
             return (Complex.ImaginaryOne * 0.5) * ((1.0 - inv).Ln() - (1.0 + inv).Ln());
         }
 
@@ -396,7 +396,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>The arc secant of a complex number.</returns>
         public static Complex Asec(this Complex value)
         {
-            var inv = 1 / value;
+            Complex inv = 1 / value;
             return -Complex.ImaginaryOne * (inv + (Complex.ImaginaryOne * (1 - inv.Square()).SquareRoot())).Ln();
         }
 
@@ -417,7 +417,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>The arc cosecant of a complex number.</returns>
         public static Complex Acsc(this Complex value)
         {
-            var inv = 1 / value;
+            Complex inv = 1 / value;
             return -Complex.ImaginaryOne * ((Complex.ImaginaryOne * inv) + (1 - inv.Square()).SquareRoot()).Ln();
         }
 
@@ -451,8 +451,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             {
                 double h = Math.Exp(Math.Abs(value.Real)) * 0.5;
                 return new Complex(
-                    Math.Sign(value.Real)*h*Cos(value.Imaginary),
-                    h*Sin(value.Imaginary));
+                    Math.Sign(value.Real) * h * Cos(value.Imaginary),
+                    h * Sin(value.Imaginary));
             }
 
             return new Complex(
@@ -515,8 +515,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return -1;
             }
 
-            var e1 = Math.Exp(angle);
-            var e2 = Math.Exp(-angle);
+            double e1 = Math.Exp(angle);
+            double e2 = Math.Exp(-angle);
             return (e1 - e2) / (e1 + e2);
         }
 
@@ -553,7 +553,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             double coshr = Cosh(value.Real);
 
             if (double.IsInfinity(tani))
+            {
                 return new Complex(coshr / sinhr, 0.0);
+            }
 
             double denom = 1.0 + beta * sinhr * sinhr;
             return new Complex(beta * coshr * sinhr / denom, tani / denom);
@@ -576,8 +578,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return -1;
             }
 
-            var e1 = Math.Exp(angle);
-            var e2 = Math.Exp(-angle);
+            double e1 = Math.Exp(angle);
+            double e2 = Math.Exp(-angle);
             return (e1 + e2) / (e1 - e2);
         }
 
@@ -714,7 +716,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             // if |x| > huge, asinh(x) ~= Sign(x) * ln(2|x|)
 
             if (Math.Abs(value) >= 268435456.0) // 2^28, taken from freeBSD
+            {
                 return Math.Sign(value) * (Math.Log(Math.Abs(value)) + Math.Log(2.0));
+            }
 
             return Math.Sign(value) * Math.Log(Math.Abs(value) + Math.Sqrt((value * value) + 1));
         }
@@ -740,7 +744,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             // if |x| >= 2^28, acosh(x) ~ ln(x) + ln(2)
 
             if (Math.Abs(value) >= 268435456.0) // 2^28, taken from freeBSD
+            {
                 return Math.Log(value) + Math.Log(2.0);
+            }
 
             return Math.Log(value + (Math.Sqrt(value - 1) * Math.Sqrt(value + 1)), Math.E);
         }
@@ -792,7 +798,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>The hyperbolic arc cotangent of a complex number.</returns>
         public static Complex Acoth(this Complex value)
         {
-            var inv = 1.0 / value;
+            Complex inv = 1.0 / value;
             return 0.5 * ((1.0 + inv).Ln() - (1.0 - inv).Ln());
         }
 
@@ -813,7 +819,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>The hyperbolic arc secant of a complex number.</returns>
         public static Complex Asech(this Complex value)
         {
-            var inv = 1 / value;
+            Complex inv = 1 / value;
             return (inv + ((inv - 1).SquareRoot() * (inv + 1).SquareRoot())).Ln();
         }
 
@@ -834,7 +840,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>The hyperbolic arc cosecant of a complex number.</returns>
         public static Complex Acsch(this Complex value)
         {
-            var inv = 1 / value;
+            Complex inv = 1 / value;
             return (inv + (inv.Square() + 1).SquareRoot()).Ln();
         }
     }

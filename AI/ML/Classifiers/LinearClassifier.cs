@@ -14,12 +14,12 @@ namespace AI.ML.Classifiers
         public double MinimalMargin { get; set; } = 0;
         public double C { get; set; } = 1;
 
-        Vector w;
-        double b = 0, nW;
+        private Vector w;
+        private double b = 0, nW;
 
-        public LinearClassifierBinarry(int dim) 
+        public LinearClassifierBinarry(int dim)
         {
-            w = new Vector(dim)+0.1/dim;
+            w = new Vector(dim) + 0.1 / dim;
             nW = Math.Sqrt(dim);
         }
 
@@ -32,9 +32,9 @@ namespace AI.ML.Classifiers
         public override Vector ClassifyProbVector(Vector inp)
         {
             double outp = Margin.OutputLinModel(inp, w, b);
-            outp /= nW+1e-20;
+            outp /= nW + 1e-20;
 
-            return ActivationFunctions.Softmax(new Vector(0.0-outp, 0+outp));
+            return ActivationFunctions.Softmax(new Vector(0.0 - outp, 0 + outp));
         }
 
         public override void Train(Vector[] features, int[] classes)

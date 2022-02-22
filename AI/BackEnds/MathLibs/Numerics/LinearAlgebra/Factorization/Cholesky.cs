@@ -77,7 +77,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
         /// <returns>The left hand side <see cref="MatrixMathNet{T}"/>, <b>X</b>.</returns>
         public virtual MatrixMathNet<T> Solve(MatrixMathNet<T> input)
         {
-            var x = MatrixMathNet<T>.Build.SameAs(input, input.RowCount, input.ColumnCount, fullyMutable: true);
+            MatrixMathNet<T> x = MatrixMathNet<T>.Build.SameAs(input, input.RowCount, input.ColumnCount, fullyMutable: true);
             Solve(input, x);
             return x;
         }
@@ -96,7 +96,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
         /// <returns>The left hand side <see cref="VectorMathNet{T}"/>, <b>x</b>.</returns>
         public virtual VectorMathNet<T> Solve(VectorMathNet<T> input)
         {
-            var x = VectorMathNet<T>.Build.SameAs(input, input.Count);
+            VectorMathNet<T> x = VectorMathNet<T>.Build.SameAs(input, input.Count);
             Solve(input, x);
             return x;
         }

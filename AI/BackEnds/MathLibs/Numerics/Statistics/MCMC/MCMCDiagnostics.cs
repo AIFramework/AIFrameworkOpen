@@ -48,7 +48,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <returns>The auto correlation.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Throws if lag is zero or if lag is
         /// greater than or equal to the length of Series.</exception>
-        public static double ACF<T>(IEnumerable<T> series, int lag, Func<T,double> f)
+        public static double ACF<T>(IEnumerable<T> series, int lag, Func<T, double> f)
         {
             if (lag < 0)
             {
@@ -61,11 +61,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
                 throw new ArgumentOutOfRangeException(nameof(lag), "Lag must be smaller than the sample size");
             }
 
-            var transformedSeries = series.Select(f);
+            IEnumerable<double> transformedSeries = series.Select(f);
 
-            var enumerable = transformedSeries as double[] ?? transformedSeries.ToArray();
-            var firstSeries = enumerable.Take(length-lag);
-            var secondSeries = enumerable.Skip(lag);
+            double[] enumerable = transformedSeries as double[] ?? transformedSeries.ToArray();
+            IEnumerable<double> firstSeries = enumerable.Take(length - lag);
+            IEnumerable<double> secondSeries = enumerable.Skip(lag);
 
             return CorrelationMathNet.Pearson(firstSeries, secondSeries);
         }
@@ -76,7 +76,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <param name="series">The samples.</param>
         /// <param name="f">The function use for evaluating the series.</param>
         /// <returns>The effective size when auto correlation is taken into account.</returns>
-        public static double EffectiveSize<T>(IEnumerable<T> series, Func<T,double> f)
+        public static double EffectiveSize<T>(IEnumerable<T> series, Func<T, double> f)
         {
             int length = series.Count();
             double rho = ACF(series, 1, f);

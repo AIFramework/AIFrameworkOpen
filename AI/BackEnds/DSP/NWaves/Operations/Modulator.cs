@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.Signals;
+﻿using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Operations
 {
@@ -42,15 +42,15 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <param name="modulatorFrequency">Modulator frequency</param>
         /// <param name="modulationIndex">Modulation index (depth)</param>
         /// <returns>AM signal</returns>
-        public DiscreteSignal Amplitude(DiscreteSignal carrier, 
+        public DiscreteSignal Amplitude(DiscreteSignal carrier,
                                         float modulatorFrequency = 20/*Hz*/,
                                         float modulationIndex = 0.5f)
         {
-            var fs = carrier.SamplingRate;
-            var mf = modulatorFrequency;          // just short aliases //
-            var mi = modulationIndex;
+            int fs = carrier.SamplingRate;
+            float mf = modulatorFrequency;          // just short aliases //
+            float mi = modulationIndex;
 
-            var output = Enumerable.Range(0, carrier.Length)
+            System.Collections.Generic.IEnumerable<double> output = Enumerable.Range(0, carrier.Length)
                                    .Select(i => carrier[i] * (1 + mi * Math.Cos(2 * Math.PI * mf / fs * i)));
 
             return new DiscreteSignal(fs, output.ToFloats());
@@ -69,12 +69,12 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                                         float carrierFrequency,
                                         float deviation = 0.1f/*Hz*/)
         {
-            var fs = baseband.SamplingRate;
-            var ca = carrierAmplitude;          // just short aliases //
-            var cf = carrierFrequency;
+            int fs = baseband.SamplingRate;
+            float ca = carrierAmplitude;          // just short aliases //
+            float cf = carrierFrequency;
 
-            var integral = 0.0;
-            var output = Enumerable.Range(0, baseband.Length)
+            double integral = 0.0;
+            System.Collections.Generic.IEnumerable<double> output = Enumerable.Range(0, baseband.Length)
                                    .Select(i => ca * Math.Cos(2 * Math.PI * cf / fs * i +
                                                  2 * Math.PI * deviation * (integral += baseband[i])));
 
@@ -99,14 +99,14 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                                         int length,
                                         int samplingRate = 1)
         {
-            var fs = samplingRate;
-            var ca = carrierAmplitude;
-            var cf = carrierFrequency;          // just short aliases //
-            var mf = modulatorFrequency;
-            var mi = modulationIndex;
+            int fs = samplingRate;
+            float ca = carrierAmplitude;
+            float cf = carrierFrequency;          // just short aliases //
+            float mf = modulatorFrequency;
+            float mi = modulationIndex;
 
-            var output = Enumerable.Range(0, length)
-                                   .Select(i => ca * Math.Cos(2 * Math.PI * cf / fs * i + 
+            System.Collections.Generic.IEnumerable<double> output = Enumerable.Range(0, length)
+                                   .Select(i => ca * Math.Cos(2 * Math.PI * cf / fs * i +
                                                 mi * Math.Sin(2 * Math.PI * mf / fs * i)));
 
             return new DiscreteSignal(samplingRate, output.ToFloats());
@@ -128,12 +128,12 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                                         int length,
                                         int samplingRate = 1)
         {
-            var fs = samplingRate;
-            var ca = carrierAmplitude;          // just short aliases //
-            var cf = carrierFrequency;
-            var mi = modulationIndex;
+            int fs = samplingRate;
+            float ca = carrierAmplitude;          // just short aliases //
+            float cf = carrierFrequency;
+            float mi = modulationIndex;
 
-            var output = Enumerable.Range(0, length)
+            System.Collections.Generic.IEnumerable<double> output = Enumerable.Range(0, length)
                                    .Select(i => ca * Math.Cos(2 * Math.PI * (cf / fs + mi * i) * i / fs));
 
             return new DiscreteSignal(fs, output.ToFloats());
@@ -152,11 +152,11 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                                     float carrierFrequency,
                                     float deviation = 0.8f)
         {
-            var fs = baseband.SamplingRate;
-            var ca = carrierAmplitude;          // just short aliases //
-            var cf = carrierFrequency;
+            int fs = baseband.SamplingRate;
+            float ca = carrierAmplitude;          // just short aliases //
+            float cf = carrierFrequency;
 
-            var output = Enumerable.Range(0, baseband.Length)
+            System.Collections.Generic.IEnumerable<double> output = Enumerable.Range(0, baseband.Length)
                                    .Select(i => ca * Math.Cos(2 * Math.PI * cf / fs * i + deviation * baseband[i]));
 
             return new DiscreteSignal(fs, output.ToFloats());
@@ -169,8 +169,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <returns></returns>
         public DiscreteSignal DemodulateAmplitude(DiscreteSignal signal)
         {
-            var ht = new HilbertTransform(signal.Length, false);
-            var mag = ht.AnalyticSignal(signal.Samples).Magnitude();
+            HilbertTransform ht = new HilbertTransform(signal.Length, false);
+            float[] mag = ht.AnalyticSignal(signal.Samples).Magnitude();
 
             return new DiscreteSignal(signal.SamplingRate, mag) - 1.0f;
         }
@@ -182,12 +182,12 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <returns></returns>
         public DiscreteSignal DemodulateFrequency(DiscreteSignal signal)
         {
-            var diff = new float[signal.Length];
+            float[] diff = new float[signal.Length];
 
             MathUtils.Diff(signal.Samples, diff);
 
-            var ht = new HilbertTransform(signal.Length, false);
-            var mag = ht.AnalyticSignal(diff).Magnitude();
+            HilbertTransform ht = new HilbertTransform(signal.Length, false);
+            float[] mag = ht.AnalyticSignal(diff).Magnitude();
 
             return new DiscreteSignal(signal.SamplingRate, mag) - 1.0f;
         }

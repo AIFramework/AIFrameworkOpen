@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
 using AI.BackEnds.DSP.NWaves.Windows;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 {
@@ -39,7 +39,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// </summary>
         protected readonly float[][] _filterbank;
         public float[][] Filterbank => _filterbank;
-        
+
         /// <summary>
         /// Signal envelopes in different frequency bands
         /// </summary>
@@ -90,7 +90,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// Internal buffer for modulation spectrum analysis
         /// </summary>
         protected readonly float[] _modBlock;
-            
+
         /// <summary>
         /// Modulation spectrum (in one band)
         /// </summary>
@@ -130,7 +130,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 }
 
                 _fft = new RealFft(_fftSize);
-                
+
                 FeatureCount = _filterbank.Length * (_modulationFftSize / 2 + 1);
 
                 _spectrum = new float[_fftSize / 2 + 1];
@@ -155,12 +155,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             FeatureDescriptions = new List<string>();
 
-            var modulationSamplingRate = (float)SamplingRate / HopSize;
-            var resolution = modulationSamplingRate / _modulationFftSize;
+            float modulationSamplingRate = (float)SamplingRate / HopSize;
+            float resolution = modulationSamplingRate / _modulationFftSize;
 
-            for (var fi = 0; fi < length; fi++)
+            for (int fi = 0; fi < length; fi++)
             {
-                for (var fj = 0; fj <= _modulationFftSize / 2; fj++)
+                for (int fj = 0; fj <= _modulationFftSize / 2; fj++)
                 {
                     FeatureDescriptions.Add(string.Format("band_{0}_mf_{1:F2}_Hz", fi + 1, fj * resolution));
                 }
@@ -179,25 +179,25 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         {
             Guard.AgainstInvalidRange(startSample, endSample, "starting pos", "ending pos");
 
-            var frameSize = FrameSize;
-            var hopSize = HopSize;
+            int frameSize = FrameSize;
+            int hopSize = HopSize;
 
-            var featureVectors = new List<float[]>();
+            List<float[]> featureVectors = new List<float[]>();
 
-            var en = 0;
-            var i = startSample;
+            int en = 0;
+            int i = startSample;
 
             if (_featuregram == null)
             {
                 _envelopes = new float[_filterbank.Length][];
-                for (var n = 0; n < _envelopes.Length; n++)
+                for (int n = 0; n < _envelopes.Length; n++)
                 {
                     _envelopes[n] = new float[samples.Length / hopSize];
                 }
 
-                var prevSample = startSample > 0 ? samples[startSample - 1] : 0.0f;
+                float prevSample = startSample > 0 ? samples[startSample - 1] : 0.0f;
 
-                var lastSample = endSample - Math.Max(frameSize, hopSize);
+                int lastSample = endSample - Math.Max(frameSize, hopSize);
 
                 // ===================== compute local FFTs (do STFT) =======================
 
@@ -206,22 +206,25 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                     // copy frameSize samples
                     samples.FastCopyTo(_block, frameSize, i);
                     // fill zeros to fftSize if frameSize < fftSize
-                    for (var k = frameSize; k < _block.Length; _block[k++] = 0) ;
+                    for (int k = frameSize; k < _block.Length; _block[k++] = 0)
+                    {
+                        ;
+                    }
 
 
                     // 0) pre-emphasis (if needed)
 
                     if (_preEmphasis > 1e-10f)
                     {
-                        for (var k = 0; k < frameSize; k++)
+                        for (int k = 0; k < frameSize; k++)
                         {
-                            var y = _block[k] - prevSample * _preEmphasis;
+                            float y = _block[k] - prevSample * _preEmphasis;
                             prevSample = _block[k];
                             _block[k] = y;
                         }
                         prevSample = samples[i + hopSize - 1];
                     }
-                    
+
                     // 1) apply window
 
                     if (_window != WindowTypes.Rectangular)
@@ -239,7 +242,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
                     // ...and save results for future calculations
 
-                    for (var n = 0; n < _envelopes.Length; n++)
+                    for (int n = 0; n < _envelopes.Length; n++)
                     {
                         _envelopes[n][en] = _filteredSpectrum[n];
                     }
@@ -251,7 +254,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 en = _featuregram.Length;
                 _envelopes = new float[_featuregram[0].Length][];
 
-                for (var n = 0; n < _envelopes.Length; n++)
+                for (int n = 0; n < _envelopes.Length; n++)
                 {
                     _envelopes[n] = new float[en];
                     for (i = 0; i < en; i++)
@@ -263,14 +266,14 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // =========================== modulation analysis =======================
 
-            var envelopeLength = en;
+            int envelopeLength = en;
 
             // long-term AVG-normalization
 
-            foreach (var envelope in _envelopes)
+            foreach (float[] envelope in _envelopes)
             {
-                var avg = 0.0f;
-                for (var k = 0; k < envelopeLength; k++)
+                float avg = 0.0f;
+                for (int k = 0; k < envelopeLength; k++)
                 {
                     avg += (k >= 0) ? envelope[k] : -envelope[k];
                 }
@@ -278,7 +281,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
                 if (avg >= 1e-10f)   // this happens more frequently
                 {
-                    for (var k = 0; k < envelopeLength; k++)
+                    for (int k = 0; k < envelopeLength; k++)
                     {
                         envelope[k] /= avg;
                     }
@@ -288,16 +291,16 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             i = 0;
             while (i < envelopeLength)
             {
-                var vector = new float[_envelopes.Length * (_modulationFftSize / 2 + 1)];
-                var offset = 0;
+                float[] vector = new float[_envelopes.Length * (_modulationFftSize / 2 + 1)];
+                int offset = 0;
 
-                foreach (var envelope in _envelopes)
+                foreach (float[] envelope in _envelopes)
                 {
                     // copy modFftSize samples (or envelopeLength - i in the end)
-                    var len = Math.Min(_modulationFftSize, envelopeLength - i);
+                    int len = Math.Min(_modulationFftSize, envelopeLength - i);
                     envelope.FastCopyTo(_modBlock, len, i);
                     // fill zeros to modFftSize if len < modFftSize
-                    for (var k = len; k < _modBlock.Length; _modBlock[k++] = 0) { }
+                    for (int k = len; k < _modBlock.Length; _modBlock[k++] = 0) { }
 
                     _modulationFft.PowerSpectrum(_modBlock, _modSpectrum);
                     _modSpectrum.FastCopyTo(vector, _modSpectrum.Length, 0, offset);
@@ -321,13 +324,13 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// <returns></returns>
         public float[][] MakeSpectrum2D(float[] featureVector)
         {
-            var length = _filterbank?.Length ?? _featuregram[0].Length;
+            int length = _filterbank?.Length ?? _featuregram[0].Length;
 
-            var spectrum = new float[length][];
-            var spectrumSize = _modulationFftSize / 2 + 1;
+            float[][] spectrum = new float[length][];
+            int spectrumSize = _modulationFftSize / 2 + 1;
 
-            var offset = 0;
-            for (var i = 0; i < spectrum.Length; i++)
+            int offset = 0;
+            for (int i = 0; i < spectrum.Length; i++)
             {
                 spectrum[i] = featureVector.FastCopyFragment(spectrumSize, offset);
                 offset += spectrumSize;
@@ -345,18 +348,18 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// <returns>Short-time spectra corresponding to particular modulation frequency</returns>
         public List<float[]> VectorsAtHerz(IList<float[]> featureVectors, float herz = 4)
         {
-            var length = _filterbank?.Length ?? _featuregram[0].Length;
-            var modulationSamplingRate = (float) SamplingRate / HopSize;
-            var resolution = modulationSamplingRate / _modulationFftSize;
-            var freq = (int) Math.Round(herz / resolution);
+            int length = _filterbank?.Length ?? _featuregram[0].Length;
+            float modulationSamplingRate = (float)SamplingRate / HopSize;
+            float resolution = modulationSamplingRate / _modulationFftSize;
+            int freq = (int)Math.Round(herz / resolution);
 
-            var spectrumSize = _modulationFftSize / 2 + 1;
-            
-            var freqVectors = new List<float[]>();
-            foreach (var vector in featureVectors)
+            int spectrumSize = _modulationFftSize / 2 + 1;
+
+            List<float[]> freqVectors = new List<float[]>();
+            foreach (float[] vector in featureVectors)
             {
-                var spectrum = new float[length];
-                for (var i = 0; i < spectrum.Length; i++)
+                float[] spectrum = new float[length];
+                for (int i = 0; i < spectrum.Length; i++)
                 {
                     spectrum[i] = vector[freq + i * spectrumSize];
                 }

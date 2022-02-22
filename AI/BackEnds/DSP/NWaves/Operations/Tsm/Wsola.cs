@@ -67,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
             _hopAnalysis = Math.Max(hopAnalysis, 10);
             _hopSynthesis = (int)(_hopAnalysis * stretch);
             _maxDelta = maxDelta > 2 ? maxDelta : _hopSynthesis;
-            
+
             _userParameters = true;
 
             PrepareConvolver();
@@ -88,7 +88,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
                 _windowSize = 1024;     // 46,4 ms
                 _hopAnalysis = 128;     //  5,8 ms
             }
-            else if (_stretch > 1.1)   
+            else if (_stretch > 1.1)
             {
                 _windowSize = 1536;     // 69,7 ms
                 _hopAnalysis = 256;     // 10,6 ms
@@ -115,7 +115,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         /// </summary>
         private void PrepareConvolver()
         {
-            var fftSize = MathUtils.NextPowerOfTwo(_windowSize + _maxDelta - 1);
+            int fftSize = MathUtils.NextPowerOfTwo(_windowSize + _maxDelta - 1);
 
             if (fftSize >= 512)
             {
@@ -137,7 +137,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 
             if (signal.SamplingRate != 22050 && !_userParameters)
             {
-                var factor = (float)signal.SamplingRate / 22050;
+                float factor = (float)signal.SamplingRate / 22050;
 
                 _windowSize = (int)(_windowSize * factor);
                 _hopAnalysis = (int)(_hopAnalysis * factor);
@@ -147,16 +147,16 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
                 PrepareConvolver();
             }
 
-            var window = Window.OfType(WindowTypes.Hann, _windowSize);
-            var gain = _hopSynthesis / window.Select(w => w * w).Sum() * 0.75f;
+            float[] window = Window.OfType(WindowTypes.Hann, _windowSize);
+            float gain = _hopSynthesis / window.Select(w => w * w).Sum() * 0.75f;
 
             // and now WSOLA:
 
-            var input = signal.Samples;
-            var output = new float[(int)(_stretch * (input.Length + _windowSize))];
+            float[] input = signal.Samples;
+            float[] output = new float[(int)(_stretch * (input.Length + _windowSize))];
 
-            var current = new float[_windowSize + _maxDelta];
-            var prev = new float[_windowSize];
+            float[] current = new float[_windowSize + _maxDelta];
+            float[] prev = new float[_windowSize];
 
             int posSynthesis = 0;
 
@@ -180,12 +180,12 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 
                 int size = Math.Min(_windowSize, output.Length - posSynthesis);
 
-                for (var j = 0; j < size; j++)
+                for (int j = 0; j < size; j++)
                 {
                     output[posSynthesis + j] += current[delta + j] * window[j];
                 }
 
-                for (var j = 0; j < _hopSynthesis; j++)
+                for (int j = 0; j < _hopSynthesis; j++)
                 {
                     output[posSynthesis + j] *= gain;
                 }
@@ -205,18 +205,18 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         /// <returns></returns>
         public int WaveformSimilarityPos(float[] current, float[] prev, int maxDelta)
         {
-            var optimalShift = 0;
-            var maxCorrelation = 0.0f;
+            int optimalShift = 0;
+            float maxCorrelation = 0.0f;
 
             // for small window sizes cross-correlate directly:
 
             if (_convolver == null)
             {
-                for (var i = 0; i < maxDelta; i++)
+                for (int i = 0; i < maxDelta; i++)
                 {
-                    var xcorr = 0.0f;
+                    float xcorr = 0.0f;
 
-                    for (var j = 0; j < prev.Length; j++)
+                    for (int j = 0; j < prev.Length; j++)
                     {
                         xcorr += current[i + j] * prev[j];
                     }

@@ -15,8 +15,8 @@ namespace AI.ML.Classifiers
         public double C { get; set; } = 1;
         public int NumSupportVectors { get; set; } = 2;
 
-        Vector w;
-        double b = 0, nW;
+        private Vector w;
+        private double b = 0, nW;
 
         public SVMBinary(int dim)
         {
@@ -44,8 +44,8 @@ namespace AI.ML.Classifiers
 
             for (int i = 0; i < EpochesToPass; i++)
             {
-                var sv = GetSupportVectors(features, classes); // Получение опорных векторов
-                
+                Tuple<Vector[], int[]> sv = GetSupportVectors(features, classes); // Получение опорных векторов
+
                 data = Margin.GetAverageMarginWithGradient(sv.Item2, sv.Item1, w, b, C, L1, L2, MinimalMargin); // Расчет градиента по опрным векторам
 
                 w -= LearningRate * data.GradientW;
@@ -55,9 +55,9 @@ namespace AI.ML.Classifiers
             nW = AnalyticGeometryFunctions.NormVect(w);
         }
 
-        Tuple<Vector[], int[]> GetSupportVectors(Vector[] features, int[] classes) 
+        private Tuple<Vector[], int[]> GetSupportVectors(Vector[] features, int[] classes)
         {
-            var data = Margin.GetSupportVector(classes, features, w, b, NumSupportVectors);
+            DataSets.VectorClass[] data = Margin.GetSupportVector(classes, features, w, b, NumSupportVectors);
             Vector[] feats = new Vector[data.Length];
             int[] marks = new int[data.Length];
 
@@ -69,7 +69,7 @@ namespace AI.ML.Classifiers
 
             return new Tuple<Vector[], int[]>(feats, marks);
         }
-        
-        
+
+
     }
 }

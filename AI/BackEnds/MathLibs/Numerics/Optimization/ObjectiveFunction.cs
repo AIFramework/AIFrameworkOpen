@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -110,7 +110,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// <summary>
         /// Objective function where the first and second derivatives are available.
         /// </summary>
-        public static IScalarObjectiveFunction ScalarSecondDerivative(Func<double, double> function, Func<double, double> derivative, Func<double,double> secondDerivative)
+        public static IScalarObjectiveFunction ScalarSecondDerivative(Func<double, double> function, Func<double, double> derivative, Func<double, double> secondDerivative)
         {
             return new ScalarObjectiveFunction(function, derivative, secondDerivative);
         }
@@ -122,7 +122,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             Func<VectorMathNet<double>, VectorMathNet<double>, MatrixMathNet<double>> derivatives,
             VectorMathNet<double> observedX, VectorMathNet<double> observedY, VectorMathNet<double> weight = null)
         {
-            var objective = new NonlinearObjectiveFunction(function, derivatives);
+            NonlinearObjectiveFunction objective = new NonlinearObjectiveFunction(function, derivatives);
             objective.SetObserved(observedX, observedY, weight);
             return objective;
         }
@@ -134,7 +134,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             VectorMathNet<double> observedX, VectorMathNet<double> observedY, VectorMathNet<double> weight = null,
             int accuracyOrder = 2)
         {
-            var objective = new NonlinearObjectiveFunction(function, accuracyOrder: accuracyOrder);
+            NonlinearObjectiveFunction objective = new NonlinearObjectiveFunction(function, accuracyOrder: accuracyOrder);
             objective.SetObserved(observedX, observedY, weight);
             return objective;
         }
@@ -148,7 +148,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         {
             VectorMathNet<double> Func(VectorMathNet<double> point, VectorMathNet<double> x)
             {
-                var functionValues = CreateVector.Dense<double>(x.Count);
+                VectorMathNet<double> functionValues = CreateVector.Dense<double>(x.Count);
                 for (int i = 0; i < x.Count; i++)
                 {
                     functionValues[i] = function(point, x[i]);
@@ -159,7 +159,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 
             MatrixMathNet<double> Prime(VectorMathNet<double> point, VectorMathNet<double> x)
             {
-                var derivativeValues = CreateMatrix.Dense<double>(x.Count, point.Count);
+                MatrixMathNet<double> derivativeValues = CreateMatrix.Dense<double>(x.Count, point.Count);
                 for (int i = 0; i < x.Count; i++)
                 {
                     derivativeValues.SetRow(i, derivatives(point, x[i]));
@@ -168,7 +168,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 return derivativeValues;
             }
 
-            var objective = new NonlinearObjectiveFunction(Func, Prime);
+            NonlinearObjectiveFunction objective = new NonlinearObjectiveFunction(Func, Prime);
             objective.SetObserved(observedX, observedY, weight);
             return objective;
         }
@@ -182,7 +182,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         {
             VectorMathNet<double> Func(VectorMathNet<double> point, VectorMathNet<double> x)
             {
-                var functionValues = CreateVector.Dense<double>(x.Count);
+                VectorMathNet<double> functionValues = CreateVector.Dense<double>(x.Count);
                 for (int i = 0; i < x.Count; i++)
                 {
                     functionValues[i] = function(point, x[i]);
@@ -191,7 +191,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 return functionValues;
             }
 
-            var objective = new NonlinearObjectiveFunction(Func, accuracyOrder: accuracyOrder);
+            NonlinearObjectiveFunction objective = new NonlinearObjectiveFunction(Func, accuracyOrder: accuracyOrder);
             objective.SetObserved(observedX, observedY, weight);
             return objective;
         }
@@ -203,7 +203,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             Func<VectorMathNet<double>, VectorMathNet<double>, MatrixMathNet<double>> derivatives,
             VectorMathNet<double> observedX, VectorMathNet<double> observedY, VectorMathNet<double> weight = null)
         {
-            var objective = new NonlinearObjectiveFunction(function, derivatives);
+            NonlinearObjectiveFunction objective = new NonlinearObjectiveFunction(function, derivatives);
             objective.SetObserved(observedX, observedY, weight);
             return objective.ToObjectiveFunction();
         }
@@ -216,7 +216,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             VectorMathNet<double> observedX, VectorMathNet<double> observedY, VectorMathNet<double> weight = null,
             int accuracyOrder = 2)
         {
-            var objective = new NonlinearObjectiveFunction(function, null, accuracyOrder: accuracyOrder);
+            NonlinearObjectiveFunction objective = new NonlinearObjectiveFunction(function, null, accuracyOrder: accuracyOrder);
             objective.SetObserved(observedX, observedY, weight);
             return objective.ToObjectiveFunction();
         }

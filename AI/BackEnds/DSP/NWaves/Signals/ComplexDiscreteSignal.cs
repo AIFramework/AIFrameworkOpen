@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.DSP.NWaves.Utils;
 
 namespace AI.BackEnds.DSP.NWaves.Signals
 {
@@ -98,9 +98,9 @@ namespace AI.BackEnds.DSP.NWaves.Signals
 
             SamplingRate = samplingRate;
 
-            var reals = new double[length];
-            var imags = new double[length];
-            for (var i = 0; i < length; i++)
+            double[] reals = new double[length];
+            double[] imags = new double[length];
+            for (int i = 0; i < length; i++)
             {
                 reals[i] = real;
                 imags[i] = imag;
@@ -121,10 +121,10 @@ namespace AI.BackEnds.DSP.NWaves.Signals
 
             SamplingRate = samplingRate;
 
-            var intSamples = samples.ToArray();
-            var realSamples = new double[intSamples.Length];
-            
-            for (var i = 0; i < intSamples.Length; i++)
+            int[] intSamples = samples.ToArray();
+            double[] realSamples = new double[intSamples.Length];
+
+            for (int i = 0; i < intSamples.Length; i++)
             {
                 realSamples[i] = intSamples[i] / normalizeFactor;
             }
@@ -132,7 +132,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
             Real = realSamples;
             Imag = new double[intSamples.Length];
         }
-        
+
         /// <summary>
         /// Method for creating the deep copy of a complex signal
         /// </summary>
@@ -172,7 +172,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
             {
                 Guard.AgainstInvalidRange(startPos, endPos, "Left index", "Right index");
 
-                var rangeLength = endPos - startPos;
+                int rangeLength = endPos - startPos;
 
                 return new ComplexDiscreteSignal(SamplingRate,
                                     Real.FastCopyFragment(rangeLength, startPos),
@@ -187,11 +187,11 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         {
             get
             {
-                var real = Real;
-                var imag = Imag;
+                double[] real = Real;
+                double[] imag = Imag;
 
-                var magnitude = new double[real.Length];
-                for (var i = 0; i < magnitude.Length; i++)
+                double[] magnitude = new double[real.Length];
+                for (int i = 0; i < magnitude.Length; i++)
                 {
                     magnitude[i] = Math.Sqrt(real[i] * real[i] + imag[i] * imag[i]);
                 }
@@ -207,11 +207,11 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         {
             get
             {
-                var real = Real;
-                var imag = Imag;
+                double[] real = Real;
+                double[] imag = Imag;
 
-                var magnitude = new double[real.Length];
-                for (var i = 0; i < magnitude.Length; i++)
+                double[] magnitude = new double[real.Length];
+                for (int i = 0; i < magnitude.Length; i++)
                 {
                     magnitude[i] = real[i] * real[i] + imag[i] * imag[i];
                 }
@@ -227,11 +227,11 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         {
             get
             {
-                var real = Real;
-                var imag = Imag;
+                double[] real = Real;
+                double[] imag = Imag;
 
-                var phase = new double[real.Length];
-                for (var i = 0; i < phase.Length; i++)
+                double[] phase = new double[real.Length];
+                for (int i = 0; i < phase.Length; i++)
                 {
                     phase[i] = Math.Atan2(imag[i], real[i]);
                 }
@@ -289,7 +289,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <returns>Amplified signal</returns>
         public static ComplexDiscreteSignal operator *(ComplexDiscreteSignal s, float coeff)
         {
-            var signal = s.Copy();
+            ComplexDiscreteSignal signal = s.Copy();
             signal.Amplify(coeff);
             return signal;
         }

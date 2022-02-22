@@ -48,8 +48,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
     /// </remarks>
     public class NevillePolynomialInterpolation : IInterpolation
     {
-        readonly double[] _x;
-        readonly double[] _y;
+        private readonly double[] _x;
+        private readonly double[] _y;
 
         /// <param name="x">Sample Points t, sorted ascendingly.</param>
         /// <param name="y">Sample Values x(t), sorted ascendingly by x.</param>
@@ -65,7 +65,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                 throw new ArgumentException("The given array is too small. It must be at least 1 long.", nameof(x));
             }
 
-            for (var i = 1; i < x.Length; ++i)
+            for (int i = 1; i < x.Length; ++i)
             {
                 if (x[i] == x[i - 1])
                 {
@@ -126,7 +126,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// <returns>Interpolated value x(t).</returns>
         public double Interpolate(double t)
         {
-            var x = new double[_y.Length];
+            double[] x = new double[_y.Length];
             _y.CopyTo(x, 0);
 
             for (int level = 1; level < x.Length; level++)
@@ -136,7 +136,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                     double hp = t - _x[i + level];
                     double ho = _x[i] - t;
                     double den = _x[i] - _x[i + level];
-                    x[i] = ((hp*x[i]) + (ho*x[i + 1]))/den;
+                    x[i] = ((hp * x[i]) + (ho * x[i + 1])) / den;
                 }
             }
 
@@ -150,8 +150,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// <returns>Interpolated first derivative at point t.</returns>
         public double Differentiate(double t)
         {
-            var x = new double[_y.Length];
-            var dx = new double[_y.Length];
+            double[] x = new double[_y.Length];
+            double[] dx = new double[_y.Length];
             _y.CopyTo(x, 0);
 
             for (int level = 1; level < x.Length; level++)
@@ -161,8 +161,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                     double hp = t - _x[i + level];
                     double ho = _x[i] - t;
                     double den = _x[i] - _x[i + level];
-                    dx[i] = ((hp*dx[i]) + x[i] + (ho*dx[i + 1]) - x[i + 1])/den;
-                    x[i] = ((hp*x[i]) + (ho*x[i + 1]))/den;
+                    dx[i] = ((hp * dx[i]) + x[i] + (ho * dx[i + 1]) - x[i + 1]) / den;
+                    x[i] = ((hp * x[i]) + (ho * x[i + 1])) / den;
                 }
             }
 
@@ -176,9 +176,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// <returns>Interpolated second derivative at point t.</returns>
         public double Differentiate2(double t)
         {
-            var x = new double[_y.Length];
-            var dx = new double[_y.Length];
-            var ddx = new double[_y.Length];
+            double[] x = new double[_y.Length];
+            double[] dx = new double[_y.Length];
+            double[] ddx = new double[_y.Length];
             _y.CopyTo(x, 0);
 
             for (int level = 1; level < x.Length; level++)
@@ -188,9 +188,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                     double hp = t - _x[i + level];
                     double ho = _x[i] - t;
                     double den = _x[i] - _x[i + level];
-                    ddx[i] = ((hp*ddx[i]) + (ho*ddx[i + 1]) + (2*dx[i]) - (2*dx[i + 1]))/den;
-                    dx[i] = ((hp*dx[i]) + x[i] + (ho*dx[i + 1]) - x[i + 1])/den;
-                    x[i] = ((hp*x[i]) + (ho*x[i + 1]))/den;
+                    ddx[i] = ((hp * ddx[i]) + (ho * ddx[i + 1]) + (2 * dx[i]) - (2 * dx[i + 1])) / den;
+                    dx[i] = ((hp * dx[i]) + x[i] + (ho * dx[i + 1]) - x[i + 1]) / den;
+                    x[i] = ((hp * x[i]) + (ho * x[i + 1])) / den;
                 }
             }
 
@@ -201,13 +201,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// Indefinite integral at point t. NOT SUPPORTED.
         /// </summary>
         /// <param name="t">Point t to integrate at.</param>
-        double IInterpolation.Integrate(double t) => throw new NotSupportedException();
+        double IInterpolation.Integrate(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Definite integral between points a and b. NOT SUPPORTED.
         /// </summary>
         /// <param name="a">Left bound of the integration interval [a,b].</param>
         /// <param name="b">Right bound of the integration interval [a,b].</param>
-        double IInterpolation.Integrate(double a, double b) => throw new NotSupportedException();
+        double IInterpolation.Integrate(double a, double b)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

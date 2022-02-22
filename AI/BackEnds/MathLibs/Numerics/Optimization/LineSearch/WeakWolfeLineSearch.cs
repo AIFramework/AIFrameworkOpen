@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch
 {
@@ -48,7 +48,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch
     public class WeakWolfeLineSearch : WolfeLineSearch
     {
         public WeakWolfeLineSearch(double c1, double c2, double parameterTolerance, int maxIterations = 10)
-            : base(c1,c2,parameterTolerance,maxIterations)
+            : base(c1, c2, parameterTolerance, maxIterations)
         {
             // Validation in base class
         }
@@ -71,7 +71,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch
         protected override void ValidateInputArguments(IObjectiveFunctionEvaluation startingPoint, VectorMathNet<double> searchDirection, double initialStep, double upperBound)
         {
             if (!startingPoint.IsGradientSupported)
+            {
                 throw new ArgumentException("objective function does not support gradient");
+            }
         }
 
         protected override void ValidateGradient(IObjectiveFunctionEvaluation eval)
@@ -85,7 +87,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch
             }
         }
 
-        static bool IsFinite(double x)
+        private static bool IsFinite(double x)
         {
             return !(double.IsNaN(x) || double.IsInfinity(x));
         }

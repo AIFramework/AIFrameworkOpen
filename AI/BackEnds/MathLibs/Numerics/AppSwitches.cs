@@ -40,17 +40,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
     /// </remarks>
     public static class AppSwitches
     {
-        const string AppSwitchDisableNativeProviderProbing = "Switch.AI.BackEnds.MathLibs.MathNet.Numerics.Providers.DisableNativeProviderProbing";
-        const string AppSwitchDisableNativeProviders = "Switch.AI.BackEnds.MathLibs.MathNet.Numerics.Providers.DisableNativeProviders";
-        const string AppSwitchDisableMklNativeProvider = "Switch.AI.BackEnds.MathLibs.MathNet.Numerics.Providers.DisableMklNativeProvider";
-        const string AppSwitchDisableCudaNativeProvider = "Switch.AI.BackEnds.MathLibs.MathNet.Numerics.Providers.DisableCudaNativeProvider";
-        const string AppSwitchDisableOpenBlasNativeProvider = "Switch.AI.BackEnds.MathLibs.MathNet.Numerics.Providers.DisableOpenBlasNativeProvider";
+        private const string AppSwitchDisableNativeProviderProbing = "Switch.AI.BackEnds.MathLibs.MathNet.Numerics.Providers.DisableNativeProviderProbing";
+        private const string AppSwitchDisableNativeProviders = "Switch.AI.BackEnds.MathLibs.MathNet.Numerics.Providers.DisableNativeProviders";
+        private const string AppSwitchDisableMklNativeProvider = "Switch.AI.BackEnds.MathLibs.MathNet.Numerics.Providers.DisableMklNativeProvider";
+        private const string AppSwitchDisableCudaNativeProvider = "Switch.AI.BackEnds.MathLibs.MathNet.Numerics.Providers.DisableCudaNativeProvider";
+        private const string AppSwitchDisableOpenBlasNativeProvider = "Switch.AI.BackEnds.MathLibs.MathNet.Numerics.Providers.DisableOpenBlasNativeProvider";
 
 #if NET40
         static readonly System.Collections.Generic.Dictionary<string, bool> Switches = new System.Collections.Generic.Dictionary<string, bool>();
 #endif
 
-        static void SetSwitch(string switchName, bool isEnabled)
+        private static void SetSwitch(string switchName, bool isEnabled)
         {
 #if NET40
             Switches[switchName] = isEnabled;
@@ -59,7 +59,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 #endif
         }
 
-        static bool IsEnabled(string switchName)
+        private static bool IsEnabled(string switchName)
         {
 #if NET40
             return Switches.TryGetValue(switchName, out bool isEnabled) && isEnabled;

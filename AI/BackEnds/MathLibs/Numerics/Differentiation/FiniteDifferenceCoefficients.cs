@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
 {
@@ -57,8 +57,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
             }
         }
 
-        double[][,] _coefficients;
-        int _points;
+        private double[][,] _coefficients;
+        private int _points;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FiniteDifferenceCoefficients"/> class.
@@ -79,15 +79,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         public double[] GetCoefficients(int center, int order)
         {
             if (center >= _coefficients.Length)
+            {
                 throw new ArgumentOutOfRangeException(nameof(center), "Center position must be within the point range.");
+            }
+
             if (order >= _coefficients.Length)
+            {
                 throw new ArgumentOutOfRangeException(nameof(order), "Maximum difference order is points-1.");
+            }
 
             // Return proper row
-            var columns = _coefficients[center].GetLength(1);
-            var array = new double[columns];
+            int columns = _coefficients[center].GetLength(1);
+            double[] array = new double[columns];
             for (int i = 0; i < columns; ++i)
+            {
                 array[i] = _coefficients[center][order, i];
+            }
+
             return array;
         }
 
@@ -99,21 +107,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         public double[,] GetCoefficientsForAllOrders(int center)
         {
             if (center >= _coefficients.Length)
+            {
                 throw new ArgumentOutOfRangeException(nameof(center), "Center position must be within the point range.");
+            }
 
             return _coefficients[center];
         }
 
-        void CalculateCoefficients(int points)
+        private void CalculateCoefficients(int points)
         {
-            var c = new double[points][,];
+            double[][,] c = new double[points][,];
 
             // For ever possible center given the number of points, compute ever possible coefficient for all possible orders.
             for (int center = 0; center < points; center++)
             {
                 // Deltas matrix for center located at 'center'.
-                var A = new DenseMatrix(points);
-                var l = points - center - 1;
+                DenseMatrix A = new DenseMatrix(points);
+                int l = points - center - 1;
                 for (int row = points - 1; row >= 0; row--)
                 {
                     A[row, 0] = 1.0;
@@ -127,7 +137,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
                 c[center] = A.Inverse().ToArray();
 
                 // "Polish" results by rounding.
-                var fac = SpecialFunctions.Factorial(points);
+                double fac = SpecialFunctions.Factorial(points);
                 for (int j = 0; j < points; j++)
                 {
                     for (int k = 0; k < points; k++)

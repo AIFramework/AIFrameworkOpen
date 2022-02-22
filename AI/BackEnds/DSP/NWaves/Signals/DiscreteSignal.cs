@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.DSP.NWaves.Utils;
 
 namespace AI.BackEnds.DSP.NWaves.Signals
 {
@@ -75,8 +75,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals
 
             SamplingRate = samplingRate;
 
-            var samples = new float[length];
-            for (var i = 0; i < samples.Length; i++)
+            float[] samples = new float[length];
+            for (int i = 0; i < samples.Length; i++)
             {
                 samples[i] = value;
             }
@@ -95,10 +95,10 @@ namespace AI.BackEnds.DSP.NWaves.Signals
             Guard.AgainstNonPositive(samplingRate, "Sampling rate");
 
             SamplingRate = samplingRate;
-            
-            var intSamples = samples.ToArray();
-            var floatSamples = new float[intSamples.Length];
-            for (var i = 0; i < intSamples.Length; i++)
+
+            int[] intSamples = samples.ToArray();
+            float[] floatSamples = new float[intSamples.Length];
+            for (int i = 0; i < intSamples.Length; i++)
             {
                 floatSamples[i] = intSamples[i] / normalizeFactor;
             }
@@ -213,7 +213,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <returns>Amplified signal</returns>
         public static DiscreteSignal operator *(DiscreteSignal s, float coeff)
         {
-            var signal = s.Copy();
+            DiscreteSignal signal = s.Copy();
             signal.Amplify(coeff);
             return signal;
         }
@@ -230,8 +230,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <returns>Energy</returns>
         public float Energy(int startPos, int endPos)
         {
-            var total = 0.0f;
-            for (var i = startPos; i < endPos; i++)
+            float total = 0.0f;
+            for (int i = startPos; i < endPos; i++)
             {
                 total += Samples[i] * Samples[i];
             }
@@ -243,7 +243,10 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// Energy of entire signal
         /// </summary>
         /// <returns>Energy</returns>
-        public float Energy() => Energy(0, Length);
+        public float Energy()
+        {
+            return Energy(0, Length);
+        }
 
         /// <summary>
         /// RMS of a signal fragment
@@ -260,7 +263,10 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// RMS of entire signal
         /// </summary>
         /// <returns>RMS</returns>
-        public float Rms() => (float)Math.Sqrt(Energy(0, Length));
+        public float Rms()
+        {
+            return (float)Math.Sqrt(Energy(0, Length));
+        }
 
         /// <summary>
         /// Zero-crossing rate of a signal fragment
@@ -272,12 +278,12 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         {
             const float disbalance = 1e-4f;
 
-            var prevSample = Samples[startPos] + disbalance;
+            float prevSample = Samples[startPos] + disbalance;
 
-            var rate = 0;
-            for (var i = startPos + 1; i < endPos; i++)
+            int rate = 0;
+            for (int i = startPos + 1; i < endPos; i++)
             {
-                var sample = Samples[i] + disbalance;
+                float sample = Samples[i] + disbalance;
 
                 if ((sample >= 0) != (prevSample >= 0))
                 {
@@ -294,7 +300,10 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// Zero-crossing rate of entire signal
         /// </summary>
         /// <returns>Zero-crossing rate</returns>
-        public float ZeroCrossingRate() => ZeroCrossingRate(0, Length);
+        public float ZeroCrossingRate()
+        {
+            return ZeroCrossingRate(0, Length);
+        }
 
         /// <summary>
         /// Shannon entropy of a signal fragment
@@ -305,20 +314,20 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <returns>Shannon entropy</returns>
         public float Entropy(int startPos, int endPos, int binCount = 32)
         {
-            var len = endPos - startPos;
+            int len = endPos - startPos;
 
             if (len < binCount)
             {
                 binCount = len;
             }
 
-            var bins = new int[binCount+1];
+            int[] bins = new int[binCount + 1];
 
-            var min = Samples[0];
-            var max = Samples[0];
-            for (var i = startPos; i < endPos; i++)
+            float min = Samples[0];
+            float max = Samples[0];
+            for (int i = startPos; i < endPos; i++)
             {
-                var sample = Math.Abs(Samples[i]);
+                float sample = Math.Abs(Samples[i]);
 
                 if (sample < min)
                 {
@@ -335,17 +344,17 @@ namespace AI.BackEnds.DSP.NWaves.Signals
                 return 0;
             }
 
-            var binLength = (max - min) / binCount;
+            float binLength = (max - min) / binCount;
 
-            for (var i = startPos; i < endPos; i++)
+            for (int i = startPos; i < endPos; i++)
             {
                 bins[(int)((Math.Abs(Samples[i]) - min) / binLength)]++;
             }
 
-            var entropy = 0.0;
-            for (var i = 0; i < binCount; i++)
+            double entropy = 0.0;
+            for (int i = 0; i < binCount; i++)
             {
-                var p = (float) bins[i] / (endPos - startPos);
+                float p = (float)bins[i] / (endPos - startPos);
 
                 if (p > 1e-8f)
                 {
@@ -360,7 +369,10 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// Entropy of entire signal
         /// </summary>
         /// <returns>Entropy</returns>
-        public float Entropy() => Entropy(0, Length);
+        public float Entropy()
+        {
+            return Entropy(0, Length);
+        }
 
         #endregion
     }

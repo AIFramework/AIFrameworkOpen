@@ -27,7 +27,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
         public FastDct4(int dctSize)
         {
-            var halfSize = dctSize / 2;
+            int halfSize = dctSize / 2;
             _fft = new Fft(halfSize);
             _temp = new float[halfSize];
             _tempRe = new float[halfSize];
@@ -38,16 +38,16 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             Array.Clear(output, 0, output.Length);
 
-            var N = Size;
+            int N = Size;
 
             // mutiply by exp(-j * pi * n / N):
 
-            for (var m = 0; m < _temp.Length; m++)
+            for (int m = 0; m < _temp.Length; m++)
             {
-                var re = input[2 * m];
-                var im = input[N - 1 - 2 * m];
-                var cos = Math.Cos(Math.PI * m / N);
-                var sin = Math.Sin(-Math.PI * m / N);
+                float re = input[2 * m];
+                float im = input[N - 1 - 2 * m];
+                double cos = Math.Cos(Math.PI * m / N);
+                double sin = Math.Sin(-Math.PI * m / N);
 
                 _temp[m] = 2 * (float)(re * cos - im * sin);
                 output[m] = 2 * (float)(re * sin + im * cos);
@@ -57,12 +57,12 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             // mutiply by exp(-j * pi * (2n + 0.5) / 2N):
 
-            for (var m = 0; m < _temp.Length; m++)
+            for (int m = 0; m < _temp.Length; m++)
             {
-                var re = _temp[m];
-                var im = output[m];
-                var cos = Math.Cos(0.5 * Math.PI * (2 * m + 0.5) / N);
-                var sin = Math.Sin(-0.5 * Math.PI * (2 * m + 0.5) / N);
+                float re = _temp[m];
+                float im = output[m];
+                double cos = Math.Cos(0.5 * Math.PI * (2 * m + 0.5) / N);
+                double sin = Math.Sin(-0.5 * Math.PI * (2 * m + 0.5) / N);
 
                 _tempRe[m] = (float)(re * cos - im * sin);
                 _tempIm[m] = (float)(re * sin + im * cos);
@@ -82,9 +82,12 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             Direct(input, output);
 
-            var norm = (float)(0.5 * Math.Sqrt(2.0 / Size));
+            float norm = (float)(0.5 * Math.Sqrt(2.0 / Size));
 
-            for (var i = 0; i < Size; output[i++] *= norm) ;
+            for (int i = 0; i < Size; output[i++] *= norm)
+            {
+                ;
+            }
         }
 
         public void Inverse(float[] input, float[] output)

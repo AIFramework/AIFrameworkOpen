@@ -22,16 +22,16 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 pitch = Pitch.FromSpectralPeaks(spectrum, samplingRate);
             }
 
-            var resolution = (float)samplingRate / (2 * (spectrum.Length - 1));
+            float resolution = (float)samplingRate / (2 * (spectrum.Length - 1));
 
-            var region = (int)(pitch / (2 * resolution));
+            int region = (int)(pitch / (2 * resolution));
 
             peaks[0] = (int)(pitch / resolution);
             peakFrequencies[0] = pitch;
-            
-            for (var i = 0; i < peaks.Length; i++)
+
+            for (int i = 0; i < peaks.Length; i++)
             {
-                var candidate = (i + 1) * peaks[0];
+                int candidate = (i + 1) * peaks[0];
 
                 if (candidate >= spectrum.Length)
                 {
@@ -40,12 +40,12 @@ namespace AI.BackEnds.DSP.NWaves.Features
                     continue;
                 }
 
-                var c = candidate;
-                for (var j = -region; j < region; j++)
+                int c = candidate;
+                for (int j = -region; j < region; j++)
                 {
-                    if (c + j - 1       > 0 &&
-                        c + j + 1       < spectrum.Length &&
-                        spectrum[c + j] > spectrum[c + j - 1] && 
+                    if (c + j - 1 > 0 &&
+                        c + j + 1 < spectrum.Length &&
+                        spectrum[c + j] > spectrum[c + j - 1] &&
                         spectrum[c + j] > spectrum[c + j + 1] &&
                         spectrum[c + j] > spectrum[candidate])
                     {
@@ -72,12 +72,12 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 return 0;
             }
 
-            var sum = 1e-10f;
-            var weightedSum = 0.0f;
+            float sum = 1e-10f;
+            float weightedSum = 0.0f;
 
-            for (var i = 0; i < peaks.Length; i++)
+            for (int i = 0; i < peaks.Length; i++)
             {
-                var p = peaks[i];
+                int p = peaks[i];
                 sum += spectrum[p];
                 weightedSum += peakFrequencies[i] * spectrum[p];
             }
@@ -99,14 +99,14 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 return 0;
             }
 
-            var centroid = Centroid(spectrum, peaks, peakFrequencies);
+            float centroid = Centroid(spectrum, peaks, peakFrequencies);
 
-            var sum = 1e-10f;
-            var weightedSum = 0.0f;
+            float sum = 1e-10f;
+            float weightedSum = 0.0f;
 
-            for (var i = 0; i < peaks.Length; i++)
+            for (int i = 0; i < peaks.Length; i++)
             {
-                var p = peaks[i];
+                int p = peaks[i];
                 sum += spectrum[p];
                 weightedSum += spectrum[p] * (peakFrequencies[i] - centroid) * (peakFrequencies[i] - centroid);
             }
@@ -128,15 +128,15 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 return 0;
             }
 
-            var f0 = peakFrequencies[0];
+            float f0 = peakFrequencies[0];
 
-            var squaredSum = 1e-10f;
-            var sum = 0.0f;
+            float squaredSum = 1e-10f;
+            float sum = 0.0f;
 
-            for (var i = 0; i < peaks.Length; i++)
+            for (int i = 0; i < peaks.Length; i++)
             {
-                var p = peaks[i];
-                var sqr = spectrum[p] * spectrum[p];
+                int p = peaks[i];
+                float sqr = spectrum[p] * spectrum[p];
 
                 sum += (peakFrequencies[i] - (i + 1) * f0) * sqr;
                 squaredSum += sqr;
@@ -158,15 +158,15 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 return 0;
             }
 
-            var oddSum = 1e-10f;
-            var evenSum = 1e-10f;
+            float oddSum = 1e-10f;
+            float evenSum = 1e-10f;
 
-            for (var i = 0; i < peaks.Length; i += 2)
+            for (int i = 0; i < peaks.Length; i += 2)
             {
                 evenSum += spectrum[peaks[i]];
             }
 
-            for (var i = 1; i < peaks.Length; i += 2)
+            for (int i = 1; i < peaks.Length; i += 2)
             {
                 oddSum += spectrum[peaks[i]];
             }
@@ -188,9 +188,9 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 return 0;
             }
 
-            var sum = 1e-10f;
+            float sum = 1e-10f;
 
-            for (var i = 0; i < peaks.Length; i++)
+            for (int i = 0; i < peaks.Length; i++)
             {
                 sum += spectrum[peaks[i]];
             }

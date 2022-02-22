@@ -37,11 +37,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
     /// <remarks>Supports both differentiation and integration.</remarks>
     public class QuadraticSpline : IInterpolation
     {
-        readonly double[] _x;
-        readonly double[] _c0;
-        readonly double[] _c1;
-        readonly double[] _c2;
-        readonly Lazy<double[]> _indefiniteIntegral;
+        private readonly double[] _x;
+        private readonly double[] _c0;
+        private readonly double[] _c1;
+        private readonly double[] _c2;
+        private readonly Lazy<double[]> _indefiniteIntegral;
 
         /// <param name="x">sample points (N+1), sorted ascending</param>
         /// <param name="c0">Zero order spline coefficients (N)</param>
@@ -84,8 +84,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         public double Interpolate(double t)
         {
             int k = LeftSegmentIndex(t);
-            var x = t - _x[k];
-            return _c0[k] + x*(_c1[k] + x*_c2[k]);
+            double x = t - _x[k];
+            return _c0[k] + x * (_c1[k] + x * _c2[k]);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         public double Differentiate(double t)
         {
             int k = LeftSegmentIndex(t);
-            return _c1[k] + (t - _x[k])*2*_c2[k];
+            return _c1[k] + (t - _x[k]) * 2 * _c2[k];
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         public double Differentiate2(double t)
         {
             int k = LeftSegmentIndex(t);
-            return 2*_c2[k];
+            return 2 * _c2[k];
         }
 
         /// <summary>
@@ -117,8 +117,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         public double Integrate(double t)
         {
             int k = LeftSegmentIndex(t);
-            var x = t - _x[k];
-            return _indefiniteIntegral.Value[k] + x*(_c0[k] + x*(_c1[k]/2 + x*_c2[k]/3));
+            double x = t - _x[k];
+            return _indefiniteIntegral.Value[k] + x * (_c0[k] + x * (_c1[k] / 2 + x * _c2[k] / 3));
         }
 
         /// <summary>
@@ -126,15 +126,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// </summary>
         /// <param name="a">Left bound of the integration interval [a,b].</param>
         /// <param name="b">Right bound of the integration interval [a,b].</param>
-        public double Integrate(double a, double b) => Integrate(b) - Integrate(a);
-
-        double[] ComputeIndefiniteIntegral()
+        public double Integrate(double a, double b)
         {
-            var integral = new double[_c1.Length];
+            return Integrate(b) - Integrate(a);
+        }
+
+        private double[] ComputeIndefiniteIntegral()
+        {
+            double[] integral = new double[_c1.Length];
             for (int i = 0; i < integral.Length - 1; i++)
             {
                 double w = _x[i + 1] - _x[i];
-                integral[i + 1] = integral[i] + w*(_c0[i] + w*(_c1[i]/2 + w*_c2[i]/3));
+                integral[i + 1] = integral[i] + w * (_c0[i] + w * (_c1[i] / 2 + w * _c2[i] / 3));
             }
 
             return integral;
@@ -144,7 +147,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// Find the index of the greatest sample point smaller than t,
         /// or the left index of the closest segment for extrapolation.
         /// </summary>
-        int LeftSegmentIndex(double t)
+        private int LeftSegmentIndex(double t)
         {
             int index = Array.BinarySearch(_x, t);
             if (index < 0)

@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
 {
@@ -43,7 +43,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <param name="w">Weight matrix W, usually diagonal with an entry for each predictor (row).</param>
         public static VectorMathNet<T> Weighted<T>(MatrixMathNet<T> x, VectorMathNet<T> y, MatrixMathNet<T> w) where T : struct, IEquatable<T>, IFormattable
         {
-            return x.TransposeThisAndMultiply(w*x).Cholesky().Solve(x.TransposeThisAndMultiply(w*y));
+            return x.TransposeThisAndMultiply(w * x).Cholesky().Solve(x.TransposeThisAndMultiply(w * y));
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <param name="w">Weight matrix W, usually diagonal with an entry for each predictor (row).</param>
         public static MatrixMathNet<T> Weighted<T>(MatrixMathNet<T> x, MatrixMathNet<T> y, MatrixMathNet<T> w) where T : struct, IEquatable<T>, IFormattable
         {
-            return x.TransposeThisAndMultiply(w*x).Cholesky().Solve(x.TransposeThisAndMultiply(w*y));
+            return x.TransposeThisAndMultiply(w * x).Cholesky().Solve(x.TransposeThisAndMultiply(w * y));
         }
 
         /// <summary>
@@ -66,15 +66,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <param name="intercept">True if an intercept should be added as first artificial predictor value. Default = false.</param>
         public static T[] Weighted<T>(T[][] x, T[] y, T[] w, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var predictor = MatrixMathNet<T>.Build.DenseOfRowArrays(x);
+            MatrixMathNet<T> predictor = MatrixMathNet<T>.Build.DenseOfRowArrays(x);
             if (intercept)
             {
                 predictor = predictor.InsertColumn(0, VectorMathNet<T>.Build.Dense(predictor.RowCount, VectorMathNet<T>.One));
             }
 
-            var response = VectorMathNet<T>.Build.Dense(y);
-            var weights = MatrixMathNet<T>.Build.Diagonal(w);
-            return predictor.TransposeThisAndMultiply(weights*predictor).Cholesky().Solve(predictor.TransposeThisAndMultiply(weights*response)).ToArray();
+            VectorMathNet<T> response = VectorMathNet<T>.Build.Dense(y);
+            MatrixMathNet<T> weights = MatrixMathNet<T>.Build.Diagonal(w);
+            return predictor.TransposeThisAndMultiply(weights * predictor).Cholesky().Solve(predictor.TransposeThisAndMultiply(weights * response)).ToArray();
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <param name="intercept">True if an intercept should be added as first artificial predictor value. Default = false.</param>
         public static T[] Weighted<T>(IEnumerable<Tuple<T[], T>> samples, T[] weights, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var (u, v) = samples.UnpackSinglePass();
+            (T[][] u, T[] v) = samples.UnpackSinglePass();
             return Weighted(u, v, weights, intercept);
         }
 
@@ -97,7 +97,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <param name="intercept">True if an intercept should be added as first artificial predictor value. Default = false.</param>
         public static T[] Weighted<T>(IEnumerable<(T[], T)> samples, T[] weights, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var (u, v) = samples.UnpackSinglePass();
+            (T[][] u, T[] v) = samples.UnpackSinglePass();
             return Weighted(u, v, weights, intercept);
         }
 
@@ -108,10 +108,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         public static VectorMathNet<T> Local<T>(MatrixMathNet<T> x, VectorMathNet<T> y, VectorMathNet<T> t, double radius, Func<double, T> kernel) where T : struct, IEquatable<T>, IFormattable
         {
             // TODO: Weird kernel definition
-            var w = MatrixMathNet<T>.Build.Dense(x.RowCount, x.RowCount);
+            MatrixMathNet<T> w = MatrixMathNet<T>.Build.Dense(x.RowCount, x.RowCount);
             for (int i = 0; i < x.RowCount; i++)
             {
-                w.At(i, i, kernel(Distance.Euclidean(t, x.Row(i))/radius));
+                w.At(i, i, kernel(Distance.Euclidean(t, x.Row(i)) / radius));
             }
 
             return Weighted(x, y, w);
@@ -124,10 +124,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         public static MatrixMathNet<T> Local<T>(MatrixMathNet<T> x, MatrixMathNet<T> y, VectorMathNet<T> t, double radius, Func<double, T> kernel) where T : struct, IEquatable<T>, IFormattable
         {
             // TODO: Weird kernel definition
-            var w = MatrixMathNet<T>.Build.Dense(x.RowCount, x.RowCount);
+            MatrixMathNet<T> w = MatrixMathNet<T>.Build.Dense(x.RowCount, x.RowCount);
             for (int i = 0; i < x.RowCount; i++)
             {
-                w.At(i, i, kernel(Distance.Euclidean(t, x.Row(i))/radius));
+                w.At(i, i, kernel(Distance.Euclidean(t, x.Row(i)) / radius));
             }
 
             return Weighted(x, y, w);
@@ -136,7 +136,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         [Obsolete("Warning: This function is here to stay but will likely be refactored and/or moved to another place. Opting out from semantic versioning.")]
         public static double GaussianKernel(double normalizedDistance)
         {
-            return Math.Exp(-0.5*normalizedDistance*normalizedDistance);
+            return Math.Exp(-0.5 * normalizedDistance * normalizedDistance);
         }
     }
 }

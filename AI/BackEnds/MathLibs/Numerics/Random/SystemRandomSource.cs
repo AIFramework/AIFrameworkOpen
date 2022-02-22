@@ -27,12 +27,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
-using System.Threading;
 using System;
+using System.Collections.Generic;
 using System.Runtime;
+using System.Runtime.Serialization;
+using System.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
@@ -44,7 +44,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
     public class SystemRandomSource : RandomSource
     {
         [DataMember(Order = 1)]
-        readonly System.Random _random;
+        private readonly System.Random _random;
 
         /// <summary>
         /// Construct a new random number generator with a random seed.
@@ -80,7 +80,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             _random = new System.Random(seed);
         }
 
-        static readonly ThreadLocal<SystemRandomSource> DefaultInstance = new ThreadLocal<SystemRandomSource>(() => new SystemRandomSource(RandomSeed.Robust(), true));
+        private static readonly ThreadLocal<SystemRandomSource> DefaultInstance = new ThreadLocal<SystemRandomSource>(() => new SystemRandomSource(RandomSeed.Robust(), true));
 
         /// <summary>
         /// Default instance, thread-safe.
@@ -145,7 +145,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 
             CommonParallel.For(0, values.Length, values.Length >= 65536 ? 8192 : values.Length >= 16384 ? 2048 : 1024, (a, b) =>
             {
-                var rnd = new System.Random(RandomSeed.Robust());
+                System.Random rnd = new System.Random(RandomSeed.Robust());
                 for (int i = a; i < b; i++)
                 {
                     values[i] = rnd.NextDouble();
@@ -161,7 +161,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] FastDoubles(int length)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             FastDoubles(data);
             return data;
         }
@@ -172,13 +172,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <remarks>Supports being called in parallel from multiple threads, but the result must be enumerated from a single thread each.</remarks>
         public static IEnumerable<double> DoubleSequence()
         {
-            var rnd1 = Default;
+            SystemRandomSource rnd1 = Default;
             for (int i = 0; i < 128; i++)
             {
                 yield return rnd1.NextDouble();
             }
 
-            var rnd2 = new System.Random(RandomSeed.Robust());
+            System.Random rnd2 = new System.Random(RandomSeed.Robust());
             while (true)
             {
                 yield return rnd2.NextDouble();
@@ -191,7 +191,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <remarks>Supports being called in parallel from multiple threads.</remarks>
         public static void Doubles(double[] values, int seed)
         {
-            var rnd = new System.Random(seed);
+            System.Random rnd = new System.Random(seed);
             for (int i = 0; i < values.Length; i++)
             {
                 values[i] = rnd.NextDouble();
@@ -205,7 +205,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] Doubles(int length, int seed)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             Doubles(data, seed);
             return data;
         }
@@ -216,7 +216,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <remarks>Supports being called in parallel from multiple threads, but the result must be enumerated from a single thread each.</remarks>
         public static IEnumerable<double> DoubleSequence(int seed)
         {
-            var rnd = new System.Random(seed);
+            System.Random rnd = new System.Random(seed);
             while (true)
             {
                 yield return rnd.NextDouble();

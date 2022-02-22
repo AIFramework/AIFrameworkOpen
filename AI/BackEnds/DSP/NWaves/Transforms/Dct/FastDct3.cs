@@ -15,14 +15,29 @@
         /// </summary>
         public int Size => _dct2.Size;
 
-        public FastDct3(int dctSize) => _dct2 = new FastDct2(dctSize);
+        public FastDct3(int dctSize)
+        {
+            _dct2 = new FastDct2(dctSize);
+        }
 
-        public void Direct(float[] input, float[] output) => _dct2.Inverse(input, output);
+        public void Direct(float[] input, float[] output)
+        {
+            _dct2.Inverse(input, output);
+        }
 
-        public void DirectNorm(float[] input, float[] output) => _dct2.InverseNorm(input, output);
+        public void DirectNorm(float[] input, float[] output)
+        {
+            _dct2.InverseNorm(input, output);
+        }
 
-        public void Inverse(float[] input, float[] output) => _dct2.Direct(input, output);
+        public void Inverse(float[] input, float[] output)
+        {
+            _dct2.Direct(input, output);
+        }
 
-        public void InverseNorm(float[] input, float[] output) => _dct2.DirectNorm(input, output);
+        public void InverseNorm(float[] input, float[] output)
+        {
+            _dct2.DirectNorm(input, output);
+        }
     }
 }

@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -48,31 +48,30 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class ConwayMaxwellPoisson : IDiscreteDistribution
     {
-        System.Random _random;
-
-        readonly double _lambda;
-        readonly double _nu;
+        private System.Random _random;
+        private readonly double _lambda;
+        private readonly double _nu;
 
         /// <summary>
         /// The mean of the distribution.
         /// </summary>
-        double _mean = double.MinValue;
+        private double _mean = double.MinValue;
 
         /// <summary>
         ///  The variance of the distribution.
         /// </summary>
-        double _variance = double.MinValue;
+        private double _variance = double.MinValue;
 
         /// <summary>
         /// Caches the value of the normalization constant.
         /// </summary>
-        double _z = double.MinValue;
+        private double _z = double.MinValue;
 
         /// <summary>
         /// Since many properties of the distribution can only be computed approximately, the tolerance
         /// level specifies how much error we accept.
         /// </summary>
-        const double Tolerance = 1e-12;
+        private const double Tolerance = 1e-12;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConwayMaxwellPoisson"/> class.
@@ -110,9 +109,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return $"ConwayMaxwellPoisson(λ = {_lambda}, ν = {_nu})";
@@ -166,31 +165,31 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 }
 
                 // The normalization constant for the distribution.
-                var z = 1 + _lambda;
+                double z = 1 + _lambda;
 
                 // The probability of the next term.
-                var a1 = _lambda*_lambda/Math.Pow(2, _nu);
+                double a1 = _lambda * _lambda / Math.Pow(2, _nu);
 
                 // The unnormalized mean.
-                var zx = _lambda;
+                double zx = _lambda;
 
                 // The contribution of the next term to the mean.
-                var ax1 = 2*a1;
+                double ax1 = 2 * a1;
 
-                for (var i = 3; i < 1000; i++)
+                for (int i = 3; i < 1000; i++)
                 {
-                    var e = _lambda/Math.Pow(i, _nu);
-                    var ex = _lambda/Math.Pow(i, _nu - 1)/(i - 1);
-                    var a2 = a1*e;
-                    var ax2 = ax1*ex;
+                    double e = _lambda / Math.Pow(i, _nu);
+                    double ex = _lambda / Math.Pow(i, _nu - 1) / (i - 1);
+                    double a2 = a1 * e;
+                    double ax2 = ax1 * ex;
 
                     if ((ax2 < ax1) && (a2 < a1))
                     {
-                        var m = zx/z;
-                        var upper = (zx + (ax1/(1 - (ax2/ax1))))/z;
-                        var lower = zx/(z + (a1/(1 - (a2/a1))));
+                        double m = zx / z;
+                        double upper = (zx + (ax1 / (1 - (ax2 / ax1)))) / z;
+                        double lower = zx / (z + (a1 / (1 - (a2 / a1))));
 
-                        var r = (upper - lower)/m;
+                        double r = (upper - lower) / m;
                         if (r < Tolerance)
                         {
                             break;
@@ -203,7 +202,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     ax1 = ax2;
                 }
 
-                _mean = zx/z;
+                _mean = zx / z;
                 return _mean;
             }
         }
@@ -227,31 +226,31 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 }
 
                 // The normalization constant for the distribution.
-                var z = 1 + _lambda;
+                double z = 1 + _lambda;
 
                 // The probability of the next term.
-                var a1 = _lambda*_lambda/Math.Pow(2, _nu);
+                double a1 = _lambda * _lambda / Math.Pow(2, _nu);
 
                 // The unnormalized second moment.
-                var zxx = _lambda;
+                double zxx = _lambda;
 
                 // The contribution of the next term to the second moment.
-                var axx1 = 4*a1;
+                double axx1 = 4 * a1;
 
-                for (var i = 3; i < 1000; i++)
+                for (int i = 3; i < 1000; i++)
                 {
-                    var e = _lambda/Math.Pow(i, _nu);
-                    var exx = _lambda/Math.Pow(i, _nu - 2)/(i - 1)/(i - 1);
-                    var a2 = a1*e;
-                    var axx2 = axx1*exx;
+                    double e = _lambda / Math.Pow(i, _nu);
+                    double exx = _lambda / Math.Pow(i, _nu - 2) / (i - 1) / (i - 1);
+                    double a2 = a1 * e;
+                    double axx2 = axx1 * exx;
 
                     if ((axx2 < axx1) && (a2 < a1))
                     {
-                        var m = zxx/z;
-                        var upper = (zxx + (axx1/(1 - (axx2/axx1))))/z;
-                        var lower = zxx/(z + (a1/(1 - (a2/a1))));
+                        double m = zxx / z;
+                        double upper = (zxx + (axx1 / (1 - (axx2 / axx1)))) / z;
+                        double lower = zxx / (z + (a1 / (1 - (a2 / a1))));
 
-                        var r = (upper - lower)/m;
+                        double r = (upper - lower) / m;
                         if (r < Tolerance)
                         {
                             break;
@@ -264,8 +263,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     axx1 = axx2;
                 }
 
-                var mean = Mean;
-                _variance = (zxx/z) - (mean*mean);
+                double mean = Mean;
+                _variance = (zxx / z) - (mean * mean);
                 return _variance;
             }
         }
@@ -312,7 +311,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the probability mass at location <paramref name="k"/>.</returns>
         public double Probability(int k)
         {
-            return Math.Pow(_lambda, k)/Math.Pow(SpecialFunctions.Factorial(k), _nu)/Z;
+            return Math.Pow(_lambda, k) / Math.Pow(SpecialFunctions.Factorial(k), _nu) / Z;
         }
 
         /// <summary>
@@ -322,7 +321,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the log probability mass at location <paramref name="k"/>.</returns>
         public double ProbabilityLn(int k)
         {
-            return k*Math.Log(_lambda) - _nu*SpecialFunctions.FactorialLn(k) - Math.Log(Z);
+            return k * Math.Log(_lambda) - _nu * SpecialFunctions.FactorialLn(k) - Math.Log(Z);
         }
 
         /// <summary>
@@ -332,11 +331,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the cumulative distribution at location <paramref name="x"/>.</returns>
         public double CumulativeDistribution(double x)
         {
-            var z = Z;
+            double z = Z;
             double sum = 0;
-            for (var i = 0; i < x + 1; i++)
+            for (int i = 0; i < x + 1; i++)
             {
-                sum += Math.Pow(_lambda, i)/Math.Pow(SpecialFunctions.Factorial(i), _nu)/z;
+                sum += Math.Pow(_lambda, i) / Math.Pow(SpecialFunctions.Factorial(i), _nu) / z;
             }
 
             return sum;
@@ -356,8 +355,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = Normalization(lambda, nu);
-            return Math.Pow(lambda, k)/Math.Pow(SpecialFunctions.Factorial(k), nu)/z;
+            double z = Normalization(lambda, nu);
+            return Math.Pow(lambda, k) / Math.Pow(SpecialFunctions.Factorial(k), nu) / z;
         }
 
         /// <summary>
@@ -374,8 +373,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = Normalization(lambda, nu);
-            return k*Math.Log(lambda) - nu*SpecialFunctions.FactorialLn(k) - Math.Log(z);
+            double z = Normalization(lambda, nu);
+            return k * Math.Log(lambda) - nu * SpecialFunctions.FactorialLn(k) - Math.Log(z);
         }
 
         /// <summary>
@@ -393,11 +392,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = Normalization(lambda, nu);
+            double z = Normalization(lambda, nu);
             double sum = 0;
-            for (var i = 0; i < x + 1; i++)
+            for (int i = 0; i < x + 1; i++)
             {
-                sum += Math.Pow(lambda, i)/Math.Pow(SpecialFunctions.Factorial(i), nu)/z;
+                sum += Math.Pow(lambda, i) / Math.Pow(SpecialFunctions.Factorial(i), nu) / z;
             }
 
             return sum;
@@ -406,7 +405,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the normalization constant of the Conway-Maxwell-Poisson distribution.
         /// </summary>
-        double Z
+        private double Z
         {
             get
             {
@@ -428,22 +427,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>
         /// an approximate normalization constant for the CMP distribution.
         /// </returns>
-        static double Normalization(double lambda, double nu)
+        private static double Normalization(double lambda, double nu)
         {
             // Initialize Z with the first two terms.
-            var z = 1.0 + lambda;
+            double z = 1.0 + lambda;
 
             // Remembers the last term added.
-            var t = lambda;
+            double t = lambda;
 
             // Start adding more terms until convergence.
-            for (var i = 2; i < 1000; i++)
+            for (int i = 2; i < 1000; i++)
             {
                 // The new addition for term i.
-                var e = lambda/Math.Pow(i, nu);
+                double e = lambda / Math.Pow(i, nu);
 
                 // The new term.
-                t = t*e;
+                t = t * e;
 
                 // The updated normalization constant.
                 z = z + t;
@@ -451,7 +450,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 // The stopping criterion.
                 if (e < 1)
                 {
-                    if (t/(1 - e)/z < Tolerance)
+                    if (t / (1 - e) / z < Tolerance)
                     {
                         break;
                     }
@@ -471,38 +470,38 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>
         /// One sample from the distribution implied by <paramref name="lambda"/>, <paramref name="nu"/>, and <paramref name="z"/>.
         /// </returns>
-        static int SampleUnchecked(System.Random rnd, double lambda, double nu, double z)
+        private static int SampleUnchecked(System.Random rnd, double lambda, double nu, double z)
         {
-            var u = rnd.NextDouble();
-            var p = 1.0/z;
-            var cdf = p;
-            var i = 0;
+            double u = rnd.NextDouble();
+            double p = 1.0 / z;
+            double cdf = p;
+            int i = 0;
 
             while (u > cdf)
             {
                 i++;
-                p = p*lambda/Math.Pow(i, nu);
+                p = p * lambda / Math.Pow(i, nu);
                 cdf += p;
             }
 
             return i;
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, double lambda, double nu, double z)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, double lambda, double nu, double z)
         {
-            var uniform = rnd.NextDoubles(values.Length);
+            double[] uniform = rnd.NextDoubles(values.Length);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    var u = uniform[i];
-                    var p = 1.0/z;
-                    var cdf = p;
-                    var k = 0;
+                    double u = uniform[i];
+                    double p = 1.0 / z;
+                    double cdf = p;
+                    int k = 0;
                     while (u > cdf)
                     {
                         k++;
-                        p = p*lambda/Math.Pow(k, nu);
+                        p = p * lambda / Math.Pow(k, nu);
                         cdf += p;
                     }
 
@@ -511,7 +510,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             });
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, double lambda, double nu, double z)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, double lambda, double nu, double z)
         {
             while (true)
             {
@@ -560,7 +559,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = Normalization(lambda, nu);
+            double z = Normalization(lambda, nu);
             return SampleUnchecked(rnd, lambda, nu, z);
         }
 
@@ -577,7 +576,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = Normalization(lambda, nu);
+            double z = Normalization(lambda, nu);
             return SamplesUnchecked(rnd, lambda, nu, z);
         }
 
@@ -595,7 +594,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = Normalization(lambda, nu);
+            double z = Normalization(lambda, nu);
             SamplesUnchecked(rnd, values, lambda, nu, z);
         }
 
@@ -611,7 +610,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = Normalization(lambda, nu);
+            double z = Normalization(lambda, nu);
             return SampleUnchecked(SystemRandomSource.Default, lambda, nu, z);
         }
 
@@ -627,7 +626,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = Normalization(lambda, nu);
+            double z = Normalization(lambda, nu);
             return SamplesUnchecked(SystemRandomSource.Default, lambda, nu, z);
         }
 
@@ -644,7 +643,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = Normalization(lambda, nu);
+            double z = Normalization(lambda, nu);
             SamplesUnchecked(SystemRandomSource.Default, values, lambda, nu, z);
         }
     }

@@ -9,20 +9,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
     {
         #region Private Variables
 
-        readonly Func<VectorMathNet<double>, VectorMathNet<double>, VectorMathNet<double>> _userFunction; // (p, x) => f(x; p)
-        readonly Func<VectorMathNet<double>, VectorMathNet<double>, MatrixMathNet<double>> _userDerivative; // (p, x) => df(x; p)/dp
-        readonly int _accuracyOrder; // the desired accuracy order to evaluate the jacobian by numerical approximaiton.
+        private readonly Func<VectorMathNet<double>, VectorMathNet<double>, VectorMathNet<double>> _userFunction; // (p, x) => f(x; p)
+        private readonly Func<VectorMathNet<double>, VectorMathNet<double>, MatrixMathNet<double>> _userDerivative; // (p, x) => df(x; p)/dp
+        private readonly int _accuracyOrder; // the desired accuracy order to evaluate the jacobian by numerical approximaiton.
 
-        VectorMathNet<double> _coefficients;
+        private VectorMathNet<double> _coefficients;
+        private bool _hasFunctionValue;
+        private double _functionValue; // the residual sum of squares, residuals * residuals.
+        private VectorMathNet<double> _residuals; // the weighted error values
 
-        bool _hasFunctionValue;
-        double _functionValue; // the residual sum of squares, residuals * residuals.
-        VectorMathNet<double> _residuals; // the weighted error values
-
-        bool _hasJacobianValue;
-        MatrixMathNet<double> _jacobianValue; // the Jacobian matrix.
-        VectorMathNet<double> _gradientValue; // the Gradient vector.
-        MatrixMathNet<double> _hessianValue; // the Hessian matrix.
+        private bool _hasJacobianValue;
+        private MatrixMathNet<double> _jacobianValue; // the Jacobian matrix.
+        private VectorMathNet<double> _gradientValue; // the Gradient vector.
+        private MatrixMathNet<double> _hessianValue; // the Hessian matrix.
 
         #endregion Private Variables
 
@@ -42,7 +41,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
         /// Set or get the values of the weights for the observations.
         /// </summary>
         public MatrixMathNet<double> Weights { get; private set; }
-        VectorMathNet<double> L; // Weights = LL'
+
+        private VectorMathNet<double> L; // Weights = LL'
 
         /// <summary>
         /// Get whether parameters are fixed or free.
@@ -66,7 +66,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
         {
             get
             {
-                var df = NumberOfObservations - NumberOfParameters;
+                int df = NumberOfObservations - NumberOfParameters;
                 if (IsFixed != null)
                 {
                     df = df + IsFixed.Count(p => p);
@@ -271,13 +271,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
                 return (Value, Gradient, Hessian);
             }
 
-            var objective = new GradientHessianObjectiveFunction(Function);
+            GradientHessianObjectiveFunction objective = new GradientHessianObjectiveFunction(Function);
             return objective;
         }
 
         #region Private Methods
 
-        void EvaluateFunction()
+        private void EvaluateFunction()
         {
             // Calculates the residuals, (y[i] - f(x[i]; p)) * L[i]
             if (ModelValues == null)
@@ -296,7 +296,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
             _functionValue = _residuals.DotProduct(_residuals);
         }
 
-        void EvaluateJacobian()
+        private void EvaluateJacobian()
         {
             // Calculates the jacobian of x and p.
             if (_userDerivative != null)
@@ -336,15 +336,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
             _hessianValue = _jacobianValue.Transpose() * _jacobianValue;
         }
 
-        MatrixMathNet<double> NumericalJacobian(VectorMathNet<double> parameters, VectorMathNet<double> currentValues, int accuracyOrder = 2)
+        private MatrixMathNet<double> NumericalJacobian(VectorMathNet<double> parameters, VectorMathNet<double> currentValues, int accuracyOrder = 2)
         {
             const double sqrtEpsilon = 1.4901161193847656250E-8; // sqrt(machineEpsilon)
 
             MatrixMathNet<double> derivertives = MatrixMathNet<double>.Build.Dense(NumberOfObservations, NumberOfParameters);
 
-            var d = 0.000003 * parameters.PointwiseAbs().PointwiseMaximum(sqrtEpsilon);
+            VectorMathNet<double> d = 0.000003 * parameters.PointwiseAbs().PointwiseMaximum(sqrtEpsilon);
 
-            var h = VectorMathNet<double>.Build.Dense(NumberOfParameters);
+            VectorMathNet<double> h = VectorMathNet<double>.Build.Dense(NumberOfParameters);
             for (int j = 0; j < NumberOfParameters; j++)
             {
                 h[j] = d[j];
@@ -352,67 +352,67 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
                 if (accuracyOrder >= 6)
                 {
                     // f'(x) = {- f(x - 3h) + 9f(x - 2h) - 45f(x - h) + 45f(x + h) - 9f(x + 2h) + f(x + 3h)} / 60h + O(h^6)
-                    var f1 = _userFunction(parameters - 3 * h, ObservedX);
-                    var f2 = _userFunction(parameters - 2 * h, ObservedX);
-                    var f3 = _userFunction(parameters - h, ObservedX);
-                    var f4 = _userFunction(parameters + h, ObservedX);
-                    var f5 = _userFunction(parameters + 2 * h, ObservedX);
-                    var f6 = _userFunction(parameters + 3 * h, ObservedX);
+                    VectorMathNet<double> f1 = _userFunction(parameters - 3 * h, ObservedX);
+                    VectorMathNet<double> f2 = _userFunction(parameters - 2 * h, ObservedX);
+                    VectorMathNet<double> f3 = _userFunction(parameters - h, ObservedX);
+                    VectorMathNet<double> f4 = _userFunction(parameters + h, ObservedX);
+                    VectorMathNet<double> f5 = _userFunction(parameters + 2 * h, ObservedX);
+                    VectorMathNet<double> f6 = _userFunction(parameters + 3 * h, ObservedX);
 
-                    var prime = (-f1 + 9 * f2 - 45 * f3 + 45 * f4 - 9 * f5 + f6) / (60 * h[j]);
+                    VectorMathNet<double> prime = (-f1 + 9 * f2 - 45 * f3 + 45 * f4 - 9 * f5 + f6) / (60 * h[j]);
                     derivertives.SetColumn(j, prime);
                 }
                 else if (accuracyOrder == 5)
                 {
                     // f'(x) = {-137f(x) + 300f(x + h) - 300f(x + 2h) + 200f(x + 3h) - 75f(x + 4h) + 12f(x + 5h)} / 60h + O(h^5)
-                    var f1 = currentValues;
-                    var f2 = _userFunction(parameters + h, ObservedX);
-                    var f3 = _userFunction(parameters + 2 * h, ObservedX);
-                    var f4 = _userFunction(parameters + 3 * h, ObservedX);
-                    var f5 = _userFunction(parameters + 4 * h, ObservedX);
-                    var f6 = _userFunction(parameters + 5 * h, ObservedX);
+                    VectorMathNet<double> f1 = currentValues;
+                    VectorMathNet<double> f2 = _userFunction(parameters + h, ObservedX);
+                    VectorMathNet<double> f3 = _userFunction(parameters + 2 * h, ObservedX);
+                    VectorMathNet<double> f4 = _userFunction(parameters + 3 * h, ObservedX);
+                    VectorMathNet<double> f5 = _userFunction(parameters + 4 * h, ObservedX);
+                    VectorMathNet<double> f6 = _userFunction(parameters + 5 * h, ObservedX);
 
-                    var prime = (-137 * f1 + 300 * f2 - 300 * f3 + 200 * f4 - 75 * f5 + 12 * f6) / (60 * h[j]);
+                    VectorMathNet<double> prime = (-137 * f1 + 300 * f2 - 300 * f3 + 200 * f4 - 75 * f5 + 12 * f6) / (60 * h[j]);
                     derivertives.SetColumn(j, prime);
                 }
                 else if (accuracyOrder == 4)
                 {
                     // f'(x) = {f(x - 2h) - 8f(x - h) + 8f(x + h) - f(x + 2h)} / 12h + O(h^4)
-                    var f1 = _userFunction(parameters - 2 * h, ObservedX);
-                    var f2 = _userFunction(parameters - h, ObservedX);
-                    var f3 = _userFunction(parameters + h, ObservedX);
-                    var f4 = _userFunction(parameters + 2 * h, ObservedX);
+                    VectorMathNet<double> f1 = _userFunction(parameters - 2 * h, ObservedX);
+                    VectorMathNet<double> f2 = _userFunction(parameters - h, ObservedX);
+                    VectorMathNet<double> f3 = _userFunction(parameters + h, ObservedX);
+                    VectorMathNet<double> f4 = _userFunction(parameters + 2 * h, ObservedX);
 
-                    var prime = (f1 - 8 * f2 + 8 * f3 - f4) / (12 * h[j]);
+                    VectorMathNet<double> prime = (f1 - 8 * f2 + 8 * f3 - f4) / (12 * h[j]);
                     derivertives.SetColumn(j, prime);
                 }
                 else if (accuracyOrder == 3)
                 {
                     // f'(x) = {-11f(x) + 18f(x + h) - 9f(x + 2h) + 2f(x + 3h)} / 6h + O(h^3)
-                    var f1 = currentValues;
-                    var f2 = _userFunction(parameters + h, ObservedX);
-                    var f3 = _userFunction(parameters + 2 * h, ObservedX);
-                    var f4 = _userFunction(parameters + 3 * h, ObservedX);
+                    VectorMathNet<double> f1 = currentValues;
+                    VectorMathNet<double> f2 = _userFunction(parameters + h, ObservedX);
+                    VectorMathNet<double> f3 = _userFunction(parameters + 2 * h, ObservedX);
+                    VectorMathNet<double> f4 = _userFunction(parameters + 3 * h, ObservedX);
 
-                    var prime = (-11 * f1 + 18 * f2 - 9 * f3 + 2 * f4) / (6 * h[j]);
+                    VectorMathNet<double> prime = (-11 * f1 + 18 * f2 - 9 * f3 + 2 * f4) / (6 * h[j]);
                     derivertives.SetColumn(j, prime);
                 }
                 else if (accuracyOrder == 2)
                 {
                     // f'(x) = {f(x + h) - f(x - h)} / 2h + O(h^2)
-                    var f1 = _userFunction(parameters + h, ObservedX);
-                    var f2 = _userFunction(parameters - h, ObservedX);
+                    VectorMathNet<double> f1 = _userFunction(parameters + h, ObservedX);
+                    VectorMathNet<double> f2 = _userFunction(parameters - h, ObservedX);
 
-                    var prime = (f1 - f2) / (2 * h[j]);
+                    VectorMathNet<double> prime = (f1 - f2) / (2 * h[j]);
                     derivertives.SetColumn(j, prime);
                 }
                 else
                 {
                     // f'(x) = {- f(x) + f(x + h)} / h + O(h)
-                    var f1 = currentValues;
-                    var f2 = _userFunction(parameters + h, ObservedX);
+                    VectorMathNet<double> f1 = currentValues;
+                    VectorMathNet<double> f2 = _userFunction(parameters + h, ObservedX);
 
-                    var prime = (-f1 + f2) / h[j];
+                    VectorMathNet<double> prime = (-f1 + f2) / h[j];
                     derivertives.SetColumn(j, prime);
                 }
 

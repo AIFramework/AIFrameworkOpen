@@ -74,7 +74,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 
             _b = new double[_kernelSize * 2];
 
-            for (var i = 0; i < _kernelSize; i++)
+            for (int i = 0; i < _kernelSize; i++)
             {
                 _b[i] = _b[_kernelSize + i] = kernel.ElementAt(i);
             }
@@ -112,21 +112,21 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
             switch (method)
             {
                 case FilteringMethod.OverlapAdd:
-                {
-                    var fftSize = MathUtils.NextPowerOfTwo(4 * _kernelSize);
-                    var blockConvolver = OlaBlockConvolver64.FromFilter(this, fftSize);
-                    return blockConvolver.ApplyTo(signal);
-                }
+                    {
+                        int fftSize = MathUtils.NextPowerOfTwo(4 * _kernelSize);
+                        OlaBlockConvolver64 blockConvolver = OlaBlockConvolver64.FromFilter(this, fftSize);
+                        return blockConvolver.ApplyTo(signal);
+                    }
                 case FilteringMethod.OverlapSave:
-                {
-                    var fftSize = MathUtils.NextPowerOfTwo(4 * _kernelSize);
-                    var blockConvolver = OlsBlockConvolver64.FromFilter(this, fftSize);
-                    return blockConvolver.ApplyTo(signal);
-                }
+                    {
+                        int fftSize = MathUtils.NextPowerOfTwo(4 * _kernelSize);
+                        OlsBlockConvolver64 blockConvolver = OlsBlockConvolver64.FromFilter(this, fftSize);
+                        return blockConvolver.ApplyTo(signal);
+                    }
                 default:
-                {
-                    return ProcessAllSamples(signal);
-                }
+                    {
+                        return ProcessAllSamples(signal);
+                    }
             }
         }
 
@@ -139,7 +139,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         {
             _delayLine[_delayLineOffset] = sample;
 
-            var output = 0.0;
+            double output = 0.0;
 
             for (int i = 0, j = _kernelSize - _delayLineOffset; i < _kernelSize; i++, j++)
             {
@@ -163,14 +163,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// <returns></returns>
         public double[] ProcessAllSamples(double[] samples)
         {
-            var filtered = new double[samples.Length + _kernelSize - 1];
+            double[] filtered = new double[samples.Length + _kernelSize - 1];
 
-            var k = 0;
-            foreach (var sample in samples)
+            int k = 0;
+            foreach (double sample in samples)
             {
                 _delayLine[_delayLineOffset] = sample;
 
-                var output = 0.0;
+                double output = 0.0;
 
                 for (int i = 0, j = _kernelSize - _delayLineOffset; i < _kernelSize; i++, j++)
                 {
@@ -201,7 +201,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         {
             if (kernel.Length == _kernelSize)
             {
-                for (var i = 0; i < _kernelSize; i++)
+                for (int i = 0; i < _kernelSize; i++)
                 {
                     _b[i] = _b[_kernelSize + i] = kernel[i];
                 }

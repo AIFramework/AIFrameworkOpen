@@ -85,15 +85,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
             switch (scaling)
             {
                 case FourierTransformScaling.SymmetricScaling:
-                {
-                    HalfRescale(samples);
-                    break;
-                }
+                    {
+                        HalfRescale(samples);
+                        break;
+                    }
                 case FourierTransformScaling.ForwardScaling:
-                {
-                    FullRescale(samples);
-                    break;
-                }
+                    {
+                        FullRescale(samples);
+                        break;
+                    }
             }
         }
 
@@ -118,15 +118,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
             switch (scaling)
             {
                 case FourierTransformScaling.SymmetricScaling:
-                {
-                    HalfRescale(samples);
-                    break;
-                }
+                    {
+                        HalfRescale(samples);
+                        break;
+                    }
                 case FourierTransformScaling.ForwardScaling:
-                {
-                    FullRescale(samples);
-                    break;
-                }
+                    {
+                        FullRescale(samples);
+                        break;
+                    }
             }
         }
 
@@ -151,15 +151,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
             switch (scaling)
             {
                 case FourierTransformScaling.SymmetricScaling:
-                {
-                    HalfRescale(spectrum);
-                    break;
-                }
+                    {
+                        HalfRescale(spectrum);
+                        break;
+                    }
                 case FourierTransformScaling.BackwardScaling:
-                {
-                    FullRescale(spectrum);
-                    break;
-                }
+                    {
+                        FullRescale(spectrum);
+                        break;
+                    }
             }
         }
 
@@ -184,15 +184,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
             switch (scaling)
             {
                 case FourierTransformScaling.SymmetricScaling:
-                {
-                    HalfRescale(spectrum);
-                    break;
-                }
+                    {
+                        HalfRescale(spectrum);
+                        break;
+                    }
                 case FourierTransformScaling.BackwardScaling:
-                {
-                    FullRescale(spectrum);
-                    break;
-                }
+                    {
+                        FullRescale(spectrum);
+                        break;
+                    }
             }
         }
 
@@ -241,19 +241,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
 
             samples[0] = data[0].Real;
             samples[1] = 0d;
-            for (int i = 1, j = 2; i < data.Length/2; i++)
+            for (int i = 1, j = 2; i < data.Length / 2; i++)
             {
                 samples[j++] = data[i].Real;
                 samples[j++] = data[i].Imaginary;
             }
             if (n.IsEven())
             {
-                samples[n] = data[data.Length/2].Real;
-                samples[n+1] = 0d;
+                samples[n] = data[data.Length / 2].Real;
+                samples[n + 1] = 0d;
             }
             else
             {
-                samples[n-1] = data[data.Length / 2].Real;
+                samples[n - 1] = data[data.Length / 2].Real;
                 samples[n] = data[data.Length / 2].Imaginary;
             }
         }
@@ -294,19 +294,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
 
             Complex[] data = new Complex[n];
             data[0] = new Complex(spectrum[0], 0d);
-            for (int i = 1, j = 2; i < data.Length/2; i++)
+            for (int i = 1, j = 2; i < data.Length / 2; i++)
             {
                 data[i] = new Complex(spectrum[j++], spectrum[j++]);
                 data[data.Length - i] = data[i].Conjugate();
             }
             if (n.IsEven())
             {
-                data[data.Length/2] = new Complex(spectrum[n], 0d);
+                data[data.Length / 2] = new Complex(spectrum[n], 0d);
             }
             else
             {
-                data[data.Length/2] = new Complex(spectrum[n-1], spectrum[n]);
-                data[data.Length/2 + 1] = data[data.Length/2].Conjugate();
+                data[data.Length / 2] = new Complex(spectrum[n - 1], spectrum[n]);
+                data[data.Length / 2 + 1] = data[data.Length / 2].Conjugate();
             }
 
             Backward(data, scaling);

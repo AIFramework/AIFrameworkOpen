@@ -35,11 +35,11 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 
         public override float NextSample()
         {
-            var idx = ((int)_n) % _samples.Length;
+            int idx = ((int)_n) % _samples.Length;
 
             if (_interpolate)
             {
-                var frac = _n - (int)_n;
+                float frac = _n - (int)_n;
 
                 _n += _stride;
 

@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorization
 {
@@ -50,32 +50,32 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <exception cref="ArgumentNullException">If <paramref name="factor"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">If <paramref name="factor"/> is not a square matrix.</exception>
         /// <exception cref="ArgumentException">If <paramref name="factor"/> is not positive definite.</exception>
-        static void DoCholesky(MatrixMathNet<float> factor)
+        private static void DoCholesky(MatrixMathNet<float> factor)
         {
             if (factor.RowCount != factor.ColumnCount)
             {
                 throw new ArgumentException("Matrix must be square.");
             }
 
-            var tmpColumn = new float[factor.RowCount];
+            float[] tmpColumn = new float[factor.RowCount];
 
             // Main loop - along the diagonal
-            for (var ij = 0; ij < factor.RowCount; ij++)
+            for (int ij = 0; ij < factor.RowCount; ij++)
             {
                 // "Pivot" element
-                var tmpVal = factor.At(ij, ij);
+                float tmpVal = factor.At(ij, ij);
 
                 if (tmpVal > 0.0)
                 {
-                    tmpVal = (float) Math.Sqrt(tmpVal);
+                    tmpVal = (float)Math.Sqrt(tmpVal);
                     factor.At(ij, ij, tmpVal);
                     tmpColumn[ij] = tmpVal;
 
                     // Calculate multipliers and copy to local column
                     // Current column, below the diagonal
-                    for (var i = ij + 1; i < factor.RowCount; i++)
+                    for (int i = ij + 1; i < factor.RowCount; i++)
                     {
-                        factor.At(i, ij, factor.At(i, ij)/tmpVal);
+                        factor.At(i, ij, factor.At(i, ij) / tmpVal);
                         tmpColumn[i] = factor.At(i, ij);
                     }
 
@@ -87,7 +87,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                     throw new ArgumentException("Matrix must be positive definite.");
                 }
 
-                for (var i = ij + 1; i < factor.RowCount; i++)
+                for (int i = ij + 1; i < factor.RowCount; i++)
                 {
                     factor.At(ij, i, 0.0f);
                 }
@@ -105,7 +105,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         public static UserCholesky Create(MatrixMathNet<float> matrix)
         {
             // Create a new matrix for the Cholesky factor, then perform factorization (while overwriting).
-            var factor = matrix.Clone();
+            MatrixMathNet<float> factor = matrix.Clone();
             DoCholesky(factor);
             return new UserCholesky(factor);
         }
@@ -129,7 +129,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             DoCholesky(Factor);
         }
 
-        UserCholesky(MatrixMathNet<float> factor)
+        private UserCholesky(MatrixMathNet<float> factor)
             : base(factor)
         {
         }
@@ -143,14 +143,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="colLimit">Total columns</param>
         /// <param name="multipliers">Multipliers calculated previously</param>
         /// <param name="availableCores">Number of available processors</param>
-        static void DoCholeskyStep(MatrixMathNet<float> data, int rowDim, int firstCol, int colLimit, float[] multipliers, int availableCores)
+        private static void DoCholeskyStep(MatrixMathNet<float> data, int rowDim, int firstCol, int colLimit, float[] multipliers, int availableCores)
         {
-            var tmpColCount = colLimit - firstCol;
+            int tmpColCount = colLimit - firstCol;
 
             if ((availableCores > 1) && (tmpColCount > 200))
             {
-                var tmpSplit = firstCol + (tmpColCount/3);
-                var tmpCores = availableCores/2;
+                int tmpSplit = firstCol + (tmpColCount / 3);
+                int tmpCores = availableCores / 2;
 
                 CommonParallel.Invoke(
                     () => DoCholeskyStep(data, rowDim, firstCol, tmpSplit, multipliers, tmpCores),
@@ -158,12 +158,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
             else
             {
-                for (var j = firstCol; j < colLimit; j++)
+                for (int j = firstCol; j < colLimit; j++)
                 {
-                    var tmpVal = multipliers[j];
-                    for (var i = j; i < rowDim; i++)
+                    float tmpVal = multipliers[j];
+                    for (int i = j; i < rowDim; i++)
                     {
-                        data.At(i, j, data.At(i, j) - (multipliers[i]*tmpVal));
+                        data.At(i, j, data.At(i, j) - (multipliers[i] * tmpVal));
                     }
                 }
             }
@@ -192,33 +192,33 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
 
             input.CopyTo(result);
-            var order = Factor.RowCount;
+            int order = Factor.RowCount;
 
-            for (var c = 0; c < result.ColumnCount; c++)
+            for (int c = 0; c < result.ColumnCount; c++)
             {
                 // Solve L*Y = B;
                 float sum;
-                for (var i = 0; i < order; i++)
+                for (int i = 0; i < order; i++)
                 {
                     sum = result.At(i, c);
-                    for (var k = i - 1; k >= 0; k--)
+                    for (int k = i - 1; k >= 0; k--)
                     {
-                        sum -= Factor.At(i, k)*result.At(k, c);
+                        sum -= Factor.At(i, k) * result.At(k, c);
                     }
 
-                    result.At(i, c, sum/Factor.At(i, i));
+                    result.At(i, c, sum / Factor.At(i, i));
                 }
 
                 // Solve L'*X = Y;
-                for (var i = order - 1; i >= 0; i--)
+                for (int i = order - 1; i >= 0; i--)
                 {
                     sum = result.At(i, c);
-                    for (var k = i + 1; k < order; k++)
+                    for (int k = i + 1; k < order; k++)
                     {
-                        sum -= Factor.At(k, i)*result.At(k, c);
+                        sum -= Factor.At(k, i) * result.At(k, c);
                     }
 
-                    result.At(i, c, sum/Factor.At(i, i));
+                    result.At(i, c, sum / Factor.At(i, i));
                 }
             }
         }
@@ -241,31 +241,31 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
 
             input.CopyTo(result);
-            var order = Factor.RowCount;
+            int order = Factor.RowCount;
 
             // Solve L*Y = B;
             float sum;
-            for (var i = 0; i < order; i++)
+            for (int i = 0; i < order; i++)
             {
                 sum = result[i];
-                for (var k = i - 1; k >= 0; k--)
+                for (int k = i - 1; k >= 0; k--)
                 {
-                    sum -= Factor.At(i, k)*result[k];
+                    sum -= Factor.At(i, k) * result[k];
                 }
 
-                result[i] = sum/Factor.At(i, i);
+                result[i] = sum / Factor.At(i, i);
             }
 
             // Solve L'*X = Y;
-            for (var i = order - 1; i >= 0; i--)
+            for (int i = order - 1; i >= 0; i--)
             {
                 sum = result[i];
-                for (var k = i + 1; k < order; k++)
+                for (int k = i + 1; k < order; k++)
                 {
-                    sum -= Factor.At(k, i)*result[k];
+                    sum -= Factor.At(k, i) * result[k];
                 }
 
-                result[i] = sum/Factor.At(i, i);
+                result[i] = sum / Factor.At(i, i);
             }
         }
     }

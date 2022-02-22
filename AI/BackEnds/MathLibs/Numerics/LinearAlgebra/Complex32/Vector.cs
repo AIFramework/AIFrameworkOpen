@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
 {
@@ -142,7 +142,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </param>
         protected override void DoMultiply(Complex32 scalar, VectorMathNet<Complex32> result)
         {
-            Map(x => x*scalar, result, Zeros.AllowSkip);
+            Map(x => x * scalar, result, Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </param>
         protected override void DoDivide(Complex32 divisor, VectorMathNet<Complex32> result)
         {
-            Map(x => x/divisor, result, divisor.IsZero() ? Zeros.Include : Zeros.AllowSkip);
+            Map(x => x / divisor, result, divisor.IsZero() ? Zeros.Include : Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <param name="result">The vector to store the result of the division.</param>
         protected override void DoDivideByThis(Complex32 dividend, VectorMathNet<Complex32> result)
         {
-            Map(x => dividend/x, result, Zeros.Include);
+            Map(x => dividend / x, result, Zeros.Include);
         }
 
         /// <summary>
@@ -329,8 +329,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <returns>The sum of a[i]*b[i] for all i.</returns>
         protected override Complex32 DoDotProduct(VectorMathNet<Complex32> other)
         {
-            var dot = Complex32.Zero;
-            for (var i = 0; i < Count; i++)
+            Complex32 dot = Complex32.Zero;
+            for (int i = 0; i < Count; i++)
             {
                 dot += At(i) * other.At(i);
             }
@@ -344,8 +344,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <returns>The sum of conj(a[i])*b[i] for all i.</returns>
         protected override Complex32 DoConjugateDotProduct(VectorMathNet<Complex32> other)
         {
-            var dot = Complex32.Zero;
-            for (var i = 0; i < Count; i++)
+            Complex32 dot = Complex32.Zero;
+            for (int i = 0; i < Count; i++)
             {
                 dot += At(i).Conjugate() * other.At(i);
             }
@@ -453,11 +453,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <returns>The index of absolute minimum element.</returns>
         public override int AbsoluteMinimumIndex()
         {
-            var index = 0;
-            var min = At(index).Magnitude;
-            for (var i = 1; i < Count; i++)
+            int index = 0;
+            float min = At(index).Magnitude;
+            for (int i = 1; i < Count; i++)
             {
-                var test = At(i).Magnitude;
+                float test = At(i).Magnitude;
                 if (test < min)
                 {
                     index = i;
@@ -483,11 +483,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <returns>The index of absolute maximum element.</returns>
         public override int AbsoluteMaximumIndex()
         {
-            var index = 0;
-            var max = At(index).Magnitude;
-            for (var i = 1; i < Count; i++)
+            int index = 0;
+            float max = At(index).Magnitude;
+            for (int i = 1; i < Count; i++)
             {
-                var test = At(i).Magnitude;
+                float test = At(i).Magnitude;
                 if (test > max)
                 {
                     index = i;
@@ -504,8 +504,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <returns>The sum of the vector's elements.</returns>
         public override Complex32 Sum()
         {
-            var sum = Complex32.Zero;
-            for (var i = 0; i < Count; i++)
+            Complex32 sum = Complex32.Zero;
+            for (int i = 0; i < Count; i++)
             {
                 sum += At(i);
             }
@@ -519,7 +519,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         public override double L1Norm()
         {
             double sum = 0d;
-            for (var i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 sum += At(i).Magnitude;
             }
@@ -555,18 +555,32 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </returns>
         public override double Norm(double p)
         {
-            if (p < 0d) throw new ArgumentOutOfRangeException(nameof(p));
+            if (p < 0d)
+            {
+                throw new ArgumentOutOfRangeException(nameof(p));
+            }
 
-            if (p == 1d) return L1Norm();
-            if (p == 2d) return L2Norm();
-            if (double.IsPositiveInfinity(p)) return InfinityNorm();
+            if (p == 1d)
+            {
+                return L1Norm();
+            }
+
+            if (p == 2d)
+            {
+                return L2Norm();
+            }
+
+            if (double.IsPositiveInfinity(p))
+            {
+                return InfinityNorm();
+            }
 
             double sum = 0d;
-            for (var index = 0; index < Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 sum += Math.Pow(At(index).Magnitude, p);
             }
-            return Math.Pow(sum, 1.0/p);
+            return Math.Pow(sum, 1.0 / p);
         }
 
         /// <summary>
@@ -604,7 +618,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
             }
 
             double norm = Norm(p);
-            var clone = Clone();
+            VectorMathNet<Complex32> clone = Clone();
             if (norm == 0d)
             {
                 return clone;

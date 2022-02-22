@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 {
@@ -64,7 +64,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The conjugate transpose of this matrix.</returns>
         public sealed override MatrixMathNet<Complex> ConjugateTranspose()
         {
-            var ret = Transpose();
+            MatrixMathNet<Complex> ret = Transpose();
             ret.MapInplace(c => c.Conjugate(), Zeros.AllowSkip);
             return ret;
         }
@@ -147,7 +147,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The matrix to store the result of the multiplication.</param>
         protected override void DoMultiply(Complex scalar, MatrixMathNet<Complex> result)
         {
-            Map(x => x*scalar, result, Zeros.AllowSkip);
+            Map(x => x * scalar, result, Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -157,12 +157,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoMultiply(VectorMathNet<Complex> rightSide, VectorMathNet<Complex> result)
         {
-            for (var i = 0; i < RowCount; i++)
+            for (int i = 0; i < RowCount; i++)
             {
-                var s = Complex.Zero;
-                for (var j = 0; j < ColumnCount; j++)
+                Complex s = Complex.Zero;
+                for (int j = 0; j < ColumnCount; j++)
                 {
-                    s += At(i, j)*rightSide[j];
+                    s += At(i, j) * rightSide[j];
                 }
                 result[i] = s;
             }
@@ -175,14 +175,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoMultiply(MatrixMathNet<Complex> other, MatrixMathNet<Complex> result)
         {
-            for (var i = 0; i < RowCount; i++)
+            for (int i = 0; i < RowCount; i++)
             {
-                for (var j = 0; j != other.ColumnCount; j++)
+                for (int j = 0; j != other.ColumnCount; j++)
                 {
-                    var s = Complex.Zero;
-                    for (var k = 0; k < ColumnCount; k++)
+                    Complex s = Complex.Zero;
+                    for (int k = 0; k < ColumnCount; k++)
                     {
-                        s += At(i, k)*other.At(k, j);
+                        s += At(i, k) * other.At(k, j);
                     }
                     result.At(i, j, s);
                 }
@@ -196,7 +196,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The matrix to store the result of the division.</param>
         protected override void DoDivide(Complex divisor, MatrixMathNet<Complex> result)
         {
-            Map(x => x/divisor, result, divisor.IsZero() ? Zeros.Include : Zeros.AllowSkip);
+            Map(x => x / divisor, result, divisor.IsZero() ? Zeros.Include : Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The matrix to store the result of the division.</param>
         protected override void DoDivideByThis(Complex dividend, MatrixMathNet<Complex> result)
         {
-            Map(x => dividend/x, result, Zeros.Include);
+            Map(x => dividend / x, result, Zeros.Include);
         }
 
         /// <summary>
@@ -216,14 +216,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoTransposeAndMultiply(MatrixMathNet<Complex> other, MatrixMathNet<Complex> result)
         {
-            for (var j = 0; j < other.RowCount; j++)
+            for (int j = 0; j < other.RowCount; j++)
             {
-                for (var i = 0; i < RowCount; i++)
+                for (int i = 0; i < RowCount; i++)
                 {
-                    var s = Complex.Zero;
-                    for (var k = 0; k < ColumnCount; k++)
+                    Complex s = Complex.Zero;
+                    for (int k = 0; k < ColumnCount; k++)
                     {
-                        s += At(i, k)*other.At(j, k);
+                        s += At(i, k) * other.At(j, k);
                     }
                     result.At(i, j, s);
                 }
@@ -237,14 +237,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoConjugateTransposeAndMultiply(MatrixMathNet<Complex> other, MatrixMathNet<Complex> result)
         {
-            for (var j = 0; j < other.RowCount; j++)
+            for (int j = 0; j < other.RowCount; j++)
             {
-                for (var i = 0; i < RowCount; i++)
+                for (int i = 0; i < RowCount; i++)
                 {
-                    var s = Complex.Zero;
-                    for (var k = 0; k < ColumnCount; k++)
+                    Complex s = Complex.Zero;
+                    for (int k = 0; k < ColumnCount; k++)
                     {
-                        s += At(i, k)*other.At(j, k).Conjugate();
+                        s += At(i, k) * other.At(j, k).Conjugate();
                     }
                     result.At(i, j, s);
                 }
@@ -258,14 +258,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoTransposeThisAndMultiply(MatrixMathNet<Complex> other, MatrixMathNet<Complex> result)
         {
-            for (var j = 0; j < other.ColumnCount; j++)
+            for (int j = 0; j < other.ColumnCount; j++)
             {
-                for (var i = 0; i < ColumnCount; i++)
+                for (int i = 0; i < ColumnCount; i++)
                 {
-                    var s = Complex.Zero;
-                    for (var k = 0; k < RowCount; k++)
+                    Complex s = Complex.Zero;
+                    for (int k = 0; k < RowCount; k++)
                     {
-                        s += At(k, i)*other.At(k, j);
+                        s += At(k, i) * other.At(k, j);
                     }
                     result.At(i, j, s);
                 }
@@ -279,14 +279,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoConjugateTransposeThisAndMultiply(MatrixMathNet<Complex> other, MatrixMathNet<Complex> result)
         {
-            for (var j = 0; j < other.ColumnCount; j++)
+            for (int j = 0; j < other.ColumnCount; j++)
             {
-                for (var i = 0; i < ColumnCount; i++)
+                for (int i = 0; i < ColumnCount; i++)
                 {
-                    var s = Complex.Zero;
-                    for (var k = 0; k < RowCount; k++)
+                    Complex s = Complex.Zero;
+                    for (int k = 0; k < RowCount; k++)
                     {
-                        s += At(k, i).Conjugate()*other.At(k, j);
+                        s += At(k, i).Conjugate() * other.At(k, j);
                     }
                     result.At(i, j, s);
                 }
@@ -300,12 +300,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoTransposeThisAndMultiply(VectorMathNet<Complex> rightSide, VectorMathNet<Complex> result)
         {
-            for (var j = 0; j < ColumnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                var s = Complex.Zero;
-                for (var i = 0; i < RowCount; i++)
+                Complex s = Complex.Zero;
+                for (int i = 0; i < RowCount; i++)
                 {
-                    s += At(i, j)*rightSide[i];
+                    s += At(i, j) * rightSide[i];
                 }
                 result[j] = s;
             }
@@ -318,12 +318,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoConjugateTransposeThisAndMultiply(VectorMathNet<Complex> rightSide, VectorMathNet<Complex> result)
         {
-            for (var j = 0; j < ColumnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                var s = Complex.Zero;
-                for (var i = 0; i < RowCount; i++)
+                Complex s = Complex.Zero;
+                for (int i = 0; i < RowCount; i++)
                 {
-                    s += At(i, j).Conjugate()*rightSide[i];
+                    s += At(i, j).Conjugate() * rightSide[i];
                 }
                 result[j] = s;
             }
@@ -527,14 +527,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </summary>
         public override MatrixMathNet<Complex> PseudoInverse()
         {
-            var svd = Svd(true);
-            var w = svd.W;
-            var s = svd.S;
+            Svd<Complex> svd = Svd(true);
+            MatrixMathNet<Complex> w = svd.W;
+            VectorMathNet<Complex> s = svd.S;
             double tolerance = Math.Max(RowCount, ColumnCount) * svd.L2Norm * Precision.DoublePrecision;
 
             for (int i = 0; i < s.Count; i++)
             {
-                s[i] = s[i].Magnitude < tolerance ? 0 : 1/s[i];
+                s[i] = s[i].Magnitude < tolerance ? 0 : 1 / s[i];
             }
 
             w.SetDiagonal(s);
@@ -553,8 +553,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 throw new ArgumentException("Matrix must be square.");
             }
 
-            var sum = Complex.Zero;
-            for (var i = 0; i < RowCount; i++)
+            Complex sum = Complex.Zero;
+            for (int i = 0; i < RowCount; i++)
             {
                 sum += At(i, i);
             }
@@ -608,11 +608,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The maximum absolute column sum of the matrix.</returns>
         public override double L1Norm()
         {
-            var norm = 0d;
-            for (var j = 0; j < ColumnCount; j++)
+            double norm = 0d;
+            for (int j = 0; j < ColumnCount; j++)
             {
-                var s = 0d;
-                for (var i = 0; i < RowCount; i++)
+                double s = 0d;
+                for (int i = 0; i < RowCount; i++)
                 {
                     s += At(i, j).Magnitude;
                 }
@@ -625,11 +625,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The maximum absolute row sum of the matrix.</returns>
         public override double InfinityNorm()
         {
-            var norm = 0d;
-            for (var i = 0; i < RowCount; i++)
+            double norm = 0d;
+            for (int i = 0; i < RowCount; i++)
             {
-                var s = 0d;
-                for (var j = 0; j < ColumnCount; j++)
+                double s = 0d;
+                for (int j = 0; j < ColumnCount; j++)
                 {
                     s += At(i, j).Magnitude;
                 }
@@ -642,10 +642,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The square root of the sum of the squared values.</returns>
         public override double FrobeniusNorm()
         {
-            var transpose = ConjugateTranspose();
-            var aat = this*transpose;
-            var norm = 0d;
-            for (var i = 0; i < RowCount; i++)
+            MatrixMathNet<Complex> transpose = ConjugateTranspose();
+            MatrixMathNet<Complex> aat = this * transpose;
+            double norm = 0d;
+            for (int i = 0; i < RowCount; i++)
             {
                 norm += aat.At(i, i).Magnitude;
             }
@@ -663,7 +663,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 throw new ArgumentOutOfRangeException(nameof(norm), "Value must be positive.");
             }
 
-            var ret = new double[RowCount];
+            double[] ret = new double[RowCount];
             if (norm == 2.0)
             {
                 Storage.FoldByRowUnchecked(ret, (s, x) => s + x.MagnitudeSquared(), (x, c) => Math.Sqrt(x), ret, Zeros.AllowSkip);
@@ -678,7 +678,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             }
             else
             {
-                double invnorm = 1.0/norm;
+                double invnorm = 1.0 / norm;
                 Storage.FoldByRowUnchecked(ret, (s, x) => s + Math.Pow(x.Magnitude, norm), (x, c) => Math.Pow(x, invnorm), ret, Zeros.AllowSkip);
             }
             return VectorMathNet<double>.Build.Dense(ret);
@@ -695,7 +695,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 throw new ArgumentOutOfRangeException(nameof(norm), "Value must be positive.");
             }
 
-            var ret = new double[ColumnCount];
+            double[] ret = new double[ColumnCount];
             if (norm == 2.0)
             {
                 Storage.FoldByColumnUnchecked(ret, (s, x) => s + x.MagnitudeSquared(), (x, c) => Math.Sqrt(x), ret, Zeros.AllowSkip);
@@ -710,7 +710,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             }
             else
             {
-                double invnorm = 1.0/norm;
+                double invnorm = 1.0 / norm;
                 Storage.FoldByColumnUnchecked(ret, (s, x) => s + Math.Pow(x.Magnitude, norm), (x, c) => Math.Pow(x, invnorm), ret, Zeros.AllowSkip);
             }
             return VectorMathNet<double>.Build.Dense(ret);
@@ -722,14 +722,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </summary>
         public sealed override MatrixMathNet<Complex> NormalizeRows(double norm)
         {
-            var norminv = ((DenseVectorStorage<double>)RowNorms(norm).Storage).Data;
+            double[] norminv = ((DenseVectorStorage<double>)RowNorms(norm).Storage).Data;
             for (int i = 0; i < norminv.Length; i++)
             {
-                norminv[i] = norminv[i] == 0d ? 1d : 1d/norminv[i];
+                norminv[i] = norminv[i] == 0d ? 1d : 1d / norminv[i];
             }
 
-            var result = Build.SameAs(this, RowCount, ColumnCount);
-            Storage.MapIndexedTo(result.Storage, (i, j, x) => norminv[i]*x, Zeros.AllowSkip, ExistingData.AssumeZeros);
+            MatrixMathNet<Complex> result = Build.SameAs(this, RowCount, ColumnCount);
+            Storage.MapIndexedTo(result.Storage, (i, j, x) => norminv[i] * x, Zeros.AllowSkip, ExistingData.AssumeZeros);
             return result;
         }
 
@@ -739,14 +739,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </summary>
         public sealed override MatrixMathNet<Complex> NormalizeColumns(double norm)
         {
-            var norminv = ((DenseVectorStorage<double>)ColumnNorms(norm).Storage).Data;
+            double[] norminv = ((DenseVectorStorage<double>)ColumnNorms(norm).Storage).Data;
             for (int i = 0; i < norminv.Length; i++)
             {
-                norminv[i] = norminv[i] == 0d ? 1d : 1d/norminv[i];
+                norminv[i] = norminv[i] == 0d ? 1d : 1d / norminv[i];
             }
 
-            var result = Build.SameAs(this, RowCount, ColumnCount);
-            Storage.MapIndexedTo(result.Storage, (i, j, x) => norminv[j]*x, Zeros.AllowSkip, ExistingData.AssumeZeros);
+            MatrixMathNet<Complex> result = Build.SameAs(this, RowCount, ColumnCount);
+            Storage.MapIndexedTo(result.Storage, (i, j, x) => norminv[j] * x, Zeros.AllowSkip, ExistingData.AssumeZeros);
             return result;
         }
 
@@ -755,7 +755,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </summary>
         public override VectorMathNet<Complex> RowSums()
         {
-            var ret = new Complex[RowCount];
+            Complex[] ret = new Complex[RowCount];
             Storage.FoldByRowUnchecked(ret, (s, x) => s + x, (x, c) => x, ret, Zeros.AllowSkip);
             return VectorMathNet<Complex>.Build.Dense(ret);
         }
@@ -765,7 +765,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </summary>
         public override VectorMathNet<Complex> RowAbsoluteSums()
         {
-            var ret = new Complex[RowCount];
+            Complex[] ret = new Complex[RowCount];
             Storage.FoldByRowUnchecked(ret, (s, x) => s + x.Magnitude, (x, c) => x, ret, Zeros.AllowSkip);
             return VectorMathNet<Complex>.Build.Dense(ret);
         }
@@ -775,7 +775,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </summary>
         public override VectorMathNet<Complex> ColumnSums()
         {
-            var ret = new Complex[ColumnCount];
+            Complex[] ret = new Complex[ColumnCount];
             Storage.FoldByColumnUnchecked(ret, (s, x) => s + x, (x, c) => x, ret, Zeros.AllowSkip);
             return VectorMathNet<Complex>.Build.Dense(ret);
         }
@@ -785,7 +785,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </summary>
         public override VectorMathNet<Complex> ColumnAbsoluteSums()
         {
-            var ret = new Complex[ColumnCount];
+            Complex[] ret = new Complex[ColumnCount];
             Storage.FoldByColumnUnchecked(ret, (s, x) => s + x.Magnitude, (x, c) => x, ret, Zeros.AllowSkip);
             return VectorMathNet<Complex>.Build.Dense(ret);
         }
@@ -800,7 +800,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 return false;
             }
 
-            for (var k = 0; k < RowCount; k++)
+            for (int k = 0; k < RowCount; k++)
             {
                 if (!At(k, k).IsReal())
                 {
@@ -808,9 +808,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 }
             }
 
-            for (var row = 0; row < RowCount; row++)
+            for (int row = 0; row < RowCount; row++)
             {
-                for (var column = row + 1; column < ColumnCount; column++)
+                for (int column = row + 1; column < ColumnCount; column++)
                 {
                     if (!At(row, column).Equals(At(column, row).Conjugate()))
                     {

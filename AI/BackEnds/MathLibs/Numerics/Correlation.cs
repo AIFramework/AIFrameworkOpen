@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.IntegralTransforms;
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.IntegralTransforms;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using Complex = System.Numerics.Complex;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
@@ -61,8 +61,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         public static double[] Auto(double[] x, int kMax, int kMin = 0)
         {
             // assert max and min in proper order
-            var kMax2 = Math.Max(kMax, kMin);
-            var kMin2 = Math.Min(kMax, kMin);
+            int kMax2 = Math.Max(kMax, kMin);
+            int kMin2 = Math.Min(kMax, kMin);
 
             return AutoCorrelationFft(x, kMin2, kMax2);
         }
@@ -85,14 +85,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 throw new ArgumentException("k");
             }
 
-            var kMin = k.Min();
-            var kMax = k.Max();
+            int kMin = k.Min();
+            int kMax = k.Max();
 
             // get acf between full range
-            var acf = AutoCorrelationFft(x, kMin, kMax);
+            double[] acf = AutoCorrelationFft(x, kMin, kMax);
 
             // map output by indexing
-            var result = new double[k.Length];
+            double[] result = new double[k.Length];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = acf[k[i] - kMin];
@@ -108,19 +108,29 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <param name="kLow">Min lag to calculate ACF for (0 = no shift with acf=1) must be zero or positive and smaller than x.Length</param>
         /// <param name="kHigh">Max lag (EXCLUSIVE) to calculate ACF for must be positive and smaller than x.Length</param>
         /// <returns>An array with the ACF as a function of the lags k.</returns>
-        static double[] AutoCorrelationFft(double[] x, int kLow, int kHigh)
+        private static double[] AutoCorrelationFft(double[] x, int kLow, int kHigh)
         {
             if (x == null)
+            {
                 throw new ArgumentNullException(nameof(x));
+            }
 
             int N = x.Length;    // Sample size
 
             if (kLow < 0 || kLow >= N)
+            {
                 throw new ArgumentOutOfRangeException(nameof(kLow), "kMin must be zero or positive and smaller than x.Length");
+            }
+
             if (kHigh < 0 || kHigh >= N)
+            {
                 throw new ArgumentOutOfRangeException(nameof(kHigh), "kMax must be positive and smaller than x.Length");
+            }
+
             if (N < 1)
+            {
                 return new double[0];
+            }
 
             int nFFT = Euclid.CeilingToPowerOfTwo(N) * 2;
 
@@ -191,17 +201,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                     double currentB = ieB.Current;
 
                     double deltaA = currentA - meanA;
-                    double scaleDeltaA = deltaA/++n;
+                    double scaleDeltaA = deltaA / ++n;
 
                     double deltaB = currentB - meanB;
-                    double scaleDeltaB = deltaB/n;
+                    double scaleDeltaB = deltaB / n;
 
                     meanA += scaleDeltaA;
                     meanB += scaleDeltaB;
 
-                    varA += scaleDeltaA*deltaA*(n - 1);
-                    varB += scaleDeltaB*deltaB*(n - 1);
-                    r += (deltaA*deltaB*(n - 1))/n;
+                    varA += scaleDeltaA * deltaA * (n - 1);
+                    varB += scaleDeltaB * deltaB * (n - 1);
+                    r += (deltaA * deltaB * (n - 1)) / n;
                 }
 
                 if (ieB.MoveNext())
@@ -210,7 +220,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 }
             }
 
-            return r/Math.Sqrt(varA*varB);
+            return r / Math.Sqrt(varA * varB);
         }
 
         /// <summary>
@@ -255,16 +265,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                     double temp = sumWeight + wi;
 
                     double deltaX = xi - meanA;
-                    double rX = deltaX*wi/temp;
+                    double rX = deltaX * wi / temp;
                     meanA += rX;
-                    varA += sumWeight*deltaX*rX;
+                    varA += sumWeight * deltaX * rX;
 
                     double deltaY = yi - meanB;
-                    double rY = deltaY*wi/temp;
+                    double rY = deltaY * wi / temp;
                     meanB += rY;
-                    varB += sumWeight*deltaY*rY;
+                    varB += sumWeight * deltaY * rY;
 
-                    covariance += deltaX*deltaY*wi*(sumWeight/temp);
+                    covariance += deltaX * deltaY * wi * (sumWeight / temp);
                     sumWeight = temp;
                 }
                 if (ieB.MoveNext())
@@ -276,7 +286,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                     throw new ArgumentOutOfRangeException(nameof(weights), "The array arguments must have the same length.");
                 }
             }
-            return covariance/Math.Sqrt(varA*varB);
+            return covariance / Math.Sqrt(varA * varB);
         }
 
         /// <summary>
@@ -286,12 +296,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <returns>The Pearson product-moment correlation matrix.</returns>
         public static MatrixMathNet<double> PearsonMatrix(params double[][] vectors)
         {
-            var m = MatrixMathNet<double>.Build.DenseIdentity(vectors.Length);
+            MatrixMathNet<double> m = MatrixMathNet<double>.Build.DenseIdentity(vectors.Length);
             for (int i = 0; i < vectors.Length; i++)
             {
                 for (int j = i + 1; j < vectors.Length; j++)
                 {
-                    var c = Pearson(vectors[i], vectors[j]);
+                    double c = Pearson(vectors[i], vectors[j]);
                     m.At(i, j, c);
                     m.At(j, i, c);
                 }
@@ -341,7 +351,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             return PearsonMatrix(vectors.Select(Rank).ToArray());
         }
 
-        static double[] Rank(IEnumerable<double> series)
+        private static double[] Rank(IEnumerable<double> series)
         {
             if (series == null)
             {
@@ -351,7 +361,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             // WARNING: do not try to cast series to an array and use it directly,
             // as we need to sort it (inplace operation)
 
-            var data = series.ToArray();
+            double[] data = series.ToArray();
             return ArrayStatistics.RanksInplace(data, RankDefinition.Average);
         }
     }

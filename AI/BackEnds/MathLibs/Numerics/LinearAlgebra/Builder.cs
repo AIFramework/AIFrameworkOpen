@@ -27,13 +27,13 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
 {
@@ -60,7 +60,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
 
         public override MatrixMathNet<double> Random(int rows, int columns, IContinuousDistribution distribution)
         {
-            return Dense(rows, columns, Generate.Random(rows*columns, distribution));
+            return Dense(rows, columns, Generate.Random(rows * columns, distribution));
         }
 
         public override IIterationStopCriterion<double>[] IterativeSolverStopCriteria(int maxIterations = 1000)
@@ -128,7 +128,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
         public override MatrixMathNet<float> Random(int rows, int columns, IContinuousDistribution distribution)
         {
-            return Dense(rows, columns, Generate.RandomSingle(rows*columns, distribution));
+            return Dense(rows, columns, Generate.RandomSingle(rows * columns, distribution));
         }
 
         public override IIterationStopCriterion<float>[] IterativeSolverStopCriteria(int maxIterations = 1000)
@@ -198,7 +198,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 
         public override MatrixMathNet<Complex> Random(int rows, int columns, IContinuousDistribution distribution)
         {
-            return Dense(rows, columns, Generate.RandomComplex(rows*columns, distribution));
+            return Dense(rows, columns, Generate.RandomComplex(rows * columns, distribution));
         }
 
         public override IIterationStopCriterion<Complex>[] IterativeSolverStopCriteria(int maxIterations = 1000)
@@ -266,7 +266,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
 
         public override MatrixMathNet<Numerics.Complex32> Random(int rows, int columns, IContinuousDistribution distribution)
         {
-            return Dense(rows, columns, Generate.RandomComplex32(rows*columns, distribution));
+            return Dense(rows, columns, Generate.RandomComplex32(rows * columns, distribution));
         }
 
         public override IIterationStopCriterion<Numerics.Complex32>[] IterativeSolverStopCriteria(int maxIterations = 1000)
@@ -336,11 +336,25 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> OfStorage(MatrixStorage<T> storage)
         {
-            if (storage == null) throw new ArgumentNullException(nameof(storage));
+            if (storage == null)
+            {
+                throw new ArgumentNullException(nameof(storage));
+            }
 
-            if (storage is DenseColumnMajorMatrixStorage<T> dense) return Dense(dense);
-            if (storage is SparseCompressedRowMatrixStorage<T> sparse) return Sparse(sparse);
-            if (storage is DiagonalMatrixStorage<T> diagonal) return Diagonal(diagonal);
+            if (storage is DenseColumnMajorMatrixStorage<T> dense)
+            {
+                return Dense(dense);
+            }
+
+            if (storage is SparseCompressedRowMatrixStorage<T> sparse)
+            {
+                return Sparse(sparse);
+            }
+
+            if (storage is DiagonalMatrixStorage<T> diagonal)
+            {
+                return Diagonal(diagonal);
+            }
 
             throw new NotSupportedException(FormattableString.Invariant($"Matrix storage type '{storage.GetType().Name}' is not supported. Only DenseColumnMajorMatrixStorage, SparseCompressedRowMatrixStorage and DiagonalMatrixStorage are supported as this point."));
         }
@@ -351,10 +365,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         public MatrixMathNet<T> SameAs<TU>(MatrixMathNet<TU> example, int rows, int columns, bool fullyMutable = false)
             where TU : struct, IEquatable<TU>, IFormattable
         {
-            var storage = example.Storage;
-            if (storage is DenseColumnMajorMatrixStorage<T>) return Dense(rows, columns);
-            if (storage is DiagonalMatrixStorage<T>) return fullyMutable ? Sparse(rows, columns) : Diagonal(rows, columns);
-            if (storage is SparseCompressedRowMatrixStorage<T>) return Sparse(rows, columns);
+            MatrixStorage<TU> storage = example.Storage;
+            if (storage is DenseColumnMajorMatrixStorage<T>)
+            {
+                return Dense(rows, columns);
+            }
+
+            if (storage is DiagonalMatrixStorage<T>)
+            {
+                return fullyMutable ? Sparse(rows, columns) : Diagonal(rows, columns);
+            }
+
+            if (storage is SparseCompressedRowMatrixStorage<T>)
+            {
+                return Sparse(rows, columns);
+            }
+
             return Dense(rows, columns);
         }
 
@@ -380,11 +406,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> SameAs(MatrixMathNet<T> example, MatrixMathNet<T> otherExample, int rows, int columns, bool fullyMutable = false)
         {
-            var storage1 = example.Storage;
-            var storage2 = otherExample.Storage;
-            if (storage1 is DenseColumnMajorMatrixStorage<T> || storage2 is DenseColumnMajorMatrixStorage<T>) return Dense(rows, columns);
-            if (storage1 is DiagonalMatrixStorage<T> && storage2 is DiagonalMatrixStorage<T>) return fullyMutable ? Sparse(rows, columns) : Diagonal(rows, columns);
-            if (storage1 is SparseCompressedRowMatrixStorage<T> || storage2 is SparseCompressedRowMatrixStorage<T>) return Sparse(rows, columns);
+            MatrixStorage<T> storage1 = example.Storage;
+            MatrixStorage<T> storage2 = otherExample.Storage;
+            if (storage1 is DenseColumnMajorMatrixStorage<T> || storage2 is DenseColumnMajorMatrixStorage<T>)
+            {
+                return Dense(rows, columns);
+            }
+
+            if (storage1 is DiagonalMatrixStorage<T> && storage2 is DiagonalMatrixStorage<T>)
+            {
+                return fullyMutable ? Sparse(rows, columns) : Diagonal(rows, columns);
+            }
+
+            if (storage1 is SparseCompressedRowMatrixStorage<T> || storage2 is SparseCompressedRowMatrixStorage<T>)
+            {
+                return Sparse(rows, columns);
+            }
+
             return Dense(rows, columns);
         }
 
@@ -423,7 +461,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> RandomPositiveDefinite(int order, IContinuousDistribution distribution)
         {
-            var a = Random(order, order, distribution);
+            MatrixMathNet<T> a = Random(order, order, distribution);
             return a.ConjugateTransposeThisAndMultiply(a);
         }
 
@@ -433,7 +471,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> RandomPositiveDefinite(int order)
         {
-            var a = Random(order, order, new Normal(SystemRandomSource.Default));
+            MatrixMathNet<T> a = Random(order, order, new Normal(SystemRandomSource.Default));
             return a.ConjugateTransposeThisAndMultiply(a);
         }
 
@@ -443,7 +481,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> RandomPositiveDefinite(int order, int seed)
         {
-            var a = Random(order, order, new Normal(new SystemRandomSource(seed, true)));
+            MatrixMathNet<T> a = Random(order, order, new Normal(new SystemRandomSource(seed, true)));
             return a.ConjugateTransposeThisAndMultiply(a);
         }
 
@@ -480,7 +518,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> Dense(int rows, int columns, T value)
         {
-            if (Zero.Equals(value)) return Dense(rows, columns);
+            if (Zero.Equals(value))
+            {
+                return Dense(rows, columns);
+            }
+
             return Dense(DenseColumnMajorMatrixStorage<T>.OfValue(rows, columns, value));
         }
 
@@ -497,7 +539,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DenseDiagonal(int rows, int columns, T value)
         {
-            if (Zero.Equals(value)) return Dense(rows, columns);
+            if (Zero.Equals(value))
+            {
+                return Dense(rows, columns);
+            }
+
             return Dense(DenseColumnMajorMatrixStorage<T>.OfDiagonalInit(rows, columns, i => value));
         }
 
@@ -506,7 +552,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DenseDiagonal(int order, T value)
         {
-            if (Zero.Equals(value)) return Dense(order, order);
+            if (Zero.Equals(value))
+            {
+                return Dense(order, order);
+            }
+
             return Dense(DenseColumnMajorMatrixStorage<T>.OfDiagonalInit(order, order, i => value));
         }
 
@@ -636,7 +686,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DenseOfColumnVectors(params VectorMathNet<T>[] columns)
         {
-            var storage = new VectorStorage<T>[columns.Length];
+            VectorStorage<T>[] storage = new VectorStorage<T>[columns.Length];
             for (int i = 0; i < columns.Length; i++)
             {
                 storage[i] = columns[i].Storage;
@@ -714,7 +764,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DenseOfRowVectors(params VectorMathNet<T>[] rows)
         {
-            var storage = new VectorStorage<T>[rows.Length];
+            VectorStorage<T>[] storage = new VectorStorage<T>[rows.Length];
             for (int i = 0; i < rows.Length; i++)
             {
                 storage[i] = rows[i].Storage;
@@ -739,7 +789,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DenseOfDiagonalVector(VectorMathNet<T> diagonal)
         {
-            var m = Dense(diagonal.Count, diagonal.Count);
+            MatrixMathNet<T> m = Dense(diagonal.Count, diagonal.Count);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -751,7 +801,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DenseOfDiagonalVector(int rows, int columns, VectorMathNet<T> diagonal)
         {
-            var m = Dense(rows, columns);
+            MatrixMathNet<T> m = Dense(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -763,7 +813,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DenseOfDiagonalArray(T[] diagonal)
         {
-            var m = Dense(diagonal.Length, diagonal.Length);
+            MatrixMathNet<T> m = Dense(diagonal.Length, diagonal.Length);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -775,7 +825,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DenseOfDiagonalArray(int rows, int columns, T[] diagonal)
         {
-            var m = Dense(rows, columns);
+            MatrixMathNet<T> m = Dense(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -788,8 +838,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DenseOfMatrixArray(MatrixMathNet<T>[,] matrices)
         {
-            var rowspans = new int[matrices.GetLength(0)];
-            var colspans = new int[matrices.GetLength(1)];
+            int[] rowspans = new int[matrices.GetLength(0)];
+            int[] colspans = new int[matrices.GetLength(1)];
             for (int i = 0; i < rowspans.Length; i++)
             {
                 for (int j = 0; j < colspans.Length; j++)
@@ -798,7 +848,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                     colspans[j] = Math.Max(colspans[j], matrices[i, j].ColumnCount);
                 }
             }
-            var m = Dense(rowspans.Sum(), colspans.Sum());
+            MatrixMathNet<T> m = Dense(rowspans.Sum(), colspans.Sum());
             int rowoffset = 0;
             for (int i = 0; i < rowspans.Length; i++)
             {
@@ -837,7 +887,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> Sparse(int rows, int columns, T value)
         {
-            if (Zero.Equals(value)) return Sparse(rows, columns);
+            if (Zero.Equals(value))
+            {
+                return Sparse(rows, columns);
+            }
+
             return Sparse(SparseCompressedRowMatrixStorage<T>.OfValue(rows, columns, value));
         }
 
@@ -854,7 +908,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> SparseDiagonal(int rows, int columns, T value)
         {
-            if (Zero.Equals(value)) return Sparse(rows, columns);
+            if (Zero.Equals(value))
+            {
+                return Sparse(rows, columns);
+            }
+
             return Sparse(SparseCompressedRowMatrixStorage<T>.OfDiagonalInit(rows, columns, i => value));
         }
 
@@ -863,7 +921,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> SparseDiagonal(int order, T value)
         {
-            if (Zero.Equals(value)) return Sparse(order, order);
+            if (Zero.Equals(value))
+            {
+                return Sparse(order, order);
+            }
+
             return Sparse(SparseCompressedRowMatrixStorage<T>.OfDiagonalInit(order, order, i => value));
         }
 
@@ -1006,7 +1068,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> SparseOfColumnVectors(params VectorMathNet<T>[] columns)
         {
-            var storage = new VectorStorage<T>[columns.Length];
+            VectorStorage<T>[] storage = new VectorStorage<T>[columns.Length];
             for (int i = 0; i < columns.Length; i++)
             {
                 storage[i] = columns[i].Storage;
@@ -1073,7 +1135,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> SparseOfRowVectors(params VectorMathNet<T>[] rows)
         {
-            var storage = new VectorStorage<T>[rows.Length];
+            VectorStorage<T>[] storage = new VectorStorage<T>[rows.Length];
             for (int i = 0; i < rows.Length; i++)
             {
                 storage[i] = rows[i].Storage;
@@ -1098,7 +1160,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> SparseOfDiagonalVector(VectorMathNet<T> diagonal)
         {
-            var m = Sparse(diagonal.Count, diagonal.Count);
+            MatrixMathNet<T> m = Sparse(diagonal.Count, diagonal.Count);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -1110,7 +1172,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> SparseOfDiagonalVector(int rows, int columns, VectorMathNet<T> diagonal)
         {
-            var m = Sparse(rows, columns);
+            MatrixMathNet<T> m = Sparse(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -1122,7 +1184,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> SparseOfDiagonalArray(T[] diagonal)
         {
-            var m = Sparse(diagonal.Length, diagonal.Length);
+            MatrixMathNet<T> m = Sparse(diagonal.Length, diagonal.Length);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -1134,7 +1196,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> SparseOfDiagonalArray(int rows, int columns, T[] diagonal)
         {
-            var m = Sparse(rows, columns);
+            MatrixMathNet<T> m = Sparse(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -1147,8 +1209,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> SparseOfMatrixArray(MatrixMathNet<T>[,] matrices)
         {
-            var rowspans = new int[matrices.GetLength(0)];
-            var colspans = new int[matrices.GetLength(1)];
+            int[] rowspans = new int[matrices.GetLength(0)];
+            int[] colspans = new int[matrices.GetLength(1)];
             for (int i = 0; i < rowspans.Length; i++)
             {
                 for (int j = 0; j < colspans.Length; j++)
@@ -1157,7 +1219,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                     colspans[j] = Math.Max(colspans[j], matrices[i, j].ColumnCount);
                 }
             }
-            var m = Sparse(rowspans.Sum(), colspans.Sum());
+            MatrixMathNet<T> m = Sparse(rowspans.Sum(), colspans.Sum());
             int rowoffset = 0;
             for (int i = 0; i < rowspans.Length; i++)
             {
@@ -1293,7 +1355,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> Diagonal(int rows, int columns, T value)
         {
-            if (Zero.Equals(value)) return Diagonal(rows, columns);
+            if (Zero.Equals(value))
+            {
+                return Diagonal(rows, columns);
+            }
+
             return Diagonal(DiagonalMatrixStorage<T>.OfValue(rows, columns, value));
         }
 
@@ -1329,7 +1395,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DiagonalOfDiagonalVector(VectorMathNet<T> diagonal)
         {
-            var m = Diagonal(diagonal.Count, diagonal.Count);
+            MatrixMathNet<T> m = Diagonal(diagonal.Count, diagonal.Count);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -1341,7 +1407,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DiagonalOfDiagonalVector(int rows, int columns, VectorMathNet<T> diagonal)
         {
-            var m = Diagonal(rows, columns);
+            MatrixMathNet<T> m = Diagonal(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -1353,7 +1419,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DiagonalOfDiagonalArray(T[] diagonal)
         {
-            var m = Diagonal(diagonal.Length, diagonal.Length);
+            MatrixMathNet<T> m = Diagonal(diagonal.Length, diagonal.Length);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -1365,7 +1431,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> DiagonalOfDiagonalArray(int rows, int columns, T[] diagonal)
         {
-            var m = Diagonal(rows, columns);
+            MatrixMathNet<T> m = Diagonal(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -1396,10 +1462,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public VectorMathNet<T> OfStorage(VectorStorage<T> storage)
         {
-            if (storage == null) throw new ArgumentNullException(nameof(storage));
+            if (storage == null)
+            {
+                throw new ArgumentNullException(nameof(storage));
+            }
 
-            if (storage is DenseVectorStorage<T> dense) return Dense(dense);
-            if (storage is SparseVectorStorage<T> sparse) return Sparse(sparse);
+            if (storage is DenseVectorStorage<T> dense)
+            {
+                return Dense(dense);
+            }
+
+            if (storage is SparseVectorStorage<T> sparse)
+            {
+                return Sparse(sparse);
+            }
 
             throw new NotSupportedException(FormattableString.Invariant($"Vector storage type '{storage.GetType().Name}' is not supported. Only DenseVectorStorage and SparseVectorStorage are supported as this point."));
         }
@@ -1506,7 +1582,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public VectorMathNet<T> Dense(int length, T value)
         {
-            if (Zero.Equals(value)) return Dense(length);
+            if (Zero.Equals(value))
+            {
+                return Dense(length);
+            }
+
             return Dense(DenseVectorStorage<T>.OfValue(length, value));
         }
 
@@ -1592,7 +1672,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public VectorMathNet<T> Sparse(int length, T value)
         {
-            if (Zero.Equals(value)) return Sparse(length);
+            if (Zero.Equals(value))
+            {
+                return Sparse(length);
+            }
+
             return Sparse(SparseVectorStorage<T>.OfValue(length, value));
         }
 
@@ -1659,32 +1743,32 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 
     internal static class BuilderInstance<T> where T : struct, IEquatable<T>, IFormattable
     {
-        static Lazy<Tuple<MatrixBuilder<T>, VectorBuilder<T>>> _singleton = new Lazy<Tuple<MatrixBuilder<T>, VectorBuilder<T>>>(Create);
+        private static Lazy<Tuple<MatrixBuilder<T>, VectorBuilder<T>>> _singleton = new Lazy<Tuple<MatrixBuilder<T>, VectorBuilder<T>>>(Create);
 
-        static Tuple<MatrixBuilder<T>, VectorBuilder<T>> Create()
+        private static Tuple<MatrixBuilder<T>, VectorBuilder<T>> Create()
         {
-            if (typeof (T) == typeof (System.Numerics.Complex))
+            if (typeof(T) == typeof(System.Numerics.Complex))
             {
                 return new Tuple<MatrixBuilder<T>, VectorBuilder<T>>(
                     (MatrixBuilder<T>)(object)new Complex.MatrixBuilder(),
                     (VectorBuilder<T>)(object)new Complex.VectorBuilder());
             }
 
-            if (typeof (T) == typeof (Numerics.Complex32))
+            if (typeof(T) == typeof(Numerics.Complex32))
             {
                 return new Tuple<MatrixBuilder<T>, VectorBuilder<T>>(
                     (MatrixBuilder<T>)(object)new Complex32.MatrixBuilder(),
                     (VectorBuilder<T>)(object)new Complex32.VectorBuilder());
             }
 
-            if (typeof (T) == typeof (double))
+            if (typeof(T) == typeof(double))
             {
                 return new Tuple<MatrixBuilder<T>, VectorBuilder<T>>(
                     (MatrixBuilder<T>)(object)new Double.MatrixBuilder(),
                     (VectorBuilder<T>)(object)new Double.VectorBuilder());
             }
 
-            if (typeof (T) == typeof (float))
+            if (typeof(T) == typeof(float))
             {
                 return new Tuple<MatrixBuilder<T>, VectorBuilder<T>>(
                     (MatrixBuilder<T>)(object)new Single.MatrixBuilder(),

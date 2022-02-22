@@ -10,15 +10,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion.Subprob
 
         public void Solve(IObjectiveModel objective, double delta)
         {
-            var Gradient = objective.Gradient;
-            var Hessian = objective.Hessian;
+            VectorMathNet<double> Gradient = objective.Gradient;
+            MatrixMathNet<double> Hessian = objective.Hessian;
 
             // newton point, the Gauss–Newton step by solving the normal equations
-            var Pgn = -Hessian.PseudoInverse() * Gradient; // Hessian.Solve(Gradient) fails so many times...
+            VectorMathNet<double> Pgn = -Hessian.PseudoInverse() * Gradient; // Hessian.Solve(Gradient) fails so many times...
 
             // cauchy point, steepest descent direction is given by
-            var alpha = Gradient.DotProduct(Gradient) / (Hessian * Gradient).DotProduct(Gradient);
-            var Psd = -alpha * Gradient;
+            double alpha = Gradient.DotProduct(Gradient) / (Hessian * Gradient).DotProduct(Gradient);
+            VectorMathNet<double> Psd = -alpha * Gradient;
 
             // update step and prectted reduction
             if (Pgn.L2Norm() <= delta)
@@ -37,7 +37,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion.Subprob
             {
                 // Pstep is intersection of the trust region boundary
                 HitBoundary = true;
-                var beta = Util.FindBeta(alpha, Psd, Pgn, delta).Item2;
+                double beta = Util.FindBeta(alpha, Psd, Pgn, delta).Item2;
                 Pstep = alpha * Psd + beta * (Pgn - alpha * Psd);
             }
         }

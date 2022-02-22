@@ -27,14 +27,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
 {
@@ -50,12 +50,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <summary>
         /// Number of elements
         /// </summary>
-        readonly int _length;
+        private readonly int _length;
 
         /// <summary>
         /// Gets the vector's data.
         /// </summary>
-        readonly Complex32[] _values;
+        private readonly Complex32[] _values;
 
         /// <summary>
         /// Create a new dense vector straight from an initialized vector storage instance.
@@ -147,7 +147,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseVector Create(int length, Complex32 value)
         {
-            if (value == Complex32.Zero) return new DenseVector(length);
+            if (value == Complex32.Zero)
+            {
+                return new DenseVector(length);
+            }
+
             return new DenseVector(DenseVectorStorage<Complex32>.OfValue(length, value));
         }
 
@@ -164,7 +168,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseVector CreateRandom(int length, IContinuousDistribution distribution)
         {
-            var samples = Generate.RandomComplex32(length, distribution);
+            Complex32[] samples = Generate.RandomComplex32(length, distribution);
             return new DenseVector(new DenseVectorStorage<Complex32>(length, samples));
         }
 
@@ -412,8 +416,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         {
             if (other is DenseVector denseVector)
             {
-                var dot = Complex32.Zero;
-                for (var i = 0; i < _values.Length; i++)
+                Complex32 dot = Complex32.Zero;
+                for (int i = 0; i < _values.Length; i++)
                 {
                     dot += _values[i].Conjugate() * denseVector._values[i];
                 }
@@ -500,11 +504,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <returns>The index of absolute minimum element.</returns>
         public override int AbsoluteMinimumIndex()
         {
-            var index = 0;
-            var min = _values[index].Magnitude;
-            for (var i = 1; i < _length; i++)
+            int index = 0;
+            float min = _values[index].Magnitude;
+            for (int i = 1; i < _length; i++)
             {
-                var test = _values[i].Magnitude;
+                float test = _values[i].Magnitude;
                 if (test < min)
                 {
                     index = i;
@@ -521,11 +525,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <returns>The index of absolute maximum element.</returns>
         public override int AbsoluteMaximumIndex()
         {
-            var index = 0;
-            var max = _values[index].Magnitude;
-            for (var i = 1; i < _length; i++)
+            int index = 0;
+            float max = _values[index].Magnitude;
+            for (int i = 1; i < _length; i++)
             {
-                var test = _values[i].Magnitude;
+                float test = _values[i].Magnitude;
                 if (test > max)
                 {
                     index = i;
@@ -542,8 +546,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <returns>The sum of the vector's elements.</returns>
         public override Complex32 Sum()
         {
-            var sum = Complex32.Zero;
-            for (var i = 0; i < _length; i++)
+            Complex32 sum = Complex32.Zero;
+            for (int i = 0; i < _length; i++)
             {
                 sum += _values[i];
             }
@@ -557,7 +561,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         public override double L1Norm()
         {
             double sum = 0d;
-            for (var i = 0; i < _length; i++)
+            for (int i = 0; i < _length; i++)
             {
                 sum += _values[i].Magnitude;
             }
@@ -590,14 +594,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// <returns>Scalar <c>ret = ( ∑|this[i]|^p )^(1/p)</c></returns>
         public override double Norm(double p)
         {
-            if (p < 0d) throw new ArgumentOutOfRangeException(nameof(p));
+            if (p < 0d)
+            {
+                throw new ArgumentOutOfRangeException(nameof(p));
+            }
 
-            if (p == 1d) return L1Norm();
-            if (p == 2d) return L2Norm();
-            if (double.IsPositiveInfinity(p)) return InfinityNorm();
+            if (p == 1d)
+            {
+                return L1Norm();
+            }
+
+            if (p == 2d)
+            {
+                return L2Norm();
+            }
+
+            if (double.IsPositiveInfinity(p))
+            {
+                return InfinityNorm();
+            }
 
             double sum = 0d;
-            for (var i = 0; i < _length; i++)
+            for (int i = 0; i < _length; i++)
             {
                 sum += Math.Pow(_values[i].Magnitude, p);
             }
@@ -706,11 +724,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
             }
 
             // parsing
-            var strongTokens = value.Split(new[] { formatProvider.GetTextInfo().ListSeparator }, StringSplitOptions.RemoveEmptyEntries);
-            var data = new List<Complex32>();
+            string[] strongTokens = value.Split(new[] { formatProvider.GetTextInfo().ListSeparator }, StringSplitOptions.RemoveEmptyEntries);
+            List<Complex32> data = new List<Complex32>();
             foreach (string strongToken in strongTokens)
             {
-                var weakTokens = strongToken.Split(new[] { " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] weakTokens = strongToken.Split(new[] { " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
                 string current = string.Empty;
                 for (int i = 0; i < weakTokens.Length; i++)
                 {
@@ -719,7 +737,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
                     {
                         continue;
                     }
-                    var ahead = i < weakTokens.Length - 1 ? weakTokens[i + 1] : string.Empty;
+                    string ahead = i < weakTokens.Length - 1 ? weakTokens[i + 1] : string.Empty;
                     if (ahead.StartsWith("+") || ahead.StartsWith("-"))
                     {
                         continue;

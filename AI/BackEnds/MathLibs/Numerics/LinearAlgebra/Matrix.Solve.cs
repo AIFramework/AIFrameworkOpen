@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 {
@@ -126,7 +126,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The left hand side <see cref="MatrixMathNet{T}"/>, <b>X</b>.</returns>
         public MatrixMathNet<T> Solve(MatrixMathNet<T> input)
         {
-            var x = Build.SameAs(this, ColumnCount, input.ColumnCount, fullyMutable: true);
+            MatrixMathNet<T> x = Build.SameAs(this, ColumnCount, input.ColumnCount, fullyMutable: true);
             Solve(input, x);
             return x;
         }
@@ -139,7 +139,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The left hand side <see cref="VectorMathNet{T}"/>, <b>x</b>.</returns>
         public VectorMathNet<T> Solve(VectorMathNet<T> input)
         {
-            var x = VectorMathNet<T>.Build.SameAs(this, ColumnCount);
+            VectorMathNet<T> x = VectorMathNet<T>.Build.SameAs(this, ColumnCount);
             Solve(input, x);
             return x;
         }
@@ -198,13 +198,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 preconditioner = new UnitPreconditioner<T>();
             }
 
-            for (var column = 0; column < input.ColumnCount; column++)
+            for (int column = 0; column < input.ColumnCount; column++)
             {
-                var solution = VectorMathNet<T>.Build.Dense(RowCount);
+                VectorMathNet<T> solution = VectorMathNet<T>.Build.Dense(RowCount);
 
                 solver.Solve(this, input.Column(column), solution, iterator, preconditioner);
 
-                foreach (var element in solution.EnumerateIndexed(Zeros.AllowSkip))
+                foreach ((int, T) element in solution.EnumerateIndexed(Zeros.AllowSkip))
                 {
                     result.At(element.Item1, column, element.Item2);
                 }
@@ -224,7 +224,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="preconditioner">The preconditioner to use for approximations.</param>
         public IterationStatus TrySolveIterative(VectorMathNet<T> input, VectorMathNet<T> result, IIterativeSolver<T> solver, IPreconditioner<T> preconditioner, params IIterationStopCriterion<T>[] stopCriteria)
         {
-            var iterator = new Iterator<T>(stopCriteria.Length == 0 ? Build.IterativeSolverStopCriteria() : stopCriteria);
+            Iterator<T> iterator = new Iterator<T>(stopCriteria.Length == 0 ? Build.IterativeSolverStopCriteria() : stopCriteria);
             return TrySolveIterative(input, result, solver, iterator, preconditioner);
         }
 
@@ -238,7 +238,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="preconditioner">The preconditioner to use for approximations.</param>
         public IterationStatus TrySolveIterative(MatrixMathNet<T> input, MatrixMathNet<T> result, IIterativeSolver<T> solver, IPreconditioner<T> preconditioner, params IIterationStopCriterion<T>[] stopCriteria)
         {
-            var iterator = new Iterator<T>(stopCriteria.Length == 0 ? Build.IterativeSolverStopCriteria() : stopCriteria);
+            Iterator<T> iterator = new Iterator<T>(stopCriteria.Length == 0 ? Build.IterativeSolverStopCriteria() : stopCriteria);
             return TrySolveIterative(input, result, solver, iterator, preconditioner);
         }
 
@@ -251,7 +251,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="stopCriteria">Criteria to control when to stop iterating.</param>
         public IterationStatus TrySolveIterative(VectorMathNet<T> input, VectorMathNet<T> result, IIterativeSolver<T> solver, params IIterationStopCriterion<T>[] stopCriteria)
         {
-            var iterator = new Iterator<T>(stopCriteria.Length == 0 ? Build.IterativeSolverStopCriteria() : stopCriteria);
+            Iterator<T> iterator = new Iterator<T>(stopCriteria.Length == 0 ? Build.IterativeSolverStopCriteria() : stopCriteria);
             return TrySolveIterative(input, result, solver, iterator);
         }
 
@@ -264,7 +264,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="stopCriteria">Criteria to control when to stop iterating.</param>
         public IterationStatus TrySolveIterative(MatrixMathNet<T> input, MatrixMathNet<T> result, IIterativeSolver<T> solver, params IIterationStopCriterion<T>[] stopCriteria)
         {
-            var iterator = new Iterator<T>(stopCriteria.Length == 0 ? Build.IterativeSolverStopCriteria() : stopCriteria);
+            Iterator<T> iterator = new Iterator<T>(stopCriteria.Length == 0 ? Build.IterativeSolverStopCriteria() : stopCriteria);
             return TrySolveIterative(input, result, solver, iterator);
         }
 
@@ -282,7 +282,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The result vector <c>x</c>.</returns>
         public VectorMathNet<T> SolveIterative(VectorMathNet<T> input, IIterativeSolver<T> solver, Iterator<T> iterator = null, IPreconditioner<T> preconditioner = null)
         {
-            var result = VectorMathNet<T>.Build.Dense(RowCount);
+            VectorMathNet<T> result = VectorMathNet<T>.Build.Dense(RowCount);
             TrySolveIterative(input, result, solver, iterator, preconditioner);
             return result;
         }
@@ -297,7 +297,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The result matrix <c>X</c>.</returns>
         public MatrixMathNet<T> SolveIterative(MatrixMathNet<T> input, IIterativeSolver<T> solver, Iterator<T> iterator = null, IPreconditioner<T> preconditioner = null)
         {
-            var result = Build.Dense(input.RowCount, input.ColumnCount);
+            MatrixMathNet<T> result = Build.Dense(input.RowCount, input.ColumnCount);
             TrySolveIterative(input, result, solver, iterator, preconditioner);
             return result;
         }
@@ -312,7 +312,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The result vector <c>x</c>.</returns>
         public VectorMathNet<T> SolveIterative(VectorMathNet<T> input, IIterativeSolver<T> solver, IPreconditioner<T> preconditioner, params IIterationStopCriterion<T>[] stopCriteria)
         {
-            var result = VectorMathNet<T>.Build.Dense(RowCount);
+            VectorMathNet<T> result = VectorMathNet<T>.Build.Dense(RowCount);
             TrySolveIterative(input, result, solver, preconditioner, stopCriteria);
             return result;
         }
@@ -327,7 +327,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The result matrix <c>X</c>.</returns>
         public MatrixMathNet<T> SolveIterative(MatrixMathNet<T> input, IIterativeSolver<T> solver, IPreconditioner<T> preconditioner, params IIterationStopCriterion<T>[] stopCriteria)
         {
-            var result = Build.Dense(input.RowCount, input.ColumnCount);
+            MatrixMathNet<T> result = Build.Dense(input.RowCount, input.ColumnCount);
             TrySolveIterative(input, result, solver, preconditioner, stopCriteria);
             return result;
         }
@@ -341,7 +341,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The result vector <c>x</c>.</returns>
         public VectorMathNet<T> SolveIterative(VectorMathNet<T> input, IIterativeSolver<T> solver, params IIterationStopCriterion<T>[] stopCriteria)
         {
-            var result = VectorMathNet<T>.Build.Dense(RowCount);
+            VectorMathNet<T> result = VectorMathNet<T>.Build.Dense(RowCount);
             TrySolveIterative(input, result, solver, stopCriteria);
             return result;
         }
@@ -355,7 +355,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The result matrix <c>X</c>.</returns>
         public MatrixMathNet<T> SolveIterative(MatrixMathNet<T> input, IIterativeSolver<T> solver, params IIterationStopCriterion<T>[] stopCriteria)
         {
-            var result = Build.Dense(input.RowCount, input.ColumnCount);
+            MatrixMathNet<T> result = Build.Dense(input.RowCount, input.ColumnCount);
             TrySolveIterative(input, result, solver, stopCriteria);
             return result;
         }

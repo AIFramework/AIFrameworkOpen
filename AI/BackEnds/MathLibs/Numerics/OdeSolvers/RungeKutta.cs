@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.OdeSolvers
 {

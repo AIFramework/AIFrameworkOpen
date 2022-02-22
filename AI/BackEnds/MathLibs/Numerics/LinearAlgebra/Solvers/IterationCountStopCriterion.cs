@@ -47,12 +47,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
         /// <summary>
         /// The maximum number of iterations the calculation is allowed to perform.
         /// </summary>
-        int _maximumNumberOfIterations;
+        private int _maximumNumberOfIterations;
 
         /// <summary>
         /// The status of the calculation
         /// </summary>
-        IterationStatus _status = IterationStatus.Continue;
+        private IterationStatus _status = IterationStatus.Continue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IterationCountStopCriterion{T}"/> class with the default maximum

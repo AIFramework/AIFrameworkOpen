@@ -6,13 +6,13 @@ namespace AI.DSP.DSPCore
 {
     public class DCT2NWaveWrapper
     {
-        readonly Dct2 dct2;
-        readonly FastDct2 fastDct;
+        private readonly Dct2 dct2;
+        private readonly FastDct2 fastDct;
 
         public int Count { get; private set; }
         public bool IsFast { get; private set; }
 
-        public DCT2NWaveWrapper(int countElements) 
+        public DCT2NWaveWrapper(int countElements)
         {
             Count = countElements;
             if (IsPow2(countElements))
@@ -28,7 +28,7 @@ namespace AI.DSP.DSPCore
         }
 
         #region Вспомогательные методы
-        static bool IsPow2(int n)
+        private static bool IsPow2(int n)
         {
             int pow = (int)Math.Log(n, 2);
             return n == 1 << pow;

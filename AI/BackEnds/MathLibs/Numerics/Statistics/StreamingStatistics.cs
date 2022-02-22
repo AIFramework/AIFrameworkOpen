@@ -53,7 +53,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double min = double.PositiveInfinity;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (double d in stream)
             {
                 if (d < min || double.IsNaN(d))
                 {
@@ -76,7 +76,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             float min = float.PositiveInfinity;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (float d in stream)
             {
                 if (d < min || float.IsNaN(d))
                 {
@@ -99,7 +99,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double max = double.NegativeInfinity;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (double d in stream)
             {
                 if (d > max || double.IsNaN(d))
                 {
@@ -122,7 +122,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             float max = float.NegativeInfinity;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (float d in stream)
             {
                 if (d > max || float.IsNaN(d))
                 {
@@ -145,7 +145,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double min = double.PositiveInfinity;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (double d in stream)
             {
                 if (Math.Abs(d) < min || double.IsNaN(d))
                 {
@@ -168,7 +168,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             float min = float.PositiveInfinity;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (float d in stream)
             {
                 if (Math.Abs(d) < min || float.IsNaN(d))
                 {
@@ -191,7 +191,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double max = 0.0d;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (double d in stream)
             {
                 if (Math.Abs(d) > max || double.IsNaN(d))
                 {
@@ -214,7 +214,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             float max = 0.0f;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (float d in stream)
             {
                 if (Math.Abs(d) > max || float.IsNaN(d))
                 {
@@ -238,7 +238,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             Complex min = new Complex(double.PositiveInfinity, double.PositiveInfinity);
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (Complex d in stream)
             {
                 double magnitude = d.Magnitude;
                 if (double.IsNaN(magnitude))
@@ -268,7 +268,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             Complex32 min = new Complex32(float.PositiveInfinity, float.PositiveInfinity);
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (Complex32 d in stream)
             {
                 float magnitude = d.Magnitude;
                 if (float.IsNaN(magnitude))
@@ -298,7 +298,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             Complex max = Complex.Zero;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (Complex d in stream)
             {
                 double magnitude = d.Magnitude;
                 if (double.IsNaN(magnitude))
@@ -328,7 +328,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             Complex32 max = Complex32.Zero;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (Complex32 d in stream)
             {
                 float magnitude = d.Magnitude;
                 if (float.IsNaN(magnitude))
@@ -358,9 +358,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             ulong m = 0;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (double d in stream)
             {
-                mean += (d - mean)/++m;
+                mean += (d - mean) / ++m;
                 any = true;
             }
 
@@ -387,7 +387,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             ulong m = 0;
             double sum = 0;
 
-            foreach (var d in stream)
+            foreach (double d in stream)
             {
                 sum += Math.Log(d);
                 m++;
@@ -416,13 +416,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             ulong m = 0;
             double sum = 0;
 
-            foreach (var d in stream)
+            foreach (double d in stream)
             {
                 sum += 1.0 / d;
                 m++;
             }
 
-            return m > 0 ? m/sum : double.NaN;
+            return m > 0 ? m / sum : double.NaN;
         }
 
         /// <summary>
@@ -447,7 +447,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double sum = 0;
             ulong count = 0;
 
-            using (var iterator = samples.GetEnumerator())
+            using (IEnumerator<double> iterator = samples.GetEnumerator())
             {
                 if (iterator.MoveNext())
                 {
@@ -460,12 +460,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                     count++;
                     double xi = iterator.Current;
                     sum += xi;
-                    double diff = (count*xi) - sum;
-                    variance += (diff*diff)/(count*(count - 1));
+                    double diff = (count * xi) - sum;
+                    variance += (diff * diff) / (count * (count - 1));
                 }
             }
 
-            return count > 1 ? variance/(count - 1) : double.NaN;
+            return count > 1 ? variance / (count - 1) : double.NaN;
         }
 
         /// <summary>
@@ -491,7 +491,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double sum = 0;
             ulong count = 0;
 
-            using (var iterator = population.GetEnumerator())
+            using (IEnumerator<double> iterator = population.GetEnumerator())
             {
                 if (iterator.MoveNext())
                 {
@@ -504,12 +504,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                     count++;
                     double xi = iterator.Current;
                     sum += xi;
-                    double diff = (count*xi) - sum;
-                    variance += (diff*diff)/(count*(count - 1));
+                    double diff = (count * xi) - sum;
+                    variance += (diff * diff) / (count * (count - 1));
                 }
             }
 
-            return variance/count;
+            return variance / count;
         }
 
         /// <summary>
@@ -580,7 +580,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double sum = 0;
             ulong count = 0;
 
-            using (var iterator = samples.GetEnumerator())
+            using (IEnumerator<double> iterator = samples.GetEnumerator())
             {
                 if (iterator.MoveNext())
                 {
@@ -599,7 +599,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 }
             }
 
-            return (count > 0 ? mean : double.NaN, count > 1 ? variance/(count - 1) : double.NaN);
+            return (count > 0 ? mean : double.NaN, count > 1 ? variance / (count - 1) : double.NaN);
         }
 
         /// <summary>
@@ -621,7 +621,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <param name="samples">Sample stream, no sorting is assumed.</param>
         public static (double Mean, double StandardDeviation) MeanStandardDeviation(IEnumerable<double> samples)
         {
-            var meanVariance = MeanVariance(samples);
+            (double Mean, double Variance) meanVariance = MeanVariance(samples);
             return (meanVariance.Item1, Math.Sqrt(meanVariance.Item2));
         }
 
@@ -646,13 +646,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         public static double Covariance(IEnumerable<double> samples1, IEnumerable<double> samples2)
         {
             // https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
-            var n = 0;
-            var mean1 = 0.0;
-            var mean2 = 0.0;
-            var comoment = 0.0;
+            int n = 0;
+            double mean1 = 0.0;
+            double mean2 = 0.0;
+            double comoment = 0.0;
 
-            using (var s1 = samples1.GetEnumerator())
-            using (var s2 = samples2.GetEnumerator())
+            using (IEnumerator<double> s1 = samples1.GetEnumerator())
+            using (IEnumerator<double> s2 = samples2.GetEnumerator())
             {
                 while (s1.MoveNext())
                 {
@@ -661,11 +661,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                         throw new ArgumentException("All vectors must have the same dimensionality.");
                     }
 
-                    var mean2Prev = mean2;
+                    double mean2Prev = mean2;
                     n++;
-                    mean1 += (s1.Current - mean1)/n;
-                    mean2 += (s2.Current - mean2)/n;
-                    comoment += (s1.Current - mean1)*(s2.Current - mean2Prev);
+                    mean1 += (s1.Current - mean1) / n;
+                    mean2 += (s2.Current - mean2) / n;
+                    comoment += (s1.Current - mean1) * (s2.Current - mean2Prev);
                 }
 
                 if (s2.MoveNext())
@@ -674,7 +674,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 }
             }
 
-            return n > 1 ? comoment/(n - 1) : double.NaN;
+            return n > 1 ? comoment / (n - 1) : double.NaN;
         }
 
         /// <summary>
@@ -699,13 +699,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         public static double PopulationCovariance(IEnumerable<double> population1, IEnumerable<double> population2)
         {
             // https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
-            var n = 0;
-            var mean1 = 0.0;
-            var mean2 = 0.0;
-            var comoment = 0.0;
+            int n = 0;
+            double mean1 = 0.0;
+            double mean2 = 0.0;
+            double comoment = 0.0;
 
-            using (var p1 = population1.GetEnumerator())
-            using (var p2 = population2.GetEnumerator())
+            using (IEnumerator<double> p1 = population1.GetEnumerator())
+            using (IEnumerator<double> p2 = population2.GetEnumerator())
             {
                 while (p1.MoveNext())
                 {
@@ -714,7 +714,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                         throw new ArgumentException("All vectors must have the same dimensionality.");
                     }
 
-                    var mean2Prev = mean2;
+                    double mean2Prev = mean2;
                     n++;
                     mean1 += (p1.Current - mean1) / n;
                     mean2 += (p2.Current - mean2) / n;
@@ -727,7 +727,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 }
             }
 
-            return comoment/n;
+            return comoment / n;
         }
 
         /// <summary>
@@ -753,9 +753,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             ulong m = 0;
             bool any = false;
 
-            foreach (var d in stream)
+            foreach (double d in stream)
             {
-                mean += (d*d - mean)/++m;
+                mean += (d * d - mean) / ++m;
                 any = true;
             }
 
@@ -782,7 +782,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         {
             // http://en.wikipedia.org/wiki/Shannon_entropy
 
-            var index = new Dictionary<double, double>();
+            Dictionary<double, double> index = new Dictionary<double, double>();
 
             // count the number of occurrences of each item in the stream
             int totalCount = 0;
@@ -793,8 +793,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                     return double.NaN;
                 }
 
-                double currentValueCount;
-                if (index.TryGetValue(value, out currentValueCount))
+                if (index.TryGetValue(value, out double currentValueCount))
                 {
                     index[value] = ++currentValueCount;
                 }
@@ -808,7 +807,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
 
             // calculate the entropy of the stream
             double entropy = 0;
-            foreach (var item in index)
+            foreach (KeyValuePair<double, double> item in index)
             {
                 double p = item.Value / totalCount;
                 entropy += p * Math.Log(p, 2);

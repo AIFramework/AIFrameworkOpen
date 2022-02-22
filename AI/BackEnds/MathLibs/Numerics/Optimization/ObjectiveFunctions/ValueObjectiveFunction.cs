@@ -27,14 +27,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
 {
     internal class ValueObjectiveFunction : IObjectiveFunction
     {
-        readonly Func<VectorMathNet<double>, double> _function;
+        private readonly Func<VectorMathNet<double>, double> _function;
 
         public ValueObjectiveFunction(Func<VectorMathNet<double>, double> function)
         {

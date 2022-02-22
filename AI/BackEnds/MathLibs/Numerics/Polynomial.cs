@@ -117,11 +117,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Polynomial Fit(double[] x, double[] y, int order, DirectRegressionMethod method = DirectRegressionMethod.QR)
         {
-            var coefficients = Numerics.Fit.Polynomial(x, y, order, method);
+            double[] coefficients = Numerics.Fit.Polynomial(x, y, order, method);
             return new Polynomial(coefficients);
         }
 
-        static int EvaluateDegree(double[] coefficients)
+        private static int EvaluateDegree(double[] coefficients)
         {
             for (int i = coefficients.Length - 1; i >= 0; i--)
             {
@@ -307,7 +307,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return Zero;
             }
 
-            var c = new double[n];
+            double[] c = new double[n];
             for (int i = 0; i < c.Length; i++)
             {
                 c[i] = Coefficients[i + 1] * (i + 1);
@@ -324,7 +324,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return this;
             }
 
-            var c = new double[n + 2];
+            double[] c = new double[n + 2];
             for (int i = 1; i < c.Length; i++)
             {
                 c[i] = Coefficients[i - 1] / i;
@@ -399,13 +399,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>Resulting Polynomial</returns>
         public static Polynomial Add(Polynomial a, Polynomial b)
         {
-            var ac = a.Coefficients;
-            var bc = b.Coefficients;
+            double[] ac = a.Coefficients;
+            double[] bc = b.Coefficients;
 
-            var degree = Math.Max(a.Degree, b.Degree);
-            var result = new double[degree + 1];
+            int degree = Math.Max(a.Degree, b.Degree);
+            double[] result = new double[degree + 1];
 
-            var commonLength = Math.Min(Math.Min(ac.Length, bc.Length), result.Length);
+            int commonLength = Math.Min(Math.Min(ac.Length, bc.Length), result.Length);
             for (int i = 0; i < commonLength; i++)
             {
                 result[i] = ac[i] + bc[i];
@@ -433,12 +433,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Polynomial Add(Polynomial a, double b)
         {
-            var ac = a.Coefficients;
+            double[] ac = a.Coefficients;
 
-            var degree = Math.Max(a.Degree, 0);
-            var result = new double[degree + 1];
+            int degree = Math.Max(a.Degree, 0);
+            double[] result = new double[degree + 1];
 
-            var commonLength = Math.Min(ac.Length, result.Length);
+            int commonLength = Math.Min(ac.Length, result.Length);
             for (int i = 0; i < commonLength; i++)
             {
                 result[i] = ac[i];
@@ -457,13 +457,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>Resulting Polynomial</returns>
         public static Polynomial Subtract(Polynomial a, Polynomial b)
         {
-            var ac = a.Coefficients;
-            var bc = b.Coefficients;
+            double[] ac = a.Coefficients;
+            double[] bc = b.Coefficients;
 
-            var degree = Math.Max(a.Degree, b.Degree);
-            var result = new double[degree + 1];
+            int degree = Math.Max(a.Degree, b.Degree);
+            double[] result = new double[degree + 1];
 
-            var commonLength = Math.Min(Math.Min(ac.Length, bc.Length), result.Length);
+            int commonLength = Math.Min(Math.Min(ac.Length, bc.Length), result.Length);
             for (int i = 0; i < commonLength; i++)
             {
                 result[i] = ac[i] - bc[i];
@@ -499,12 +499,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Polynomial Subtract(double b, Polynomial a)
         {
-            var ac = a.Coefficients;
+            double[] ac = a.Coefficients;
 
-            var degree = Math.Max(a.Degree, 0);
-            var result = new double[degree + 1];
+            int degree = Math.Max(a.Degree, 0);
+            double[] result = new double[degree + 1];
 
-            var commonLength = Math.Min(ac.Length, result.Length);
+            int commonLength = Math.Min(ac.Length, result.Length);
             for (int i = 0; i < commonLength; i++)
             {
                 result[i] = -ac[i];
@@ -520,10 +520,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Polynomial Negate(Polynomial a)
         {
-            var ac = a.Coefficients;
+            double[] ac = a.Coefficients;
 
-            var degree = a.Degree;
-            var result = new double[degree + 1];
+            int degree = a.Degree;
+            double[] result = new double[degree + 1];
 
             for (int i = 0; i < result.Length; i++)
             {
@@ -557,8 +557,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentNullException(nameof(b));
             }
 
-            var ad = a.Degree;
-            var bd = b.Degree;
+            int ad = a.Degree;
+            int bd = b.Degree;
 
             // 2020-10-07 jbialogrodzki #730 Zero polynomials need explicit handling.
             // Without this check, we attempted to create arrays of negative lengths!
@@ -570,7 +570,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             double[] ac = a.Coefficients;
             double[] bc = b.Coefficients;
 
-            var degree = ad + bd;
+            int degree = ad + bd;
             double[] result = new double[degree + 1];
 
             for (int i = 0; i <= ad; i++)
@@ -593,9 +593,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>Resulting Polynomial</returns>
         public static Polynomial Multiply(Polynomial a, double k)
         {
-            var ac = a.Coefficients;
+            double[] ac = a.Coefficients;
 
-            var result = new double[a.Degree + 1];
+            double[] result = new double[a.Degree + 1];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = ac[i] * k;
@@ -612,9 +612,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>Resulting Polynomial</returns>
         public static Polynomial Divide(Polynomial a, double k)
         {
-            var ac = a.Coefficients;
+            double[] ac = a.Coefficients;
 
-            var result = new double[a.Degree + 1];
+            double[] result = new double[a.Degree + 1];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = ac[i] / k;
@@ -631,13 +631,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>A tuple holding quotient in first and remainder in second</returns>
         public static (Polynomial, Polynomial) DivideRemainder(Polynomial a, Polynomial b)
         {
-            var bDegree = b.Degree;
+            int bDegree = b.Degree;
             if (bDegree < 0)
             {
                 throw new DivideByZeroException("b polynomial ends with zero");
             }
 
-            var aDegree = a.Degree;
+            int aDegree = a.Degree;
             if (aDegree < 0)
             {
                 // zero divided by non-zero is zero without remainder
@@ -657,11 +657,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return (Zero, a);
             }
 
-            var c1 = a.Coefficients.ToArray();
-            var c2 = b.Coefficients.ToArray();
+            double[] c1 = a.Coefficients.ToArray();
+            double[] c2 = b.Coefficients.ToArray();
 
-            var scl = c2[bDegree];
-            var c22 = new double[bDegree];
+            double scl = c2[bDegree];
+            double[] c22 = new double[bDegree];
             for (int ii = 0; ii < c22.Length; ii++)
             {
                 c22[ii] = c2[ii] / scl;
@@ -671,7 +671,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             int j = aDegree;
             while (i >= 0)
             {
-                var v = c1[j];
+                double v = c1[j];
                 for (int k = i; k < j; k++)
                 {
                     c1[k] -= c22[k - i] * v;
@@ -681,16 +681,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 j--;
             }
 
-            var j1 = j + 1;
-            var l1 = aDegree - j;
+            int j1 = j + 1;
+            int l1 = aDegree - j;
 
-            var quo = new double[l1];
+            double[] quo = new double[l1];
             for (int k = 0; k < l1; k++)
             {
                 quo[k] = c1[k + j1] / scl;
             }
 
-            var rem = new double[j1];
+            double[] rem = new double[j1];
             for (int k = 0; k < j1; k++)
             {
                 rem[k] = c1[k];
@@ -711,13 +711,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>Resulting Polynomial</returns>
         public static Polynomial PointwiseDivide(Polynomial a, Polynomial b)
         {
-            var ac = a.Coefficients;
-            var bc = b.Coefficients;
+            double[] ac = a.Coefficients;
+            double[] bc = b.Coefficients;
 
-            var degree = a.Degree;
-            var result = new double[degree + 1];
+            int degree = a.Degree;
+            double[] result = new double[degree + 1];
 
-            var commonLength = Math.Min(Math.Min(ac.Length, bc.Length), result.Length);
+            int commonLength = Math.Min(Math.Min(ac.Length, bc.Length), result.Length);
             for (int i = 0; i < commonLength; i++)
             {
                 result[i] = ac[i] / bc[i];
@@ -739,11 +739,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>Resulting Polynomial</returns>
         public static Polynomial PointwiseMultiply(Polynomial a, Polynomial b)
         {
-            var ac = a.Coefficients;
-            var bc = b.Coefficients;
+            double[] ac = a.Coefficients;
+            double[] bc = b.Coefficients;
 
-            var degree = Math.Min(a.Degree, b.Degree);
-            var result = new double[degree + 1];
+            int degree = Math.Min(a.Degree, b.Degree);
+            double[] result = new double[degree + 1];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = ac[i] * bc[i];
@@ -952,7 +952,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return "0";
             }
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             bool first = true;
             for (int i = 0; i < Coefficients.Length; i++)
             {
@@ -1017,7 +1017,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return "0";
             }
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             bool first = true;
             for (int i = Coefficients.Length - 1; i >= 0; i--)
             {
@@ -1078,8 +1078,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 
         public bool Equals(Polynomial other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
 
             int n = Degree;
             if (n != other.Degree)
@@ -1087,7 +1094,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return false;
             }
 
-            for (var i = 0; i <= n; i++)
+            for (int i = 0; i <= n; i++)
             {
                 if (!Coefficients[i].Equals(other.Coefficients[i]))
                 {
@@ -1100,19 +1107,31 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(Polynomial)) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != typeof(Polynomial))
+            {
+                return false;
+            }
+
             return Equals((Polynomial)obj);
         }
 
         public override int GetHashCode()
         {
-            var hashNum = Math.Min(Degree + 1, 25);
+            int hashNum = Math.Min(Degree + 1, 25);
             int hash = 17;
             unchecked
             {
-                for (var i = 0; i < hashNum; i++)
+                for (int i = 0; i < hashNum; i++)
                 {
                     hash = hash * 31 + Coefficients[i].GetHashCode();
                 }
@@ -1128,7 +1147,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         public Polynomial Clone()
         {
             int degree = EvaluateDegree(Coefficients);
-            var coefficients = new double[degree + 1];
+            double[] coefficients = new double[degree + 1];
             Array.Copy(Coefficients, coefficients, coefficients.Length);
             return new Polynomial(coefficients);
         }

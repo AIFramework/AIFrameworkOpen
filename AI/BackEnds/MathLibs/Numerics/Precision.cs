@@ -79,14 +79,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// point value. i.e. there are this many digits used to represent the
         /// actual number, where in a number as: 0.134556 * 10^5 the digits are 0.134556 and the exponent is 5.
         /// </summary>
-        const int DoubleWidth = 53;
+        private const int DoubleWidth = 53;
 
         /// <summary>
         /// The number of binary digits used to represent the binary number for a single precision floating
         /// point value. i.e. there are this many digits used to represent the
         /// actual number, where in a number as: 0.134556 * 10^5 the digits are 0.134556 and the exponent is 5.
         /// </summary>
-        const int SingleWidth = 24;
+        private const int SingleWidth = 24;
 
         /// <summary>
         /// Standard epsilon, the maximum relative precision of IEEE 754 double-precision floating numbers (64 bit).
@@ -98,7 +98,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// Standard epsilon, the maximum relative precision of IEEE 754 double-precision floating numbers (64 bit).
         /// According to the definition of Prof. Higham and used in the ISO C standard and MATLAB.
         /// </summary>
-        public static readonly double PositiveDoublePrecision = 2*DoublePrecision;
+        public static readonly double PositiveDoublePrecision = 2 * DoublePrecision;
 
         /// <summary>
         /// Standard epsilon, the maximum relative precision of IEEE 754 single-precision floating numbers (32 bit).
@@ -110,7 +110,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// Standard epsilon, the maximum relative precision of IEEE 754 single-precision floating numbers (32 bit).
         /// According to the definition of Prof. Higham and used in the ISO C standard and MATLAB.
         /// </summary>
-        public static readonly double PositiveSinglePrecision = 2*SinglePrecision;
+        public static readonly double PositiveSinglePrecision = 2 * SinglePrecision;
 
         /// <summary>
         /// Actual double precision machine epsilon, the smallest number that can be subtracted from 1, yielding a results different than 1.
@@ -129,22 +129,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <summary>
         /// The number of significant decimal places of double-precision floating numbers (64 bit).
         /// </summary>
-        public static readonly int DoubleDecimalPlaces = (int) Math.Floor(Math.Abs(Math.Log10(DoublePrecision)));
+        public static readonly int DoubleDecimalPlaces = (int)Math.Floor(Math.Abs(Math.Log10(DoublePrecision)));
 
         /// <summary>
         /// The number of significant decimal places of single-precision floating numbers (32 bit).
         /// </summary>
-        public static readonly int SingleDecimalPlaces = (int) Math.Floor(Math.Abs(Math.Log10(SinglePrecision)));
+        public static readonly int SingleDecimalPlaces = (int)Math.Floor(Math.Abs(Math.Log10(SinglePrecision)));
 
         /// <summary>
         /// Value representing 10 * 2^(-53) = 1.11022302462516E-15
         /// </summary>
-        static readonly double DefaultDoubleAccuracy = DoublePrecision*10;
+        private static readonly double DefaultDoubleAccuracy = DoublePrecision * 10;
 
         /// <summary>
         /// Value representing 10 * 2^(-24) = 5.96046447753906E-07
         /// </summary>
-        static readonly float DefaultSingleAccuracy = (float) (SinglePrecision*10);
+        private static readonly float DefaultSingleAccuracy = (float)(SinglePrecision * 10);
 
         /// <summary>
         /// Returns the magnitude of the number.
@@ -162,7 +162,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             // Note that we need the absolute value of the input because Log10 doesn't
             // work for negative numbers (obviously).
             double magnitude = Math.Log10(Math.Abs(value));
-            var truncated = (int)Truncate(magnitude);
+            int truncated = (int)Truncate(magnitude);
 
             // To get the right number we need to know if the value is negative or positive
             // truncating a positive number will always give use the correct magnitude
@@ -188,8 +188,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 
             // Note that we need the absolute value of the input because Log10 doesn't
             // work for negative numbers (obviously).
-            var magnitude = Convert.ToSingle(Math.Log10(Math.Abs(value)));
-            var truncated = (int)Truncate(magnitude);
+            float magnitude = Convert.ToSingle(Math.Log10(Math.Abs(value)));
+            int truncated = (int)Truncate(magnitude);
 
             // To get the right number we need to know if the value is negative or positive
             // truncating a positive number will always give use the correct magnitude
@@ -212,7 +212,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             int magnitude = Magnitude(value);
-            return value*Math.Pow(10, -magnitude);
+            return value * Math.Pow(10, -magnitude);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         /// <param name="value">The input double value.</param>
         /// <returns>A long value which is roughly the equivalent of the double value.</returns>
-        static long AsDirectionalInt64(double value)
+        private static long AsDirectionalInt64(double value)
         {
             // Convert in the normal way.
             long result = BitConverter.DoubleToInt64Bits(value);
@@ -240,7 +240,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         /// <param name="value">The input float value.</param>
         /// <returns>An int value which is roughly the equivalent of the double value.</returns>
-        static int AsDirectionalInt32(float value)
+        private static int AsDirectionalInt32(float value)
         {
             // Convert in the normal way.
             int result = SingleToInt32Bits(value);
@@ -362,7 +362,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </returns>
         public static double CoerceZero(this double a, int maxNumbersBetween)
         {
-            return CoerceZero(a, (long) maxNumbersBetween);
+            return CoerceZero(a, (long)maxNumbersBetween);
         }
 
         /// <summary>
@@ -390,7 +390,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 
             // We allow maxNumbersBetween between 0 and the number so
             // we need to check if there a
-            if (NumbersBetween(0.0, a) <= (ulong) maxNumbersBetween)
+            if (NumbersBetween(0.0, a) <= (ulong)maxNumbersBetween)
             {
                 return 0.0;
             }
@@ -482,7 +482,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 // Note that long.MinValue has the same bit pattern as
                 // -0.0. Therefore we're working in opposite direction (i.e. add if we want to
                 // go more negative and subtract if we want to go less negative)
-                var topRangeEnd = Math.Abs(long.MinValue - intValue) < maxNumbersBetween
+                double topRangeEnd = Math.Abs(long.MinValue - intValue) < maxNumbersBetween
                     // Got underflow, which can be fixed by splitting the calculation into two bits
                     // first get the remainder of the intValue after subtracting it from the long.MinValue
                     // and add that to the ulpsDifference. That way we'll turn positive without underflow
@@ -490,7 +490,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                     // No problems here, move along.
                     : BitConverter.Int64BitsToDouble(intValue - maxNumbersBetween);
 
-                var bottomRangeEnd = Math.Abs(intValue) < maxNumbersBetween
+                double bottomRangeEnd = Math.Abs(intValue) < maxNumbersBetween
                     // Underflow, which means we'd have to go further than a long would allow us.
                     // Also we couldn't translate it back to a double, so we'll return -Double.MaxValue
                     ? -double.MaxValue
@@ -503,7 +503,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             else
             {
                 // IntValue is positive
-                var topRangeEnd = long.MaxValue - intValue < maxNumbersBetween
+                double topRangeEnd = long.MaxValue - intValue < maxNumbersBetween
                     // Overflow, which means we'd have to go further than a long would allow us.
                     // Also we couldn't translate it back to a double, so we'll return Double.MaxValue
                     ? double.MaxValue
@@ -511,7 +511,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                     : BitConverter.Int64BitsToDouble(intValue + maxNumbersBetween);
 
                 // Check the bottom range end for underflows
-                var bottomRangeEnd = intValue > maxNumbersBetween
+                double bottomRangeEnd = intValue > maxNumbersBetween
                     // No problems here. IntValue is larger than ulpsDifference so we'll end up with a
                     // positive number.
                     ? BitConverter.Int64BitsToDouble(intValue - maxNumbersBetween)
@@ -590,14 +590,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             // so return the ulps counts for the difference.
             if (value.Equals(0))
             {
-                var v = BitConverter.DoubleToInt64Bits(relativeDifference);
+                long v = BitConverter.DoubleToInt64Bits(relativeDifference);
                 return (v, v);
             }
 
             // Calculate the ulps for the maximum and minimum values
             // Note that these can overflow
-            long max = AsDirectionalInt64(value + (relativeDifference*Math.Abs(value)));
-            long min = AsDirectionalInt64(value - (relativeDifference*Math.Abs(value)));
+            long max = AsDirectionalInt64(value + (relativeDifference * Math.Abs(value)));
+            long min = AsDirectionalInt64(value - (relativeDifference * Math.Abs(value)));
 
             // Calculate the ulps from the value
             long intValue = AsDirectionalInt64(value);
@@ -645,7 +645,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 
             // Now find the number of values between the two doubles. This should not overflow
             // given that there are more long values than there are double values
-            return (a >= b) ? (ulong) (intA - intB) : (ulong) (intB - intA);
+            return (a >= b) ? (ulong)(intA - intB) : (ulong)(intB - intA);
         }
 
         /// <summary>
@@ -715,7 +715,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <seealso cref="EpsilonOf(double)"/>
         public static double PositiveEpsilonOf(this double value)
         {
-            return 2*EpsilonOf(value);
+            return 2 * EpsilonOf(value);
         }
 
         /// <summary>
@@ -735,12 +735,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// This is also known as unit roundoff error. According to the definition of Prof. Demmel.
         /// </summary>
         /// <returns>Positive Machine epsilon</returns>
-        static double MeasureMachineEpsilon()
+        private static double MeasureMachineEpsilon()
         {
             double eps = 1.0d;
 
             while ((1.0d - (eps / 2.0d)) < 1.0d)
+            {
                 eps /= 2.0d;
+            }
 
             return eps;
         }
@@ -750,12 +752,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// This is also known as unit roundoff error. According to the definition of Prof. Higham.
         /// </summary>
         /// <returns>Machine epsilon</returns>
-        static double MeasurePositiveMachineEpsilon()
+        private static double MeasurePositiveMachineEpsilon()
         {
             double eps = 1.0d;
 
             while ((1.0d + (eps / 2.0d)) > 1.0d)
+            {
                 eps /= 2.0d;
+            }
 
             return eps;
         }
@@ -777,7 +781,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="basis">The basis to whose multiples to round to. Must be positive.</param>
         public static float RoundToMultiple(this float number, float basis)
         {
-            return (float) RoundToMultiple((double) number, basis);
+            return (float)RoundToMultiple((double)number, basis);
         }
 
         /// <summary>
@@ -809,7 +813,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="basis">The basis to whose powers to round to. Must be positive.</param>
         public static float RoundToPower(this float number, float basis)
         {
-            return (float) RoundToPower((double) number, basis);
+            return (float)RoundToPower((double)number, basis);
         }
 
         /// <summary>
@@ -835,7 +839,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>Rounded number</returns>
         public static float Round(this float number, int digits)
         {
-            return (float) Round((double) number, digits);
+            return (float)Round((double)number, digits);
         }
 
         /// <summary>
@@ -849,21 +853,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         {
             return digits >= 0
                 ? Math.Round(number, digits, MidpointRounding.AwayFromZero)
-                : RoundToMultiple(number, (decimal) Math.Pow(10.0, -digits));
+                : RoundToMultiple(number, (decimal)Math.Pow(10.0, -digits));
         }
 
-		/// <summary>
-		/// Round to the number closest to 10^(-decimals). Negative decimals to round within the integer part.
-		/// </summary>
-		/// <param name="number">Number to be rounded</param>
+        /// <summary>
+        /// Round to the number closest to 10^(-decimals). Negative decimals to round within the integer part.
+        /// </summary>
+        /// <param name="number">Number to be rounded</param>
         /// <param name="digits">If positive the number of decimals to round to. If negative the number of digits within the integer part to round, e.g. -3 will wound to the closes 1000.</param>
-		/// <example>To round 123456789 to hundreds Round(123456789, -2) = 123456800 </example>
-		/// <returns>Rounded number</returns>
-		public static int Round(this int number, int digits)
+        /// <example>To round 123456789 to hundreds Round(123456789, -2) = 123456800 </example>
+        /// <returns>Rounded number</returns>
+        public static int Round(this int number, int digits)
         {
             return digits >= 0
                 ? number
-                : (int) Round((decimal) number, digits);
+                : (int)Round((decimal)number, digits);
         }
 
         /// <summary>
@@ -878,7 +882,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         {
             return digits >= 0
                 ? number
-                : (uint) Round((decimal) number, digits);
+                : (uint)Round((decimal)number, digits);
         }
 
         /// <summary>
@@ -892,7 +896,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         {
             return digits >= 0
                 ? number
-                : (long) Round((decimal) number, digits);
+                : (long)Round((decimal)number, digits);
         }
 
         /// <summary>
@@ -907,7 +911,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         {
             return digits >= 0
                 ? number
-                : (ulong) Round((decimal) number, digits);
+                : (ulong)Round((decimal)number, digits);
         }
 
         /// <summary>
@@ -921,7 +925,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         {
             return digits >= 0
                 ? number
-                : (short) Round((decimal) number, digits);
+                : (short)Round((decimal)number, digits);
         }
 
         /// <summary>
@@ -936,7 +940,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         {
             return digits >= 0
                 ? number
-                : (ushort) Round((decimal) number, digits);
+                : (ushort)Round((decimal)number, digits);
         }
 
         /// <summary>
@@ -953,9 +957,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return number;
             }
 
-            var onelarger = number / BigInteger.Pow(10, (-digits)-1);
-            var divided = onelarger / 10;
-            var lastDigit = onelarger - divided * 10;
+            BigInteger onelarger = number / BigInteger.Pow(10, (-digits) - 1);
+            BigInteger divided = onelarger / 10;
+            BigInteger lastDigit = onelarger - divided * 10;
             if (lastDigit >= 5)
             {
                 divided += 1;
@@ -965,25 +969,25 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         }
 
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
-        static double Truncate(double value)
+        private static double Truncate(double value)
         {
             return Math.Truncate(value);
         }
 
-        static int SingleToInt32Bits(float value)
+        private static int SingleToInt32Bits(float value)
         {
-            var union = new SingleIntUnion { Single = value };
+            SingleIntUnion union = new SingleIntUnion { Single = value };
             return union.Int32;
         }
 
-        static float Int32BitsToSingle(int value)
+        private static float Int32BitsToSingle(int value)
         {
-            var union = new SingleIntUnion { Int32 = value };
+            SingleIntUnion union = new SingleIntUnion { Int32 = value };
             return union.Single;
         }
 
         [StructLayout(LayoutKind.Explicit)]
-        struct SingleIntUnion
+        private struct SingleIntUnion
         {
             [FieldOffset(0)]
             public float Single;

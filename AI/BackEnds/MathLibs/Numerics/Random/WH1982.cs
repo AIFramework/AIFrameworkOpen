@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System;
+using System.Collections.Generic;
 using System.Runtime;
+using System.Runtime.Serialization;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
@@ -44,19 +44,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
     [DataContract(Namespace = "urn:MathNet/Numerics/Random")]
     public class WH1982 : RandomSource
     {
-        const uint Modx = 30269;
-        const double ModxRecip = 1.0/Modx;
-        const uint Mody = 30307;
-        const double ModyRecip = 1.0/Mody;
-        const uint Modz = 30323;
-        const double ModzRecip = 1.0/Modz;
+        private const uint Modx = 30269;
+        private const double ModxRecip = 1.0 / Modx;
+        private const uint Mody = 30307;
+        private const double ModyRecip = 1.0 / Mody;
+        private const uint Modz = 30323;
+        private const double ModzRecip = 1.0 / Modz;
 
         [DataMember(Order = 1)]
-        uint _xn;
+        private uint _xn;
         [DataMember(Order = 2)]
-        uint _yn = 1;
+        private uint _yn = 1;
         [DataMember(Order = 3)]
-        uint _zn = 1;
+        private uint _zn = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WH1982"/> class using
@@ -89,7 +89,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 seed = 1;
             }
 
-            _xn = (uint)seed%Modx;
+            _xn = (uint)seed % Modx;
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 seed = 1;
             }
 
-            _xn = (uint)seed%Modx;
+            _xn = (uint)seed % Modx;
         }
 
         /// <summary>
@@ -114,11 +114,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected sealed override double DoSample()
         {
-            _xn = (171*_xn)%Modx;
-            _yn = (172*_yn)%Mody;
-            _zn = (170*_zn)%Modz;
+            _xn = (171 * _xn) % Modx;
+            _yn = (172 * _yn) % Mody;
+            _zn = (170 * _zn) % Modz;
 
-            double w = _xn*ModxRecip + _yn*ModyRecip + _zn*ModzRecip;
+            double w = _xn * ModxRecip + _yn * ModyRecip + _zn * ModzRecip;
             w -= (int)w;
             return w;
         }
@@ -134,17 +134,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 seed = 1;
             }
 
-            uint xn = (uint)seed%Modx;
+            uint xn = (uint)seed % Modx;
             uint yn = 1;
             uint zn = 1;
 
             for (int i = 0; i < values.Length; i++)
             {
-                xn = (171*xn)%Modx;
-                yn = (172*yn)%Mody;
-                zn = (170*zn)%Modz;
+                xn = (171 * xn) % Modx;
+                yn = (172 * yn) % Mody;
+                zn = (170 * zn) % Modz;
 
-                double w = xn*ModxRecip + yn*ModyRecip + zn*ModzRecip;
+                double w = xn * ModxRecip + yn * ModyRecip + zn * ModzRecip;
                 values[i] = w - (int)w;
             }
         }
@@ -156,7 +156,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] Doubles(int length, int seed)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             Doubles(data, seed);
             return data;
         }
@@ -172,17 +172,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 seed = 1;
             }
 
-            uint xn = (uint)seed%Modx;
+            uint xn = (uint)seed % Modx;
             uint yn = 1;
             uint zn = 1;
 
             while (true)
             {
-                xn = (171*xn)%Modx;
-                yn = (172*yn)%Mody;
-                zn = (170*zn)%Modz;
+                xn = (171 * xn) % Modx;
+                yn = (172 * yn) % Mody;
+                zn = (170 * zn) % Modz;
 
-                double w = xn*ModxRecip + yn*ModyRecip + zn*ModzRecip;
+                double w = xn * ModxRecip + yn * ModyRecip + zn * ModzRecip;
                 yield return w - (int)w;
             }
         }

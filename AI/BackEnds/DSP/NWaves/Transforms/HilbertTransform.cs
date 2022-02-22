@@ -51,20 +51,20 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns>Complex analytic signal</returns>
         public ComplexDiscreteSignal AnalyticSignal(double[] samples, bool norm = true)
         {
-            var analyticSignal = new ComplexDiscreteSignal(1, samples);
+            ComplexDiscreteSignal analyticSignal = new ComplexDiscreteSignal(1, samples);
 
-            var re = analyticSignal.Real;
-            var im = analyticSignal.Imag;
+            double[] re = analyticSignal.Real;
+            double[] im = analyticSignal.Imag;
 
             _fft64.Direct(re, im);
 
-            for (var i = 1; i < re.Length / 2; i++)
+            for (int i = 1; i < re.Length / 2; i++)
             {
                 re[i] *= 2;
                 im[i] *= 2;
             }
 
-            for (var i = re.Length / 2 + 1; i < re.Length; i++)
+            for (int i = re.Length / 2 + 1; i < re.Length; i++)
             {
                 re[i] = 0.0;
                 im[i] = 0.0;
@@ -88,21 +88,21 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns>Complex analytic signal</returns>
         public Tuple<float[], float[]> AnalyticSignal(float[] samples, bool norm = true)
         {
-            var sre = new DiscreteSignal(1, samples, allocateNew: true);
-            var sim = new DiscreteSignal(1, samples.Length);
+            DiscreteSignal sre = new DiscreteSignal(1, samples, allocateNew: true);
+            DiscreteSignal sim = new DiscreteSignal(1, samples.Length);
 
-            var re = sre.Samples;
-            var im = sim.Samples;
+            float[] re = sre.Samples;
+            float[] im = sim.Samples;
 
             _fft32.Direct(re, im);
 
-            for (var i = 1; i < re.Length / 2; i++)
+            for (int i = 1; i < re.Length / 2; i++)
             {
                 re[i] *= 2;
                 im[i] *= 2;
             }
 
-            for (var i = re.Length / 2 + 1; i < re.Length; i++)
+            for (int i = re.Length / 2 + 1; i < re.Length; i++)
             {
                 re[i] = 0.0f;
                 im[i] = 0.0f;
@@ -126,7 +126,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns>Hilbert Transform</returns>
         public DiscreteSignal Direct(DiscreteSignal signal)
         {
-            var output = new float[signal.Length];
+            float[] output = new float[signal.Length];
             Direct(signal.Samples, output);
             return new DiscreteSignal(signal.SamplingRate, output);
         }
@@ -138,7 +138,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="output">Hilbert Transform array</param>
         public void Direct(double[] samples, double[] output)
         {
-            var analyticSignal = AnalyticSignal(samples).Imag;
+            double[] analyticSignal = AnalyticSignal(samples).Imag;
             analyticSignal.FastCopyTo(output, analyticSignal.Length);
         }
 
@@ -149,7 +149,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="output">Hilbert Transform array</param>
         public void Direct(float[] samples, float[] output)
         {
-            var analyticSignal = AnalyticSignal(samples).Item2;
+            float[] analyticSignal = AnalyticSignal(samples).Item2;
             analyticSignal.FastCopyTo(output, analyticSignal.Length);
         }
     }

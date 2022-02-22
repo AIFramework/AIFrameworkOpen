@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Operations.Convolution;
 using AI.BackEnds.DSP.NWaves.Utils;
 using AI.BackEnds.DSP.NWaves.Windows;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 {
@@ -93,9 +93,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // 2) Levinson-Durbin
 
-            for (int k = 0; k < _lpc.Length; _lpc[k] = 0, k++) ;
+            for (int k = 0; k < _lpc.Length; _lpc[k] = 0, k++)
+            {
+                ;
+            }
 
-            var err = Lpc.LevinsonDurbin(_cc, _lpc, _order, FrameSize - 1);
+            float err = Lpc.LevinsonDurbin(_cc, _lpc, _order, FrameSize - 1);
 
             // 3) compute LPCC coefficients from LPC
 
@@ -113,14 +116,18 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// True if computations can be done in parallel
         /// </summary>
         /// <returns></returns>
-        public override bool IsParallelizable() => true;
+        public override bool IsParallelizable()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
         /// </summary>
         /// <returns></returns>
-        public override FeatureExtractor ParallelCopy() =>
-            new LpccExtractor(new LpccOptions
+        public override FeatureExtractor ParallelCopy()
+        {
+            return new LpccExtractor(new LpccOptions
             {
                 SamplingRate = SamplingRate,
                 FeatureCount = FeatureCount,
@@ -131,5 +138,6 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 PreEmphasis = _preEmphasis,
                 Window = _window
             });
+        }
     }
 }

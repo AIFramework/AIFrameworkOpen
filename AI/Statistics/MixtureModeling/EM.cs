@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AI.Statistics.MixtureModeling
+﻿namespace AI.Statistics.MixtureModeling
 {
-    class EM
+    internal class EM
     {
     }
 }

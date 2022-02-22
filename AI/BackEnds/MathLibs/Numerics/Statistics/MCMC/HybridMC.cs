@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using System;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
 {
@@ -42,18 +42,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// Number of parameters in the density function.
         /// </summary>
-        readonly int _length;
+        private readonly int _length;
 
         /// <summary>
         /// Distribution to sample momentum from.
         /// </summary>
-        Normal _pDistribution;
+        private Normal _pDistribution;
 
         /// <summary>
         /// Standard deviations used in the sampling of different components of the
         /// momentum.
         /// </summary>
-        double[] _mpSdv;
+        private double[] _mpSdv;
 
         /// <summary>
         /// Gets or sets the standard deviations used in the sampling of different components of the
@@ -165,7 +165,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// Initialize parameters.
         /// </summary>
         /// <param name="x0">The current location of the sampler.</param>
-        void Initialize(double[] x0)
+        private void Initialize(double[] x0)
         {
             Current = (double[])x0.Clone();
             _pDistribution = new Normal(0.0, 1.0, RandomSource);
@@ -178,7 +178,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <exception cref="ArgumentOutOfRangeException">When the length of pSdv is not the same as Length or if any
         /// component is negative.</exception>
         /// <exception cref="ArgumentNullException">When pSdv is null.</exception>
-        void CheckVariance(double[] pSdv)
+        private void CheckVariance(double[] pSdv)
         {
             if (pSdv == null)
             {
@@ -201,7 +201,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <returns>A copy of the source object.</returns>
         protected override double[] Copy(double[] source)
         {
-            var destination = new double[_length];
+            double[] destination = new double[_length];
             Array.Copy(source, 0, destination, 0, _length);
             return destination;
         }
@@ -262,12 +262,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <param name="function">Function which the gradient is to be evaluated.</param>
         /// <param name="x">The location where the gradient is to be evaluated.</param>
         /// <returns>The gradient of the function at the point x.</returns>
-        static double[] Grad(DensityLn<double[]> function, double[] x)
+        private static double[] Grad(DensityLn<double[]> function, double[] x)
         {
             int length = x.Length;
-            var returnValue = new double[length];
-            var increment = new double[length];
-            var decrement = new double[length];
+            double[] returnValue = new double[length];
+            double[] increment = new double[length];
+            double[] decrement = new double[length];
 
             Array.Copy(x, 0, increment, 0, length);
             Array.Copy(x, 0, decrement, 0, length);

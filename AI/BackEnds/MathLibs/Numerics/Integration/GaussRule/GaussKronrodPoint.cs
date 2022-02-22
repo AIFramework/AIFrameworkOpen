@@ -381,68 +381,71 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule
             int gaussStart = gaussOrder.IsOdd() ? 0 : 1;
             int kronrodStart = gaussOrder.IsOdd() ? 1 : 0;
 
-            var gaussPoint = GaussLegendrePointFactory.GetGaussPoint(gaussOrder);
-            var gaussAbscissas = gaussPoint.Abscissas;
-            var gaussWeights = gaussPoint.Weights;
+            GaussPoint gaussPoint = GaussLegendrePointFactory.GetGaussPoint(gaussOrder);
+            double[] gaussAbscissas = gaussPoint.Abscissas;
+            double[] gaussWeights = gaussPoint.Weights;
 
             // Calculate Kronrod polynomial in terms of Legendre polynomials
             // K(x) = c0*P(0, x) + c1*P(1, x) + ...
 
-            var c = StieltjesP(gaussOrder + 1);
+            double[] c = StieltjesP(gaussOrder + 1);
 
             // Calculate Abscissas for Kronrod polynomial
 
             int r = gaussOrder.IsOdd() ? (gaussOrder - 1) / 2 + 1 : gaussOrder / 2 + 1;
-            var kronrodAbscissas = new double[r];
+            double[] kronrodAbscissas = new double[r];
 
             for (int k = 1; k <= gaussOrder + 1; k = k + 2)
             {
-                var x0 = (1.0 - (1.0 - 1.0 / gaussOrder) / (8 * gaussOrder * gaussOrder)) * Math.Cos((k - 0.5) * Math.PI / (2.0 * gaussOrder + 1.0));
-                var dx = 0d;
-                var j = 1; // iterations
+                double x0 = (1.0 - (1.0 - 1.0 / gaussOrder) / (8 * gaussOrder * gaussOrder)) * Math.Cos((k - 0.5) * Math.PI / (2.0 * gaussOrder + 1.0));
+                double dx = 0d;
+                int j = 1; // iterations
 
                 // Newton iterations
                 do
                 {
-                    var E = LegendreSeries(c, x0);
+                    (double, double) E = LegendreSeries(c, x0);
                     dx = E.Item1 / E.Item2;
                     x0 = x0 - dx;
                     j++;
                 }
                 while (Math.Abs(dx) > eps && j < 100);
 
-                if (Math.Abs(x0) < Precision.MachineEpsilon) x0 = 0.0;
+                if (Math.Abs(x0) < Precision.MachineEpsilon)
+                {
+                    x0 = 0.0;
+                }
 
                 kronrodAbscissas[(k - 1) / 2] = x0;
             }
 
             // Concatenate two abscissas
 
-            var abscissas = new double[gaussAbscissas.Length + kronrodAbscissas.Length];
+            double[] abscissas = new double[gaussAbscissas.Length + kronrodAbscissas.Length];
             gaussAbscissas.CopyTo(abscissas, 0);
             kronrodAbscissas.CopyTo(abscissas, gaussAbscissas.Length);
             abscissas = abscissas.OrderBy(v => v).ToArray();
 
             // Calculate weights for abscissas
 
-            var weights = new double[gaussAbscissas.Length + kronrodAbscissas.Length];
+            double[] weights = new double[gaussAbscissas.Length + kronrodAbscissas.Length];
             for (int i = gaussStart; i < abscissas.Length; i += 2)
             {
-                var x = abscissas[i];
+                double x = abscissas[i];
 
-                var E = LegendreSeries(c, x);
-                var L = LegendreP(gaussOrder, x);
+                (double, double) E = LegendreSeries(c, x);
+                (double, double) L = LegendreP(gaussOrder, x);
 
-                var p = L.Item2;
-                var w2 = 2.0 / ((1.0 - x * x) * p * p); // Gauss weight
+                double p = L.Item2;
+                double w2 = 2.0 / ((1.0 - x * x) * p * p); // Gauss weight
                 weights[i] = w2 + 2.0 / ((gaussOrder + 1.0) * p * E.Item1);
             }
             for (int i = kronrodStart; i < abscissas.Length; i += 2)
             {
-                var x = abscissas[i];
+                double x = abscissas[i];
 
-                var E = LegendreSeries(c, x);
-                var L = LegendreP(gaussOrder, x);
+                (double, double) E = LegendreSeries(c, x);
+                (double, double) L = LegendreP(gaussOrder, x);
 
                 weights[i] = 2.0 / ((gaussOrder + 1.0) * L.Item1 * E.Item2);
             }
@@ -453,7 +456,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule
         /// <summary>
         /// Returns coefficients of a Stieltjes polynomial in terms of Legendre polynomials.
         /// </summary>
-        static double[] StieltjesP(int order)
+        private static double[] StieltjesP(int order)
         {
             // Reference:
             // 1. Patterson, Thomas NL. "The optimum addition of points to quadrature formulae." Mathematics of Computation 22.104 (1968): 847-856.
@@ -474,15 +477,29 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule
             // The added n + 1 Kronrod abscissae is the roots of the Kronrod polynomial.
 
             if (order == 1)         // P(1, x)
+            {
                 return new double[] { 0, 1 };
+            }
+
             if (order == 2)    // -2/5 * P(0, x) +  P(2, x)
+            {
                 return new double[] { -0.4, 0, 1 };
+            }
+
             if (order == 3)    // -9/14 * P(1, x) + P(3, x)
+            {
                 return new double[] { 0, -0.642857142857142857142857142857, 0, 1 };
+            }
+
             if (order == 4)    // 14/891 * P(0, x) - 20/27 * P(2, x) + P(4, x)
+            {
                 return new double[] { 0.0157126823793490460157126823793, 0, -0.740740740740740740740740740741, 0, 1 };
+            }
+
             if (order == 5)    // 135/12584 * P(1, x) - 35/44 * P(3, x) + P(5, x)
+            {
                 return new double[] { 0, 0.0107279084551811824539097266370, 0, -0.795454545454545454545454545455, 0, 1 };
+            }
 
             int n = order - 1;
             int q = n.IsOdd() ? 1 : 0;
@@ -530,7 +547,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule
         /// <summary>
         /// Return value and derivative of a Legendre series at given points.
         /// </summary>
-        static (double, double) LegendreSeries(double[] a, double x)
+        private static (double, double) LegendreSeries(double[] a, double x)
         {
             // S = a[0]*P[0, x] + ... + a[k]*P[k, x] + ... + a[n]*P[n, x]
             // where P[k, x] is the Legendre polynomial of order k
@@ -548,9 +565,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule
             // b'[k, x] = (2k + 1)/(k + 1)*b[k + 1, x] + (2k + 1)/(k + 1)*x*b'[k + 1, x] - (k + 1)/(k + 2)*b'[k + 2, x]
 
             if (a.Length == 1)
+            {
                 return (a[0], 0);
+            }
+
             if (a.Length == 2)
+            {
                 return (a[0] + a[1] * x, a[1]);
+            }
 
             double b0 = 0.0, b1 = 0.0, b2 = 0.0;
             double p0 = 0.0, p1 = 0.0, p2 = 0.0;
@@ -566,15 +588,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule
                 p1 = p0;
             }
 
-            var value = a[0] + b1 * x - 0.5 * b2;
-            var derivative = b1 + p1 * x - 0.5 * p2;
+            double value = a[0] + b1 * x - 0.5 * b2;
+            double derivative = b1 + p1 * x - 0.5 * p2;
             return (value, derivative);
         }
 
         /// <summary>
         /// Return value and derivative of a Legendre polynomial of order at given points.
         /// </summary>
-        static (double, double) LegendreP(int order, double x)
+        private static (double, double) LegendreP(int order, double x)
         {
             // The Legendre polynomial, P[n, x], is defined by the recurrence relation:
             //
@@ -589,9 +611,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule
             //                        = (2 * n + 1) * (P[n, x] + x * P'[n, x]) - n * P'[n - 1, x]
 
             if (order == 0)
+            {
                 return (1.0, 0.0);
+            }
+
             if (order == 1)
+            {
                 return (x, 1.0);
+            }
 
             double b0 = 0.0, b1 = 1.0, b2 = 0.0;
             double p0 = 0.0, p1 = 0.0, p2 = 0.0;
@@ -607,8 +634,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule
                 p1 = p0;
             }
 
-            var value = b0;
-            var derivative = p0;
+            double value = b0;
+            double derivative = p0;
             return (value, derivative);
         }
     }

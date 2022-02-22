@@ -55,30 +55,30 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentException>(matrix);
             }
 
-            var q = matrix.Clone();
-            var r = MatrixMathNet<float>.Build.SameAs(matrix, matrix.ColumnCount, matrix.ColumnCount, fullyMutable: true);
+            MatrixMathNet<float> q = matrix.Clone();
+            MatrixMathNet<float> r = MatrixMathNet<float>.Build.SameAs(matrix, matrix.ColumnCount, matrix.ColumnCount, fullyMutable: true);
 
-            for (var k = 0; k < q.ColumnCount; k++)
+            for (int k = 0; k < q.ColumnCount; k++)
             {
-                var norm = (float) q.Column(k).L2Norm();
+                float norm = (float)q.Column(k).L2Norm();
                 if (norm == 0f)
                 {
                     throw new ArgumentException("Matrix must not be rank deficient.");
                 }
 
                 r.At(k, k, norm);
-                for (var i = 0; i < q.RowCount; i++)
+                for (int i = 0; i < q.RowCount; i++)
                 {
                     q.At(i, k, q.At(i, k) / norm);
                 }
 
-                for (var j = k + 1; j < q.ColumnCount; j++)
+                for (int j = k + 1; j < q.ColumnCount; j++)
                 {
-                    var dot = q.Column(k).DotProduct(q.Column(j));
+                    float dot = q.Column(k).DotProduct(q.Column(j));
                     r.At(k, j, dot);
-                    for (var i = 0; i < q.RowCount; i++)
+                    for (int i = 0; i < q.RowCount; i++)
                     {
-                        var value = q.At(i, j) - (q.At(i, k) * dot);
+                        float value = q.At(i, j) - (q.At(i, k) * dot);
                         q.At(i, j, value);
                     }
                 }
@@ -87,7 +87,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             return new UserGramSchmidt(q, r);
         }
 
-        UserGramSchmidt(MatrixMathNet<float> q, MatrixMathNet<float> rFull)
+        private UserGramSchmidt(MatrixMathNet<float> q, MatrixMathNet<float> rFull)
             : base(q, rFull)
         {
         }
@@ -117,21 +117,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 throw new ArgumentException("Matrix column dimensions must agree.");
             }
 
-            var inputCopy = input.Clone();
+            MatrixMathNet<float> inputCopy = input.Clone();
 
             // Compute Y = transpose(Q)*B
-            var column = new float[Q.RowCount];
-            for (var j = 0; j < input.ColumnCount; j++)
+            float[] column = new float[Q.RowCount];
+            for (int j = 0; j < input.ColumnCount; j++)
             {
-                for (var k = 0; k < Q.RowCount; k++)
+                for (int k = 0; k < Q.RowCount; k++)
                 {
                     column[k] = inputCopy.At(k, j);
                 }
 
-                for (var i = 0; i < Q.ColumnCount; i++)
+                for (int i = 0; i < Q.ColumnCount; i++)
                 {
                     float s = 0;
-                    for (var k = 0; k < Q.RowCount; k++)
+                    for (int k = 0; k < Q.RowCount; k++)
                     {
                         s += Q.At(k, i) * column[k];
                     }
@@ -141,25 +141,25 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
 
             // Solve R*X = Y;
-            for (var k = Q.ColumnCount - 1; k >= 0; k--)
+            for (int k = Q.ColumnCount - 1; k >= 0; k--)
             {
-                for (var j = 0; j < input.ColumnCount; j++)
+                for (int j = 0; j < input.ColumnCount; j++)
                 {
                     inputCopy.At(k, j, inputCopy.At(k, j) / FullR.At(k, k));
                 }
 
-                for (var i = 0; i < k; i++)
+                for (int i = 0; i < k; i++)
                 {
-                    for (var j = 0; j < input.ColumnCount; j++)
+                    for (int j = 0; j < input.ColumnCount; j++)
                     {
                         inputCopy.At(i, j, inputCopy.At(i, j) - (inputCopy.At(k, j) * FullR.At(i, k)));
                     }
                 }
             }
 
-            for (var i = 0; i < FullR.ColumnCount; i++)
+            for (int i = 0; i < FullR.ColumnCount; i++)
             {
-                for (var j = 0; j < input.ColumnCount; j++)
+                for (int j = 0; j < input.ColumnCount; j++)
                 {
                     result.At(i, j, inputCopy.At(i, j));
                 }
@@ -186,19 +186,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentException>(Q, result);
             }
 
-            var inputCopy = input.Clone();
+            VectorMathNet<float> inputCopy = input.Clone();
 
             // Compute Y = transpose(Q)*B
-            var column = new float[Q.RowCount];
-            for (var k = 0; k < Q.RowCount; k++)
+            float[] column = new float[Q.RowCount];
+            for (int k = 0; k < Q.RowCount; k++)
             {
                 column[k] = inputCopy[k];
             }
 
-            for (var i = 0; i < Q.ColumnCount; i++)
+            for (int i = 0; i < Q.ColumnCount; i++)
             {
                 float s = 0;
-                for (var k = 0; k < Q.RowCount; k++)
+                for (int k = 0; k < Q.RowCount; k++)
                 {
                     s += Q.At(k, i) * column[k];
                 }
@@ -207,16 +207,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
 
             // Solve R*X = Y;
-            for (var k = Q.ColumnCount - 1; k >= 0; k--)
+            for (int k = Q.ColumnCount - 1; k >= 0; k--)
             {
                 inputCopy[k] /= FullR.At(k, k);
-                for (var i = 0; i < k; i++)
+                for (int i = 0; i < k; i++)
                 {
                     inputCopy[i] -= inputCopy[k] * FullR.At(i, k);
                 }
             }
 
-            for (var i = 0; i < FullR.ColumnCount; i++)
+            for (int i = 0; i < FullR.ColumnCount; i++)
             {
                 result[i] = inputCopy[i];
             }

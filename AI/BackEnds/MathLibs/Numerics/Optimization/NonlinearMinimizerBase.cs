@@ -41,7 +41,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// </summary>
         public VectorMathNet<double> Scales { get; private set; }
 
-        bool IsBounded => LowerBound != null || UpperBound != null || Scales != null;
+        private bool IsBounded => LowerBound != null || UpperBound != null || Scales != null;
 
         protected NonlinearMinimizerBase(double gradientTolerance = 1E-18, double stepTolerance = 1E-18, double functionTolerance = 1E-18, int maximumIterations = -1)
         {
@@ -95,19 +95,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 
         protected double EvaluateFunction(IObjectiveModel objective, VectorMathNet<double> Pint)
         {
-            var Pext = ProjectToExternalParameters(Pint);
+            VectorMathNet<double> Pext = ProjectToExternalParameters(Pint);
             objective.EvaluateAt(Pext);
             return objective.Value;
         }
 
         protected (VectorMathNet<double> Gradient, MatrixMathNet<double> Hessian) EvaluateJacobian(IObjectiveModel objective, VectorMathNet<double> Pint)
         {
-            var gradient = objective.Gradient;
-            var hessian = objective.Hessian;
+            VectorMathNet<double> gradient = objective.Gradient;
+            MatrixMathNet<double> hessian = objective.Hessian;
 
             if (IsBounded)
             {
-                var scaleFactors = ScaleFactorsOfJacobian(Pint); // the parameters argument is always internal.
+                VectorMathNet<double> scaleFactors = ScaleFactorsOfJacobian(Pint); // the parameters argument is always internal.
 
                 for (int i = 0; i < gradient.Count; i++)
                 {
@@ -163,7 +163,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 
         protected VectorMathNet<double> ProjectToInternalParameters(VectorMathNet<double> Pext)
         {
-            var Pint = Pext.Clone();
+            VectorMathNet<double> Pint = Pext.Clone();
 
             if (LowerBound != null && UpperBound != null)
             {
@@ -214,7 +214,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 
         protected VectorMathNet<double> ProjectToExternalParameters(VectorMathNet<double> Pint)
         {
-            var Pext = Pint.Clone();
+            VectorMathNet<double> Pext = Pint.Clone();
 
             if (LowerBound != null && UpperBound != null)
             {
@@ -265,7 +265,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 
         protected VectorMathNet<double> ScaleFactorsOfJacobian(VectorMathNet<double> Pint)
         {
-            var scale = VectorMathNet<double>.Build.Dense(Pint.Count, 1.0);
+            VectorMathNet<double> scale = VectorMathNet<double>.Build.Dense(Pint.Count, 1.0);
 
             if (LowerBound != null && UpperBound != null)
             {

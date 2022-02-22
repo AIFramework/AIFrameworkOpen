@@ -42,7 +42,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         public override float NextSample()
         {
-            var sample = (float)(_slope * _n + _intercept);
+            float sample = (float)(_slope * _n + _intercept);
             _n++;
             return sample;
         }

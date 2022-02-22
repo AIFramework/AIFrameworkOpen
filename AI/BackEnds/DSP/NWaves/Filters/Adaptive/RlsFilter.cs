@@ -36,7 +36,7 @@
             _lambda = lambda;
 
             _p = new float[_kernelSize, _kernelSize];
-            for (var i = 0; i < _kernelSize; i++)
+            for (int i = 0; i < _kernelSize; i++)
             {
                 _p[i, i] = initCoeff;
             }
@@ -54,15 +54,15 @@
         /// <returns></returns>
         public override float Process(float input, float desired)
         {
-            var offset = _delayLineOffset;
+            int offset = _delayLineOffset;
 
             _delayLine[offset + _kernelSize] = input;   // duplicate it for better loop performance
 
-            
-            var y = Process(input);
 
-            var e = desired - y;
-                                 
+            float y = Process(input);
+
+            float e = desired - y;
+
 
             // ======================================================================
             // ============= lot of calculations before updating weights ============
@@ -73,7 +73,7 @@
 
             for (int i = 0; i < _kernelSize; _gains[i] = 0, i++) { }
 
-            var g = _lambda;
+            float g = _lambda;
 
             for (int i = 0; i < _kernelSize; i++)    // calculate  p*x
             {

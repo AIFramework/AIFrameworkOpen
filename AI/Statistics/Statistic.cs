@@ -946,7 +946,7 @@ namespace AI.Statistics
             }
 
             double max = MaximalValue(res);
-            int ind = (int)res.FindIndex(el => el == max);
+            int ind = res.FindIndex(el => el == max);
 
             return ens[ind].Clone();
         }
@@ -1018,7 +1018,7 @@ namespace AI.Statistics
             double max = vector.Max();
             double min = vector.Min();
 
-            return (max-min)/vector.Count + eps;
+            return (max - min) / vector.Count + eps;
         }
 
 

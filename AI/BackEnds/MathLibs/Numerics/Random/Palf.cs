@@ -29,8 +29,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Runtime;
+using System.Runtime.Serialization;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
@@ -50,17 +50,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <summary>
         /// Default value for the ShortLag
         /// </summary>
-        const int DefaultShortLag = 418;
+        private const int DefaultShortLag = 418;
 
         /// <summary>
         /// Default value for the LongLag
         /// </summary>
-        const int DefaultLongLag = 1279;
+        private const int DefaultLongLag = 1279;
 
         /// <summary>
         /// The multiplier to compute a double-precision floating point number [0, 1)
         /// </summary>
-        const double Reciprocal = 1.0/4294967296.0; // 1.0/(uint.MaxValue + 1.0)
+        private const double Reciprocal = 1.0 / 4294967296.0; // 1.0/(uint.MaxValue + 1.0)
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Palf"/> class using
@@ -130,16 +130,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             ShortLag = shortLag;
 
             // Align LongLag to number of worker threads.
-            if (longLag%_threads == 0)
+            if (longLag % _threads == 0)
             {
                 LongLag = longLag;
             }
             else
             {
-                LongLag = ((longLag/_threads) + 1)*_threads;
+                LongLag = ((longLag / _threads) + 1) * _threads;
             }
 
-            _x = Generate.Map(MersenneTwister.Doubles(LongLag, seed), uniform => (uint)(uniform*uint.MaxValue));
+            _x = Generate.Map(MersenneTwister.Doubles(LongLag, seed), uniform => (uint)(uniform * uint.MaxValue));
             _k = LongLag;
         }
 
@@ -159,25 +159,25 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// Stores an array of <see cref="LongLag"/> random numbers
         /// </summary>
         [DataMember(Order = 3)]
-        readonly uint[] _x;
+        private readonly uint[] _x;
 
         [DataMember(Order = 4)]
-        readonly int _threads;
+        private readonly int _threads;
 
         /// <summary>
         /// Stores an index for the random number array element that will be accessed next.
         /// </summary>
         [DataMember(Order = 5)]
-        int _k;
+        private int _k;
 
         /// <summary>
         /// Fills the array <see cref="_x"/> with <see cref="LongLag"/> new unsigned random numbers.
         /// </summary>
         /// <remarks>
         /// Generated random numbers are 32-bit unsigned integers greater than or equal to 0
-        /// and less than or equal to <see cref="Int32.MaxValue"/>.
+        /// and less than or equal to <see cref="int.MaxValue"/>.
         /// </remarks>
-        void Fill()
+        private void Fill()
         {
             //CommonParallel.For(0, Control.NumberOfParallelWorkerThreads, (u, v) =>
             //{
@@ -199,12 +199,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             for (int index = 0; index < _threads; index++)
             {
                 // Two loops to avoid costly modulo operations
-                for (var j = index; j < ShortLag; j = j + _threads)
+                for (int j = index; j < ShortLag; j = j + _threads)
                 {
                     _x[j] += _x[j + (LongLag - ShortLag)];
                 }
 
-                for (var j = ShortLag + index; j < LongLag; j = j + _threads)
+                for (int j = ShortLag + index; j < LongLag; j = j + _threads)
                 {
                     _x[j] += _x[j - ShortLag - index];
                 }
@@ -259,16 +259,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 
             int threads = Control.MaxDegreeOfParallelism;
             const int shortLag = DefaultShortLag;
-            var longLag = DefaultLongLag;
+            int longLag = DefaultLongLag;
 
             // Align LongLag to number of worker threads.
-            if (longLag%threads != 0)
+            if (longLag % threads != 0)
             {
-                longLag = ((longLag/threads) + 1)*threads;
+                longLag = ((longLag / threads) + 1) * threads;
             }
 
-            var x = Generate.Map(MersenneTwister.Doubles(longLag, seed), uniform => (uint)(uniform*uint.MaxValue));
-            var k = longLag;
+            uint[] x = Generate.Map(MersenneTwister.Doubles(longLag, seed), uniform => (uint)(uniform * uint.MaxValue));
+            int k = longLag;
 
             for (int i = 0; i < values.Length; i++)
             {
@@ -277,12 +277,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                     for (int index = 0; index < threads; index++)
                     {
                         // Two loops to avoid costly modulo operations
-                        for (var j = index; j < shortLag; j = j + threads)
+                        for (int j = index; j < shortLag; j = j + threads)
                         {
                             x[j] += x[j + (longLag - shortLag)];
                         }
 
-                        for (var j = shortLag + index; j < longLag; j = j + threads)
+                        for (int j = shortLag + index; j < longLag; j = j + threads)
                         {
                             x[j] += x[j - shortLag - index];
                         }
@@ -291,7 +291,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                     k = 0;
                 }
 
-                values[i] = x[k++]*Reciprocal;
+                values[i] = x[k++] * Reciprocal;
             }
         }
 
@@ -302,7 +302,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] Doubles(int length, int seed)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             Doubles(data, seed);
             return data;
         }
@@ -320,16 +320,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 
             int threads = Control.MaxDegreeOfParallelism;
             const int shortLag = DefaultShortLag;
-            var longLag = DefaultLongLag;
+            int longLag = DefaultLongLag;
 
             // Align LongLag to number of worker threads.
-            if (longLag%threads != 0)
+            if (longLag % threads != 0)
             {
-                longLag = ((longLag/threads) + 1)*threads;
+                longLag = ((longLag / threads) + 1) * threads;
             }
 
-            var x = Generate.Map(MersenneTwister.Doubles(longLag, seed), uniform => (uint)(uniform*uint.MaxValue));
-            var k = longLag;
+            uint[] x = Generate.Map(MersenneTwister.Doubles(longLag, seed), uniform => (uint)(uniform * uint.MaxValue));
+            int k = longLag;
 
             while (true)
             {
@@ -338,12 +338,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                     for (int index = 0; index < threads; index++)
                     {
                         // Two loops to avoid costly modulo operations
-                        for (var j = index; j < shortLag; j = j + threads)
+                        for (int j = index; j < shortLag; j = j + threads)
                         {
                             x[j] += x[j + (longLag - shortLag)];
                         }
 
-                        for (var j = shortLag + index; j < longLag; j = j + threads)
+                        for (int j = shortLag + index; j < longLag; j = j + threads)
                         {
                             x[j] += x[j - shortLag - index];
                         }
@@ -352,7 +352,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                     k = 0;
                 }
 
-                yield return x[k++]*Reciprocal;
+                yield return x[k++] * Reciprocal;
             }
         }
     }

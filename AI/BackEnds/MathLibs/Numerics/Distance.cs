@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Statistics;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics
 {
@@ -59,7 +59,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             double sum = 0d;
-            for (var i = 0; i < a.Length; i++)
+            for (int i = 0; i < a.Length; i++)
             {
                 sum += Math.Abs(a[i] - b[i]);
             }
@@ -77,7 +77,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             float sum = 0f;
-            for (var i = 0; i < a.Length; i++)
+            for (int i = 0; i < a.Length; i++)
             {
                 sum += Math.Abs(a[i] - b[i]);
             }
@@ -89,7 +89,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double MAE<T>(VectorMathNet<T> a, VectorMathNet<T> b) where T : struct, IEquatable<T>, IFormattable
         {
-            return (a - b).L1Norm()/a.Count;
+            return (a - b).L1Norm() / a.Count;
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double MAE(double[] a, double[] b)
         {
-            return SAD(a, b)/a.Length;
+            return SAD(a, b) / a.Length;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static float MAE(float[] a, float[] b)
         {
-            return SAD(a, b)/a.Length;
+            return SAD(a, b) / a.Length;
         }
 
         /// <summary>
@@ -113,8 +113,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double SSD<T>(VectorMathNet<T> a, VectorMathNet<T> b) where T : struct, IEquatable<T>, IFormattable
         {
-            var norm = (a - b).L2Norm();
-            return norm*norm;
+            double norm = (a - b).L2Norm();
+            return norm * norm;
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentException("All vectors must have the same dimensionality.");
             }
 
-            var diff = new double[a.Length];
+            double[] diff = new double[a.Length];
             LinearAlgebraControl.Provider.SubtractArrays(a, b, diff);
             return LinearAlgebraControl.Provider.DotProduct(diff, diff);
         }
@@ -142,7 +142,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentException("All vectors must have the same dimensionality.");
             }
 
-            var diff = new float[a.Length];
+            float[] diff = new float[a.Length];
             LinearAlgebraControl.Provider.SubtractArrays(a, b, diff);
             return LinearAlgebraControl.Provider.DotProduct(diff, diff);
         }
@@ -152,8 +152,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double MSE<T>(VectorMathNet<T> a, VectorMathNet<T> b) where T : struct, IEquatable<T>, IFormattable
         {
-            var norm = (a - b).L2Norm();
-            return norm*norm/a.Count;
+            double norm = (a - b).L2Norm();
+            return norm * norm / a.Count;
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double MSE(double[] a, double[] b)
         {
-            return SSD(a, b)/a.Length;
+            return SSD(a, b) / a.Length;
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static float MSE(float[] a, float[] b)
         {
-            return SSD(a, b)/a.Length;
+            return SSD(a, b) / a.Length;
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static float Euclidean(float[] a, float[] b)
         {
-            return (float) Math.Sqrt(SSD(a, b));
+            return (float)Math.Sqrt(SSD(a, b));
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             double max = Math.Abs(a[0] - b[0]);
             for (int i = 1; i < a.Length; i++)
             {
-                var next = Math.Abs(a[i] - b[i]);
+                double next = Math.Abs(a[i] - b[i]);
                 if (next > max)
                 {
                     max = next;
@@ -263,7 +263,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             float max = Math.Abs(a[0] - b[0]);
             for (int i = 1; i < a.Length; i++)
             {
-                var next = Math.Abs(a[i] - b[i]);
+                float next = Math.Abs(a[i] - b[i]);
                 if (next > max)
                 {
                     max = next;
@@ -311,7 +311,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             double sum = 0d;
-            for (var i = 0; i < a.Length; i++)
+            for (int i = 0; i < a.Length; i++)
             {
                 sum += Math.Pow(Math.Abs(a[i] - b[i]), p);
             }
@@ -349,11 +349,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             double sum = 0d;
-            for (var i = 0; i < a.Length; i++)
+            for (int i = 0; i < a.Length; i++)
             {
                 sum += Math.Pow(Math.Abs(a[i] - b[i]), p);
             }
-            return (float) Math.Pow(sum, 1.0/p);
+            return (float)Math.Pow(sum, 1.0 / p);
         }
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             double sum = 0d;
-            for (var i = 0; i < a.Length; i++)
+            for (int i = 0; i < a.Length; i++)
             {
                 sum += Math.Abs(a[i] - b[i]) / (Math.Abs(a[i]) + Math.Abs(b[i]));
             }
@@ -385,7 +385,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             float sum = 0f;
-            for (var i = 0; i < a.Length; i++)
+            for (int i = 0; i < a.Length; i++)
             {
                 sum += Math.Abs(a[i] - b[i]) / (Math.Abs(a[i]) + Math.Abs(b[i]));
             }
@@ -402,10 +402,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentException("All vectors must have the same dimensionality.");
             }
 
-            var ab = LinearAlgebraControl.Provider.DotProduct(a, b);
-            var a2 = LinearAlgebraControl.Provider.DotProduct(a, a);
-            var b2 = LinearAlgebraControl.Provider.DotProduct(b, b);
-            return 1d - ab/Math.Sqrt(a2*b2);
+            double ab = LinearAlgebraControl.Provider.DotProduct(a, b);
+            double a2 = LinearAlgebraControl.Provider.DotProduct(a, a);
+            double b2 = LinearAlgebraControl.Provider.DotProduct(b, b);
+            return 1d - ab / Math.Sqrt(a2 * b2);
         }
 
         /// <summary>
@@ -418,10 +418,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentException("All vectors must have the same dimensionality.");
             }
 
-            var ab = LinearAlgebraControl.Provider.DotProduct(a, b);
-            var a2 = LinearAlgebraControl.Provider.DotProduct(a, a);
-            var b2 = LinearAlgebraControl.Provider.DotProduct(b, b);
-            return (float)(1d - ab/Math.Sqrt(a2*b2));
+            float ab = LinearAlgebraControl.Provider.DotProduct(a, b);
+            float a2 = LinearAlgebraControl.Provider.DotProduct(a, a);
+            float b2 = LinearAlgebraControl.Provider.DotProduct(b, b);
+            return (float)(1d - ab / Math.Sqrt(a2 * b2));
         }
 
         /// <summary>

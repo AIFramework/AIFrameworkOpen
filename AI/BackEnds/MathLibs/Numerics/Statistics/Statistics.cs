@@ -617,7 +617,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <param name="samples">A subset of samples, sampled from the full population.</param>
         public static (double Skewness, double Kurtosis) SkewnessKurtosis(this IEnumerable<double> samples)
         {
-            var stats = new RunningStatistics(samples);
+            RunningStatistics stats = new RunningStatistics(samples);
             return (stats.Skewness, stats.Kurtosis);
         }
 
@@ -628,7 +628,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <param name="population">The full population data.</param>
         public static (double Skewness, double Kurtosis) PopulationSkewnessKurtosis(this IEnumerable<double> population)
         {
-            var stats = new RunningStatistics(population);
+            RunningStatistics stats = new RunningStatistics(population);
             return (stats.PopulationSkewness, stats.PopulationKurtosis);
         }
 
@@ -1491,7 +1491,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <param name="windowSize">The number of last samples to consider.</param>
         public static IEnumerable<double> MovingAverage(this IEnumerable<double> samples, int windowSize)
         {
-            var movingStatistics = new MovingStatistics(windowSize);
+            MovingStatistics movingStatistics = new MovingStatistics(windowSize);
             return samples.Select(sample =>
             {
                 movingStatistics.Push(sample);

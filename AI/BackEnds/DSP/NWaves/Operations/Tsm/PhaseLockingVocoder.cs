@@ -49,7 +49,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         /// </summary>
         public override void ProcessSpectrum()
         {
-            for (var j = 0; j < _mag.Length; j++)
+            for (int j = 0; j < _mag.Length; j++)
             {
                 _mag[j] = Math.Sqrt(_re[j] * _re[j] + _im[j] * _im[j]);
                 _phase[j] = Math.Atan2(_im[j], _re[j]);
@@ -57,9 +57,9 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 
             // spectral peaks in magnitude spectrum
 
-            var peakCount = 0;
+            int peakCount = 0;
 
-            for (var j = 2; j < _mag.Length - 3; j++)
+            for (int j = 2; j < _mag.Length - 3; j++)
             {
                 if (_mag[j] <= _mag[j - 1] || _mag[j] <= _mag[j - 2] ||
                     _mag[j] <= _mag[j + 1] || _mag[j] <= _mag[j + 2])
@@ -74,25 +74,25 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 
             // assign phases at peaks to all neighboring frequency bins
 
-            var leftPos = 1;
+            int leftPos = 1;
 
-            for (var j = 0; j < peakCount - 1; j++)
+            for (int j = 0; j < peakCount - 1; j++)
             {
-                var peakPos = _peaks[j];
-                var peakPhase = _phase[peakPos];
+                int peakPos = _peaks[j];
+                double peakPhase = _phase[peakPos];
 
                 _delta[peakPos] = peakPhase - _prevPhase[peakPos];
 
-                var deltaUnwrapped = _delta[peakPos] - _hopAnalysis * _omega[peakPos];
-                var deltaWrapped = MathUtils.Mod(deltaUnwrapped + Math.PI, 2 * Math.PI) - Math.PI;
+                double deltaUnwrapped = _delta[peakPos] - _hopAnalysis * _omega[peakPos];
+                double deltaWrapped = MathUtils.Mod(deltaUnwrapped + Math.PI, 2 * Math.PI) - Math.PI;
 
-                var freq = _omega[peakPos] + deltaWrapped / _hopAnalysis;
+                double freq = _omega[peakPos] + deltaWrapped / _hopAnalysis;
 
                 _phaseTotal[peakPos] = _phaseTotal[peakPos] + _hopSynthesis * freq;
 
-                var rightPos = (_peaks[j] + _peaks[j + 1]) / 2;
+                int rightPos = (_peaks[j] + _peaks[j + 1]) / 2;
 
-                for (var k = leftPos; k < rightPos; k++)
+                for (int k = leftPos; k < rightPos; k++)
                 {
                     _phaseTotal[k] = _phaseTotal[peakPos] + _phase[k] - _phase[peakPos];
 

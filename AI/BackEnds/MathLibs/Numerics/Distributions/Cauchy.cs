@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -41,10 +41,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Cauchy : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _location;
-        readonly double _scale;
+        private System.Random _random;
+        private readonly double _location;
+        private readonly double _scale;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Cauchy"/> class with the location parameter set to 0 and the scale parameter set to 1
@@ -144,7 +143,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the entropy of the distribution.
         /// </summary>
-        public double Entropy => Math.Log(4.0*Constants.Pi*_scale);
+        public double Entropy => Math.Log(4.0 * Constants.Pi * _scale);
 
         /// <summary>
         /// Gets the skewness of the distribution.
@@ -179,8 +178,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDF"/>
         public double Density(double x)
         {
-            var z = (x - _location)/_scale;
-            return 1.0/(Constants.Pi*_scale*(1.0 + z * z));
+            double z = (x - _location) / _scale;
+            return 1.0 / (Constants.Pi * _scale * (1.0 + z * z));
         }
 
         /// <summary>
@@ -191,8 +190,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDFLn"/>
         public double DensityLn(double x)
         {
-            var z = (x - _location)/_scale;
-            return -Math.Log(Constants.Pi*_scale*(1.0 +  z * z));
+            double z = (x - _location) / _scale;
+            return -Math.Log(Constants.Pi * _scale * (1.0 + z * z));
         }
 
         /// <summary>
@@ -203,7 +202,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="CDF"/>
         public double CumulativeDistribution(double x)
         {
-            return Constants.InvPi*Math.Atan((x - _location)/_scale) + 0.5;
+            return Constants.InvPi * Math.Atan((x - _location) / _scale) + 0.5;
         }
 
         /// <summary>
@@ -216,7 +215,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         public double InverseCumulativeDistribution(double p)
         {
             return p <= 0.0 ? double.NegativeInfinity : p >= 1.0 ? double.PositiveInfinity
-                : _location + _scale*Math.Tan((p - 0.5)*Constants.Pi);
+                : _location + _scale * Math.Tan((p - 0.5) * Constants.Pi);
         }
 
         /// <summary>
@@ -245,28 +244,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _location, _scale);
         }
 
-        static double SampleUnchecked(System.Random rnd, double location, double scale)
+        private static double SampleUnchecked(System.Random rnd, double location, double scale)
         {
-            return location + scale*Math.Tan(Constants.Pi*(rnd.NextDouble() - 0.5));
+            return location + scale * Math.Tan(Constants.Pi * (rnd.NextDouble() - 0.5));
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double location, double scale)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double location, double scale)
         {
             rnd.NextDoubles(values);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    values[i] = location + scale*Math.Tan(Constants.Pi*(values[i] - 0.5));
+                    values[i] = location + scale * Math.Tan(Constants.Pi * (values[i] - 0.5));
                 }
             });
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double location, double scale)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double location, double scale)
         {
             while (true)
             {
-                yield return location + scale*Math.Tan(Constants.Pi*(rnd.NextDouble() - 0.5));
+                yield return location + scale * Math.Tan(Constants.Pi * (rnd.NextDouble() - 0.5));
             }
         }
 
@@ -285,8 +284,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = (x - location)/scale;
-            return 1.0/(Constants.Pi*scale*(1.0 + z * z));
+            double z = (x - location) / scale;
+            return 1.0 / (Constants.Pi * scale * (1.0 + z * z));
         }
         /// <summary>
         /// Computes the log probability density of the distribution (lnPDF) at x, i.e. ln(∂P(X ≤ x)/∂x).
@@ -303,8 +302,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = (x - location)/scale;
-            return -Math.Log(Constants.Pi*scale*(1.0 + z * z ));
+            double z = (x - location) / scale;
+            return -Math.Log(Constants.Pi * scale * (1.0 + z * z));
         }
 
         /// <summary>
@@ -322,7 +321,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return Math.Atan((x - location)/scale)/Constants.Pi + 0.5;
+            return Math.Atan((x - location) / scale) / Constants.Pi + 0.5;
         }
 
         /// <summary>
@@ -342,7 +341,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             return p <= 0.0 ? double.NegativeInfinity : p >= 1.0 ? double.PositiveInfinity
-                : location + scale*Math.Tan((p - 0.5)*Constants.Pi);
+                : location + scale * Math.Tan((p - 0.5) * Constants.Pi);
         }
 
         /// <summary>

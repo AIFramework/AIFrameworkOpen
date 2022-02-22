@@ -620,7 +620,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         {
             NNValue returnObj = new NNValue(m.Shape);
 
-            Parallel.For(0, m.Data.Length, i=>
+            Parallel.For(0, m.Data.Length, i =>
             {
                 returnObj.Data[i] = 1 - m.Data[i];
             });
@@ -695,7 +695,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             {
                 returnObj[i] = tensor[i] * s;
             });
-            
+
             if (IsBackward)
             {
                 Runnable bp = new Runnable
@@ -732,7 +732,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             {
                 returnObj[i] = -m[i];
             });
-            
+
             if (IsBackward)
             {
                 Runnable bp = new Runnable

@@ -43,7 +43,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
         /// Maximum number of iterations, until the asked
         /// maximum error is (likely to be) satisfied.
         /// </summary>
-        const int NumberOfMaximumLevels = 10;
+        private const int NumberOfMaximumLevels = 10;
 
         /// <summary>
         /// Approximate the integral by the double exponential transformation
@@ -88,25 +88,25 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
         /// </summary>
         /// <param name="level">The level to evaluate the abscissa vector for.</param>
         /// <returns>Abscissa Vector.</returns>
-        static double[] EvaluateAbcissas(int level)
+        private static double[] EvaluateAbcissas(int level)
         {
             if (level < PrecomputedAbscissas.Length)
             {
                 return PrecomputedAbscissas[level];
             }
 
-            double step = level <= 1 ? 1.0 : (1.0/(2 << (level - 2)));
-            double offset = level == 0 ? 0.0 : (1.0/(2 << (level - 1)));
+            double step = level <= 1 ? 1.0 : (1.0 / (2 << (level - 2)));
+            double offset = level == 0 ? 0.0 : (1.0 / (2 << (level - 1)));
             int length = level == 0 ? 4 : (3 << (level - 1));
 
             double t = 0;
-            var abcissas = new double[length];
+            double[] abcissas = new double[length];
             for (int i = 0; i < abcissas.Length; i++)
             {
                 double arg = offset + t;
                 t += step;
 
-                abcissas[i] = Math.Tanh(Constants.PiOver2*Math.Sinh(arg));
+                abcissas[i] = Math.Tanh(Constants.PiOver2 * Math.Sinh(arg));
             }
 
             return abcissas;
@@ -117,27 +117,27 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
         /// </summary>
         /// <param name="level">The level to evaluate the weight vector for.</param>
         /// <returns>Weight Vector.</returns>
-        static double[] EvaluateWeights(int level)
+        private static double[] EvaluateWeights(int level)
         {
             if (level < PrecomputedWeights.Length)
             {
                 return PrecomputedWeights[level];
             }
 
-            double step = level <= 1 ? 1.0 : (1.0/(2 << (level - 2)));
-            double offset = level == 0 ? 0.0 : (1.0/(2 << (level - 1)));
+            double step = level <= 1 ? 1.0 : (1.0 / (2 << (level - 2)));
+            double offset = level == 0 ? 0.0 : (1.0 / (2 << (level - 1)));
             int length = level == 0 ? 4 : (3 << (level - 1));
 
             double t = 0;
-            var weights = new double[length];
+            double[] weights = new double[length];
             for (int i = 0; i < weights.Length; i++)
             {
                 double arg = offset + t;
                 t += step;
 
                 // TODO: reuse abscissas as computed in EvaluateAbcissas
-                double abcissa = Math.Tanh(Constants.PiOver2*Math.Sinh(arg));
-                weights[i] = Constants.PiOver2*(1 - (abcissa*abcissa))*Math.Cosh(arg);
+                double abcissa = Math.Tanh(Constants.PiOver2 * Math.Sinh(arg));
+                weights[i] = Constants.PiOver2 * (1 - (abcissa * abcissa)) * Math.Cosh(arg);
             }
 
             return weights;
@@ -148,7 +148,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
         /// <summary>
         /// Precomputed abscissa vector per level.
         /// </summary>
-        static readonly double[][] PrecomputedAbscissas =
+        private static readonly double[][] PrecomputedAbscissas =
         {
             new[]
             {
@@ -369,7 +369,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
         /// <summary>
         /// Precomputed weight vector per level.
         /// </summary>
-        static readonly double[][] PrecomputedWeights =
+        private static readonly double[][] PrecomputedWeights =
         {
             new[]
             {

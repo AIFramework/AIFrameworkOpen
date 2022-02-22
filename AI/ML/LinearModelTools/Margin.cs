@@ -11,13 +11,13 @@ namespace AI.ML.LinearModelTools
     {
         public static double GetMargin(float ideal, float outp)
         {
-            var t = Normal(ideal);
+            double t = Normal(ideal);
             return t * outp;
         }
 
         public static double GetMargin(double ideal, double outp)
         {
-            var t = Normal(ideal);
+            double t = Normal(ideal);
             return t * outp;
         }
 
@@ -30,7 +30,7 @@ namespace AI.ML.LinearModelTools
 
         public static double OutputLinModel(Vector inp, Vector w, double b)
         {
-            return AnalyticGeometryFunctions.Dot(inp, w)+b;
+            return AnalyticGeometryFunctions.Dot(inp, w) + b;
         }
 
 
@@ -52,11 +52,13 @@ namespace AI.ML.LinearModelTools
                 vectorClasses[i] = vectorClass;
             });
 
-            var vectorClassesList = vectorClasses.ToList();
+            System.Collections.Generic.List<VectorClass> vectorClassesList = vectorClasses.ToList();
             vectorClassesList.Sort((x, y) => x.R.CompareTo(y.R));
 
             for (int i = 0; i < count; i++)
+            {
                 data[i] = vectorClassesList[i];
+            }
 
             return data;
         }
@@ -90,12 +92,12 @@ namespace AI.ML.LinearModelTools
         {
             double tNorm = Normal(ideal);
             double margin = tNorm * OutputLinModel(inp, param, bias);
-            var dif1 = margin-minMargin <= 0 ? -C : 0;
+            double dif1 = margin - minMargin <= 0 ? -C : 0;
             Vector gradW = dif1 * tNorm * inp;
             double gradB = dif1 * tNorm;
 
             return new GradientMargin<Vector, double>()
-            { GradientW = gradW, Margin = margin, GradientBias = gradB};
+            { GradientW = gradW, Margin = margin, GradientBias = gradB };
         }
 
         public static GradientMargin<Vector, double> GetAverageMarginWithGradient(Vector ideal, Vector[] inp, Vector param, double bias, double C = 1, double l1 = 0.0, double l2 = 0.0, double minMargin = 0)
@@ -106,7 +108,7 @@ namespace AI.ML.LinearModelTools
 
             for (int i = 0; i < n; i++)
             {
-                var gData = GetMarginWithGradient(ideal[i], inp[i], param, bias, C, minMargin);
+                GradientMargin<Vector, double> gData = GetMarginWithGradient(ideal[i], inp[i], param, bias, C, minMargin);
                 margin += gData.Margin;
                 gradW += gData.GradientW;
                 gradB += gData.GradientBias;
@@ -121,7 +123,7 @@ namespace AI.ML.LinearModelTools
             { GradientW = gradW, Margin = margin, GradientBias = gradB };
         }
 
-        private static double Normal(double outp) 
+        private static double Normal(double outp)
         {
             return outp > 0.5 ? 1 : -1;
         }
@@ -134,7 +136,7 @@ namespace AI.ML.LinearModelTools
         public T2 Margin { get; set; }
     }
 
-    public class MarginVector 
+    public class MarginVector
     {
         public double Margin { get; set; }
         public Vector Features { get; set; }

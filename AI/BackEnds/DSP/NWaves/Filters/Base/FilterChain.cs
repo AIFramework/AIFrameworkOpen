@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AI.BackEnds.DSP.NWaves.Signals;
+using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.DSP.NWaves.Signals;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
@@ -32,7 +32,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         {
             _filters = new List<IOnlineFilter>();
 
-            foreach (var tf in tfs)
+            foreach (TransferFunction tf in tfs)
             {
                 _filters.Add(new IirFilter(tf));
             }
@@ -42,20 +42,29 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// Add filter to the chain
         /// </summary>
         /// <param name="filter"></param>
-        public void Add(IOnlineFilter filter) => _filters.Add(filter);
+        public void Add(IOnlineFilter filter)
+        {
+            _filters.Add(filter);
+        }
 
         /// <summary>
         /// Insert filter at specified index into the chain
         /// </summary>
         /// <param name="idx"></param>
         /// <param name="filter"></param>
-        public void Insert(int idx, IOnlineFilter filter) => _filters.Insert(idx, filter);
+        public void Insert(int idx, IOnlineFilter filter)
+        {
+            _filters.Insert(idx, filter);
+        }
 
         /// <summary>
         /// Remove filter at specified index from the chain
         /// </summary>
         /// <param name="idx"></param>
-        public void RemoveAt(int idx) => _filters.RemoveAt(idx);
+        public void RemoveAt(int idx)
+        {
+            _filters.RemoveAt(idx);
+        }
 
         /// <summary>
         /// Process sample by the chain of filters
@@ -64,9 +73,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public float Process(float input)
         {
-            var sample = input;
+            float sample = input;
 
-            foreach (var filter in _filters)
+            foreach (IOnlineFilter filter in _filters)
             {
                 sample = filter.Process(sample);
             }
@@ -79,7 +88,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// </summary>
         public void Reset()
         {
-            foreach (var filter in _filters)
+            foreach (IOnlineFilter filter in _filters)
             {
                 filter.Reset();
             }

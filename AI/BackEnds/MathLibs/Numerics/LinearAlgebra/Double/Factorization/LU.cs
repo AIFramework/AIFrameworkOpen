@@ -55,8 +55,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
         {
             get
             {
-                var det = 1.0;
-                for (var j = 0; j < Factors.RowCount; j++)
+                double det = 1.0;
+                for (int j = 0; j < Factors.RowCount; j++)
                 {
                     if (Pivots[j] != j)
                     {

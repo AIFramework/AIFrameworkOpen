@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AI.BackEnds.DSP.NWaves.Windows;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
-using AI.BackEnds.DSP.NWaves.Windows;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
 {
@@ -27,7 +27,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
         {
             get
             {
-                var errors = base.Errors;
+                List<string> errors = base.Errors;
 
                 if (FeatureCount <= 0)
                 {
@@ -40,7 +40,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
                     errors.Add("Number of coefficients must not exceed number of filters");
                 }
 
-                var dctErrorText = "Supported DCT formats: 1, 2, 3, 4, 1N, 2N, 3N, 4N";
+                string dctErrorText = "Supported DCT formats: 1, 2, 3, 4, 1N, 2N, 3N, 4N";
 
                 if (string.IsNullOrEmpty(DctType) || DctType.Length > 2)
                 {

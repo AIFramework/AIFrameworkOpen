@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Solvers
 {
@@ -47,7 +47,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Solvers
         /// The matrix holding the lower (L) and upper (U) matrices. The
         /// decomposition matrices are combined to reduce storage.
         /// </summary>
-        SparseMatrix _decompositionLU;
+        private SparseMatrix _decompositionLU;
 
         /// <summary>
         /// Returns the upper triagonal matrix that was created during the LU decomposition.
@@ -55,10 +55,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Solvers
         /// <returns>A new matrix containing the upper triagonal elements.</returns>
         internal MatrixMathNet<float> UpperTriangle()
         {
-            var result = new SparseMatrix(_decompositionLU.RowCount);
-            for (var i = 0; i < _decompositionLU.RowCount; i++)
+            SparseMatrix result = new SparseMatrix(_decompositionLU.RowCount);
+            for (int i = 0; i < _decompositionLU.RowCount; i++)
             {
-                for (var j = i; j < _decompositionLU.ColumnCount; j++)
+                for (int j = i; j < _decompositionLU.ColumnCount; j++)
                 {
                     result[i, j] = _decompositionLU[i, j];
                 }
@@ -73,10 +73,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Solvers
         /// <returns>A new matrix containing the lower triagonal elements.</returns>
         internal MatrixMathNet<float> LowerTriangle()
         {
-            var result = new SparseMatrix(_decompositionLU.RowCount);
-            for (var i = 0; i < _decompositionLU.RowCount; i++)
+            SparseMatrix result = new SparseMatrix(_decompositionLU.RowCount);
+            for (int i = 0; i < _decompositionLU.RowCount; i++)
             {
-                for (var j = 0; j <= i; j++)
+                for (int j = 0; j <= i; j++)
                 {
                     if (i == j)
                     {
@@ -125,20 +125,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Solvers
             //         end
             //     end
             // end
-            for (var i = 0; i < _decompositionLU.RowCount; i++)
+            for (int i = 0; i < _decompositionLU.RowCount; i++)
             {
-                for (var k = 0; k < i; k++)
+                for (int k = 0; k < i; k++)
                 {
                     if (_decompositionLU[i, k] != 0.0)
                     {
-                        var t = _decompositionLU[i, k]/_decompositionLU[k, k];
+                        float t = _decompositionLU[i, k] / _decompositionLU[k, k];
                         _decompositionLU[i, k] = t;
                         if (_decompositionLU[k, i] != 0.0)
                         {
-                            _decompositionLU[i, i] = _decompositionLU[i, i] - (t*_decompositionLU[k, i]);
+                            _decompositionLU[i, i] = _decompositionLU[i, i] - (t * _decompositionLU[k, i]);
                         }
 
-                        for (var j = k + 1; j < _decompositionLU.RowCount; j++)
+                        for (int j = k + 1; j < _decompositionLU.RowCount; j++)
                         {
                             if (j == i)
                             {
@@ -147,7 +147,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Solvers
 
                             if (_decompositionLU[i, j] != 0.0)
                             {
-                                _decompositionLU[i, j] = _decompositionLU[i, j] - (t*_decompositionLU[k, j]);
+                                _decompositionLU[i, j] = _decompositionLU[i, j] - (t * _decompositionLU[k, j]);
                             }
                         }
                     }
@@ -180,17 +180,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Solvers
             //     z_i = l_ii^-1 * (y_i - SUM_(j<i) l_ij * z_j)
             // }
             // NOTE: l_ii should be 1 because u_ii has to be the value
-            var rowValues = new DenseVector(_decompositionLU.RowCount);
-            for (var i = 0; i < _decompositionLU.RowCount; i++)
+            DenseVector rowValues = new DenseVector(_decompositionLU.RowCount);
+            for (int i = 0; i < _decompositionLU.RowCount; i++)
             {
                 // Clear the rowValues
                 rowValues.Clear();
                 _decompositionLU.Row(i, rowValues);
 
-                var sum = 0.0f;
-                for (var j = 0; j < i; j++)
+                float sum = 0.0f;
+                for (int j = 0; j < i; j++)
                 {
-                    sum += rowValues[j]*lhs[j];
+                    sum += rowValues[j] * lhs[j];
                 }
 
                 lhs[i] = rhs[i] - sum;
@@ -203,17 +203,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Solvers
             // {
             //     x_i = u_ii^-1 * (z_i - SUM_(j > i) u_ij * x_j)
             // }
-            for (var i = _decompositionLU.RowCount - 1; i > -1; i--)
+            for (int i = _decompositionLU.RowCount - 1; i > -1; i--)
             {
                 _decompositionLU.Row(i, rowValues);
 
-                var sum = 0.0f;
-                for (var j = _decompositionLU.RowCount - 1; j > i; j--)
+                float sum = 0.0f;
+                for (int j = _decompositionLU.RowCount - 1; j > i; j--)
                 {
-                    sum += rowValues[j]*lhs[j];
+                    sum += rowValues[j] * lhs[j];
                 }
 
-                lhs[i] = 1/rowValues[i]*(lhs[i] - sum);
+                lhs[i] = 1 / rowValues[i] * (lhs[i] - sum);
             }
         }
     }

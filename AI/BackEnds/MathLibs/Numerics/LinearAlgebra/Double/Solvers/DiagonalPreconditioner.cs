@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
 {
@@ -41,7 +41,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <summary>
         /// The inverse of the matrix diagonal.
         /// </summary>
-        double[] _inverseDiagonals;
+        private double[] _inverseDiagonals;
 
         /// <summary>
         /// Returns the decomposed matrix diagonal.
@@ -49,10 +49,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <returns>The matrix diagonal.</returns>
         internal DiagonalMatrix DiagonalEntries()
         {
-            var result = new DiagonalMatrix(_inverseDiagonals.Length);
-            for (var i = 0; i < _inverseDiagonals.Length; i++)
+            DiagonalMatrix result = new DiagonalMatrix(_inverseDiagonals.Length);
+            for (int i = 0; i < _inverseDiagonals.Length; i++)
             {
-                result[i, i] = 1/_inverseDiagonals[i];
+                result[i, i] = 1 / _inverseDiagonals[i];
             }
 
             return result;
@@ -73,9 +73,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
             }
 
             _inverseDiagonals = new double[matrix.RowCount];
-            for (var i = 0; i < matrix.RowCount; i++)
+            for (int i = 0; i < matrix.RowCount; i++)
             {
-                _inverseDiagonals[i] = 1/matrix[i, i];
+                _inverseDiagonals[i] = 1 / matrix[i, i];
             }
         }
 
@@ -96,9 +96,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
                 throw new ArgumentException("All vectors must have the same dimensionality.", nameof(rhs));
             }
 
-            for (var i = 0; i < _inverseDiagonals.Length; i++)
+            for (int i = 0; i < _inverseDiagonals.Length; i++)
             {
-                lhs[i] = rhs[i]*_inverseDiagonals[i];
+                lhs[i] = rhs[i] * _inverseDiagonals[i];
             }
         }
     }

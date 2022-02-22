@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 using static System.FormattableString;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch
@@ -43,11 +43,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch
         public WolfeLineSearch(double c1, double c2, double parameterTolerance, int maxIterations = 10)
         {
             if (c1 <= 0)
+            {
                 throw new ArgumentException(Invariant($"c1 {c1} should be greater than 0"));
+            }
+
             if (c2 <= c1)
+            {
                 throw new ArgumentException(Invariant($"c1 {c1} should be less than c2 {c2}"));
+            }
+
             if (c2 >= 1)
+            {
                 throw new ArgumentException(Invariant($"c2 {c2} should be less than 1"));
+            }
 
             C1 = c1;
             C2 = c2;
@@ -97,7 +105,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch
                     upperBound = step;
                     step = 0.5 * (lowerBound + upperBound);
                 }
-                else if (WolfeCondition(stepDd,initialDd))
+                else if (WolfeCondition(stepDd, initialDd))
                 {
                     lowerBound = step;
                     step = double.IsPositiveInfinity(upperBound) ? 2 * lowerBound : 0.5 * (lowerBound + upperBound);
@@ -124,7 +132,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch
                 }
             }
 
-            if (ii == MaximumIterations && Double.IsPositiveInfinity(upperBound))
+            if (ii == MaximumIterations && double.IsPositiveInfinity(upperBound))
             {
                 throw new MaximumIterationsException(Invariant($"Maximum iterations ({MaximumIterations}) reached. Function appears to be unbounded in search direction."));
             }

@@ -15,14 +15,14 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
         /// <param name="options"></param>
         public static void SaveOptions(this Stream stream, FeatureExtractorOptions options)
         {
-            var currentCulture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             try
             {
-                using (var writer = JsonReaderWriterFactory.CreateJsonWriter(stream, Encoding.UTF8, true, true, "  "))
+                using (System.Xml.XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(stream, Encoding.UTF8, true, true, "  "))
                 {
-                    var js = new DataContractJsonSerializer(options.GetType());
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(options.GetType());
                     js.WriteObject(writer, options);
                     stream.Flush();
                 }
@@ -40,12 +40,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
         /// <returns></returns>
         public static T LoadOptions<T>(this Stream stream) where T : FeatureExtractorOptions
         {
-            var currentCulture = Thread.CurrentThread.CurrentCulture;
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             try
             {
-                var js = new DataContractJsonSerializer(typeof(T));
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(T));
                 return (T)js.ReadObject(stream);
             }
             finally
@@ -66,13 +66,13 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
         {
             byte[] data;
 
-            using (var config = new MemoryStream())
+            using (MemoryStream config = new MemoryStream())
             {
                 config.SaveOptions(options);
                 data = config.ToArray();
             }
 
-            using (var config = new MemoryStream(data))
+            using (MemoryStream config = new MemoryStream(data))
             {
                 return config.LoadOptions<U>();
             }

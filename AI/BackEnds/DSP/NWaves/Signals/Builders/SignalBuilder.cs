@@ -23,7 +23,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// List of signals to be superimposed with the resulting signal
         /// </summary>
         private readonly List<DiscreteSignal> _toSuperimpose = new List<DiscreteSignal>();
-        
+
         /// <summary>
         /// Resulting signal
         /// </summary>
@@ -61,13 +61,13 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         public virtual SignalBuilder SetParameter(string parameterName, double parameterValue)
         {
-            foreach (var parameterKey in ParameterSetters.Keys)
+            foreach (string parameterKey in ParameterSetters.Keys)
             {
-                var keywords = parameterKey.Split(',').Select(s => s.Trim());
+                IEnumerable<string> keywords = parameterKey.Split(',').Select(s => s.Trim());
 
                 if (keywords.Any(keyword => string.Compare(keyword, parameterName, StringComparison.OrdinalIgnoreCase) == 0))
                 {
-                    var setter = ParameterSetters[parameterKey];
+                    Action<double> setter = ParameterSetters[parameterKey];
                     setter.Invoke(parameterValue);
                     return this;
                 }
@@ -95,9 +95,9 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns>Generated signal</returns>
         protected virtual DiscreteSignal Generate()
         {
-            var signal = new DiscreteSignal(SamplingRate, Length);
+            DiscreteSignal signal = new DiscreteSignal(SamplingRate, Length);
 
-            for (var i = 0; i < signal.Length; i++)
+            for (int i = 0; i < signal.Length; i++)
             {
                 signal[i] = NextSample();
             }
@@ -111,7 +111,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns>The signal that is currently built</returns>
         public virtual DiscreteSignal Build()
         {
-            var signal = Generate();
+            DiscreteSignal signal = Generate();
 
             // perhaps, superimpose
             signal = _toSuperimpose.Aggregate(signal, (current, s) => current.Superimpose(s));
@@ -130,7 +130,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 
             return signal;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>

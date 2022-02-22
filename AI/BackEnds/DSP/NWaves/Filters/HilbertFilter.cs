@@ -30,10 +30,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <returns></returns>
         public static IEnumerable<double> MakeKernel(int size)
         {
-            var kernel = new double[size];
+            double[] kernel = new double[size];
 
             kernel[0] = 0;
-            for (var i = 1; i < size; i++)
+            for (int i = 1; i < size; i++)
             {
                 kernel[i] = 2 * Math.Pow(Math.Sin(Math.PI * i / 2), 2) / (Math.PI * i);
             }

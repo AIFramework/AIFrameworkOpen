@@ -544,7 +544,7 @@ namespace AI.DataStructs.Algebraic
         #endregion
 
         #region Технические методы
-        #pragma warning disable CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
+#pragma warning disable CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
 
         public override string ToString()
         {
@@ -607,7 +607,7 @@ namespace AI.DataStructs.Algebraic
             }
         }
 
-        #pragma warning restore CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
+#pragma warning restore CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
         #endregion
 
         #region Сериализация

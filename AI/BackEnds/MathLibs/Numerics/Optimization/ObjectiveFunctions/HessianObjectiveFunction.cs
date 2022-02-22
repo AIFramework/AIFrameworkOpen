@@ -27,14 +27,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
 {
     internal class HessianObjectiveFunction : IObjectiveFunction
     {
-        readonly Func<VectorMathNet<double>, (double, MatrixMathNet<double>)> _function;
+        private readonly Func<VectorMathNet<double>, (double, MatrixMathNet<double>)> _function;
 
         public HessianObjectiveFunction(Func<VectorMathNet<double>, (double, MatrixMathNet<double>)> function)
         {

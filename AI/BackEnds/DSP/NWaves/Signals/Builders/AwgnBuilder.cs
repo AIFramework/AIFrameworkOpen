@@ -44,13 +44,13 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
                 return _next;
             }
 
-            var u1 = _rand.NextDouble();
-            var u2 = _rand.NextDouble();
+            double u1 = _rand.NextDouble();
+            double u2 = _rand.NextDouble();
 
-            var r = Math.Sqrt(-2 * Math.Log(u1));
-            var theta = 2 * Math.PI * u2;
+            double r = Math.Sqrt(-2 * Math.Log(u1));
+            double theta = 2 * Math.PI * u2;
 
-            var sample = (float)(r * Math.Cos(theta) * _sigma + _mu);
+            float sample = (float)(r * Math.Cos(theta) * _sigma + _mu);
             _next = (float)(r * Math.Sin(theta) * _sigma + _mu);
 
             return sample;
@@ -64,6 +64,6 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         private float _next;
         private bool _nextReady;
 
-        private Random _rand = new Random();
+        private readonly Random _rand = new Random();
     }
 }

@@ -29,8 +29,8 @@
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
 {
-    using System;
     using Distributions;
+    using System;
 
     /// <summary>
     /// Metropolis-Hastings sampling produces samples from distribution P by sampling from a proposal distribution Q
@@ -47,32 +47,32 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// Evaluates the log density function of the target distribution.
         /// </summary>
-        readonly DensityLn<T> _pdfLnP;
+        private readonly DensityLn<T> _pdfLnP;
 
         /// <summary>
         /// Evaluates the log transition probability for the proposal distribution.
         /// </summary>
-        readonly TransitionKernelLn<T> _krnlQ;
+        private readonly TransitionKernelLn<T> _krnlQ;
 
         /// <summary>
         /// A function which samples from a proposal distribution.
         /// </summary>
-        readonly LocalProposalSampler<T> _proposal;
+        private readonly LocalProposalSampler<T> _proposal;
 
         /// <summary>
         /// The current location of the sampler.
         /// </summary>
-        T _current;
+        private T _current;
 
         /// <summary>
         /// The log density at the current location.
         /// </summary>
-        double _currentDensityLn;
+        private double _currentDensityLn;
 
         /// <summary>
         /// The number of burn iterations between two samples.
         /// </summary>
-        int _burnInterval;
+        private int _burnInterval;
 
         /// <summary>
         /// Constructs a new Metropolis-Hastings sampler using the default <see cref="System.Random"/> random number generator. This
@@ -116,7 +116,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// This method runs the sampler for a number of iterations without returning a sample
         /// </summary>
-        void Burn(int n)
+        private void Burn(int n)
         {
             for (int i = 0; i < n; i++)
             {

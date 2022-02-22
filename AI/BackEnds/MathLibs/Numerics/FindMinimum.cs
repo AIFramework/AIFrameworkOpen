@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Optimization;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics
 {
@@ -39,10 +39,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// Find value x that minimizes the scalar function f(x), constrained within bounds, using the Golden Section algorithm.
         /// For more options and diagnostics consider to use <see cref="GoldenSectionMinimizer"/> directly.
         /// </summary>
-        public static double OfScalarFunctionConstrained(Func<double, double> function, double lowerBound, double upperBound, double tolerance=1e-5, int maxIterations=1000)
+        public static double OfScalarFunctionConstrained(Func<double, double> function, double lowerBound, double upperBound, double tolerance = 1e-5, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.ScalarValue(function);
-            var result = GoldenSectionMinimizer.Minimum(objective, lowerBound, upperBound, tolerance, maxIterations);
+            IScalarObjectiveFunction objective = ObjectiveFunction.ScalarValue(function);
+            ScalarMinimizationResult result = GoldenSectionMinimizer.Minimum(objective, lowerBound, upperBound, tolerance, maxIterations);
             return result.MinimizingPoint;
         }
 
@@ -52,8 +52,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double OfScalarFunction(Func<double, double> function, double initialGuess, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Value(v => function(v[0]));
-            var result = NelderMeadSimplex.Minimum(objective, CreateVector.Dense(new[] { initialGuess }), tolerance, maxIterations);
+            IObjectiveFunction objective = ObjectiveFunction.Value(v => function(v[0]));
+            MinimizationResult result = NelderMeadSimplex.Minimum(objective, CreateVector.Dense(new[] { initialGuess }), tolerance, maxIterations);
             return result.MinimizingPoint[0];
         }
 
@@ -63,8 +63,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static (double P0, double P1) OfFunction(Func<double, double, double> function, double initialGuess0, double initialGuess1, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Value(v => function(v[0], v[1]));
-            var result = NelderMeadSimplex.Minimum(objective, CreateVector.Dense(new[] { initialGuess0, initialGuess1 }), tolerance, maxIterations);
+            IObjectiveFunction objective = ObjectiveFunction.Value(v => function(v[0], v[1]));
+            MinimizationResult result = NelderMeadSimplex.Minimum(objective, CreateVector.Dense(new[] { initialGuess0, initialGuess1 }), tolerance, maxIterations);
             return (result.MinimizingPoint[0], result.MinimizingPoint[1]);
         }
 
@@ -74,8 +74,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static (double P0, double P1, double P2) OfFunction(Func<double, double, double, double> function, double initialGuess0, double initialGuess1, double initialGuess2, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Value(v => function(v[0], v[1], v[2]));
-            var result = NelderMeadSimplex.Minimum(objective, CreateVector.Dense(new[] { initialGuess0, initialGuess1, initialGuess2 }), tolerance, maxIterations);
+            IObjectiveFunction objective = ObjectiveFunction.Value(v => function(v[0], v[1], v[2]));
+            MinimizationResult result = NelderMeadSimplex.Minimum(objective, CreateVector.Dense(new[] { initialGuess0, initialGuess1, initialGuess2 }), tolerance, maxIterations);
             return (result.MinimizingPoint[0], result.MinimizingPoint[1], result.MinimizingPoint[2]);
         }
 
@@ -85,8 +85,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static (double P0, double P1, double P2, double P3) OfFunction(Func<double, double, double, double, double> function, double initialGuess0, double initialGuess1, double initialGuess2, double initialGuess3, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Value(v => function(v[0], v[1], v[2], v[3]));
-            var result = NelderMeadSimplex.Minimum(objective, CreateVector.Dense(new[] { initialGuess0, initialGuess1, initialGuess2, initialGuess3 }), tolerance, maxIterations);
+            IObjectiveFunction objective = ObjectiveFunction.Value(v => function(v[0], v[1], v[2], v[3]));
+            MinimizationResult result = NelderMeadSimplex.Minimum(objective, CreateVector.Dense(new[] { initialGuess0, initialGuess1, initialGuess2, initialGuess3 }), tolerance, maxIterations);
             return (result.MinimizingPoint[0], result.MinimizingPoint[1], result.MinimizingPoint[2], result.MinimizingPoint[3]);
         }
 
@@ -96,8 +96,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static (double P0, double P1, double P2, double P3, double P4) OfFunction(Func<double, double, double, double, double, double> function, double initialGuess0, double initialGuess1, double initialGuess2, double initialGuess3, double initialGuess4, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Value(v => function(v[0], v[1], v[2], v[3], v[4]));
-            var result = NelderMeadSimplex.Minimum(objective, CreateVector.Dense(new[] { initialGuess0, initialGuess1, initialGuess2, initialGuess3, initialGuess4 }), tolerance, maxIterations);
+            IObjectiveFunction objective = ObjectiveFunction.Value(v => function(v[0], v[1], v[2], v[3], v[4]));
+            MinimizationResult result = NelderMeadSimplex.Minimum(objective, CreateVector.Dense(new[] { initialGuess0, initialGuess1, initialGuess2, initialGuess3, initialGuess4 }), tolerance, maxIterations);
             return (result.MinimizingPoint[0], result.MinimizingPoint[1], result.MinimizingPoint[2], result.MinimizingPoint[3], result.MinimizingPoint[4]);
         }
 
@@ -105,10 +105,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// Find vector x that minimizes the function f(x) using the Nelder-Mead Simplex algorithm.
         /// For more options and diagnostics consider to use <see cref="NelderMeadSimplex"/> directly.
         /// </summary>
-        public static VectorMathNet<double> OfFunction(Func<VectorMathNet<double>, double> function, VectorMathNet<double> initialGuess, double tolerance=1e-8, int maxIterations=1000)
+        public static VectorMathNet<double> OfFunction(Func<VectorMathNet<double>, double> function, VectorMathNet<double> initialGuess, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Value(function);
-            var result = NelderMeadSimplex.Minimum(objective, initialGuess, tolerance, maxIterations);
+            IObjectiveFunction objective = ObjectiveFunction.Value(function);
+            MinimizationResult result = NelderMeadSimplex.Minimum(objective, initialGuess, tolerance, maxIterations);
             return result.MinimizingPoint;
         }
 
@@ -117,12 +117,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// The missing gradient is evaluated numerically (forward difference).
         /// For more options and diagnostics consider to use <see cref="BfgsBMinimizer"/> directly.
         /// </summary>
-        public static VectorMathNet<double> OfFunctionConstrained(Func<VectorMathNet<double>, double> function, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound, VectorMathNet<double> initialGuess, double gradientTolerance=1e-5, double parameterTolerance=1e-5, double functionProgressTolerance=1e-5, int maxIterations=1000)
+        public static VectorMathNet<double> OfFunctionConstrained(Func<VectorMathNet<double>, double> function, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound, VectorMathNet<double> initialGuess, double gradientTolerance = 1e-5, double parameterTolerance = 1e-5, double functionProgressTolerance = 1e-5, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Value(function);
-            var objectiveWithGradient = new Optimization.ObjectiveFunctions.ForwardDifferenceGradientObjectiveFunction(objective, lowerBound, upperBound);
-            var algorithm = new BfgsBMinimizer(gradientTolerance, parameterTolerance, functionProgressTolerance, maxIterations);
-            var result = algorithm.FindMinimum(objectiveWithGradient, lowerBound, upperBound, initialGuess);
+            IObjectiveFunction objective = ObjectiveFunction.Value(function);
+            Optimization.ObjectiveFunctions.ForwardDifferenceGradientObjectiveFunction objectiveWithGradient = new Optimization.ObjectiveFunctions.ForwardDifferenceGradientObjectiveFunction(objective, lowerBound, upperBound);
+            BfgsBMinimizer algorithm = new BfgsBMinimizer(gradientTolerance, parameterTolerance, functionProgressTolerance, maxIterations);
+            MinimizationResult result = algorithm.FindMinimum(objectiveWithGradient, lowerBound, upperBound, initialGuess);
             return result.MinimizingPoint;
         }
 
@@ -131,11 +131,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// For more options and diagnostics consider to use <see cref="BfgsMinimizer"/> directly.
         /// An alternative routine using conjugate gradients (CG) is available in <see cref="ConjugateGradientMinimizer"/>.
         /// </summary>
-        public static VectorMathNet<double> OfFunctionGradient(Func<VectorMathNet<double>, double> function, Func<VectorMathNet<double>, VectorMathNet<double>> gradient, VectorMathNet<double> initialGuess, double gradientTolerance=1e-5, double parameterTolerance=1e-5, double functionProgressTolerance=1e-5, int maxIterations=1000)
+        public static VectorMathNet<double> OfFunctionGradient(Func<VectorMathNet<double>, double> function, Func<VectorMathNet<double>, VectorMathNet<double>> gradient, VectorMathNet<double> initialGuess, double gradientTolerance = 1e-5, double parameterTolerance = 1e-5, double functionProgressTolerance = 1e-5, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Gradient(function, gradient);
-            var algorithm = new BfgsMinimizer(gradientTolerance, parameterTolerance, functionProgressTolerance, maxIterations);
-            var result = algorithm.FindMinimum(objective, initialGuess);
+            IObjectiveFunction objective = ObjectiveFunction.Gradient(function, gradient);
+            BfgsMinimizer algorithm = new BfgsMinimizer(gradientTolerance, parameterTolerance, functionProgressTolerance, maxIterations);
+            MinimizationResult result = algorithm.FindMinimum(objective, initialGuess);
             return result.MinimizingPoint;
         }
 
@@ -144,11 +144,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// For more options and diagnostics consider to use <see cref="BfgsMinimizer"/> directly.
         /// An alternative routine using conjugate gradients (CG) is available in <see cref="ConjugateGradientMinimizer"/>.
         /// </summary>
-        public static VectorMathNet<double> OfFunctionGradient(Func<VectorMathNet<double>, (double, VectorMathNet<double>)> functionGradient, VectorMathNet<double> initialGuess, double gradientTolerance=1e-5, double parameterTolerance=1e-5, double functionProgressTolerance=1e-5, int maxIterations=1000)
+        public static VectorMathNet<double> OfFunctionGradient(Func<VectorMathNet<double>, (double, VectorMathNet<double>)> functionGradient, VectorMathNet<double> initialGuess, double gradientTolerance = 1e-5, double parameterTolerance = 1e-5, double functionProgressTolerance = 1e-5, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Gradient(functionGradient);
-            var algorithm = new BfgsMinimizer(gradientTolerance, parameterTolerance, functionProgressTolerance, maxIterations);
-            var result = algorithm.FindMinimum(objective, initialGuess);
+            IObjectiveFunction objective = ObjectiveFunction.Gradient(functionGradient);
+            BfgsMinimizer algorithm = new BfgsMinimizer(gradientTolerance, parameterTolerance, functionProgressTolerance, maxIterations);
+            MinimizationResult result = algorithm.FindMinimum(objective, initialGuess);
             return result.MinimizingPoint;
         }
 
@@ -156,11 +156,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// Find vector x that minimizes the function f(x), constrained within bounds, using the Broyden–Fletcher–Goldfarb–Shanno Bounded (BFGS-B) algorithm.
         /// For more options and diagnostics consider to use <see cref="BfgsBMinimizer"/> directly.
         /// </summary>
-        public static VectorMathNet<double> OfFunctionGradientConstrained(Func<VectorMathNet<double>, double> function, Func<VectorMathNet<double>, VectorMathNet<double>> gradient, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound, VectorMathNet<double> initialGuess, double gradientTolerance=1e-5, double parameterTolerance=1e-5, double functionProgressTolerance=1e-5, int maxIterations=1000)
+        public static VectorMathNet<double> OfFunctionGradientConstrained(Func<VectorMathNet<double>, double> function, Func<VectorMathNet<double>, VectorMathNet<double>> gradient, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound, VectorMathNet<double> initialGuess, double gradientTolerance = 1e-5, double parameterTolerance = 1e-5, double functionProgressTolerance = 1e-5, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Gradient(function, gradient);
-            var algorithm = new BfgsBMinimizer(gradientTolerance, parameterTolerance, functionProgressTolerance, maxIterations);
-            var result = algorithm.FindMinimum(objective, lowerBound, upperBound, initialGuess);
+            IObjectiveFunction objective = ObjectiveFunction.Gradient(function, gradient);
+            BfgsBMinimizer algorithm = new BfgsBMinimizer(gradientTolerance, parameterTolerance, functionProgressTolerance, maxIterations);
+            MinimizationResult result = algorithm.FindMinimum(objective, lowerBound, upperBound, initialGuess);
             return result.MinimizingPoint;
         }
 
@@ -168,11 +168,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// Find vector x that minimizes the function f(x), constrained within bounds, using the Broyden–Fletcher–Goldfarb–Shanno Bounded (BFGS-B) algorithm.
         /// For more options and diagnostics consider to use <see cref="BfgsBMinimizer"/> directly.
         /// </summary>
-        public static VectorMathNet<double> OfFunctionGradientConstrained(Func<VectorMathNet<double>, (double, VectorMathNet<double>)> functionGradient, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound, VectorMathNet<double> initialGuess, double gradientTolerance=1e-5, double parameterTolerance=1e-5, double functionProgressTolerance=1e-5, int maxIterations=1000)
+        public static VectorMathNet<double> OfFunctionGradientConstrained(Func<VectorMathNet<double>, (double, VectorMathNet<double>)> functionGradient, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound, VectorMathNet<double> initialGuess, double gradientTolerance = 1e-5, double parameterTolerance = 1e-5, double functionProgressTolerance = 1e-5, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.Gradient(functionGradient);
-            var algorithm = new BfgsBMinimizer(gradientTolerance, parameterTolerance, functionProgressTolerance, maxIterations);
-            var result = algorithm.FindMinimum(objective, lowerBound, upperBound, initialGuess);
+            IObjectiveFunction objective = ObjectiveFunction.Gradient(functionGradient);
+            BfgsBMinimizer algorithm = new BfgsBMinimizer(gradientTolerance, parameterTolerance, functionProgressTolerance, maxIterations);
+            MinimizationResult result = algorithm.FindMinimum(objective, lowerBound, upperBound, initialGuess);
             return result.MinimizingPoint;
         }
 
@@ -180,10 +180,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// Find vector x that minimizes the function f(x) using the Newton algorithm.
         /// For more options and diagnostics consider to use <see cref="NewtonMinimizer"/> directly.
         /// </summary>
-        public static VectorMathNet<double> OfFunctionGradientHessian(Func<VectorMathNet<double>, double> function, Func<VectorMathNet<double>, VectorMathNet<double>> gradient, Func<VectorMathNet<double>, MatrixMathNet<double>> hessian, VectorMathNet<double> initialGuess, double gradientTolerance=1e-8, int maxIterations=1000)
+        public static VectorMathNet<double> OfFunctionGradientHessian(Func<VectorMathNet<double>, double> function, Func<VectorMathNet<double>, VectorMathNet<double>> gradient, Func<VectorMathNet<double>, MatrixMathNet<double>> hessian, VectorMathNet<double> initialGuess, double gradientTolerance = 1e-8, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.GradientHessian(function, gradient, hessian);
-            var result = NewtonMinimizer.Minimum(objective, initialGuess, gradientTolerance, maxIterations);
+            IObjectiveFunction objective = ObjectiveFunction.GradientHessian(function, gradient, hessian);
+            MinimizationResult result = NewtonMinimizer.Minimum(objective, initialGuess, gradientTolerance, maxIterations);
             return result.MinimizingPoint;
         }
 
@@ -191,10 +191,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// Find vector x that minimizes the function f(x) using the Newton algorithm.
         /// For more options and diagnostics consider to use <see cref="NewtonMinimizer"/> directly.
         /// </summary>
-        public static VectorMathNet<double> OfFunctionGradientHessian(Func<VectorMathNet<double>, (double, VectorMathNet<double>, MatrixMathNet<double>)> functionGradientHessian, VectorMathNet<double> initialGuess, double gradientTolerance=1e-8, int maxIterations=1000)
+        public static VectorMathNet<double> OfFunctionGradientHessian(Func<VectorMathNet<double>, (double, VectorMathNet<double>, MatrixMathNet<double>)> functionGradientHessian, VectorMathNet<double> initialGuess, double gradientTolerance = 1e-8, int maxIterations = 1000)
         {
-            var objective = ObjectiveFunction.GradientHessian(functionGradientHessian);
-            var result = NewtonMinimizer.Minimum(objective, initialGuess, gradientTolerance, maxIterations);
+            IObjectiveFunction objective = ObjectiveFunction.GradientHessian(functionGradientHessian);
+            MinimizationResult result = NewtonMinimizer.Minimum(objective, initialGuess, gradientTolerance, maxIterations);
             return result.MinimizingPoint;
         }
     }

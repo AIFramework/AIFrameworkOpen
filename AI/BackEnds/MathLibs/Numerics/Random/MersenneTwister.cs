@@ -65,11 +65,11 @@
    email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
 */
 
+using System;
 using System.Collections.Generic;
+using System.Runtime;
 using System.Runtime.Serialization;
 using System.Threading;
-using System;
-using System.Runtime;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
@@ -83,49 +83,49 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <summary>
         /// Mersenne twister constant.
         /// </summary>
-        const uint LowerMask = 0x7fffffff;
+        private const uint LowerMask = 0x7fffffff;
 
         /// <summary>
         /// Mersenne twister constant.
         /// </summary>
-        const int M = 397;
+        private const int M = 397;
 
         /// <summary>
         /// Mersenne twister constant.
         /// </summary>
-        const uint MatrixA = 0x9908b0df;
+        private const uint MatrixA = 0x9908b0df;
 
         /// <summary>
         /// Mersenne twister constant.
         /// </summary>
-        const int N = 624;
+        private const int N = 624;
 
         /// <summary>
         /// Mersenne twister constant.
         /// </summary>
-        const double Reciprocal = 1.0/4294967296.0; // 1.0/(uint.MaxValue + 1.0)
+        private const double Reciprocal = 1.0 / 4294967296.0; // 1.0/(uint.MaxValue + 1.0)
 
         /// <summary>
         /// Mersenne twister constant.
         /// </summary>
-        const uint UpperMask = 0x80000000;
+        private const uint UpperMask = 0x80000000;
 
         /// <summary>
         /// Mersenne twister constant.
         /// </summary>
-        static readonly uint[] Mag01 = { 0x0U, MatrixA };
+        private static readonly uint[] Mag01 = { 0x0U, MatrixA };
 
         /// <summary>
         /// Mersenne twister constant.
         /// </summary>
         [DataMember(Order = 1)]
-        readonly uint[] _mt = new uint[N];
+        private readonly uint[] _mt = new uint[N];
 
         /// <summary>
         /// Mersenne twister constant.
         /// </summary>
         [DataMember(Order = 2)]
-        int _mti = N + 1;
+        private int _mti = N + 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MersenneTwister"/> class using
@@ -168,7 +168,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             init_genrand((uint)seed);
         }
 
-        static readonly ThreadLocal<MersenneTwister> DefaultInstance = new ThreadLocal<MersenneTwister>(() => new MersenneTwister(RandomSeed.Robust(), true));
+        private static readonly ThreadLocal<MersenneTwister> DefaultInstance = new ThreadLocal<MersenneTwister>(() => new MersenneTwister(RandomSeed.Robust(), true));
 
         /// <summary>
         /// Default instance, thread-safe.
@@ -195,12 +195,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         */
         /* initializes _mt[_n] with a seed */
 
-        void init_genrand(uint s)
+        private void init_genrand(uint s)
         {
             _mt[0] = s & 0xffffffff;
             for (_mti = 1; _mti < N; _mti++)
             {
-                _mt[_mti] = 1812433253*(_mt[_mti - 1] ^ (_mt[_mti - 1] >> 30)) + (uint)_mti;
+                _mt[_mti] = 1812433253 * (_mt[_mti - 1] ^ (_mt[_mti - 1] >> 30)) + (uint)_mti;
                 /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
                 /* In the previous versions, MSBs of the seed affect   */
                 /* only MSBs of the array _mt[].                        */
@@ -251,7 +251,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 
         /* generates a random number on [0,0xffffffff]-interval */
 
-        uint genrand_int32()
+        private uint genrand_int32()
         {
             uint y;
 
@@ -301,7 +301,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected sealed override double DoSample()
         {
-            return genrand_int32()*Reciprocal;
+            return genrand_int32() * Reciprocal;
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected sealed override void DoSampleBytes(byte[] buffer)
         {
-            for (var i = 0; i < buffer.Length; i++)
+            for (int i = 0; i < buffer.Length; i++)
             {
                 buffer[i] = (byte)(genrand_int32() % 256);
             }
@@ -353,7 +353,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             t[0] = s & 0xffffffff;
             for (k = 1; k < N; k++)
             {
-                t[k] = 1812433253*(t[k - 1] ^ (t[k - 1] >> 30)) + (uint)k;
+                t[k] = 1812433253 * (t[k - 1] ^ (t[k - 1] >> 30)) + (uint)k;
                 t[k] &= 0xffffffff;
             }
 
@@ -390,7 +390,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 y ^= (y << 15) & 0xefc60000;
                 y ^= y >> 18;
 
-                values[i] = y*Reciprocal;
+                values[i] = y * Reciprocal;
             }
         }
 
@@ -401,7 +401,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] Doubles(int length, int seed)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             Doubles(data, seed);
             return data;
         }
@@ -419,7 +419,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             t[0] = s & 0xffffffff;
             for (k = 1; k < N; k++)
             {
-                t[k] = 1812433253*(t[k - 1] ^ (t[k - 1] >> 30)) + (uint)k;
+                t[k] = 1812433253 * (t[k - 1] ^ (t[k - 1] >> 30)) + (uint)k;
                 t[k] &= 0xffffffff;
             }
 
@@ -456,7 +456,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 y ^= (y << 15) & 0xefc60000;
                 y ^= y >> 18;
 
-                yield return y*Reciprocal;
+                yield return y * Reciprocal;
             }
         }
     }

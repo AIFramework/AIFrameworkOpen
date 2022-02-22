@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
+using System;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics
 {
@@ -56,9 +56,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> LineFunc(double[] x, double[] y)
         {
-            var parameters = SimpleRegression.Fit(x, y);
+            (double A, double B) parameters = SimpleRegression.Fit(x, y);
             double intercept = parameters.Item1, slope = parameters.Item2;
-            return z => intercept + slope*z;
+            return z => intercept + slope * z;
         }
 
         /// <summary>
@@ -99,9 +99,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> ExponentialFunc(double[] x, double[] y, DirectRegressionMethod method = DirectRegressionMethod.QR)
         {
-            var parameters = Exponential(x, y, method);
-            var a = parameters.Item1;
-            var r = parameters.Item2;
+            (double A, double R) parameters = Exponential(x, y, method);
+            double a = parameters.Item1;
+            double r = parameters.Item2;
             return z => a * Math.Exp(r * z);
         }
 
@@ -122,9 +122,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> LogarithmFunc(double[] x, double[] y, DirectRegressionMethod method = DirectRegressionMethod.QR)
         {
-            var parameters = Logarithm(x, y, method);
-            var a = parameters.Item1;
-            var b = parameters.Item2;
+            (double A, double B) parameters = Logarithm(x, y, method);
+            double a = parameters.Item1;
+            double b = parameters.Item2;
             return z => a + b * Math.Log(z);
         }
 
@@ -146,9 +146,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> PowerFunc(double[] x, double[] y, DirectRegressionMethod method = DirectRegressionMethod.QR)
         {
-            var parameters = Power(x, y, method);
-            var a = parameters.Item1;
-            var b = parameters.Item2;
+            (double A, double B) parameters = Power(x, y, method);
+            double a = parameters.Item1;
+            double b = parameters.Item2;
             return z => a * Math.Pow(z, b);
         }
 
@@ -159,7 +159,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double[] Polynomial(double[] x, double[] y, int order, DirectRegressionMethod method = DirectRegressionMethod.QR)
         {
-            var design = MatrixMathNet<double>.Build.Dense(x.Length, order + 1, (i, j) => Math.Pow(x[i], j));
+            MatrixMathNet<double> design = MatrixMathNet<double>.Build.Dense(x.Length, order + 1, (i, j) => Math.Pow(x[i], j));
             return MultipleRegression.DirectMethod(design, VectorMathNet<double>.Build.Dense(y), method).ToArray();
         }
 
@@ -170,7 +170,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> PolynomialFunc(double[] x, double[] y, int order, DirectRegressionMethod method = DirectRegressionMethod.QR)
         {
-            var parameters = Polynomial(x, y, order, method);
+            double[] parameters = Polynomial(x, y, order, method);
             return z => Numerics.Polynomial.Evaluate(z, parameters);
         }
 
@@ -181,7 +181,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double[] PolynomialWeighted(double[] x, double[] y, double[] w, int order)
         {
-            var design = MatrixMathNet<double>.Build.Dense(x.Length, order + 1, (i, j) => Math.Pow(x[i], j));
+            MatrixMathNet<double> design = MatrixMathNet<double>.Build.Dense(x.Length, order + 1, (i, j) => Math.Pow(x[i], j));
             return WeightedRegression.Weighted(design, VectorMathNet<double>.Build.Dense(y), MatrixMathNet<double>.Build.Diagonal(w)).ToArray();
         }
 
@@ -189,9 +189,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// Least-Squares fitting the points (x,y) to an arbitrary linear combination y : x -> p0*f0(x) + p1*f1(x) + ... + pk*fk(x),
         /// returning its best fitting parameters as [p0, p1, p2, ..., pk] array.
         /// </summary>
-        public static double[] LinearCombination(double[] x, double[] y, params Func<double,double>[] functions)
+        public static double[] LinearCombination(double[] x, double[] y, params Func<double, double>[] functions)
         {
-            var design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
+            MatrixMathNet<double> design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
             return MultipleRegression.QR(design, VectorMathNet<double>.Build.Dense(y)).ToArray();
         }
 
@@ -201,8 +201,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> LinearCombinationFunc(double[] x, double[] y, params Func<double, double>[] functions)
         {
-            var parameters = LinearCombination(x, y, functions);
-            return z => functions.Zip(parameters, (f, p) => p*f(z)).Sum();
+            double[] parameters = LinearCombination(x, y, functions);
+            return z => functions.Zip(parameters, (f, p) => p * f(z)).Sum();
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double[] LinearCombination(double[] x, double[] y, DirectRegressionMethod method, params Func<double, double>[] functions)
         {
-            var design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
+            MatrixMathNet<double> design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
             return MultipleRegression.DirectMethod(design, VectorMathNet<double>.Build.Dense(y), method).ToArray();
         }
 
@@ -221,8 +221,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> LinearCombinationFunc(double[] x, double[] y, DirectRegressionMethod method, params Func<double, double>[] functions)
         {
-            var parameters = LinearCombination(x, y, method, functions);
-            return z => functions.Zip(parameters, (f, p) => p*f(z)).Sum();
+            double[] parameters = LinearCombination(x, y, method, functions);
+            return z => functions.Zip(parameters, (f, p) => p * f(z)).Sum();
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double[], double> MultiDimFunc(double[][] x, double[] y, bool intercept = false, DirectRegressionMethod method = DirectRegressionMethod.NormalEquations)
         {
-            var parameters = MultipleRegression.DirectMethod(x, y, intercept, method);
+            double[] parameters = MultipleRegression.DirectMethod(x, y, intercept, method);
             return z => LinearAlgebraControl.Provider.DotProduct(parameters, z);
         }
 
@@ -261,7 +261,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double[] LinearMultiDim(double[][] x, double[] y, params Func<double[], double>[] functions)
         {
-            var design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
+            MatrixMathNet<double> design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
             return MultipleRegression.QR(design, VectorMathNet<double>.Build.Dense(y)).ToArray();
         }
 
@@ -271,7 +271,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double[], double> LinearMultiDimFunc(double[][] x, double[] y, params Func<double[], double>[] functions)
         {
-            var parameters = LinearMultiDim(x, y, functions);
+            double[] parameters = LinearMultiDim(x, y, functions);
             return z => functions.Zip(parameters, (f, p) => p * f(z)).Sum();
         }
 
@@ -281,7 +281,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double[] LinearMultiDim(double[][] x, double[] y, DirectRegressionMethod method, params Func<double[], double>[] functions)
         {
-            var design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
+            MatrixMathNet<double> design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
             return MultipleRegression.DirectMethod(design, VectorMathNet<double>.Build.Dense(y), method).ToArray();
         }
 
@@ -291,7 +291,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double[], double> LinearMultiDimFunc(double[][] x, double[] y, DirectRegressionMethod method, params Func<double[], double>[] functions)
         {
-            var parameters = LinearMultiDim(x, y, method, functions);
+            double[] parameters = LinearMultiDim(x, y, method, functions);
             return z => functions.Zip(parameters, (f, p) => p * f(z)).Sum();
         }
 
@@ -301,7 +301,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double[] LinearGeneric<T>(T[] x, double[] y, params Func<T, double>[] functions)
         {
-            var design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
+            MatrixMathNet<double> design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
             return MultipleRegression.QR(design, VectorMathNet<double>.Build.Dense(y)).ToArray();
         }
 
@@ -311,7 +311,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<T, double> LinearGenericFunc<T>(T[] x, double[] y, params Func<T, double>[] functions)
         {
-            var parameters = LinearGeneric(x, y, functions);
+            double[] parameters = LinearGeneric(x, y, functions);
             return z => functions.Zip(parameters, (f, p) => p * f(z)).Sum();
         }
 
@@ -321,7 +321,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static double[] LinearGeneric<T>(T[] x, double[] y, DirectRegressionMethod method, params Func<T, double>[] functions)
         {
-            var design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
+            MatrixMathNet<double> design = MatrixMathNet<double>.Build.Dense(x.Length, functions.Length, (i, j) => functions[j](x[i]));
             return MultipleRegression.DirectMethod(design, VectorMathNet<double>.Build.Dense(y), method).ToArray();
         }
 
@@ -331,7 +331,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<T, double> LinearGenericFunc<T>(T[] x, double[] y, DirectRegressionMethod method, params Func<T, double>[] functions)
         {
-            var parameters = LinearGeneric(x, y, method, functions);
+            double[] parameters = LinearGeneric(x, y, method, functions);
             return z => functions.Zip(parameters, (f, p) => p * f(z)).Sum();
         }
 
@@ -386,7 +386,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> CurveFunc(double[] x, double[] y, Func<double, double, double> f, double initialGuess, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var parameters = Curve(x, y, f, initialGuess, tolerance, maxIterations);
+            double parameters = Curve(x, y, f, initialGuess, tolerance, maxIterations);
             return z => f(parameters, z);
         }
 
@@ -396,7 +396,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> CurveFunc(double[] x, double[] y, Func<double, double, double, double> f, double initialGuess0, double initialGuess1, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var parameters = Curve(x, y, f, initialGuess0, initialGuess1, tolerance, maxIterations);
+            (double P0, double P1) parameters = Curve(x, y, f, initialGuess0, initialGuess1, tolerance, maxIterations);
             return z => f(parameters.P0, parameters.P1, z);
         }
 
@@ -406,7 +406,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> CurveFunc(double[] x, double[] y, Func<double, double, double, double, double> f, double initialGuess0, double initialGuess1, double initialGuess2, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var parameters = Curve(x, y, f, initialGuess0, initialGuess1, initialGuess2, tolerance, maxIterations);
+            (double P0, double P1, double P2) parameters = Curve(x, y, f, initialGuess0, initialGuess1, initialGuess2, tolerance, maxIterations);
             return z => f(parameters.P0, parameters.P1, parameters.P2, z);
         }
 
@@ -416,7 +416,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> CurveFunc(double[] x, double[] y, Func<double, double, double, double, double, double> f, double initialGuess0, double initialGuess1, double initialGuess2, double initialGuess3, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var parameters = Curve(x, y, f, initialGuess0, initialGuess1, initialGuess2, initialGuess3, tolerance, maxIterations);
+            (double P0, double P1, double P2, double P3) parameters = Curve(x, y, f, initialGuess0, initialGuess1, initialGuess2, initialGuess3, tolerance, maxIterations);
             return z => f(parameters.P0, parameters.P1, parameters.P2, parameters.P3, z);
         }
 
@@ -426,7 +426,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static Func<double, double> CurveFunc(double[] x, double[] y, Func<double, double, double, double, double, double, double> f, double initialGuess0, double initialGuess1, double initialGuess2, double initialGuess3, double initialGuess4, double tolerance = 1e-8, int maxIterations = 1000)
         {
-            var parameters = Curve(x, y, f, initialGuess0, initialGuess1, initialGuess2, initialGuess3, initialGuess4, tolerance, maxIterations);
+            (double P0, double P1, double P2, double P3, double P4) parameters = Curve(x, y, f, initialGuess0, initialGuess1, initialGuess2, initialGuess3, initialGuess4, tolerance, maxIterations);
             return z => f(parameters.P0, parameters.P1, parameters.P2, parameters.P3, parameters.P4, z);
         }
     }

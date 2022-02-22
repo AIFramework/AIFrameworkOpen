@@ -56,11 +56,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         {
             get
             {
-                var det = 1.0f;
-                for (var j = 0; j < Factor.RowCount; j++)
+                float det = 1.0f;
+                for (int j = 0; j < Factor.RowCount; j++)
                 {
-                    var d = Factor.At(j, j);
-                    det *= d*d;
+                    float d = Factor.At(j, j);
+                    det *= d * d;
                 }
 
                 return det;
@@ -74,10 +74,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         {
             get
             {
-                var det = 0.0f;
-                for (var j = 0; j < Factor.RowCount; j++)
+                float det = 0.0f;
+                for (int j = 0; j < Factor.RowCount; j++)
                 {
-                    det += 2.0f*Convert.ToSingle(Math.Log(Factor.At(j, j)));
+                    det += 2.0f * Convert.ToSingle(Math.Log(Factor.At(j, j)));
                 }
 
                 return det;

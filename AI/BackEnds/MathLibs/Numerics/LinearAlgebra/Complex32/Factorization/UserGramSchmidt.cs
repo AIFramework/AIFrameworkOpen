@@ -57,35 +57,35 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentException>(matrix);
             }
 
-            var q = matrix.Clone();
-            var r = MatrixMathNet<Complex32>.Build.SameAs(matrix, matrix.ColumnCount, matrix.ColumnCount, fullyMutable: true);
+            MatrixMathNet<Complex32> q = matrix.Clone();
+            MatrixMathNet<Complex32> r = MatrixMathNet<Complex32>.Build.SameAs(matrix, matrix.ColumnCount, matrix.ColumnCount, fullyMutable: true);
 
-            for (var k = 0; k < q.ColumnCount; k++)
+            for (int k = 0; k < q.ColumnCount; k++)
             {
-                var norm = (float) q.Column(k).L2Norm();
+                float norm = (float)q.Column(k).L2Norm();
                 if (norm == 0f)
                 {
                     throw new ArgumentException("Matrix must not be rank deficient.");
                 }
 
                 r.At(k, k, norm);
-                for (var i = 0; i < q.RowCount; i++)
+                for (int i = 0; i < q.RowCount; i++)
                 {
                     q.At(i, k, (q.At(i, k) / norm));
                 }
 
-                for (var j = k + 1; j < q.ColumnCount; j++)
+                for (int j = k + 1; j < q.ColumnCount; j++)
                 {
-                    var dot = Complex32.Zero;
+                    Complex32 dot = Complex32.Zero;
                     for (int i = 0; i < q.RowCount; i++)
                     {
                         dot += q.Column(k)[i].Conjugate() * q.Column(j)[i];
                     }
 
                     r.At(k, j, dot);
-                    for (var i = 0; i < q.RowCount; i++)
+                    for (int i = 0; i < q.RowCount; i++)
                     {
-                        var value = q.At(i, j) - (q.At(i, k) * dot);
+                        Complex32 value = q.At(i, j) - (q.At(i, k) * dot);
                         q.At(i, j, value);
                     }
                 }
@@ -94,7 +94,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
             return new UserGramSchmidt(q, r);
         }
 
-        UserGramSchmidt(MatrixMathNet<Complex32> q, MatrixMathNet<Complex32> rFull)
+        private UserGramSchmidt(MatrixMathNet<Complex32> q, MatrixMathNet<Complex32> rFull)
             : base(q, rFull)
         {
         }
@@ -124,21 +124,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
                 throw new ArgumentException("Matrix column dimensions must agree.");
             }
 
-            var inputCopy = input.Clone();
+            MatrixMathNet<Complex32> inputCopy = input.Clone();
 
             // Compute Y = transpose(Q)*B
-            var column = new Complex32[Q.RowCount];
-            for (var j = 0; j < input.ColumnCount; j++)
+            Complex32[] column = new Complex32[Q.RowCount];
+            for (int j = 0; j < input.ColumnCount; j++)
             {
-                for (var k = 0; k < Q.RowCount; k++)
+                for (int k = 0; k < Q.RowCount; k++)
                 {
                     column[k] = inputCopy.At(k, j);
                 }
 
-                for (var i = 0; i < Q.ColumnCount; i++)
+                for (int i = 0; i < Q.ColumnCount; i++)
                 {
-                    var s = Complex32.Zero;
-                    for (var k = 0; k < Q.RowCount; k++)
+                    Complex32 s = Complex32.Zero;
+                    for (int k = 0; k < Q.RowCount; k++)
                     {
                         s += Q.At(k, i).Conjugate() * column[k];
                     }
@@ -148,25 +148,25 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
             }
 
             // Solve R*X = Y;
-            for (var k = Q.ColumnCount - 1; k >= 0; k--)
+            for (int k = Q.ColumnCount - 1; k >= 0; k--)
             {
-                for (var j = 0; j < input.ColumnCount; j++)
+                for (int j = 0; j < input.ColumnCount; j++)
                 {
                     inputCopy.At(k, j, inputCopy.At(k, j) / FullR.At(k, k));
                 }
 
-                for (var i = 0; i < k; i++)
+                for (int i = 0; i < k; i++)
                 {
-                    for (var j = 0; j < input.ColumnCount; j++)
+                    for (int j = 0; j < input.ColumnCount; j++)
                     {
                         inputCopy.At(i, j, inputCopy.At(i, j) - (inputCopy.At(k, j) * FullR.At(i, k)));
                     }
                 }
             }
 
-            for (var i = 0; i < FullR.ColumnCount; i++)
+            for (int i = 0; i < FullR.ColumnCount; i++)
             {
-                for (var j = 0; j < input.ColumnCount; j++)
+                for (int j = 0; j < input.ColumnCount; j++)
                 {
                     result.At(i, j, inputCopy.At(i, j));
                 }
@@ -193,19 +193,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentException>(Q, result);
             }
 
-            var inputCopy = input.Clone();
+            VectorMathNet<Complex32> inputCopy = input.Clone();
 
             // Compute Y = transpose(Q)*B
-            var column = new Complex32[Q.RowCount];
-            for (var k = 0; k < Q.RowCount; k++)
+            Complex32[] column = new Complex32[Q.RowCount];
+            for (int k = 0; k < Q.RowCount; k++)
             {
                 column[k] = inputCopy[k];
             }
 
-            for (var i = 0; i < Q.ColumnCount; i++)
+            for (int i = 0; i < Q.ColumnCount; i++)
             {
-                var s = Complex32.Zero;
-                for (var k = 0; k < Q.RowCount; k++)
+                Complex32 s = Complex32.Zero;
+                for (int k = 0; k < Q.RowCount; k++)
                 {
                     s += Q.At(k, i).Conjugate() * column[k];
                 }
@@ -214,16 +214,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
             }
 
             // Solve R*X = Y;
-            for (var k = Q.ColumnCount - 1; k >= 0; k--)
+            for (int k = Q.ColumnCount - 1; k >= 0; k--)
             {
                 inputCopy[k] /= FullR.At(k, k);
-                for (var i = 0; i < k; i++)
+                for (int i = 0; i < k; i++)
                 {
                     inputCopy[i] -= inputCopy[k] * FullR.At(i, k);
                 }
             }
 
-            for (var i = 0; i < FullR.ColumnCount; i++)
+            for (int i = 0; i < FullR.ColumnCount; i++)
             {
                 result[i] = inputCopy[i];
             }

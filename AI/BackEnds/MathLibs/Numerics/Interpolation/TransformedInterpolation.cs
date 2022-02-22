@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
 {
@@ -40,8 +40,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
     /// <remarks>Neither differentiation nor integration is supported.</remarks>
     public class TransformedInterpolation : IInterpolation
     {
-        readonly IInterpolation _interpolation;
-        readonly Func<double, double> _transform;
+        private readonly IInterpolation _interpolation;
+        private readonly Func<double, double> _transform;
 
         public TransformedInterpolation(IInterpolation interpolation, Func<double, double> transform)
         {
@@ -63,7 +63,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                 throw new ArgumentException("All vectors must have the same dimensionality.");
             }
 
-            var yhat = new double[y.Length];
+            double[] yhat = new double[y.Length];
             CommonParallel.For(0, y.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
@@ -130,33 +130,48 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// </summary>
         /// <param name="t">Point t to interpolate at.</param>
         /// <returns>Interpolated value x(t).</returns>
-        public double Interpolate(double t) => _transform(_interpolation.Interpolate(t));
+        public double Interpolate(double t)
+        {
+            return _transform(_interpolation.Interpolate(t));
+        }
 
         /// <summary>
         /// Differentiate at point t. NOT SUPPORTED.
         /// </summary>
         /// <param name="t">Point t to interpolate at.</param>
         /// <returns>Interpolated first derivative at point t.</returns>
-        double IInterpolation.Differentiate(double t) => throw new NotSupportedException();
+        double IInterpolation.Differentiate(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Differentiate twice at point t. NOT SUPPORTED.
         /// </summary>
         /// <param name="t">Point t to interpolate at.</param>
         /// <returns>Interpolated second derivative at point t.</returns>
-        double IInterpolation.Differentiate2(double t) => throw new NotSupportedException();
+        double IInterpolation.Differentiate2(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Indefinite integral at point t. NOT SUPPORTED.
         /// </summary>
         /// <param name="t">Point t to integrate at.</param>
-        double IInterpolation.Integrate(double t) => throw new NotSupportedException();
+        double IInterpolation.Integrate(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Definite integral between points a and b. NOT SUPPORTED.
         /// </summary>
         /// <param name="a">Left bound of the integration interval [a,b].</param>
         /// <param name="b">Right bound of the integration interval [a,b].</param>
-        double IInterpolation.Integrate(double a, double b) => throw new NotSupportedException();
+        double IInterpolation.Integrate(double a, double b)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

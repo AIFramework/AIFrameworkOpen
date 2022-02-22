@@ -14,9 +14,9 @@ namespace AI.BackEnds.DSP.NWaves.Features
         /// <returns></returns>
         public static float Loudness(float[] spectralBands)
         {
-            var loudness = 0.0;
+            double loudness = 0.0;
 
-            for (var i = 0; i < spectralBands.Length; i++)
+            for (int i = 0; i < spectralBands.Length; i++)
             {
                 loudness += Math.Pow(spectralBands[i], 0.23);
             }
@@ -35,12 +35,12 @@ namespace AI.BackEnds.DSP.NWaves.Features
         /// <returns></returns>
         public static float Sharpness(float[] spectralBands)
         {
-            var sharpness = 0.0;
-            var total = 0.0;
+            double sharpness = 0.0;
+            double total = 0.0;
 
-            for (var i = 0; i < spectralBands.Length; i++)
+            for (int i = 0; i < spectralBands.Length; i++)
             {
-                var loudness = Math.Pow(spectralBands[i], 0.23);
+                double loudness = Math.Pow(spectralBands[i], 0.23);
                 sharpness += (i + 1) * loudness;
                 total += loudness;
             }

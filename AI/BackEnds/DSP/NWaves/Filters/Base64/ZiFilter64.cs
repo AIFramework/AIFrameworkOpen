@@ -46,7 +46,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
             _b = b.ToArray();
             _a = a.ToArray();
 
-            var maxLength = _a.Length;
+            int maxLength = _a.Length;
 
             if (_a.Length > _b.Length)
             {
@@ -99,9 +99,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// <returns>Output sample</returns>
         public double Process(double input)
         {
-            var output = _b[0] * input + _zi[0];
+            double output = _b[0] * input + _zi[0];
 
-            for (var j = 1; j < _zi.Length; j++)
+            for (int j = 1; j < _zi.Length; j++)
             {
                 _zi[j - 1] = _b[j] * input - _a[j] * output + _zi[j];
             }
@@ -124,18 +124,22 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 
             Guard.AgainstInvalidRange(padLength, signal.Length, "pad length", "Signal length");
 
-            var output = new double[signal.Length];
-            var edgeLeft = new double[padLength];
-            var edgeRight = new double[padLength];
+            double[] output = new double[signal.Length];
+            double[] edgeLeft = new double[padLength];
+            double[] edgeRight = new double[padLength];
 
 
             // forward filtering: ============================================================
 
-            var initialZi = Tf.Zi;
-            var zi = initialZi.FastCopy();
-            var baseSample = 2 * signal[0] - signal[padLength];
+            double[] initialZi = Tf.Zi;
+            double[] zi = initialZi.FastCopy();
+            double baseSample = 2 * signal[0] - signal[padLength];
 
-            for (int i = 0; i < zi.Length; zi[i++] *= baseSample) ;
+            for (int i = 0; i < zi.Length; zi[i++] *= baseSample)
+            {
+                ;
+            }
+
             Init(zi);
 
             baseSample = signal[0];
@@ -163,7 +167,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
             zi = initialZi;
             baseSample = edgeRight.Last();
 
-            for (int i = 0; i < zi.Length; zi[i++] *= baseSample) ;
+            for (int i = 0; i < zi.Length; zi[i++] *= baseSample)
+            {
+                ;
+            }
+
             Init(zi);
 
             for (int i = padLength - 1; i >= 0; i--)

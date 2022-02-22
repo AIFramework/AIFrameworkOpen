@@ -13,7 +13,7 @@
         /// <param name="normalize"></param>
         public static void ToFloats8Bit(byte[] bytes, float[][] floats, bool normalize = true)
         {
-            var channelCount = floats.Length;
+            int channelCount = floats.Length;
 
             if (normalize)
             {
@@ -45,7 +45,7 @@
         /// <param name="normalized"></param>
         public static void FromFloats8Bit(float[][] floats, byte[] bytes, bool normalized = true)
         {
-            var channelCount = floats.Length;
+            int channelCount = floats.Length;
 
             if (normalized)
             {
@@ -78,8 +78,8 @@
         /// <param name="bigEndian"></param>
         public static void ToFloats16Bit(byte[] bytes, float[][] floats, bool normalize = true, bool bigEndian = false)
         {
-            var channelCount = floats.Length;
-            var step = channelCount * 2;
+            int channelCount = floats.Length;
+            int step = channelCount * 2;
 
             if (bigEndian)
             {
@@ -108,7 +108,7 @@
             {
                 if (normalize)
                 {
-                    for (var n = 0; n < channelCount; n++)
+                    for (int n = 0; n < channelCount; n++)
                     {
                         for (int i = 2 * n, j = 0; i < bytes.Length; i += step, j++)
                         {
@@ -118,7 +118,7 @@
                 }
                 else
                 {
-                    for (var n = 0; n < channelCount; n++)
+                    for (int n = 0; n < channelCount; n++)
                     {
                         for (int i = 2 * n, j = 0; i < bytes.Length; i += step, j++)
                         {
@@ -138,8 +138,8 @@
         /// <param name="bigEndian"></param>
         public static void FromFloats16Bit(float[][] floats, byte[] bytes, bool normalized = true, bool bigEndian = false)
         {
-            var channelCount = floats.Length;
-            var step = channelCount * 2;
+            int channelCount = floats.Length;
+            int step = channelCount * 2;
 
             if (bigEndian)
             {
@@ -149,7 +149,7 @@
                     {
                         for (int i = 2 * n, j = 0; j < floats[n].Length; i += step, j++)
                         {
-                            var s = (short)(floats[n][j] * 32768);
+                            short s = (short)(floats[n][j] * 32768);
 
                             bytes[i] = (byte)(s >> 8);
                             bytes[i + 1] = (byte)s;
@@ -162,7 +162,7 @@
                     {
                         for (int i = 2 * n, j = 0; j < floats[n].Length; i += step, j++)
                         {
-                            var s = (short)floats[n][j];
+                            short s = (short)floats[n][j];
 
                             bytes[i] = (byte)(s >> 8);
                             bytes[i + 1] = (byte)s;
@@ -178,7 +178,7 @@
                     {
                         for (int i = 2 * n, j = 0; j < floats[n].Length; i += step, j++)
                         {
-                            var s = (short)(floats[n][j] * 32768);
+                            short s = (short)(floats[n][j] * 32768);
 
                             bytes[i] = (byte)s;
                             bytes[i + 1] = (byte)(s >> 8);
@@ -191,7 +191,7 @@
                     {
                         for (int i = 2 * n, j = 0; j < floats[n].Length; i += step, j++)
                         {
-                            var s = (short)floats[n][j];
+                            short s = (short)floats[n][j];
 
                             bytes[i] = (byte)s;
                             bytes[i + 1] = (byte)(s >> 8);

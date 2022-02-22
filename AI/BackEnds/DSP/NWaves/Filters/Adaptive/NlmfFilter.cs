@@ -44,18 +44,18 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
         /// <returns></returns>
         public override float Process(float input, float desired)
         {
-            var offset = _delayLineOffset;
+            int offset = _delayLineOffset;
 
             _delayLine[offset + _kernelSize] = input;   // duplicate it for better loop performance
 
 
-            var y = Process(input);
+            float y = Process(input);
 
-            var e = desired - y;
+            float e = desired - y;
 
-            var norm = _eps + _delayLine.Sum(x => x * x);
+            float norm = _eps + _delayLine.Sum(x => x * x);
 
-            for (var i = 0; i < _kernelSize; i++, offset++)
+            for (int i = 0; i < _kernelSize; i++, offset++)
             {
                 _b[i] = _b[_kernelSize + i] = (1 - _leakage * _mu) * _b[i] + 4 * _mu * e * e * e * _delayLine[offset] / norm;
             }

@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -40,10 +40,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Logistic : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _mean;
-        readonly double _scale;
+        private System.Random _random;
+        private readonly double _mean;
+        private readonly double _scale;
 
         /// <summary>
         /// Initializes a new instance of the Logistic class. This is a logistic distribution with mean 0.0
@@ -124,7 +123,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>a logistic distribution.</returns>
         public static Logistic WithMeanStdDev(double mean, double stddev, System.Random randomSource = null)
         {
-            var scale = Math.Sqrt(3) * stddev / Math.PI;
+            double scale = Math.Sqrt(3) * stddev / Math.PI;
             return new Logistic(mean, scale, randomSource);
         }
 
@@ -189,12 +188,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the variance of the logistic distribution.
         /// </summary>
-        public double Variance => (Math.Pow(_scale, 2) * Math.Pow(Math.PI,2))/3;
+        public double Variance => (Math.Pow(_scale, 2) * Math.Pow(Math.PI, 2)) / 3;
 
         /// <summary>
         /// Gets the precision of the logistic distribution.
         /// </summary>
-        public double Precision => 1.0/Variance;
+        public double Precision => 1.0 / Variance;
 
         /// <summary>
         /// Gets the random number generator which is used to draw random samples.
@@ -306,12 +305,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _mean, _scale);
         }
 
-        static double SampleUnchecked(System.Random rnd, double mean, double scale)
+        private static double SampleUnchecked(System.Random rnd, double mean, double scale)
         {
             return InvCDF(mean, scale, rnd.NextDouble());
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double mean, double scale)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double mean, double scale)
         {
             while (true)
             {
@@ -319,7 +318,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double mean, double scale)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double mean, double scale)
         {
             if (values.Length == 0)
             {
@@ -347,7 +346,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = (x - mean)/scale;
+            double z = (x - mean) / scale;
             return Math.Exp(-z) / (scale * Math.Pow(1.0 + Math.Exp(-z), 2));
         }
 
@@ -366,8 +365,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var z = (x - mean)/scale;
-            return -z - Math.Log(scale) - (2 * Math.Log(1+Math.Exp(-z)));
+            double z = (x - mean) / scale;
+            return -z - Math.Log(scale) - (2 * Math.Log(1 + Math.Exp(-z)));
         }
 
         /// <summary>
@@ -385,7 +384,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
-            var z = (x - mean)/scale;
+            double z = (x - mean) / scale;
             return 1 / (1 + Math.Exp(-z));
         }
 
@@ -406,7 +405,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return mean + (scale*Math.Log(p / (1-p)));
+            return mean + (scale * Math.Log(p / (1 - p)));
         }
 
         /// <summary>

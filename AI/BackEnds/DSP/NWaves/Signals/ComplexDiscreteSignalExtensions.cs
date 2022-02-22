@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
-using AI.BackEnds.DSP.NWaves.Utils;
 
 namespace AI.BackEnds.DSP.NWaves.Signals
 {
@@ -28,7 +28,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <returns></returns>
         public static ComplexDiscreteSignal Delay(this ComplexDiscreteSignal signal, int delay)
         {
-            var length = signal.Length;
+            int length = signal.Length;
 
             if (delay <= 0)
             {
@@ -67,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
             {
                 superimposed = signal1.Copy();
 
-                for (var i = 0; i < signal2.Length; i++)
+                for (int i = 0; i < signal2.Length; i++)
                 {
                     superimposed.Real[i] += signal2.Real[i];
                     superimposed.Imag[i] += signal2.Imag[i];
@@ -77,7 +77,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
             {
                 superimposed = signal2.Copy();
 
-                for (var i = 0; i < signal1.Length; i++)
+                for (int i = 0; i < signal1.Length; i++)
                 {
                     superimposed.Real[i] += signal1.Real[i];
                     superimposed.Imag[i] += signal1.Imag[i];
@@ -127,7 +127,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <param name="coeff"></param>
         public static void Amplify(this ComplexDiscreteSignal signal, double coeff)
         {
-            for (var i = 0; i < signal.Length; i++)
+            for (int i = 0; i < signal.Length; i++)
             {
                 signal.Real[i] *= coeff;
                 signal.Imag[i] *= coeff;
@@ -213,17 +213,17 @@ namespace AI.BackEnds.DSP.NWaves.Signals
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,
                                         "Sampling rate of signal1", "sampling rate of signal2");
 
-            var length = signal1.Length;
+            int length = signal1.Length;
 
-            var real = new double[length];
-            var imag = new double[length];
+            double[] real = new double[length];
+            double[] imag = new double[length];
 
-            var real1 = signal1.Real;
-            var imag1 = signal1.Imag;
-            var real2 = signal2.Real;
-            var imag2 = signal2.Imag;
+            double[] real1 = signal1.Real;
+            double[] imag1 = signal1.Imag;
+            double[] real2 = signal2.Real;
+            double[] imag2 = signal2.Imag;
 
-            for (var i = 0; i < length; i++)
+            for (int i = 0; i < length; i++)
             {
                 real[i] = real1[i] * real2[i] - imag1[i] * imag2[i];
                 imag[i] = real1[i] * imag2[i] + imag1[i] * real2[i];
@@ -245,19 +245,19 @@ namespace AI.BackEnds.DSP.NWaves.Signals
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,
                                         "Sampling rate of signal1", "sampling rate of signal2");
 
-            var length = signal1.Length;
+            int length = signal1.Length;
 
-            var real = new double[length];
-            var imag = new double[length];
+            double[] real = new double[length];
+            double[] imag = new double[length];
 
-            var real1 = signal1.Real;
-            var imag1 = signal1.Imag;
-            var real2 = signal2.Real;
-            var imag2 = signal2.Imag;
+            double[] real1 = signal1.Real;
+            double[] imag1 = signal1.Imag;
+            double[] real2 = signal2.Real;
+            double[] imag2 = signal2.Imag;
 
-            for (var i = 0; i < length; i++)
+            for (int i = 0; i < length; i++)
             {
-                var den = imag1[i] * imag1[i] + imag2[i] * imag2[i];
+                double den = imag1[i] * imag1[i] + imag2[i] * imag2[i];
                 real[i] = (real1[i] * real2[i] + imag1[i] * imag2[i]) / den;
                 imag[i] = (real2[i] * imag1[i] - imag2[i] * real1[i]) / den;
             }
@@ -283,13 +283,13 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <returns></returns>
         public static float[] Magnitude(this Tuple<float[], float[]> signal)
         {
-            var tuple  = signal;
+            Tuple<float[], float[]> tuple = signal;
 
             float[] real = tuple.Item1, imag = tuple.Item2;
 
-            var magnitude = new float[real.Length];
+            float[] magnitude = new float[real.Length];
 
-            for (var i = 0; i < magnitude.Length; i++)
+            for (int i = 0; i < magnitude.Length; i++)
             {
                 magnitude[i] = (float)Math.Sqrt(real[i] * real[i] + imag[i] * imag[i]);
             }
@@ -304,13 +304,13 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <returns></returns>
         public static float[] Phase(this Tuple<float[], float[]> signal)
         {
-            var tuple = signal;
+            Tuple<float[], float[]> tuple = signal;
 
             float[] real = tuple.Item1, imag = tuple.Item2;
 
-            var magnitude = new float[real.Length];
+            float[] magnitude = new float[real.Length];
 
-            for (var i = 0; i < magnitude.Length; i++)
+            for (int i = 0; i < magnitude.Length; i++)
             {
                 magnitude[i] = (float)Math.Atan2(imag[i], real[i]);
             }
@@ -325,7 +325,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <returns></returns>
         public static IEnumerable<Complex> ToComplexNumbers(this ComplexDiscreteSignal signal)
         {
-            for (var i = 0; i < signal.Length; i++)
+            for (int i = 0; i < signal.Length; i++)
             {
                 yield return new Complex(signal.Real[i], signal.Imag[i]);
             }

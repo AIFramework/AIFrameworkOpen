@@ -13,8 +13,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
         {
             get
             {
-                var errors = base.Errors;
-                if (LpcOrder <= 0) errors.Add("Positive order of LPC must be specified");
+                List<string> errors = base.Errors;
+                if (LpcOrder <= 0)
+                {
+                    errors.Add("Positive order of LPC must be specified");
+                }
+
                 return errors;
             }
         }

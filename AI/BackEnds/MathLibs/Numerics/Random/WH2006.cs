@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System;
+using System.Collections.Generic;
 using System.Runtime;
+using System.Runtime.Serialization;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
@@ -44,23 +44,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
     [DataContract(Namespace = "urn:MathNet/Numerics/Random")]
     public class WH2006 : RandomSource
     {
-        const uint Modw = 2147483123;
-        const double ModwRecip = 1.0/Modw;
-        const uint Modx = 2147483579;
-        const double ModxRecip = 1.0/Modx;
-        const uint Mody = 2147483543;
-        const double ModyRecip = 1.0/Mody;
-        const uint Modz = 2147483423;
-        const double ModzRecip = 1.0/Modz;
+        private const uint Modw = 2147483123;
+        private const double ModwRecip = 1.0 / Modw;
+        private const uint Modx = 2147483579;
+        private const double ModxRecip = 1.0 / Modx;
+        private const uint Mody = 2147483543;
+        private const double ModyRecip = 1.0 / Mody;
+        private const uint Modz = 2147483423;
+        private const double ModzRecip = 1.0 / Modz;
 
         [DataMember(Order = 1)]
-        ulong _wn = 1;
+        private ulong _wn = 1;
         [DataMember(Order = 2)]
-        ulong _xn;
+        private ulong _xn;
         [DataMember(Order = 3)]
-        ulong _yn = 1;
+        private ulong _yn = 1;
         [DataMember(Order = 4)]
-        ulong _zn = 1;
+        private ulong _zn = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WH2006"/> class using
@@ -93,7 +93,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 seed = 1;
             }
 
-            _xn = (uint)seed%Modx;
+            _xn = (uint)seed % Modx;
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 seed = 1;
             }
 
-            _xn = (uint)seed%Modx;
+            _xn = (uint)seed % Modx;
         }
 
         /// <summary>
@@ -117,12 +117,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected sealed override double DoSample()
         {
-            _xn = 11600*_xn%Modx;
-            _yn = 47003*_yn%Mody;
-            _zn = 23000*_zn%Modz;
-            _wn = 33000*_wn%Modw;
+            _xn = 11600 * _xn % Modx;
+            _yn = 47003 * _yn % Mody;
+            _zn = 23000 * _zn % Modz;
+            _wn = 33000 * _wn % Modw;
 
-            double u = _xn*ModxRecip + _yn*ModyRecip + _zn*ModzRecip + _wn*ModwRecip;
+            double u = _xn * ModxRecip + _yn * ModyRecip + _zn * ModzRecip + _wn * ModwRecip;
             u -= (int)u;
             return u;
         }
@@ -139,18 +139,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             }
 
             ulong wn = 1;
-            ulong xn = (uint)seed%Modx;
+            ulong xn = (uint)seed % Modx;
             ulong yn = 1;
             ulong zn = 1;
 
             for (int i = 0; i < values.Length; i++)
             {
-                xn = 11600*xn%Modx;
-                yn = 47003*yn%Mody;
-                zn = 23000*zn%Modz;
-                wn = 33000*wn%Modw;
+                xn = 11600 * xn % Modx;
+                yn = 47003 * yn % Mody;
+                zn = 23000 * zn % Modz;
+                wn = 33000 * wn % Modw;
 
-                double u = xn*ModxRecip + yn*ModyRecip + zn*ModzRecip + wn*ModwRecip;
+                double u = xn * ModxRecip + yn * ModyRecip + zn * ModzRecip + wn * ModwRecip;
                 values[i] = u - (int)u;
             }
         }
@@ -162,7 +162,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] Doubles(int length, int seed)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             Doubles(data, seed);
             return data;
         }
@@ -179,18 +179,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             }
 
             ulong wn = 1;
-            ulong xn = (uint)seed%Modx;
+            ulong xn = (uint)seed % Modx;
             ulong yn = 1;
             ulong zn = 1;
 
             while (true)
             {
-                xn = 11600*xn%Modx;
-                yn = 47003*yn%Mody;
-                zn = 23000*zn%Modz;
-                wn = 33000*wn%Modw;
+                xn = 11600 * xn % Modx;
+                yn = 47003 * yn % Mody;
+                zn = 23000 * zn % Modz;
+                wn = 33000 * wn % Modw;
 
-                double u = xn*ModxRecip + yn*ModyRecip + zn*ModzRecip + wn*ModwRecip;
+                double u = xn * ModxRecip + yn * ModyRecip + zn * ModzRecip + wn * ModwRecip;
                 yield return u - (int)u;
             }
         }

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using AI.BackEnds.DSP.NWaves.Filters.Base;
+﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Filters.BiQuad;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 {
@@ -45,23 +45,27 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                                            VtlnWarper vtln = null,
                                            Func<double, double> mapper = null)
         {
-            if (mapper == null) mapper = x => x;
+            if (mapper == null)
+            {
+                mapper = x => x;
+            }
+
             Func<double, double> warp = vtln == null ? mapper : x => mapper(vtln.Warp(x));
 
-            var herzResolution = (double)samplingRate / fftSize;
+            double herzResolution = (double)samplingRate / fftSize;
 
-            var herzFrequencies = Enumerable.Range(0, fftSize / 2 + 1)
+            double[] herzFrequencies = Enumerable.Range(0, fftSize / 2 + 1)
                                             .Select(f => f * herzResolution)
                                             .ToArray();
 
-            var filterCount = frequencies.Length;
-            var filterBank = new float[filterCount][];
+            int filterCount = frequencies.Length;
+            float[][] filterBank = new float[filterCount][];
 
-            for (var i = 0; i < filterCount; i++)
+            for (int i = 0; i < filterCount; i++)
             {
                 filterBank[i] = new float[fftSize / 2 + 1];
 
-                var tuple = frequencies[i];
+                Tuple<double, double, double> tuple = frequencies[i];
 
                 double left = tuple.Item1, center = tuple.Item2, right = tuple.Item3;
 
@@ -69,8 +73,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 center = warp(center);
                 right = warp(right);
 
-                var j = 0;
-                for (; mapper(herzFrequencies[j]) <= left; j++) ;
+                int j = 0;
+                for (; mapper(herzFrequencies[j]) <= left; j++)
+                {
+                    ;
+                }
+
                 for (; mapper(herzFrequencies[j]) <= center; j++)
                 {
                     filterBank[i][j] = (float)((mapper(herzFrequencies[j]) - left) / (center - left));
@@ -95,27 +103,31 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns>Array of rectangular filters</returns>
         public static float[][] Rectangular(int fftSize,
                                            int samplingRate,
-                                           Tuple< double, double, double>[] frequencies,
+                                           Tuple<double, double, double>[] frequencies,
                                            VtlnWarper vtln = null,
                                            Func<double, double> mapper = null)
         {
-            if (mapper == null) mapper = x => x;
+            if (mapper == null)
+            {
+                mapper = x => x;
+            }
+
             Func<double, double> warp = vtln == null ? mapper : x => mapper(vtln.Warp(x));
 
-            var herzResolution = (double)samplingRate / fftSize;
+            double herzResolution = (double)samplingRate / fftSize;
 
-            var herzFrequencies = Enumerable.Range(0, fftSize / 2 + 1)
+            double[] herzFrequencies = Enumerable.Range(0, fftSize / 2 + 1)
                                             .Select(f => f * herzResolution)
                                             .ToArray();
 
-            var filterCount = frequencies.Length;
-            var filterBank = new float[filterCount][];
+            int filterCount = frequencies.Length;
+            float[][] filterBank = new float[filterCount][];
 
-            for (var i = 0; i < filterCount; i++)
+            for (int i = 0; i < filterCount; i++)
             {
                 filterBank[i] = new float[fftSize / 2 + 1];
 
-                var tuple = frequencies[i];
+                Tuple<double, double, double> tuple = frequencies[i];
 
                 double left = tuple.Item1, center = tuple.Item2, right = tuple.Item3;
 
@@ -124,8 +136,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 center = warp(center);
                 right = warp(right);
 
-                var j = 0;
-                for (; mapper(herzFrequencies[j]) <= left; j++) ;
+                int j = 0;
+                for (; mapper(herzFrequencies[j]) <= left; j++)
+                {
+                    ;
+                }
+
                 for (; j < herzFrequencies.Length && mapper(herzFrequencies[j]) < right; j++)
                 {
                     filterBank[i][j] = 1;
@@ -150,22 +166,25 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                                            VtlnWarper vtln = null,
                                            Func<double, double> mapper = null)
         {
-            var filterBank = Rectangular(fftSize, samplingRate, frequencies, vtln, mapper);
+            float[][] filterBank = Rectangular(fftSize, samplingRate, frequencies, vtln, mapper);
 
-            for (var i = 0; i < filterBank.Length; i++)
+            for (int i = 0; i < filterBank.Length; i++)
             {
-                var filterTf = new TransferFunction(DesignFilter.Fir(fftSize / 4 + 1, filterBank[i]));
+                TransferFunction filterTf = new TransferFunction(DesignFilter.Fir(fftSize / 4 + 1, filterBank[i]));
 
                 filterBank[i] = filterTf.FrequencyResponse(fftSize).Magnitude.ToFloats();
 
                 // normalize gain to 1.0
 
-                var maxAmp = 0.0f;
-                for (var j = 0; j < filterBank[i].Length; j++)
+                float maxAmp = 0.0f;
+                for (int j = 0; j < filterBank[i].Length; j++)
                 {
-                    if (filterBank[i][j] > maxAmp) maxAmp = filterBank[i][j];
+                    if (filterBank[i][j] > maxAmp)
+                    {
+                        maxAmp = filterBank[i][j];
+                    }
                 }
-                for (var j = 0; j < filterBank[i].Length; j++)
+                for (int j = 0; j < filterBank[i].Length; j++)
                 {
                     filterBank[i][j] /= maxAmp;
                 }
@@ -183,15 +202,15 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns>Array of BiQuad bandpass filters</returns>
         public static float[][] BiQuad(int fftSize, int samplingRate, Tuple<double, double, double>[] frequencies)
         {
-            var center = frequencies.Select(f => f.Item2).ToArray();
+            double[] center = frequencies.Select(f => f.Item2).ToArray();
 
-            var filterCount = frequencies.Length;
-            var filterBank = new float[filterCount][];
+            int filterCount = frequencies.Length;
+            float[][] filterBank = new float[filterCount][];
 
-            for (var i = 0; i < filterCount; i++)
+            for (int i = 0; i < filterCount; i++)
             {
-                var freq = center[i] / samplingRate;
-                var filter = new BandPassFilter(freq, 2.0);
+                double freq = center[i] / samplingRate;
+                BandPassFilter filter = new BandPassFilter(freq, 2.0);
 
                 filterBank[i] = filter.Tf.FrequencyResponse(fftSize).Magnitude.ToFloats();
             }
@@ -213,10 +232,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         private static Tuple<double, double, double>[] UniformBands(
                                                      Func<double, double> scaleMapper,
                                                      Func<double, double> inverseMapper,
-                                                     int filterCount, 
-                                                     int samplingRate, 
+                                                     int filterCount,
+                                                     int samplingRate,
                                                      double lowFreq = 0,
-                                                     double highFreq = 0, 
+                                                     double highFreq = 0,
                                                      bool overlap = true)
         {
             if (lowFreq < 0)
@@ -228,32 +247,32 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 highFreq = samplingRate / 2.0;
             }
 
-            var startingFrequency = scaleMapper(lowFreq);
+            double startingFrequency = scaleMapper(lowFreq);
 
-            var frequencyTuples = new Tuple<double, double, double>[filterCount];
+            Tuple<double, double, double>[] frequencyTuples = new Tuple<double, double, double>[filterCount];
 
             if (overlap)
             {
-                var newResolution = (scaleMapper(highFreq) - scaleMapper(lowFreq)) / (filterCount + 1);
+                double newResolution = (scaleMapper(highFreq) - scaleMapper(lowFreq)) / (filterCount + 1);
 
-                var frequencies = Enumerable.Range(0, filterCount + 2)
+                double[] frequencies = Enumerable.Range(0, filterCount + 2)
                                             .Select(i => inverseMapper(startingFrequency + i * newResolution))
                                             .ToArray();
-                
-                for (var i = 0; i < filterCount; i++)
+
+                for (int i = 0; i < filterCount; i++)
                 {
                     frequencyTuples[i] = new Tuple<double, double, double>(frequencies[i], frequencies[i + 1], frequencies[i + 2]);
                 }
             }
             else
             {
-                var newResolution = (scaleMapper(highFreq) - scaleMapper(lowFreq)) / filterCount;
+                double newResolution = (scaleMapper(highFreq) - scaleMapper(lowFreq)) / filterCount;
 
-                var frequencies = Enumerable.Range(0, filterCount + 1)
+                double[] frequencies = Enumerable.Range(0, filterCount + 1)
                                             .Select(i => inverseMapper(startingFrequency + i * newResolution))
                                             .ToArray();
-                
-                for (var i = 0; i < filterCount; i++)
+
+                for (int i = 0; i < filterCount; i++)
                 {
                     frequencyTuples[i] = new Tuple<double, double, double>(frequencies[i], frequencies[i + 1], frequencies[i + 2]);
                 }
@@ -365,35 +384,43 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             double[] centerFrequencies = { 50,   150,  250,  350,  450,  570,  700,  840,  1000, 1170, 1370,  1600,
                                            1850, 2150, 2500, 2900, 3400, 4000, 4800, 5800, 7000, 8500, 10500, 13500, 17500 };
 
-            var startIndex = 0;
-            for (var i = 0; i < centerFrequencies.Length; i++)
+            int startIndex = 0;
+            for (int i = 0; i < centerFrequencies.Length; i++)
             {
-                if (centerFrequencies[i] < lowFreq) continue;
+                if (centerFrequencies[i] < lowFreq)
+                {
+                    continue;
+                }
+
                 startIndex = i;
                 break;
             }
 
-            var endIndex = 0;
-            for (var i = centerFrequencies.Length - 1; i >= 0; i--)
+            int endIndex = 0;
+            for (int i = centerFrequencies.Length - 1; i >= 0; i--)
             {
-                if (centerFrequencies[i] > highFreq) continue;
+                if (centerFrequencies[i] > highFreq)
+                {
+                    continue;
+                }
+
                 endIndex = i;
                 break;
             }
 
             filterCount = Math.Min(endIndex - startIndex + 1, filterCount);
 
-            var edges = edgeFrequencies.Skip(startIndex)
+            double[] edges = edgeFrequencies.Skip(startIndex)
                                        .Take(filterCount + 1)
                                        .ToArray();
 
-            var centers = centerFrequencies.Skip(startIndex)
+            double[] centers = centerFrequencies.Skip(startIndex)
                                            .Take(filterCount)
                                            .ToArray();
 
-            var frequencyTuples = new Tuple<double, double, double>[filterCount];
+            Tuple<double, double, double>[] frequencyTuples = new Tuple<double, double, double>[filterCount];
 
-            for (var i = 0; i < filterCount; i++)
+            for (int i = 0; i < filterCount; i++)
             {
                 frequencyTuples[i] = new Tuple<double, double, double>(edges[i], centers[i], edges[i + 1]);
             }
@@ -423,16 +450,16 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 highFreq = samplingRate / 2.0;
             }
 
-            var f1 = lowFreq;
-            var f2 = lowFreq * 2;
+            double f1 = lowFreq;
+            double f2 = lowFreq * 2;
 
-            var frequencyTuples = new List<Tuple<double, double, double>>();
+            List<Tuple<double, double, double>> frequencyTuples = new List<Tuple<double, double, double>>();
 
             if (overlap)
             {
-                var f3 = f2 * 2;
+                double f3 = f2 * 2;
 
-                for (var i = 0; i < octaveCount && f3 < highFreq; i++)
+                for (int i = 0; i < octaveCount && f3 < highFreq; i++)
                 {
                     frequencyTuples.Add(new Tuple<double, double, double>(f1, f2, f3));
                     f1 = f2;
@@ -442,7 +469,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             }
             else
             {
-                for (var i = 0; i < octaveCount && f2 < highFreq; i++)
+                for (int i = 0; i < octaveCount && f2 < highFreq; i++)
                 {
                     frequencyTuples.Add(new Tuple<double, double, double>(f1, (f1 + f2) / 2, f2));
                     f1 *= 2;
@@ -476,9 +503,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 highFreq = samplingRate / 2.0;
             }
 
-            var frequencies = UniformBands(Scale.HerzToMelSlaney, Scale.MelToHerzSlaney, filterCount, samplingRate, lowFreq, highFreq, true);
+            Tuple<double, double, double>[] frequencies = UniformBands(Scale.HerzToMelSlaney, Scale.MelToHerzSlaney, filterCount, samplingRate, lowFreq, highFreq, true);
 
-            var filterBank = Triangular(fftSize, samplingRate, frequencies, vtln);
+            float[][] filterBank = Triangular(fftSize, samplingRate, frequencies, vtln);
 
             if (normalizeGain)
             {
@@ -510,28 +537,28 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 highFreq = samplingRate / 2.0;
             }
 
-            var lowBark = Scale.HerzToBarkSlaney(lowFreq);
-            var highBark = Scale.HerzToBarkSlaney(highFreq) - lowBark;
+            double lowBark = Scale.HerzToBarkSlaney(lowFreq);
+            double highBark = Scale.HerzToBarkSlaney(highFreq) - lowBark;
 
-            var herzResolution = (double)samplingRate / fftSize;
-            var step = highBark / (filterCount - 1);
+            double herzResolution = (double)samplingRate / fftSize;
+            double step = highBark / (filterCount - 1);
 
-            var binBarks = Enumerable.Range(0, fftSize / 2 + 1)
+            double[] binBarks = Enumerable.Range(0, fftSize / 2 + 1)
                                      .Select(i => Scale.HerzToBarkSlaney(i * herzResolution))
                                      .ToArray();
 
-            var filterBank = new float[filterCount][];
+            float[][] filterBank = new float[filterCount][];
 
-            var midBark = lowBark;
+            double midBark = lowBark;
 
-            for (var i = 0; i < filterCount; i++, midBark += step)
+            for (int i = 0; i < filterCount; i++, midBark += step)
             {
                 filterBank[i] = new float[fftSize / 2 + 1];
 
-                for (var j = 0; j < filterBank[i].Length; j++)
+                for (int j = 0; j < filterBank[i].Length; j++)
                 {
-                    var lof = binBarks[j] - midBark - 0.5;
-                    var hif = binBarks[j] - midBark + 0.5;
+                    double lof = binBarks[j] - midBark - 0.5;
+                    double hif = binBarks[j] - midBark + 0.5;
 
                     filterBank[i][j] = (float)Math.Pow(10, Math.Min(0, Math.Min(hif, -2.5 * lof) / width));
                 }
@@ -567,75 +594,75 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             const double bw = earQ * minBw;
             const int order = 1;
 
-            var t = 1.0 / samplingRate;
-            
-            var frequencies = new double[erbFilterCount];
-            for (var i = 1; i <= erbFilterCount; i++)
+            double t = 1.0 / samplingRate;
+
+            double[] frequencies = new double[erbFilterCount];
+            for (int i = 1; i <= erbFilterCount; i++)
             {
                 frequencies[erbFilterCount - i] =
                     -bw + Math.Exp(i * (-Math.Log(highFreq + bw) + Math.Log(lowFreq + bw)) / erbFilterCount) * (highFreq + bw);
             }
 
-            var ucirc = new Complex[fftSize / 2 + 1];
-            for (var i = 0; i < ucirc.Length; i++)
+            Complex[] ucirc = new Complex[fftSize / 2 + 1];
+            for (int i = 0; i < ucirc.Length; i++)
             {
                 ucirc[i] = Complex.Exp((2 * Complex.ImaginaryOne * i * Math.PI) / fftSize);
             }
 
-            var rootPos = Math.Sqrt(3 + Math.Pow(2, 1.5));
-            var rootNeg = Math.Sqrt(3 - Math.Pow(2, 1.5));
+            double rootPos = Math.Sqrt(3 + Math.Pow(2, 1.5));
+            double rootNeg = Math.Sqrt(3 - Math.Pow(2, 1.5));
 
-            var fft = new Fft(fftSize);
+            Fft fft = new Fft(fftSize);
 
-            var erbFilterBank = new float[erbFilterCount][];
-            
-            for (var i = 0; i < erbFilterCount; i++)
+            float[][] erbFilterBank = new float[erbFilterCount][];
+
+            for (int i = 0; i < erbFilterCount; i++)
             {
-                var cf = frequencies[i];
-                var erb = Math.Pow(Math.Pow(cf / earQ, order) + Math.Pow(minBw, order), 1.0 / order);
-                var b = 1.019 * 2 * Math.PI * erb;
+                double cf = frequencies[i];
+                double erb = Math.Pow(Math.Pow(cf / earQ, order) + Math.Pow(minBw, order), 1.0 / order);
+                double b = 1.019 * 2 * Math.PI * erb;
 
-                var theta = 2 * cf * Math.PI * t;
-                var itheta = Complex.Exp(2 * Complex.ImaginaryOne * theta);
+                double theta = 2 * cf * Math.PI * t;
+                Complex itheta = Complex.Exp(2 * Complex.ImaginaryOne * theta);
 
-                var a0 = t;
-                var a2 = 0.0;
-                var b0 = 1.0;
-                var b1 = -2 * Math.Cos(theta) / Math.Exp(b * t);
-                var b2 = Math.Exp(-2 * b * t);
+                double a0 = t;
+                double a2 = 0.0;
+                double b0 = 1.0;
+                double b1 = -2 * Math.Cos(theta) / Math.Exp(b * t);
+                double b2 = Math.Exp(-2 * b * t);
 
-                var common = -t * Math.Exp(-b * t);
+                double common = -t * Math.Exp(-b * t);
 
-                var k1 = Math.Cos(theta) + rootPos * Math.Sin(theta);
-                var k2 = Math.Cos(theta) - rootPos * Math.Sin(theta);
-                var k3 = Math.Cos(theta) + rootNeg * Math.Sin(theta);
-                var k4 = Math.Cos(theta) - rootNeg * Math.Sin(theta);
+                double k1 = Math.Cos(theta) + rootPos * Math.Sin(theta);
+                double k2 = Math.Cos(theta) - rootPos * Math.Sin(theta);
+                double k3 = Math.Cos(theta) + rootNeg * Math.Sin(theta);
+                double k4 = Math.Cos(theta) - rootNeg * Math.Sin(theta);
 
-                var a11 = common * k1;
-                var a12 = common * k2;
-                var a13 = common * k3;
-                var a14 = common * k4;
+                double a11 = common * k1;
+                double a12 = common * k2;
+                double a13 = common * k3;
+                double a14 = common * k4;
 
-                var gainArg = Complex.Exp(Complex.ImaginaryOne * theta - b * t);
+                Complex gainArg = Complex.Exp(Complex.ImaginaryOne * theta - b * t);
 
-                var gain = (float)Complex.Abs(
+                float gain = (float)Complex.Abs(
                                     (itheta - gainArg * k1) *
                                     (itheta - gainArg * k2) *
                                     (itheta - gainArg * k3) *
                                     (itheta - gainArg * k4) *
-                                    Complex.Pow(t * Math.Exp(b * t) / (-1.0/Math.Exp(b*t) + 1 + itheta*(1 - Math.Exp(b*t))), 4.0));
+                                    Complex.Pow(t * Math.Exp(b * t) / (-1.0 / Math.Exp(b * t) + 1 + itheta * (1 - Math.Exp(b * t))), 4.0));
 
-                var filter1 = new IirFilter(new[] { a0, a11, a2 }, new[] { b0, b1, b2 });
-                var filter2 = new IirFilter(new[] { a0, a12, a2 }, new[] { b0, b1, b2 });
-                var filter3 = new IirFilter(new[] { a0, a13, a2 }, new[] { b0, b1, b2 });
-                var filter4 = new IirFilter(new[] { a0, a14, a2 }, new[] { b0, b1, b2 });
+                IirFilter filter1 = new IirFilter(new[] { a0, a11, a2 }, new[] { b0, b1, b2 });
+                IirFilter filter2 = new IirFilter(new[] { a0, a12, a2 }, new[] { b0, b1, b2 });
+                IirFilter filter3 = new IirFilter(new[] { a0, a13, a2 }, new[] { b0, b1, b2 });
+                IirFilter filter4 = new IirFilter(new[] { a0, a14, a2 }, new[] { b0, b1, b2 });
 
-                var ir = new DiscreteSignal(1, fftSize);
+                DiscreteSignal ir = new DiscreteSignal(1, fftSize);
                 ir[0] = 1.0f;
 
-                var chain = new FilterChain(new[] { filter1, filter2, filter3, filter4 });
+                FilterChain chain = new FilterChain(new[] { filter1, filter2, filter3, filter4 });
 
-                var kernel = chain.ApplyTo(ir);
+                DiscreteSignal kernel = chain.ApplyTo(ir);
                 kernel.Attenuate(gain);
 
                 erbFilterBank[i] = fft.PowerSpectrum(kernel, false).Samples;
@@ -648,17 +675,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 return erbFilterBank;
             }
 
-            foreach (var filter in erbFilterBank)
+            foreach (float[] filter in erbFilterBank)
             {
-                var sum = 0.0;
-                for (var j = 0; j < filter.Length; j++)
+                double sum = 0.0;
+                for (int j = 0; j < filter.Length; j++)
                 {
                     sum += Math.Abs(filter[j] * filter[j]);
                 }
 
-                var weight = Math.Sqrt(sum * samplingRate / fftSize);
+                double weight = Math.Sqrt(sum * samplingRate / fftSize);
 
-                for (var j = 0; j < filter.Length; j++)
+                for (int j = 0; j < filter.Length; j++)
                 {
                     filter[j] = (float)(filter[j] / weight);
                 }
@@ -675,13 +702,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="filterBank"></param>
         public static void Normalize(int filterCount, Tuple<double, double, double>[] frequencies, float[][] filterBank)
         {
-            for (var i = 0; i < filterCount; i++)
+            for (int i = 0; i < filterCount; i++)
             {
-                var tuple = frequencies[i];
+                Tuple<double, double, double> tuple = frequencies[i];
 
                 double left = tuple.Item1, right = tuple.Item2;
 
-                for (var j = 0; j < filterBank[i].Length; j++)
+                for (int j = 0; j < filterBank[i].Length; j++)
                 {
                     filterBank[i][j] *= 2 / (float)(right - left);
                 }
@@ -696,11 +723,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="filtered"></param>
         public static void Apply(float[][] filterbank, float[] spectrum, float[] filtered)
         {
-            for (var i = 0; i < filterbank.Length; i++)
+            for (int i = 0; i < filterbank.Length; i++)
             {
-                var en = 0.0f;
+                float en = 0.0f;
 
-                for (var j = 0; j < spectrum.Length; j++)
+                for (int j = 0; j < spectrum.Length; j++)
                 {
                     en += filterbank[i][j] * spectrum[j];
                 }
@@ -716,20 +743,20 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="spectrogram"></param>
         public static float[][] Apply(float[][] filterbank, IList<float[]> spectrogram)
         {
-            var filtered = new float[spectrogram.Count][];
+            float[][] filtered = new float[spectrogram.Count][];
 
-            for (var k = 0; k < filtered.Length; k++)
+            for (int k = 0; k < filtered.Length; k++)
             {
                 filtered[k] = new float[filterbank.Length];
             }
 
-            for (var i = 0; i < filterbank.Length; i++)
+            for (int i = 0; i < filterbank.Length; i++)
             {
-                for (var k = 0; k < filtered.Length; k++)
+                for (int k = 0; k < filtered.Length; k++)
                 {
-                    var en = 0.0f;
+                    float en = 0.0f;
 
-                    for (var j = 0; j < spectrogram[i].Length; j++)
+                    for (int j = 0; j < spectrogram[i].Length; j++)
                     {
                         en += filterbank[i][j] * spectrogram[k][j];
                     }
@@ -750,11 +777,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="floor">log floor</param>
         public static void ApplyAndLog(float[][] filterbank, float[] spectrum, float[] filtered, float floor = float.Epsilon)
         {
-            for (var i = 0; i < filterbank.Length; i++)
+            for (int i = 0; i < filterbank.Length; i++)
             {
-                var en = 0.0f;
+                float en = 0.0f;
 
-                for (var j = 0; j < spectrum.Length; j++)
+                for (int j = 0; j < spectrum.Length; j++)
                 {
                     en += filterbank[i][j] * spectrum[j];
                 }
@@ -772,11 +799,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="floor">log floor</param>
         public static void ApplyAndLog10(float[][] filterbank, float[] spectrum, float[] filtered, float floor = float.Epsilon)
         {
-            for (var i = 0; i < filterbank.Length; i++)
+            for (int i = 0; i < filterbank.Length; i++)
             {
-                var en = 0.0f;
+                float en = 0.0f;
 
-                for (var j = 0; j < spectrum.Length; j++)
+                for (int j = 0; j < spectrum.Length; j++)
                 {
                     en += filterbank[i][j] * spectrum[j];
                 }
@@ -795,11 +822,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="minLevel"></param>
         public static void ApplyAndToDecibel(float[][] filterbank, float[] spectrum, float[] filtered, float minLevel = 1e-10f)
         {
-            for (var i = 0; i < filterbank.Length; i++)
+            for (int i = 0; i < filterbank.Length; i++)
             {
-                var en = 0.0f;
+                float en = 0.0f;
 
-                for (var j = 0; j < spectrum.Length; j++)
+                for (int j = 0; j < spectrum.Length; j++)
                 {
                     en += filterbank[i][j] * spectrum[j];
                 }
@@ -818,11 +845,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="power"></param>
         public static void ApplyAndPow(float[][] filterbank, float[] spectrum, float[] filtered, double power = 1.0 / 3)
         {
-            for (var i = 0; i < filterbank.Length; i++)
+            for (int i = 0; i < filterbank.Length; i++)
             {
-                var en = 0.0f;
+                float en = 0.0f;
 
-                for (var j = 0; j < spectrum.Length; j++)
+                for (int j = 0; j < spectrum.Length; j++)
                 {
                     en += filterbank[i][j] * spectrum[j];
                 }

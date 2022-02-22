@@ -35,7 +35,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
     public class Burr : IContinuousDistribution
     {
-        System.Random _random;
+        private System.Random _random;
 
         /// <summary>
         /// Gets the scale (a) of the distribution. Range: a > 0.
@@ -88,7 +88,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="k">The second shape parameter k of the Burr distribution. Range: k > 0.</param>
         public static bool IsValidParameterSet(double a, double c, double k)
         {
-            var allFinite = a.IsFinite() && c.IsFinite() && k.IsFinite();
+            bool allFinite = a.IsFinite() && c.IsFinite() && k.IsFinite();
             return allFinite && a > 0.0 && c > 0.0 && k > 0.0;
         }
 
@@ -145,9 +145,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var mean = Mean;
-                var variance = Variance;
-                var std = StdDev;
+                double mean = Mean;
+                double variance = Variance;
+                double std = StdDev;
                 return (GetMoment(3) - 3 * mean * variance - mean * mean * mean) / (std * std * std);
             }
         }
@@ -235,31 +235,31 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(rnd, a, c, k);
         }
 
-        static double SampleUnchecked(System.Random rnd, double a, double c, double k)
+        private static double SampleUnchecked(System.Random rnd, double a, double c, double k)
         {
-            var kInv = 1 / k;
-            var cInv = 1 / c;
+            double kInv = 1 / k;
+            double cInv = 1 / c;
             double u = rnd.NextDouble();
             return a * Math.Pow(Math.Pow(1 - u, -kInv) - 1, cInv);
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double a, double c, double k)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double a, double c, double k)
         {
             if (values.Length == 0)
             {
                 return;
             }
-            var kInv = 1 / k;
-            var cInv = 1 / c;
+            double kInv = 1 / k;
+            double cInv = 1 / c;
             double[] u = rnd.NextDoubles(values.Length);
 
-            for (var j = 0; j < values.Length; ++j)
+            for (int j = 0; j < values.Length; ++j)
             {
                 values[j] = a * Math.Pow(Math.Pow(1 - u[j], -kInv) - 1, cInv);
             }
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double a, double c, double k)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double a, double c, double k)
         {
             while (true)
             {
@@ -278,7 +278,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 throw new ArgumentException("The chosen parameter set is invalid (probably some value is out of range).");
             }
-            var lambdaN = (n / C) * SpecialFunctions.Gamma(n / C) * SpecialFunctions.Gamma(K - n / C);
+            double lambdaN = (n / C) * SpecialFunctions.Gamma(n / C) * SpecialFunctions.Gamma(K - n / C);
             return Math.Pow(A, n) * lambdaN / SpecialFunctions.Gamma(K);
         }
 
@@ -369,21 +369,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return CumulativeDistributionImpl(a, c, k, x);
         }
 
-        static double DensityImpl(double a, double c, double k, double x)
+        private static double DensityImpl(double a, double c, double k, double x)
         {
-            var numerator = (k * c / a) * Math.Pow(x / a, c - 1);
-            var denominator = Math.Pow(1 + Math.Pow(x / a, c), k + 1);
+            double numerator = (k * c / a) * Math.Pow(x / a, c - 1);
+            double denominator = Math.Pow(1 + Math.Pow(x / a, c), k + 1);
             return numerator / denominator;
         }
 
-        static double DensityLnImpl(double a, double c, double k, double x)
+        private static double DensityLnImpl(double a, double c, double k, double x)
         {
             return Math.Log(DensityImpl(a, c, k, x));
         }
 
-        static double CumulativeDistributionImpl(double a, double c, double k, double x)
+        private static double CumulativeDistributionImpl(double a, double c, double k, double x)
         {
-            var denominator = Math.Pow(1 + Math.Pow(x / a, c), k);
+            double denominator = Math.Pow(1 + Math.Pow(x / a, c), k);
             return 1 - 1 / denominator;
         }
     }

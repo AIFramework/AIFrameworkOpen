@@ -16,10 +16,10 @@ namespace AI.BackEnds.DSP.NWaves.Features
         /// <returns>Spectral centroid</returns>
         public static float Centroid(float[] spectrum, float[] frequencies)
         {
-            var sum = 1e-10f;
-            var weightedSum = 0.0f;
+            float sum = 1e-10f;
+            float weightedSum = 0.0f;
 
-            for (var i = 1; i < spectrum.Length; i++)
+            for (int i = 1; i < spectrum.Length; i++)
             {
                 sum += spectrum[i];
                 weightedSum += frequencies[i] * spectrum[i];
@@ -36,18 +36,18 @@ namespace AI.BackEnds.DSP.NWaves.Features
         /// <returns></returns>
         public static float Spread(float[] spectrum, float[] frequencies)
         {
-            var centroid = Centroid(spectrum, frequencies);
+            float centroid = Centroid(spectrum, frequencies);
 
-            var sum = 1e-10f;
-            var weightedSum = 0.0f;
+            float sum = 1e-10f;
+            float weightedSum = 0.0f;
 
-            for (var i = 1; i < spectrum.Length; i++)
+            for (int i = 1; i < spectrum.Length; i++)
             {
                 sum += spectrum[i];
                 weightedSum += spectrum[i] * (frequencies[i] - centroid) * (frequencies[i] - centroid);
             }
 
-            return (float) Math.Sqrt(weightedSum / sum);
+            return (float)Math.Sqrt(weightedSum / sum);
         }
 
         /// <summary>
@@ -57,10 +57,10 @@ namespace AI.BackEnds.DSP.NWaves.Features
         /// <returns></returns>
         public static float Decrease(float[] spectrum)
         {
-            var sum = 1e-10f;
-            var diffSum = 0.0f;
+            float sum = 1e-10f;
+            float diffSum = 0.0f;
 
-            for (var i = 2; i < spectrum.Length; i++)
+            for (int i = 2; i < spectrum.Length; i++)
             {
                 sum += spectrum[i];
                 diffSum += (spectrum[i] - spectrum[1]) / (i - 1);
@@ -77,12 +77,12 @@ namespace AI.BackEnds.DSP.NWaves.Features
         /// <returns></returns>
         public static float Flatness(float[] spectrum, float minLevel = 1e-10f)
         {
-            var sum = 0.0f;
-            var logSum = 0.0;
+            float sum = 0.0f;
+            double logSum = 0.0;
 
-            for (var i = 1; i < spectrum.Length; i++)
+            for (int i = 1; i < spectrum.Length; i++)
             {
-                var amp = Math.Max(spectrum[i], minLevel);
+                float amp = Math.Max(spectrum[i], minLevel);
 
                 sum += amp;
                 logSum += Math.Log(amp);
@@ -103,10 +103,10 @@ namespace AI.BackEnds.DSP.NWaves.Features
         /// <returns></returns>
         public static float Noiseness(float[] spectrum, float[] frequencies, float noiseFrequency = 3000)
         {
-            var noiseSum = 0.0f;
-            var totalSum = 1e-10f;
+            float noiseSum = 0.0f;
+            float totalSum = 1e-10f;
 
-            var i = 1;
+            int i = 1;
             for (; i < spectrum.Length && frequencies[i] < noiseFrequency; i++)
             {
                 totalSum += spectrum[i];
@@ -130,17 +130,17 @@ namespace AI.BackEnds.DSP.NWaves.Features
         /// <returns></returns>
         public static float Rolloff(float[] spectrum, float[] frequencies, float rolloffPercent = 0.85f)
         {
-            var threshold = 0.0f;
-            for (var i = 1; i < spectrum.Length; i++)
+            float threshold = 0.0f;
+            for (int i = 1; i < spectrum.Length; i++)
             {
                 threshold += spectrum[i];
             }
 
             threshold *= rolloffPercent;
-            
-            var cumulativeSum = 0.0f;
-            var index = 0;
-            for (var i = 1; i < spectrum.Length; i++)
+
+            float cumulativeSum = 0.0f;
+            int index = 0;
+            for (int i = 1; i < spectrum.Length; i++)
             {
                 cumulativeSum += spectrum[i];
 
@@ -161,12 +161,12 @@ namespace AI.BackEnds.DSP.NWaves.Features
         /// <returns></returns>
         public static float Crest(float[] spectrum)
         {
-            var sum = 0.0f;
-            var max = 0.0f;
-            
-            for (var i = 1; i < spectrum.Length; i++)
+            float sum = 0.0f;
+            float max = 0.0f;
+
+            for (int i = 1; i < spectrum.Length; i++)
             {
-                var s = spectrum[i] * spectrum[i];
+                float s = spectrum[i] * spectrum[i];
 
                 sum += s;
 
@@ -191,14 +191,14 @@ namespace AI.BackEnds.DSP.NWaves.Features
         {
             const double alpha = 0.02;
 
-            var contrasts = new float[bandCount];
+            float[] contrasts = new float[bandCount];
 
-            var octaveLow = minFrequency;
-            var octaveHigh = 2 * octaveLow;
+            float octaveLow = minFrequency;
+            float octaveHigh = 2 * octaveLow;
 
-            for (var n = 0; n < bandCount; n++)
+            for (int n = 0; n < bandCount; n++)
             {
-                var bandSpectrum = spectrum.Where((s, i) => frequencies[i] >= octaveLow && frequencies[i] <= octaveHigh)
+                float[] bandSpectrum = spectrum.Where((s, i) => frequencies[i] >= octaveLow && frequencies[i] <= octaveHigh)
                                            .OrderBy(s => s)
                                            .ToArray();
 
@@ -207,12 +207,12 @@ namespace AI.BackEnds.DSP.NWaves.Features
                     return contrasts;   // zeros
                 }
 
-                var selectedCount = Math.Max(alpha * bandSpectrum.Length, 1);
+                double selectedCount = Math.Max(alpha * bandSpectrum.Length, 1);
 
-                var avgPeaks = 0.0;
-                var avgValleys = 0.0;
+                double avgPeaks = 0.0;
+                double avgValleys = 0.0;
 
-                for (var i = 0; i < selectedCount; i++)
+                for (int i = 0; i < selectedCount; i++)
                 {
                     avgValleys += bandSpectrum[i];
                     avgPeaks += bandSpectrum[bandSpectrum.Length - i - 1];
@@ -243,10 +243,10 @@ namespace AI.BackEnds.DSP.NWaves.Features
         {
             const double alpha = 0.02;
 
-            var octaveLow = minFrequency * Math.Pow(2, bandNo - 1);
-            var octaveHigh = 2 * octaveLow;
+            double octaveLow = minFrequency * Math.Pow(2, bandNo - 1);
+            double octaveHigh = 2 * octaveLow;
 
-            var bandSpectrum = spectrum.Where((s, i) => frequencies[i] >= octaveLow && frequencies[i] <= octaveHigh)
+            float[] bandSpectrum = spectrum.Where((s, i) => frequencies[i] >= octaveLow && frequencies[i] <= octaveHigh)
                                        .OrderBy(s => s)
                                        .ToArray();
 
@@ -255,12 +255,12 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 return 0;
             }
 
-            var selectedCount = Math.Max(alpha * bandSpectrum.Length, 1);
+            double selectedCount = Math.Max(alpha * bandSpectrum.Length, 1);
 
-            var avgPeaks = 0.0;
-            var avgValleys = 0.0;
+            double avgPeaks = 0.0;
+            double avgValleys = 0.0;
 
-            for (var i = 0; i < selectedCount; i++)
+            for (int i = 0; i < selectedCount; i++)
             {
                 avgValleys += bandSpectrum[i];
                 avgPeaks += bandSpectrum[bandSpectrum.Length - i - 1];
@@ -277,18 +277,18 @@ namespace AI.BackEnds.DSP.NWaves.Features
         /// </summary>
         public static float Entropy(float[] spectrum)
         {
-            var entropy = 0.0;
+            double entropy = 0.0;
 
-            var sum = spectrum.Sum();
+            float sum = spectrum.Sum();
 
             if (sum < 1e-8)
             {
                 return 0;
             }
 
-            for (var i = 1; i < spectrum.Length; i++)
+            for (int i = 1; i < spectrum.Length; i++)
             {
-                var p = spectrum[i] / sum;
+                float p = spectrum[i] / sum;
 
                 if (p > 1e-8)
                 {

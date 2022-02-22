@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
 {
@@ -50,12 +50,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
 
         protected bool ValueEvaluated { get; set; }
         protected bool GradientEvaluated { get; set; }
-        VectorMathNet<double> _gradient;
+
+        private VectorMathNet<double> _gradient;
 
         public double MinimumIncrement { get; set; }
         public double RelativeIncrement { get; set; }
 
-        public ForwardDifferenceGradientObjectiveFunction(IObjectiveFunction valueOnlyObj, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound, double relativeIncrement=1e-5, double minimumIncrement=1e-8)
+        public ForwardDifferenceGradientObjectiveFunction(IObjectiveFunction valueOnlyObj, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound, double relativeIncrement = 1e-5, double minimumIncrement = 1e-8)
         {
             InnerObjectiveFunction = valueOnlyObj;
             LowerBound = lowerBound;
@@ -73,20 +74,24 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
         protected void EvaluateGradient()
         {
             if (!ValueEvaluated)
+            {
                 EvaluateValue();
+            }
 
-            var tmpPoint = Point.Clone();
-            var tmpObj = InnerObjectiveFunction.CreateNew();
+            VectorMathNet<double> tmpPoint = Point.Clone();
+            IObjectiveFunction tmpObj = InnerObjectiveFunction.CreateNew();
             for (int ii = 0; ii < _gradient.Count; ++ii)
             {
-                var origPoint = tmpPoint[ii];
-                var relIncr = origPoint * RelativeIncrement;
-                var h = Math.Max(relIncr, MinimumIncrement);
-                var mult = 1;
+                double origPoint = tmpPoint[ii];
+                double relIncr = origPoint * RelativeIncrement;
+                double h = Math.Max(relIncr, MinimumIncrement);
+                int mult = 1;
                 if (origPoint + h > UpperBound[ii])
+                {
                     mult = -1;
+                }
 
-                tmpPoint[ii] = origPoint + mult*h;
+                tmpPoint[ii] = origPoint + mult * h;
                 tmpObj.EvaluateAt(tmpPoint);
                 double bumpedValue = tmpObj.Value;
                 _gradient[ii] = (mult * bumpedValue - mult * InnerObjectiveFunction.Value) / h;
@@ -101,7 +106,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
             get
             {
                 if (!GradientEvaluated)
+                {
                     EvaluateGradient();
+                }
+
                 return _gradient;
             }
             protected set => _gradient = value;
@@ -120,14 +128,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
             get
             {
                 if (!ValueEvaluated)
+                {
                     EvaluateValue();
-                return this.InnerObjectiveFunction.Value;
+                }
+
+                return InnerObjectiveFunction.Value;
             }
         }
 
         public IObjectiveFunction CreateNew()
         {
-            var tmp = new ForwardDifferenceGradientObjectiveFunction(InnerObjectiveFunction.CreateNew(), LowerBound, UpperBound, this.RelativeIncrement, this.MinimumIncrement);
+            ForwardDifferenceGradientObjectiveFunction tmp = new ForwardDifferenceGradientObjectiveFunction(InnerObjectiveFunction.CreateNew(), LowerBound, UpperBound, RelativeIncrement, MinimumIncrement);
             return tmp;
         }
 
@@ -141,7 +152,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
 
         public IObjectiveFunction Fork()
         {
-            return new ForwardDifferenceGradientObjectiveFunction(InnerObjectiveFunction.Fork(), LowerBound, UpperBound, this.RelativeIncrement, this.MinimumIncrement)
+            return new ForwardDifferenceGradientObjectiveFunction(InnerObjectiveFunction.Fork(), LowerBound, UpperBound, RelativeIncrement, MinimumIncrement)
             {
                 Point = Point?.Clone(),
                 GradientEvaluated = GradientEvaluated,

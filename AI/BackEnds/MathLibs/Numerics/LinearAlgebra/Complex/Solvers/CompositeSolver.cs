@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
 {
@@ -56,7 +56,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
         /// <summary>
         /// The collection of solvers that will be used
         /// </summary>
-        readonly List<Tuple<IIterativeSolver<Complex>, IPreconditioner<Complex>>> _solvers;
+        private readonly List<Tuple<IIterativeSolver<Complex>, IPreconditioner<Complex>>> _solvers;
 
         public CompositeSolver(IEnumerable<IIterativeSolverSetup<Complex>> solvers)
         {
@@ -96,10 +96,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Solvers
 
             // Create a copy of the solution and result vectors so we can use them
             // later on
-            var internalInput = input.Clone();
-            var internalResult = result.Clone();
+            VectorMathNet<Complex> internalInput = input.Clone();
+            VectorMathNet<Complex> internalResult = result.Clone();
 
-            foreach (var solver in _solvers)
+            foreach (Tuple<IIterativeSolver<Complex>, IPreconditioner<Complex>> solver in _solvers)
             {
                 // Store a reference to the solver so we can stop it.
 

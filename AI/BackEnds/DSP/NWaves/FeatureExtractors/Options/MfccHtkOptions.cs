@@ -15,11 +15,11 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
                               int filterbankSize = 24,
                               int fftSize = 0)
         {
-            
-            var frameSize = (int)(frameDuration * samplingRate);
+
+            int frameSize = (int)(frameDuration * samplingRate);
             fftSize = fftSize > frameSize ? fftSize : MathUtils.NextPowerOfTwo(frameSize);
 
-            var melBands = FilterBanks.MelBands(filterbankSize, samplingRate, lowFrequency, highFrequency);
+            System.Tuple<double, double, double>[] melBands = FilterBanks.MelBands(filterbankSize, samplingRate, lowFrequency, highFrequency);
             FilterBank = FilterBanks.Triangular(fftSize, samplingRate, melBands, null, Scale.HerzToMel);
             FilterBankSize = filterbankSize;
             FeatureCount = featureCount;

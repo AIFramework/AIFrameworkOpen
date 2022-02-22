@@ -75,13 +75,13 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// <param name="options">Filterbank options</param>
         public FilterbankExtractor(FilterbankOptions options) : base(options)
         {
-            var filterbankSize = options.FilterBankSize;
+            int filterbankSize = options.FilterBankSize;
 
             if (options.FilterBank == null)
             {
                 _blockSize = options.FftSize > FrameSize ? options.FftSize : MathUtils.NextPowerOfTwo(FrameSize);
 
-                var melBands = FilterBanks.MelBands(filterbankSize, SamplingRate, options.LowFrequency, options.HighFrequency, false);
+                Tuple<double, double, double>[] melBands = FilterBanks.MelBands(filterbankSize, SamplingRate, options.LowFrequency, options.HighFrequency, false);
                 FilterBank = FilterBanks.Rectangular(_blockSize, SamplingRate, melBands, mapper: Scale.HerzToMel);
             }
             else
@@ -158,25 +158,30 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// True if computations can be done in parallel
         /// </summary>
         /// <returns></returns>
-        public override bool IsParallelizable() => true;
+        public override bool IsParallelizable()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
         /// </summary>
         /// <returns></returns>
-        public override FeatureExtractor ParallelCopy() =>
-            new FilterbankExtractor(
-                new FilterbankOptions
-                {
-                    SamplingRate = SamplingRate,
-                    FilterBank = FilterBank,
-                    FrameDuration = FrameDuration,
-                    HopDuration = HopDuration,
-                    PreEmphasis = _preEmphasis,
-                    NonLinearity = _nonLinearityType,
-                    SpectrumType = _spectrumType,
-                    Window = _window,
-                    LogFloor = _logFloor
-                });
+        public override FeatureExtractor ParallelCopy()
+        {
+            return new FilterbankExtractor(
+new FilterbankOptions
+{
+    SamplingRate = SamplingRate,
+    FilterBank = FilterBank,
+    FrameDuration = FrameDuration,
+    HopDuration = HopDuration,
+    PreEmphasis = _preEmphasis,
+    NonLinearity = _nonLinearityType,
+    SpectrumType = _spectrumType,
+    Window = _window,
+    LogFloor = _logFloor
+});
+        }
     }
 }

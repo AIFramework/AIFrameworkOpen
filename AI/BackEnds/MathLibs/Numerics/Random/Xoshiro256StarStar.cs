@@ -38,10 +38,10 @@
    See <http://creativecommons.org/publicdomain/zero/1.0/>.
 */
 
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System;
+using System.Collections.Generic;
 using System.Runtime;
+using System.Runtime.Serialization;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
@@ -69,17 +69,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
     public class Xoshiro256StarStar : RandomSource
     {
         // Constants.
-        const double REAL_UNIT_UINT = 1.0 / (1UL << 53);
+        private const double REAL_UNIT_UINT = 1.0 / (1UL << 53);
 
         // RNG state.
         [DataMember(Order = 1)]
-        ulong _s0;
+        private ulong _s0;
         [DataMember(Order = 2)]
-        ulong _s1;
+        private ulong _s1;
         [DataMember(Order = 3)]
-        ulong _s2;
+        private ulong _s2;
         [DataMember(Order = 4)]
-        ulong _s3;
+        private ulong _s3;
 
         /// <summary>
         /// Construct a new random number generator with a random seed.
@@ -131,7 +131,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected override int DoSampleInteger()
         {
-            retry:
+        retry:
             // Handle the special case where the value int.MaxValue is generated; this is outside
             // the range of permitted return values for this method.
             ulong rtn = NextInnerULong() & 0x7fff_ffffUL;
@@ -231,7 +231,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             return (long)(NextInnerULong() >> (64 - bitCount));
         }
 
-        void Initialise(int seed)
+        private void Initialise(int seed)
         {
             // Notes.
             // xoroshiro256** requires that at least one of the state variable be non-zero, use of splitmix64
@@ -248,7 +248,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             _s3 = Splitmix64(ref longSeed);
         }
 
-        ulong NextInnerULong()
+        private ulong NextInnerULong()
         {
             ulong s0 = _s0;
             ulong s1 = _s1;
@@ -309,7 +309,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] Doubles(int length, int seed)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             Doubles(data, seed);
             return data;
         }
@@ -355,7 +355,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// Splitmix64 produces equidistributed outputs, thus if a zero is generated then the
         /// next zero will be after a further 2^64 outputs.
         /// </remarks>
-        static ulong Splitmix64(ref ulong x)
+        private static ulong Splitmix64(ref ulong x)
         {
             ulong z = (x += 0x9E3779B97F4A7C15UL);
             z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL;
@@ -363,7 +363,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             return z ^ (z >> 31);
         }
 
-        static ulong RotateLeft(ulong x, int k)
+        private static ulong RotateLeft(ulong x, int k)
         {
             // Note. RyuJIT will compile this to a single rotate CPU instruction (as of about .NET 4.6.1 and dotnet core 2.0).
             return (x << k) | (x >> (64 - k));

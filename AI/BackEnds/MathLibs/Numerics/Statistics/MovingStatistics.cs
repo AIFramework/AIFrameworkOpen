@@ -37,20 +37,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
     /// </summary>
     public class MovingStatistics
     {
-        readonly double[] _oldValues;
-        readonly int _windowSize;
-
-        long _count;
-        long _totalCountOffset;
-        int _lastIndex;
-        int _lastNaNTimeToLive;
-        int _lastPosInfTimeToLive;
-        int _lastNegInfTimeToLive;
-
-        double _m1;
-        double _m2;
-        double _max = double.NegativeInfinity;
-        double _min = double.PositiveInfinity;
+        private readonly double[] _oldValues;
+        private readonly int _windowSize;
+        private long _count;
+        private long _totalCountOffset;
+        private int _lastIndex;
+        private int _lastNaNTimeToLive;
+        private int _lastPosInfTimeToLive;
+        private int _lastNegInfTimeToLive;
+        private double _m1;
+        private double _m2;
+        private double _max = double.NegativeInfinity;
+        private double _min = double.PositiveInfinity;
 
         public MovingStatistics(int windowSize)
         {
@@ -270,9 +268,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             {
                 _oldValues[_count] = value;
                 _count++;
-                var d = value - _m1;
-                var s = d / _count;
-                var t = d * s * (_count - 1);
+                double d = value - _m1;
+                double s = d / _count;
+                double t = d * s * (_count - 1);
 
                 _m1 += s;
                 _m2 += t;
@@ -289,14 +287,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             }
             else
             {
-                var oldValue = _oldValues[_lastIndex];
-                var d = value - oldValue;
-                var s = d / _count;
-                var oldM1 = _m1;
+                double oldValue = _oldValues[_lastIndex];
+                double d = value - oldValue;
+                double s = d / _count;
+                double oldM1 = _m1;
                 _m1 += s;
 
-                var x = (value - _m1 + oldValue - oldM1);
-                var t = d * x;
+                double x = (value - _m1 + oldValue - oldM1);
+                double t = d * x;
                 _m2 += t;
 
                 _oldValues[_lastIndex] = value;
@@ -315,13 +313,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// </summary>
         public void PushRange(IEnumerable<double> values)
         {
-            foreach (var value in values)
+            foreach (double value in values)
             {
                 Push(value);
             }
         }
 
-        void DecrementTimeToLive()
+        private void DecrementTimeToLive()
         {
             if (_lastNaNTimeToLive > 0)
             {
@@ -339,7 +337,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             }
         }
 
-        void Reset(double min, double max)
+        private void Reset(double min, double max)
         {
             _totalCountOffset += _count + 1;
             _count = 0;

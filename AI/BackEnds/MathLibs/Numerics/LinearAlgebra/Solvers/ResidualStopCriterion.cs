@@ -40,28 +40,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
         /// <summary>
         /// The maximum value for the residual below which the calculation is considered converged.
         /// </summary>
-        double _maximum;
+        private double _maximum;
 
         /// <summary>
         /// The minimum number of iterations for which the residual has to be below the maximum before
         /// the calculation is considered converged.
         /// </summary>
-        int _minimumIterationsBelowMaximum;
+        private int _minimumIterationsBelowMaximum;
 
         /// <summary>
         /// The status of the calculation
         /// </summary>
-        IterationStatus _status = IterationStatus.Continue;
+        private IterationStatus _status = IterationStatus.Continue;
 
         /// <summary>
         /// The number of iterations since the residuals got below the maximum.
         /// </summary>
-        int _iterationCount;
+        private int _iterationCount;
 
         /// <summary>
         /// The iteration number of the last iteration.
         /// </summary>
-        int _lastIteration = -1;
+        private int _lastIteration = -1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ResidualStopCriterion{T}"/> class with the specified
@@ -168,7 +168,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
             // Store the infinity norms of both the solution and residual vectors
             // These values will be used to calculate the relative drop in residuals
             // later on.
-            var residualNorm = residualVector.InfinityNorm();
+            double residualNorm = residualVector.InfinityNorm();
 
 
             // This is criterion 1 from Templates for the solution of linear systems.
@@ -180,7 +180,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
 
             // Check the residuals by calculating:
             // ||r_i|| <= stop_tol * ||b||
-            var stopCriterion = _maximum*sourceVector.InfinityNorm();
+            double stopCriterion = _maximum * sourceVector.InfinityNorm();
 
 
             // First check that we have real numbers not NaN's.

@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factorization
 {
@@ -60,16 +60,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
         /// <exception cref="ArgumentException">If SVD algorithm failed to converge with matrix <paramref name="matrix"/>.</exception>
         public static DenseSvd Create(DenseMatrix matrix, bool computeVectors)
         {
-            var nm = Math.Min(matrix.RowCount, matrix.ColumnCount);
-            var s = new DenseVector(nm);
-            var u = new DenseMatrix(matrix.RowCount);
-            var vt = new DenseMatrix(matrix.ColumnCount);
-            LinearAlgebraControl.Provider.SingularValueDecomposition(computeVectors, ((DenseMatrix) matrix.Clone()).Values, matrix.RowCount, matrix.ColumnCount, s.Values, u.Values, vt.Values);
+            int nm = Math.Min(matrix.RowCount, matrix.ColumnCount);
+            DenseVector s = new DenseVector(nm);
+            DenseMatrix u = new DenseMatrix(matrix.RowCount);
+            DenseMatrix vt = new DenseMatrix(matrix.ColumnCount);
+            LinearAlgebraControl.Provider.SingularValueDecomposition(computeVectors, ((DenseMatrix)matrix.Clone()).Values, matrix.RowCount, matrix.ColumnCount, s.Values, u.Values, vt.Values);
 
             return new DenseSvd(s, u, vt, computeVectors);
         }
 
-        DenseSvd(VectorMathNet<Complex32> s, MatrixMathNet<Complex32> u, MatrixMathNet<Complex32> vt, bool vectorsComputed)
+        private DenseSvd(VectorMathNet<Complex32> s, MatrixMathNet<Complex32> u, MatrixMathNet<Complex32> vt, bool vectorsComputed)
             : base(s, u, vt, vectorsComputed)
         {
         }
@@ -106,7 +106,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
 
             if (input is DenseMatrix dinput && result is DenseMatrix dresult)
             {
-                LinearAlgebraControl.Provider.SvdSolveFactored(U.RowCount, VT.ColumnCount, ((DenseVector) S).Values, ((DenseMatrix) U).Values, ((DenseMatrix) VT).Values, dinput.Values, input.ColumnCount, dresult.Values);
+                LinearAlgebraControl.Provider.SvdSolveFactored(U.RowCount, VT.ColumnCount, ((DenseVector)S).Values, ((DenseMatrix)U).Values, ((DenseMatrix)VT).Values, dinput.Values, input.ColumnCount, dresult.Values);
             }
             else
             {
@@ -141,7 +141,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
 
             if (input is DenseVector dinput && result is DenseVector dresult)
             {
-                LinearAlgebraControl.Provider.SvdSolveFactored(U.RowCount, VT.ColumnCount, ((DenseVector) S).Values, ((DenseMatrix) U).Values, ((DenseMatrix) VT).Values, dinput.Values, 1, dresult.Values);
+                LinearAlgebraControl.Provider.SvdSolveFactored(U.RowCount, VT.ColumnCount, ((DenseVector)S).Values, ((DenseMatrix)U).Values, ((DenseMatrix)VT).Values, dinput.Values, 1, dresult.Values);
             }
             else
             {

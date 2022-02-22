@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorization
 {
@@ -42,7 +42,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
     internal abstract class GramSchmidt : GramSchmidt<double>
     {
         protected GramSchmidt(MatrixMathNet<double> q, MatrixMathNet<double> rFull)
-            : base(q,rFull)
+            : base(q, rFull)
         {
         }
 
@@ -58,8 +58,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
                     throw new ArgumentException("Matrix must be square.");
                 }
 
-                var det = 1.0;
-                for (var i = 0; i < FullR.ColumnCount; i++)
+                double det = 1.0;
+                for (int i = 0; i < FullR.ColumnCount; i++)
                 {
                     det *= FullR.At(i, i);
                     if (Math.Abs(FullR.At(i, i)).AlmostEqual(0.0))
@@ -80,7 +80,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
         {
             get
             {
-                for (var i = 0; i < FullR.ColumnCount; i++)
+                for (int i = 0; i < FullR.ColumnCount; i++)
                 {
                     if (Math.Abs(FullR.At(i, i)).AlmostEqual(0.0))
                     {

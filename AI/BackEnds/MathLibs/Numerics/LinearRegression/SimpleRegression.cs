@@ -71,12 +71,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
             for (int i = 0; i < x.Length; i++)
             {
                 double diff = x[i] - mx;
-                covariance += diff*(y[i] - my);
-                variance += diff*diff;
+                covariance += diff * (y[i] - my);
+                variance += diff * diff;
             }
 
-            var b = covariance/variance;
-            return (my - b*mx, b);
+            double b = covariance / variance;
+            return (my - b * mx, b);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <param name="samples">Predictor-Response samples as tuples</param>
         public static (double A, double B) Fit(IEnumerable<Tuple<double, double>> samples)
         {
-            var (u, v) = samples.UnpackSinglePass();
+            (double[] u, double[] v) = samples.UnpackSinglePass();
             return Fit(u, v);
         }
 
@@ -99,7 +99,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <param name="samples">Predictor-Response samples as tuples</param>
         public static (double A, double B) Fit(IEnumerable<(double, double)> samples)
         {
-            var (u, v) = samples.UnpackSinglePass();
+            (double[] u, double[] v) = samples.UnpackSinglePass();
             return Fit(u, v);
         }
 
@@ -126,8 +126,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
             double mxx = 0.0;
             for (int i = 0; i < x.Length; i++)
             {
-                mxx += x[i]*x[i];
-                mxy += x[i]*y[i];
+                mxx += x[i] * x[i];
+                mxy += x[i] * y[i];
             }
 
             return mxy / mxx;
@@ -145,7 +145,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
             double mxy = 0.0;
             double mxx = 0.0;
 
-            foreach (var sample in samples)
+            foreach (Tuple<double, double> sample in samples)
             {
                 mxx += sample.Item1 * sample.Item1;
                 mxy += sample.Item1 * sample.Item2;

@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using System;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factorization
 {
@@ -64,7 +64,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
         {
             get
             {
-                double tolerance = Precision.EpsilonOf(S.AbsoluteMaximum().Magnitude)*Math.Max(U.RowCount, VT.RowCount);
+                double tolerance = Precision.EpsilonOf(S.AbsoluteMaximum().Magnitude) * Math.Max(U.RowCount, VT.RowCount);
                 return S.Count(t => t.Magnitude > tolerance);
             }
         }
@@ -83,7 +83,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
         {
             get
             {
-                var tmp = Math.Min(U.RowCount, VT.ColumnCount) - 1;
+                int tmp = Math.Min(U.RowCount, VT.ColumnCount) - 1;
                 return S[0].Magnitude / S[tmp].Magnitude;
             }
         }
@@ -100,8 +100,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
                     throw new ArgumentException("Matrix must be square.");
                 }
 
-                var det = Complex32.One;
-                foreach (var value in S)
+                Complex32 det = Complex32.One;
+                foreach (Complex32 value in S)
                 {
                     det *= value;
                     if (value.Magnitude.AlmostEqual(0.0f))

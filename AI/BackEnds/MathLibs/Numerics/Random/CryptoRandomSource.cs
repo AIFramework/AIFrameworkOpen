@@ -29,8 +29,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Runtime;
+using System.Security.Cryptography;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
@@ -39,8 +39,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
     /// </summary>
     public sealed class CryptoRandomSource : RandomSource, IDisposable
     {
-        const double Reciprocal = 1.0/4294967296.0; // 1.0/(uint.MaxValue + 1.0)
-        readonly RandomNumberGenerator _crypto;
+        private const double Reciprocal = 1.0 / 4294967296.0; // 1.0/(uint.MaxValue + 1.0)
+        private readonly RandomNumberGenerator _crypto;
 
         /// <summary>
         /// Construct a new random number generator with a random seed.
@@ -93,11 +93,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <summary>
         /// Returns a random double-precision floating point number greater than or equal to 0.0, and less than 1.0.
         /// </summary>
-        protected  override double DoSample()
+        protected override double DoSample()
         {
-            var bytes = new byte[4];
+            byte[] bytes = new byte[4];
             _crypto.GetBytes(bytes);
-            return BitConverter.ToUInt32(bytes, 0)*Reciprocal;
+            return BitConverter.ToUInt32(bytes, 0) * Reciprocal;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected override int DoSampleInteger()
         {
-            var bytes = new byte[4];
+            byte[] bytes = new byte[4];
             _crypto.GetBytes(bytes);
             uint uint32 = BitConverter.ToUInt32(bytes, 0);
             int int31 = (int)(uint32 >> 1);
@@ -128,16 +128,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <remarks>Supports being called in parallel from multiple threads.</remarks>
         public static void Doubles(double[] values)
         {
-            var bytes = new byte[values.Length*4];
+            byte[] bytes = new byte[values.Length * 4];
 
-            using (var rnd = RandomNumberGenerator.Create())
+            using (RandomNumberGenerator rnd = RandomNumberGenerator.Create())
             {
                 rnd.GetBytes(bytes);
             }
 
             for (int i = 0; i < values.Length; i++)
             {
-                values[i] = BitConverter.ToUInt32(bytes, i*4)*Reciprocal;
+                values[i] = BitConverter.ToUInt32(bytes, i * 4) * Reciprocal;
             }
         }
 
@@ -148,7 +148,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] Doubles(int length)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             Doubles(data);
             return data;
         }
@@ -159,15 +159,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <remarks>Supports being called in parallel from multiple threads.</remarks>
         public static IEnumerable<double> DoubleSequence()
         {
-            var rnd = RandomNumberGenerator.Create();
-            var buffer = new byte[1024*4];
+            RandomNumberGenerator rnd = RandomNumberGenerator.Create();
+            byte[] buffer = new byte[1024 * 4];
 
             while (true)
             {
                 rnd.GetBytes(buffer);
                 for (int i = 0; i < buffer.Length; i += 4)
                 {
-                    yield return BitConverter.ToUInt32(buffer, i)*Reciprocal;
+                    yield return BitConverter.ToUInt32(buffer, i) * Reciprocal;
                 }
             }
         }

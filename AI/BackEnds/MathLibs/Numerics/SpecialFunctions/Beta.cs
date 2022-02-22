@@ -84,7 +84,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>The lower incomplete (unregularized) beta function.</returns>
         public static double BetaIncomplete(double a, double b, double x)
         {
-            return BetaRegularized(a, b, x)*Beta(a, b);
+            return BetaRegularized(a, b, x) * Beta(a, b);
         }
 
         /// <summary>
@@ -112,82 +112,82 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 throw new ArgumentOutOfRangeException(nameof(x), $"Value is expected to be between 0.0 and 1.0 (including 0.0 and 1.0).");
             }
 
-            var bt = (x == 0.0 || x == 1.0)
+            double bt = (x == 0.0 || x == 1.0)
                 ? 0.0
-                : Math.Exp(GammaLn(a + b) - GammaLn(a) - GammaLn(b) + (a*Math.Log(x)) + (b*Math.Log(1.0 - x)));
+                : Math.Exp(GammaLn(a + b) - GammaLn(a) - GammaLn(b) + (a * Math.Log(x)) + (b * Math.Log(1.0 - x)));
 
-            var symmetryTransformation = x >= (a + 1.0)/(a + b + 2.0);
+            bool symmetryTransformation = x >= (a + 1.0) / (a + b + 2.0);
 
             /* Continued fraction representation */
-            var eps = Precision.DoublePrecision;
-            var fpmin = 0.0.Increment()/eps;
+            double eps = Precision.DoublePrecision;
+            double fpmin = 0.0.Increment() / eps;
 
             if (symmetryTransformation)
             {
                 x = 1.0 - x;
-                var swap = a;
+                double swap = a;
                 a = b;
                 b = swap;
             }
 
-            var qab = a + b;
-            var qap = a + 1.0;
-            var qam = a - 1.0;
-            var c = 1.0;
-            var d = 1.0 - (qab*x/qap);
+            double qab = a + b;
+            double qap = a + 1.0;
+            double qam = a - 1.0;
+            double c = 1.0;
+            double d = 1.0 - (qab * x / qap);
 
             if (Math.Abs(d) < fpmin)
             {
                 d = fpmin;
             }
 
-            d = 1.0/d;
-            var h = d;
+            d = 1.0 / d;
+            double h = d;
 
             for (int m = 1, m2 = 2; m <= 50000; m++, m2 += 2)
             {
-                var aa = m*(b - m)*x/((qam + m2)*(a + m2));
-                d = 1.0 + (aa*d);
+                double aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+                d = 1.0 + (aa * d);
 
                 if (Math.Abs(d) < fpmin)
                 {
                     d = fpmin;
                 }
 
-                c = 1.0 + (aa/c);
+                c = 1.0 + (aa / c);
                 if (Math.Abs(c) < fpmin)
                 {
                     c = fpmin;
                 }
 
-                d = 1.0/d;
-                h *= d*c;
-                aa = -(a + m)*(qab + m)*x/((a + m2)*(qap + m2));
-                d = 1.0 + (aa*d);
+                d = 1.0 / d;
+                h *= d * c;
+                aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+                d = 1.0 + (aa * d);
 
                 if (Math.Abs(d) < fpmin)
                 {
                     d = fpmin;
                 }
 
-                c = 1.0 + (aa/c);
+                c = 1.0 + (aa / c);
 
                 if (Math.Abs(c) < fpmin)
                 {
                     c = fpmin;
                 }
 
-                d = 1.0/d;
-                var del = d*c;
+                d = 1.0 / d;
+                double del = d * c;
                 h *= del;
 
                 if (Math.Abs(del - 1.0) <= eps)
                 {
-                    return symmetryTransformation ? 1.0 - (bt*h/a) : bt*h/a;
+                    return symmetryTransformation ? 1.0 - (bt * h / a) : bt * h / a;
                 }
             }
 
-            return symmetryTransformation ? 1.0 - (bt*h/a) : bt*h/a;
+            return symmetryTransformation ? 1.0 - (bt * h / a) : bt * h / a;
         }
     }
 }

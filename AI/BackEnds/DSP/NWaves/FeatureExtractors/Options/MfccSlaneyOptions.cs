@@ -16,7 +16,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
                                  int fftSize = 0,
                                  bool normalize = true)
         {
-            var frameSize = (int)(frameDuration * samplingRate);
+            int frameSize = (int)(frameDuration * samplingRate);
             fftSize = fftSize > frameSize ? fftSize : MathUtils.NextPowerOfTwo(frameSize);
 
             FilterBank = FilterBanks.MelBankSlaney(filterbankSize, fftSize, samplingRate, lowFrequency, highFrequency, normalize);

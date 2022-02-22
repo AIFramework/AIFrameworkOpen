@@ -117,21 +117,21 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         /// </summary>
         public void ProcessFrame()
         {
-            var M = _kernel.Length;
+            int M = _kernel.Length;
 
-            var halfSize = _fftSize / 2;
+            int halfSize = _fftSize / 2;
 
             Array.Clear(_blockRe, HopSize, M - 1);
 
             _fft.Direct(_blockRe, _blockRe, _blockIm);
-            for (var j = 0; j <= halfSize; j++)
+            for (int j = 0; j <= halfSize; j++)
             {
                 _convRe[j] = (_blockRe[j] * _kernelSpectrumRe[j] - _blockIm[j] * _kernelSpectrumIm[j]) / halfSize;
                 _convIm[j] = (_blockRe[j] * _kernelSpectrumIm[j] + _blockIm[j] * _kernelSpectrumRe[j]) / halfSize;
             }
             _fft.Inverse(_convRe, _convIm, _convRe);
 
-            for (var j = 0; j < M - 1; j++)
+            for (int j = 0; j < M - 1; j++)
             {
                 _convRe[j] += _lastSaved[j];
             }
@@ -150,7 +150,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         /// <returns></returns>
         public double[] ApplyTo(double[] signal, FilteringMethod method = FilteringMethod.Auto)
         {
-            var firstCount = Math.Min(HopSize - 1, signal.Length);
+            int firstCount = Math.Min(HopSize - 1, signal.Length);
 
             int i = 0, j = 0;
 
@@ -159,14 +159,14 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
                 Process(signal[i]);
             }
 
-            var filtered = new double[signal.Length + _kernel.Length - 1];
+            double[] filtered = new double[signal.Length + _kernel.Length - 1];
 
             for (; i < signal.Length; i++, j++)    // process
             {
                 filtered[j] = Process(signal[i]);
             }
 
-            var lastCount = firstCount + _kernel.Length - 1;
+            int lastCount = firstCount + _kernel.Length - 1;
 
             for (i = 0; i < lastCount; i++, j++)    // get last 'late' samples
             {

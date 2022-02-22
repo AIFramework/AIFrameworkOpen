@@ -183,15 +183,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         /// </returns>
         public override int GetHashCode()
         {
-            var hashNum = Math.Min(RowCount*ColumnCount, 25);
+            int hashNum = Math.Min(RowCount * ColumnCount, 25);
             int hash = 17;
             unchecked
             {
-                for (var i = 0; i < hashNum; i++)
+                for (int i = 0; i < hashNum; i++)
                 {
-                    int col;
-                    int row = Math.DivRem(i, ColumnCount, out col);
-                    hash = hash*31 + At(row, col).GetHashCode();
+                    int row = Math.DivRem(i, ColumnCount, out int col);
+                    hash = hash * 31 + At(row, col).GetHashCode();
                 }
             }
             return hash;
@@ -201,9 +200,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual void Clear()
         {
-            for (var i = 0; i < RowCount; i++)
+            for (int i = 0; i < RowCount; i++)
             {
-                for (var j = 0; j < ColumnCount; j++)
+                for (int j = 0; j < ColumnCount; j++)
                 {
                     At(i, j, Zero);
                 }
@@ -232,9 +231,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         internal virtual void ClearUnchecked(int rowIndex, int rowCount, int columnIndex, int columnCount)
         {
-            for (var i = rowIndex; i < rowIndex + rowCount; i++)
+            for (int i = rowIndex; i < rowIndex + rowCount; i++)
             {
-                for (var j = columnIndex; j < columnIndex + columnCount; j++)
+                for (int j = columnIndex; j < columnIndex + columnCount; j++)
                 {
                     At(i, j, Zero);
                 }
@@ -279,10 +278,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         internal virtual void ClearRowsUnchecked(int[] rowIndices)
         {
-            for (var k = 0; k < rowIndices.Length; k++)
+            for (int k = 0; k < rowIndices.Length; k++)
             {
                 int row = rowIndices[k];
-                for (var j = 0; j < ColumnCount; j++)
+                for (int j = 0; j < ColumnCount; j++)
                 {
                     At(row, j, Zero);
                 }
@@ -291,10 +290,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         internal virtual void ClearColumnsUnchecked(int[] columnIndices)
         {
-            for (var k = 0; k < columnIndices.Length; k++)
+            for (int k = 0; k < columnIndices.Length; k++)
             {
                 int column = columnIndices[k];
-                for (var i = 0; i < RowCount; i++)
+                for (int i = 0; i < RowCount; i++)
                 {
                     At(i, column, Zero);
                 }
@@ -317,7 +316,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (RowCount != target.RowCount || ColumnCount != target.ColumnCount)
             {
-                var message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {target.RowCount}x{target.ColumnCount}.";
+                string message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {target.RowCount}x{target.ColumnCount}.";
                 throw new ArgumentException(message, nameof(target));
             }
 
@@ -475,7 +474,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (RowCount != target.ColumnCount || ColumnCount != target.RowCount)
             {
-                var message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {target.RowCount}x{target.ColumnCount}.";
+                string message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {target.RowCount}x{target.ColumnCount}.";
                 throw new ArgumentException(message, nameof(target));
             }
 
@@ -516,10 +515,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual T[] ToRowMajorArray()
         {
-            var ret = new T[RowCount*ColumnCount];
+            T[] ret = new T[RowCount * ColumnCount];
             for (int i = 0; i < RowCount; i++)
             {
-                var offset = i*ColumnCount;
+                int offset = i * ColumnCount;
                 for (int j = 0; j < ColumnCount; j++)
                 {
                     ret[offset + j] = At(i, j);
@@ -530,10 +529,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual T[] ToColumnMajorArray()
         {
-            var ret = new T[RowCount*ColumnCount];
+            T[] ret = new T[RowCount * ColumnCount];
             for (int j = 0; j < ColumnCount; j++)
             {
-                var offset = j*RowCount;
+                int offset = j * RowCount;
                 for (int i = 0; i < RowCount; i++)
                 {
                     ret[offset + i] = At(i, j);
@@ -544,10 +543,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual T[][] ToRowArrays()
         {
-            var ret = new T[RowCount][];
+            T[][] ret = new T[RowCount][];
             for (int i = 0; i < RowCount; i++)
             {
-                var row = new T[ColumnCount];
+                T[] row = new T[ColumnCount];
                 for (int j = 0; j < ColumnCount; j++)
                 {
                     row[j] = At(i, j);
@@ -559,10 +558,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual T[][] ToColumnArrays()
         {
-            var ret = new T[ColumnCount][];
+            T[][] ret = new T[ColumnCount][];
             for (int j = 0; j < ColumnCount; j++)
             {
-                var column = new T[RowCount];
+                T[] column = new T[RowCount];
                 for (int i = 0; i < RowCount; i++)
                 {
                     column[i] = At(i, j);
@@ -574,7 +573,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual T[,] ToArray()
         {
-            var ret = new T[RowCount, ColumnCount];
+            T[,] ret = new T[RowCount, ColumnCount];
             for (int i = 0; i < RowCount; i++)
             {
                 for (int j = 0; j < ColumnCount; j++)
@@ -640,7 +639,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 for (int j = 0; j < ColumnCount; j++)
                 {
-                    var x = At(i, j);
+                    T x = At(i, j);
                     if (!Zero.Equals(x))
                     {
                         yield return x;
@@ -655,7 +654,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 for (int j = 0; j < ColumnCount; j++)
                 {
-                    var x = At(i, j);
+                    T x = At(i, j);
                     if (!Zero.Equals(x))
                     {
                         yield return (i, j, x);
@@ -672,7 +671,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 for (int j = 0; j < ColumnCount; j++)
                 {
-                    var item = At(i, j);
+                    T item = At(i, j);
                     if (predicate(item))
                     {
                         return new Tuple<int, int, T>(i, j, item);
@@ -692,7 +691,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (RowCount != other.RowCount || ColumnCount != other.ColumnCount)
             {
-                var message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {other.RowCount}x{other.ColumnCount}.";
+                string message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {other.RowCount}x{other.ColumnCount}.";
                 throw new ArgumentException(message, nameof(other));
             }
 
@@ -706,8 +705,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 for (int j = 0; j < ColumnCount; j++)
                 {
-                    var item = At(i, j);
-                    var otherItem = other.At(i, j);
+                    T item = At(i, j);
+                    TOther otherItem = other.At(i, j);
                     if (predicate(item, otherItem))
                     {
                         return new Tuple<int, int, T, TOther>(i, j, item, otherItem);
@@ -751,7 +750,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (RowCount != target.RowCount || ColumnCount != target.ColumnCount)
             {
-                var message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {target.RowCount}x{target.ColumnCount}.";
+                string message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {target.RowCount}x{target.ColumnCount}.";
                 throw new ArgumentException(message, nameof(target));
             }
 
@@ -780,7 +779,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (RowCount != target.RowCount || ColumnCount != target.ColumnCount)
             {
-                var message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {target.RowCount}x{target.ColumnCount}.";
+                string message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {target.RowCount}x{target.ColumnCount}.";
                 throw new ArgumentException(message, nameof(target));
             }
 
@@ -856,13 +855,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (RowCount != target.RowCount || ColumnCount != target.ColumnCount)
             {
-                var message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {target.RowCount}x{target.ColumnCount}.";
+                string message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {target.RowCount}x{target.ColumnCount}.";
                 throw new ArgumentException(message, nameof(target));
             }
 
             if (RowCount != other.RowCount || ColumnCount != other.ColumnCount)
             {
-                var message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {other.RowCount}x{other.ColumnCount}.";
+                string message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {other.RowCount}x{other.ColumnCount}.";
                 throw new ArgumentException(message, nameof(other));
             }
 
@@ -968,7 +967,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             if (RowCount != other.RowCount || ColumnCount != other.ColumnCount)
             {
-                var message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {other.RowCount}x{other.ColumnCount}.";
+                string message = $"Matrix dimensions must agree: op1 is {RowCount}x{ColumnCount}, op2 is {other.RowCount}x{other.ColumnCount}.";
                 throw new ArgumentException(message, nameof(other));
             }
 

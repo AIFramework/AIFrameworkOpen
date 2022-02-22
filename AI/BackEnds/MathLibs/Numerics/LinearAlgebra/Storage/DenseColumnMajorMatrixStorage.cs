@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 {
@@ -48,7 +48,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         internal DenseColumnMajorMatrixStorage(int rows, int columns)
             : base(rows, columns)
         {
-            Data = new T[rows*columns];
+            Data = new T[rows * columns];
         }
 
         internal DenseColumnMajorMatrixStorage(int rows, int columns, T[] data)
@@ -59,7 +59,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentNullException(nameof(data));
             }
 
-            if (data.Length != rows*columns)
+            if (data.Length != rows * columns)
             {
                 throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {rows * columns}.");
             }
@@ -92,7 +92,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         /// </summary>
         public override T At(int row, int column)
         {
-            return Data[(column*RowCount) + row];
+            return Data[(column * RowCount) + row];
         }
 
         /// <summary>
@@ -100,13 +100,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         /// </summary>
         public override void At(int row, int column, T value)
         {
-            Data[(column*RowCount) + row] = value;
+            Data[(column * RowCount) + row] = value;
         }
 
         /// <summary>
         /// Evaluate the row and column at a specific data index.
         /// </summary>
-        void RowColumnAtIndex(int index, out int row, out int column)
+        private void RowColumnAtIndex(int index, out int row, out int column)
         {
             column = Math.DivRem(index, RowCount, out row);
         }
@@ -128,16 +128,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             for (int j = columnIndex; j < columnIndex + columnCount; j++)
             {
-                Array.Clear(Data, j*RowCount + rowIndex, rowCount);
+                Array.Clear(Data, j * RowCount + rowIndex, rowCount);
             }
         }
 
         internal override void ClearRowsUnchecked(int[] rowIndices)
         {
-            for (var j = 0; j < ColumnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                int offset = j*RowCount;
-                for (var k = 0; k < rowIndices.Length; k++)
+                int offset = j * RowCount;
+                for (int k = 0; k < rowIndices.Length; k++)
                 {
                     Data[offset + rowIndices[k]] = Zero;
                 }
@@ -148,7 +148,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             for (int k = 0; k < columnIndices.Length; k++)
             {
-                Array.Clear(Data, columnIndices[k]*RowCount, RowCount);
+                Array.Clear(Data, columnIndices[k] * RowCount, RowCount);
             }
         }
 
@@ -156,15 +156,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DenseColumnMajorMatrixStorage<T> OfMatrix(MatrixStorage<T> matrix)
         {
-            var storage = new DenseColumnMajorMatrixStorage<T>(matrix.RowCount, matrix.ColumnCount);
+            DenseColumnMajorMatrixStorage<T> storage = new DenseColumnMajorMatrixStorage<T>(matrix.RowCount, matrix.ColumnCount);
             matrix.CopyToUnchecked(storage, ExistingData.AssumeZeros);
             return storage;
         }
 
         public static DenseColumnMajorMatrixStorage<T> OfValue(int rows, int columns, T value)
         {
-            var storage = new DenseColumnMajorMatrixStorage<T>(rows, columns);
-            var data = storage.Data;
+            DenseColumnMajorMatrixStorage<T> storage = new DenseColumnMajorMatrixStorage<T>(rows, columns);
+            T[] data = storage.Data;
             CommonParallel.For(0, data.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
@@ -177,11 +177,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DenseColumnMajorMatrixStorage<T> OfInit(int rows, int columns, Func<int, int, T> init)
         {
-            var storage = new DenseColumnMajorMatrixStorage<T>(rows, columns);
+            DenseColumnMajorMatrixStorage<T> storage = new DenseColumnMajorMatrixStorage<T>(rows, columns);
             int index = 0;
-            for (var j = 0; j < columns; j++)
+            for (int j = 0; j < columns; j++)
             {
-                for (var i = 0; i < rows; i++)
+                for (int i = 0; i < rows; i++)
                 {
                     storage.Data[index++] = init(i, j);
                 }
@@ -191,10 +191,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DenseColumnMajorMatrixStorage<T> OfDiagonalInit(int rows, int columns, Func<int, T> init)
         {
-            var storage = new DenseColumnMajorMatrixStorage<T>(rows, columns);
+            DenseColumnMajorMatrixStorage<T> storage = new DenseColumnMajorMatrixStorage<T>(rows, columns);
             int index = 0;
             int stride = rows + 1;
-            for (var i = 0; i < Math.Min(rows, columns); i++)
+            for (int i = 0; i < Math.Min(rows, columns); i++)
             {
                 storage.Data[index] = init(i);
                 index += stride;
@@ -204,11 +204,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DenseColumnMajorMatrixStorage<T> OfArray(T[,] array)
         {
-            var storage = new DenseColumnMajorMatrixStorage<T>(array.GetLength(0), array.GetLength(1));
+            DenseColumnMajorMatrixStorage<T> storage = new DenseColumnMajorMatrixStorage<T>(array.GetLength(0), array.GetLength(1));
             int index = 0;
-            for (var j = 0; j < storage.ColumnCount; j++)
+            for (int j = 0; j < storage.ColumnCount; j++)
             {
-                for (var i = 0; i < storage.RowCount; i++)
+                for (int i = 0; i < storage.RowCount; i++)
                 {
                     storage.Data[index++] = array[i, j];
                 }
@@ -225,10 +225,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             int columns = data.Length;
             int rows = data[0].Length;
-            var array = new T[rows*columns];
+            T[] array = new T[rows * columns];
             for (int j = 0; j < data.Length; j++)
             {
-                Array.Copy(data[j], 0, array, j*rows, rows);
+                Array.Copy(data[j], 0, array, j * rows, rows);
             }
             return new DenseColumnMajorMatrixStorage<T>(rows, columns, array);
         }
@@ -242,10 +242,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             int rows = data.Length;
             int columns = data[0].Length;
-            var array = new T[rows*columns];
+            T[] array = new T[rows * columns];
             for (int j = 0; j < columns; j++)
             {
-                int offset = j*rows;
+                int offset = j * rows;
                 for (int i = 0; i < rows; i++)
                 {
                     array[offset + i] = data[i][j];
@@ -256,20 +256,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DenseColumnMajorMatrixStorage<T> OfColumnMajorArray(int rows, int columns, T[] data)
         {
-            T[] ret = new T[rows*columns];
+            T[] ret = new T[rows * columns];
             Array.Copy(data, 0, ret, 0, Math.Min(ret.Length, data.Length));
             return new DenseColumnMajorMatrixStorage<T>(rows, columns, ret);
         }
 
         public static DenseColumnMajorMatrixStorage<T> OfRowMajorArray(int rows, int columns, T[] data)
         {
-            T[] ret = new T[rows*columns];
+            T[] ret = new T[rows * columns];
             for (int i = 0; i < rows; i++)
             {
-                int offset = i*columns;
+                int offset = i * columns;
                 for (int j = 0; j < columns; j++)
                 {
-                    ret[(j*rows) + i] = data[offset + j];
+                    ret[(j * rows) + i] = data[offset + j];
                 }
             }
             return new DenseColumnMajorMatrixStorage<T>(rows, columns, ret);
@@ -284,18 +284,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             int columns = data.Length;
             int rows = data[0].Length;
-            var array = new T[rows*columns];
+            T[] array = new T[rows * columns];
             for (int j = 0; j < data.Length; j++)
             {
-                var column = data[j];
+                VectorStorage<T> column = data[j];
                 if (column is DenseVectorStorage<T> denseColumn)
                 {
-                    Array.Copy(denseColumn.Data, 0, array, j*rows, rows);
+                    Array.Copy(denseColumn.Data, 0, array, j * rows, rows);
                 }
                 else
                 {
                     // FALL BACK
-                    int offset = j*rows;
+                    int offset = j * rows;
                     for (int i = 0; i < rows; i++)
                     {
                         array[offset + i] = column.At(i);
@@ -314,10 +314,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             int rows = data.Length;
             int columns = data[0].Length;
-            var array = new T[rows*columns];
+            T[] array = new T[rows * columns];
             for (int j = 0; j < columns; j++)
             {
-                int offset = j*rows;
+                int offset = j * rows;
                 for (int i = 0; i < rows; i++)
                 {
                     array[offset + i] = data[i].At(j);
@@ -328,8 +328,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DenseColumnMajorMatrixStorage<T> OfIndexedEnumerable(int rows, int columns, IEnumerable<Tuple<int, int, T>> data)
         {
-            var array = new T[rows*columns];
-            foreach (var (i,j,x) in data)
+            T[] array = new T[rows * columns];
+            foreach ((int i, int j, T x) in data)
             {
                 array[j * rows + i] = x;
             }
@@ -338,8 +338,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DenseColumnMajorMatrixStorage<T> OfIndexedEnumerable(int rows, int columns, IEnumerable<(int, int, T)> data)
         {
-            var array = new T[rows*columns];
-            foreach (var (i,j,x) in data)
+            T[] array = new T[rows * columns];
+            foreach ((int i, int j, T x) in data)
             {
                 array[j * rows + i] = x;
             }
@@ -363,54 +363,82 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public static DenseColumnMajorMatrixStorage<T> OfColumnEnumerables(int rows, int columns, IEnumerable<IEnumerable<T>> data)
         {
-            var array = new T[rows*columns];
-            using (var columnIterator = data.GetEnumerator())
+            T[] array = new T[rows * columns];
+            using (IEnumerator<IEnumerable<T>> columnIterator = data.GetEnumerator())
             {
                 for (int column = 0; column < columns; column++)
                 {
-                    if (!columnIterator.MoveNext()) throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {columns}.");
+                    if (!columnIterator.MoveNext())
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {columns}.");
+                    }
+
                     if (columnIterator.Current is T[] arrayColumn)
                     {
-                        Array.Copy(arrayColumn, 0, array, column*rows, rows);
+                        Array.Copy(arrayColumn, 0, array, column * rows, rows);
                     }
                     else
                     {
-                        using (var rowIterator = columnIterator.Current.GetEnumerator())
+                        using (IEnumerator<T> rowIterator = columnIterator.Current.GetEnumerator())
                         {
-                            var end = (column + 1)*rows;
-                            for (int index = column*rows; index < end; index++)
+                            int end = (column + 1) * rows;
+                            for (int index = column * rows; index < end; index++)
                             {
-                                if (!rowIterator.MoveNext()) throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {rows}.");
+                                if (!rowIterator.MoveNext())
+                                {
+                                    throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {rows}.");
+                                }
+
                                 array[index] = rowIterator.Current;
                             }
-                            if (rowIterator.MoveNext()) throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {rows}.");
+                            if (rowIterator.MoveNext())
+                            {
+                                throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {rows}.");
+                            }
                         }
                     }
                 }
-                if (columnIterator.MoveNext()) throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {columns}.");
+                if (columnIterator.MoveNext())
+                {
+                    throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {columns}.");
+                }
             }
             return new DenseColumnMajorMatrixStorage<T>(rows, columns, array);
         }
 
         public static DenseColumnMajorMatrixStorage<T> OfRowEnumerables(int rows, int columns, IEnumerable<IEnumerable<T>> data)
         {
-            var array = new T[rows*columns];
-            using (var rowIterator = data.GetEnumerator())
+            T[] array = new T[rows * columns];
+            using (IEnumerator<IEnumerable<T>> rowIterator = data.GetEnumerator())
             {
                 for (int row = 0; row < rows; row++)
                 {
-                    if (!rowIterator.MoveNext()) throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {rows}.");
-                    using (var columnIterator = rowIterator.Current.GetEnumerator())
+                    if (!rowIterator.MoveNext())
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {rows}.");
+                    }
+
+                    using (IEnumerator<T> columnIterator = rowIterator.Current.GetEnumerator())
                     {
                         for (int index = row; index < array.Length; index += rows)
                         {
-                            if (!columnIterator.MoveNext()) throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {columns}.");
+                            if (!columnIterator.MoveNext())
+                            {
+                                throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {columns}.");
+                            }
+
                             array[index] = columnIterator.Current;
                         }
-                        if (columnIterator.MoveNext()) throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {columns}.");
+                        if (columnIterator.MoveNext())
+                        {
+                            throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {columns}.");
+                        }
                     }
                 }
-                if (rowIterator.MoveNext()) throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {rows}.");
+                if (rowIterator.MoveNext())
+                {
+                    throw new ArgumentOutOfRangeException(nameof(data), $"The given array has the wrong length. Should be {rows}.");
+                }
             }
             return new DenseColumnMajorMatrixStorage<T>(rows, columns, array);
         }
@@ -436,7 +464,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void CopyToUnchecked(DenseColumnMajorMatrixStorage<T> target)
+        private void CopyToUnchecked(DenseColumnMajorMatrixStorage<T> target)
         {
             //Buffer.BlockCopy(Data, 0, target.Data, 0, Data.Length * System.Runtime.InteropServices.Marshal.SizeOf(typeof(T)));
             Array.Copy(Data, 0, target.Data, 0, Data.Length);
@@ -459,7 +487,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             for (int j = sourceColumnIndex, jj = targetColumnIndex; j < sourceColumnIndex + columnCount; j++, jj++)
             {
-                int index = sourceRowIndex + j*RowCount;
+                int index = sourceRowIndex + j * RowCount;
                 for (int ii = targetRowIndex; ii < targetRowIndex + rowCount; ii++)
                 {
                     target.At(ii, jj, Data[index++]);
@@ -467,14 +495,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void CopySubMatrixToUnchecked(DenseColumnMajorMatrixStorage<T> target,
+        private void CopySubMatrixToUnchecked(DenseColumnMajorMatrixStorage<T> target,
             int sourceRowIndex, int targetRowIndex, int rowCount,
             int sourceColumnIndex, int targetColumnIndex, int columnCount)
         {
             for (int j = sourceColumnIndex, jj = targetColumnIndex; j < sourceColumnIndex + columnCount; j++, jj++)
             {
                 //Buffer.BlockCopy(Data, j*RowCount + sourceRowIndex, target.Data, jj*target.RowCount + targetRowIndex, rowCount * System.Runtime.InteropServices.Marshal.SizeOf(typeof(T)));
-                Array.Copy(Data, j*RowCount + sourceRowIndex, target.Data, jj*target.RowCount + targetRowIndex, rowCount);
+                Array.Copy(Data, j * RowCount + sourceRowIndex, target.Data, jj * target.RowCount + targetRowIndex, rowCount);
             }
         }
 
@@ -487,7 +515,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 for (int j = 0; j < columnCount; j++)
                 {
-                    targetDense.Data[j + targetColumnIndex] = Data[(j + sourceColumnIndex)*RowCount + rowIndex];
+                    targetDense.Data[j + targetColumnIndex] = Data[(j + sourceColumnIndex) * RowCount + rowIndex];
                 }
                 return;
             }
@@ -496,7 +524,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             for (int j = sourceColumnIndex, jj = targetColumnIndex; j < sourceColumnIndex + columnCount; j++, jj++)
             {
-                target.At(jj, Data[(j*RowCount) + rowIndex]);
+                target.At(jj, Data[(j * RowCount) + rowIndex]);
             }
         }
 
@@ -507,13 +535,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             if (target is DenseVectorStorage<T> targetDense)
             {
-                Array.Copy(Data, columnIndex*RowCount + sourceRowIndex, targetDense.Data, targetRowIndex, rowCount);
+                Array.Copy(Data, columnIndex * RowCount + sourceRowIndex, targetDense.Data, targetRowIndex, rowCount);
                 return;
             }
 
             // FALL BACK
 
-            var offset = columnIndex*RowCount;
+            int offset = columnIndex * RowCount;
             for (int i = sourceRowIndex, ii = targetRowIndex; i < sourceRowIndex + rowCount; i++, ii++)
             {
                 target.At(ii, Data[offset + i]);
@@ -547,28 +575,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void TransposeToUnchecked(DenseColumnMajorMatrixStorage<T> target)
+        private void TransposeToUnchecked(DenseColumnMajorMatrixStorage<T> target)
         {
-            for (var j = 0; j < ColumnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                var index = j * RowCount;
-                for (var i = 0; i < RowCount; i++)
+                int index = j * RowCount;
+                for (int i = 0; i < RowCount; i++)
                 {
                     target.Data[(i * ColumnCount) + j] = Data[index + i];
                 }
             }
         }
 
-        void TransposeToUnchecked(SparseCompressedRowMatrixStorage<T> target)
+        private void TransposeToUnchecked(SparseCompressedRowMatrixStorage<T> target)
         {
-            var rowPointers = target.RowPointers;
-            var columnIndices = new List<int>();
-            var values = new List<T>();
+            int[] rowPointers = target.RowPointers;
+            List<int> columnIndices = new List<int>();
+            List<T> values = new List<T>();
 
             for (int j = 0; j < ColumnCount; j++)
             {
                 rowPointers[j] = values.Count;
-                var index = j * RowCount;
+                int index = j * RowCount;
                 for (int i = 0; i < RowCount; i++)
                 {
                     if (!Zero.Equals(Data[index + i]))
@@ -586,14 +614,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         internal override void TransposeSquareInplaceUnchecked()
         {
-            for (var j = 0; j < ColumnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                var index = j * RowCount;
-                for (var i = 0; i < j; i++)
+                int index = j * RowCount;
+                for (int i = 0; i < j; i++)
                 {
                     T swap = Data[index + i];
-                    Data[index + i] = Data[i*ColumnCount + j];
-                    Data[i*ColumnCount + j] = swap;
+                    Data[index + i] = Data[i * ColumnCount + j];
+                    Data[i * ColumnCount + j] = swap;
                 }
             }
         }
@@ -602,13 +630,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public override T[] ToRowMajorArray()
         {
-            var ret = new T[Data.Length];
+            T[] ret = new T[Data.Length];
             for (int i = 0; i < RowCount; i++)
             {
-                var offset = i*ColumnCount;
+                int offset = i * ColumnCount;
                 for (int j = 0; j < ColumnCount; j++)
                 {
-                    ret[offset + j] = Data[(j*RowCount) + i];
+                    ret[offset + j] = Data[(j * RowCount) + i];
                 }
             }
             return ret;
@@ -616,52 +644,52 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public override T[] ToColumnMajorArray()
         {
-            var ret = new T[Data.Length];
+            T[] ret = new T[Data.Length];
             Array.Copy(Data, 0, ret, 0, Data.Length);
             return ret;
         }
 
         public override T[][] ToRowArrays()
         {
-            var ret = new T[RowCount][];
-            CommonParallel.For(0, RowCount, Math.Max(4096/ColumnCount, 32), (a, b) =>
-            {
-                for (int i = a; i < b; i++)
-                {
-                    var row = new T[ColumnCount];
-                    for (int j = 0; j < ColumnCount; j++)
-                    {
-                        row[j] = Data[j*RowCount + i];
-                    }
-                    ret[i] = row;
-                }
-            });
+            T[][] ret = new T[RowCount][];
+            CommonParallel.For(0, RowCount, Math.Max(4096 / ColumnCount, 32), (a, b) =>
+              {
+                  for (int i = a; i < b; i++)
+                  {
+                      T[] row = new T[ColumnCount];
+                      for (int j = 0; j < ColumnCount; j++)
+                      {
+                          row[j] = Data[j * RowCount + i];
+                      }
+                      ret[i] = row;
+                  }
+              });
             return ret;
         }
 
         public override T[][] ToColumnArrays()
         {
-            var ret = new T[ColumnCount][];
-            CommonParallel.For(0, ColumnCount, Math.Max(4096/RowCount, 32), (a, b) =>
-            {
-                for (int j = a; j < b; j++)
-                {
-                    var column = new T[RowCount];
-                    Array.Copy(Data, j*RowCount, column, 0, RowCount);
-                    ret[j] = column;
-                }
-            });
+            T[][] ret = new T[ColumnCount][];
+            CommonParallel.For(0, ColumnCount, Math.Max(4096 / RowCount, 32), (a, b) =>
+              {
+                  for (int j = a; j < b; j++)
+                  {
+                      T[] column = new T[RowCount];
+                      Array.Copy(Data, j * RowCount, column, 0, RowCount);
+                      ret[j] = column;
+                  }
+              });
             return ret;
         }
 
         public override T[,] ToArray()
         {
-            var ret = new T[RowCount, ColumnCount];
+            T[,] ret = new T[RowCount, ColumnCount];
             for (int i = 0; i < RowCount; i++)
             {
                 for (int j = 0; j < ColumnCount; j++)
                 {
-                    ret[i, j] = Data[(j*RowCount) + i];
+                    ret[i, j] = Data[(j * RowCount) + i];
                 }
             }
             return ret;
@@ -704,7 +732,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             {
                 for (int i = 0; i < RowCount; i++)
                 {
-                    var x = Data[index];
+                    T x = Data[index];
                     if (!Zero.Equals(x))
                     {
                         yield return (i, j, x);
@@ -778,17 +806,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                     {
                         if (k < otherRowPointers[row + 1] && otherColumnIndices[k] == col)
                         {
-                            if (predicate(Data[col*RowCount + row], otherValues[k]))
+                            if (predicate(Data[col * RowCount + row], otherValues[k]))
                             {
-                                return new Tuple<int, int, T, TOther>(row, col, Data[col*RowCount + row], otherValues[k]);
+                                return new Tuple<int, int, T, TOther>(row, col, Data[col * RowCount + row], otherValues[k]);
                             }
                             k++;
                         }
                         else
                         {
-                            if (predicate(Data[col*RowCount + row], otherZero))
+                            if (predicate(Data[col * RowCount + row], otherZero))
                             {
-                                return new Tuple<int, int, T, TOther>(row, col, Data[col*RowCount + row], otherValues[k]);
+                                return new Tuple<int, int, T, TOther>(row, col, Data[col * RowCount + row], otherValues[k]);
                             }
                         }
                     }
@@ -816,18 +844,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public override void MapIndexedInplace(Func<int, int, T, T> f, Zeros zeros)
         {
-            CommonParallel.For(0, ColumnCount, Math.Max(4096/RowCount, 32), (a, b) =>
-            {
-                int index = a*RowCount;
-                for (int j = a; j < b; j++)
-                {
-                    for (int i = 0; i < RowCount; i++)
-                    {
-                        Data[index] = f(i, j, Data[index]);
-                        index++;
-                    }
-                }
-            });
+            CommonParallel.For(0, ColumnCount, Math.Max(4096 / RowCount, 32), (a, b) =>
+              {
+                  int index = a * RowCount;
+                  for (int j = a; j < b; j++)
+                  {
+                      for (int i = 0; i < RowCount; i++)
+                      {
+                          Data[index] = f(i, j, Data[index]);
+                          index++;
+                      }
+                  }
+              });
         }
 
         internal override void MapToUnchecked<TU>(MatrixStorage<TU> target, Func<T, TU> f,
@@ -862,18 +890,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             if (target is DenseColumnMajorMatrixStorage<TU> denseTarget)
             {
-                CommonParallel.For(0, ColumnCount, Math.Max(4096/RowCount, 32), (a, b) =>
-                {
-                    int index = a*RowCount;
-                    for (int j = a; j < b; j++)
-                    {
-                        for (int i = 0; i < RowCount; i++)
-                        {
-                            denseTarget.Data[index] = f(i, j, Data[index]);
-                            index++;
-                        }
-                    }
-                });
+                CommonParallel.For(0, ColumnCount, Math.Max(4096 / RowCount, 32), (a, b) =>
+                  {
+                      int index = a * RowCount;
+                      for (int j = a; j < b; j++)
+                      {
+                          for (int i = 0; i < RowCount; i++)
+                          {
+                              denseTarget.Data[index] = f(i, j, Data[index]);
+                              index++;
+                          }
+                      }
+                  });
                 return;
             }
 
@@ -896,18 +924,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             if (target is DenseColumnMajorMatrixStorage<TU> denseTarget)
             {
-                CommonParallel.For(0, columnCount, Math.Max(4096/rowCount, 32), (a, b) =>
-                {
-                    for (int j = a; j < b; j++)
-                    {
-                        int sourceIndex = sourceRowIndex + (j + sourceColumnIndex)*RowCount;
-                        int targetIndex = targetRowIndex + (j + targetColumnIndex)*target.RowCount;
-                        for (int i = 0; i < rowCount; i++)
-                        {
-                            denseTarget.Data[targetIndex++] = f(targetRowIndex + i, targetColumnIndex + j, Data[sourceIndex++]);
-                        }
-                    }
-                });
+                CommonParallel.For(0, columnCount, Math.Max(4096 / rowCount, 32), (a, b) =>
+                  {
+                      for (int j = a; j < b; j++)
+                      {
+                          int sourceIndex = sourceRowIndex + (j + sourceColumnIndex) * RowCount;
+                          int targetIndex = targetRowIndex + (j + targetColumnIndex) * target.RowCount;
+                          for (int i = 0; i < rowCount; i++)
+                          {
+                              denseTarget.Data[targetIndex++] = f(targetRowIndex + i, targetColumnIndex + j, Data[sourceIndex++]);
+                          }
+                      }
+                  });
                 return;
             }
 
@@ -917,7 +945,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
             for (int j = sourceColumnIndex, jj = targetColumnIndex; j < sourceColumnIndex + columnCount; j++, jj++)
             {
-                int index = sourceRowIndex + j*RowCount;
+                int index = sourceRowIndex + j * RowCount;
                 for (int ii = targetRowIndex; ii < targetRowIndex + rowCount; ii++)
                 {
                     target.At(ii, jj, f(ii, jj, Data[index++]));
@@ -934,7 +962,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 TU s = state[i];
                 for (int j = 0; j < ColumnCount; j++)
                 {
-                    s = f(s, Data[j*RowCount + i]);
+                    s = f(s, Data[j * RowCount + i]);
                 }
                 target[i] = finalize(s, ColumnCount);
             }
@@ -944,7 +972,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             for (int j = 0; j < ColumnCount; j++)
             {
-                int offset = j*RowCount;
+                int offset = j * RowCount;
                 TU s = state[j];
                 for (int i = 0; i < RowCount; i++)
                 {
@@ -995,11 +1023,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                     {
                         if (k < otherRowPointers[row + 1] && otherColumnIndices[k] == col)
                         {
-                            state = f(state, Data[col*RowCount + row], otherValues[k++]);
+                            state = f(state, Data[col * RowCount + row], otherValues[k++]);
                         }
                         else
                         {
-                            state = f(state, Data[col*RowCount + row], otherZero);
+                            state = f(state, Data[col * RowCount + row], otherZero);
                         }
                     }
                 }

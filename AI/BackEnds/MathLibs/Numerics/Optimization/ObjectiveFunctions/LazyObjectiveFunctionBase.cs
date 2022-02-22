@@ -33,7 +33,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
 {
     public abstract class LazyObjectiveFunctionBase : IObjectiveFunction
     {
-        VectorMathNet<double> _point;
+        private VectorMathNet<double> _point;
 
         protected bool HasFunctionValue { get; set; }
         protected double FunctionValue { get; set; }

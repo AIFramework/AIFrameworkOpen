@@ -32,8 +32,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <returns></returns>
         private static TransferFunction MakeTf(int order, double delta)
         {
-            var a = Enumerable.Range(0, order + 1).Select(i => ThiranCoefficient(i, order, delta));
-            var b = a.Reverse();
+            System.Collections.Generic.IEnumerable<double> a = Enumerable.Range(0, order + 1).Select(i => ThiranCoefficient(i, order, delta));
+            System.Collections.Generic.IEnumerable<double> b = a.Reverse();
 
             return new TransferFunction(b.ToArray(), a.ToArray());
         }
@@ -47,9 +47,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <returns></returns>
         private static double ThiranCoefficient(int k, int n, double delta)
         {
-            var a = 1.0;
+            double a = 1.0;
 
-            for (var i = 0; i <= n; i++)
+            for (int i = 0; i <= n; i++)
             {
                 a *= (delta - n + i) / (delta - n + k + i);
             }

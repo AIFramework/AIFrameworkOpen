@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Audio.Interfaces;
+using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 using System.Text;
 using System.Threading.Tasks;
-using AI.BackEnds.DSP.NWaves.Audio.Interfaces;
-using AI.BackEnds.DSP.NWaves.Signals;
 
 namespace AI.BackEnds.DSP.NWaves.Audio.Mci
 {
@@ -64,21 +64,21 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
 
             _alias = Guid.NewGuid().ToString();
 
-            var mciCommand = string.Format("open \"{0}\" type waveaudio alias {1}", source, _alias);
+            string mciCommand = string.Format("open \"{0}\" type waveaudio alias {1}", source, _alias);
             Mci.SendString(mciCommand, null, 0, 0);
 
             mciCommand = string.Format("set {0} time format samples", _alias);
             Mci.SendString(mciCommand, null, 0, 0);
 
-            var durationBuffer = new StringBuilder(255);
+            StringBuilder durationBuffer = new StringBuilder(255);
             mciCommand = string.Format("status {0} length", _alias);
             Mci.SendString(mciCommand, durationBuffer, 255, 0);
-            var duration = int.Parse(durationBuffer.ToString());
+            int duration = int.Parse(durationBuffer.ToString());
 
-            var samplingRateBuffer = new StringBuilder(255);
+            StringBuilder samplingRateBuffer = new StringBuilder(255);
             mciCommand = string.Format("status {0} samplespersec", _alias);
             Mci.SendString(mciCommand, samplingRateBuffer, 255, 0);
-            var samplingRate = int.Parse(samplingRateBuffer.ToString());
+            int samplingRate = int.Parse(samplingRateBuffer.ToString());
 
             mciCommand = string.Format("play {2} from {0} to {1} notify", startPos, endPos, _alias);
             mciCommand = mciCommand.Replace(" to -1", "");
@@ -86,7 +86,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
 
             // ======= here's how we do asynchrony with old technology from 90's )) ========
 
-            var currentAlias = _alias;
+            string currentAlias = _alias;
 
             await Task.Delay((int)(duration * 1000.0 / samplingRate));
 
@@ -97,7 +97,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
             {
                 // first, we check if the pause is right now
                 if (_isPaused)
-                { 
+                {
                     // then just await one second more
                     // (the stupidest wait spin I wrote in years ))))
                     await Task.Delay(1000);
@@ -145,7 +145,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
                 return;
             }
 
-            var mciCommand = string.Format("pause {0}", _alias);
+            string mciCommand = string.Format("pause {0}", _alias);
             Mci.SendString(mciCommand, null, 0, 0);
 
             _pauseTime = DateTime.Now;
@@ -162,10 +162,10 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
                 return;
             }
 
-            var mciCommand = string.Format("resume {0}", _alias);
+            string mciCommand = string.Format("resume {0}", _alias);
             Mci.SendString(mciCommand, null, 0, 0);
 
-            var pause = DateTime.Now - _pauseTime;
+            TimeSpan pause = DateTime.Now - _pauseTime;
 
             _pauseDuration += pause.Duration().Seconds * 1000 + pause.Duration().Milliseconds;
             _isPaused = false;
@@ -186,7 +186,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
                 Resume();
             }
 
-            var mciCommand = string.Format("stop {0}", _alias);
+            string mciCommand = string.Format("stop {0}", _alias);
             Mci.SendString(mciCommand, null, 0, 0);
 
             mciCommand = string.Format("close {0}", _alias);

@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -76,12 +76,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class NormalGamma : IDistribution
     {
-        System.Random _random;
-
-        readonly double _meanLocation;
-        readonly double _meanScale;
-        readonly double _precisionShape;
-        readonly double _precisionInvScale;
+        private System.Random _random;
+        private readonly double _meanLocation;
+        private readonly double _meanScale;
+        private readonly double _precisionShape;
+        private readonly double _precisionInvScale;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NormalGamma"/> class.
@@ -184,10 +183,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             if (double.IsPositiveInfinity(_precisionInvScale))
             {
-                return new StudentT(_meanLocation, 1.0/(_meanScale*_precisionShape), double.PositiveInfinity);
+                return new StudentT(_meanLocation, 1.0 / (_meanScale * _precisionShape), double.PositiveInfinity);
             }
 
-            return new StudentT(_meanLocation, Math.Sqrt(_precisionInvScale/(_meanScale*_precisionShape)), 2.0*_precisionShape);
+            return new StudentT(_meanLocation, Math.Sqrt(_precisionInvScale / (_meanScale * _precisionShape)), 2.0 * _precisionShape);
         }
 
         /// <summary>
@@ -203,13 +202,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// Gets the mean of the distribution.
         /// </summary>
         /// <value>The mean of the distribution.</value>
-        public MeanPrecisionPair Mean => double.IsPositiveInfinity(_precisionInvScale) ? new MeanPrecisionPair(_meanLocation, _precisionShape) : new MeanPrecisionPair(_meanLocation, _precisionShape/_precisionInvScale);
+        public MeanPrecisionPair Mean => double.IsPositiveInfinity(_precisionInvScale) ? new MeanPrecisionPair(_meanLocation, _precisionShape) : new MeanPrecisionPair(_meanLocation, _precisionShape / _precisionInvScale);
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
         /// <value>The mean of the distribution.</value>
-        public MeanPrecisionPair Variance => new MeanPrecisionPair(_precisionInvScale/(_meanScale*(_precisionShape - 1)), _precisionShape/Math.Sqrt(_precisionInvScale));
+        public MeanPrecisionPair Variance => new MeanPrecisionPair(_precisionInvScale / (_meanScale * (_precisionShape - 1)), _precisionShape / Math.Sqrt(_precisionInvScale));
 
         /// <summary>
         /// Evaluates the probability density function for a NormalGamma distribution.
@@ -251,9 +250,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             // double e = -0.5 * prec * (mean - _meanLocation) * (mean - _meanLocation) - prec * _precisionInvScale;
             // return Math.Pow(prec * _precisionInvScale, _precisionShape) * Math.Exp(e) / (Constants.Sqrt2Pi * Math.Sqrt(prec) * SpecialFunctions.Gamma(_precisionShape));
-            double e = -(0.5*prec*_meanScale*(mean - _meanLocation)*(mean - _meanLocation)) - (prec*_precisionInvScale);
-            return Math.Pow(prec*_precisionInvScale, _precisionShape)*Math.Exp(e)*Math.Sqrt(_meanScale)
-                   /(Constants.Sqrt2Pi*Math.Sqrt(prec)*SpecialFunctions.Gamma(_precisionShape));
+            double e = -(0.5 * prec * _meanScale * (mean - _meanLocation) * (mean - _meanLocation)) - (prec * _precisionInvScale);
+            return Math.Pow(prec * _precisionInvScale, _precisionShape) * Math.Exp(e) * Math.Sqrt(_meanScale)
+                   / (Constants.Sqrt2Pi * Math.Sqrt(prec) * SpecialFunctions.Gamma(_precisionShape));
         }
 
         /// <summary>
@@ -291,8 +290,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             // double e = -0.5 * prec * (mean - _meanLocation) * (mean - _meanLocation) - prec * _precisionInvScale;
             // return (_precisionShape - 0.5) * Math.Log(prec) + _precisionShape * Math.Log(_precisionInvScale) + e - Constants.LogSqrt2Pi - SpecialFunctions.GammaLn(_precisionShape);
-            double e = -(0.5*prec*_meanScale*(mean - _meanLocation)*(mean - _meanLocation)) - (prec*_precisionInvScale);
-            return ((_precisionShape - 0.5)*Math.Log(prec)) + (_precisionShape*Math.Log(_precisionInvScale)) - (0.5*Math.Log(_meanScale)) + e - Constants.LogSqrt2Pi - SpecialFunctions.GammaLn(_precisionShape);
+            double e = -(0.5 * prec * _meanScale * (mean - _meanLocation) * (mean - _meanLocation)) - (prec * _precisionInvScale);
+            return ((_precisionShape - 0.5) * Math.Log(prec)) + (_precisionShape * Math.Log(_precisionInvScale)) - (0.5 * Math.Log(_meanScale)) + e - Constants.LogSqrt2Pi - SpecialFunctions.GammaLn(_precisionShape);
         }
 
         /// <summary>
@@ -332,13 +331,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var mp = new MeanPrecisionPair();
+            MeanPrecisionPair mp = new MeanPrecisionPair
+            {
 
-            // Sample the precision.
-            mp.Precision = double.IsPositiveInfinity(precisionInverseScale) ? precisionShape : Gamma.Sample(rnd, precisionShape, precisionInverseScale);
+                // Sample the precision.
+                Precision = double.IsPositiveInfinity(precisionInverseScale) ? precisionShape : Gamma.Sample(rnd, precisionShape, precisionInverseScale)
+            };
 
             // Sample the mean.
-            mp.Mean = meanScale == 0.0 ? meanLocation : Normal.Sample(rnd, meanLocation, Math.Sqrt(1.0/(meanScale*mp.Precision)));
+            mp.Mean = meanScale == 0.0 ? meanLocation : Normal.Sample(rnd, meanLocation, Math.Sqrt(1.0 / (meanScale * mp.Precision)));
 
             return mp;
         }
@@ -361,13 +362,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             while (true)
             {
-                var mp = new MeanPrecisionPair();
+                MeanPrecisionPair mp = new MeanPrecisionPair
+                {
 
-                // Sample the precision.
-                mp.Precision = double.IsPositiveInfinity(precisionInvScale) ? precisionShape : Gamma.Sample(rnd, precisionShape, precisionInvScale);
+                    // Sample the precision.
+                    Precision = double.IsPositiveInfinity(precisionInvScale) ? precisionShape : Gamma.Sample(rnd, precisionShape, precisionInvScale)
+                };
 
                 // Sample the mean.
-                mp.Mean = meanScale == 0.0 ? meanLocation : Normal.Sample(rnd, meanLocation, Math.Sqrt(1.0/(meanScale*mp.Precision)));
+                mp.Mean = meanScale == 0.0 ? meanLocation : Normal.Sample(rnd, meanLocation, Math.Sqrt(1.0 / (meanScale * mp.Precision)));
 
                 yield return mp;
             }

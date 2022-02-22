@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -41,9 +41,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class ChiSquared : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _freedom;
+        private System.Random _random;
+        private readonly double _freedom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChiSquared"/> class.
@@ -116,22 +115,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => 2.0*_freedom;
+        public double Variance => 2.0 * _freedom;
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => Math.Sqrt(2.0*_freedom);
+        public double StdDev => Math.Sqrt(2.0 * _freedom);
 
         /// <summary>
         /// Gets the entropy of the distribution.
         /// </summary>
-        public double Entropy => (_freedom/2.0) + Math.Log(2.0*SpecialFunctions.Gamma(_freedom/2.0)) + ((1.0 - (_freedom/2.0))*SpecialFunctions.DiGamma(_freedom/2.0));
+        public double Entropy => (_freedom / 2.0) + Math.Log(2.0 * SpecialFunctions.Gamma(_freedom / 2.0)) + ((1.0 - (_freedom / 2.0)) * SpecialFunctions.DiGamma(_freedom / 2.0));
 
         /// <summary>
         /// Gets the skewness of the distribution.
         /// </summary>
-        public double Skewness => Math.Sqrt(8.0/_freedom);
+        public double Skewness => Math.Sqrt(8.0 / _freedom);
 
         /// <summary>
         /// Gets the mode of the distribution.
@@ -141,7 +140,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the median of the distribution.
         /// </summary>
-        public double Median => _freedom - (2.0/3.0);
+        public double Median => _freedom - (2.0 / 3.0);
 
         /// <summary>
         /// Gets the minimum of the distribution.
@@ -230,14 +229,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="rnd">The random number generator to use.</param>
         /// <param name="freedom">The degrees of freedom (k) of the distribution. Range: k > 0.</param>
         /// <returns>a random number from the distribution.</returns>
-        static double SampleUnchecked(System.Random rnd, double freedom)
+        private static double SampleUnchecked(System.Random rnd, double freedom)
         {
             // Use the simple method if the degrees of freedom is an integer anyway
             if (Math.Floor(freedom) == freedom && freedom < int.MaxValue)
             {
                 double sum = 0;
-                var n = (int)freedom;
-                for (var i = 0; i < n; i++)
+                int n = (int)freedom;
+                for (int i = 0; i < n; i++)
                 {
                     sum += Math.Pow(Normal.Sample(rnd, 0.0, 1.0), 2);
                 }
@@ -247,7 +246,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             // Call the gamma function (see http://en.wikipedia.org/wiki/Gamma_distribution#Specializations
             // for a justification)
-            return Gamma.SampleUnchecked(rnd, freedom/2.0, .5);
+            return Gamma.SampleUnchecked(rnd, freedom / 2.0, .5);
         }
 
         internal static void SamplesUnchecked(System.Random rnd, double[] values, double freedom)
@@ -255,18 +254,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             // Use the simple method if the degrees of freedom is an integer anyway
             if (Math.Floor(freedom) == freedom && freedom < int.MaxValue)
             {
-                var n = (int)freedom;
-                var standard = new double[values.Length*n];
+                int n = (int)freedom;
+                double[] standard = new double[values.Length * n];
                 Normal.SamplesUnchecked(rnd, standard, 0.0, 1.0);
                 CommonParallel.For(0, values.Length, 4096, (a, b) =>
                 {
                     for (int i = a; i < b; i++)
                     {
-                        int k = i*n;
+                        int k = i * n;
                         double sum = 0;
                         for (int j = 0; j < n; j++)
                         {
-                            sum += standard[k + j]*standard[k + j];
+                            sum += standard[k + j] * standard[k + j];
                         }
 
                         values[i] = sum;
@@ -277,10 +276,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             // Call the gamma function (see http://en.wikipedia.org/wiki/Gamma_distribution#Specializations
             // for a justification)
-            Gamma.SamplesUnchecked(rnd, values, freedom/2.0, .5);
+            Gamma.SamplesUnchecked(rnd, values, freedom / 2.0, .5);
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double freedom)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double freedom)
         {
             while (true)
             {
@@ -312,7 +311,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return Math.Exp(PDFLn(freedom, x));
             }
 
-            return (Math.Pow(x, (freedom/2.0) - 1.0)*Math.Exp(-x/2.0))/(Math.Pow(2.0, freedom/2.0)*SpecialFunctions.Gamma(freedom/2.0));
+            return (Math.Pow(x, (freedom / 2.0) - 1.0) * Math.Exp(-x / 2.0)) / (Math.Pow(2.0, freedom / 2.0) * SpecialFunctions.Gamma(freedom / 2.0));
         }
 
         /// <summary>
@@ -334,7 +333,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return double.NegativeInfinity;
             }
 
-            return (-x/2.0) + (((freedom/2.0) - 1.0)*Math.Log(x)) - ((freedom/2.0)*Math.Log(2)) - SpecialFunctions.GammaLn(freedom/2.0);
+            return (-x / 2.0) + (((freedom / 2.0) - 1.0) * Math.Log(x)) - ((freedom / 2.0) * Math.Log(2)) - SpecialFunctions.GammaLn(freedom / 2.0);
         }
 
         /// <summary>
@@ -361,7 +360,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 1.0;
             }
 
-            return SpecialFunctions.GammaLowerRegularized(freedom/2.0, x/2.0);
+            return SpecialFunctions.GammaLowerRegularized(freedom / 2.0, x / 2.0);
         }
 
         /// <summary>
@@ -373,7 +372,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the inverse cumulative density at <paramref name="p"/>.</returns>
         public static double InvCDF(double freedom, double p)
         {
-            if(!IsValidParameterSet(freedom))
+            if (!IsValidParameterSet(freedom))
             {
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }

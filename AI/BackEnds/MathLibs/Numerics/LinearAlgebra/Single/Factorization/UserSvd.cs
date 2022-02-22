@@ -57,35 +57,35 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <exception cref="NonConvergenceException"></exception>
         public static UserSvd Create(MatrixMathNet<float> matrix, bool computeVectors)
         {
-            var nm = Math.Min(matrix.RowCount + 1, matrix.ColumnCount);
-            var matrixCopy = matrix.Clone();
+            int nm = Math.Min(matrix.RowCount + 1, matrix.ColumnCount);
+            MatrixMathNet<float> matrixCopy = matrix.Clone();
 
-            var s = VectorMathNet<float>.Build.SameAs(matrixCopy, nm);
-            var u = MatrixMathNet<float>.Build.SameAs(matrixCopy, matrixCopy.RowCount, matrixCopy.RowCount, fullyMutable: true);
-            var vt = MatrixMathNet<float>.Build.SameAs(matrixCopy, matrixCopy.ColumnCount, matrixCopy.ColumnCount, fullyMutable: true);
+            VectorMathNet<float> s = VectorMathNet<float>.Build.SameAs(matrixCopy, nm);
+            MatrixMathNet<float> u = MatrixMathNet<float>.Build.SameAs(matrixCopy, matrixCopy.RowCount, matrixCopy.RowCount, fullyMutable: true);
+            MatrixMathNet<float> vt = MatrixMathNet<float>.Build.SameAs(matrixCopy, matrixCopy.ColumnCount, matrixCopy.ColumnCount, fullyMutable: true);
 
             const int maxiter = 1000;
-            var e = new float[matrixCopy.ColumnCount];
-            var work = new float[matrixCopy.RowCount];
+            float[] e = new float[matrixCopy.ColumnCount];
+            float[] work = new float[matrixCopy.RowCount];
 
             int i, j;
             int l, lp1;
             float t;
 
-            var ncu = matrixCopy.RowCount;
+            int ncu = matrixCopy.RowCount;
 
             // Reduce matrixCopy to bidiagonal form, storing the diagonal elements
             // In s and the super-diagonal elements in e.
-            var nct = Math.Min(matrixCopy.RowCount - 1, matrixCopy.ColumnCount);
-            var nrt = Math.Max(0, Math.Min(matrixCopy.ColumnCount - 2, matrixCopy.RowCount));
-            var lu = Math.Max(nct, nrt);
+            int nct = Math.Min(matrixCopy.RowCount - 1, matrixCopy.ColumnCount);
+            int nrt = Math.Max(0, Math.Min(matrixCopy.ColumnCount - 2, matrixCopy.RowCount));
+            int lu = Math.Max(nct, nrt);
             for (l = 0; l < lu; l++)
             {
                 lp1 = l + 1;
                 if (l < nct)
                 {
                     // Compute the transformation for the l-th column and place the l-th diagonal in VectorS[l].
-                    var xnorm = Dnrm2Column(matrixCopy, matrixCopy.RowCount, l, l);
+                    float xnorm = Dnrm2Column(matrixCopy, matrixCopy.RowCount, l, l);
                     s[l] = xnorm;
                     if (s[l] != 0.0)
                     {
@@ -94,7 +94,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                             s[l] = Dsign(s[l], matrixCopy.At(l, l));
                         }
 
-                        DscalColumn(matrixCopy, matrixCopy.RowCount, l, l, 1.0f/s[l]);
+                        DscalColumn(matrixCopy, matrixCopy.RowCount, l, l, 1.0f / s[l]);
                         matrixCopy.At(l, l, (1.0f + matrixCopy.At(l, l)));
                     }
 
@@ -108,10 +108,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                         if (s[l] != 0.0)
                         {
                             // Apply the transformation.
-                            t = -Ddot(matrixCopy, matrixCopy.RowCount, l, j, l)/matrixCopy.At(l, l);
-                            for (var ii = l; ii < matrixCopy.RowCount; ii++)
+                            t = -Ddot(matrixCopy, matrixCopy.RowCount, l, j, l) / matrixCopy.At(l, l);
+                            for (int ii = l; ii < matrixCopy.RowCount; ii++)
                             {
-                                matrixCopy.At(ii, j, matrixCopy.At(ii, j) + (t*matrixCopy.At(ii, l)));
+                                matrixCopy.At(ii, j, matrixCopy.At(ii, j) + (t * matrixCopy.At(ii, l)));
                             }
                         }
                     }
@@ -136,7 +136,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 }
 
                 // Compute the l-th row transformation and place the l-th super-diagonal in e(l).
-                var enorm = Dnrm2Vector(e, lp1);
+                float enorm = Dnrm2Vector(e, lp1);
                 e[l] = enorm;
                 if (e[l] != 0.0)
                 {
@@ -145,7 +145,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                         e[l] = Dsign(e[l], e[lp1]);
                     }
 
-                    DscalVector(e, lp1, 1.0f/e[l]);
+                    DscalVector(e, lp1, 1.0f / e[l]);
                     e[lp1] = 1.0f + e[lp1];
                 }
 
@@ -160,18 +160,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
 
                     for (j = lp1; j < matrixCopy.ColumnCount; j++)
                     {
-                        for (var ii = lp1; ii < matrixCopy.RowCount; ii++)
+                        for (int ii = lp1; ii < matrixCopy.RowCount; ii++)
                         {
-                            work[ii] += e[j]*matrixCopy.At(ii, j);
+                            work[ii] += e[j] * matrixCopy.At(ii, j);
                         }
                     }
 
                     for (j = lp1; j < matrixCopy.ColumnCount; j++)
                     {
-                        var ww = -e[j]/e[lp1];
-                        for (var ii = lp1; ii < matrixCopy.RowCount; ii++)
+                        float ww = -e[j] / e[lp1];
+                        for (int ii = lp1; ii < matrixCopy.RowCount; ii++)
                         {
-                            matrixCopy.At(ii, j, matrixCopy.At(ii, j) + (ww*work[ii]));
+                            matrixCopy.At(ii, j, matrixCopy.At(ii, j) + (ww * work[ii]));
                         }
                     }
                 }
@@ -187,9 +187,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
 
             // Set up the final bidiagonal matrixCopy or order m.
-            var m = Math.Min(matrixCopy.ColumnCount, matrixCopy.RowCount + 1);
-            var nctp1 = nct + 1;
-            var nrtp1 = nrt + 1;
+            int m = Math.Min(matrixCopy.ColumnCount, matrixCopy.RowCount + 1);
+            int nctp1 = nct + 1;
+            int nrtp1 = nrt + 1;
             if (nct < matrixCopy.ColumnCount)
             {
                 s[nctp1 - 1] = matrixCopy.At((nctp1 - 1), (nctp1 - 1));
@@ -226,10 +226,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                     {
                         for (j = l + 1; j < ncu; j++)
                         {
-                            t = -Ddot(u, matrixCopy.RowCount, l, j, l)/u.At(l, l);
-                            for (var ii = l; ii < matrixCopy.RowCount; ii++)
+                            t = -Ddot(u, matrixCopy.RowCount, l, j, l) / u.At(l, l);
+                            for (int ii = l; ii < matrixCopy.RowCount; ii++)
                             {
-                                u.At(ii, j, u.At(ii, j) + (t*u.At(ii, l)));
+                                u.At(ii, j, u.At(ii, j) + (t * u.At(ii, l)));
                             }
                         }
 
@@ -264,10 +264,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                         {
                             for (j = lp1; j < matrixCopy.ColumnCount; j++)
                             {
-                                t = -Ddot(vt, matrixCopy.ColumnCount, l, j, lp1)/vt.At(lp1, l);
-                                for (var ii = l; ii < matrixCopy.ColumnCount; ii++)
+                                t = -Ddot(vt, matrixCopy.ColumnCount, l, j, lp1) / vt.At(lp1, l);
+                                for (int ii = l; ii < matrixCopy.ColumnCount; ii++)
                                 {
-                                    vt.At(ii, j, vt.At(ii, j) + (t*vt.At(ii, l)));
+                                    vt.At(ii, j, vt.At(ii, j) + (t * vt.At(ii, l)));
                                 }
                             }
                         }
@@ -289,11 +289,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 if (s[i] != 0.0)
                 {
                     t = s[i];
-                    r = s[i]/t;
+                    r = s[i] / t;
                     s[i] = t;
                     if (i < m - 1)
                     {
-                        e[i] = e[i]/r;
+                        e[i] = e[i] / r;
                     }
 
                     if (computeVectors)
@@ -311,9 +311,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 if (e[i] != 0.0)
                 {
                     t = e[i];
-                    r = t/e[i];
+                    r = t / e[i];
                     e[i] = t;
-                    s[i + 1] = s[i + 1]*r;
+                    s[i + 1] = s[i + 1] * r;
                     if (computeVectors)
                     {
                         DscalColumn(vt, matrixCopy.ColumnCount, i + 1, 0, r);
@@ -322,8 +322,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
 
             // Main iteration loop for the singular values.
-            var mn = m;
-            var iter = 0;
+            int mn = m;
+            int iter = 0;
 
             while (m > 0)
             {
@@ -406,12 +406,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 float cs;
                 switch (kase)
                 {
-                        // Deflate negligible VectorS[m].
+                    // Deflate negligible VectorS[m].
                     case 1:
                         f = e[m - 2];
                         e[m - 2] = 0.0f;
                         float t1;
-                        for (var kk = l; kk < m - 1; kk++)
+                        for (int kk = l; kk < m - 1; kk++)
                         {
                             k = m - 2 - kk + l;
                             t1 = s[k];
@@ -419,8 +419,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                             s[k] = t1;
                             if (k != l)
                             {
-                                f = -sn*e[k - 1];
-                                e[k - 1] = cs*e[k - 1];
+                                f = -sn * e[k - 1];
+                                e[k - 1] = cs * e[k - 1];
                             }
 
                             if (computeVectors)
@@ -431,7 +431,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
 
                         break;
 
-                        // Split at negligible VectorS[l].
+                    // Split at negligible VectorS[l].
                     case 2:
                         f = e[l - 1];
                         e[l - 1] = 0.0f;
@@ -440,8 +440,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                             t1 = s[k];
                             Drotg(ref t1, ref f, out cs, out sn);
                             s[k] = t1;
-                            f = -sn*e[k];
-                            e[k] = cs*e[k];
+                            f = -sn * e[k];
+                            e[k] = cs * e[k];
                             if (computeVectors)
                             {
                                 Drot(u, matrixCopy.RowCount, k, l - 1, cs, sn);
@@ -450,36 +450,36 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
 
                         break;
 
-                        // Perform one qr step.
+                    // Perform one qr step.
                     case 3:
                         // Calculate the shift.
-                        var scale = 0.0f;
+                        float scale = 0.0f;
                         scale = Math.Max(scale, Math.Abs(s[m - 1]));
                         scale = Math.Max(scale, Math.Abs(s[m - 2]));
                         scale = Math.Max(scale, Math.Abs(e[m - 2]));
                         scale = Math.Max(scale, Math.Abs(s[l]));
                         scale = Math.Max(scale, Math.Abs(e[l]));
-                        var sm = s[m - 1]/scale;
-                        var smm1 = s[m - 2]/scale;
-                        var emm1 = e[m - 2]/scale;
-                        var sl = s[l]/scale;
-                        var el = e[l]/scale;
-                        var b = (((smm1 + sm)*(smm1 - sm)) + (emm1*emm1))/2.0f;
-                        var c = (sm*emm1)*(sm*emm1);
-                        var shift = 0.0f;
+                        float sm = s[m - 1] / scale;
+                        float smm1 = s[m - 2] / scale;
+                        float emm1 = e[m - 2] / scale;
+                        float sl = s[l] / scale;
+                        float el = e[l] / scale;
+                        float b = (((smm1 + sm) * (smm1 - sm)) + (emm1 * emm1)) / 2.0f;
+                        float c = (sm * emm1) * (sm * emm1);
+                        float shift = 0.0f;
                         if (b != 0.0 || c != 0.0)
                         {
-                            shift = (float) Math.Sqrt((b*b) + c);
+                            shift = (float)Math.Sqrt((b * b) + c);
                             if (b < 0.0)
                             {
                                 shift = -shift;
                             }
 
-                            shift = c/(b + shift);
+                            shift = c / (b + shift);
                         }
 
-                        f = ((sl + sm)*(sl - sm)) + shift;
-                        var g = sl*el;
+                        f = ((sl + sm) * (sl - sm)) + shift;
+                        float g = sl * el;
 
                         // Chase zeros.
                         for (k = l; k < m - 1; k++)
@@ -490,10 +490,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                                 e[k - 1] = f;
                             }
 
-                            f = (cs*s[k]) + (sn*e[k]);
-                            e[k] = (cs*e[k]) - (sn*s[k]);
-                            g = sn*s[k + 1];
-                            s[k + 1] = cs*s[k + 1];
+                            f = (cs * s[k]) + (sn * e[k]);
+                            e[k] = (cs * e[k]) - (sn * s[k]);
+                            g = sn * s[k + 1];
+                            s[k + 1] = cs * s[k + 1];
                             if (computeVectors)
                             {
                                 Drot(vt, matrixCopy.ColumnCount, k, k + 1, cs, sn);
@@ -501,10 +501,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
 
                             Drotg(ref f, ref g, out cs, out sn);
                             s[k] = f;
-                            f = (cs*e[k]) + (sn*s[k + 1]);
-                            s[k + 1] = (-sn*e[k]) + (cs*s[k + 1]);
-                            g = sn*e[k + 1];
-                            e[k + 1] = cs*e[k + 1];
+                            f = (cs * e[k]) + (sn * s[k + 1]);
+                            s[k + 1] = (-sn * e[k]) + (cs * s[k + 1]);
+                            g = sn * e[k + 1];
+                            e[k + 1] = cs * e[k + 1];
                             if (computeVectors && k < matrixCopy.RowCount)
                             {
                                 Drot(u, matrixCopy.RowCount, k, k + 1, cs, sn);
@@ -515,7 +515,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                         iter = iter + 1;
                         break;
 
-                        // Convergence.
+                    // Convergence.
                     case 4:
                         // Make the singular value  positive
                         if (s[l] < 0.0)
@@ -568,7 +568,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             if (matrixCopy.RowCount < matrixCopy.ColumnCount)
             {
                 nm--;
-                var tmp = VectorMathNet<float>.Build.SameAs(matrixCopy, nm);
+                VectorMathNet<float> tmp = VectorMathNet<float>.Build.SameAs(matrixCopy, nm);
                 for (i = 0; i < nm; i++)
                 {
                     tmp[i] = s[i];
@@ -580,7 +580,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             return new UserSvd(s, u, vt, computeVectors);
         }
 
-        UserSvd(VectorMathNet<float> s, MatrixMathNet<float> u, MatrixMathNet<float> vt, bool vectorsComputed)
+        private UserSvd(VectorMathNet<float> s, MatrixMathNet<float> u, MatrixMathNet<float> vt, bool vectorsComputed)
             : base(s, u, vt, vectorsComputed)
         {
         }
@@ -591,9 +591,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="z1">Double value z1</param>
         /// <param name="z2">Double value z2</param>
         /// <returns>Result multiplication of signum function and absolute value</returns>
-        static float Dsign(float z1, float z2)
+        private static float Dsign(float z1, float z2)
         {
-            return Math.Abs(z1)*(z2/Math.Abs(z2));
+            return Math.Abs(z1) * (z2 / Math.Abs(z2));
         }
 
         /// <summary>
@@ -603,11 +603,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="rowCount">The number of rows in <paramref name="a"/></param>
         /// <param name="columnA">Column A index to swap</param>
         /// <param name="columnB">Column B index to swap</param>
-        static void Dswap(MatrixMathNet<float> a, int rowCount, int columnA, int columnB)
+        private static void Dswap(MatrixMathNet<float> a, int rowCount, int columnA, int columnB)
         {
-            for (var i = 0; i < rowCount; i++)
+            for (int i = 0; i < rowCount; i++)
             {
-                var z = a.At(i, columnA);
+                float z = a.At(i, columnA);
                 a.At(i, columnA, a.At(i, columnB));
                 a.At(i, columnB, z);
             }
@@ -621,11 +621,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="column">Column to scale</param>
         /// <param name="rowStart">Row to scale from</param>
         /// <param name="z">Scale value</param>
-        static void DscalColumn(MatrixMathNet<float> a, int rowCount, int column, int rowStart, float z)
+        private static void DscalColumn(MatrixMathNet<float> a, int rowCount, int column, int rowStart, float z)
         {
-            for (var i = rowStart; i < rowCount; i++)
+            for (int i = rowStart; i < rowCount; i++)
             {
-                a.At(i, column, a.At(i, column)*z);
+                a.At(i, column, a.At(i, column) * z);
             }
         }
 
@@ -635,11 +635,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="a">Source vector</param>
         /// <param name="start">Row to scale from</param>
         /// <param name="z">Scale value</param>
-        static void DscalVector(float[] a, int start, float z)
+        private static void DscalVector(float[] a, int start, float z)
         {
-            for (var i = start; i < a.Length; i++)
+            for (int i = start; i < a.Length; i++)
             {
-                a[i] = a[i]*z;
+                a[i] = a[i] * z;
             }
         }
 
@@ -652,19 +652,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="c">Contains the parameter c associated with the Givens rotation</param>
         /// <param name="s">Contains the parameter s associated with the Givens rotation</param>
         /// <remarks>This is equivalent to the DROTG LAPACK routine.</remarks>
-        static void Drotg(ref float da, ref float db, out float c, out float s)
+        private static void Drotg(ref float da, ref float db, out float c, out float s)
         {
             float r, z;
 
-            var roe = db;
-            var absda = Math.Abs(da);
-            var absdb = Math.Abs(db);
+            float roe = db;
+            float absda = Math.Abs(da);
+            float absdb = Math.Abs(db);
             if (absda > absdb)
             {
                 roe = da;
             }
 
-            var scale = absda + absdb;
+            float scale = absda + absdb;
             if (scale == 0.0)
             {
                 c = 1.0f;
@@ -674,16 +674,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
             else
             {
-                var sda = da/scale;
-                var sdb = db/scale;
-                r = scale*(float) Math.Sqrt((sda*sda) + (sdb*sdb));
+                float sda = da / scale;
+                float sdb = db / scale;
+                r = scale * (float)Math.Sqrt((sda * sda) + (sdb * sdb));
                 if (roe < 0.0)
                 {
                     r = -r;
                 }
 
-                c = da/r;
-                s = db/r;
+                c = da / r;
+                s = db / r;
                 z = 1.0f;
                 if (absda > absdb)
                 {
@@ -692,7 +692,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
 
                 if (absdb >= absda && c != 0.0)
                 {
-                    z = 1.0f/c;
+                    z = 1.0f / c;
                 }
             }
 
@@ -708,15 +708,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="column">Column index</param>
         /// <param name="rowStart">Start row index</param>
         /// <returns>Norm2 (Euclidean norm) of the column</returns>
-        static float Dnrm2Column(MatrixMathNet<float> a, int rowCount, int column, int rowStart)
+        private static float Dnrm2Column(MatrixMathNet<float> a, int rowCount, int column, int rowStart)
         {
             float s = 0;
-            for (var i = rowStart; i < rowCount; i++)
+            for (int i = rowStart; i < rowCount; i++)
             {
-                s += a.At(i, column)*a.At(i, column);
+                s += a.At(i, column) * a.At(i, column);
             }
 
-            return (float) Math.Sqrt(s);
+            return (float)Math.Sqrt(s);
         }
 
         /// <summary>
@@ -725,15 +725,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="a">Source vector</param>
         /// <param name="rowStart">Start index</param>
         /// <returns>Norm2 (Euclidean norm) of the vector</returns>
-        static float Dnrm2Vector(float[] a, int rowStart)
+        private static float Dnrm2Vector(float[] a, int rowStart)
         {
             float s = 0;
-            for (var i = rowStart; i < a.Length; i++)
+            for (int i = rowStart; i < a.Length; i++)
             {
-                s += a[i]*a[i];
+                s += a[i] * a[i];
             }
 
-            return (float) Math.Sqrt(s);
+            return (float)Math.Sqrt(s);
         }
 
         /// <summary>
@@ -745,12 +745,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="columnB">Index of column B</param>
         /// <param name="rowStart">Starting row index</param>
         /// <returns>Dot product value</returns>
-        static float Ddot(MatrixMathNet<float> a, int rowCount, int columnA, int columnB, int rowStart)
+        private static float Ddot(MatrixMathNet<float> a, int rowCount, int columnA, int columnB, int rowStart)
         {
-            var z = 0.0f;
-            for (var i = rowStart; i < rowCount; i++)
+            float z = 0.0f;
+            for (int i = rowStart; i < rowCount; i++)
             {
-                z += a.At(i, columnB)*a.At(i, columnA);
+                z += a.At(i, columnB) * a.At(i, columnA);
             }
 
             return z;
@@ -766,12 +766,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="columnB">Index of column B</param>
         /// <param name="c">Scalar "c" value</param>
         /// <param name="s">Scalar "s" value</param>
-        static void Drot(MatrixMathNet<float> a, int rowCount, int columnA, int columnB, float c, float s)
+        private static void Drot(MatrixMathNet<float> a, int rowCount, int columnA, int columnB, float c, float s)
         {
-            for (var i = 0; i < rowCount; i++)
+            for (int i = 0; i < rowCount; i++)
             {
-                var z = (c*a.At(i, columnA)) + (s*a.At(i, columnB));
-                var tmp = (c*a.At(i, columnB)) - (s*a.At(i, columnA));
+                float z = (c * a.At(i, columnA)) + (s * a.At(i, columnB));
+                float tmp = (c * a.At(i, columnB)) - (s * a.At(i, columnA));
                 a.At(i, columnB, tmp);
                 a.At(i, columnA, z);
             }
@@ -807,21 +807,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 throw new ArgumentException("Matrix column dimensions must agree.");
             }
 
-            var mn = Math.Min(U.RowCount, VT.ColumnCount);
-            var bn = input.ColumnCount;
+            int mn = Math.Min(U.RowCount, VT.ColumnCount);
+            int bn = input.ColumnCount;
 
-            var tmp = new float[VT.ColumnCount];
+            float[] tmp = new float[VT.ColumnCount];
 
-            for (var k = 0; k < bn; k++)
+            for (int k = 0; k < bn; k++)
             {
-                for (var j = 0; j < VT.ColumnCount; j++)
+                for (int j = 0; j < VT.ColumnCount; j++)
                 {
                     float value = 0;
                     if (j < mn)
                     {
-                        for (var i = 0; i < U.RowCount; i++)
+                        for (int i = 0; i < U.RowCount; i++)
                         {
-                            value += U.At(i, j)*input.At(i, k);
+                            value += U.At(i, j) * input.At(i, k);
                         }
 
                         value /= S[j];
@@ -830,12 +830,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                     tmp[j] = value;
                 }
 
-                for (var j = 0; j < VT.ColumnCount; j++)
+                for (int j = 0; j < VT.ColumnCount; j++)
                 {
                     float value = 0;
-                    for (var i = 0; i < VT.ColumnCount; i++)
+                    for (int i = 0; i < VT.ColumnCount; i++)
                     {
-                        value += VT.At(i, j)*tmp[i];
+                        value += VT.At(i, j) * tmp[i];
                     }
 
                     result.At(j, k, value);
@@ -868,17 +868,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentException>(VT, result);
             }
 
-            var mn = Math.Min(U.RowCount, VT.ColumnCount);
-            var tmp = new float[VT.ColumnCount];
+            int mn = Math.Min(U.RowCount, VT.ColumnCount);
+            float[] tmp = new float[VT.ColumnCount];
             float value;
-            for (var j = 0; j < VT.ColumnCount; j++)
+            for (int j = 0; j < VT.ColumnCount; j++)
             {
                 value = 0;
                 if (j < mn)
                 {
-                    for (var i = 0; i < U.RowCount; i++)
+                    for (int i = 0; i < U.RowCount; i++)
                     {
-                        value += U.At(i, j)*input[i];
+                        value += U.At(i, j) * input[i];
                     }
 
                     value /= S[j];
@@ -887,12 +887,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 tmp[j] = value;
             }
 
-            for (var j = 0; j < VT.ColumnCount; j++)
+            for (int j = 0; j < VT.ColumnCount; j++)
             {
                 value = 0;
                 for (int i = 0; i < VT.ColumnCount; i++)
                 {
-                    value += VT.At(i, j)*tmp[i];
+                    value += VT.At(i, j) * tmp[i];
                 }
 
                 result[j] = value;

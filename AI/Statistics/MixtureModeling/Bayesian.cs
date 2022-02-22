@@ -1,18 +1,14 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.Statistics.Distributions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.Statistics.MixtureModeling
 {
     public class Bayesian
     {
-
-        IDistributionWithoutParams[] _distributions;
-        Vector _apriori;
+        private readonly IDistributionWithoutParams[] _distributions;
+        private readonly Vector _apriori;
 
         public Bayesian(IEnumerable<IDistributionWithoutParams> distributions, Vector apriori)
         {
@@ -64,7 +60,7 @@ namespace AI.Statistics.MixtureModeling
             return logs.MaxElementIndex();
         }
 
-        public static Vector CalcAposteori(Vector conditionalProbabilities, Vector apriori) 
+        public static Vector CalcAposteori(Vector conditionalProbabilities, Vector apriori)
         {
             Vector vector_prob = conditionalProbabilities * apriori;
             double denominator = vector_prob.Sum();
@@ -77,7 +73,7 @@ namespace AI.Statistics.MixtureModeling
         /// <param name="distribution">Родительская функция распределения</param>
         /// <param name="param_dist">Параметры распределения</param>
         /// <param name="apriori">Априорное расп</param>
-        public static int LogArgmax1D(double inp, IDistribution distribution, Dictionary<string, double>[] param_dist, Vector apriori) 
+        public static int LogArgmax1D(double inp, IDistribution distribution, Dictionary<string, double>[] param_dist, Vector apriori)
         {
             Vector logs = new Vector(apriori.Count).TransformByIndex(i => distribution.CulcLogProb(inp, param_dist[i]) * apriori[i]);
             return logs.MaxElementIndex();

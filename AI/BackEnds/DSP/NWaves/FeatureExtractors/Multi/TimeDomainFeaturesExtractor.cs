@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Signals;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 {
@@ -35,14 +35,14 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
         /// <param name="options">Options</param>
         public TimeDomainFeaturesExtractor(MultiFeatureOptions options) : base(options)
         {
-            var featureList = options.FeatureList;
+            string featureList = options.FeatureList;
 
             if (featureList == "all" || featureList == "full")
             {
                 featureList = FeatureSet;
             }
 
-            var features = featureList.Split(',', '+', '-', ';', ':')
+            List<string> features = featureList.Split(',', '+', '-', ';', ':')
                                       .Select(f => f.Trim().ToLower())
                                       .ToList();
 
@@ -97,13 +97,13 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
         /// <param name="vectors">Pre-allocated sequence of feature vectors</param>
         public override void ComputeFrom(float[] samples, int startSample, int endSample, IList<float[]> vectors)
         {
-            var ds = new DiscreteSignal(SamplingRate, samples);
+            DiscreteSignal ds = new DiscreteSignal(SamplingRate, samples);
 
             for (int sample = startSample, fv = 0; sample + FrameSize < endSample; sample += HopSize, fv++)
             {
-                var featureVector = vectors[fv];
+                float[] featureVector = vectors[fv];
 
-                for (var j = 0; j < featureVector.Length; j++)
+                for (int j = 0; j < featureVector.Length; j++)
                 {
                     featureVector[j] = _extractors[j](ds, sample, sample + FrameSize);
                 }
@@ -124,7 +124,10 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
         /// True if computations can be done in parallel
         /// </summary>
         /// <returns></returns>
-        public override bool IsParallelizable() => true;
+        public override bool IsParallelizable()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
@@ -132,7 +135,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
         /// <returns></returns>
         public override FeatureExtractor ParallelCopy()
         {
-            var options = new MultiFeatureOptions
+            MultiFeatureOptions options = new MultiFeatureOptions
             {
                 SamplingRate = SamplingRate,
                 FrameDuration = FrameDuration,

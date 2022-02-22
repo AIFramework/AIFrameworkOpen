@@ -37,7 +37,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             else
             {
                 int m = (int)Math.Ceiling(order) + 1;
-                if (m < 1) m = 1;
+                if (m < 1)
+                {
+                    m = 1;
+                }
+
                 double r = m - order - 1;
                 Func<double, double> g = (v) => Integrate.DoubleExponential((t) => Math.Pow(v - t, r) * f(t), x0, v, targetAbsoluteError: targetAbsoluteError);
                 double numerator = Differentiate.Derivative(g, x, m);
@@ -72,14 +76,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             {
                 return f(x);
             }
-            else if (order > 0 && Math.Abs(order - (int)order) < double.Epsilon) 
+            else if (order > 0 && Math.Abs(order - (int)order) < double.Epsilon)
             {
                 return Differentiate.Derivative(f, x, (int)order);
             }
             else
             {
                 int m = (int)Math.Ceiling(order) + 1;
-                if (m < 1) m = 1;
+                if (m < 1)
+                {
+                    m = 1;
+                }
+
                 double r = m - order - 1;
                 Func<double, double> g = (v) => Integrate.GaussLegendre((t) => Math.Pow(v - t, r) * f(t), x0, v, order: gaussLegendrePoints);
                 double numerator = Differentiate.Derivative(g, x, m);
@@ -115,14 +123,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             {
                 return f(x);
             }
-            else if (order > 0 && Math.Abs(order - (int)order) < double.Epsilon) 
+            else if (order > 0 && Math.Abs(order - (int)order) < double.Epsilon)
             {
                 return Differentiate.Derivative(f, x, (int)order);
             }
             else
             {
                 int m = (int)Math.Ceiling(order) + 1;
-                if (m < 1) m = 1;
+                if (m < 1)
+                {
+                    m = 1;
+                }
+
                 double r = m - order - 1;
                 Func<double, double> g = (v) => Integrate.GaussKronrod((t) => Math.Pow(v - t, r) * f(t), x0, v, targetRelativeError: targetRelativeError, order: gaussKronrodPoints);
                 double numerator = Differentiate.Derivative(g, x, m);

@@ -7,11 +7,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Butterworth
     {
         public static Complex[] Poles(int order)
         {
-            var poles = new Complex[order];
+            Complex[] poles = new Complex[order];
 
-            for (var k = 0; k < order; k++)
+            for (int k = 0; k < order; k++)
             {
-                var theta = Math.PI * (2 * k + 1) / (2 * order);
+                double theta = Math.PI * (2 * k + 1) / (2 * order);
 
                 poles[k] = new Complex(-Math.Sin(theta), Math.Cos(theta));
             }

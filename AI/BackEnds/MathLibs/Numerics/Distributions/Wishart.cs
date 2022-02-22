@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -44,22 +44,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Wishart : IDistribution
     {
-        System.Random _random;
+        private System.Random _random;
 
         /// <summary>
         /// The degrees of freedom for the Wishart distribution.
         /// </summary>
-        readonly double _degreesOfFreedom;
+        private readonly double _degreesOfFreedom;
 
         /// <summary>
         /// The scale matrix for the Wishart distribution.
         /// </summary>
-        readonly MatrixMathNet<double> _scale;
+        private readonly MatrixMathNet<double> _scale;
 
         /// <summary>
         /// Caches the Cholesky factorization of the scale matrix.
         /// </summary>
-        readonly Cholesky<double> _chol;
+        private readonly Cholesky<double> _chol;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Wishart"/> class.
@@ -110,7 +110,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return false;
             }
 
-            for (var i = 0; i < scale.RowCount; i++)
+            for (int i = 0; i < scale.RowCount; i++)
             {
                 if (scale.At(i, i) <= 0.0)
                 {
@@ -158,26 +158,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// Gets the mean of the distribution.
         /// </summary>
         /// <value>The mean of the distribution.</value>
-        public MatrixMathNet<double> Mean => _degreesOfFreedom*_scale;
+        public MatrixMathNet<double> Mean => _degreesOfFreedom * _scale;
 
         /// <summary>
         /// Gets the mode of the distribution.
         /// </summary>
         /// <value>The mode of the distribution.</value>
-        public MatrixMathNet<double> Mode => (_degreesOfFreedom - _scale.RowCount - 1.0)*_scale;
+        public MatrixMathNet<double> Mode => (_degreesOfFreedom - _scale.RowCount - 1.0) * _scale;
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
         /// <value>The variance  of the distribution.</value>
-        public MatrixMathNet<double> Variance
-        {
-            get
-            {
-                return MatrixMathNet<double>.Build.Dense(_scale.RowCount, _scale.ColumnCount,
-                    (i, j) => _degreesOfFreedom*((_scale.At(i, j)*_scale.At(i, j)) + (_scale.At(i, i)*_scale.At(j, j))));
-            }
-        }
+        public MatrixMathNet<double> Variance => MatrixMathNet<double>.Build.Dense(_scale.RowCount, _scale.ColumnCount,
+                    (i, j) => _degreesOfFreedom * ((_scale.At(i, j) * _scale.At(i, j)) + (_scale.At(i, i) * _scale.At(j, j))));
 
         /// <summary>
         /// Evaluates the probability density function for the Wishart distribution.
@@ -187,28 +181,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the density at <paramref name="x"/>.</returns>
         public double Density(MatrixMathNet<double> x)
         {
-            var p = _scale.RowCount;
+            int p = _scale.RowCount;
 
             if (x.RowCount != p || x.ColumnCount != p)
             {
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentOutOfRangeException>(x, _scale, "x");
             }
 
-            var dX = x.Determinant();
-            var siX = _chol.Solve(x);
+            double dX = x.Determinant();
+            MatrixMathNet<double> siX = _chol.Solve(x);
 
             // Compute the multivariate Gamma function.
-            var gp = Math.Pow(Constants.Pi, p*(p - 1.0)/4.0);
-            for (var j = 1; j <= p; j++)
+            double gp = Math.Pow(Constants.Pi, p * (p - 1.0) / 4.0);
+            for (int j = 1; j <= p; j++)
             {
-                gp *= SpecialFunctions.Gamma((_degreesOfFreedom + 1.0 - j)/2.0);
+                gp *= SpecialFunctions.Gamma((_degreesOfFreedom + 1.0 - j) / 2.0);
             }
 
-            return Math.Pow(dX, (_degreesOfFreedom - p - 1.0)/2.0)
-                   *Math.Exp(-0.5*siX.Trace())
-                   /Math.Pow(2.0, _degreesOfFreedom*p/2.0)
-                   /Math.Pow(_chol.Determinant, _degreesOfFreedom/2.0)
-                   /gp;
+            return Math.Pow(dX, (_degreesOfFreedom - p - 1.0) / 2.0)
+                   * Math.Exp(-0.5 * siX.Trace())
+                   / Math.Pow(2.0, _degreesOfFreedom * p / 2.0)
+                   / Math.Pow(_chol.Determinant, _degreesOfFreedom / 2.0)
+                   / gp;
         }
 
         /// <summary>
@@ -251,28 +245,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="scale">The scale matrix (V) for the Wishart distribution.</param>
         /// <param name="chol">The cholesky decomposition to use.</param>
         /// <returns>a random number from the distribution.</returns>
-        static MatrixMathNet<double> DoSample(System.Random rnd, double degreesOfFreedom, MatrixMathNet<double> scale, Cholesky<double> chol)
+        private static MatrixMathNet<double> DoSample(System.Random rnd, double degreesOfFreedom, MatrixMathNet<double> scale, Cholesky<double> chol)
         {
-            var count = scale.RowCount;
+            int count = scale.RowCount;
 
             // First generate a lower triangular matrix with Sqrt(Chi-Squares) on the diagonal
             // and normal distributed variables in the lower triangle.
-            var a = new DenseMatrix(count, count);
-            for (var d = 0; d < count; d++)
+            DenseMatrix a = new DenseMatrix(count, count);
+            for (int d = 0; d < count; d++)
             {
-                a.At(d, d, Math.Sqrt(Gamma.Sample(rnd, (degreesOfFreedom - d)/2.0, 0.5)));
+                a.At(d, d, Math.Sqrt(Gamma.Sample(rnd, (degreesOfFreedom - d) / 2.0, 0.5)));
             }
 
-            for (var i = 1; i < count; i++)
+            for (int i = 1; i < count; i++)
             {
-                for (var j = 0; j < i; j++)
+                for (int j = 0; j < i; j++)
                 {
                     a.At(i, j, Normal.Sample(rnd, 0.0, 1.0));
                 }
             }
 
-            var factor = chol.Factor;
-            return factor*a*a.Transpose()*factor.Transpose();
+            MatrixMathNet<double> factor = chol.Factor;
+            return factor * a * a.Transpose() * factor.Transpose();
         }
     }
 }

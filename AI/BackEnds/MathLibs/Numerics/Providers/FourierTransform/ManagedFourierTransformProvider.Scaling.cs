@@ -39,9 +39,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// Fully rescale the FFT result.
         /// </summary>
         /// <param name="samples">Sample Vector.</param>
-        static void FullRescale(Complex32[] samples)
+        private static void FullRescale(Complex32[] samples)
         {
-            var scalingFactor = (float)1.0 / samples.Length;
+            float scalingFactor = (float)1.0 / samples.Length;
             for (int i = 0; i < samples.Length; i++)
             {
                 samples[i] *= scalingFactor;
@@ -52,9 +52,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// Fully rescale the FFT result.
         /// </summary>
         /// <param name="samples">Sample Vector.</param>
-        static void FullRescale(Complex[] samples)
+        private static void FullRescale(Complex[] samples)
         {
-            var scalingFactor = 1.0 / samples.Length;
+            double scalingFactor = 1.0 / samples.Length;
             for (int i = 0; i < samples.Length; i++)
             {
                 samples[i] *= scalingFactor;
@@ -65,9 +65,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// Half rescale the FFT result (e.g. for symmetric transforms).
         /// </summary>
         /// <param name="samples">Sample Vector.</param>
-        static void HalfRescale(Complex32[] samples)
+        private static void HalfRescale(Complex32[] samples)
         {
-            var scalingFactor = (float)Math.Sqrt(1.0 / samples.Length);
+            float scalingFactor = (float)Math.Sqrt(1.0 / samples.Length);
             for (int i = 0; i < samples.Length; i++)
             {
                 samples[i] *= scalingFactor;
@@ -78,9 +78,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.FourierTransform
         /// Fully rescale the FFT result (e.g. for symmetric transforms).
         /// </summary>
         /// <param name="samples">Sample Vector.</param>
-        static void HalfRescale(Complex[] samples)
+        private static void HalfRescale(Complex[] samples)
         {
-            var scalingFactor = Math.Sqrt(1.0 / samples.Length);
+            double scalingFactor = Math.Sqrt(1.0 / samples.Length);
             for (int i = 0; i < samples.Length; i++)
             {
                 samples[i] *= scalingFactor;

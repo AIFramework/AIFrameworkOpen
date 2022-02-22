@@ -70,7 +70,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra
         /// <summary>
         /// Assumes that <paramref name="numRows"/> and <paramref name="numCols"/> have already been transposed.
         /// </summary>
-        static void GetRow<T>(Transpose transpose, int rowindx, int numRows, int numCols, T[] matrix, T[] row)
+        private static void GetRow<T>(Transpose transpose, int rowindx, int numRows, int numCols, T[] matrix, T[] row)
         {
             if (transpose == Transpose.DontTranspose)
             {
@@ -88,7 +88,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra
         /// <summary>
         /// Assumes that <paramref name="numRows"/> and <paramref name="numCols"/> have already been transposed.
         /// </summary>
-        static void GetColumn<T>(Transpose transpose, int colindx, int numRows, int numCols, T[] matrix, T[] column)
+        private static void GetColumn<T>(Transpose transpose, int colindx, int numRows, int numCols, T[] matrix, T[] column)
         {
             if (transpose == Transpose.DontTranspose)
             {

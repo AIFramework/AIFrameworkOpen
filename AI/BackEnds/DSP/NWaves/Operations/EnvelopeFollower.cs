@@ -54,7 +54,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <summary>
         /// Sampling rate
         /// </summary>
-        private int _fs;
+        private readonly int _fs;
 
         /// <summary>
         /// Constructor
@@ -76,7 +76,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <returns></returns>
         public float Process(float input)
         {
-            var sample = Math.Abs(input);
+            float sample = Math.Abs(input);
 
             _env = _env < sample ? _ga * _env + (1 - _ga) * sample : _gr * _env + (1 - _ga) * sample;
 

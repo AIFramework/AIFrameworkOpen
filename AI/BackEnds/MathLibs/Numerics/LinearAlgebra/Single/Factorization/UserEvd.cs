@@ -66,12 +66,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 throw new ArgumentException("Matrix must be square.");
             }
 
-            var order = matrix.RowCount;
+            int order = matrix.RowCount;
 
             // Initialize matrices for eigenvalues and eigenvectors
-            var eigenVectors = MatrixMathNet<float>.Build.SameAs(matrix, order, order, fullyMutable: true);
-            var blockDiagonal = MatrixMathNet<float>.Build.SameAs(matrix, order, order);
-            var eigenValues = new LinearAlgebra.Complex.DenseVector(order);
+            MatrixMathNet<float> eigenVectors = MatrixMathNet<float>.Build.SameAs(matrix, order, order, fullyMutable: true);
+            MatrixMathNet<float> blockDiagonal = MatrixMathNet<float>.Build.SameAs(matrix, order, order);
+            LinearAlgebra.Complex.DenseVector eigenValues = new LinearAlgebra.Complex.DenseVector(order);
 
             bool isSymmetric;
             switch (symmetricity)
@@ -88,8 +88,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                     break;
             }
 
-            var d = new float[order];
-            var e = new float[order];
+            float[] d = new float[order];
+            float[] e = new float[order];
 
             if (isSymmetric)
             {
@@ -101,13 +101,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
             else
             {
-                var matrixH = matrix.ToArray();
+                float[,] matrixH = matrix.ToArray();
 
                 NonsymmetricReduceToHessenberg(eigenVectors, matrixH, order);
                 NonsymmetricReduceHessenberToRealSchur(eigenVectors, matrixH, d, e, order);
             }
 
-            for (var i = 0; i < order; i++)
+            for (int i = 0; i < order; i++)
             {
                 blockDiagonal.At(i, i, d[i]);
 
@@ -121,7 +121,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 }
             }
 
-            for (var i = 0; i < order; i++)
+            for (int i = 0; i < order; i++)
             {
                 eigenValues[i] = new Complex(d[i], e[i]);
             }
@@ -129,7 +129,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             return new UserEvd(eigenVectors, eigenValues, blockDiagonal, isSymmetric);
         }
 
-        UserEvd(MatrixMathNet<float> eigenVectors, VectorMathNet<Complex> eigenValues, MatrixMathNet<float> blockDiagonal, bool isSymmetric)
+        private UserEvd(MatrixMathNet<float> eigenVectors, VectorMathNet<Complex> eigenValues, MatrixMathNet<float> blockDiagonal, bool isSymmetric)
             : base(eigenVectors, eigenValues, blockDiagonal, isSymmetric)
         {
         }
@@ -145,16 +145,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
         /// Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
         /// Fortran subroutine in EISPACK.</remarks>
-        static void SymmetricTridiagonalize(MatrixMathNet<float> eigenVectors, float[] d, float[] e, int order)
+        private static void SymmetricTridiagonalize(MatrixMathNet<float> eigenVectors, float[] d, float[] e, int order)
         {
             // Householder reduction to tridiagonal form.
-            for (var i = order - 1; i > 0; i--)
+            for (int i = order - 1; i > 0; i--)
             {
                 // Scale to avoid under/overflow.
-                var scale = 0.0f;
-                var h = 0.0f;
+                float scale = 0.0f;
+                float h = 0.0f;
 
-                for (var k = 0; k < i; k++)
+                for (int k = 0; k < i; k++)
                 {
                     scale = scale + Math.Abs(d[k]);
                 }
@@ -162,7 +162,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 if (scale == 0.0f)
                 {
                     e[i] = d[i - 1];
-                    for (var j = 0; j < i; j++)
+                    for (int j = 0; j < i; j++)
                     {
                         d[j] = eigenVectors.At(i - 1, j);
                         eigenVectors.At(i, j, 0.0f);
@@ -172,39 +172,39 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 else
                 {
                     // Generate Householder vector.
-                    for (var k = 0; k < i; k++)
+                    for (int k = 0; k < i; k++)
                     {
                         d[k] /= scale;
-                        h += d[k]*d[k];
+                        h += d[k] * d[k];
                     }
 
-                    var f = d[i - 1];
-                    var g = (float) Math.Sqrt(h);
+                    float f = d[i - 1];
+                    float g = (float)Math.Sqrt(h);
                     if (f > 0)
                     {
                         g = -g;
                     }
 
-                    e[i] = scale*g;
-                    h = h - (f*g);
+                    e[i] = scale * g;
+                    h = h - (f * g);
                     d[i - 1] = f - g;
 
-                    for (var j = 0; j < i; j++)
+                    for (int j = 0; j < i; j++)
                     {
                         e[j] = 0.0f;
                     }
 
                     // Apply similarity transformation to remaining columns.
-                    for (var j = 0; j < i; j++)
+                    for (int j = 0; j < i; j++)
                     {
                         f = d[j];
                         eigenVectors.At(j, i, f);
-                        g = e[j] + (eigenVectors.At(j, j)*f);
+                        g = e[j] + (eigenVectors.At(j, j) * f);
 
-                        for (var k = j + 1; k <= i - 1; k++)
+                        for (int k = j + 1; k <= i - 1; k++)
                         {
-                            g += eigenVectors.At(k, j)*d[k];
-                            e[k] += eigenVectors.At(k, j)*f;
+                            g += eigenVectors.At(k, j) * d[k];
+                            e[k] += eigenVectors.At(k, j) * f;
                         }
 
                         e[j] = g;
@@ -212,27 +212,27 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
 
                     f = 0.0f;
 
-                    for (var j = 0; j < i; j++)
+                    for (int j = 0; j < i; j++)
                     {
                         e[j] /= h;
-                        f += e[j]*d[j];
+                        f += e[j] * d[j];
                     }
 
-                    var hh = f/(h + h);
+                    float hh = f / (h + h);
 
-                    for (var j = 0; j < i; j++)
+                    for (int j = 0; j < i; j++)
                     {
-                        e[j] -= hh*d[j];
+                        e[j] -= hh * d[j];
                     }
 
-                    for (var j = 0; j < i; j++)
+                    for (int j = 0; j < i; j++)
                     {
                         f = d[j];
                         g = e[j];
 
-                        for (var k = j; k <= i - 1; k++)
+                        for (int k = j; k <= i - 1; k++)
                         {
-                            eigenVectors.At(k, j, eigenVectors.At(k, j) - (f*e[k]) - (g*d[k]));
+                            eigenVectors.At(k, j, eigenVectors.At(k, j) - (f * e[k]) - (g * d[k]));
                         }
 
                         d[j] = eigenVectors.At(i - 1, j);
@@ -244,40 +244,40 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
 
             // Accumulate transformations.
-            for (var i = 0; i < order - 1; i++)
+            for (int i = 0; i < order - 1; i++)
             {
                 eigenVectors.At(order - 1, i, eigenVectors.At(i, i));
                 eigenVectors.At(i, i, 1.0f);
-                var h = d[i + 1];
+                float h = d[i + 1];
                 if (h != 0.0f)
                 {
-                    for (var k = 0; k <= i; k++)
+                    for (int k = 0; k <= i; k++)
                     {
-                        d[k] = eigenVectors.At(k, i + 1)/h;
+                        d[k] = eigenVectors.At(k, i + 1) / h;
                     }
 
-                    for (var j = 0; j <= i; j++)
+                    for (int j = 0; j <= i; j++)
                     {
-                        var g = 0.0f;
-                        for (var k = 0; k <= i; k++)
+                        float g = 0.0f;
+                        for (int k = 0; k <= i; k++)
                         {
-                            g += eigenVectors.At(k, i + 1)*eigenVectors.At(k, j);
+                            g += eigenVectors.At(k, i + 1) * eigenVectors.At(k, j);
                         }
 
-                        for (var k = 0; k <= i; k++)
+                        for (int k = 0; k <= i; k++)
                         {
-                            eigenVectors.At(k, j, eigenVectors.At(k, j) - g*d[k]);
+                            eigenVectors.At(k, j, eigenVectors.At(k, j) - g * d[k]);
                         }
                     }
                 }
 
-                for (var k = 0; k <= i; k++)
+                for (int k = 0; k <= i; k++)
                 {
                     eigenVectors.At(k, i + 1, 0.0f);
                 }
             }
 
-            for (var j = 0; j < order; j++)
+            for (int j = 0; j < order; j++)
             {
                 d[j] = eigenVectors.At(order - 1, j);
                 eigenVectors.At(order - 1, j, 0.0f);
@@ -299,28 +299,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
         /// Fortran subroutine in EISPACK.</remarks>
         /// <exception cref="NonConvergenceException"></exception>
-        static void SymmetricDiagonalize(MatrixMathNet<float> eigenVectors, float[] d, float[] e, int order)
+        private static void SymmetricDiagonalize(MatrixMathNet<float> eigenVectors, float[] d, float[] e, int order)
         {
             const int maxiter = 1000;
 
-            for (var i = 1; i < order; i++)
+            for (int i = 1; i < order; i++)
             {
                 e[i - 1] = e[i];
             }
 
             e[order - 1] = 0.0f;
 
-            var f = 0.0f;
-            var tst1 = 0.0f;
-            var eps = Precision.DoublePrecision;
-            for (var l = 0; l < order; l++)
+            float f = 0.0f;
+            float tst1 = 0.0f;
+            double eps = Precision.DoublePrecision;
+            for (int l = 0; l < order; l++)
             {
                 // Find small subdiagonal element
                 tst1 = Math.Max(tst1, Math.Abs(d[l]) + Math.Abs(e[l]));
-                var m = l;
+                int m = l;
                 while (m < order)
                 {
-                    if (Math.Abs(e[m]) <= eps*tst1)
+                    if (Math.Abs(e[m]) <= eps * tst1)
                     {
                         break;
                     }
@@ -332,26 +332,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 // otherwise, iterate.
                 if (m > l)
                 {
-                    var iter = 0;
+                    int iter = 0;
                     do
                     {
                         iter = iter + 1; // (Could check iteration count here.)
 
                         // Compute implicit shift
-                        var g = d[l];
-                        var p = (d[l + 1] - g)/(2.0f*e[l]);
-                        var r = SpecialFunctions.Hypotenuse(p, 1.0f);
+                        float g = d[l];
+                        float p = (d[l + 1] - g) / (2.0f * e[l]);
+                        float r = SpecialFunctions.Hypotenuse(p, 1.0f);
                         if (p < 0)
                         {
                             r = -r;
                         }
 
-                        d[l] = e[l]/(p + r);
-                        d[l + 1] = e[l]*(p + r);
+                        d[l] = e[l] / (p + r);
+                        d[l + 1] = e[l] * (p + r);
 
-                        var dl1 = d[l + 1];
-                        var h = g - d[l];
-                        for (var i = l + 2; i < order; i++)
+                        float dl1 = d[l + 1];
+                        float h = g - d[l];
+                        for (int i = l + 2; i < order; i++)
                         {
                             d[i] -= h;
                         }
@@ -360,38 +360,38 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
 
                         // Implicit QL transformation.
                         p = d[m];
-                        var c = 1.0f;
-                        var c2 = c;
-                        var c3 = c;
-                        var el1 = e[l + 1];
-                        var s = 0.0f;
-                        var s2 = 0.0f;
-                        for (var i = m - 1; i >= l; i--)
+                        float c = 1.0f;
+                        float c2 = c;
+                        float c3 = c;
+                        float el1 = e[l + 1];
+                        float s = 0.0f;
+                        float s2 = 0.0f;
+                        for (int i = m - 1; i >= l; i--)
                         {
                             c3 = c2;
                             c2 = c;
                             s2 = s;
-                            g = c*e[i];
-                            h = c*p;
+                            g = c * e[i];
+                            h = c * p;
                             r = SpecialFunctions.Hypotenuse(p, e[i]);
-                            e[i + 1] = s*r;
-                            s = e[i]/r;
-                            c = p/r;
-                            p = (c*d[i]) - (s*g);
-                            d[i + 1] = h + (s*((c*g) + (s*d[i])));
+                            e[i + 1] = s * r;
+                            s = e[i] / r;
+                            c = p / r;
+                            p = (c * d[i]) - (s * g);
+                            d[i + 1] = h + (s * ((c * g) + (s * d[i])));
 
                             // Accumulate transformation.
-                            for (var k = 0; k < order; k++)
+                            for (int k = 0; k < order; k++)
                             {
                                 h = eigenVectors.At(k, i + 1);
-                                eigenVectors.At(k, i + 1, (s*eigenVectors.At(k, i)) + (c*h));
-                                eigenVectors.At(k, i, (c*eigenVectors.At(k, i)) - (s*h));
+                                eigenVectors.At(k, i + 1, (s * eigenVectors.At(k, i)) + (c * h));
+                                eigenVectors.At(k, i, (c * eigenVectors.At(k, i)) - (s * h));
                             }
                         }
 
-                        p = (-s)*s2*c3*el1*e[l]/dl1;
-                        e[l] = s*p;
-                        d[l] = c*p;
+                        p = (-s) * s2 * c3 * el1 * e[l] / dl1;
+                        e[l] = s * p;
+                        d[l] = c * p;
 
                         // Check for convergence. If too many iterations have been performed,
                         // throw exception that Convergence Failed
@@ -399,7 +399,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                         {
                             throw new NonConvergenceException();
                         }
-                    } while (Math.Abs(e[l]) > eps*tst1);
+                    } while (Math.Abs(e[l]) > eps * tst1);
                 }
 
                 d[l] = d[l] + f;
@@ -407,11 +407,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
 
             // Sort eigenvalues and corresponding vectors.
-            for (var i = 0; i < order - 1; i++)
+            for (int i = 0; i < order - 1; i++)
             {
-                var k = i;
-                var p = d[i];
-                for (var j = i + 1; j < order; j++)
+                int k = i;
+                float p = d[i];
+                for (int j = i + 1; j < order; j++)
                 {
                     if (d[j] < p)
                     {
@@ -424,7 +424,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 {
                     d[k] = d[i];
                     d[i] = p;
-                    for (var j = 0; j < order; j++)
+                    for (int j = 0; j < order; j++)
                     {
                         p = eigenVectors.At(j, i);
                         eigenVectors.At(j, i, eigenVectors.At(j, k));
@@ -444,15 +444,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// by Martin and Wilkinson, Handbook for Auto. Comp.,
         /// Vol.ii-Linear Algebra, and the corresponding
         /// Fortran subroutines in EISPACK.</remarks>
-        static void NonsymmetricReduceToHessenberg(MatrixMathNet<float> eigenVectors, float[,] matrixH, int order)
+        private static void NonsymmetricReduceToHessenberg(MatrixMathNet<float> eigenVectors, float[,] matrixH, int order)
         {
-            var ort = new float[order];
+            float[] ort = new float[order];
 
-            for (var m = 1; m < order - 1; m++)
+            for (int m = 1; m < order - 1; m++)
             {
                 // Scale column.
-                var scale = 0.0f;
-                for (var i = m; i < order; i++)
+                float scale = 0.0f;
+                for (int i = m; i < order; i++)
                 {
                     scale = scale + Math.Abs(matrixH[i, m - 1]);
                 }
@@ -460,90 +460,90 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 if (scale != 0.0f)
                 {
                     // Compute Householder transformation.
-                    var h = 0.0f;
-                    for (var i = order - 1; i >= m; i--)
+                    float h = 0.0f;
+                    for (int i = order - 1; i >= m; i--)
                     {
-                        ort[i] = matrixH[i, m - 1]/scale;
-                        h += ort[i]*ort[i];
+                        ort[i] = matrixH[i, m - 1] / scale;
+                        h += ort[i] * ort[i];
                     }
 
-                    var g = (float) Math.Sqrt(h);
+                    float g = (float)Math.Sqrt(h);
                     if (ort[m] > 0)
                     {
                         g = -g;
                     }
 
-                    h = h - (ort[m]*g);
+                    h = h - (ort[m] * g);
                     ort[m] = ort[m] - g;
 
                     // Apply Householder similarity transformation
                     // H = (I-u*u'/h)*H*(I-u*u')/h)
-                    for (var j = m; j < order; j++)
+                    for (int j = m; j < order; j++)
                     {
-                        var f = 0.0f;
-                        for (var i = order - 1; i >= m; i--)
+                        float f = 0.0f;
+                        for (int i = order - 1; i >= m; i--)
                         {
-                            f += ort[i]*matrixH[i, j];
+                            f += ort[i] * matrixH[i, j];
                         }
 
-                        f = f/h;
-                        for (var i = m; i < order; i++)
+                        f = f / h;
+                        for (int i = m; i < order; i++)
                         {
-                            matrixH[i, j] -= f*ort[i];
+                            matrixH[i, j] -= f * ort[i];
                         }
                     }
 
-                    for (var i = 0; i < order; i++)
+                    for (int i = 0; i < order; i++)
                     {
-                        var f = 0.0f;
-                        for (var j = order - 1; j >= m; j--)
+                        float f = 0.0f;
+                        for (int j = order - 1; j >= m; j--)
                         {
-                            f += ort[j]*matrixH[i, j];
+                            f += ort[j] * matrixH[i, j];
                         }
 
-                        f = f/h;
-                        for (var j = m; j < order; j++)
+                        f = f / h;
+                        for (int j = m; j < order; j++)
                         {
-                            matrixH[i, j] -= f*ort[j];
+                            matrixH[i, j] -= f * ort[j];
                         }
                     }
 
-                    ort[m] = scale*ort[m];
-                    matrixH[m, m - 1] = scale*g;
+                    ort[m] = scale * ort[m];
+                    matrixH[m, m - 1] = scale * g;
                 }
             }
 
             // Accumulate transformations (Algol's ortran).
-            for (var i = 0; i < order; i++)
+            for (int i = 0; i < order; i++)
             {
-                for (var j = 0; j < order; j++)
+                for (int j = 0; j < order; j++)
                 {
                     eigenVectors.At(i, j, i == j ? 1.0f : 0.0f);
                 }
             }
 
-            for (var m = order - 2; m >= 1; m--)
+            for (int m = order - 2; m >= 1; m--)
             {
                 if (matrixH[m, m - 1] != 0.0f)
                 {
-                    for (var i = m + 1; i < order; i++)
+                    for (int i = m + 1; i < order; i++)
                     {
                         ort[i] = matrixH[i, m - 1];
                     }
 
-                    for (var j = m; j < order; j++)
+                    for (int j = m; j < order; j++)
                     {
-                        var g = 0.0f;
-                        for (var i = m; i < order; i++)
+                        float g = 0.0f;
+                        for (int i = m; i < order; i++)
                         {
-                            g += ort[i]*eigenVectors.At(i, j);
+                            g += ort[i] * eigenVectors.At(i, j);
                         }
 
                         // Double division avoids possible underflow
-                        g = (g/ort[m])/matrixH[m, m - 1];
-                        for (var i = m; i < order; i++)
+                        g = (g / ort[m]) / matrixH[m, m - 1];
+                        for (int i = m; i < order; i++)
                         {
-                            eigenVectors.At(i, j, eigenVectors.At(i, j) + g*ort[i]);
+                            eigenVectors.At(i, j, eigenVectors.At(i, j) + g * ort[i]);
                         }
                     }
                 }
@@ -562,30 +562,30 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// by Martin and Wilkinson, Handbook for Auto. Comp.,
         /// Vol.ii-Linear Algebra, and the corresponding
         /// Fortran subroutine in EISPACK.</remarks>
-        static void NonsymmetricReduceHessenberToRealSchur(MatrixMathNet<float> eigenVectors, float[,] matrixH, float[] d, float[] e, int order)
+        private static void NonsymmetricReduceHessenberToRealSchur(MatrixMathNet<float> eigenVectors, float[,] matrixH, float[] d, float[] e, int order)
         {
             // Initialize
-            var n = order - 1;
-            var eps = (float) Precision.SinglePrecision;
-            var exshift = 0.0f;
+            int n = order - 1;
+            float eps = (float)Precision.SinglePrecision;
+            float exshift = 0.0f;
             float p = 0, q = 0, r = 0, s = 0, z = 0, w, x, y;
 
             // Store roots isolated by balanc and compute matrix norm
-            var norm = 0.0f;
-            for (var i = 0; i < order; i++)
+            float norm = 0.0f;
+            for (int i = 0; i < order; i++)
             {
-                for (var j = Math.Max(i - 1, 0); j < order; j++)
+                for (int j = Math.Max(i - 1, 0); j < order; j++)
                 {
                     norm = norm + Math.Abs(matrixH[i, j]);
                 }
             }
 
             // Outer loop over eigenvalue index
-            var iter = 0;
+            int iter = 0;
             while (n >= 0)
             {
                 // Look for single small sub-diagonal element
-                var l = n;
+                int l = n;
                 while (l > 0)
                 {
                     s = Math.Abs(matrixH[l - 1, l - 1]) + Math.Abs(matrixH[l, l]);
@@ -595,7 +595,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                         s = norm;
                     }
 
-                    if (Math.Abs(matrixH[l, l - 1]) < eps*s)
+                    if (Math.Abs(matrixH[l, l - 1]) < eps * s)
                     {
                         break;
                     }
@@ -617,10 +617,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 }
                 else if (l == n - 1)
                 {
-                    w = matrixH[n, n - 1]*matrixH[n - 1, n];
-                    p = (matrixH[n - 1, n - 1] - matrixH[n, n])/2.0f;
-                    q = (p*p) + w;
-                    z = (float) Math.Sqrt(Math.Abs(q));
+                    w = matrixH[n, n - 1] * matrixH[n - 1, n];
+                    p = (matrixH[n - 1, n - 1] - matrixH[n, n]) / 2.0f;
+                    q = (p * p) + w;
+                    z = (float)Math.Sqrt(Math.Abs(q));
                     matrixH[n, n] = matrixH[n, n] + exshift;
                     matrixH[n - 1, n - 1] = matrixH[n - 1, n - 1] + exshift;
                     x = matrixH[n, n];
@@ -642,41 +642,41 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                         d[n] = d[n - 1];
                         if (z != 0.0f)
                         {
-                            d[n] = x - (w/z);
+                            d[n] = x - (w / z);
                         }
 
                         e[n - 1] = 0.0f;
                         e[n] = 0.0f;
                         x = matrixH[n, n - 1];
                         s = Math.Abs(x) + Math.Abs(z);
-                        p = x/s;
-                        q = z/s;
-                        r = (float) Math.Sqrt((p*p) + (q*q));
-                        p = p/r;
-                        q = q/r;
+                        p = x / s;
+                        q = z / s;
+                        r = (float)Math.Sqrt((p * p) + (q * q));
+                        p = p / r;
+                        q = q / r;
 
                         // Row modification
-                        for (var j = n - 1; j < order; j++)
+                        for (int j = n - 1; j < order; j++)
                         {
                             z = matrixH[n - 1, j];
-                            matrixH[n - 1, j] = (q*z) + (p*matrixH[n, j]);
-                            matrixH[n, j] = (q*matrixH[n, j]) - (p*z);
+                            matrixH[n - 1, j] = (q * z) + (p * matrixH[n, j]);
+                            matrixH[n, j] = (q * matrixH[n, j]) - (p * z);
                         }
 
                         // Column modification
-                        for (var i = 0; i <= n; i++)
+                        for (int i = 0; i <= n; i++)
                         {
                             z = matrixH[i, n - 1];
-                            matrixH[i, n - 1] = (q*z) + (p*matrixH[i, n]);
-                            matrixH[i, n] = (q*matrixH[i, n]) - (p*z);
+                            matrixH[i, n - 1] = (q * z) + (p * matrixH[i, n]);
+                            matrixH[i, n] = (q * matrixH[i, n]) - (p * z);
                         }
 
                         // Accumulate transformations
-                        for (var i = 0; i < order; i++)
+                        for (int i = 0; i < order; i++)
                         {
                             z = eigenVectors.At(i, n - 1);
-                            eigenVectors.At(i, n - 1, (q*z) + (p*eigenVectors.At(i, n)));
-                            eigenVectors.At(i, n, (q*eigenVectors.At(i, n)) - (p*z));
+                            eigenVectors.At(i, n - 1, (q * z) + (p * eigenVectors.At(i, n)));
+                            eigenVectors.At(i, n, (q * eigenVectors.At(i, n)) - (p * z));
                         }
 
                         // Complex pair
@@ -703,38 +703,38 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                     if (l < n)
                     {
                         y = matrixH[n - 1, n - 1];
-                        w = matrixH[n, n - 1]*matrixH[n - 1, n];
+                        w = matrixH[n, n - 1] * matrixH[n - 1, n];
                     }
 
                     // Wilkinson's original ad hoc shift
                     if (iter == 10)
                     {
                         exshift += x;
-                        for (var i = 0; i <= n; i++)
+                        for (int i = 0; i <= n; i++)
                         {
                             matrixH[i, i] -= x;
                         }
 
                         s = Math.Abs(matrixH[n, n - 1]) + Math.Abs(matrixH[n - 1, n - 2]);
-                        x = y = 0.75f*s;
-                        w = (-0.4375f)*s*s;
+                        x = y = 0.75f * s;
+                        w = (-0.4375f) * s * s;
                     }
 
                     // MATLAB's new ad hoc shift
                     if (iter == 30)
                     {
-                        s = (y - x)/2.0f;
-                        s = (s*s) + w;
+                        s = (y - x) / 2.0f;
+                        s = (s * s) + w;
                         if (s > 0)
                         {
-                            s = (float) Math.Sqrt(s);
+                            s = (float)Math.Sqrt(s);
                             if (y < x)
                             {
                                 s = -s;
                             }
 
-                            s = x - (w/(((y - x)/2.0f) + s));
-                            for (var i = 0; i <= n; i++)
+                            s = x - (w / (((y - x) / 2.0f) + s));
+                            for (int i = 0; i <= n; i++)
                             {
                                 matrixH[i, i] -= s;
                             }
@@ -747,26 +747,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                     iter = iter + 1; // (Could check iteration count here.)
 
                     // Look for two consecutive small sub-diagonal elements
-                    var m = n - 2;
+                    int m = n - 2;
                     while (m >= l)
                     {
                         z = matrixH[m, m];
                         r = x - z;
                         s = y - z;
-                        p = (((r*s) - w)/matrixH[m + 1, m]) + matrixH[m, m + 1];
+                        p = (((r * s) - w) / matrixH[m + 1, m]) + matrixH[m, m + 1];
                         q = matrixH[m + 1, m + 1] - z - r - s;
                         r = matrixH[m + 2, m + 1];
                         s = Math.Abs(p) + Math.Abs(q) + Math.Abs(r);
-                        p = p/s;
-                        q = q/s;
-                        r = r/s;
+                        p = p / s;
+                        q = q / s;
+                        r = r / s;
 
                         if (m == l)
                         {
                             break;
                         }
 
-                        if (Math.Abs(matrixH[m, m - 1])*(Math.Abs(q) + Math.Abs(r)) < eps*(Math.Abs(p)*(Math.Abs(matrixH[m - 1, m - 1]) + Math.Abs(z) + Math.Abs(matrixH[m + 1, m + 1]))))
+                        if (Math.Abs(matrixH[m, m - 1]) * (Math.Abs(q) + Math.Abs(r)) < eps * (Math.Abs(p) * (Math.Abs(matrixH[m - 1, m - 1]) + Math.Abs(z) + Math.Abs(matrixH[m + 1, m + 1]))))
                         {
                             break;
                         }
@@ -774,7 +774,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                         m--;
                     }
 
-                    for (var i = m + 2; i <= n; i++)
+                    for (int i = m + 2; i <= n; i++)
                     {
                         matrixH[i, i - 2] = 0.0f;
                         if (i > m + 2)
@@ -784,7 +784,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                     }
 
                     // Double QR step involving rows l:n and columns m:n
-                    for (var k = m; k <= n - 1; k++)
+                    for (int k = m; k <= n - 1; k++)
                     {
                         bool notlast = k != n - 1;
 
@@ -796,9 +796,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                             x = Math.Abs(p) + Math.Abs(q) + Math.Abs(r);
                             if (x != 0.0f)
                             {
-                                p = p/x;
-                                q = q/x;
-                                r = r/x;
+                                p = p / x;
+                                q = q / x;
+                                r = r / x;
                             }
                         }
 
@@ -807,7 +807,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                             break;
                         }
 
-                        s = (float) Math.Sqrt((p*p) + (q*q) + (r*r));
+                        s = (float)Math.Sqrt((p * p) + (q * q) + (r * r));
                         if (p < 0)
                         {
                             s = -s;
@@ -817,7 +817,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                         {
                             if (k != m)
                             {
-                                matrixH[k, k - 1] = (-s)*x;
+                                matrixH[k, k - 1] = (-s) * x;
                             }
                             else if (l != m)
                             {
@@ -825,55 +825,55 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                             }
 
                             p = p + s;
-                            x = p/s;
-                            y = q/s;
-                            z = r/s;
-                            q = q/p;
-                            r = r/p;
+                            x = p / s;
+                            y = q / s;
+                            z = r / s;
+                            q = q / p;
+                            r = r / p;
 
                             // Row modification
-                            for (var j = k; j < order; j++)
+                            for (int j = k; j < order; j++)
                             {
-                                p = matrixH[k, j] + (q*matrixH[k + 1, j]);
+                                p = matrixH[k, j] + (q * matrixH[k + 1, j]);
 
                                 if (notlast)
                                 {
-                                    p = p + (r*matrixH[k + 2, j]);
-                                    matrixH[k + 2, j] = matrixH[k + 2, j] - (p*z);
+                                    p = p + (r * matrixH[k + 2, j]);
+                                    matrixH[k + 2, j] = matrixH[k + 2, j] - (p * z);
                                 }
 
-                                matrixH[k, j] = matrixH[k, j] - (p*x);
-                                matrixH[k + 1, j] = matrixH[k + 1, j] - (p*y);
+                                matrixH[k, j] = matrixH[k, j] - (p * x);
+                                matrixH[k + 1, j] = matrixH[k + 1, j] - (p * y);
                             }
 
                             // Column modification
-                            for (var i = 0; i <= Math.Min(n, k + 3); i++)
+                            for (int i = 0; i <= Math.Min(n, k + 3); i++)
                             {
-                                p = (x*matrixH[i, k]) + (y*matrixH[i, k + 1]);
+                                p = (x * matrixH[i, k]) + (y * matrixH[i, k + 1]);
 
                                 if (notlast)
                                 {
-                                    p = p + (z*matrixH[i, k + 2]);
-                                    matrixH[i, k + 2] = matrixH[i, k + 2] - (p*r);
+                                    p = p + (z * matrixH[i, k + 2]);
+                                    matrixH[i, k + 2] = matrixH[i, k + 2] - (p * r);
                                 }
 
                                 matrixH[i, k] = matrixH[i, k] - p;
-                                matrixH[i, k + 1] = matrixH[i, k + 1] - (p*q);
+                                matrixH[i, k + 1] = matrixH[i, k + 1] - (p * q);
                             }
 
                             // Accumulate transformations
-                            for (var i = 0; i < order; i++)
+                            for (int i = 0; i < order; i++)
                             {
-                                p = (x*eigenVectors.At(i, k)) + (y*eigenVectors.At(i, k + 1));
+                                p = (x * eigenVectors.At(i, k)) + (y * eigenVectors.At(i, k + 1));
 
                                 if (notlast)
                                 {
-                                    p = p + (z*eigenVectors.At(i, k + 2));
-                                    eigenVectors.At(i, k + 2, eigenVectors.At(i, k + 2) - (p*r));
+                                    p = p + (z * eigenVectors.At(i, k + 2));
+                                    eigenVectors.At(i, k + 2, eigenVectors.At(i, k + 2) - (p * r));
                                 }
 
                                 eigenVectors.At(i, k, eigenVectors.At(i, k) - p);
-                                eigenVectors.At(i, k + 1, eigenVectors.At(i, k + 1) - (p*q));
+                                eigenVectors.At(i, k + 1, eigenVectors.At(i, k + 1) - (p * q));
                             }
                         } // (s != 0)
                     } // k loop
@@ -896,15 +896,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 // Real vector
                 if (q == 0.0f)
                 {
-                    var l = n;
+                    int l = n;
                     matrixH[n, n] = 1.0f;
-                    for (var i = n - 1; i >= 0; i--)
+                    for (int i = n - 1; i >= 0; i--)
                     {
                         w = matrixH[i, i] - p;
                         r = 0.0f;
-                        for (var j = l; j <= n; j++)
+                        for (int j = l; j <= n; j++)
                         {
-                            r = r + (matrixH[i, j]*matrixH[j, n]);
+                            r = r + (matrixH[i, j] * matrixH[j, n]);
                         }
 
                         if (e[i] < 0.0f)
@@ -919,11 +919,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                             {
                                 if (w != 0.0f)
                                 {
-                                    matrixH[i, n] = (-r)/w;
+                                    matrixH[i, n] = (-r) / w;
                                 }
                                 else
                                 {
-                                    matrixH[i, n] = (-r)/(eps*norm);
+                                    matrixH[i, n] = (-r) / (eps * norm);
                                 }
 
                                 // Solve real equations
@@ -932,26 +932,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                             {
                                 x = matrixH[i, i + 1];
                                 y = matrixH[i + 1, i];
-                                q = ((d[i] - p)*(d[i] - p)) + (e[i]*e[i]);
-                                t = ((x*s) - (z*r))/q;
+                                q = ((d[i] - p) * (d[i] - p)) + (e[i] * e[i]);
+                                t = ((x * s) - (z * r)) / q;
                                 matrixH[i, n] = t;
                                 if (Math.Abs(x) > Math.Abs(z))
                                 {
-                                    matrixH[i + 1, n] = (-r - (w*t))/x;
+                                    matrixH[i + 1, n] = (-r - (w * t)) / x;
                                 }
                                 else
                                 {
-                                    matrixH[i + 1, n] = (-s - (y*t))/z;
+                                    matrixH[i + 1, n] = (-s - (y * t)) / z;
                                 }
                             }
 
                             // Overflow control
                             t = Math.Abs(matrixH[i, n]);
-                            if ((eps*t)*t > 1)
+                            if ((eps * t) * t > 1)
                             {
-                                for (var j = i; j <= n; j++)
+                                for (int j = i; j <= n; j++)
                                 {
-                                    matrixH[j, n] = matrixH[j, n]/t;
+                                    matrixH[j, n] = matrixH[j, n] / t;
                                 }
                             }
                         }
@@ -961,31 +961,31 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 }
                 else if (q < 0)
                 {
-                    var l = n - 1;
+                    int l = n - 1;
 
                     // Last vector component imaginary so matrix is triangular
                     if (Math.Abs(matrixH[n, n - 1]) > Math.Abs(matrixH[n - 1, n]))
                     {
-                        matrixH[n - 1, n - 1] = q/matrixH[n, n - 1];
-                        matrixH[n - 1, n] = (-(matrixH[n, n] - p))/matrixH[n, n - 1];
+                        matrixH[n - 1, n - 1] = q / matrixH[n, n - 1];
+                        matrixH[n - 1, n] = (-(matrixH[n, n] - p)) / matrixH[n, n - 1];
                     }
                     else
                     {
-                        var res = Cdiv(0.0f, -matrixH[n - 1, n], matrixH[n - 1, n - 1] - p, q);
+                        Complex32 res = Cdiv(0.0f, -matrixH[n - 1, n], matrixH[n - 1, n - 1] - p, q);
                         matrixH[n - 1, n - 1] = res.Real;
                         matrixH[n - 1, n] = res.Imaginary;
                     }
 
                     matrixH[n, n - 1] = 0.0f;
                     matrixH[n, n] = 1.0f;
-                    for (var i = n - 2; i >= 0; i--)
+                    for (int i = n - 2; i >= 0; i--)
                     {
                         float ra = 0.0f;
                         float sa = 0.0f;
-                        for (var j = l; j <= n; j++)
+                        for (int j = l; j <= n; j++)
                         {
-                            ra = ra + (matrixH[i, j]*matrixH[j, n - 1]);
-                            sa = sa + (matrixH[i, j]*matrixH[j, n]);
+                            ra = ra + (matrixH[i, j] * matrixH[j, n - 1]);
+                            sa = sa + (matrixH[i, j] * matrixH[j, n]);
                         }
 
                         w = matrixH[i, i] - p;
@@ -1001,7 +1001,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                             l = i;
                             if (e[i] == 0.0f)
                             {
-                                var res = Cdiv(-ra, -sa, w, q);
+                                Complex32 res = Cdiv(-ra, -sa, w, q);
                                 matrixH[i, n - 1] = res.Real;
                                 matrixH[i, n] = res.Imaginary;
                             }
@@ -1011,24 +1011,24 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                                 x = matrixH[i, i + 1];
                                 y = matrixH[i + 1, i];
 
-                                float vr = ((d[i] - p)*(d[i] - p)) + (e[i]*e[i]) - (q*q);
-                                float vi = (d[i] - p)*2.0f*q;
+                                float vr = ((d[i] - p) * (d[i] - p)) + (e[i] * e[i]) - (q * q);
+                                float vi = (d[i] - p) * 2.0f * q;
                                 if ((vr == 0.0f) && (vi == 0.0f))
                                 {
-                                    vr = eps*norm*(Math.Abs(w) + Math.Abs(q) + Math.Abs(x) + Math.Abs(y) + Math.Abs(z));
+                                    vr = eps * norm * (Math.Abs(w) + Math.Abs(q) + Math.Abs(x) + Math.Abs(y) + Math.Abs(z));
                                 }
 
-                                var res = Cdiv((x*r) - (z*ra) + (q*sa), (x*s) - (z*sa) - (q*ra), vr, vi);
+                                Complex32 res = Cdiv((x * r) - (z * ra) + (q * sa), (x * s) - (z * sa) - (q * ra), vr, vi);
                                 matrixH[i, n - 1] = res.Real;
                                 matrixH[i, n] = res.Imaginary;
                                 if (Math.Abs(x) > (Math.Abs(z) + Math.Abs(q)))
                                 {
-                                    matrixH[i + 1, n - 1] = (-ra - (w*matrixH[i, n - 1]) + (q*matrixH[i, n]))/x;
-                                    matrixH[i + 1, n] = (-sa - (w*matrixH[i, n]) - (q*matrixH[i, n - 1]))/x;
+                                    matrixH[i + 1, n - 1] = (-ra - (w * matrixH[i, n - 1]) + (q * matrixH[i, n])) / x;
+                                    matrixH[i + 1, n] = (-sa - (w * matrixH[i, n]) - (q * matrixH[i, n - 1])) / x;
                                 }
                                 else
                                 {
-                                    res = Cdiv(-r - (y*matrixH[i, n - 1]), -s - (y*matrixH[i, n]), z, q);
+                                    res = Cdiv(-r - (y * matrixH[i, n - 1]), -s - (y * matrixH[i, n]), z, q);
                                     matrixH[i + 1, n - 1] = res.Real;
                                     matrixH[i + 1, n] = res.Imaginary;
                                 }
@@ -1036,12 +1036,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
 
                             // Overflow control
                             t = Math.Max(Math.Abs(matrixH[i, n - 1]), Math.Abs(matrixH[i, n]));
-                            if ((eps*t)*t > 1)
+                            if ((eps * t) * t > 1)
                             {
-                                for (var j = i; j <= n; j++)
+                                for (int j = i; j <= n; j++)
                                 {
-                                    matrixH[j, n - 1] = matrixH[j, n - 1]/t;
-                                    matrixH[j, n] = matrixH[j, n]/t;
+                                    matrixH[j, n - 1] = matrixH[j, n - 1] / t;
+                                    matrixH[j, n] = matrixH[j, n] / t;
                                 }
                             }
                         }
@@ -1050,14 +1050,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
 
             // Back transformation to get eigenvectors of original matrix
-            for (var j = order - 1; j >= 0; j--)
+            for (int j = order - 1; j >= 0; j--)
             {
-                for (var i = 0; i < order; i++)
+                for (int i = 0; i < order; i++)
                 {
                     z = 0.0f;
-                    for (var k = 0; k <= j; k++)
+                    for (int k = 0; k <= j; k++)
                     {
-                        z = z + (eigenVectors.At(i, k)*matrixH[k, j]);
+                        z = z + (eigenVectors.At(i, k) * matrixH[k, j]);
                     }
 
                     eigenVectors.At(i, j, z);
@@ -1073,14 +1073,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         /// <param name="yreal">Real part of Y</param>
         /// <param name="yimag">Imaginary part of Y</param>
         /// <returns>Division result as a <see cref="Complex"/> number.</returns>
-        static Complex32 Cdiv(float xreal, float ximag, float yreal, float yimag)
+        private static Complex32 Cdiv(float xreal, float ximag, float yreal, float yimag)
         {
             if (Math.Abs(yimag) < Math.Abs(yreal))
             {
-                return new Complex32((xreal + (ximag*(yimag/yreal)))/(yreal + (yimag*(yimag/yreal))), (ximag - (xreal*(yimag/yreal)))/(yreal + (yimag*(yimag/yreal))));
+                return new Complex32((xreal + (ximag * (yimag / yreal))) / (yreal + (yimag * (yimag / yreal))), (ximag - (xreal * (yimag / yreal))) / (yreal + (yimag * (yimag / yreal))));
             }
 
-            return new Complex32((ximag + (xreal*(yreal/yimag)))/(yimag + (yreal*(yreal/yimag))), (-xreal + (ximag*(yreal/yimag)))/(yimag + (yreal*(yreal/yimag))));
+            return new Complex32((ximag + (xreal * (yreal / yimag))) / (yimag + (yreal * (yreal / yimag))), (-xreal + (ximag * (yreal / yimag))) / (yimag + (yreal * (yreal / yimag))));
         }
 
         /// <summary>
@@ -1110,33 +1110,33 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
 
             if (IsSymmetric)
             {
-                var order = EigenValues.Count;
-                var tmp = new float[order];
+                int order = EigenValues.Count;
+                float[] tmp = new float[order];
 
-                for (var k = 0; k < order; k++)
+                for (int k = 0; k < order; k++)
                 {
-                    for (var j = 0; j < order; j++)
+                    for (int j = 0; j < order; j++)
                     {
                         float value = 0;
                         if (j < order)
                         {
-                            for (var i = 0; i < order; i++)
+                            for (int i = 0; i < order; i++)
                             {
-                                value += EigenVectors.At(i, j)*input.At(i, k);
+                                value += EigenVectors.At(i, j) * input.At(i, k);
                             }
 
-                            value /= (float) EigenValues[j].Real;
+                            value /= (float)EigenValues[j].Real;
                         }
 
                         tmp[j] = value;
                     }
 
-                    for (var j = 0; j < order; j++)
+                    for (int j = 0; j < order; j++)
                     {
                         float value = 0;
-                        for (var i = 0; i < order; i++)
+                        for (int i = 0; i < order; i++)
                         {
-                            value += EigenVectors.At(j, i)*tmp[i];
+                            value += EigenVectors.At(j, i) * tmp[i];
                         }
 
                         result.At(j, k, value);
@@ -1172,32 +1172,32 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             if (IsSymmetric)
             {
                 // Symmetric case -> x = V * inv(λ) * VT * b;
-                var order = EigenValues.Count;
-                var tmp = new float[order];
+                int order = EigenValues.Count;
+                float[] tmp = new float[order];
                 float value;
 
-                for (var j = 0; j < order; j++)
+                for (int j = 0; j < order; j++)
                 {
                     value = 0;
                     if (j < order)
                     {
-                        for (var i = 0; i < order; i++)
+                        for (int i = 0; i < order; i++)
                         {
-                            value += EigenVectors.At(i, j)*input[i];
+                            value += EigenVectors.At(i, j) * input[i];
                         }
 
-                        value /= (float) EigenValues[j].Real;
+                        value /= (float)EigenValues[j].Real;
                     }
 
                     tmp[j] = value;
                 }
 
-                for (var j = 0; j < order; j++)
+                for (int j = 0; j < order; j++)
                 {
                     value = 0;
                     for (int i = 0; i < order; i++)
                     {
-                        value += EigenVectors.At(j, i)*tmp[i];
+                        value += EigenVectors.At(j, i) * tmp[i];
                     }
 
                     result[j] = value;

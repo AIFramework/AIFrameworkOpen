@@ -32,9 +32,9 @@
 // </contribution>
 
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -48,11 +48,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class BetaBinomial : IDiscreteDistribution
     {
-        System.Random _random;
-
-        readonly int _n;
-        readonly double _a;
-        readonly double _b;
+        private System.Random _random;
+        private readonly int _n;
+        private readonly double _a;
+        private readonly double _b;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BetaBinomial"/> class.
@@ -82,7 +81,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="randomSource">The random number generator which is used to draw random samples.</param>
         public BetaBinomial(int n, double a, double b, System.Random randomSource)
         {
-            if (!IsValidParameterSet(n,a,b))
+            if (!IsValidParameterSet(n, a, b))
             {
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
@@ -94,10 +93,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="string"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -124,7 +123,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="k">The location in the domain where we want to evaluate the probability mass function.</param>
         public static bool IsValidParameterSet(int n, double a, double b, int k)
         {
-            return n >= 1.0 && a > 0.0 && b > 0.0 && k >=0 && k <=n;
+            return n >= 1.0 && a > 0.0 && b > 0.0 && k >= 0 && k <= n;
         }
 
 
@@ -145,7 +144,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => (_n*_a*_b*(_a+_b+_n))/(Math.Pow((_a+_b),2) * (_a+_b+1));
+        public double Variance => (_n * _a * _b * (_a + _b + _n)) / (Math.Pow((_a + _b), 2) * (_a + _b + 1));
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
@@ -269,14 +268,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="CumulativeDistribution"/>
         public static double CDF(int n, double a, double b, int x)
         {
-            if (!IsValidParameterSet(n,a,b,x))
+            if (!IsValidParameterSet(n, a, b, x))
             {
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
             double accumulator = 0;
 
-            for (int i = 0; i<=x; i++)
+            for (int i = 0; i <= x; i++)
             {
                 accumulator += PMF(n, a, b, i);
             }
@@ -292,14 +291,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="b">The β shape parameter of the Beta distribution. Range: β ≥ 0.</param>
         /// <param name="n">The number of trials (n). Range: n ≥ 0.</param>
         /// <returns>a random number from the BetaBinomial distribution.</returns>
-        static int SampleUnchecked(System.Random rnd, int n, double a, double b)
+        private static int SampleUnchecked(System.Random rnd, int n, double a, double b)
         {
-            var p = Beta.SampleUnchecked(rnd, a, b);
-            var x = Binomial.SampleUnchecked(rnd, p, n);
+            double p = Beta.SampleUnchecked(rnd, a, b);
+            int x = Binomial.SampleUnchecked(rnd, p, n);
             return x;
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, int n, double a, double b)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, int n, double a, double b)
         {
             for (int i = 0; i < values.Length; i++)
             {
@@ -307,7 +306,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, int n, double a, double b)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, int n, double a, double b)
         {
             while (true)
             {
@@ -354,7 +353,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
         public int Sample(System.Random rnd, int n, double a, double b)
         {
-            if (!IsValidParameterSet(n,a,b))
+            if (!IsValidParameterSet(n, a, b))
             {
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }

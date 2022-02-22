@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.Signals;
+﻿using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
 using AI.BackEnds.DSP.NWaves.Windows;
+using System;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
@@ -154,14 +154,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             _fft.Inverse(_filteredRe, _filteredIm, _filteredRe);
             _filteredRe.ApplyWindow(_window);
 
-            for (var j = 0; j < _overlapSize; j++)
+            for (int j = 0; j < _overlapSize; j++)
             {
                 _filteredRe[j] += _lastSaved[j];
             }
 
             _filteredRe.FastCopyTo(_lastSaved, _overlapSize, _hopSize);
 
-            for (var i = 0; i < _filteredRe.Length; i++)  // Wet/Dry mix
+            for (int i = 0; i < _filteredRe.Length; i++)  // Wet/Dry mix
             {
                 _filteredRe[i] *= Wet * _gain;
                 _filteredRe[i] += _dl[i] * Dry;

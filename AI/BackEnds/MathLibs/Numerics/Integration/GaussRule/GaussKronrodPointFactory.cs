@@ -8,7 +8,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration.GaussRule
     internal static class GaussKronrodPointFactory
     {
         [ThreadStatic]
-        static GaussPointPair _gaussKronrodPoint;
+        private static GaussPointPair _gaussKronrodPoint;
 
         /// <summary>
         /// Getter for the GaussKronrodPoint.

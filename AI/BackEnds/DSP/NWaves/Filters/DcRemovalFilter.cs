@@ -22,7 +22,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// Constructor creates simple 1st order recursive filter
         /// </summary>
         /// <param name="r">R coefficient (usually in [0.9, 1] range)</param>
-        public DcRemovalFilter(double r = 0.995) : base(new [] { 1.0, -1 }, new [] { 1.0, -r })
+        public DcRemovalFilter(double r = 0.995) : base(new[] { 1.0, -1 }, new[] { 1.0, -r })
         {
             _r = (float)r;
         }
@@ -34,7 +34,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <returns></returns>
         public override float Process(float sample)
         {
-            var output = sample - _in1 + _r * _out1;
+            float output = sample - _in1 + _r * _out1;
 
             _in1 = sample;
             _out1 = output;

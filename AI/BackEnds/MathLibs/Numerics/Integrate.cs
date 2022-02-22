@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Integration;
 using System;
 using System.Numerics;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Integration;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics
 {

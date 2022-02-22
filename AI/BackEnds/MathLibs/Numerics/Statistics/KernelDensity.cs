@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
 {
@@ -52,8 +52,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 throw new ArgumentException("The bandwidth must be a positive number!");
             }
 
-            var n = samples.Count;
-            var estimate = CommonParallel.Aggregate(0, n,
+            int n = samples.Count;
+            double estimate = CommonParallel.Aggregate(0, n,
                                i => kernel((x - samples[i]) / bandwidth),
                                (a, b) => a + b,
                                0d) / (n * bandwidth);

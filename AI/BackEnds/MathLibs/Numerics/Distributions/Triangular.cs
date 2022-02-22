@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -45,11 +45,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// to <c>false</c>, all parameter checks can be turned off.</para></remarks>
     public class Triangular : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _lower;
-        readonly double _upper;
-        readonly double _mode;
+        private System.Random _random;
+        private readonly double _lower;
+        private readonly double _upper;
+        private readonly double _mode;
 
         /// <summary>
         /// Initializes a new instance of the Triangular class with the given lower bound, upper bound and mode.
@@ -134,7 +133,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => (_lower + _upper + _mode)/3.0;
+        public double Mean => (_lower + _upper + _mode) / 3.0;
 
         /// <summary>
         /// Gets the variance of the distribution.
@@ -143,10 +142,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var a = _lower;
-                var b = _upper;
-                var c = _mode;
-                return (a*a + b*b + c*c - a*b - a*c - b*c)/18.0;
+                double a = _lower;
+                double b = _upper;
+                double c = _mode;
+                return (a * a + b * b + c * c - a * b - a * c - b * c) / 18.0;
             }
         }
 
@@ -159,7 +158,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// Gets the entropy of the distribution.
         /// </summary>
         /// <value></value>
-        public double Entropy => 0.5 + Math.Log((_upper - _lower)/2);
+        public double Entropy => 0.5 + Math.Log((_upper - _lower) / 2);
 
         /// <summary>
         /// Gets the skewness of the distribution.
@@ -168,12 +167,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var a = _lower;
-                var b = _upper;
-                var c = _mode;
-                var q = Math.Sqrt(2)*(a + b - 2*c)*(2*a - b - c)*(a - 2*b + c);
-                var d = 5*Math.Pow(a*a + b*b + c*c - a*b - a*c - b*c, 3.0/2);
-                return q/d;
+                double a = _lower;
+                double b = _upper;
+                double c = _mode;
+                double q = Math.Sqrt(2) * (a + b - 2 * c) * (2 * a - b - c) * (a - 2 * b + c);
+                double d = 5 * Math.Pow(a * a + b * b + c * c - a * b - a * c - b * c, 3.0 / 2);
+                return q / d;
             }
         }
 
@@ -190,12 +189,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var a = _lower;
-                var b = _upper;
-                var c = _mode;
-                return c >= (a + b)/2
-                    ? a + Math.Sqrt((b - a)*(c - a)/2)
-                    : b - Math.Sqrt((b - a)*(b - c)/2);
+                double a = _lower;
+                double b = _upper;
+                double c = _mode;
+                return c >= (a + b) / 2
+                    ? a + Math.Sqrt((b - a) * (c - a) / 2)
+                    : b - Math.Sqrt((b - a) * (b - c) / 2);
             }
         }
 
@@ -280,26 +279,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _lower, _upper, _mode);
         }
 
-        static double SampleUnchecked(System.Random rnd, double lower, double upper, double mode)
+        private static double SampleUnchecked(System.Random rnd, double lower, double upper, double mode)
         {
-            var u = rnd.NextDouble();
-            return u < (mode - lower)/(upper - lower)
-                ? lower + Math.Sqrt(u*(upper - lower)*(mode - lower))
-                : upper - Math.Sqrt((1 - u)*(upper - lower)*(upper - mode));
+            double u = rnd.NextDouble();
+            return u < (mode - lower) / (upper - lower)
+                ? lower + Math.Sqrt(u * (upper - lower) * (mode - lower))
+                : upper - Math.Sqrt((1 - u) * (upper - lower) * (upper - mode));
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double lower, double upper, double mode)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double lower, double upper, double mode)
         {
             double ml = mode - lower, ul = upper - lower, um = upper - mode;
-            double u = ml/ul, v = ul*ml, w = ul*um;
+            double u = ml / ul, v = ul * ml, w = ul * um;
 
-            return rnd.NextDoubleSequence().Select(x => x < u ? lower + Math.Sqrt(x*v) : upper - Math.Sqrt((1 - x)*w));
+            return rnd.NextDoubleSequence().Select(x => x < u ? lower + Math.Sqrt(x * v) : upper - Math.Sqrt((1 - x) * w));
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double lower, double upper, double mode)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double lower, double upper, double mode)
         {
             double ml = mode - lower, ul = upper - lower, um = upper - mode;
-            double u = ml/ul, v = ul*ml, w = ul*um;
+            double u = ml / ul, v = ul * ml, w = ul * um;
 
             rnd.NextDoubles(values);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
@@ -307,8 +306,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 for (int i = a; i < b; i++)
                 {
                     values[i] = values[i] < u
-                        ? lower + Math.Sqrt(values[i]*v)
-                        : upper - Math.Sqrt((1 - values[i])*w);
+                        ? lower + Math.Sqrt(values[i] * v)
+                        : upper - Math.Sqrt((1 - values[i]) * w);
                 }
             });
         }
@@ -329,18 +328,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var a = lower;
-            var b = upper;
-            var c = mode;
+            double a = lower;
+            double b = upper;
+            double c = mode;
 
             if (a <= x && x <= c)
             {
-                return 2*(x - a)/((b - a)*(c - a));
+                return 2 * (x - a) / ((b - a) * (c - a));
             }
 
             if (c < x & x <= b)
             {
-                return 2*(b - x)/((b - a)*(b - c));
+                return 2 * (b - x) / ((b - a) * (b - c));
             }
 
             return 0;
@@ -376,9 +375,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var a = lower;
-            var b = upper;
-            var c = mode;
+            double a = lower;
+            double b = upper;
+            double c = mode;
 
             if (x < a)
             {
@@ -387,12 +386,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (a <= x && x <= c)
             {
-                return (x - a)*(x - a)/((b - a)*(c - a));
+                return (x - a) * (x - a) / ((b - a) * (c - a));
             }
 
             if (c < x & x <= b)
             {
-                return 1 - (b - x)*(b - x)/((b - a)*(b - c));
+                return 1 - (b - x) * (b - x) / ((b - a) * (b - c));
             }
 
             return 1;
@@ -415,9 +414,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var a = lower;
-            var b = upper;
-            var c = mode;
+            double a = lower;
+            double b = upper;
+            double c = mode;
 
             if (p <= 0)
             {
@@ -425,14 +424,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             // Taken from http://www.ntrand.com/triangular-distribution/
-            if (p < (c - a)/(b - a))
+            if (p < (c - a) / (b - a))
             {
-                return a + Math.Sqrt(p*(c - a)*(b - a));
+                return a + Math.Sqrt(p * (c - a) * (b - a));
             }
 
             if (p < 1)
             {
-                return b - Math.Sqrt((1 - p)*(b - c)*(b - a));
+                return b - Math.Sqrt((1 - p) * (b - c) * (b - a));
             }
 
             return upper;

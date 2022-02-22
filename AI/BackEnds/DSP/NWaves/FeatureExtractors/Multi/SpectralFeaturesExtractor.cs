@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Features;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 {
@@ -67,14 +67,14 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
         /// <param name="options">Options</param>
         public SpectralFeaturesExtractor(MultiFeatureOptions options) : base(options)
         {
-            var featureList = options.FeatureList;
+            string featureList = options.FeatureList;
 
             if (featureList == "all" || featureList == "full")
             {
                 featureList = FeatureSet;
             }
 
-            var features = featureList.Split(',', '+', '-', ';', ':')
+            List<string> features = featureList.Split(',', '+', '-', ';', ':')
                                       .Select(f => f.Trim().ToLower())
                                       .ToList();
 
@@ -96,7 +96,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
                     case "flatness":
                         if (_parameters?.ContainsKey("minLevel") ?? false)
                         {
-                            var minLevel = (float)_parameters["minLevel"];
+                            float minLevel = (float)_parameters["minLevel"];
                             return (spectrum, freqs) => Spectral.Flatness(spectrum, minLevel);
                         }
                         else
@@ -108,7 +108,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
                     case "noiseness":
                         if (_parameters?.ContainsKey("noiseFrequency") ?? false)
                         {
-                            var noiseFrequency = (float)_parameters["noiseFrequency"];
+                            float noiseFrequency = (float)_parameters["noiseFrequency"];
                             return (spectrum, freqs) => Spectral.Noiseness(spectrum, freqs, noiseFrequency);
                         }
                         else
@@ -119,7 +119,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
                     case "rolloff":
                         if (_parameters?.ContainsKey("rolloffPercent") ?? false)
                         {
-                            var rolloffPercent = (float)_parameters["rolloffPercent"];
+                            float rolloffPercent = (float)_parameters["rolloffPercent"];
                             return (spectrum, freqs) => Spectral.Rolloff(spectrum, freqs, rolloffPercent);
                         }
                         else
@@ -153,12 +153,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 
             FeatureCount = features.Count;
             FeatureDescriptions = features;
-            
+
             _blockSize = options.FftSize > FrameSize ? options.FftSize : MathUtils.NextPowerOfTwo(FrameSize);
             _fft = new RealFft(_blockSize);
 
-            var frequencies = options.Frequencies;
-            var resolution = (float)SamplingRate / _blockSize;
+            float[] frequencies = options.Frequencies;
+            float resolution = (float)SamplingRate / _blockSize;
 
             if (frequencies == null)
             {
@@ -177,7 +177,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
                 _mappedSpectrum = new float[_frequencies.Length];
                 _frequencyPositions = new int[_frequencies.Length];
 
-                for (var i = 1; i < _frequencies.Length; i++)
+                for (int i = 1; i < _frequencies.Length; i++)
                 {
                     _frequencyPositions[i] = (int)(_frequencies[i] / resolution) + 1;
                 }
@@ -215,7 +215,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
             }
             else
             {
-                for (var j = 0; j < _mappedSpectrum.Length; j++)
+                for (int j = 0; j < _mappedSpectrum.Length; j++)
                 {
                     _mappedSpectrum[j] = _spectrum[_frequencyPositions[j]];
                 }
@@ -223,7 +223,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 
             // extract spectral features
 
-            for (var j = 0; j < _extractors.Count; j++)
+            for (int j = 0; j < _extractors.Count; j++)
             {
                 features[j] = _extractors[j](_mappedSpectrum, _frequencies);
             }
@@ -233,7 +233,10 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
         /// True if computations can be done in parallel
         /// </summary>
         /// <returns></returns>
-        public override bool IsParallelizable() => true;
+        public override bool IsParallelizable()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
@@ -241,8 +244,8 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
         /// <returns></returns>
         public override FeatureExtractor ParallelCopy()
         {
-            var spectralFeatureSet = string.Join(",", FeatureDescriptions.Take(_extractors.Count));
-            var options = new MultiFeatureOptions
+            string spectralFeatureSet = string.Join(",", FeatureDescriptions.Take(_extractors.Count));
+            MultiFeatureOptions options = new MultiFeatureOptions
             {
                 SamplingRate = SamplingRate,
                 FeatureList = spectralFeatureSet,

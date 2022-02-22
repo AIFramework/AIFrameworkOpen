@@ -70,7 +70,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             {
                 for (int i = 1; i < count; i++)
                 {
-                    var key = keys[i];
+                    T key = keys[i];
                     int j = i - 1;
                     while (j >= 0 && comparer.Compare(keys[j], key) > 0)
                     {
@@ -136,8 +136,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             {
                 for (int i = 1; i < count; i++)
                 {
-                    var key = keys[i];
-                    var item = items[i];
+                    TKey key = keys[i];
+                    TItem item = items[i];
                     int j = i - 1;
                     while (j >= 0 && comparer.Compare(keys[j], key) > 0)
                     {
@@ -201,9 +201,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             {
                 for (int i = 1; i < count; i++)
                 {
-                    var key = keys[i];
-                    var item1 = items1[i];
-                    var item2 = items2[i];
+                    TKey key = keys[i];
+                    TItem1 item1 = items1[i];
+                    TItem2 item2 = items2[i];
                     int j = i - 1;
                     while (j >= 0 && comparer.Compare(keys[j], key) > 0)
                     {
@@ -268,7 +268,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 int to = index + count;
                 for (int i = index + 1; i < to; i++)
                 {
-                    var key = keys[i];
+                    T key = keys[i];
                     int j = i - 1;
                     while (j >= index && comparer.Compare(keys[j], key) > 0)
                     {
@@ -346,8 +346,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 int to = index + count;
                 for (int i = index + 1; i < to; i++)
                 {
-                    var key = keys[i];
-                    var item = items[i];
+                    TKey key = keys[i];
+                    TItem item = items[i];
                     int j = i - 1;
                     while (j >= index && comparer.Compare(keys[j], key) > 0)
                     {
@@ -423,9 +423,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 int to = index + count;
                 for (int i = index + 1; i < to; i++)
                 {
-                    var key = keys[i];
-                    var item1 = items1[i];
-                    var item2 = items2[i];
+                    TKey key = keys[i];
+                    TItem1 item1 = items1[i];
+                    TItem2 item2 = items2[i];
                     int j = i - 1;
                     while (j >= index && comparer.Compare(keys[j], key) > 0)
                     {
@@ -479,7 +479,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="comparer">The method with which to compare two elements of the quick sort.</param>
         /// <param name="left">The left boundary of the quick sort.</param>
         /// <param name="right">The right boundary of the quick sort.</param>
-        static void QuickSort<T>(IList<T> keys, IComparer<T> comparer, int left, int right)
+        private static void QuickSort<T>(IList<T> keys, IComparer<T> comparer, int left, int right)
         {
             do
             {
@@ -565,7 +565,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="comparer">The method with which to compare two elements of the quick sort.</param>
         /// <param name="left">The left boundary of the quick sort.</param>
         /// <param name="right">The right boundary of the quick sort.</param>
-        static void QuickSort<T, TItems>(IList<T> keys, IList<TItems> items, IComparer<T> comparer, int left, int right)
+        private static void QuickSort<T, TItems>(IList<T> keys, IList<TItems> items, IComparer<T> comparer, int left, int right)
         {
             do
             {
@@ -657,7 +657,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="comparer">The method with which to compare two elements of the quick sort.</param>
         /// <param name="left">The left boundary of the quick sort.</param>
         /// <param name="right">The right boundary of the quick sort.</param>
-        static void QuickSort<T, TItems1, TItems2>(
+        private static void QuickSort<T, TItems1, TItems2>(
             IList<T> keys, IList<TItems1> items1, IList<TItems2> items2,
             IComparer<T> comparer,
             int left, int right)
@@ -755,7 +755,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="secondaryComparer">The method with which to compare two elements of the secondary list.</param>
         /// <param name="left">The left boundary of the quick sort.</param>
         /// <param name="right">The right boundary of the quick sort.</param>
-        static void QuickSortAll<T1, T2>(
+        private static void QuickSortAll<T1, T2>(
             IList<T1> primary, IList<T2> secondary,
             IComparer<T1> primaryComparer, IComparer<T2> secondaryComparer,
             int left, int right)
@@ -851,7 +851,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="keys">The list in which the elements are stored.</param>
         /// <param name="a">The index of the first element of the swap.</param>
         /// <param name="b">The index of the second element of the swap.</param>
-        static void Swap<T>(IList<T> keys, int a, int b)
+        private static void Swap<T>(IList<T> keys, int a, int b)
         {
             if (a == b)
             {

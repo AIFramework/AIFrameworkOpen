@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorization
 {
@@ -59,12 +59,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
             }
 
             // Create a new matrix for the Cholesky factor, then perform factorization (while overwriting).
-            var factor = (DenseMatrix) matrix.Clone();
+            DenseMatrix factor = (DenseMatrix)matrix.Clone();
             LinearAlgebraControl.Provider.CholeskyFactor(factor.Values, factor.RowCount);
             return new DenseCholesky(factor);
         }
 
-        DenseCholesky(MatrixMathNet<float> factor)
+        private DenseCholesky(MatrixMathNet<float> factor)
             : base(factor)
         {
         }
@@ -97,7 +97,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 Buffer.BlockCopy(dinput.Values, 0, dresult.Values, 0, dinput.Values.Length * Constants.SizeOfFloat);
 
                 // Cholesky solve by overwriting result.
-                var dfactor = (DenseMatrix) Factor;
+                DenseMatrix dfactor = (DenseMatrix)Factor;
                 LinearAlgebraControl.Provider.CholeskySolveFactored(dfactor.Values, dfactor.RowCount, dresult.Values, dresult.ColumnCount);
             }
             else
@@ -129,7 +129,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
                 Buffer.BlockCopy(dinput.Values, 0, dresult.Values, 0, dinput.Values.Length * Constants.SizeOfFloat);
 
                 // Cholesky solve by overwriting result.
-                var dfactor = (DenseMatrix) Factor;
+                DenseMatrix dfactor = (DenseMatrix)Factor;
                 LinearAlgebraControl.Provider.CholeskySolveFactored(dfactor.Values, dfactor.RowCount, dresult.Values, 1);
             }
             else
@@ -160,7 +160,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
 
             if (matrix is DenseMatrix dmatrix)
             {
-                var dfactor = (DenseMatrix) Factor;
+                DenseMatrix dfactor = (DenseMatrix)Factor;
 
                 // Overwrite the existing Factor matrix with the input.
                 Buffer.BlockCopy(dmatrix.Values, 0, dfactor.Values, 0, dmatrix.Values.Length * Constants.SizeOfFloat);

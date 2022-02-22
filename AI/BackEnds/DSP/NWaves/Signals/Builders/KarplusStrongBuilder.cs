@@ -12,7 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// Frequency in Hz
         /// </summary>
         protected double _frequency;
-        
+
         /// <summary>
         /// Stretch factor (0, +INF]
         /// </summary>
@@ -52,7 +52,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 
         protected void GenerateWaveTable(int sampleCount)
         {
-            var values = new[] { -1f, 1f };
+            float[] values = new[] { -1f, 1f };
 
             _samples = Enumerable.Range(0, sampleCount)
                                  .Select(_ => values[_rand.Next(2)])
@@ -61,7 +61,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 
         public override float NextSample()
         {
-            var idx = ((int)_n) % _samples.Length;
+            int idx = ((int)_n) % _samples.Length;
 
             if (_rand.NextDouble() < 1 / _stretchFactor)
             {

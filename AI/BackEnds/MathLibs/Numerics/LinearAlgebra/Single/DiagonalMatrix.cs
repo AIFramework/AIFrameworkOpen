@@ -27,14 +27,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 {
@@ -55,7 +55,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// Gets the matrix's data.
         /// </summary>
         /// <value>The matrix's data.</value>
-        readonly float[] _data;
+        private readonly float[] _data;
 
         /// <summary>
         /// Create a new diagonal matrix straight from an initialized matrix storage instance.
@@ -97,7 +97,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         public DiagonalMatrix(int rows, int columns, float diagonalValue)
             : this(rows, columns)
         {
-            for (var i = 0; i < _data.Length; i++)
+            for (int i = 0; i < _data.Length; i++)
             {
                 _data[i] = diagonalValue;
             }
@@ -204,7 +204,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             }
 
             result.Clear();
-            for (var i = 0; i < _data.Length; i++)
+            for (int i = 0; i < _data.Length; i++)
             {
                 result.At(i, i, -_data[i]);
             }
@@ -291,7 +291,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoMultiply(VectorMathNet<float> rightSide, VectorMathNet<float> result)
         {
-            var d = Math.Min(ColumnCount, RowCount);
+            int d = Math.Min(ColumnCount, RowCount);
             if (d < RowCount)
             {
                 result.ClearSubVector(ColumnCount, RowCount - ColumnCount);
@@ -306,9 +306,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 }
             }
 
-            for (var i = 0; i < d; i++)
+            for (int i = 0; i < d; i++)
             {
-                result.At(i, _data[i]*rightSide.At(i));
+                result.At(i, _data[i] * rightSide.At(i));
             }
         }
 
@@ -321,8 +321,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         {
             if (other is DiagonalMatrix diagonalOther && result is DiagonalMatrix diagonalResult)
             {
-                var thisDataCopy = new float[diagonalResult._data.Length];
-                var otherDataCopy = new float[diagonalResult._data.Length];
+                float[] thisDataCopy = new float[diagonalResult._data.Length];
+                float[] otherDataCopy = new float[diagonalResult._data.Length];
                 Array.Copy(_data, 0, thisDataCopy, 0, (diagonalResult._data.Length > _data.Length) ? _data.Length : diagonalResult._data.Length);
                 Array.Copy(diagonalOther._data, 0, otherDataCopy, 0, (diagonalResult._data.Length > diagonalOther._data.Length) ? diagonalOther._data.Length : diagonalResult._data.Length);
                 LinearAlgebraControl.Provider.PointWiseMultiplyArrays(thisDataCopy, otherDataCopy, diagonalResult._data);
@@ -331,9 +331,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
             if (other.Storage is DenseColumnMajorMatrixStorage<float> denseOther)
             {
-                var dense = denseOther.Data;
-                var diagonal = _data;
-                var d = Math.Min(denseOther.RowCount, RowCount);
+                float[] dense = denseOther.Data;
+                float[] diagonal = _data;
+                int d = Math.Min(denseOther.RowCount, RowCount);
                 if (d < RowCount)
                 {
                     result.ClearSubMatrix(denseOther.RowCount, RowCount - denseOther.RowCount, 0, denseOther.ColumnCount);
@@ -343,7 +343,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 {
                     for (int j = 0; j < d; j++)
                     {
-                        result.At(j, i, dense[index]*diagonal[j]);
+                        result.At(j, i, dense[index] * diagonal[j]);
                         index++;
                     }
                     index += (denseOther.RowCount - d);
@@ -353,12 +353,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
             if (ColumnCount == RowCount)
             {
-                other.Storage.MapIndexedTo(result.Storage, (i, j, x) => x*_data[i], Zeros.AllowSkip, ExistingData.Clear);
+                other.Storage.MapIndexedTo(result.Storage, (i, j, x) => x * _data[i], Zeros.AllowSkip, ExistingData.Clear);
             }
             else
             {
                 result.Clear();
-                other.Storage.MapSubMatrixIndexedTo(result.Storage, (i, j, x) => x*_data[i], 0, 0, Math.Min(RowCount, other.RowCount), 0, 0, other.ColumnCount, Zeros.AllowSkip, ExistingData.AssumeZeros);
+                other.Storage.MapSubMatrixIndexedTo(result.Storage, (i, j, x) => x * _data[i], 0, 0, Math.Min(RowCount, other.RowCount), 0, 0, other.ColumnCount, Zeros.AllowSkip, ExistingData.AssumeZeros);
             }
         }
 
@@ -371,8 +371,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         {
             if (other is DiagonalMatrix diagonalOther && result is DiagonalMatrix diagonalResult)
             {
-                var thisDataCopy = new float[diagonalResult._data.Length];
-                var otherDataCopy = new float[diagonalResult._data.Length];
+                float[] thisDataCopy = new float[diagonalResult._data.Length];
+                float[] otherDataCopy = new float[diagonalResult._data.Length];
                 Array.Copy(_data, 0, thisDataCopy, 0, (diagonalResult._data.Length > _data.Length) ? _data.Length : diagonalResult._data.Length);
                 Array.Copy(diagonalOther._data, 0, otherDataCopy, 0, (diagonalResult._data.Length > diagonalOther._data.Length) ? diagonalOther._data.Length : diagonalResult._data.Length);
                 LinearAlgebraControl.Provider.PointWiseMultiplyArrays(thisDataCopy, otherDataCopy, diagonalResult._data);
@@ -381,9 +381,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
             if (other.Storage is DenseColumnMajorMatrixStorage<float> denseOther)
             {
-                var dense = denseOther.Data;
-                var diagonal = _data;
-                var d = Math.Min(denseOther.ColumnCount, RowCount);
+                float[] dense = denseOther.Data;
+                float[] diagonal = _data;
+                int d = Math.Min(denseOther.ColumnCount, RowCount);
                 if (d < RowCount)
                 {
                     result.ClearSubMatrix(denseOther.ColumnCount, RowCount - denseOther.ColumnCount, 0, denseOther.RowCount);
@@ -393,7 +393,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 {
                     for (int i = 0; i < denseOther.RowCount; i++)
                     {
-                        result.At(j, i, dense[index]*diagonal[j]);
+                        result.At(j, i, dense[index] * diagonal[j]);
                         index++;
                     }
                 }
@@ -412,8 +412,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         {
             if (other is DiagonalMatrix diagonalOther && result is DiagonalMatrix diagonalResult)
             {
-                var thisDataCopy = new float[diagonalResult._data.Length];
-                var otherDataCopy = new float[diagonalResult._data.Length];
+                float[] thisDataCopy = new float[diagonalResult._data.Length];
+                float[] otherDataCopy = new float[diagonalResult._data.Length];
                 Array.Copy(_data, 0, thisDataCopy, 0, (diagonalResult._data.Length > _data.Length) ? _data.Length : diagonalResult._data.Length);
                 Array.Copy(diagonalOther._data, 0, otherDataCopy, 0, (diagonalResult._data.Length > diagonalOther._data.Length) ? diagonalOther._data.Length : diagonalResult._data.Length);
                 LinearAlgebraControl.Provider.PointWiseMultiplyArrays(thisDataCopy, otherDataCopy, diagonalResult._data);
@@ -422,9 +422,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
             if (other.Storage is DenseColumnMajorMatrixStorage<float> denseOther)
             {
-                var dense = denseOther.Data;
-                var diagonal = _data;
-                var d = Math.Min(denseOther.RowCount, ColumnCount);
+                float[] dense = denseOther.Data;
+                float[] diagonal = _data;
+                int d = Math.Min(denseOther.RowCount, ColumnCount);
                 if (d < ColumnCount)
                 {
                     result.ClearSubMatrix(denseOther.RowCount, ColumnCount - denseOther.RowCount, 0, denseOther.ColumnCount);
@@ -434,7 +434,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 {
                     for (int j = 0; j < d; j++)
                     {
-                        result.At(j, i, dense[index]*diagonal[j]);
+                        result.At(j, i, dense[index] * diagonal[j]);
                         index++;
                     }
                     index += (denseOther.RowCount - d);
@@ -444,12 +444,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
             if (ColumnCount == RowCount)
             {
-                other.Storage.MapIndexedTo(result.Storage, (i, j, x) => x*_data[i], Zeros.AllowSkip, ExistingData.Clear);
+                other.Storage.MapIndexedTo(result.Storage, (i, j, x) => x * _data[i], Zeros.AllowSkip, ExistingData.Clear);
             }
             else
             {
                 result.Clear();
-                other.Storage.MapSubMatrixIndexedTo(result.Storage, (i, j, x) => x*_data[i], 0, 0, other.RowCount, 0, 0, other.ColumnCount, Zeros.AllowSkip, ExistingData.AssumeZeros);
+                other.Storage.MapSubMatrixIndexedTo(result.Storage, (i, j, x) => x * _data[i], 0, 0, other.RowCount, 0, 0, other.ColumnCount, Zeros.AllowSkip, ExistingData.AssumeZeros);
             }
         }
 
@@ -460,7 +460,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoTransposeThisAndMultiply(VectorMathNet<float> rightSide, VectorMathNet<float> result)
         {
-            var d = Math.Min(ColumnCount, RowCount);
+            int d = Math.Min(ColumnCount, RowCount);
             if (d < ColumnCount)
             {
                 result.ClearSubVector(RowCount, ColumnCount - RowCount);
@@ -475,9 +475,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 }
             }
 
-            for (var i = 0; i < d; i++)
+            for (int i = 0; i < d; i++)
             {
-                result.At(i, _data[i]*rightSide.At(i));
+                result.At(i, _data[i] * rightSide.At(i));
             }
         }
 
@@ -496,14 +496,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 
             if (result is DiagonalMatrix diagResult)
             {
-                LinearAlgebraControl.Provider.ScaleArray(1.0f/divisor, _data, diagResult._data);
+                LinearAlgebraControl.Provider.ScaleArray(1.0f / divisor, _data, diagResult._data);
                 return;
             }
 
             result.Clear();
             for (int i = 0; i < _data.Length; i++)
             {
-                result.At(i, i, _data[i]/divisor);
+                result.At(i, i, _data[i] / divisor);
             }
         }
 
@@ -516,12 +516,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         {
             if (result is DiagonalMatrix diagResult)
             {
-                var resultData = diagResult._data;
+                float[] resultData = diagResult._data;
                 CommonParallel.For(0, _data.Length, 4096, (a, b) =>
                 {
                     for (int i = a; i < b; i++)
                     {
-                        resultData[i] = dividend/_data[i];
+                        resultData[i] = dividend / _data[i];
                     }
                 });
                 return;
@@ -530,7 +530,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             result.Clear();
             for (int i = 0; i < _data.Length; i++)
             {
-                result.At(i, i, dividend/_data[i]);
+                result.At(i, i, dividend / _data[i]);
             }
         }
 
@@ -636,9 +636,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <returns>The condition number of the matrix.</returns>
         public override float ConditionNumber()
         {
-            var maxSv = float.NegativeInfinity;
-            var minSv = float.PositiveInfinity;
-            foreach (var t in _data)
+            float maxSv = float.NegativeInfinity;
+            float minSv = float.PositiveInfinity;
+            foreach (float t in _data)
             {
                 maxSv = Math.Max(maxSv, Math.Abs(t));
                 minSv = Math.Min(minSv, Math.Abs(t));
@@ -658,8 +658,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 throw new ArgumentException("Matrix must be square.");
             }
 
-            var inverse = (DiagonalMatrix)Clone();
-            for (var i = 0; i < _data.Length; i++)
+            DiagonalMatrix inverse = (DiagonalMatrix)Clone();
+            for (int i = 0; i < _data.Length; i++)
             {
                 if (_data[i] != 0.0)
                 {
@@ -701,7 +701,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             }
 
             result.Clear();
-            for (var i = 0; i < _data.Length; i++)
+            for (int i = 0; i < _data.Length; i++)
             {
                 result.At(i, i, _data[i]);
             }
@@ -754,7 +754,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             }
 
             result.Clear();
-            for (var i = 0; i < _data.Length; i++)
+            for (int i = 0; i < _data.Length; i++)
             {
                 result.At(i, i, _data[i]);
             }
@@ -803,7 +803,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// is not positive.</exception>
         public override MatrixMathNet<float> SubMatrix(int rowIndex, int rowCount, int columnIndex, int columnCount)
         {
-            var target = rowIndex == columnIndex
+            MatrixMathNet<float> target = rowIndex == columnIndex
                 ? (MatrixMathNet<float>)new DiagonalMatrix(rowCount, columnCount)
                 : new SparseMatrix(rowCount, columnCount);
 
@@ -853,8 +853,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             {
                 CommonParallel.For(0, _data.Length, 4096, (a, b) =>
                 {
-                    var r = diagonalResult._data;
-                    for (var i = a; i < b; i++)
+                    float[] r = diagonalResult._data;
+                    for (int i = a; i < b; i++)
                     {
                         r[i] = Euclid.Modulus(_data[i], divisor);
                     }
@@ -878,8 +878,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             {
                 CommonParallel.For(0, _data.Length, 4096, (a, b) =>
                 {
-                    var r = diagonalResult._data;
-                    for (var i = a; i < b; i++)
+                    float[] r = diagonalResult._data;
+                    for (int i = a; i < b; i++)
                     {
                         r[i] = Euclid.Modulus(dividend, _data[i]);
                     }
@@ -903,8 +903,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             {
                 CommonParallel.For(0, _data.Length, 4096, (a, b) =>
                 {
-                    var r = diagonalResult._data;
-                    for (var i = a; i < b; i++)
+                    float[] r = diagonalResult._data;
+                    for (int i = a; i < b; i++)
                     {
                         r[i] = _data[i] % divisor;
                     }
@@ -928,8 +928,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             {
                 CommonParallel.For(0, _data.Length, 4096, (a, b) =>
                 {
-                    var r = diagonalResult._data;
-                    for (var i = a; i < b; i++)
+                    float[] r = diagonalResult._data;
+                    for (int i = a; i < b; i++)
                     {
                         r[i] = dividend % _data[i];
                     }

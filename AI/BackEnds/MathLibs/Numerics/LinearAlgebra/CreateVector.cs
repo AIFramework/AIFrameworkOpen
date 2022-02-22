@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 {
@@ -49,7 +49,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <summary>
         /// Create a new vector with the same kind of the provided example.
         /// </summary>
-        public static VectorMathNet<T> SameAs<T,TU>(VectorMathNet<TU> example, int length)
+        public static VectorMathNet<T> SameAs<T, TU>(VectorMathNet<TU> example, int length)
             where T : struct, IEquatable<T>, IFormattable
             where TU : struct, IEquatable<TU>, IFormattable
         {
@@ -59,7 +59,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <summary>
         /// Create a new vector with the same kind and dimension of the provided example.
         /// </summary>
-        public static VectorMathNet<T> SameAs<T,TU>(VectorMathNet<TU> example)
+        public static VectorMathNet<T> SameAs<T, TU>(VectorMathNet<TU> example)
             where T : struct, IEquatable<T>, IFormattable
             where TU : struct, IEquatable<TU>, IFormattable
         {
@@ -69,7 +69,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <summary>
         /// Create a new vector with the same kind of the provided example.
         /// </summary>
-        public static  VectorMathNet<T> SameAs<T,TU>(MatrixMathNet<TU> example, int length)
+        public static VectorMathNet<T> SameAs<T, TU>(MatrixMathNet<TU> example, int length)
             where T : struct, IEquatable<T>, IFormattable
             where TU : struct, IEquatable<TU>, IFormattable
         {

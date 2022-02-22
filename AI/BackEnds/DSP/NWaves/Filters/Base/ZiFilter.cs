@@ -49,21 +49,21 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             _b = b.ToArray();
             _a = a.ToArray();
 
-            var maxLength = _a.Length;
+            int maxLength = _a.Length;
 
             if (_a.Length > _b.Length)
             {
                 maxLength = _a.Length;
                 _b = _b.PadZeros(maxLength);
             }
-            else if(_a.Length < _b.Length)
+            else if (_a.Length < _b.Length)
             {
                 maxLength = _b.Length;
                 _a = _a.PadZeros(maxLength);
             }
             // don't check for equality
 
-            _zi = new float [maxLength];
+            _zi = new float[maxLength];
         }
 
         /// <summary>
@@ -126,14 +126,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public DiscreteSignal FilterIc(DiscreteSignal signal)
         {
-            var input = signal.Samples;
-            var output = new float[signal.Length];
+            float[] input = signal.Samples;
+            float[] output = new float[signal.Length];
 
-            for (var i = 0; i < output.Length; i++)
+            for (int i = 0; i < output.Length; i++)
             {
                 output[i] = _b[0] * input[i] + _zi[0];
 
-                for (var j = 1; j < _zi.Length; j++)
+                for (int j = 1; j < _zi.Length; j++)
                 {
                     _zi[j - 1] = _b[j] * input[i] - _a[j] * output[i] + _zi[j];
                 }
@@ -149,9 +149,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns>Output sample</returns>
         public override float Process(float input)
         {
-            var output = _b[0] * input + _zi[0];
+            float output = _b[0] * input + _zi[0];
 
-            for (var j = 1; j < _zi.Length; j++)
+            for (int j = 1; j < _zi.Length; j++)
             {
                 _zi[j - 1] = _b[j] * input - _a[j] * output + _zi[j];
             }
@@ -174,19 +174,23 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             Guard.AgainstInvalidRange(padLength, signal.Length, "pad length", "Signal length");
 
-            var input = signal.Samples;
-            var output = new float[signal.Length];
-            var edgeLeft = new float[padLength];
-            var edgeRight = new float[padLength];
+            float[] input = signal.Samples;
+            float[] output = new float[signal.Length];
+            float[] edgeLeft = new float[padLength];
+            float[] edgeRight = new float[padLength];
 
 
             // forward filtering: ============================================================
 
-            var initialZi = Tf.Zi;
-            var zi = initialZi.FastCopy();
-            var baseSample = 2 * input[0] - input[padLength];
+            double[] initialZi = Tf.Zi;
+            double[] zi = initialZi.FastCopy();
+            float baseSample = 2 * input[0] - input[padLength];
 
-            for (int i = 0; i < zi.Length; zi[i++] *= baseSample) ;
+            for (int i = 0; i < zi.Length; zi[i++] *= baseSample)
+            {
+                ;
+            }
+
             Init(zi);
 
             baseSample = input[0];
@@ -200,7 +204,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             {
                 output[i] = Process(input[i]);
             }
-            
+
             baseSample = input.Last();
 
             for (int k = 0, i = input.Length - 2; i > input.Length - 2 - padLength; k++, i--)
@@ -214,7 +218,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             zi = initialZi;
             baseSample = edgeRight.Last();
 
-            for (int i = 0; i < zi.Length; zi[i++] *= baseSample) ;
+            for (int i = 0; i < zi.Length; zi[i++] *= baseSample)
+            {
+                ;
+            }
+
             Init(zi);
 
             for (int i = padLength - 1; i >= 0; i--)

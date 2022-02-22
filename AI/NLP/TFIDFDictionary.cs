@@ -68,7 +68,7 @@ namespace AI.NLP
         /// <summary>
         /// Drawing up a vector dictionary
         /// </summary>
-        public Dictionary<string, Vector> VectorDictionary() 
+        public Dictionary<string, Vector> VectorDictionary()
         {
             Dictionary<string, double>[] dotDicts = tFIDF.pDs;
             Dictionary<string, Vector> vecDict = new Dictionary<string, Vector>();

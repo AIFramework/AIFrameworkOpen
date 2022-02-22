@@ -42,12 +42,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
         /// The collection that holds all the stop criteria and the flag indicating if they should be added
         /// to the child iterators.
         /// </summary>
-        readonly List<IIterationStopCriterion<T>> _stopCriteria;
+        private readonly List<IIterationStopCriterion<T>> _stopCriteria;
 
         /// <summary>
         /// The status of the iterator.
         /// </summary>
-        IterationStatus _status = IterationStatus.Continue;
+        private IterationStatus _status = IterationStatus.Continue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Iterator{T}"/> class with the default stop criteria.
@@ -117,9 +117,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
                 return _status;
             }
 
-            foreach (var stopCriterion in _stopCriteria)
+            foreach (IIterationStopCriterion<T> stopCriterion in _stopCriteria)
             {
-                var status = stopCriterion.DetermineStatus(iterationNumber, solutionVector, sourceVector, residualVector);
+                IterationStatus status = stopCriterion.DetermineStatus(iterationNumber, solutionVector, sourceVector, residualVector);
                 if (status == IterationStatus.Continue)
                 {
                     continue;
@@ -154,7 +154,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
         {
             _status = IterationStatus.Continue;
 
-            foreach (var stopCriterion in _stopCriteria)
+            foreach (IIterationStopCriterion<T> stopCriterion in _stopCriteria)
             {
                 stopCriterion.Reset();
             }

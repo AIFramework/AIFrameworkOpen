@@ -59,7 +59,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
             _hiD = wavelet.HiD.Reverse().ToArray();
             _loR = wavelet.LoR.ToArray();           // in orthonormal case: loR = loD and hiR = hiD
             _hiR = wavelet.HiR.ToArray();
-            
+
             _temp = new float[size];
 
             // For future:
@@ -78,7 +78,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
         /// <param name="level"></param>
         public void Direct(float[] input, float[] output, int level = 0)
         {
-            var maxLevel = MaxLevel(input.Length);
+            int maxLevel = MaxLevel(input.Length);
 
             if (level <= 0)
             {
@@ -95,26 +95,29 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
                                                        // convolution in case of db3, db5, db7, etc. runs through another samples;
                                                        // essentially, we're convolving kernel with signal [x_n-1, x0, x1, ..., x_n-2]
 
-                                                       // NOTE. We are emulating the 'periodization' mode of MATLAB/pywt.
-            var h = input.Length;
+            // NOTE. We are emulating the 'periodization' mode of MATLAB/pywt.
+            int h = input.Length;
 
-            for (var l = 0; l < level && h >= _waveletLength; l++, h /= 2)
+            for (int l = 0; l < level && h >= _waveletLength; l++, h /= 2)
             {
-                var halfLen = h / 2;
-                var padding = pad ? h - 1 : 0;
-                var start = (_waveletLength - 1) / 4;
+                int halfLen = h / 2;
+                int padding = pad ? h - 1 : 0;
+                int start = (_waveletLength - 1) / 4;
 
                 for (int i = 0; i < halfLen; i++, start++)
                 {
-                    if (start == halfLen) start = 0;
+                    if (start == halfLen)
+                    {
+                        start = 0;
+                    }
 
                     output[start] = output[start + halfLen] = 0;
 
                     for (int j = 0; j < _waveletLength; j++)
                     {
-                        var k = (i * 2 + j + padding) % h;
+                        int k = (i * 2 + j + padding) % h;
 
-                        output[start]           += _temp[k] * _loD[j]; // approximation
+                        output[start] += _temp[k] * _loD[j]; // approximation
                         output[start + halfLen] += _temp[k] * _hiD[j]; // details
                     }
                 }
@@ -131,7 +134,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
         /// <param name="level"></param>
         public void Inverse(float[] input, float[] output, int level = 0)
         {
-            var maxLevel = MaxLevel(input.Length);
+            int maxLevel = MaxLevel(input.Length);
 
             if (level <= 0)
             {
@@ -146,23 +149,26 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
 
             bool pad = (_waveletLength / 2) % 2 == 0;
 
-            var h = (int)(input.Length / Math.Pow(2, level - 1));
+            int h = (int)(input.Length / Math.Pow(2, level - 1));
 
             for (; h <= input.Length; h *= 2)
             {
                 Array.Clear(output, 0, output.Length);
 
-                var halfLen = h / 2;
-                var padding = pad ? h - 1 : 0;
-                var start = (_waveletLength - 1) / 4;
+                int halfLen = h / 2;
+                int padding = pad ? h - 1 : 0;
+                int start = (_waveletLength - 1) / 4;
 
                 for (int i = 0; i < halfLen; i++, start++)
                 {
-                    if (start == halfLen) start = 0;
+                    if (start == halfLen)
+                    {
+                        start = 0;
+                    }
 
                     for (int j = 0; j < _waveletLength; j++)
                     {
-                        var k = (i * 2 + j + padding) % h;
+                        int k = (i * 2 + j + padding) % h;
 
                         output[k] += _temp[start] * _loR[j] + _temp[start + halfLen] * _hiR[j];
                     }
@@ -177,6 +183,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
-        public int MaxLevel(int length) => (int)(Math.Log(length / (_waveletLength - 1), 2));
+        public int MaxLevel(int length)
+        {
+            return (int)(Math.Log(length / (_waveletLength - 1), 2));
+        }
     }
 }

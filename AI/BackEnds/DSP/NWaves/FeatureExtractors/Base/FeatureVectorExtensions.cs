@@ -10,7 +10,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
         /// </summary>
         public static Dictionary<string, float> Statistics(this float[] vector)
         {
-            var mean = vector.Average();
+            float mean = vector.Average();
 
             return new Dictionary<string, float>
             {

@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -43,17 +43,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Zipf : IDiscreteDistribution
     {
-        System.Random _random;
+        private System.Random _random;
 
         /// <summary>
         /// The s parameter of the distribution.
         /// </summary>
-        readonly double _s;
+        private readonly double _s;
 
         /// <summary>
         /// The n parameter of the distribution.
         /// </summary>
-        readonly int _n;
+        private readonly int _n;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Zipf"/> class.
@@ -131,7 +131,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => SpecialFunctions.GeneralHarmonic(_n, _s - 1.0)/SpecialFunctions.GeneralHarmonic(_n, _s);
+        public double Mean => SpecialFunctions.GeneralHarmonic(_n, _s - 1.0) / SpecialFunctions.GeneralHarmonic(_n, _s);
 
         /// <summary>
         /// Gets the variance of the distribution.
@@ -145,9 +145,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                var ghns = SpecialFunctions.GeneralHarmonic(_n, _s);
-                return (SpecialFunctions.GeneralHarmonic(_n, _s - 2)*SpecialFunctions.GeneralHarmonic(_n, _s))
-                       - (Math.Pow(SpecialFunctions.GeneralHarmonic(_n, _s - 1), 2)/(ghns*ghns));
+                double ghns = SpecialFunctions.GeneralHarmonic(_n, _s);
+                return (SpecialFunctions.GeneralHarmonic(_n, _s - 2) * SpecialFunctions.GeneralHarmonic(_n, _s))
+                       - (Math.Pow(SpecialFunctions.GeneralHarmonic(_n, _s - 1), 2) / (ghns * ghns));
             }
         }
 
@@ -164,12 +164,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             get
             {
                 double sum = 0;
-                for (var i = 0; i < _n; i++)
+                for (int i = 0; i < _n; i++)
                 {
-                    sum += Math.Log(i + 1)/Math.Pow(i + 1, _s);
+                    sum += Math.Log(i + 1) / Math.Pow(i + 1, _s);
                 }
 
-                return ((_s/SpecialFunctions.GeneralHarmonic(_n, _s))*sum) + Math.Log(SpecialFunctions.GeneralHarmonic(_n, _s));
+                return ((_s / SpecialFunctions.GeneralHarmonic(_n, _s)) * sum) + Math.Log(SpecialFunctions.GeneralHarmonic(_n, _s));
             }
         }
 
@@ -185,7 +185,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                return ((SpecialFunctions.GeneralHarmonic(_n, _s - 3)*Math.Pow(SpecialFunctions.GeneralHarmonic(_n, _s), 2)) - (SpecialFunctions.GeneralHarmonic(_n, _s - 1)*((3*SpecialFunctions.GeneralHarmonic(_n, _s - 2)*SpecialFunctions.GeneralHarmonic(_n, _s)) - Math.Pow(SpecialFunctions.GeneralHarmonic(_n, _s - 1), 2))))/Math.Pow((SpecialFunctions.GeneralHarmonic(_n, _s - 2)*SpecialFunctions.GeneralHarmonic(_n, _s)) - Math.Pow(SpecialFunctions.GeneralHarmonic(_n, _s - 1), 2), 1.5);
+                return ((SpecialFunctions.GeneralHarmonic(_n, _s - 3) * Math.Pow(SpecialFunctions.GeneralHarmonic(_n, _s), 2)) - (SpecialFunctions.GeneralHarmonic(_n, _s - 1) * ((3 * SpecialFunctions.GeneralHarmonic(_n, _s - 2) * SpecialFunctions.GeneralHarmonic(_n, _s)) - Math.Pow(SpecialFunctions.GeneralHarmonic(_n, _s - 1), 2)))) / Math.Pow((SpecialFunctions.GeneralHarmonic(_n, _s - 2) * SpecialFunctions.GeneralHarmonic(_n, _s)) - Math.Pow(SpecialFunctions.GeneralHarmonic(_n, _s - 1), 2), 1.5);
             }
         }
 
@@ -216,7 +216,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the probability mass at location <paramref name="k"/>.</returns>
         public double Probability(int k)
         {
-            return (1.0/Math.Pow(k, _s))/SpecialFunctions.GeneralHarmonic(_n, _s);
+            return (1.0 / Math.Pow(k, _s)) / SpecialFunctions.GeneralHarmonic(_n, _s);
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            return SpecialFunctions.GeneralHarmonic((int)x, _s)/SpecialFunctions.GeneralHarmonic(_n, _s);
+            return SpecialFunctions.GeneralHarmonic((int)x, _s) / SpecialFunctions.GeneralHarmonic(_n, _s);
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return (1.0/Math.Pow(k, s))/SpecialFunctions.GeneralHarmonic(n, s);
+            return (1.0 / Math.Pow(k, s)) / SpecialFunctions.GeneralHarmonic(n, s);
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            return SpecialFunctions.GeneralHarmonic((int)x, s)/SpecialFunctions.GeneralHarmonic(n, s);
+            return SpecialFunctions.GeneralHarmonic((int)x, s) / SpecialFunctions.GeneralHarmonic(n, s);
         }
 
         /// <summary>
@@ -308,20 +308,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="s">The s parameter of the distribution.</param>
         /// <param name="n">The n parameter of the distribution.</param>
         /// <returns>a random number from the Zipf distribution.</returns>
-        static int SampleUnchecked(System.Random rnd, double s, int n)
+        private static int SampleUnchecked(System.Random rnd, double s, int n)
         {
-            var r = 0.0;
+            double r = 0.0;
             while (r == 0.0)
             {
                 r = rnd.NextDouble();
             }
 
-            var p = 1.0/SpecialFunctions.GeneralHarmonic(n, s);
+            double p = 1.0 / SpecialFunctions.GeneralHarmonic(n, s);
             int i;
-            var sum = 0.0;
+            double sum = 0.0;
             for (i = 1; i <= n; i++)
             {
-                sum += p/Math.Pow(i, s);
+                sum += p / Math.Pow(i, s);
                 if (sum >= r)
                 {
                     break;
@@ -331,7 +331,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return i;
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, double s, int n)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, double s, int n)
         {
             for (int i = 0; i < values.Length; i++)
             {
@@ -339,7 +339,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, double s, int n)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, double s, int n)
         {
             while (true)
             {

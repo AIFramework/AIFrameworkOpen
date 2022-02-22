@@ -57,7 +57,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Extremal frequencies
         /// </summary>
         public double[] ExtremalFrequencies => _extrs.Select(e => _grid[e]).ToArray();
-        
+
         /// <summary>
         /// Tolerance (for computing denominators)
         /// </summary>
@@ -66,7 +66,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <summary>
         /// Indices of extremal frequencies in the grid
         /// </summary>
-        private int[] _extrs;
+        private readonly int[] _extrs;
 
         /// <summary>
         /// Grid
@@ -140,12 +140,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="gridDensity"></param>
         private void MakeGrid(double[] desired, double[] weights, int gridDensity = 16)
         {
-            var gridSize = 0;
-            var bandSizes = new int[_freqs.Length / 2];
+            int gridSize = 0;
+            int[] bandSizes = new int[_freqs.Length / 2];
 
-            var step = 0.5 / (gridDensity * (K - 1));
+            double step = 0.5 / (gridDensity * (K - 1));
 
-            for (var i = 0; i < bandSizes.Length; i++)
+            for (int i = 0; i < bandSizes.Length; i++)
             {
                 bandSizes[i] = (int)((_freqs[2 * i + 1] - _freqs[2 * i]) / step + 0.5);
 
@@ -156,13 +156,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             _weights = new double[gridSize];
             _desired = new double[gridSize];
 
-            var gi = 0;
+            int gi = 0;
 
-            for (var i = 0; i < bandSizes.Length; i++)
+            for (int i = 0; i < bandSizes.Length; i++)
             {
-                var freq = _freqs[2 * i];
+                double freq = _freqs[2 * i];
 
-                for (var k = 0; k < bandSizes[i]; k++, gi++, freq += step)
+                for (int k = 0; k < bandSizes[i]; k++, gi++, freq += step)
                 {
                     _grid[gi] = freq;
                     _weights[gi] = weights[i];
@@ -178,9 +178,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// </summary>
         private void InitExtrema()
         {
-            var n = _grid.Length;
+            int n = _grid.Length;
 
-            for (var k = 0; k < K; k++)
+            for (int k = 0; k < K; k++)
             {
                 _extrs[k] = (int)(k * (n - 1.0) / (K - 1));
             }
@@ -195,7 +195,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             InitExtrema();
 
-            var extrCandidates = new int[2 * K];
+            int[] extrCandidates = new int[2 * K];
 
             for (Iterations = 0; Iterations < maxIterations; Iterations++)
             {
@@ -205,23 +205,23 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 UpdateCoefficients();
 
                 // 3) interpolate: ==============================================================
-                
-                for (var i = 0; i < _grid.Length; i++)
+
+                for (int i = 0; i < _grid.Length; i++)
                 {
                     InterpolatedResponse[i] = Lagrange(_grid[i]);
                 }
 
                 // 4) evaluate error on entire grid: ============================================
 
-                for (var i = 0; i < _grid.Length; i++)
+                for (int i = 0; i < _grid.Length; i++)
                 {
                     Error[i] = _weights[i] * (_desired[i] - InterpolatedResponse[i]);
                 }
 
                 // 5) find extrema in error function (array): ===================================
 
-                var extrCount = 0;
-                var n = _grid.Length;
+                int extrCount = 0;
+                int n = _grid.Length;
 
                 // first, simply find all peaks of error function
                 // (alternation theorem guarantees that there'll be at least K peaks):
@@ -230,7 +230,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 {
                     extrCandidates[extrCount++] = 0;
                 }
-                for (var i = 1; i < n - 1; i++)
+                for (int i = 1; i < n - 1; i++)
                 {
                     if ((Error[i] > 0.0 && Error[i] >= Error[i - 1] && Error[i] > Error[i + 1]) ||
                         (Error[i] < 0.0 && Error[i] <= Error[i - 1] && Error[i] < Error[i + 1]))
@@ -245,7 +245,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
                 // less than K peaks? then algorithm's converged (theoretically)
 
-                if (extrCount < K) break;
+                if (extrCount < K)
+                {
+                    break;
+                }
 
 
                 // if there are more than K extrema, then remove the least important one by one
@@ -255,9 +258,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 {
                     // find index of peak with minimum abs error:
 
-                    var indexToRemove = 0;
+                    int indexToRemove = 0;
 
-                    for (var i = 1; i < extrCount; i++)
+                    for (int i = 1; i < extrCount; i++)
                     {
                         if (Math.Abs(Error[extrCandidates[i]]) < Math.Abs(Error[extrCandidates[indexToRemove]]))
                         {
@@ -269,7 +272,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
                     extrCount--;
 
-                    for (var i = indexToRemove; i < extrCount; i++)
+                    for (int i = indexToRemove; i < extrCount; i++)
                     {
                         extrCandidates[i] = extrCandidates[i + 1];
                     }
@@ -280,18 +283,28 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
                 // 6) check if we should continue iterations: ==================================
 
-                var maxError = Math.Abs(Error[0]);
-                var minError = maxError;
+                double maxError = Math.Abs(Error[0]);
+                double minError = maxError;
 
-                for (var k = 0; k < K; k++)
+                for (int k = 0; k < K; k++)
                 {
-                    var error = Math.Abs(Error[_extrs[k]]);
+                    double error = Math.Abs(Error[_extrs[k]]);
 
-                    if (error < minError) minError = error;
-                    if (error > maxError) maxError = error;
+                    if (error < minError)
+                    {
+                        minError = error;
+                    }
+
+                    if (error > maxError)
+                    {
+                        maxError = error;
+                    }
                 }
 
-                if ((maxError - minError) / minError < 1e-6) break;
+                if ((maxError - minError) / minError < 1e-6)
+                {
+                    break;
+                }
             }
 
 
@@ -314,8 +327,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             // 1) compute gamma coefficients: ============================================
 
-            var num = 0.0;
-            var den = 0.0;
+            double num = 0.0;
+            double den = 0.0;
 
             for (int i = 0, sign = 1; i < K; i++, sign = -sign)
             {
@@ -327,7 +340,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             // 2) compute delta: =========================================================
 
-            var delta = num / den;
+            double delta = num / den;
 
             // 3) compute points for interpolation: ======================================
 
@@ -345,22 +358,22 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             UpdateCoefficients();
 
-            var halfOrder = Order / 2;
+            int halfOrder = Order / 2;
 
             // optional: pre-calculate lagrange interpolated values =====================
 
-            var lagr = Enumerable.Range(0, halfOrder + 1)
+            double[] lagr = Enumerable.Range(0, halfOrder + 1)
                                  .Select(i => Lagrange((double)i / Order))
                                  .ToArray();
 
             // compute kernel (impulse response): =======================================
 
-            var kernel = new double[Order];
+            double[] kernel = new double[Order];
 
-            for (var k = 0; k < Order; k++)
+            for (int k = 0; k < Order; k++)
             {
-                var sum = 0.0;
-                for (var i = 1; i <= halfOrder; i++)
+                double sum = 0.0;
+                for (int i = 1; i <= halfOrder; i++)
                 {
                     sum += lagr[i] * Math.Cos(2 * Math.PI * i * (k - halfOrder) / Order);
                 }
@@ -378,18 +391,24 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns></returns>
         private double Gamma(int k)
         {
-            var jet = (K - 1) / 15 + 1;     // as in original Rabiner's code; without it there'll be numerical issues 
-            var den = 1.0;
+            int jet = (K - 1) / 15 + 1;     // as in original Rabiner's code; without it there'll be numerical issues 
+            double den = 1.0;
 
-            for (var j = 0; j < jet; j++)
+            for (int j = 0; j < jet; j++)
             {
-                for (var i = j; i < K; i += jet)
+                for (int i = j; i < K; i += jet)
                 {
-                    if (i != k) den *= 2 * (_cosTable[k] - _cosTable[i]);
+                    if (i != k)
+                    {
+                        den *= 2 * (_cosTable[k] - _cosTable[i]);
+                    }
                 }
             }
 
-            if (Math.Abs(den) < Tolerance) den = Tolerance;
+            if (Math.Abs(den) < Tolerance)
+            {
+                den = Tolerance;
+            }
 
             return 1 / den;
         }
@@ -401,16 +420,19 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns></returns>
         private double Lagrange(double freq)
         {
-            var num = 0.0;
-            var den = 0.0;
+            double num = 0.0;
+            double den = 0.0;
 
-            var cosFreq = Math.Cos(2 * Math.PI * freq);
+            double cosFreq = Math.Cos(2 * Math.PI * freq);
 
-            for (var i = 0; i < K; i++)
+            for (int i = 0; i < K; i++)
             {
-                var cosDiff = cosFreq - _cosTable[i];
+                double cosDiff = cosFreq - _cosTable[i];
 
-                if (Math.Abs(cosDiff) < Tolerance) return _points[i];
+                if (Math.Abs(cosDiff) < Tolerance)
+                {
+                    return _points[i];
+                }
 
                 cosDiff = _gammas[i] / cosDiff;
                 den += cosDiff;
@@ -425,14 +447,20 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
-        public static double DbToPassbandWeight(double db) => (Math.Pow(10, db / 20) - 1) / (Math.Pow(10, db / 20) + 1);
+        public static double DbToPassbandWeight(double db)
+        {
+            return (Math.Pow(10, db / 20) - 1) / (Math.Pow(10, db / 20) + 1);
+        }
 
         /// <summary>
         /// Convert ripple decibel value to stopband weight
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
-        public static double DbToStopbandWeight(double db) => Math.Pow(10, -db / 20);
+        public static double DbToStopbandWeight(double db)
+        {
+            return Math.Pow(10, -db / 20);
+        }
 
         /// <summary>
         /// Estimate LP filter order according to [Herrman et al., 1973].
@@ -447,19 +475,19 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             if (dp < da)
             {
-                var tmp = dp;
+                double tmp = dp;
                 dp = da;
                 da = tmp;
             }
 
-            var bw = fa - fp;
+            double bw = fa - fp;
 
-            var d = (0.005309 * Math.Log10(dp) * Math.Log10(dp) + 0.07114 * Math.Log10(dp) - 0.4761) * Math.Log10(da) -
+            double d = (0.005309 * Math.Log10(dp) * Math.Log10(dp) + 0.07114 * Math.Log10(dp) - 0.4761) * Math.Log10(da) -
                     (0.00266 * Math.Log10(dp) * Math.Log10(dp) + 0.5941 * Math.Log10(dp) + 0.4278);
 
-            var f = 0.51244 * (Math.Log10(dp) - Math.Log10(da)) + 11.012;
+            double f = 0.51244 * (Math.Log10(dp) - Math.Log10(da)) + 11.012;
 
-            var l = (int)((d - f * bw * bw) / bw + 1.5);
+            int l = (int)((d - f * bw * bw) / bw + 1.5);
 
             return l % 2 == 1 ? l : l + 1;
         }
@@ -478,11 +506,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns></returns>
         public static int EstimateOrder(double[] freqs, double[] deltas)
         {
-            var maxOrder = 0;
+            int maxOrder = 0;
 
             for (int fi = 1, di = 0; di < deltas.Length - 1; fi += 2, di++)
             {
-                var order = EstimateOrder(freqs[fi], freqs[fi + 1], deltas[di], deltas[di + 1]);
+                int order = EstimateOrder(freqs[fi], freqs[fi + 1], deltas[di], deltas[di + 1]);
 
                 if (order > maxOrder)
                 {

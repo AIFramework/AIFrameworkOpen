@@ -27,14 +27,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
 {
@@ -46,7 +46,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
     [DebuggerDisplay("SparseVector {Count}-Double {NonZerosCount}-NonZero")]
     public class SparseVector : VectorMathNet
     {
-        readonly SparseVectorStorage<double> _storage;
+        private readonly SparseVectorStorage<double> _storage;
 
         /// <summary>
         /// Gets the number of non zero elements in the vector.
@@ -160,8 +160,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             if (ReferenceEquals(this, result))
             {
                 // populate a new vector with the scalar
-                var vnonZeroValues = new double[Count];
-                var vnonZeroIndices = new int[Count];
+                double[] vnonZeroValues = new double[Count];
+                int[] vnonZeroIndices = new int[Count];
                 for (int index = 0; index < Count; index++)
                 {
                     vnonZeroIndices[index] = index;
@@ -169,8 +169,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                 }
 
                 // populate the non zero values from this
-                var indices = _storage.Indices;
-                var values = _storage.Values;
+                int[] indices = _storage.Indices;
+                double[] values = _storage.Values;
                 for (int j = 0; j < _storage.ValueCount; j++)
                 {
                     vnonZeroValues[indices[j]] = values[j] + scalar;
@@ -183,7 +183,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var index = 0; index < Count; index++)
+                for (int index = 0; index < Count; index++)
                 {
                     result.At(index, At(index) + scalar);
                 }
@@ -204,7 +204,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             if (other is SparseVector otherSparse && result is SparseVector resultSparse)
             {
                 // TODO (ruegg, 2011-10-11): Options to optimize?
-                var otherStorage = otherSparse._storage;
+                SparseVectorStorage<double> otherStorage = otherSparse._storage;
                 if (ReferenceEquals(this, resultSparse))
                 {
                     int i = 0, j = 0;
@@ -212,7 +212,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                     {
                         if (i >= _storage.ValueCount || _storage.Indices[i] > otherStorage.Indices[j])
                         {
-                            var otherValue = otherStorage.Values[j];
+                            double otherValue = otherStorage.Values[j];
                             if (otherValue != 0.0)
                             {
                                 _storage.InsertAtIndexUnchecked(i++, otherStorage.Indices[j], otherValue);
@@ -239,7 +239,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                     {
                         if (j >= otherStorage.ValueCount || i < _storage.ValueCount && _storage.Indices[i] <= otherStorage.Indices[j])
                         {
-                            var next = _storage.Indices[i];
+                            int next = _storage.Indices[i];
                             if (next != last)
                             {
                                 last = next;
@@ -250,7 +250,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                         }
                         else
                         {
-                            var next = otherStorage.Indices[j];
+                            int next = otherStorage.Indices[j];
                             if (next != last)
                             {
                                 last = next;
@@ -302,7 +302,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             if (other is SparseVector otherSparse && result is SparseVector resultSparse)
             {
                 // TODO (ruegg, 2011-10-11): Options to optimize?
-                var otherStorage = otherSparse._storage;
+                SparseVectorStorage<double> otherStorage = otherSparse._storage;
                 if (ReferenceEquals(this, resultSparse))
                 {
                     int i = 0, j = 0;
@@ -310,7 +310,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                     {
                         if (i >= _storage.ValueCount || _storage.Indices[i] > otherStorage.Indices[j])
                         {
-                            var otherValue = otherStorage.Values[j];
+                            double otherValue = otherStorage.Values[j];
                             if (otherValue != 0.0)
                             {
                                 _storage.InsertAtIndexUnchecked(i++, otherStorage.Indices[j], -otherValue);
@@ -337,7 +337,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                     {
                         if (j >= otherStorage.ValueCount || i < _storage.ValueCount && _storage.Indices[i] <= otherStorage.Indices[j])
                         {
-                            var next = _storage.Indices[i];
+                            int next = _storage.Indices[i];
                             if (next != last)
                             {
                                 last = next;
@@ -348,7 +348,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                         }
                         else
                         {
-                            var next = otherStorage.Indices[j];
+                            int next = otherStorage.Indices[j];
                             if (next != last)
                             {
                                 last = next;
@@ -388,7 +388,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             else
             {
                 result.Clear();
-                for (var index = 0; index < _storage.ValueCount; index++)
+                for (int index = 0; index < _storage.ValueCount; index++)
                 {
                     result.At(_storage.Indices[index], -_storage.Values[index]);
                 }
@@ -422,7 +422,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             else
             {
                 result.Clear();
-                for (var index = 0; index < _storage.ValueCount; index++)
+                for (int index = 0; index < _storage.ValueCount; index++)
                 {
                     result.At(_storage.Indices[index], scalar * _storage.Values[index]);
                 }
@@ -436,17 +436,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The sum of a[i]*b[i] for all i.</returns>
         protected override double DoDotProduct(VectorMathNet<double> other)
         {
-            var result = 0d;
+            double result = 0d;
             if (ReferenceEquals(this, other))
             {
-                for (var i = 0; i < _storage.ValueCount; i++)
+                for (int i = 0; i < _storage.ValueCount; i++)
                 {
                     result += _storage.Values[i] * _storage.Values[i];
                 }
             }
             else
             {
-                for (var i = 0; i < _storage.ValueCount; i++)
+                for (int i = 0; i < _storage.ValueCount; i++)
                 {
                     result += _storage.Values[i] * other.At(_storage.Indices[i]);
                 }
@@ -464,7 +464,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         {
             if (ReferenceEquals(this, result))
             {
-                for (var index = 0; index < _storage.ValueCount; index++)
+                for (int index = 0; index < _storage.ValueCount; index++)
                 {
                     _storage.Values[index] = Euclid.Modulus(_storage.Values[index], divisor);
                 }
@@ -472,7 +472,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             else
             {
                 result.Clear();
-                for (var index = 0; index < _storage.ValueCount; index++)
+                for (int index = 0; index < _storage.ValueCount; index++)
                 {
                     result.At(_storage.Indices[index], Euclid.Modulus(_storage.Values[index], divisor));
                 }
@@ -489,7 +489,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         {
             if (ReferenceEquals(this, result))
             {
-                for (var index = 0; index < _storage.ValueCount; index++)
+                for (int index = 0; index < _storage.ValueCount; index++)
                 {
                     _storage.Values[index] %= divisor;
                 }
@@ -497,9 +497,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             else
             {
                 result.Clear();
-                for (var index = 0; index < _storage.ValueCount; index++)
+                for (int index = 0; index < _storage.ValueCount; index++)
                 {
-                    result.At(_storage.Indices[index], _storage.Values[index]%divisor);
+                    result.At(_storage.Indices[index], _storage.Values[index] % divisor);
                 }
             }
         }
@@ -655,11 +655,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                 return 0;
             }
 
-            var index = 0;
-            var min = Math.Abs(_storage.Values[index]);
-            for (var i = 1; i < _storage.ValueCount; i++)
+            int index = 0;
+            double min = Math.Abs(_storage.Values[index]);
+            for (int i = 1; i < _storage.ValueCount; i++)
             {
-                var test = Math.Abs(_storage.Values[i]);
+                double test = Math.Abs(_storage.Values[i]);
                 if (test < min)
                 {
                     index = i;
@@ -682,11 +682,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                 return 0;
             }
 
-            var index = 0;
-            var max = Math.Abs(_storage.Values[index]);
-            for (var i = 1; i < _storage.ValueCount; i++)
+            int index = 0;
+            double max = Math.Abs(_storage.Values[index]);
+            for (int i = 1; i < _storage.ValueCount; i++)
             {
-                var test = Math.Abs(_storage.Values[i]);
+                double test = Math.Abs(_storage.Values[i]);
                 if (test > max)
                 {
                     index = i;
@@ -708,9 +708,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                 return 0;
             }
 
-            var index = 0;
-            var max = _storage.Values[0];
-            for (var i = 1; i < _storage.ValueCount; i++)
+            int index = 0;
+            double max = _storage.Values[0];
+            for (int i = 1; i < _storage.ValueCount; i++)
             {
                 if (max < _storage.Values[i])
                 {
@@ -733,9 +733,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
                 return 0;
             }
 
-            var index = 0;
-            var min = _storage.Values[0];
-            for (var i = 1; i < _storage.ValueCount; i++)
+            int index = 0;
+            double min = _storage.Values[0];
+            for (int i = 1; i < _storage.ValueCount; i++)
             {
                 if (min > _storage.Values[i])
                 {
@@ -754,7 +754,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         public override double Sum()
         {
             double result = 0;
-            for (var i = 0; i < _storage.ValueCount; i++)
+            for (int i = 0; i < _storage.ValueCount; i++)
             {
                 result += _storage.Values[i];
             }
@@ -767,8 +767,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The sum of the absolute values.</returns>
         public override double L1Norm()
         {
-            var result = 0d;
-            for (var i = 0; i < _storage.ValueCount; i++)
+            double result = 0d;
+            for (int i = 0; i < _storage.ValueCount; i++)
             {
                 result += Math.Abs(_storage.Values[i]);
             }
@@ -791,19 +791,33 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>Scalar <c>ret = ( ∑|this[i]|^p )^(1/p)</c></returns>
         public override double Norm(double p)
         {
-            if (p < 0d) throw new ArgumentOutOfRangeException(nameof(p));
+            if (p < 0d)
+            {
+                throw new ArgumentOutOfRangeException(nameof(p));
+            }
 
             if (_storage.ValueCount == 0)
             {
                 return 0d;
             }
 
-            if (p == 1d) return L1Norm();
-            if (p == 2d) return L2Norm();
-            if (double.IsPositiveInfinity(p)) return InfinityNorm();
+            if (p == 1d)
+            {
+                return L1Norm();
+            }
 
-            var sum = 0d;
-            for (var index = 0; index < _storage.ValueCount; index++)
+            if (p == 2d)
+            {
+                return L2Norm();
+            }
+
+            if (double.IsPositiveInfinity(p))
+            {
+                return InfinityNorm();
+            }
+
+            double sum = 0d;
+            for (int index = 0; index < _storage.ValueCount; index++)
             {
                 sum += Math.Pow(Math.Abs(_storage.Values[index]), p);
             }
@@ -819,7 +833,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         {
             if (ReferenceEquals(this, other) && ReferenceEquals(this, result))
             {
-                for (var i = 0; i < _storage.ValueCount; i++)
+                for (int i = 0; i < _storage.ValueCount; i++)
                 {
                     _storage.Values[i] *= _storage.Values[i];
                 }
@@ -880,9 +894,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             }
 
             // parsing
-            var tokens = value.Split(new[] { formatProvider.GetTextInfo().ListSeparator, " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
-            var data = tokens.Select(t => double.Parse(t, NumberStyles.Any, formatProvider)).ToList();
-            if (data.Count == 0) throw new FormatException();
+            string[] tokens = value.Split(new[] { formatProvider.GetTextInfo().ListSeparator, " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
+            List<double> data = tokens.Select(t => double.Parse(t, NumberStyles.Any, formatProvider)).ToList();
+            if (data.Count == 0)
+            {
+                throw new FormatException();
+            }
+
             return new SparseVector(SparseVectorStorage<double>.OfEnumerable(data));
         }
 
@@ -948,7 +966,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
 
         public override string ToTypeString()
         {
-            return FormattableString.Invariant($"SparseVector {Count}-Double {NonZerosCount / (double) Count:P2} Filled");
+            return FormattableString.Invariant($"SparseVector {Count}-Double {NonZerosCount / (double)Count:P2} Filled");
         }
     }
 }

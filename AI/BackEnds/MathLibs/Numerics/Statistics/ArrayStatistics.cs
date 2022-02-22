@@ -155,7 +155,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             ulong m = 0;
             for (int i = 0; i < data.Length; i++)
             {
-                mean += (data[i] - mean)/++m;
+                mean += (data[i] - mean) / ++m;
             }
 
             return mean;
@@ -179,7 +179,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 sum += Math.Log(data[i]);
             }
 
-            return Math.Exp(sum/data.Length);
+            return Math.Exp(sum / data.Length);
         }
 
         /// <summary>
@@ -197,10 +197,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double sum = 0;
             for (int i = 0; i < data.Length; i++)
             {
-                sum += 1.0/data[i];
+                sum += 1.0 / data[i];
             }
 
-            return data.Length/sum;
+            return data.Length / sum;
         }
 
         /// <summary>
@@ -221,11 +221,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             for (int i = 1; i < samples.Length; i++)
             {
                 t += samples[i];
-                double diff = ((i + 1)*samples[i]) - t;
-                variance += (diff*diff)/((i + 1.0)*i);
+                double diff = ((i + 1) * samples[i]) - t;
+                variance += (diff * diff) / ((i + 1.0) * i);
             }
 
-            return variance/(samples.Length - 1);
+            return variance / (samples.Length - 1);
         }
 
         /// <summary>
@@ -246,11 +246,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             for (int i = 1; i < population.Length; i++)
             {
                 t += population[i];
-                double diff = ((i + 1)*population[i]) - t;
-                variance += (diff*diff)/((i + 1.0)*i);
+                double diff = ((i + 1) * population[i]) - t;
+                variance += (diff * diff) / ((i + 1.0) * i);
             }
 
-            return variance/population.Length;
+            return variance / population.Length;
         }
 
         /// <summary>
@@ -321,10 +321,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double covariance = 0.0;
             for (int i = 0; i < samples1.Length; i++)
             {
-                covariance += (samples1[i] - mean1)*(samples2[i] - mean2);
+                covariance += (samples1[i] - mean1) * (samples2[i] - mean2);
             }
 
-            return covariance/(samples1.Length - 1);
+            return covariance / (samples1.Length - 1);
         }
 
         /// <summary>
@@ -351,10 +351,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double covariance = 0.0;
             for (int i = 0; i < population1.Length; i++)
             {
-                covariance += (population1[i] - mean1)*(population2[i] - mean2);
+                covariance += (population1[i] - mean1) * (population2[i] - mean2);
             }
 
-            return covariance/population1.Length;
+            return covariance / population1.Length;
         }
 
         /// <summary>
@@ -373,7 +373,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             ulong m = 0;
             for (int i = 0; i < data.Length; i++)
             {
-                mean += (data[i]*data[i] - mean)/++m;
+                mean += (data[i] * data[i] - mean) / ++m;
             }
 
             return Math.Sqrt(mean);
@@ -412,10 +412,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <param name="data">Sample array, no sorting is assumed. Will be reordered.</param>
         public static double MedianInplace(double[] data)
         {
-            var k = data.Length/2;
+            int k = data.Length / 2;
             return data.Length.IsOdd()
                 ? SelectInplace(data, k)
-                : (SelectInplace(data, k - 1) + SelectInplace(data, k))/2.0;
+                : (SelectInplace(data, k - 1) + SelectInplace(data, k)) / 2.0;
         }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <param name="p">Percentile selector, between 0 and 100 (inclusive).</param>
         public static double PercentileInplace(double[] data, int p)
         {
-            return QuantileInplace(data, p/100d);
+            return QuantileInplace(data, p / 100d);
         }
 
         /// <summary>
@@ -502,8 +502,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 return double.NaN;
             }
 
-            double h = (data.Length + 1d/3d)*tau + 1d/3d;
-            var hf = (int)h;
+            double h = (data.Length + 1d / 3d) * tau + 1d / 3d;
+            int hf = (int)h;
 
             if (hf <= 0 || tau == 0d)
             {
@@ -515,9 +515,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 return Maximum(data);
             }
 
-            var a = SelectInplace(data, hf - 1);
-            var b = SelectInplace(data, hf);
-            return a + (h - hf)*(b - a);
+            double a = SelectInplace(data, hf - 1);
+            double b = SelectInplace(data, hf);
+            return a + (h - hf) * (b - a);
         }
 
         /// <summary>
@@ -540,18 +540,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 return double.NaN;
             }
 
-            var x = a + (data.Length + b)*tau - 1;
-            var ip = Math.Truncate(x);
-            var fp = x - ip;
+            double x = a + (data.Length + b) * tau - 1;
+            double ip = Math.Truncate(x);
+            double fp = x - ip;
 
             if (Math.Abs(fp) < 1e-9)
             {
                 return SelectInplace(data, (int)ip);
             }
 
-            var lower = SelectInplace(data, (int)Math.Floor(x));
-            var upper = SelectInplace(data, (int)Math.Ceiling(x));
-            return lower + (upper - lower)*(c + d*fp);
+            double lower = SelectInplace(data, (int)Math.Floor(x));
+            double upper = SelectInplace(data, (int)Math.Ceiling(x));
+            return lower + (upper - lower) * (c + d * fp);
         }
 
         /// <summary>
@@ -584,83 +584,83 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             switch (definition)
             {
                 case QuantileDefinition.R1:
-                {
-                    double h = data.Length*tau + 0.5d;
-                    return SelectInplace(data, (int)Math.Ceiling(h - 0.5d) - 1);
-                }
+                    {
+                        double h = data.Length * tau + 0.5d;
+                        return SelectInplace(data, (int)Math.Ceiling(h - 0.5d) - 1);
+                    }
 
                 case QuantileDefinition.R2:
-                {
-                    double h = data.Length*tau + 0.5d;
-                    return (SelectInplace(data, (int)Math.Ceiling(h - 0.5d) - 1) + SelectInplace(data, (int)(h + 0.5d) - 1))*0.5d;
-                }
+                    {
+                        double h = data.Length * tau + 0.5d;
+                        return (SelectInplace(data, (int)Math.Ceiling(h - 0.5d) - 1) + SelectInplace(data, (int)(h + 0.5d) - 1)) * 0.5d;
+                    }
 
                 case QuantileDefinition.R3:
-                {
-                    double h = data.Length*tau;
-                    return SelectInplace(data, (int)Math.Round(h) - 1);
-                }
+                    {
+                        double h = data.Length * tau;
+                        return SelectInplace(data, (int)Math.Round(h) - 1);
+                    }
 
                 case QuantileDefinition.R4:
-                {
-                    double h = data.Length*tau;
-                    var hf = (int)h;
-                    var lower = SelectInplace(data, hf - 1);
-                    var upper = SelectInplace(data, hf);
-                    return lower + (h - hf)*(upper - lower);
-                }
+                    {
+                        double h = data.Length * tau;
+                        int hf = (int)h;
+                        double lower = SelectInplace(data, hf - 1);
+                        double upper = SelectInplace(data, hf);
+                        return lower + (h - hf) * (upper - lower);
+                    }
 
                 case QuantileDefinition.R5:
-                {
-                    double h = data.Length*tau + 0.5d;
-                    var hf = (int)h;
-                    var lower = SelectInplace(data, hf - 1);
-                    var upper = SelectInplace(data, hf);
-                    return lower + (h - hf)*(upper - lower);
-                }
+                    {
+                        double h = data.Length * tau + 0.5d;
+                        int hf = (int)h;
+                        double lower = SelectInplace(data, hf - 1);
+                        double upper = SelectInplace(data, hf);
+                        return lower + (h - hf) * (upper - lower);
+                    }
 
                 case QuantileDefinition.R6:
-                {
-                    double h = (data.Length + 1)*tau;
-                    var hf = (int)h;
-                    var lower = SelectInplace(data, hf - 1);
-                    var upper = SelectInplace(data, hf);
-                    return lower + (h - hf)*(upper - lower);
-                }
+                    {
+                        double h = (data.Length + 1) * tau;
+                        int hf = (int)h;
+                        double lower = SelectInplace(data, hf - 1);
+                        double upper = SelectInplace(data, hf);
+                        return lower + (h - hf) * (upper - lower);
+                    }
 
                 case QuantileDefinition.R7:
-                {
-                    double h = (data.Length - 1)*tau + 1d;
-                    var hf = (int)h;
-                    var lower = SelectInplace(data, hf - 1);
-                    var upper = SelectInplace(data, hf);
-                    return lower + (h - hf)*(upper - lower);
-                }
+                    {
+                        double h = (data.Length - 1) * tau + 1d;
+                        int hf = (int)h;
+                        double lower = SelectInplace(data, hf - 1);
+                        double upper = SelectInplace(data, hf);
+                        return lower + (h - hf) * (upper - lower);
+                    }
 
                 case QuantileDefinition.R8:
-                {
-                    double h = (data.Length + 1/3d)*tau + 1/3d;
-                    var hf = (int)h;
-                    var lower = SelectInplace(data, hf - 1);
-                    var upper = SelectInplace(data, hf);
-                    return lower + (h - hf)*(upper - lower);
-                }
+                    {
+                        double h = (data.Length + 1 / 3d) * tau + 1 / 3d;
+                        int hf = (int)h;
+                        double lower = SelectInplace(data, hf - 1);
+                        double upper = SelectInplace(data, hf);
+                        return lower + (h - hf) * (upper - lower);
+                    }
 
                 case QuantileDefinition.R9:
-                {
-                    double h = (data.Length + 0.25d)*tau + 0.375d;
-                    var hf = (int)h;
-                    var lower = SelectInplace(data, hf - 1);
-                    var upper = SelectInplace(data, hf);
-                    return lower + (h - hf)*(upper - lower);
-                }
+                    {
+                        double h = (data.Length + 0.25d) * tau + 0.375d;
+                        int hf = (int)h;
+                        double lower = SelectInplace(data, hf - 1);
+                        double upper = SelectInplace(data, hf);
+                        return lower + (h - hf) * (upper - lower);
+                    }
 
                 default:
                     throw new NotSupportedException();
             }
         }
 
-        static double SelectInplace(double[] workingData, int rank)
+        private static double SelectInplace(double[] workingData, int rank)
         {
             // Numerical Recipes: select
             // http://en.wikipedia.org/wiki/Selection_algorithm
@@ -684,7 +684,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 {
                     if (high == low + 1 && a[high] < a[low])
                     {
-                        var tmp = a[low];
+                        double tmp = a[low];
                         a[low] = a[high];
                         a[high] = tmp;
                     }
@@ -694,27 +694,27 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
 
                 int middle = (low + high) >> 1;
 
-                var tmp1 = a[middle];
+                double tmp1 = a[middle];
                 a[middle] = a[low + 1];
                 a[low + 1] = tmp1;
 
                 if (a[low] > a[high])
                 {
-                    var tmp = a[low];
+                    double tmp = a[low];
                     a[low] = a[high];
                     a[high] = tmp;
                 }
 
                 if (a[low + 1] > a[high])
                 {
-                    var tmp = a[low + 1];
+                    double tmp = a[low + 1];
                     a[low + 1] = a[high];
                     a[high] = tmp;
                 }
 
                 if (a[low] > a[low + 1])
                 {
-                    var tmp = a[low];
+                    double tmp = a[low];
                     a[low] = a[low + 1];
                     a[low + 1] = tmp;
                 }
@@ -742,7 +742,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                         break;
                     }
 
-                    var tmp = a[begin];
+                    double tmp = a[begin];
                     a[begin] = a[end];
                     a[end] = tmp;
                 }
@@ -770,8 +770,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// </summary>
         public static double[] RanksInplace(double[] data, RankDefinition definition = RankDefinition.Default)
         {
-            var ranks = new double[data.Length];
-            var index = new int[data.Length];
+            double[] ranks = new double[data.Length];
+            int[] index = new int[data.Length];
             for (int i = 0; i < index.Length; i++)
             {
                 index[i] = i;
@@ -813,29 +813,29 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             return ranks;
         }
 
-        static void RanksTies(double[] ranks, int[] index, int a, int b, RankDefinition definition)
+        private static void RanksTies(double[] ranks, int[] index, int a, int b, RankDefinition definition)
         {
             // TODO: potential for PERF optimization
             double rank;
             switch (definition)
             {
                 case RankDefinition.Average:
-                {
-                    rank = (b + a - 1)/2d + 1;
-                    break;
-                }
+                    {
+                        rank = (b + a - 1) / 2d + 1;
+                        break;
+                    }
 
                 case RankDefinition.Min:
-                {
-                    rank = a + 1;
-                    break;
-                }
+                    {
+                        rank = a + 1;
+                        break;
+                    }
 
                 case RankDefinition.Max:
-                {
-                    rank = b;
-                    break;
-                }
+                    {
+                        rank = b;
+                        break;
+                    }
 
                 default:
                     throw new NotSupportedException();

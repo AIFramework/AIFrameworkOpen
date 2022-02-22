@@ -208,7 +208,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// Computes descriptive statistics from a stream of data values.
         /// </summary>
         /// <param name="data">A sequence of datapoints.</param>
-        void Compute(IEnumerable<double> data)
+        private void Compute(IEnumerable<double> data)
         {
             double mean = 0;
             double variance = 0;
@@ -218,20 +218,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double maximum = double.NegativeInfinity;
             long n = 0;
 
-            foreach (var xi in data)
+            foreach (double xi in data)
             {
                 double delta = xi - mean;
-                double scaleDelta = delta/++n;
-                double scaleDeltaSqr = scaleDelta*scaleDelta;
-                double tmpDelta = delta*(n - 1);
+                double scaleDelta = delta / ++n;
+                double scaleDeltaSqr = scaleDelta * scaleDelta;
+                double tmpDelta = delta * (n - 1);
 
                 mean += scaleDelta;
 
-                kurtosis += tmpDelta*scaleDelta*scaleDeltaSqr*(n*n - 3*n + 3)
-                            + 6*scaleDeltaSqr*variance - 4*scaleDelta*skewness;
+                kurtosis += tmpDelta * scaleDelta * scaleDeltaSqr * (n * n - 3 * n + 3)
+                            + 6 * scaleDeltaSqr * variance - 4 * scaleDelta * skewness;
 
-                skewness += tmpDelta*scaleDeltaSqr*(n - 2) - 3*scaleDelta*variance;
-                variance += tmpDelta*scaleDelta;
+                skewness += tmpDelta * scaleDeltaSqr * (n - 2) - 3 * scaleDelta * variance;
+                variance += tmpDelta * scaleDelta;
 
                 if (minimum > xi)
                 {
@@ -251,7 +251,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// Computes descriptive statistics from a stream of nullable data values.
         /// </summary>
         /// <param name="data">A sequence of datapoints.</param>
-        void Compute(IEnumerable<double?> data)
+        private void Compute(IEnumerable<double?> data)
         {
             double mean = 0;
             double variance = 0;
@@ -261,22 +261,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             double maximum = double.NegativeInfinity;
             long n = 0;
 
-            foreach (var xi in data)
+            foreach (double? xi in data)
             {
                 if (xi.HasValue)
                 {
                     double delta = xi.Value - mean;
-                    double scaleDelta = delta/++n;
-                    double scaleDeltaSqr = scaleDelta*scaleDelta;
-                    double tmpDelta = delta*(n - 1);
+                    double scaleDelta = delta / ++n;
+                    double scaleDeltaSqr = scaleDelta * scaleDelta;
+                    double tmpDelta = delta * (n - 1);
 
                     mean += scaleDelta;
 
-                    kurtosis += tmpDelta*scaleDelta*scaleDeltaSqr*(n*n - 3*n + 3)
-                                + 6*scaleDeltaSqr*variance - 4*scaleDelta*skewness;
+                    kurtosis += tmpDelta * scaleDelta * scaleDeltaSqr * (n * n - 3 * n + 3)
+                                + 6 * scaleDeltaSqr * variance - 4 * scaleDelta * skewness;
 
-                    skewness += tmpDelta*scaleDeltaSqr*(n - 2) - 3*scaleDelta*variance;
-                    variance += tmpDelta*scaleDelta;
+                    skewness += tmpDelta * scaleDeltaSqr * (n - 2) - 3 * scaleDelta * variance;
+                    variance += tmpDelta * scaleDelta;
 
                     if (minimum > xi)
                     {
@@ -297,7 +297,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// Computes descriptive statistics from a stream of data values.
         /// </summary>
         /// <param name="data">A sequence of datapoints.</param>
-        void ComputeDecimal(IEnumerable<double> data)
+        private void ComputeDecimal(IEnumerable<double> data)
         {
             decimal mean = 0;
             decimal variance = 0;
@@ -311,17 +311,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
             {
                 decimal xi = (decimal)x;
                 decimal delta = xi - mean;
-                decimal scaleDelta = delta/++n;
-                decimal scaleDelta2 = scaleDelta*scaleDelta;
-                decimal tmpDelta = delta*(n - 1);
+                decimal scaleDelta = delta / ++n;
+                decimal scaleDelta2 = scaleDelta * scaleDelta;
+                decimal tmpDelta = delta * (n - 1);
 
                 mean += scaleDelta;
 
-                kurtosis += tmpDelta*scaleDelta*scaleDelta2*(n*n - 3*n + 3)
-                            + 6*scaleDelta2*variance - 4*scaleDelta*skewness;
+                kurtosis += tmpDelta * scaleDelta * scaleDelta2 * (n * n - 3 * n + 3)
+                            + 6 * scaleDelta2 * variance - 4 * scaleDelta * skewness;
 
-                skewness += tmpDelta*scaleDelta2*(n - 2) - 3*scaleDelta*variance;
-                variance += tmpDelta*scaleDelta;
+                skewness += tmpDelta * scaleDelta2 * (n - 2) - 3 * scaleDelta * variance;
+                variance += tmpDelta * scaleDelta;
 
                 if (minimum > xi)
                 {
@@ -341,7 +341,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// Computes descriptive statistics from a stream of nullable data values.
         /// </summary>
         /// <param name="data">A sequence of datapoints.</param>
-        void ComputeDecimal(IEnumerable<double?> data)
+        private void ComputeDecimal(IEnumerable<double?> data)
         {
             decimal mean = 0;
             decimal variance = 0;
@@ -357,17 +357,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 {
                     decimal xi = (decimal)x.Value;
                     decimal delta = xi - mean;
-                    decimal scaleDelta = delta/++n;
-                    decimal scaleDeltaSquared = scaleDelta*scaleDelta;
-                    decimal tmpDelta = delta*(n - 1);
+                    decimal scaleDelta = delta / ++n;
+                    decimal scaleDeltaSquared = scaleDelta * scaleDelta;
+                    decimal tmpDelta = delta * (n - 1);
 
                     mean += scaleDelta;
 
-                    kurtosis += tmpDelta*scaleDelta*scaleDeltaSquared*(n*n - 3*n + 3)
-                                + 6*scaleDeltaSquared*variance - 4*scaleDelta*skewness;
+                    kurtosis += tmpDelta * scaleDelta * scaleDeltaSquared * (n * n - 3 * n + 3)
+                                + 6 * scaleDeltaSquared * variance - 4 * scaleDelta * skewness;
 
-                    skewness += tmpDelta*scaleDeltaSquared*(n - 2) - 3*scaleDelta*variance;
-                    variance += tmpDelta*scaleDelta;
+                    skewness += tmpDelta * scaleDeltaSquared * (n - 2) - 3 * scaleDelta * variance;
+                    variance += tmpDelta * scaleDelta;
 
                     if (minimum > xi)
                     {
@@ -394,7 +394,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
         /// <param name="minimum">For setting Minimum.</param>
         /// <param name="maximum">For setting Maximum.</param>
         /// <param name="n">For setting Count.</param>
-        void SetStatistics(double mean, double variance, double skewness, double kurtosis, double minimum, double maximum, long n)
+        private void SetStatistics(double mean, double variance, double skewness, double kurtosis, double minimum, double maximum, long n)
         {
             Mean = mean;
             Count = n;
@@ -413,7 +413,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
 
                 if (n > 1)
                 {
-                    Variance = variance/(n - 1);
+                    Variance = variance / (n - 1);
                     StandardDeviation = Math.Sqrt(Variance);
                 }
 
@@ -421,13 +421,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics
                 {
                     if (n > 2)
                     {
-                        Skewness = (double)n/((n - 1)*(n - 2))*(skewness/(Variance*StandardDeviation));
+                        Skewness = (double)n / ((n - 1) * (n - 2)) * (skewness / (Variance * StandardDeviation));
                     }
 
                     if (n > 3)
                     {
-                        Kurtosis = ((double)n*n - 1)/((n - 2)*(n - 3))
-                                   *(n*kurtosis/(variance*variance) - 3 + 6.0/(n + 1));
+                        Kurtosis = ((double)n * n - 1) / ((n - 2) * (n - 3))
+                                   * (n * kurtosis / (variance * variance) - 3 + 6.0 / (n + 1));
                     }
                 }
             }

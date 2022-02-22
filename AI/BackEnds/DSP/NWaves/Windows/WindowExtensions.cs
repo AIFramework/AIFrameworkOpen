@@ -15,7 +15,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <param name="windowSamples"></param>
         public static void ApplyWindow(this float[] samples, float[] windowSamples)
         {
-            for (var k = 0; k < windowSamples.Length; k++)
+            for (int k = 0; k < windowSamples.Length; k++)
             {
                 samples[k] *= windowSamples[k];
             }
@@ -28,7 +28,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <param name="windowSamples"></param>
         public static void ApplyWindow(this double[] samples, double[] windowSamples)
         {
-            for (var k = 0; k < windowSamples.Length; k++)
+            for (int k = 0; k < windowSamples.Length; k++)
             {
                 samples[k] *= windowSamples[k];
             }
@@ -51,7 +51,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <param name="window"></param>
         public static void ApplyWindow(this float[] samples, WindowTypes window, params object[] parameters)
         {
-            var windowSamples = Window.OfType(window, samples.Length, parameters);
+            float[] windowSamples = Window.OfType(window, samples.Length, parameters);
             samples.ApplyWindow(windowSamples);
         }
 
@@ -62,7 +62,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <param name="window"></param>
         public static void ApplyWindow(this double[] samples, WindowTypes window, params object[] parameters)
         {
-            var windowSamples = Window.OfType(window, samples.Length, parameters).ToDoubles();
+            double[] windowSamples = Window.OfType(window, samples.Length, parameters).ToDoubles();
             samples.ApplyWindow(windowSamples);
         }
 
@@ -73,7 +73,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <param name="window"></param>
         public static void ApplyWindow(this DiscreteSignal signal, WindowTypes window, params object[] parameters)
         {
-            var windowSamples = Window.OfType(window, signal.Length, parameters);
+            float[] windowSamples = Window.OfType(window, signal.Length, parameters);
             signal.Samples.ApplyWindow(windowSamples);
         }
     }

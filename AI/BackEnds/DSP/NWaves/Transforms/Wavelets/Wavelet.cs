@@ -65,8 +65,8 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
             }
             else
             {
-                var digitPos = -1;
-                for (var i = 0; i < name.Length; i++)
+                int digitPos = -1;
+                for (int i = 0; i < name.Length; i++)
                 {
                     if (char.IsDigit(name[i]))
                     {
@@ -75,7 +75,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
                     }
                 }
 
-                var wname = name;
+                string wname = name;
 
                 if (digitPos < 0)
                 {
@@ -139,7 +139,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
         {
             HiD = LoD.Reverse().ToArray();
 
-            for (var i = 0; i < HiD.Length; i += 2)
+            for (int i = 0; i < HiD.Length; i += 2)
             {
                 HiD[i] = -HiD[i];
             }
@@ -159,7 +159,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
             Name = "haar";
             Length = 2;
 
-            var sqrt2 = (float)Math.Sqrt(2);
+            float sqrt2 = (float)Math.Sqrt(2);
 
             LoD = new[] { 1 / sqrt2, 1 / sqrt2 };
         }
@@ -176,7 +176,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
             switch (taps)
             {
                 case 1:
-                    var sqrt2 = (float)Math.Sqrt(2);            // just like Haar
+                    float sqrt2 = (float)Math.Sqrt(2);            // just like Haar
                     LoD = new[] { 1 / sqrt2, 1 / sqrt2 };
                     break;
                 case 2:

@@ -18,11 +18,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// </summary>
         /// <param name="a">Pre-emphasis coefficient</param>
         /// <param name="normalize">Normalize freq response to unit gain</param>
-        public PreEmphasisFilter(double a = 0.97, bool normalize = false) : base(new [] { 1, -a })
+        public PreEmphasisFilter(double a = 0.97, bool normalize = false) : base(new[] { 1, -a })
         {
             if (normalize)
             {
-                var sum = (float)(1 + a);
+                float sum = (float)(1 + a);
                 _b[0] /= sum;
                 _b[1] /= sum;
             }
@@ -35,7 +35,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <returns></returns>
         public override float Process(float sample)
         {
-            var output = _b[0] * sample + _b[1] * _prevSample;
+            float output = _b[0] * sample + _b[1] * _prevSample;
             _prevSample = sample;
 
             return output;
@@ -55,17 +55,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters
                 return base.ApplyTo(signal, method);
             }
 
-            var input = signal.Samples;
-            var output = new float[input.Length];
+            float[] input = signal.Samples;
+            float[] output = new float[input.Length];
 
-            var b0 = _b[0];
-            var b1 = _b[1];
+            float b0 = _b[0];
+            float b1 = _b[1];
 
             _prevSample = 0;
-            
-            for (var i = 0; i < input.Length; i++)
+
+            for (int i = 0; i < input.Length; i++)
             {
-                var sample = input[i];
+                float sample = input[i];
                 output[i] = b0 * sample + b1 * _prevSample;
                 _prevSample = sample;
             }

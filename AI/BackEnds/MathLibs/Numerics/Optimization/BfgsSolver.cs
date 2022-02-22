@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -41,8 +41,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
     /// </summary>
     public static class BfgsSolver
     {
-        const double GradientTolerance = 1e-5;
-        const int MaxIterations = 100000;
+        private const double GradientTolerance = 1e-5;
+        private const int MaxIterations = 100000;
 
         /// <summary>
         /// Finds a minimum of a function by the BFGS quasi-Newton method
@@ -54,7 +54,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// <returns>The minimum found</returns>
         public static VectorMathNet<double> Solve(VectorMathNet initialGuess, Func<VectorMathNet<double>, double> functionValue, Func<VectorMathNet<double>, VectorMathNet<double>> functionGradient)
         {
-            var objectiveFunction = ObjectiveFunction.Gradient(functionValue, functionGradient);
+            IObjectiveFunction objectiveFunction = ObjectiveFunction.Gradient(functionValue, functionGradient);
             objectiveFunction.EvaluateAt(initialGuess);
 
             int dim = initialGuess.Count;
@@ -72,7 +72,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 // search along the direction of the gradient
                 grad = objectiveFunction.Gradient;
                 VectorMathNet<double> p = -1 * H * grad;
-                var lineSearchResult = wolfeLineSearch.FindConformingStep(objectiveFunction, p, 1.0);
+                LineSearchResult lineSearchResult = wolfeLineSearch.FindConformingStep(objectiveFunction, p, 1.0);
                 double rate = lineSearchResult.FinalStep;
                 x = x + rate * p;
                 VectorMathNet<double> grad_old = grad;
@@ -91,8 +91,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                     H = (y * s) / (y * y) * DenseMatrix.CreateIdentity(dim);
                 }
 
-                var sM = s.ToColumnMatrix();
-                var yM = y.ToColumnMatrix();
+                MatrixMathNet<double> sM = s.ToColumnMatrix();
+                MatrixMathNet<double> yM = y.ToColumnMatrix();
 
                 // Update the estimate of the hessian
                 H = H

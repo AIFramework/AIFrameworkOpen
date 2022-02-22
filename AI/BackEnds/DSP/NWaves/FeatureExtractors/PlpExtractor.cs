@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Filters;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
 using AI.BackEnds.DSP.NWaves.Windows;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 {
@@ -23,8 +23,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         {
             get
             {
-                var names = Enumerable.Range(0, FeatureCount).Select(i => "plp" + i).ToList();
-                if (_includeEnergy) names[0] = "log_En";
+                List<string> names = Enumerable.Range(0, FeatureCount).Select(i => "plp" + i).ToList();
+                if (_includeEnergy)
+                {
+                    names[0] = "log_En";
+                }
+
                 return names;
             }
         }
@@ -121,18 +125,18 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // ================================ Prepare filter bank and center frequencies: ===========================================
 
-            var filterbankSize = options.FilterBankSize;
+            int filterbankSize = options.FilterBankSize;
 
             if (options.FilterBank == null)
             {
                 _blockSize = options.FftSize > FrameSize ? options.FftSize : MathUtils.NextPowerOfTwo(FrameSize);
 
-                var low = options.LowFrequency;
-                var high = options.HighFrequency;
+                double low = options.LowFrequency;
+                double high = options.HighFrequency;
 
                 FilterBank = FilterBanks.BarkBankSlaney(filterbankSize, _blockSize, SamplingRate, low, high);
 
-                var barkBands = FilterBanks.BarkBandsSlaney(filterbankSize, SamplingRate, low, high);
+                Tuple<double, double, double>[] barkBands = FilterBanks.BarkBandsSlaney(filterbankSize, SamplingRate, low, high);
                 _centerFrequencies = barkBands.Select(b => b.Item2).ToArray();
             }
             else
@@ -149,18 +153,18 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 }
                 else
                 {
-                    var herzResolution = (double)SamplingRate / _blockSize;
+                    double herzResolution = (double)SamplingRate / _blockSize;
 
                     // try to determine center frequencies automatically from filterbank weights:
 
                     _centerFrequencies = new double[filterbankSize];
 
-                    for (var i = 0; i < FilterBank.Length; i++)
+                    for (int i = 0; i < FilterBank.Length; i++)
                     {
-                        var minPos = 0;
-                        var maxPos = _blockSize / 2;
+                        int minPos = 0;
+                        int maxPos = _blockSize / 2;
 
-                        for (var j = 0; j < FilterBank[i].Length; j++)
+                        for (int j = 0; j < FilterBank[i].Length; j++)
                         {
                             if (FilterBank[i][j] > 0)
                             {
@@ -168,7 +172,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                                 break;
                             }
                         }
-                        for (var j = minPos; j < FilterBank[i].Length; j++)
+                        for (int j = minPos; j < FilterBank[i].Length; j++)
                         {
                             if (FilterBank[i][j] == 0)
                             {
@@ -186,9 +190,9 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             _equalLoudnessCurve = new double[filterbankSize];
 
-            for (var i = 0; i < _centerFrequencies.Length; i++)
+            for (int i = 0; i < _centerFrequencies.Length; i++)
             {
-                var level2 = _centerFrequencies[i] * _centerFrequencies[i];
+                double level2 = _centerFrequencies[i] * _centerFrequencies[i];
 
                 _equalLoudnessCurve[i] = Math.Pow(level2 / (level2 + 1.6e5), 2) * ((level2 + 1.44e6) / (level2 + 9.61e6));
             }
@@ -210,16 +214,16 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             _idftTable = new float[_lpcOrder + 1][];
 
-            var bandCount = filterbankSize + 2;     // +2 duplicated edges
-            var freq = Math.PI / (bandCount - 1);
+            int bandCount = filterbankSize + 2;     // +2 duplicated edges
+            double freq = Math.PI / (bandCount - 1);
 
-            for (var i = 0; i < _idftTable.Length; i++)
+            for (int i = 0; i < _idftTable.Length; i++)
             {
                 _idftTable[i] = new float[bandCount];
 
                 _idftTable[i][0] = 1.0f;
 
-                for (var j = 1; j < bandCount - 1; j++)
+                for (int j = 1; j < bandCount - 1; j++)
                 {
                     _idftTable[i][j] = 2 * (float)Math.Cos(freq * i * j);
                 }
@@ -275,9 +279,9 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             if (_rasta > 0)
             {
-                for (var k = 0; k < _bandSpectrum.Length; k++)
+                for (int k = 0; k < _bandSpectrum.Length; k++)
                 {
-                    var log = (float)Math.Log(_bandSpectrum[k] + float.Epsilon);
+                    float log = (float)Math.Log(_bandSpectrum[k] + float.Epsilon);
 
                     log = _rastaFilters[k].Process(log);
 
@@ -287,23 +291,23 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // 4) and 5) apply equal loudness curve and take cubic root
 
-            for (var k = 0; k < _bandSpectrum.Length; k++)
+            for (int k = 0; k < _bandSpectrum.Length; k++)
             {
                 _bandSpectrum[k] = (float)Math.Pow(Math.Max(_bandSpectrum[k], 1.0) * _equalLoudnessCurve[k], 0.33);
             }
 
             // 6) LPC from power spectrum:
 
-            var n = _idftTable[0].Length;
+            int n = _idftTable[0].Length;
 
             // get autocorrelation samples from post-processed power spectrum (via IDFT):
 
-            for (var k = 0; k < _idftTable.Length; k++)
+            for (int k = 0; k < _idftTable.Length; k++)
             {
-                var acc = _idftTable[k][0] * _bandSpectrum[0] +
+                float acc = _idftTable[k][0] * _bandSpectrum[0] +
                           _idftTable[k][n - 1] * _bandSpectrum[n - 3];  // add values at two duplicated edges right away
 
-                for (var j = 1; j < n - 1; j++)
+                for (int j = 1; j < n - 1; j++)
                 {
                     acc += _idftTable[k][j] * _bandSpectrum[j - 1];
                 }
@@ -313,9 +317,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // LPC:
 
-            for (var k = 0; k < _lpc.Length; _lpc[k] = 0, k++) ;
+            for (int k = 0; k < _lpc.Length; _lpc[k] = 0, k++)
+            {
+                ;
+            }
 
-            var err = Lpc.LevinsonDurbin(_cc, _lpc, _lpcOrder);
+            float err = Lpc.LevinsonDurbin(_cc, _lpc, _lpcOrder);
 
             // 7) compute LPCC coefficients from LPC
 
@@ -342,9 +349,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// </summary>
         public override void Reset()
         {
-            if (_rastaFilters == null) return;
+            if (_rastaFilters == null)
+            {
+                return;
+            }
 
-            foreach (var filter in _rastaFilters)
+            foreach (RastaFilter filter in _rastaFilters)
             {
                 filter.Reset();
             }
@@ -354,31 +364,36 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// In case of RASTA filtering computations can't be done in parallel
         /// </summary>
         /// <returns></returns>
-        public override bool IsParallelizable() => _rasta == 0;
+        public override bool IsParallelizable()
+        {
+            return _rasta == 0;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
         /// </summary>
         /// <returns></returns>
-        public override FeatureExtractor ParallelCopy() => 
-            new PlpExtractor(
-                new PlpOptions
-                {
-                    SamplingRate = SamplingRate,
-                    FeatureCount = FeatureCount,
-                    FrameDuration = FrameDuration,
-                    HopDuration = HopDuration,
-                    LpcOrder = _lpcOrder,
-                    Rasta = _rasta,
-                    FilterBank = FilterBank,
-                    FilterBankSize = FilterBank.Length,
-                    FftSize = _blockSize,
-                    LifterSize = _lifterSize,
-                    PreEmphasis = _preEmphasis,
-                    Window = _window,
-                    CenterFrequencies = _centerFrequencies,
-                    IncludeEnergy = _includeEnergy,
-                    LogEnergyFloor = _logEnergyFloor
-                });
+        public override FeatureExtractor ParallelCopy()
+        {
+            return new PlpExtractor(
+new PlpOptions
+{
+    SamplingRate = SamplingRate,
+    FeatureCount = FeatureCount,
+    FrameDuration = FrameDuration,
+    HopDuration = HopDuration,
+    LpcOrder = _lpcOrder,
+    Rasta = _rasta,
+    FilterBank = FilterBank,
+    FilterBankSize = FilterBank.Length,
+    FftSize = _blockSize,
+    LifterSize = _lifterSize,
+    PreEmphasis = _preEmphasis,
+    Window = _window,
+    CenterFrequencies = _centerFrequencies,
+    IncludeEnergy = _includeEnergy,
+    LogEnergyFloor = _logEnergyFloor
+});
+        }
     }
 }

@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System;
+using System.Collections.Generic;
 using System.Runtime;
+using System.Runtime.Serialization;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
@@ -43,27 +43,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
     [DataContract(Namespace = "urn:MathNet/Numerics/Random")]
     public class Mrg32k3a : RandomSource
     {
-        const double A12 = 1403580;
-        const double A13 = 810728;
-        const double A21 = 527612;
-        const double A23 = 1370589;
-        const double Modulus1 = 4294967087;
-        const double Modulus2 = 4294944443;
-
-        const double Reciprocal = 1.0/Modulus1;
+        private const double A12 = 1403580;
+        private const double A13 = 810728;
+        private const double A21 = 527612;
+        private const double A23 = 1370589;
+        private const double Modulus1 = 4294967087;
+        private const double Modulus2 = 4294944443;
+        private const double Reciprocal = 1.0 / Modulus1;
 
         [DataMember(Order = 1)]
-        double _xn1 = 1;
+        private double _xn1 = 1;
         [DataMember(Order = 2)]
-        double _xn2 = 1;
+        private double _xn2 = 1;
         [DataMember(Order = 3)]
-        double _xn3;
+        private double _xn3;
         [DataMember(Order = 4)]
-        double _yn1 = 1;
+        private double _yn1 = 1;
         [DataMember(Order = 5)]
-        double _yn2 = 1;
+        private double _yn2 = 1;
         [DataMember(Order = 6)]
-        double _yn3 = 1;
+        private double _yn3 = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Mcg31m1"/> class using
@@ -122,17 +121,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected sealed override double DoSample()
         {
-            double xn = A12*_xn2 - A13*_xn3;
-            double k = (long)(xn/Modulus1);
-            xn -= k*Modulus1;
+            double xn = A12 * _xn2 - A13 * _xn3;
+            double k = (long)(xn / Modulus1);
+            xn -= k * Modulus1;
             if (xn < 0)
             {
                 xn += Modulus1;
             }
 
-            double yn = A21*_yn1 - A23*_yn3;
-            k = (long)(yn/Modulus2);
-            yn -= k*Modulus2;
+            double yn = A21 * _yn1 - A23 * _yn3;
+            k = (long)(yn / Modulus2);
+            yn -= k * Modulus2;
             if (yn < 0)
             {
                 yn += Modulus2;
@@ -147,10 +146,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 
             if (xn <= yn)
             {
-                return (xn - yn + Modulus1)*Reciprocal;
+                return (xn - yn + Modulus1) * Reciprocal;
             }
 
-            return (xn - yn)*Reciprocal;
+            return (xn - yn) * Reciprocal;
         }
 
         /// <summary>
@@ -168,17 +167,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 
             for (int i = 0; i < values.Length; i++)
             {
-                double xn = A12*x2 - A13*x3;
-                double k = (long)(xn/Modulus1);
-                xn -= k*Modulus1;
+                double xn = A12 * x2 - A13 * x3;
+                double k = (long)(xn / Modulus1);
+                xn -= k * Modulus1;
                 if (xn < 0)
                 {
                     xn += Modulus1;
                 }
 
-                double yn = A21*y1 - A23*y3;
-                k = (long)(yn/Modulus2);
-                yn -= k*Modulus2;
+                double yn = A21 * y1 - A23 * y3;
+                k = (long)(yn / Modulus2);
+                yn -= k * Modulus2;
                 if (yn < 0)
                 {
                     yn += Modulus2;
@@ -191,7 +190,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 y2 = y1;
                 y1 = yn;
 
-                values[i] = xn <= yn ? (xn - yn + Modulus1)*Reciprocal : (xn - yn)*Reciprocal;
+                values[i] = xn <= yn ? (xn - yn + Modulus1) * Reciprocal : (xn - yn) * Reciprocal;
             }
         }
 
@@ -202,7 +201,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] Doubles(int length, int seed)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             Doubles(data, seed);
             return data;
         }
@@ -222,17 +221,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 
             while (true)
             {
-                double xn = A12*x2 - A13*x3;
-                double k = (long)(xn/Modulus1);
-                xn -= k*Modulus1;
+                double xn = A12 * x2 - A13 * x3;
+                double k = (long)(xn / Modulus1);
+                xn -= k * Modulus1;
                 if (xn < 0)
                 {
                     xn += Modulus1;
                 }
 
-                double yn = A21*y1 - A23*y3;
-                k = (long)(yn/Modulus2);
-                yn -= k*Modulus2;
+                double yn = A21 * y1 - A23 * y3;
+                k = (long)(yn / Modulus2);
+                yn -= k * Modulus2;
                 if (yn < 0)
                 {
                     yn += Modulus2;
@@ -245,7 +244,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 y2 = y1;
                 y1 = yn;
 
-                yield return xn <= yn ? (xn - yn + Modulus1)*Reciprocal : (xn - yn)*Reciprocal;
+                yield return xn <= yn ? (xn - yn + Modulus1) * Reciprocal : (xn - yn) * Reciprocal;
             }
         }
     }

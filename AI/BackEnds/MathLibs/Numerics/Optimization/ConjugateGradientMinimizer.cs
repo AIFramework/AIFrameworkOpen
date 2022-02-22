@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -49,7 +49,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             return Minimum(objective, initialGuess, GradientTolerance, MaximumIterations);
         }
 
-        public static MinimizationResult Minimum(IObjectiveFunction objective, VectorMathNet<double> initialGuess, double gradientTolerance=1e-8, int maxIterations=1000)
+        public static MinimizationResult Minimum(IObjectiveFunction objective, VectorMathNet<double> initialGuess, double gradientTolerance = 1e-8, int maxIterations = 1000)
         {
             if (!objective.IsGradientSupported)
             {
@@ -57,7 +57,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             }
 
             objective.EvaluateAt(initialGuess);
-            var gradient = objective.Gradient;
+            VectorMathNet<double> gradient = objective.Gradient;
             ValidateGradient(objective);
 
             // Check that we're not already done
@@ -67,11 +67,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             }
 
             // Set up line search algorithm
-            var lineSearcher = new WeakWolfeLineSearch(1e-4, 0.1, 1e-4, 1000);
+            WeakWolfeLineSearch lineSearcher = new WeakWolfeLineSearch(1e-4, 0.1, 1e-4, 1000);
 
             // First step
-            var steepestDirection = -gradient;
-            var searchDirection = steepestDirection;
+            VectorMathNet<double> steepestDirection = -gradient;
+            VectorMathNet<double> searchDirection = steepestDirection;
             double initialStepSize = 100 * gradientTolerance / (gradient * gradient);
 
             LineSearchResult result;
@@ -96,9 +96,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             int steepestDescentResets = 0;
             while (objective.Gradient.Norm(2.0) >= gradientTolerance && iterations < maxIterations)
             {
-                var previousSteepestDirection = steepestDirection;
+                VectorMathNet<double> previousSteepestDirection = steepestDirection;
                 steepestDirection = -objective.Gradient;
-                var searchDirectionAdjuster = Math.Max(0, steepestDirection*(steepestDirection - previousSteepestDirection)/(previousSteepestDirection*previousSteepestDirection));
+                double searchDirectionAdjuster = Math.Max(0, steepestDirection * (steepestDirection - previousSteepestDirection) / (previousSteepestDirection * previousSteepestDirection));
                 searchDirection = steepestDirection + searchDirectionAdjuster * searchDirection;
                 if (searchDirection * objective.Gradient >= 0)
                 {
@@ -130,20 +130,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             return new MinimizationWithLineSearchResult(objective, iterations, ExitCondition.AbsoluteGradient, totalLineSearchSteps, iterationsWithNontrivialLineSearch);
         }
 
-        static void ValidateGradient(IObjectiveFunctionEvaluation objective)
+        private static void ValidateGradient(IObjectiveFunctionEvaluation objective)
         {
-            foreach (var x in objective.Gradient)
+            foreach (double x in objective.Gradient)
             {
-                if (Double.IsNaN(x) || Double.IsInfinity(x))
+                if (double.IsNaN(x) || double.IsInfinity(x))
                 {
                     throw new EvaluationException("Non-finite gradient returned.", objective);
                 }
             }
         }
 
-        static void ValidateObjective(IObjectiveFunctionEvaluation objective)
+        private static void ValidateObjective(IObjectiveFunctionEvaluation objective)
         {
-            if (Double.IsNaN(objective.Value) || Double.IsInfinity(objective.Value))
+            if (double.IsNaN(objective.Value) || double.IsInfinity(objective.Value))
             {
                 throw new EvaluationException("Non-finite objective function returned.", objective);
             }

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.Filters.Base;
+﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Operations.Convolution;
 using AI.BackEnds.DSP.NWaves.Operations.Tsm;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Operations
 {
@@ -54,7 +54,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <returns></returns>
         public static double[] Convolve(double[] input, double[] kernel)
         {
-            return Convolve(new ComplexDiscreteSignal(1, input), 
+            return Convolve(new ComplexDiscreteSignal(1, input),
                             new ComplexDiscreteSignal(1, kernel)).Real;
         }
 
@@ -106,7 +106,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
             return blockConvolver.ApplyTo(signal);
         }
-        
+
         /// <summary>
         /// Deconvolution via FFT for general complex-valued case.
         ///  
@@ -231,7 +231,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
             IFilter stretchFilter;
 
-            var frameSize = MathUtils.NextPowerOfTwo(1024 * signal.SamplingRate / 16000);
+            int frameSize = MathUtils.NextPowerOfTwo(1024 * signal.SamplingRate / 16000);
 
             switch (algorithm)
             {
@@ -261,7 +261,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <returns></returns>
         public static DiscreteSignal Envelope(DiscreteSignal signal, float attackTime = 0.01f, float releaseTime = 0.05f)
         {
-            var envelopeFollower = new EnvelopeFollower(signal.SamplingRate, attackTime, releaseTime);
+            EnvelopeFollower envelopeFollower = new EnvelopeFollower(signal.SamplingRate, attackTime, releaseTime);
 
             return new DiscreteSignal(signal.SamplingRate, signal.Samples.Select(s => envelopeFollower.Process(s)));
         }
@@ -318,15 +318,15 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <returns></returns>
         public static DiscreteSignal ConvolveDirect(DiscreteSignal signal1, DiscreteSignal signal2)
         {
-            var a = signal1.Samples;
-            var b = signal2.Samples;
-            var length = a.Length + b.Length - 1;
+            float[] a = signal1.Samples;
+            float[] b = signal2.Samples;
+            int length = a.Length + b.Length - 1;
 
-            var conv = new float[length];
+            float[] conv = new float[length];
 
-            for (var n = 0; n < length; n++)
+            for (int n = 0; n < length; n++)
             {
-                for (var k = 0; k < b.Length; k++)
+                for (int k = 0; k < b.Length; k++)
                 {
                     if (n >= k && n - k < a.Length)
                     {
@@ -346,16 +346,16 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <returns></returns>
         public static DiscreteSignal CrossCorrelateDirect(DiscreteSignal signal1, DiscreteSignal signal2)
         {
-            var a = signal1.Samples;
-            var b = signal2.Samples;
-            var length = a.Length + b.Length - 1;
+            float[] a = signal1.Samples;
+            float[] b = signal2.Samples;
+            int length = a.Length + b.Length - 1;
 
-            var corr = new float[length];
+            float[] corr = new float[length];
 
-            for (var n = 0; n < length; n++)
+            for (int n = 0; n < length; n++)
             {
-                var pos = b.Length - 1;
-                for (var k = 0; k < b.Length; k++)
+                int pos = b.Length - 1;
+                for (int k = 0; k < b.Length; k++)
                 {
                     if (n >= k && n - k < a.Length)
                     {

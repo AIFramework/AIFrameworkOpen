@@ -49,7 +49,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// <exception cref="NonConvergenceException"></exception>
         public static double FindRoot(Func<double, double> f, Func<double, double> df, double lowerBound, double upperBound, double accuracy = 1e-8, int maxIterations = 100, int subdivision = 20)
         {
-            if (TryFindRoot(f, df, lowerBound, upperBound, accuracy, maxIterations, subdivision, out var root))
+            if (TryFindRoot(f, df, lowerBound, upperBound, accuracy, maxIterations, subdivision, out double root))
             {
                 return root;
             }
@@ -89,7 +89,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
                 return true;
             }
 
-            root = 0.5*(lowerBound + upperBound);
+            root = 0.5 * (lowerBound + upperBound);
             double fx = f(root);
             if (fx == 0.0)
             {
@@ -102,7 +102,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
                 double dfx = df(root);
 
                 // Netwon-Raphson step
-                double step = fx/dfx;
+                double step = fx / dfx;
                 root -= step;
 
                 if (Math.Abs(step) < accuracy && Math.Abs(fx) < accuracy)
@@ -111,7 +111,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
                 }
 
                 bool overshoot = root > upperBound, undershoot = root < lowerBound;
-                if (overshoot || undershoot || Math.Abs(2*fx) > Math.Abs(lastStep*dfx))
+                if (overshoot || undershoot || Math.Abs(2 * fx) > Math.Abs(lastStep * dfx))
                 {
                     // Newton-Raphson step failed
 
@@ -122,14 +122,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
                     }
 
                     // Bisection
-                    root = 0.5*(upperBound + lowerBound);
+                    root = 0.5 * (upperBound + lowerBound);
                     fx = f(root);
                     if (fx == 0.0)
                     {
                         return true;
                     }
 
-                    lastStep = 0.5*Math.Abs(upperBound - lowerBound);
+                    lastStep = 0.5 * Math.Abs(upperBound - lowerBound);
                     if (Math.Sign(fx) == Math.Sign(fmin))
                     {
                         lowerBound = root;
@@ -183,9 +183,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
             return false;
         }
 
-        static bool TryScanForCrossingsWithRoots(Func<double, double> f, Func<double, double> df, double lowerBound, double upperBound, double accuracy, int maxIterations, int subdivision, out double root)
+        private static bool TryScanForCrossingsWithRoots(Func<double, double> f, Func<double, double> df, double lowerBound, double upperBound, double accuracy, int maxIterations, int subdivision, out double root)
         {
-            var zeroCrossings = ZeroCrossingBracketing.FindIntervalsWithin(f, lowerBound, upperBound, subdivision);
+            System.Collections.Generic.IEnumerable<(double, double)> zeroCrossings = ZeroCrossingBracketing.FindIntervalsWithin(f, lowerBound, upperBound, subdivision);
             foreach ((double lower, double upper) in zeroCrossings)
             {
                 if (TryFindRoot(f, df, lower, upper, accuracy, maxIterations, subdivision, out root))

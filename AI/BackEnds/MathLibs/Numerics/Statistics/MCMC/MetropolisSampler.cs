@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
 {
@@ -46,27 +46,27 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// Evaluates the log density function of the sampling distribution.
         /// </summary>
-        readonly DensityLn<T> _pdfLnP;
+        private readonly DensityLn<T> _pdfLnP;
 
         /// <summary>
         /// A function which samples from a proposal distribution.
         /// </summary>
-        readonly LocalProposalSampler<T> _proposal;
+        private readonly LocalProposalSampler<T> _proposal;
 
         /// <summary>
         /// The current location of the sampler.
         /// </summary>
-        T _current;
+        private T _current;
 
         /// <summary>
         /// The log density at the current location.
         /// </summary>
-        double _currentDensityLn;
+        private double _currentDensityLn;
 
         /// <summary>
         /// The number of burn iterations between two samples.
         /// </summary>
-        int _burnInterval;
+        private int _burnInterval;
 
         /// <summary>
         /// Constructs a new Metropolis sampler using the default <see cref="System.Random"/> random number generator.
@@ -107,7 +107,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// This method runs the sampler for a number of iterations without returning a sample
         /// </summary>
-        void Burn(int n)
+        private void Burn(int n)
         {
             for (int i = 0; i < n; i++)
             {

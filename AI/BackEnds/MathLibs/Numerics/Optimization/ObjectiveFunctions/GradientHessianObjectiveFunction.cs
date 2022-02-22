@@ -27,14 +27,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
 {
     internal class GradientHessianObjectiveFunction : IObjectiveFunction
     {
-        readonly Func<VectorMathNet<double>, (double, VectorMathNet<double>, MatrixMathNet<double>)> _function;
+        private readonly Func<VectorMathNet<double>, (double, VectorMathNet<double>, MatrixMathNet<double>)> _function;
 
         public GradientHessianObjectiveFunction(Func<VectorMathNet<double>, (double, VectorMathNet<double>, MatrixMathNet<double>)> function)
         {

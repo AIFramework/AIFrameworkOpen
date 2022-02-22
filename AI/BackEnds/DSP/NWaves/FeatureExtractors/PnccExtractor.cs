@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 {
@@ -21,8 +21,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         {
             get
             {
-                var names = Enumerable.Range(0, FeatureCount).Select(i => "pncc" + i).ToList();
-                if (_includeEnergy) names[0] = "log_En";
+                List<string> names = Enumerable.Range(0, FeatureCount).Select(i => "pncc" + i).ToList();
+                if (_includeEnergy)
+                {
+                    names[0] = "log_En";
+                }
+
                 return names;
             }
         }
@@ -42,7 +46,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// </summary>
         public float LambdaA { get; set; } = 0.999f;
         public float LambdaB { get; set; } = 0.5f;
-        
+
         /// <summary>
         /// Forgetting factor in temporal masking formula
         /// </summary>
@@ -68,7 +72,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// By default it's gammatone filterbank.
         /// </summary>
         public float[][] FilterBank { get; }
-        
+
         /// <summary>
         /// Nonlinearity coefficient (if 0 then Log10 is applied)
         /// </summary>
@@ -134,7 +138,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         {
             FeatureCount = options.FeatureCount;
 
-            var filterbankSize = options.FilterBankSize;
+            int filterbankSize = options.FilterBankSize;
 
             if (options.FilterBank == null)
             {
@@ -168,7 +172,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             _avgSpectrumQ1 = new float[filterbankSize];
             _avgSpectrumQ2 = new float[filterbankSize];
             _smoothedSpectrum = new float[filterbankSize];
- 
+
             _ringBuffer = new SpectraRingBuffer(2 * M + 1, filterbankSize);
 
             _step = M - 1;
@@ -211,13 +215,13 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             _ringBuffer.Add(_gammatoneSpectrum);
 
-            var spectrumQ = _ringBuffer.AverageSpectrum;
+            float[] spectrumQ = _ringBuffer.AverageSpectrum;
 
             // 3.2) asymmetric noise suppression
 
             if (_step == 2 * M)
             {
-                for (var j = 0; j < _spectrumQOut.Length; j++)
+                for (int j = 0; j < _spectrumQOut.Length; j++)
                 {
                     _spectrumQOut[j] = spectrumQ[j] * 0.9f;
                 }
@@ -230,7 +234,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 return;
             }
 
-            for (var j = 0; j < _spectrumQOut.Length; j++)
+            for (int j = 0; j < _spectrumQOut.Length; j++)
             {
                 if (spectrumQ[j] > _spectrumQOut[j])
                 {
@@ -242,7 +246,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 }
             }
 
-            for (var j = 0; j < _filteredSpectrumQ.Length; j++)
+            for (int j = 0; j < _filteredSpectrumQ.Length; j++)
             {
                 _filteredSpectrumQ[j] = Math.Max(spectrumQ[j] - _spectrumQOut[j], 0.0f);
 
@@ -263,7 +267,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
                 // 3.3) temporal masking
 
-                var threshold = _filteredSpectrumQ[j];
+                float threshold = _filteredSpectrumQ[j];
 
                 _avgSpectrumQ2[j] *= LambdaT;
                 if (spectrumQ[j] < C * _spectrumQOut[j])
@@ -285,17 +289,17 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // 3.4) spectral smoothing 
 
-            for (var j = 0; j < _spectrumS.Length; j++)
+            for (int j = 0; j < _spectrumS.Length; j++)
             {
                 _spectrumS[j] = _filteredSpectrumQ[j] / Math.Max(spectrumQ[j], Epsilon);
             }
 
-            for (var j = 0; j < _smoothedSpectrumS.Length; j++)
+            for (int j = 0; j < _smoothedSpectrumS.Length; j++)
             {
                 _smoothedSpectrumS[j] = 0.0f;
 
-                var total = 0;
-                for (var k = Math.Max(j - N, 0);
+                int total = 0;
+                for (int k = Math.Max(j - N, 0);
                          k < Math.Min(j + N + 1, FilterBank.Length);
                          k++, total++)
                 {
@@ -306,10 +310,10 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // 3.5) mean power normalization
 
-            var centralSpectrum = _ringBuffer.CentralSpectrum;
+            float[] centralSpectrum = _ringBuffer.CentralSpectrum;
 
-            var sumPower = 0.0f;
-            for (var j = 0; j < _smoothedSpectrum.Length; j++)
+            float sumPower = 0.0f;
+            for (int j = 0; j < _smoothedSpectrum.Length; j++)
             {
                 _smoothedSpectrum[j] = _smoothedSpectrumS[j] * centralSpectrum[j];
                 sumPower += _smoothedSpectrum[j];
@@ -317,7 +321,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             _mean = LambdaMu * _mean + (1 - LambdaMu) * sumPower;
 
-            for (var j = 0; j < _smoothedSpectrum.Length; j++)
+            for (int j = 0; j < _smoothedSpectrum.Length; j++)
             {
                 _smoothedSpectrum[j] /= _mean;
                 _smoothedSpectrum[j] *= MeanPower;
@@ -329,14 +333,14 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             if (_power != 0)
             {
-                for (var j = 0; j < _smoothedSpectrum.Length; j++)
+                for (int j = 0; j < _smoothedSpectrum.Length; j++)
                 {
                     _smoothedSpectrum[j] = (float)Math.Pow(_smoothedSpectrum[j], 1.0 / _power);
                 }
             }
             else
             {
-                for (var j = 0; j < _smoothedSpectrum.Length; j++)
+                for (int j = 0; j < _smoothedSpectrum.Length; j++)
                 {
                     _smoothedSpectrum[j] = (float)Math.Log(_smoothedSpectrum[j] + Epsilon);
                 }
@@ -396,14 +400,17 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             public void Add(float[] spectrum)
             {
-                if (_count < _capacity) _count++;
+                if (_count < _capacity)
+                {
+                    _count++;
+                }
 
                 _spectra[_current] = spectrum;
 
-                for (var j = 0; j < spectrum.Length; j++)
+                for (int j = 0; j < spectrum.Length; j++)
                 {
                     AverageSpectrum[j] = 0.0f;
-                    for (var i = 0; i < _count; i++)
+                    for (int i = 0; i < _count; i++)
                     {
                         AverageSpectrum[j] += _spectra[i][j];
                     }
@@ -422,7 +429,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
                 Array.Clear(AverageSpectrum, 0, AverageSpectrum.Length);
 
-                foreach (var spectrum in _spectra)
+                foreach (float[] spectrum in _spectra)
                 {
                     Array.Clear(spectrum, 0, spectrum.Length);
                 }

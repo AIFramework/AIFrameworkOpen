@@ -1,13 +1,13 @@
-﻿using System;
-using System.Numerics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.Operations;
+﻿using AI.BackEnds.DSP.NWaves.Operations;
 using AI.BackEnds.DSP.NWaves.Operations.Convolution;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Numerics;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
@@ -56,7 +56,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         public TransferFunction(double[] numerator, double[] denominator = null)
         {
             Numerator = numerator;
-            Denominator = denominator ?? new [] { 1.0 };
+            Denominator = denominator ?? new[] { 1.0 };
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             Denominator = poles != null ? ZpToTf(poles) : new[] { 1.0 };
             Numerator = zeros != null ? ZpToTf(zeros) : new[] { 1.0 };
 
-            for (var i = 0; i < Numerator.Length; i++)
+            for (int i = 0; i < Numerator.Length; i++)
             {
                 Numerator[i] *= gain;
             }
@@ -85,29 +85,29 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <param name="stateSpace"></param>
         public TransferFunction(StateSpace stateSpace)
         {
-            var a = stateSpace.A;
+            double[][] a = stateSpace.A;
 
             Denominator = new double[a.Length + 1];
             Denominator[0] = 1;
-            for (var i = 1; i < Denominator.Length; i++)
+            for (int i = 1; i < Denominator.Length; i++)
             {
                 Denominator[i] = -a[0][i - 1];
             }
 
-            var c = stateSpace.C;
-            var d = stateSpace.D;
+            double[] c = stateSpace.C;
+            double[] d = stateSpace.D;
 
-            var num = new double[a.Length + 1];
+            double[] num = new double[a.Length + 1];
 
-            for (var i = 0; i < a.Length; i++)
+            for (int i = 0; i < a.Length; i++)
             {
                 num[i + 1] = -(a[0][i] - c[i]) + (d[0] - 1) * Denominator[i + 1];
             }
 
             const double ZeroTolerance = 1e-8;
 
-            var index = 0;
-            for (var i = 1; i < num.Length; i++)
+            int index = 0;
+            for (int i = 1; i < num.Length; i++)
             {
                 if (Math.Abs(num[i]) > ZeroTolerance)
                 {
@@ -137,15 +137,15 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         {
             get
             {
-                var M = Numerator.Length;
-                var K = Denominator.Length;
+                int M = Numerator.Length;
+                int K = Denominator.Length;
 
                 if (M > K)
                 {
                     throw new ArgumentException("Numerator size must not exceed denominator size");
                 }
 
-                var a0 = Denominator[0];    // normalize: all further results will be divided by a0
+                double a0 = Denominator[0];    // normalize: all further results will be divided by a0
 
                 if (K == 1)
                 {
@@ -158,7 +158,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                     };
                 }
 
-                var num = Numerator;
+                double[] num = Numerator;
 
                 if (M < K)
                 {
@@ -166,26 +166,26 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                     Numerator.FastCopyTo(num, M, 0, K - M);
                 }
 
-                var a = new MatrixNWaves(K - 1);
-                for (var i = 0; i < K - 1; i++)
+                MatrixNWaves a = new MatrixNWaves(K - 1);
+                for (int i = 0; i < K - 1; i++)
                 {
                     a[0][i] = -Denominator[i + 1] / a0;
                 }
-                for (var i = 1; i < K - 1; i++)
+                for (int i = 1; i < K - 1; i++)
                 {
                     a[i][i - 1] = 1;
                 }
 
-                var b = new double[K - 1];
+                double[] b = new double[K - 1];
                 b[0] = 1;
 
-                var c = new double[K - 1];
-                for (var i = 0; i < K - 1; i++)
+                double[] c = new double[K - 1];
+                for (int i = 0; i < K - 1; i++)
                 {
                     c[i] = (num[i + 1] - num[0] * Denominator[i + 1] / a0) / a0;
                 }
 
-                var d = new double[1] { num[0] / a0 };
+                double[] d = new double[1] { num[0] / a0 };
 
                 return new StateSpace
                 {
@@ -205,39 +205,46 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         {
             get
             {
-                var size = Math.Max(Numerator.Length, Denominator.Length);
+                int size = Math.Max(Numerator.Length, Denominator.Length);
 
-                var a = Denominator.PadZeros(size);
-                var b = Numerator.PadZeros(size);
+                double[] a = Denominator.PadZeros(size);
+                double[] b = Numerator.PadZeros(size);
 
-                var a0 = a[0];
+                double a0 = a[0];
 
-                for (var i = 0; i < a.Length; a[i++] /= a0) ;
-                for (var i = 0; i < b.Length; b[i++] /= a0) ;
+                for (int i = 0; i < a.Length; a[i++] /= a0)
+                {
+                    ;
+                }
 
-                var B = new double[size - 1];
+                for (int i = 0; i < b.Length; b[i++] /= a0)
+                {
+                    ;
+                }
 
-                for (var i = 1; i < size; i++)
+                double[] B = new double[size - 1];
+
+                for (int i = 1; i < size; i++)
                 {
                     B[i - 1] = b[i] - a[i] * b[0];
                 }
 
                 MatrixNWaves m = MatrixNWaves.Eye(size - 1) - MatrixNWaves.Companion(a).T;
 
-                var sum = 0.0;
+                double sum = 0.0;
 
-                for (var i = 0; i < size - 1; i++)
+                for (int i = 0; i < size - 1; i++)
                 {
                     sum += m[i][0];
                 }
 
-                var zi = new double[size];
+                double[] zi = new double[size];
 
                 zi[0] = B.Sum() / sum;
 
-                var asum = 1.0;
-                var csum = 0.0;
-                for (var i = 1; i < size - 1; i++)
+                double asum = 1.0;
+                double csum = 0.0;
+                for (int i = 1; i < size - 1; i++)
                 {
                     asum += a[i];
                     csum += b[i] - a[i] * b[0];
@@ -261,18 +268,24 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                 return Numerator.FastCopy();
             }
 
-            var b = Numerator;
-            var a = Denominator;
+            double[] b = Numerator;
+            double[] a = Denominator;
 
-            var response = new double[length];
+            double[] response = new double[length];
 
-            for (var n = 0; n < response.Length; n++)
+            for (int n = 0; n < response.Length; n++)
             {
-                if (n < b.Length) response[n] = b[n];
-
-                for (var m = 1; m < a.Length; m++)
+                if (n < b.Length)
                 {
-                    if (n >= m) response[n] -= a[m] * response[n - m];
+                    response[n] = b[n];
+                }
+
+                for (int m = 1; m < a.Length; m++)
+                {
+                    if (n >= m)
+                    {
+                        response[n] -= a[m] * response[n - m];
+                    }
                 }
             }
 
@@ -286,14 +299,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public ComplexDiscreteSignal FrequencyResponse(int length = 512)
         {
-            var ir = ImpulseResponse(length);
+            double[] ir = ImpulseResponse(length);
 
-            var real = ir.Length == length ? ir :
-                       ir.Length  < length ? ir.PadZeros(length) :
+            double[] real = ir.Length == length ? ir :
+                       ir.Length < length ? ir.PadZeros(length) :
                                              ir.FastCopyFragment(length);
-            var imag = new double[length];
+            double[] imag = new double[length];
 
-            var fft = new Fft64(length);
+            Fft64 fft = new Fft64(length);
             fft.Direct(real, imag);
 
             return new ComplexDiscreteSignal(1, real.Take(length / 2 + 1),
@@ -305,29 +318,29 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// </summary>
         public double[] GroupDelay(int length = 512)
         {
-            var cc = new ComplexConvolver()
+            double[] cc = new ComplexConvolver()
                             .CrossCorrelate(new ComplexDiscreteSignal(1, Numerator),
                                             new ComplexDiscreteSignal(1, Denominator)).Real;
 
-            var cr = Enumerable.Range(0, cc.Length)
+            double[] cr = Enumerable.Range(0, cc.Length)
                                .Zip(cc, (r, c) => r * c)
                                .Reverse()
                                .ToArray();
 
             cc = cc.Reverse().ToArray();    // reverse cc and cr (above) for EvaluatePolynomial()
 
-            var step = Math.PI / length;
-            var omega = 0.0;
-            
-            var dn = Denominator.Length - 1;
+            double step = Math.PI / length;
+            double omega = 0.0;
 
-            var gd = new double[length];
+            int dn = Denominator.Length - 1;
 
-            for (var i = 0; i < gd.Length; i++)
+            double[] gd = new double[length];
+
+            for (int i = 0; i < gd.Length; i++)
             {
-                var z = Complex.FromPolarCoordinates(1, -omega);
-                var num = MathUtils.EvaluatePolynomial(cr, z);
-                var den = MathUtils.EvaluatePolynomial(cc, z);
+                Complex z = Complex.FromPolarCoordinates(1, -omega);
+                Complex num = MathUtils.EvaluatePolynomial(cr, z);
+                Complex den = MathUtils.EvaluatePolynomial(cc, z);
 
                 gd[i] = Complex.Abs(den) < 1e-30 ? 0 : (num / den).Real - dn;
 
@@ -342,11 +355,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// </summary>
         public double[] PhaseDelay(int length = 512)
         {
-            var gd = GroupDelay(length);
+            double[] gd = GroupDelay(length);
 
-            var pd = new double[gd.Length];
-            var acc = 0.0;
-            for (var i = 0; i < pd.Length; i++)     // integrate group delay
+            double[] pd = new double[gd.Length];
+            double acc = 0.0;
+            for (int i = 0; i < pd.Length; i++)     // integrate group delay
             {
                 acc += gd[i];
                 pd[i] = acc / (i + 1);
@@ -362,12 +375,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <param name="freq"></param>
         public void NormalizeAt(double freq)
         {
-            var w = Complex.FromPolarCoordinates(1, freq);
+            Complex w = Complex.FromPolarCoordinates(1, freq);
 
-            var gain = Complex.Abs(MathUtils.EvaluatePolynomial(Denominator, w) /
+            double gain = Complex.Abs(MathUtils.EvaluatePolynomial(Denominator, w) /
                                    MathUtils.EvaluatePolynomial(Numerator, w));
 
-            for (var i = 0; i < Numerator.Length; i++)
+            for (int i = 0; i < Numerator.Length; i++)
             {
                 Numerator[i] *= gain;
             }
@@ -378,19 +391,19 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// </summary>
         public void Normalize()
         {
-            var a0 = Denominator[0];
+            double a0 = Denominator[0];
 
             if (Math.Abs(a0) < 1e-10)
             {
                 throw new ArgumentException("The first denominator coefficient can not be zero!");
             }
 
-            for (var i = 0; i < Denominator.Length; i++)
+            for (int i = 0; i < Denominator.Length; i++)
             {
                 Denominator[i] /= a0;
             }
 
-            for (var i = 0; i < Numerator.Length; i++)
+            for (int i = 0; i < Numerator.Length; i++)
             {
                 Numerator[i] /= a0;
             }
@@ -403,11 +416,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public static double[] ZpToTf(ComplexDiscreteSignal zp)
         {
-            var poly = new Complex[] { 1, new Complex(-zp.Real[0], -zp.Imag[0]) };
+            Complex[] poly = new Complex[] { 1, new Complex(-zp.Real[0], -zp.Imag[0]) };
 
-            for (var k = 1; k < zp.Length; k++)
+            for (int k = 1; k < zp.Length; k++)
             {
-                var poly1 = new Complex[] { 1, new Complex(-zp.Real[k], -zp.Imag[k]) };
+                Complex[] poly1 = new Complex[] { 1, new Complex(-zp.Real[k], -zp.Imag[k]) };
                 poly = MathUtils.MultiplyPolynomials(poly, poly1);
             }
 
@@ -421,7 +434,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <param name="re"></param>
         /// <param name="im"></param>
         /// <returns></returns>
-        public static double[] ZpToTf(double[] re, double[] im = null) => ZpToTf(new ComplexDiscreteSignal(1, re, im));
+        public static double[] ZpToTf(double[] re, double[] im = null)
+        {
+            return ZpToTf(new ComplexDiscreteSignal(1, re, im));
+        }
 
         /// <summary>
         /// Method for converting TF numerator(denominator) to zeros(poles)
@@ -435,7 +451,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                 return null;
             }
 
-            var roots = MathUtils.PolynomialRoots(tf, maxIterations);
+            Complex[] roots = MathUtils.PolynomialRoots(tf, maxIterations);
 
             return new ComplexDiscreteSignal(1, roots.Select(r => r.Real),
                                                 roots.Select(r => r.Imaginary));
@@ -449,8 +465,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public static TransferFunction operator *(TransferFunction tf1, TransferFunction tf2)
         {
-            var num = Operation.Convolve(tf1.Numerator, tf2.Numerator);
-            var den = Operation.Convolve(tf1.Denominator, tf2.Denominator);
+            double[] num = Operation.Convolve(tf1.Numerator, tf2.Numerator);
+            double[] den = Operation.Convolve(tf1.Denominator, tf2.Denominator);
 
             return new TransferFunction(num, den);
         }
@@ -463,11 +479,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public static TransferFunction operator +(TransferFunction tf1, TransferFunction tf2)
         {
-            var num1 = Operation.Convolve(tf1.Numerator, tf2.Denominator);
-            var num2 = Operation.Convolve(tf2.Numerator, tf1.Denominator);
+            double[] num1 = Operation.Convolve(tf1.Numerator, tf2.Denominator);
+            double[] num2 = Operation.Convolve(tf2.Numerator, tf1.Denominator);
 
-            var num = num1;
-            var add = num2;
+            double[] num = num1;
+            double[] add = num2;
 
             if (num1.Length < num2.Length)
             {
@@ -475,12 +491,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                 add = num1;
             }
 
-            for (var i = 0; i < add.Length; i++)
+            for (int i = 0; i < add.Length; i++)
             {
                 num[i] += add[i];
             }
 
-            var den = Operation.Convolve(tf1.Denominator, tf2.Denominator);
+            double[] den = Operation.Convolve(tf1.Denominator, tf2.Denominator);
 
             return new TransferFunction(num, den);
         }
@@ -492,15 +508,15 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <param name="delimiter"></param>
         public static TransferFunction FromCsv(Stream stream, char delimiter = ',')
         {
-            using (var reader = new StreamReader(stream))
+            using (StreamReader reader = new StreamReader(stream))
             {
-                var content = reader.ReadLine();
-                var numerator = content.Split(delimiter)
+                string content = reader.ReadLine();
+                double[] numerator = content.Split(delimiter)
                                        .Select(s => double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture))
                                        .ToArray();
 
                 content = reader.ReadLine();
-                var denominator = content.Split(delimiter)
+                double[] denominator = content.Split(delimiter)
                                          .Select(s => double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture))
                                          .ToArray();
 
@@ -515,9 +531,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <param name="delimiter"></param>
         public void ToCsv(Stream stream, char delimiter = ',')
         {
-            using (var writer = new StreamWriter(stream))
+            using (StreamWriter writer = new StreamWriter(stream))
             {
-                var content = string.Join(delimiter.ToString(), Numerator.Select(k => k.ToString(CultureInfo.InvariantCulture)));
+                string content = string.Join(delimiter.ToString(), Numerator.Select(k => k.ToString(CultureInfo.InvariantCulture)));
                 writer.WriteLine(content);
 
                 content = string.Join(delimiter.ToString(), Denominator.Select(k => k.ToString(CultureInfo.InvariantCulture)));

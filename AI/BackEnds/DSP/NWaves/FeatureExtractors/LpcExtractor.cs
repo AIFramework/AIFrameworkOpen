@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Operations.Convolution;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 {
@@ -15,7 +15,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// <summary>
         /// Descriptions ("error", "lpc1", "lpc2", etc.)
         /// </summary>
-        public override List<string> FeatureDescriptions => 
+        public override List<string> FeatureDescriptions =>
             new[] { "error" }.Concat(Enumerable.Range(1, _order).Select(i => "lpc" + i)).ToList();
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // 2) levinson-durbin
 
-            var err = Lpc.LevinsonDurbin(_cc, features, _order, FrameSize - 1);
+            float err = Lpc.LevinsonDurbin(_cc, features, _order, FrameSize - 1);
 
             features[0] = err;
         }
@@ -83,14 +83,18 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// True if computations can be done in parallel
         /// </summary>
         /// <returns></returns>
-        public override bool IsParallelizable() => true;
+        public override bool IsParallelizable()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
         /// </summary>
         /// <returns></returns>
-        public override FeatureExtractor ParallelCopy() => 
-            new LpcExtractor(new LpcOptions
+        public override FeatureExtractor ParallelCopy()
+        {
+            return new LpcExtractor(new LpcOptions
             {
                 SamplingRate = SamplingRate,
                 LpcOrder = _order,
@@ -99,5 +103,6 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 PreEmphasis = _preEmphasis,
                 Window = _window
             });
+        }
     }
 }

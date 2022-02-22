@@ -173,7 +173,9 @@ namespace AI
             double summ = 0;
 
             for (int i = 0; i < n; i++)
+            {
                 summ += vect[i];
+            }
 
             return summ;
         }

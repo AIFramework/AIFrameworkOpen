@@ -99,7 +99,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>Frequency in Hz</returns>
         public static double NoteToFreq(string note, int octave)
         {
-            var noteIndex = Array.IndexOf(Notes, note);
+            int noteIndex = Array.IndexOf(Notes, note);
 
             if (noteIndex < 0)
             {
@@ -121,10 +121,10 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>Tuple (note, octave)</returns>
         public static Tuple<string, int> FreqToNote(double freq)
         {
-            var pitch = FreqToPitch(freq);
+            int pitch = FreqToPitch(freq);
 
-            var note = Notes[pitch % 12];
-            var octave = pitch / 12 - 1;
+            string note = Notes[pitch % 12];
+            int octave = pitch / 12 - 1;
 
             return new Tuple<string, int>(note, octave);
         }
@@ -161,7 +161,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             const double minLogHerz = 1000.0;
             const double minLogMel = (minLogHerz - minHerz) / sp;
 
-            var logStep = Math.Log(6.4) / 27;
+            double logStep = Math.Log(6.4) / 27;
 
             return herz < minLogHerz ? (herz - minHerz) / sp : minLogMel + Math.Log(herz / minLogHerz) / logStep;
         }
@@ -178,7 +178,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             const double minLogHerz = 1000.0;
             const double minLogMel = (minLogHerz - minHerz) / sp;
 
-            var logStep = Math.Log(6.4) / 27;
+            double logStep = Math.Log(6.4) / 27;
 
             return mel < minLogMel ? minHerz + sp * mel : minLogHerz * Math.Exp(logStep * (mel - minLogMel));
         }
@@ -255,41 +255,41 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>Weight value in dB</returns>
         public static double LoudnessWeighting(double freq, string weightingType = "A")
         {
-            var level2 = freq * freq;
+            double level2 = freq * freq;
 
             switch (weightingType.ToUpper())
             {
                 case "B":
-                {
-                    var r = (level2 * freq * 148693636) /
+                    {
+                        double r = (level2 * freq * 148693636) /
                              (
                                 (level2 + 424.36) *
                                  Math.Sqrt(level2 + 25122.25) *
                                 (level2 + 148693636)
                              );
-                    return 20 * Math.Log10(r) + 0.17;
-                }
-                    
+                        return 20 * Math.Log10(r) + 0.17;
+                    }
+
                 case "C":
-                {
-                    var r = (level2 * 148693636) /
+                    {
+                        double r = (level2 * 148693636) /
                              (
                                  (level2 + 424.36) *
                                  (level2 + 148693636)
                              );
-                    return 20 * Math.Log10(r) + 0.06;
-                }
+                        return 20 * Math.Log10(r) + 0.06;
+                    }
 
                 default:
-                {
-                    var r = (level2 * level2 * 148693636) / 
+                    {
+                        double r = (level2 * level2 * 148693636) /
                              (
-                                 (level2 + 424.36) * 
-                                  Math.Sqrt((level2 + 11599.29) * (level2 + 544496.41)) * 
+                                 (level2 + 424.36) *
+                                  Math.Sqrt((level2 + 11599.29) * (level2 + 544496.41)) *
                                  (level2 + 148693636)
                              );
-                    return 20 * Math.Log10(r) + 2.0;
-                }
+                        return 20 * Math.Log10(r) + 2.0;
+                    }
             }
         }
     }

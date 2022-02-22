@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
 using AI.BackEnds.DSP.NWaves.Windows;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 {
@@ -36,8 +36,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         {
             get
             {
-                var names = Enumerable.Range(0, FeatureCount).Select(i => "mfcc" + i).ToList();
-                if (_includeEnergy) names[0] = "log_En";
+                List<string> names = Enumerable.Range(0, FeatureCount).Select(i => "mfcc" + i).ToList();
+                if (_includeEnergy)
+                {
+                    names[0] = "log_En";
+                }
+
                 return names;
             }
         }
@@ -112,7 +116,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// Delegate for applying DCT
         /// </summary>
         protected readonly Action<float[]> _applyDct;
-        
+
         /// <summary>
         /// Internal buffer for a signal spectrum at each step
         /// </summary>
@@ -131,13 +135,13 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         {
             FeatureCount = options.FeatureCount;
 
-            var filterbankSize = options.FilterBankSize;
+            int filterbankSize = options.FilterBankSize;
 
             if (options.FilterBank == null)
             {
                 _blockSize = options.FftSize > FrameSize ? options.FftSize : MathUtils.NextPowerOfTwo(FrameSize);
 
-                var melBands = FilterBanks.MelBands(filterbankSize, SamplingRate, options.LowFrequency, options.HighFrequency);
+                Tuple<double, double, double>[] melBands = FilterBanks.MelBands(filterbankSize, SamplingRate, options.LowFrequency, options.HighFrequency);
                 FilterBank = FilterBanks.Triangular(_blockSize, SamplingRate, melBands, mapper: Scale.HerzToMel);   // HTK/Kaldi-style
             }
             else
@@ -165,7 +169,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 case '1': _dct = new Dct1(filterbankSize); break;
                 case '3': _dct = new Dct3(filterbankSize); break;
                 case '4': _dct = new Dct4(filterbankSize); break;
-                default:  _dct = new Dct2(filterbankSize); break;
+                default: _dct = new Dct2(filterbankSize); break;
             }
 
             if (_dctType.EndsWith("N", StringComparison.OrdinalIgnoreCase))
@@ -262,32 +266,37 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// True if computations can be done in parallel
         /// </summary>
         /// <returns></returns>
-        public override bool IsParallelizable() => true;
+        public override bool IsParallelizable()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
         /// </summary>
         /// <returns></returns>
-        public override FeatureExtractor ParallelCopy() =>
-            new MfccExtractor(
-                new MfccOptions
-                {
-                    SamplingRate = SamplingRate,
-                    FeatureCount = FeatureCount,
-                    FrameDuration = FrameDuration,
-                    HopDuration = HopDuration,
-                    FilterBankSize = FilterBank.Length,
-                    FftSize = _blockSize,
-                    FilterBank = FilterBank,
-                    LifterSize = _lifterSize,
-                    PreEmphasis = _preEmphasis,
-                    DctType = _dctType,
-                    NonLinearity = _nonLinearityType,
-                    SpectrumType = _spectrumType,
-                    Window = _window,
-                    LogFloor = _logFloor,
-                    IncludeEnergy = _includeEnergy,
-                    LogEnergyFloor = _logEnergyFloor
-                });
+        public override FeatureExtractor ParallelCopy()
+        {
+            return new MfccExtractor(
+new MfccOptions
+{
+    SamplingRate = SamplingRate,
+    FeatureCount = FeatureCount,
+    FrameDuration = FrameDuration,
+    HopDuration = HopDuration,
+    FilterBankSize = FilterBank.Length,
+    FftSize = _blockSize,
+    FilterBank = FilterBank,
+    LifterSize = _lifterSize,
+    PreEmphasis = _preEmphasis,
+    DctType = _dctType,
+    NonLinearity = _nonLinearityType,
+    SpectrumType = _spectrumType,
+    Window = _window,
+    LogFloor = _logFloor,
+    IncludeEnergy = _includeEnergy,
+    LogEnergyFloor = _logEnergyFloor
+});
+        }
     }
 }

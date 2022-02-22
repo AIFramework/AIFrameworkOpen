@@ -8,7 +8,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
     // [1] https://github.com/scipy/scipy/blob/master/scipy/special/amos_wrappers.c
     public static partial class SpecialFunctions
     {
-        static class Amos
+        private static class Amos
         {
             #region AiryAi
 
@@ -527,9 +527,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                     if (z.Imaginary == 0 && (z.Real >= 0 || v == Math.Floor(v)))
                     {
                         if (z.Real < 0 && v / 2 != Math.Floor(v / 2))
+                        {
                             cyi = new Complex(double.NegativeInfinity, 0);
+                        }
                         else
+                        {
                             cyi = new Complex(double.PositiveInfinity, 0);
+                        }
                     }
                     else
                     {
@@ -937,7 +941,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 
             #region utilities
 
-            static double SinPi(double x)
+            private static double SinPi(double x)
             {
                 if (Math.Floor(x) == x && Math.Abs(x) < 1.0e14)
                 {
@@ -949,7 +953,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return Math.Sin(Math.PI * x);
             }
 
-            static double CosPi(double x)
+            private static double CosPi(double x)
             {
                 if (Math.Floor(x + 0.5) == x + 0.5 && Math.Abs(x) < 1.0E14)
                 {
@@ -961,21 +965,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return Math.Cos(Math.PI * x);
             }
 
-            static Complex Rotate(Complex z, double v)
+            private static Complex Rotate(Complex z, double v)
             {
                 double c = CosPi(v);
                 double s = SinPi(v);
                 return new Complex(z.Real * c - z.Imaginary * s, z.Real * s + z.Imaginary * c);
             }
 
-            static Complex RotateJY(Complex j, Complex y, double v)
+            private static Complex RotateJY(Complex j, Complex y, double v)
             {
                 double c = CosPi(v);
                 double s = SinPi(v);
                 return new Complex(j.Real * c - y.Real * s, j.Imaginary * c - y.Imaginary * s);
             }
 
-            static bool ReflectJY(ref Complex jy, double v)
+            private static bool ReflectJY(ref Complex jy, double v)
             {
                 //NB: Y_v may be huge near negative integers -- so handle exact
                 //     integers carefully
@@ -994,7 +998,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return true;
             }
 
-            static bool ReflectI(Complex ik, double v)
+            private static bool ReflectI(Complex ik, double v)
             {
                 if (v != Math.Floor(v))
                 {
@@ -1004,7 +1008,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return true; //I is symmetric for integer v
             }
 
-            static Complex RotateI(Complex i, Complex k, double v)
+            private static Complex RotateI(Complex i, Complex k, double v)
             {
                 double s = Math.Sin(v * Math.PI) * (2.0 / Math.PI);
                 return new Complex(i.Real + s * k.Real, i.Imaginary + s * k.Imaginary);

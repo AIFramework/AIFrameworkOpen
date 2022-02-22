@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Operations.Convolution;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 {
@@ -92,16 +92,16 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // 2) argmax of autocorrelation
 
-            var pitch1 = (int)(SamplingRate / _high);    // 2,5 ms = 400Hz
-            var pitch2 = (int)(SamplingRate / _low);     // 12,5 ms = 80Hz
+            int pitch1 = (int)(SamplingRate / _high);    // 2,5 ms = 400Hz
+            int pitch2 = (int)(SamplingRate / _low);     // 12,5 ms = 80Hz
 
-            var start = pitch1 + FrameSize - 1;
-            var end = Math.Min(start + pitch2, _cc.Length);
+            int start = pitch1 + FrameSize - 1;
+            int end = Math.Min(start + pitch2, _cc.Length);
 
-            var max = start < _cc.Length ? _cc[start] : 0;
+            float max = start < _cc.Length ? _cc[start] : 0;
 
-            var peakIndex = start;
-            for (var k = start; k < end; k++)
+            int peakIndex = start;
+            for (int k = start; k < end; k++)
             {
                 if (_cc[k] > max)
                 {
@@ -117,14 +117,18 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         /// Computations can be done in parallel
         /// </summary>
         /// <returns></returns>
-        public override bool IsParallelizable() => true;
+        public override bool IsParallelizable()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
         /// </summary>
         /// <returns></returns>
-        public override FeatureExtractor ParallelCopy() => 
-            new PitchExtractor(new PitchOptions
+        public override FeatureExtractor ParallelCopy()
+        {
+            return new PitchExtractor(new PitchOptions
             {
                 SamplingRate = SamplingRate,
                 FrameDuration = FrameDuration,
@@ -134,5 +138,6 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 PreEmphasis = _preEmphasis,
                 Window = _window
             });
+        }
     }
 }

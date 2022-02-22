@@ -55,7 +55,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             return (formatProvider as CultureInfo)
-                ?? (formatProvider.GetFormat(typeof (CultureInfo)) as CultureInfo)
+                ?? (formatProvider.GetFormat(typeof(CultureInfo)) as CultureInfo)
                     ?? CultureInfo.CurrentCulture;
         }
 
@@ -88,7 +88,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 return CultureInfo.CurrentCulture.TextInfo;
             }
 
-            return (formatProvider.GetFormat(typeof (TextInfo)) as TextInfo)
+            return (formatProvider.GetFormat(typeof(TextInfo)) as TextInfo)
                 ?? GetCultureInfo(formatProvider).TextInfo;
         }
 
@@ -102,7 +102,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         {
             for (int i = skip; i < keywords.Length; i++)
             {
-                var keyword = keywords[i];
+                string keyword = keywords[i];
                 int indexOfKeyword;
                 while ((indexOfKeyword = node.Value.IndexOf(keyword, StringComparison.Ordinal)) >= 0)
                 {
@@ -150,13 +150,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 
                 token.Value = token.Value + token.Next.Value + token.Next.Next.Value;
 
-                var list = token.List;
+                LinkedList<string> list = token.List;
                 list.Remove(token.Next.Next);
                 list.Remove(token.Next);
             }
 
-            double value;
-            if (!double.TryParse(token.Value, NumberStyles.Any, culture, out value))
+            if (!double.TryParse(token.Value, NumberStyles.Any, culture, out double value))
             {
                 throw new FormatException();
             }
@@ -184,13 +183,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 
                 token.Value = token.Value + token.Next.Value + token.Next.Next.Value;
 
-                var list = token.List;
+                LinkedList<string> list = token.List;
                 list.Remove(token.Next.Next);
                 list.Remove(token.Next);
             }
 
-            float value;
-            if (!Single.TryParse(token.Value, NumberStyles.Any, culture, out value))
+            if (!float.TryParse(token.Value, NumberStyles.Any, culture, out float value))
             {
                 throw new FormatException();
             }

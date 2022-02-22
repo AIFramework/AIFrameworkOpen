@@ -48,7 +48,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// <exception cref="NonConvergenceException"></exception>
         public static double FindRootExpand(Func<double, double> f, double guessLowerBound, double guessUpperBound, double accuracy = 1e-8, int maxIterations = 100, double expandFactor = 1.6, int maxExpandIteratons = 100)
         {
-            ZeroCrossingBracketing.ExpandReduce(f, ref guessLowerBound, ref guessUpperBound, expandFactor, maxExpandIteratons, maxExpandIteratons*10);
+            ZeroCrossingBracketing.ExpandReduce(f, ref guessLowerBound, ref guessUpperBound, expandFactor, maxExpandIteratons, maxExpandIteratons * 10);
             return FindRoot(f, guessLowerBound, guessUpperBound, accuracy, maxIterations);
         }
 
@@ -62,8 +62,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// <exception cref="NonConvergenceException"></exception>
         public static double FindRoot(Func<double, double> f, double lowerBound, double upperBound, double accuracy = 1e-14, int maxIterations = 100)
         {
-            double root;
-            if (TryFindRoot(f, lowerBound, upperBound, accuracy, maxIterations, out root))
+            if (TryFindRoot(f, lowerBound, upperBound, accuracy, maxIterations, out double root))
             {
                 return root;
             }
@@ -88,7 +87,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
 
             if (upperBound < lowerBound)
             {
-                var t = upperBound;
+                double t = upperBound;
                 upperBound = lowerBound;
                 lowerBound = t;
             }
@@ -119,7 +118,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
             {
                 double froot = f(root);
 
-                if (upperBound - lowerBound <= 2*accuracy && Math.Abs(froot) <= accuracy)
+                if (upperBound - lowerBound <= 2 * accuracy && Math.Abs(froot) <= accuracy)
                 {
                     return true;
                 }
@@ -145,7 +144,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
                     return true;
                 }
 
-                root = 0.5*(lowerBound + upperBound);
+                root = 0.5 * (lowerBound + upperBound);
             }
 
             return false;

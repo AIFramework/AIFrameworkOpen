@@ -40,12 +40,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
         /// <summary>
         /// The status of the calculation
         /// </summary>
-        IterationStatus _status = IterationStatus.Continue;
+        private IterationStatus _status = IterationStatus.Continue;
 
         /// <summary>
         /// The iteration number of the last iteration.
         /// </summary>
-        int _lastIteration = -1;
+        private int _lastIteration = -1;
 
         /// <summary>
         /// Determines the status of the iterative calculation based on the stop criteria stored

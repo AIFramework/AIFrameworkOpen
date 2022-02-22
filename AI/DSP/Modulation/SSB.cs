@@ -1,6 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
-using AI.DSP.FIR;
 using AI.DSP.DSPCore;
+using AI.DSP.FIR;
 using System;
 
 namespace AI.DSP.Modulation

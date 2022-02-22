@@ -27,12 +27,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Statistics;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -43,10 +43,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class LogNormal : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _mu;
-        readonly double _sigma;
+        private System.Random _random;
+        private readonly double _mu;
+        private readonly double _sigma;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LogNormal"/> class.
@@ -108,8 +107,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>A log-normal distribution.</returns>
         public static LogNormal WithMeanVariance(double mean, double var, System.Random randomSource = null)
         {
-            var sigma2 = Math.Log(var/(mean*mean) + 1.0);
-            return new LogNormal(Math.Log(mean) - sigma2/2.0, Math.Sqrt(sigma2), randomSource);
+            double sigma2 = Math.Log(var / (mean * mean) + 1.0);
+            return new LogNormal(Math.Log(mean) - sigma2 / 2.0, Math.Sqrt(sigma2), randomSource);
         }
 
         /// <summary>
@@ -121,7 +120,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <remarks>MATLAB: lognfit</remarks>
         public static LogNormal Estimate(IEnumerable<double> samples, System.Random randomSource = null)
         {
-            var muSigma = samples.Select(s => Math.Log(s)).MeanStandardDeviation();
+            (double Mean, double StandardDeviation) muSigma = samples.Select(s => Math.Log(s)).MeanStandardDeviation();
             return new LogNormal(muSigma.Item1, muSigma.Item2, randomSource);
         }
 
@@ -166,7 +165,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mu of the log-normal distribution.
         /// </summary>
-        public double Mean => Math.Exp(_mu + (_sigma*_sigma/2.0));
+        public double Mean => Math.Exp(_mu + (_sigma * _sigma / 2.0));
 
         /// <summary>
         /// Gets the variance of the log-normal distribution.
@@ -175,8 +174,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var sigma2 = _sigma*_sigma;
-                return (Math.Exp(sigma2) - 1.0)*Math.Exp(_mu + _mu + sigma2);
+                double sigma2 = _sigma * _sigma;
+                return (Math.Exp(sigma2) - 1.0) * Math.Exp(_mu + _mu + sigma2);
             }
         }
 
@@ -187,8 +186,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var sigma2 = _sigma*_sigma;
-                return Math.Sqrt((Math.Exp(sigma2) - 1.0)*Math.Exp(_mu + _mu + sigma2));
+                double sigma2 = _sigma * _sigma;
+                return Math.Sqrt((Math.Exp(sigma2) - 1.0) * Math.Exp(_mu + _mu + sigma2));
             }
         }
 
@@ -204,15 +203,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var expsigma2 = Math.Exp(_sigma*_sigma);
-                return (expsigma2 + 2.0)*Math.Sqrt(expsigma2 - 1);
+                double expsigma2 = Math.Exp(_sigma * _sigma);
+                return (expsigma2 + 2.0) * Math.Sqrt(expsigma2 - 1);
             }
         }
 
         /// <summary>
         /// Gets the mode of the log-normal distribution.
         /// </summary>
-        public double Mode => Math.Exp(_mu - (_sigma*_sigma));
+        public double Mode => Math.Exp(_mu - (_sigma * _sigma));
 
         /// <summary>
         /// Gets the median of the log-normal distribution.
@@ -242,8 +241,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            var a = (Math.Log(x) - _mu)/_sigma;
-            return Math.Exp(-0.5*a*a)/(x*_sigma*Constants.Sqrt2Pi);
+            double a = (Math.Log(x) - _mu) / _sigma;
+            return Math.Exp(-0.5 * a * a) / (x * _sigma * Constants.Sqrt2Pi);
         }
 
         /// <summary>
@@ -259,8 +258,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return double.NegativeInfinity;
             }
 
-            var a = (Math.Log(x) - _mu)/_sigma;
-            return (-0.5*a*a) - Math.Log(x*_sigma) - Constants.LogSqrt2Pi;
+            double a = (Math.Log(x) - _mu) / _sigma;
+            return (-0.5 * a * a) - Math.Log(x * _sigma) - Constants.LogSqrt2Pi;
         }
 
         /// <summary>
@@ -272,7 +271,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         public double CumulativeDistribution(double x)
         {
             return x < 0.0 ? 0.0
-                : 0.5*SpecialFunctions.Erfc((_mu - Math.Log(x))/(_sigma*Constants.Sqrt2));
+                : 0.5 * SpecialFunctions.Erfc((_mu - Math.Log(x)) / (_sigma * Constants.Sqrt2));
         }
 
         /// <summary>
@@ -285,7 +284,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         public double InverseCumulativeDistribution(double p)
         {
             return p <= 0.0 ? 0.0 : p >= 1.0 ? double.PositiveInfinity
-                : Math.Exp(_mu - _sigma*Constants.Sqrt2*SpecialFunctions.ErfcInv(2.0*p));
+                : Math.Exp(_mu - _sigma * Constants.Sqrt2 * SpecialFunctions.ErfcInv(2.0 * p));
         }
 
         /// <summary>
@@ -314,17 +313,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _mu, _sigma);
         }
 
-        static double SampleUnchecked(System.Random rnd, double mu, double sigma)
+        private static double SampleUnchecked(System.Random rnd, double mu, double sigma)
         {
             return Math.Exp(Normal.SampleUnchecked(rnd, mu, sigma));
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double mu, double sigma)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double mu, double sigma)
         {
             return Normal.SamplesUnchecked(rnd, mu, sigma).Select(Math.Exp);
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double mu, double sigma)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double mu, double sigma)
         {
             Normal.SamplesUnchecked(rnd, values, mu, sigma);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
@@ -357,8 +356,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            var a = (Math.Log(x) - mu)/sigma;
-            return Math.Exp(-0.5*a*a)/(x*sigma*Constants.Sqrt2Pi);
+            double a = (Math.Log(x) - mu) / sigma;
+            return Math.Exp(-0.5 * a * a) / (x * sigma * Constants.Sqrt2Pi);
         }
 
         /// <summary>
@@ -381,8 +380,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return double.NegativeInfinity;
             }
 
-            var a = (Math.Log(x) - mu)/sigma;
-            return (-0.5*a*a) - Math.Log(x*sigma) - Constants.LogSqrt2Pi;
+            double a = (Math.Log(x) - mu) / sigma;
+            return (-0.5 * a * a) - Math.Log(x * sigma) - Constants.LogSqrt2Pi;
         }
 
         /// <summary>
@@ -402,7 +401,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             return x < 0.0 ? 0.0
-                : 0.5*(1.0 + SpecialFunctions.Erf((Math.Log(x) - mu)/(sigma*Constants.Sqrt2)));
+                : 0.5 * (1.0 + SpecialFunctions.Erf((Math.Log(x) - mu) / (sigma * Constants.Sqrt2)));
         }
 
         /// <summary>
@@ -423,7 +422,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             return p <= 0.0 ? 0.0 : p >= 1.0 ? double.PositiveInfinity
-                : Math.Exp(mu - sigma*Constants.Sqrt2*SpecialFunctions.ErfcInv(2.0*p));
+                : Math.Exp(mu - sigma * Constants.Sqrt2 * SpecialFunctions.ErfcInv(2.0 * p));
         }
 
         /// <summary>

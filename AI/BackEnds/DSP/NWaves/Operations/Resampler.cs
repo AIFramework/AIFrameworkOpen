@@ -1,8 +1,8 @@
-﻿using System;
-using AI.BackEnds.DSP.NWaves.Filters.Base;
+﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Operations
 {
@@ -31,20 +31,20 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                 return signal.Copy();
             }
 
-            var output = new float[signal.Length * factor];
+            float[] output = new float[signal.Length * factor];
 
-            var pos = 0;
-            for (var i = 0; i < signal.Length; i++)
+            int pos = 0;
+            for (int i = 0; i < signal.Length; i++)
             {
                 output[pos] = factor * signal[i];
                 pos += factor;
             }
 
-            var lpFilter = filter;
+            FirFilter lpFilter = filter;
 
             if (filter == null)
             {
-                var filterSize = factor > MinResamplingFilterOrder / 2 ?
+                int filterSize = factor > MinResamplingFilterOrder / 2 ?
                                  2 * factor + 1 :
                                  MinResamplingFilterOrder;
 
@@ -68,11 +68,11 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                 return signal.Copy();
             }
 
-            var filterSize = factor > MinResamplingFilterOrder / 2 ?
+            int filterSize = factor > MinResamplingFilterOrder / 2 ?
                              2 * factor + 1 :
                              MinResamplingFilterOrder;
 
-            var lpFilter = filter;
+            FirFilter lpFilter = filter;
 
             if (filter == null)
             {
@@ -81,10 +81,10 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                 signal = lpFilter.ApplyTo(signal);
             }
 
-            var output = new float[signal.Length / factor];
+            float[] output = new float[signal.Length / factor];
 
-            var pos = 0;
-            for (var i = 0; i < output.Length; i++)
+            int pos = 0;
+            for (int i = 0; i < output.Length; i++)
             {
                 output[i] = signal[pos];
                 pos += factor;
@@ -111,10 +111,10 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                 return signal.Copy();
             }
 
-            var g = (float) newSamplingRate / signal.SamplingRate;
+            float g = (float)newSamplingRate / signal.SamplingRate;
 
-            var input = signal.Samples;
-            var output = new float[(int)(input.Length * g)];
+            float[] input = signal.Samples;
+            float[] output = new float[(int)(input.Length * g)];
 
             if (g < 1 && filter == null)
             {
@@ -123,24 +123,24 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                 input = filter.ApplyTo(signal).Samples;
             }
 
-            var step = 1 / g;
+            float step = 1 / g;
 
-            for (var n = 0; n < output.Length; n++)
+            for (int n = 0; n < output.Length; n++)
             {
-                var x = n * step;
+                float x = n * step;
 
-                for (var i = -order; i < order; i++)
+                for (int i = -order; i < order; i++)
                 {
-                    var j = (int) Math.Floor(x) - i;
+                    int j = (int)Math.Floor(x) - i;
 
                     if (j < 0 || j >= input.Length)
                     {
                         continue;
                     }
 
-                    var t = x - j;
-                    float w = (float) (0.5 * (1.0 + Math.Cos(t / order * Math.PI)));    // Hann window
-                    float sinc = (float) MathUtils.Sinc(t);                             // Sinc function
+                    float t = x - j;
+                    float w = (float)(0.5 * (1.0 + Math.Cos(t / order * Math.PI)));    // Hann window
+                    float sinc = (float)MathUtils.Sinc(t);                             // Sinc function
                     output[n] += w * sinc * input[j];
                 }
             }
@@ -163,40 +163,40 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                 return signal.Copy();
             }
 
-            var newSamplingRate = signal.SamplingRate * up / down;
+            int newSamplingRate = signal.SamplingRate * up / down;
 
             if (up > 20 && down > 20)
             {
                 return Resample(signal, newSamplingRate, filter);
             }
 
-            var output = new float[signal.Length * up];
+            float[] output = new float[signal.Length * up];
 
-            var pos = 0;
-            for (var i = 0; i < signal.Length; i++)
+            int pos = 0;
+            for (int i = 0; i < signal.Length; i++)
             {
                 output[pos] = up * signal[i];
                 pos += up;
             }
 
-            var lpFilter = filter;
+            FirFilter lpFilter = filter;
 
             if (filter == null)
             {
-                var factor = Math.Max(up, down);
-                var filterSize = factor > MinResamplingFilterOrder / 2 ?
+                int factor = Math.Max(up, down);
+                int filterSize = factor > MinResamplingFilterOrder / 2 ?
                                  8 * factor + 1 :
                                  MinResamplingFilterOrder;
 
                 lpFilter = new FirFilter(DesignFilter.FirWinLp(filterSize, 0.5f / factor));
             }
 
-            var upsampled = lpFilter.ApplyTo(new DiscreteSignal(signal.SamplingRate * up, output));
+            DiscreteSignal upsampled = lpFilter.ApplyTo(new DiscreteSignal(signal.SamplingRate * up, output));
 
             output = new float[upsampled.Length / down];
 
             pos = 0;
-            for (var i = 0; i < output.Length; i++)
+            for (int i = 0; i < output.Length; i++)
             {
                 output[i] = upsampled[pos];
                 pos += down;

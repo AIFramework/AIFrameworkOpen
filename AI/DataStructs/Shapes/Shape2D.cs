@@ -30,7 +30,7 @@ namespace AI.DataStructs.Shapes
         /// </summary>
         /// <param name="height"></param>
         /// <param name="width"></param>
-        public Shape2D(int height = 1, int width = 1) : base(width, height) {}
+        public Shape2D(int height = 1, int width = 1) : base(width, height) { }
 
         #region Операторы
         public static implicit operator Shape3D(Shape2D shape)

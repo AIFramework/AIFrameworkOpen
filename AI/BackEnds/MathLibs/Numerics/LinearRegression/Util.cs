@@ -36,10 +36,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
     {
         public static (TU[] U, TV[] V) UnpackSinglePass<TU, TV>(this IEnumerable<Tuple<TU, TV>> samples)
         {
-            var ux = new List<TU>();
-            var vx = new List<TV>();
+            List<TU> ux = new List<TU>();
+            List<TV> vx = new List<TV>();
 
-            foreach (var tuple in samples)
+            foreach (Tuple<TU, TV> tuple in samples)
             {
                 ux.Add(tuple.Item1);
                 vx.Add(tuple.Item2);
@@ -50,10 +50,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
 
         public static (TU[] U, TV[] V) UnpackSinglePass<TU, TV>(this IEnumerable<(TU, TV)> samples)
         {
-            var ux = new List<TU>();
-            var vx = new List<TV>();
+            List<TU> ux = new List<TU>();
+            List<TV> vx = new List<TV>();
 
-            foreach (var (u, v) in samples)
+            foreach ((TU u, TV v) in samples)
             {
                 ux.Add(u);
                 vx.Add(v);

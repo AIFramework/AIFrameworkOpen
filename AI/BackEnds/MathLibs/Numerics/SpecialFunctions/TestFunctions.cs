@@ -47,8 +47,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         public static double Rosenbrock(double x, double y)
         {
             double a = 1.0 - x;
-            double b = y - x*x;
-            return a*a + 100*b*b;
+            double b = y - x * x;
+            return a * a + 100 * b * b;
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </remarks>
         public static double Himmelblau(double x, double y)
         {
-            double a = x*x + y - 11.0;
-            double b = x + y*y - 7.0;
-            return a*a + b*b;
+            double a = x * x + y - 11.0;
+            double b = x + y * y - 7.0;
+            return a * a + b * b;
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </remarks>
         public static double Rastrigin(params double[] x)
         {
-            return x.Sum(xi => xi*xi - 10.0*Math.Cos(Constants.Pi2*xi)) + 10.0*x.Length;
+            return x.Sum(xi => xi * xi - 10.0 * Math.Cos(Constants.Pi2 * xi)) + 10.0 * x.Length;
         }
 
         /// <summary>
@@ -110,8 +110,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </remarks>
         public static double DropWave(double x, double y)
         {
-            double t = x*x + y*y;
-            return -(1.0 + Math.Cos(12.0*Math.Sqrt(t)))/(0.5*t + 2.0);
+            double t = x * x + y * y;
+            return -(1.0 + Math.Cos(12.0 * Math.Sqrt(t))) / (0.5 * t + 2.0);
         }
 
         /// <summary>
@@ -124,9 +124,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </remarks>
         public static double Ackley(params double[] x)
         {
-            double u = x.Sum(xi => xi*xi)/x.Length;
-            double v = x.Sum(xi => Math.Cos(Constants.Pi2*xi))/x.Length;
-            return -20*Math.Exp(-0.2*Math.Sqrt(u)) - Math.Exp(v) + 20 + Math.E;
+            double u = x.Sum(xi => xi * xi) / x.Length;
+            double v = x.Sum(xi => Math.Cos(Constants.Pi2 * xi)) / x.Length;
+            return -20 * Math.Exp(-0.2 * Math.Sqrt(u)) - Math.Exp(v) + 20 + Math.E;
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </remarks>
         public static double Bohachevsky1(double x, double y)
         {
-            return x*x + 2*y*y - 0.3*Math.Cos(3*Math.PI*x) - 0.4*Math.Cos(4*Math.PI*y);
+            return x * x + 2 * y * y - 0.3 * Math.Cos(3 * Math.PI * x) - 0.4 * Math.Cos(4 * Math.PI * y);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </remarks>
         public static double Matyas(double x, double y)
         {
-            return 0.26*(x*x + y*y) - 0.48*x*y;
+            return 0.26 * (x * x + y * y) - 0.48 * x * y;
         }
 
         /// <summary>
@@ -165,9 +165,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </remarks>
         public static double SixHumpCamel(double x, double y)
         {
-            double x2 = x*x;
-            double y2 = y*y;
-            return (4 - 2.1*x2 + x2*x2/3)*x2 + x*y + (-4 + 4*y2)*y2;
+            double x2 = x * x;
+            double y2 = y * y;
+            return (4 - 2.1 * x2 + x2 * x2 / 3) * x2 + x * y + (-4 + 4 * y2) * y2;
         }
     }
 }

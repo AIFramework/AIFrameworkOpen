@@ -27,13 +27,13 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 {
@@ -92,13 +92,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
             [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
-            get { return Storage[row, column]; }
+            get => Storage[row, column];
 
 #if !NET40
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
             [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
-            set { Storage[row, column] = value; }
+            set => Storage[row, column] = value;
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </returns>
         public MatrixMathNet<T> Clone()
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             Storage.CopyToUnchecked(result.Storage, ExistingData.AssumeZeros);
             return result;
         }
@@ -263,7 +263,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            var ret = VectorMathNet<T>.Build.SameAs(this, ColumnCount);
+            VectorMathNet<T> ret = VectorMathNet<T>.Build.SameAs(this, ColumnCount);
             Storage.CopySubRowToUnchecked(ret.Storage, index, 0, 0, ColumnCount, ExistingData.AssumeZeros);
             return ret;
         }
@@ -303,7 +303,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <exception cref="ArgumentOutOfRangeException">If <paramref name="length"/> is not positive.</exception>
         public VectorMathNet<T> Row(int rowIndex, int columnIndex, int length)
         {
-            var ret = VectorMathNet<T>.Build.SameAs(this, length);
+            VectorMathNet<T> ret = VectorMathNet<T>.Build.SameAs(this, length);
             Storage.CopySubRowTo(ret.Storage, rowIndex, columnIndex, 0, length);
             return ret;
         }
@@ -348,7 +348,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            var ret = VectorMathNet<T>.Build.SameAs(this, RowCount);
+            VectorMathNet<T> ret = VectorMathNet<T>.Build.SameAs(this, RowCount);
             Storage.CopySubColumnToUnchecked(ret.Storage, index, 0, 0, RowCount, ExistingData.AssumeZeros);
             return ret;
         }
@@ -389,7 +389,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <exception cref="ArgumentOutOfRangeException">If <paramref name="length"/> is not positive.</exception>
         public VectorMathNet<T> Column(int columnIndex, int rowIndex, int length)
         {
-            var ret = VectorMathNet<T>.Build.SameAs(this, length);
+            VectorMathNet<T> ret = VectorMathNet<T>.Build.SameAs(this, length);
             Storage.CopySubColumnTo(ret.Storage, columnIndex, rowIndex, 0, length);
             return ret;
         }
@@ -426,10 +426,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The upper triangle of this matrix.</returns>
         public virtual MatrixMathNet<T> UpperTriangle()
         {
-            var result = Build.SameAs(this);
-            for (var row = 0; row < RowCount; row++)
+            MatrixMathNet<T> result = Build.SameAs(this);
+            for (int row = 0; row < RowCount; row++)
             {
-                for (var column = row; column < ColumnCount; column++)
+                for (int column = row; column < ColumnCount; column++)
                 {
                     result.At(row, column, At(row, column));
                 }
@@ -443,10 +443,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The lower triangle of this matrix.</returns>
         public virtual MatrixMathNet<T> LowerTriangle()
         {
-            var result = Build.SameAs(this);
-            for (var row = 0; row < RowCount; row++)
+            MatrixMathNet<T> result = Build.SameAs(this);
+            for (int row = 0; row < RowCount; row++)
             {
-                for (var column = 0; column <= row && column < ColumnCount; column++)
+                for (int column = 0; column <= row && column < ColumnCount; column++)
                 {
                     result.At(row, column, At(row, column));
                 }
@@ -472,9 +472,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, result, "result");
             }
 
-            for (var row = 0; row < RowCount; row++)
+            for (int row = 0; row < RowCount; row++)
             {
-                for (var column = 0; column < ColumnCount; column++)
+                for (int column = 0; column < ColumnCount; column++)
                 {
                     result.At(row, column, row >= column ? At(row, column) : Zero);
                 }
@@ -499,9 +499,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, result, "result");
             }
 
-            for (var row = 0; row < RowCount; row++)
+            for (int row = 0; row < RowCount; row++)
             {
-                for (var column = 0; column < ColumnCount; column++)
+                for (int column = 0; column < ColumnCount; column++)
                 {
                     result.At(row, column, row <= column ? At(row, column) : Zero);
                 }
@@ -526,7 +526,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// is not positive.</exception>
         public virtual MatrixMathNet<T> SubMatrix(int rowIndex, int rowCount, int columnIndex, int columnCount)
         {
-            var result = Build.SameAs(this, rowCount, columnCount);
+            MatrixMathNet<T> result = Build.SameAs(this, rowCount, columnCount);
             Storage.CopySubMatrixTo(result.Storage, rowIndex, 0, rowCount, columnIndex, 0, columnCount, ExistingData.AssumeZeros);
             return result;
         }
@@ -539,10 +539,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// i == j (i is the row index, and j is the column index).</remarks>
         public virtual VectorMathNet<T> Diagonal()
         {
-            var min = Math.Min(RowCount, ColumnCount);
-            var diagonal = VectorMathNet<T>.Build.SameAs(this, min);
+            int min = Math.Min(RowCount, ColumnCount);
+            VectorMathNet<T> diagonal = VectorMathNet<T>.Build.SameAs(this, min);
 
-            for (var i = 0; i < min; i++)
+            for (int i = 0; i < min; i++)
             {
                 diagonal.At(i, At(i, i));
             }
@@ -557,11 +557,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The lower triangle of this matrix.</returns>
         public virtual MatrixMathNet<T> StrictlyLowerTriangle()
         {
-            var result = Build.SameAs(this);
-            for (var row = 0; row < RowCount; row++)
+            MatrixMathNet<T> result = Build.SameAs(this);
+            for (int row = 0; row < RowCount; row++)
             {
-                var columns = Math.Min(row, ColumnCount);
-                for (var column = 0; column < columns; column++)
+                int columns = Math.Min(row, ColumnCount);
+                for (int column = 0; column < columns; column++)
                 {
                     result.At(row, column, At(row, column));
                 }
@@ -587,9 +587,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, result, "result");
             }
 
-            for (var row = 0; row < RowCount; row++)
+            for (int row = 0; row < RowCount; row++)
             {
-                for (var column = 0; column < ColumnCount; column++)
+                for (int column = 0; column < ColumnCount; column++)
                 {
                     result.At(row, column, row > column ? At(row, column) : Zero);
                 }
@@ -603,10 +603,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The upper triangle of this matrix.</returns>
         public virtual MatrixMathNet<T> StrictlyUpperTriangle()
         {
-            var result = Build.SameAs(this);
-            for (var row = 0; row < RowCount; row++)
+            MatrixMathNet<T> result = Build.SameAs(this);
+            for (int row = 0; row < RowCount; row++)
             {
-                for (var column = row + 1; column < ColumnCount; column++)
+                for (int column = row + 1; column < ColumnCount; column++)
                 {
                     result.At(row, column, At(row, column));
                 }
@@ -632,9 +632,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, result, "result");
             }
 
-            for (var row = 0; row < RowCount; row++)
+            for (int row = 0; row < RowCount; row++)
             {
-                for (var column = 0; column < ColumnCount; column++)
+                for (int column = 0; column < ColumnCount; column++)
                 {
                     result.At(row, column, row < column ? At(row, column) : Zero);
                 }
@@ -667,7 +667,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("Matrix row dimensions must agree.", nameof(column));
             }
 
-            var result = Build.SameAs(this, RowCount, ColumnCount + 1, fullyMutable: true);
+            MatrixMathNet<T> result = Build.SameAs(this, RowCount, ColumnCount + 1, fullyMutable: true);
             Storage.CopySubMatrixTo(result.Storage, 0, 0, RowCount, 0, 0, columnIndex, ExistingData.AssumeZeros);
             result.SetColumn(columnIndex, column);
             Storage.CopySubMatrixTo(result.Storage, 0, 0, RowCount, columnIndex, columnIndex + 1, ColumnCount - columnIndex, ExistingData.AssumeZeros);
@@ -687,7 +687,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentOutOfRangeException(nameof(columnIndex));
             }
 
-            var result = Build.SameAs(this, RowCount, ColumnCount - 1, fullyMutable: true);
+            MatrixMathNet<T> result = Build.SameAs(this, RowCount, ColumnCount - 1, fullyMutable: true);
             Storage.CopySubMatrixTo(result.Storage, 0, 0, RowCount, 0, 0, columnIndex, ExistingData.AssumeZeros);
             Storage.CopySubMatrixTo(result.Storage, 0, 0, RowCount, columnIndex + 1, columnIndex, ColumnCount - columnIndex - 1, ExistingData.AssumeZeros);
             return result;
@@ -783,10 +783,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("Matrix row dimensions must agree.", nameof(row));
             }
 
-            var result = Build.SameAs(this, RowCount + 1, ColumnCount, fullyMutable: true);
+            MatrixMathNet<T> result = Build.SameAs(this, RowCount + 1, ColumnCount, fullyMutable: true);
             Storage.CopySubMatrixTo(result.Storage, 0, 0, rowIndex, 0, 0, ColumnCount, ExistingData.AssumeZeros);
             result.SetRow(rowIndex, row);
-            Storage.CopySubMatrixTo(result.Storage, rowIndex, rowIndex+1, RowCount - rowIndex, 0, 0, ColumnCount, ExistingData.AssumeZeros);
+            Storage.CopySubMatrixTo(result.Storage, rowIndex, rowIndex + 1, RowCount - rowIndex, 0, 0, ColumnCount, ExistingData.AssumeZeros);
             return result;
         }
 
@@ -803,7 +803,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));
             }
 
-            var result = Build.SameAs(this, RowCount - 1, ColumnCount, fullyMutable: true);
+            MatrixMathNet<T> result = Build.SameAs(this, RowCount - 1, ColumnCount, fullyMutable: true);
             Storage.CopySubMatrixTo(result.Storage, 0, 0, rowIndex, 0, 0, ColumnCount, ExistingData.AssumeZeros);
             Storage.CopySubMatrixTo(result.Storage, rowIndex + 1, rowIndex, RowCount - rowIndex - 1, 0, 0, ColumnCount, ExistingData.AssumeZeros);
             return result;
@@ -952,14 +952,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentNullException(nameof(source));
             }
 
-            var min = Math.Min(RowCount, ColumnCount);
+            int min = Math.Min(RowCount, ColumnCount);
 
             if (source.Count != min)
             {
                 throw new ArgumentException("All vectors must have the same dimensionality.", nameof(source));
             }
 
-            for (var i = 0; i < min; i++)
+            for (int i = 0; i < min; i++)
             {
                 At(i, i, source.At(i));
             }
@@ -982,14 +982,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentNullException(nameof(source));
             }
 
-            var min = Math.Min(RowCount, ColumnCount);
+            int min = Math.Min(RowCount, ColumnCount);
 
             if (source.Length != min)
             {
                 throw new ArgumentException("The array arguments must have the same length.", nameof(source));
             }
 
-            for (var i = 0; i < min; i++)
+            for (int i = 0; i < min; i++)
             {
                 At(i, i, source[i]);
             }
@@ -1004,7 +1004,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A new matrix with the desired rows and columns.</returns>
         public MatrixMathNet<T> Resize(int rowCount, int columnCount)
         {
-            var result = Build.SameAs(this, rowCount, columnCount, fullyMutable: true);
+            MatrixMathNet<T> result = Build.SameAs(this, rowCount, columnCount, fullyMutable: true);
             Storage.CopySubMatrixTo(result.Storage, 0, 0, Math.Min(RowCount, rowCount), 0, 0, Math.Min(ColumnCount, columnCount), ExistingData.AssumeZeros);
             return result;
         }
@@ -1015,7 +1015,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The transpose of this matrix.</returns>
         public MatrixMathNet<T> Transpose()
         {
-            var result = Build.SameAs(this, ColumnCount, RowCount);
+            MatrixMathNet<T> result = Build.SameAs(this, ColumnCount, RowCount);
             Storage.TransposeToUnchecked(result.Storage, ExistingData.AssumeZeros);
             return result;
         }
@@ -1051,16 +1051,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             }
 
             // Get a sequence of inversions from the permutation.
-            var inv = p.ToInversions();
+            int[] inv = p.ToInversions();
 
-            for (var i = 0; i < inv.Length; i++)
+            for (int i = 0; i < inv.Length; i++)
             {
                 if (inv[i] != i)
                 {
-                    var q = inv[i];
-                    for (var j = 0; j < ColumnCount; j++)
+                    int q = inv[i];
+                    for (int j = 0; j < ColumnCount; j++)
                     {
-                        var temp = At(q, j);
+                        T temp = At(q, j);
                         At(q, j, At(i, j));
                         At(i, j, temp);
                     }
@@ -1080,16 +1080,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             }
 
             // Get a sequence of inversions from the permutation.
-            var inv = p.ToInversions();
+            int[] inv = p.ToInversions();
 
-            for (var i = 0; i < inv.Length; i++)
+            for (int i = 0; i < inv.Length; i++)
             {
                 if (inv[i] != i)
                 {
-                    var q = inv[i];
-                    for (var j = 0; j < RowCount; j++)
+                    int q = inv[i];
+                    for (int j = 0; j < RowCount; j++)
                     {
-                        var temp = At(j, q);
+                        T temp = At(j, q);
                         At(j, q, At(j, i));
                         At(j, i, temp);
                     }
@@ -1116,7 +1116,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("Matrix row dimensions must agree.");
             }
 
-            var result = Build.SameAs(this, right, RowCount, ColumnCount + right.ColumnCount, fullyMutable: true);
+            MatrixMathNet<T> result = Build.SameAs(this, right, RowCount, ColumnCount + right.ColumnCount, fullyMutable: true);
             Storage.CopySubMatrixToUnchecked(result.Storage, 0, 0, RowCount, 0, 0, ColumnCount, ExistingData.AssumeZeros);
             right.Storage.CopySubMatrixToUnchecked(result.Storage, 0, 0, right.RowCount, 0, ColumnCount, right.ColumnCount, ExistingData.AssumeZeros);
             return result;
@@ -1176,7 +1176,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("Matrix column dimensions must agree.", nameof(lower));
             }
 
-            var result = Build.SameAs(this, lower, RowCount + lower.RowCount, ColumnCount, fullyMutable: true);
+            MatrixMathNet<T> result = Build.SameAs(this, lower, RowCount + lower.RowCount, ColumnCount, fullyMutable: true);
             Storage.CopySubMatrixToUnchecked(result.Storage, 0, 0, RowCount, 0, 0, ColumnCount, ExistingData.AssumeZeros);
             lower.Storage.CopySubMatrixToUnchecked(result.Storage, 0, RowCount, lower.RowCount, 0, 0, lower.ColumnCount, ExistingData.AssumeZeros);
             return result;
@@ -1234,7 +1234,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentNullException(nameof(lower));
             }
 
-            var result = Build.SameAs(this, lower, RowCount + lower.RowCount, ColumnCount + lower.ColumnCount, RowCount != ColumnCount);
+            MatrixMathNet<T> result = Build.SameAs(this, lower, RowCount + lower.RowCount, ColumnCount + lower.ColumnCount, RowCount != ColumnCount);
             Storage.CopySubMatrixToUnchecked(result.Storage, 0, 0, RowCount, 0, 0, ColumnCount, ExistingData.AssumeZeros);
             lower.Storage.CopySubMatrixToUnchecked(result.Storage, 0, RowCount, lower.RowCount, 0, ColumnCount, lower.ColumnCount, ExistingData.AssumeZeros);
             return result;
@@ -1281,9 +1281,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return false;
             }
 
-            for (var row = 0; row < RowCount; row++)
+            for (int row = 0; row < RowCount; row++)
             {
-                for (var column = row + 1; column < ColumnCount; column++)
+                for (int column = row + 1; column < ColumnCount; column++)
                 {
                     if (!At(row, column).Equals(At(column, row)))
                     {
@@ -1500,7 +1500,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public IEnumerable<VectorMathNet<T>> EnumerateColumns()
         {
-            for (var i = 0; i < ColumnCount; i++)
+            for (int i = 0; i < ColumnCount; i++)
             {
                 yield return Column(i);
             }
@@ -1513,8 +1513,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="length">The number of columns to enumerating over.</param>
         public IEnumerable<VectorMathNet<T>> EnumerateColumns(int index, int length)
         {
-            var maxIndex = Math.Min(index + length, ColumnCount);
-            for (var i = Math.Max(index, 0); i < maxIndex; i++)
+            int maxIndex = Math.Min(index + length, ColumnCount);
+            for (int i = Math.Max(index, 0); i < maxIndex; i++)
             {
                 yield return Column(i);
             }
@@ -1529,7 +1529,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </remarks>
         public IEnumerable<(int, VectorMathNet<T>)> EnumerateColumnsIndexed()
         {
-            for (var i = 0; i < ColumnCount; i++)
+            for (int i = 0; i < ColumnCount; i++)
             {
                 yield return (i, Column(i));
             }
@@ -1546,8 +1546,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </remarks>
         public IEnumerable<(int, VectorMathNet<T>)> EnumerateColumnsIndexed(int index, int length)
         {
-            var maxIndex = Math.Min(index + length, ColumnCount);
-            for (var i = Math.Max(index, 0); i < maxIndex; i++)
+            int maxIndex = Math.Min(index + length, ColumnCount);
+            for (int i = Math.Max(index, 0); i < maxIndex; i++)
             {
                 yield return (i, Column(i));
             }
@@ -1558,7 +1558,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public IEnumerable<VectorMathNet<T>> EnumerateRows()
         {
-            for (var i = 0; i < RowCount; i++)
+            for (int i = 0; i < RowCount; i++)
             {
                 yield return Row(i);
             }
@@ -1571,8 +1571,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="length">The number of rows to enumerating over.</param>
         public IEnumerable<VectorMathNet<T>> EnumerateRows(int index, int length)
         {
-            var maxIndex = Math.Min(index + length, RowCount);
-            for (var i = Math.Max(index, 0); i < maxIndex; i++)
+            int maxIndex = Math.Min(index + length, RowCount);
+            for (int i = Math.Max(index, 0); i < maxIndex; i++)
             {
                 yield return Row(i);
             }
@@ -1587,7 +1587,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </remarks>
         public IEnumerable<(int, VectorMathNet<T>)> EnumerateRowsIndexed()
         {
-            for (var i = 0; i < RowCount; i++)
+            for (int i = 0; i < RowCount; i++)
             {
                 yield return (i, Row(i));
             }
@@ -1604,8 +1604,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </remarks>
         public IEnumerable<(int, VectorMathNet<T>)> EnumerateRowsIndexed(int index, int length)
         {
-            var maxIndex = Math.Min(index + length, RowCount);
-            for (var i = Math.Max(index, 0); i < maxIndex; i++)
+            int maxIndex = Math.Min(index + length, RowCount);
+            for (int i = Math.Max(index, 0); i < maxIndex; i++)
             {
                 yield return (i, Row(i));
             }
@@ -1698,7 +1698,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         public MatrixMathNet<TU> Map<TU>(Func<T, TU> f, Zeros zeros = Zeros.AllowSkip)
             where TU : struct, IEquatable<TU>, IFormattable
         {
-            var result = MatrixMathNet<TU>.Build.SameAs(this, RowCount, ColumnCount, fullyMutable: zeros == Zeros.Include);
+            MatrixMathNet<TU> result = MatrixMathNet<TU>.Build.SameAs(this, RowCount, ColumnCount, fullyMutable: zeros == Zeros.Include);
             Storage.MapToUnchecked(result.Storage, f, zeros, ExistingData.AssumeZeros);
             return result;
         }
@@ -1712,7 +1712,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         public MatrixMathNet<TU> MapIndexed<TU>(Func<int, int, T, TU> f, Zeros zeros = Zeros.AllowSkip)
             where TU : struct, IEquatable<TU>, IFormattable
         {
-            var result = MatrixMathNet<TU>.Build.SameAs(this, RowCount, ColumnCount, fullyMutable: zeros == Zeros.Include);
+            MatrixMathNet<TU> result = MatrixMathNet<TU>.Build.SameAs(this, RowCount, ColumnCount, fullyMutable: zeros == Zeros.Include);
             Storage.MapIndexedToUnchecked(result.Storage, f, zeros, ExistingData.AssumeZeros);
             return result;
         }
@@ -1723,7 +1723,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public TU[] FoldByRow<TU>(Func<TU, T, TU> f, TU state, Zeros zeros = Zeros.AllowSkip)
         {
-            var result = new TU[RowCount];
+            TU[] result = new TU[RowCount];
             if (!EqualityComparer<TU>.Default.Equals(state, default(TU)))
             {
                 CommonParallel.For(0, result.Length, 4096, (a, b) =>
@@ -1744,7 +1744,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public TU[] FoldByColumn<TU>(Func<TU, T, TU> f, TU state, Zeros zeros = Zeros.AllowSkip)
         {
-            var result = new TU[ColumnCount];
+            TU[] result = new TU[ColumnCount];
             if (!EqualityComparer<TU>.Default.Equals(state, default(TU)))
             {
                 CommonParallel.For(0, result.Length, 4096, (a, b) =>
@@ -1766,7 +1766,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         public VectorMathNet<TU> FoldRows<TU>(Func<VectorMathNet<TU>, VectorMathNet<T>, VectorMathNet<TU>> f, VectorMathNet<TU> state)
             where TU : struct, IEquatable<TU>, IFormattable
         {
-            foreach (var vector in EnumerateRows())
+            foreach (VectorMathNet<T> vector in EnumerateRows())
             {
                 state = f(state, vector);
             }
@@ -1780,7 +1780,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         public VectorMathNet<TU> FoldColumns<TU>(Func<VectorMathNet<TU>, VectorMathNet<T>, VectorMathNet<TU>> f, VectorMathNet<TU> state)
             where TU : struct, IEquatable<TU>, IFormattable
         {
-            foreach (var vector in EnumerateColumns())
+            foreach (VectorMathNet<T> vector in EnumerateColumns())
             {
                 state = f(state, vector);
             }
@@ -1816,7 +1816,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public MatrixMathNet<T> Map2(Func<T, T, T> f, MatrixMathNet<T> other, Zeros zeros = Zeros.AllowSkip)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             Storage.Map2To(result.Storage, other.Storage, f, zeros, ExistingData.AssumeZeros);
             return result;
         }

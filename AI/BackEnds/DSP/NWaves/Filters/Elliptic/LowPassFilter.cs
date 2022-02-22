@@ -13,7 +13,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
         /// <param name="order"></param>
         /// <param name="ripplePass"></param>
         /// <param name="rippleStop"></param>
-        public LowPassFilter(double freq, int order, double ripplePass = 0.1, double rippleStop = 20) : 
+        public LowPassFilter(double freq, int order, double ripplePass = 0.1, double rippleStop = 20) :
             base(MakeTf(freq, order, ripplePass, rippleStop))
         {
         }

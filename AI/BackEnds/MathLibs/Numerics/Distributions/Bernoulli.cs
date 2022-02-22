@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -43,9 +43,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Bernoulli : IDiscreteDistribution
     {
-        System.Random _random;
-
-        readonly double _p;
+        private System.Random _random;
+        private readonly double _p;
 
         /// <summary>
         /// Initializes a new instance of the Bernoulli class.
@@ -120,22 +119,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => Math.Sqrt(_p*(1.0 - _p));
+        public double StdDev => Math.Sqrt(_p * (1.0 - _p));
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => _p*(1.0 - _p);
+        public double Variance => _p * (1.0 - _p);
 
         /// <summary>
         /// Gets the entropy of the distribution.
         /// </summary>
-        public double Entropy => -(_p*Math.Log(_p)) - ((1.0 - _p)*Math.Log(1.0 - _p));
+        public double Entropy => -(_p * Math.Log(_p)) - ((1.0 - _p) * Math.Log(1.0 - _p));
 
         /// <summary>
         /// Gets the skewness of the distribution.
         /// </summary>
-        public double Skewness => (1.0 - (2.0*_p))/Math.Sqrt(_p*(1.0 - _p));
+        public double Skewness => (1.0 - (2.0 * _p)) / Math.Sqrt(_p * (1.0 - _p));
 
         /// <summary>
         /// Gets the smallest element in the domain of the distributions which can be represented by an integer.
@@ -155,10 +154,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets all modes of the distribution.
         /// </summary>
-        public int[] Modes
-        {
-            get { return _p < 0.5 ? new[] { 0 } : P > 0.5 ? new[] { 1 } : new[] { 0, 1 }; }
-        }
+        public int[] Modes => _p < 0.5 ? new[] { 0 } : P > 0.5 ? new[] { 1 } : new[] { 0, 1 };
 
         /// <summary>
         /// Gets the median of the distribution.
@@ -300,7 +296,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="rnd">The random source to use.</param>
         /// <param name="p">The probability (p) of generating one. Range: 0 ≤ p ≤ 1.</param>
         /// <returns>A random sample from the Bernoulli distribution.</returns>
-        static int SampleUnchecked(System.Random rnd, double p)
+        private static int SampleUnchecked(System.Random rnd, double p)
         {
             if (rnd.NextDouble() < p)
             {
@@ -310,9 +306,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return 0;
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, double p)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, double p)
         {
-            var uniform = rnd.NextDoubles(values.Length);
+            double[] uniform = rnd.NextDoubles(values.Length);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
@@ -322,7 +318,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             });
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, double p)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, double p)
         {
             return rnd.NextDoubleSequence().Select(r => r < p ? 1 : 0);
         }

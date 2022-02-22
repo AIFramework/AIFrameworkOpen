@@ -33,19 +33,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra
 {
     public static class LinearAlgebraControl
     {
-        const string EnvVarLAProvider = "MathNetNumericsLAProvider";
-
-        static ILinearAlgebraProvider _linearAlgebraProvider;
-        static readonly object StaticLock = new object();
-
-        const string MklTypeName = "AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL.LinearAlgebra.MklLinearAlgebraControl, AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL";
-        static readonly ProviderProbe<ILinearAlgebraProvider> MklProbe = new ProviderProbe<ILinearAlgebraProvider>(MklTypeName, AppSwitches.DisableMklNativeProvider);
-
-        const string OpenBlasTypeName = "AI.BackEnds.MathLibs.MathNet.Numerics.Providers.OpenBLAS.LinearAlgebra.OpenBlasLinearAlgebraControl, AI.BackEnds.MathLibs.MathNet.Numerics.Providers.OpenBLAS";
-        static readonly ProviderProbe<ILinearAlgebraProvider> OpenBlasProbe = new ProviderProbe<ILinearAlgebraProvider>(OpenBlasTypeName, AppSwitches.DisableOpenBlasNativeProvider);
-
-        const string CudaTypeName = "AI.BackEnds.MathLibs.MathNet.Numerics.Providers.CUDA.LinearAlgebra.CudaLinearAlgebraControl, AI.BackEnds.MathLibs.MathNet.Numerics.Providers.CUDA";
-        static readonly ProviderProbe<ILinearAlgebraProvider> CudaProbe = new ProviderProbe<ILinearAlgebraProvider>(CudaTypeName, AppSwitches.DisableCudaNativeProvider);
+        private const string EnvVarLAProvider = "MathNetNumericsLAProvider";
+        private static ILinearAlgebraProvider _linearAlgebraProvider;
+        private static readonly object StaticLock = new object();
+        private const string MklTypeName = "AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL.LinearAlgebra.MklLinearAlgebraControl, AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL";
+        private static readonly ProviderProbe<ILinearAlgebraProvider> MklProbe = new ProviderProbe<ILinearAlgebraProvider>(MklTypeName, AppSwitches.DisableMklNativeProvider);
+        private const string OpenBlasTypeName = "AI.BackEnds.MathLibs.MathNet.Numerics.Providers.OpenBLAS.LinearAlgebra.OpenBlasLinearAlgebraControl, AI.BackEnds.MathLibs.MathNet.Numerics.Providers.OpenBLAS";
+        private static readonly ProviderProbe<ILinearAlgebraProvider> OpenBlasProbe = new ProviderProbe<ILinearAlgebraProvider>(OpenBlasTypeName, AppSwitches.DisableOpenBlasNativeProvider);
+        private const string CudaTypeName = "AI.BackEnds.MathLibs.MathNet.Numerics.Providers.CUDA.LinearAlgebra.CudaLinearAlgebraControl, AI.BackEnds.MathLibs.MathNet.Numerics.Providers.CUDA";
+        private static readonly ProviderProbe<ILinearAlgebraProvider> CudaProbe = new ProviderProbe<ILinearAlgebraProvider>(CudaTypeName, AppSwitches.DisableCudaNativeProvider);
 
         /// <summary>
         /// Optional path to try to load native provider binaries from,
@@ -86,16 +82,40 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra
             }
         }
 
-        public static void UseManaged() => Provider = ManagedLinearAlgebraProvider.Instance;
+        public static void UseManaged()
+        {
+            Provider = ManagedLinearAlgebraProvider.Instance;
+        }
 
-        public static void UseNativeMKL() => Provider = MklProbe.Create();
-        public static bool TryUseNativeMKL() => TryUse(MklProbe.TryCreate());
+        public static void UseNativeMKL()
+        {
+            Provider = MklProbe.Create();
+        }
 
-        public static void UseNativeCUDA() => Provider = CudaProbe.Create();
-        public static bool TryUseNativeCUDA() => TryUse(CudaProbe.TryCreate());
+        public static bool TryUseNativeMKL()
+        {
+            return TryUse(MklProbe.TryCreate());
+        }
 
-        public static void UseNativeOpenBLAS() => Provider = OpenBlasProbe.Create();
-        public static bool TryUseNativeOpenBLAS() => TryUse(OpenBlasProbe.TryCreate());
+        public static void UseNativeCUDA()
+        {
+            Provider = CudaProbe.Create();
+        }
+
+        public static bool TryUseNativeCUDA()
+        {
+            return TryUse(CudaProbe.TryCreate());
+        }
+
+        public static void UseNativeOpenBLAS()
+        {
+            Provider = OpenBlasProbe.Create();
+        }
+
+        public static bool TryUseNativeOpenBLAS()
+        {
+            return TryUse(OpenBlasProbe.TryCreate());
+        }
 
         /// <summary>
         /// Try to use a native provider, if available.
@@ -159,7 +179,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra
                 return;
             }
 
-            var value = Environment.GetEnvironmentVariable(EnvVarLAProvider);
+            string value = Environment.GetEnvironmentVariable(EnvVarLAProvider);
             switch (value != null ? value.ToUpperInvariant() : string.Empty)
             {
                 case "MKL":
@@ -180,6 +200,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra
             }
         }
 
-        public static void FreeResources() => Provider.FreeResources();
+        public static void FreeResources()
+        {
+            Provider.FreeResources();
+        }
     }
 }

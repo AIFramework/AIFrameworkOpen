@@ -19,7 +19,7 @@ namespace AI.DataStructs.Shapes
         /// Creates 1D shape
         /// </summary>
         /// <param name="width"></param>
-        public Shape1D(int width = 1) : base(width) {}
+        public Shape1D(int width = 1) : base(width) { }
 
         #region Операторы
         public static implicit operator Shape2D(Shape1D shape)

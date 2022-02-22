@@ -21,7 +21,7 @@
 
         public override float NextSample()
         {
-            var idx = ((int)_n) % _samples.Length;
+            int idx = ((int)_n) % _samples.Length;
 
             if (_rand.NextDouble() < 1 / _stretchFactor)
             {

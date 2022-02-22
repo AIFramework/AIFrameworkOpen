@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Numerics;
-using AI.BackEnds.DSP.NWaves.Signals;
+﻿using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Linq;
+using System.Numerics;
 
 namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 {
@@ -27,14 +27,14 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         /// <returns></returns>
         public ComplexDiscreteSignal Convolve(ComplexDiscreteSignal signal, ComplexDiscreteSignal kernel, int fftSize = 0)
         {
-            var length = signal.Length + kernel.Length - 1;
+            int length = signal.Length + kernel.Length - 1;
 
             if (fftSize == 0)
             {
                 fftSize = MathUtils.NextPowerOfTwo(length);
             }
 
-            var fft = new Fft64(fftSize);
+            Fft64 fft = new Fft64(fftSize);
 
             signal = signal.ZeroPadded(fftSize);
             kernel = kernel.ZeroPadded(fftSize);
@@ -46,7 +46,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             // 2) do complex multiplication of spectra
 
-            var spectrum = signal.Multiply(kernel);
+            ComplexDiscreteSignal spectrum = signal.Multiply(kernel);
 
             // 3) do inverse FFT of resulting spectrum
 
@@ -54,7 +54,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             // 3a) normalize
 
-            for (var i = 0; i < spectrum.Length; i++)
+            for (int i = 0; i < spectrum.Length; i++)
             {
                 spectrum.Real[i] /= fftSize;
                 spectrum.Imag[i] /= fftSize;
@@ -74,7 +74,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         /// <returns></returns>
         public ComplexDiscreteSignal CrossCorrelate(ComplexDiscreteSignal signal, ComplexDiscreteSignal kernel, int fftSize = 0)
         {
-            var reversedKernel =
+            ComplexDiscreteSignal reversedKernel =
                 new ComplexDiscreteSignal(kernel.SamplingRate, kernel.Real.Reverse(), kernel.Imag.Reverse());
 
             return Convolve(signal, reversedKernel, fftSize);
@@ -97,11 +97,11 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         {
             // first, try to divide polynomials
 
-            var div = MathUtils.DividePolynomial(signal.Real.Zip(signal.Imag, (r, i) => new Complex(r, i)).ToArray(),
+            Complex[][] div = MathUtils.DividePolynomial(signal.Real.Zip(signal.Imag, (r, i) => new Complex(r, i)).ToArray(),
                                                    kernel.Real.Zip(kernel.Imag, (r, i) => new Complex(r, i)).ToArray());
 
-            var quotient = div[0];
-            var remainder = div[1];
+            Complex[] quotient = div[0];
+            Complex[] remainder = div[1];
             if (remainder.All(d => Math.Abs(d.Real) < 1e-10) &&
                 remainder.All(d => Math.Abs(d.Imaginary) < 1e-10))
             {
@@ -112,14 +112,14 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             // ... deconvolve via FFT
 
-            var length = signal.Length - kernel.Length + 1;
+            int length = signal.Length - kernel.Length + 1;
 
             if (fftSize == 0)
             {
                 fftSize = MathUtils.NextPowerOfTwo(signal.Length);
             }
 
-            var fft = new Fft64(fftSize);
+            Fft64 fft = new Fft64(fftSize);
 
             signal = signal.ZeroPadded(fftSize);
             kernel = kernel.ZeroPadded(fftSize);
@@ -129,7 +129,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
             fft.Direct(signal.Real, signal.Imag);
             fft.Direct(kernel.Real, kernel.Imag);
 
-            for (var i = 0; i < fftSize; i++)
+            for (int i = 0; i < fftSize; i++)
             {
                 signal.Real[i] += 1e-10;
                 signal.Imag[i] += 1e-10;
@@ -139,7 +139,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             // 2) do complex division of spectra
 
-            var spectrum = signal.Divide(kernel);
+            ComplexDiscreteSignal spectrum = signal.Divide(kernel);
 
             // 3) do inverse FFT of resulting spectrum
 

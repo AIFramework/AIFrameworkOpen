@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
 {
@@ -43,7 +43,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// <summary>
         /// Internal Spline Interpolation
         /// </summary>
-        readonly LinearSpline _spline;
+        private readonly LinearSpline _spline;
 
         /// <param name="x">Sample points (N), sorted ascending</param>
         /// <param name="logy">Natural logarithm of the sample values (N) at the corresponding points</param>
@@ -62,7 +62,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                 throw new ArgumentException("All vectors must have the same dimensionality.");
             }
 
-            var logy = new double[y.Length];
+            double[] logy = new double[y.Length];
             CommonParallel.For(0, y.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
@@ -133,7 +133,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// <returns>Interpolated first derivative at point t.</returns>
         public double Differentiate(double t)
         {
-            return Interpolate(t)*_spline.Differentiate(t);
+            return Interpolate(t) * _spline.Differentiate(t);
         }
 
         /// <summary>
@@ -143,11 +143,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// <returns>Interpolated second derivative at point t.</returns>
         public double Differentiate2(double t)
         {
-            var linearFirstDerivative = _spline.Differentiate(t);
-            var linearSecondDerivative = _spline.Differentiate2(t);
+            double linearFirstDerivative = _spline.Differentiate(t);
+            double linearSecondDerivative = _spline.Differentiate2(t);
 
-            var secondDerivative = Differentiate(t)*linearFirstDerivative +
-                                   Interpolate(t)*linearSecondDerivative;
+            double secondDerivative = Differentiate(t) * linearFirstDerivative +
+                                   Interpolate(t) * linearSecondDerivative;
 
             return secondDerivative;
         }
@@ -156,13 +156,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// Indefinite integral at point t.
         /// </summary>
         /// <param name="t">Point t to integrate at.</param>
-        double IInterpolation.Integrate(double t) => throw new NotSupportedException();
+        double IInterpolation.Integrate(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Definite integral between points a and b.
         /// </summary>
         /// <param name="a">Left bound of the integration interval [a,b].</param>
         /// <param name="b">Right bound of the integration interval [a,b].</param>
-        double IInterpolation.Integrate(double a, double b) => throw new NotSupportedException();
+        double IInterpolation.Integrate(double a, double b)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

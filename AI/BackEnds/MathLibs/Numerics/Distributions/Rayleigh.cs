@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -45,9 +45,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Rayleigh : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _scale;
+        private System.Random _random;
+        private readonly double _scale;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Rayleigh"/> class.
@@ -117,27 +116,27 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => _scale*Math.Sqrt(Constants.PiOver2);
+        public double Mean => _scale * Math.Sqrt(Constants.PiOver2);
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => (2.0 - Constants.PiOver2)*_scale*_scale;
+        public double Variance => (2.0 - Constants.PiOver2) * _scale * _scale;
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => Math.Sqrt(2.0 - Constants.PiOver2)*_scale;
+        public double StdDev => Math.Sqrt(2.0 - Constants.PiOver2) * _scale;
 
         /// <summary>
         /// Gets the entropy of the distribution.
         /// </summary>
-        public double Entropy => 1.0 + Math.Log(_scale/Constants.Sqrt2) + (Constants.EulerMascheroni/2.0);
+        public double Entropy => 1.0 + Math.Log(_scale / Constants.Sqrt2) + (Constants.EulerMascheroni / 2.0);
 
         /// <summary>
         /// Gets the skewness of the distribution.
         /// </summary>
-        public double Skewness => (2.0*Math.Sqrt(Constants.Pi)*(Constants.Pi - 3.0))/Math.Pow(4.0 - Constants.Pi, 1.5);
+        public double Skewness => (2.0 * Math.Sqrt(Constants.Pi) * (Constants.Pi - 3.0)) / Math.Pow(4.0 - Constants.Pi, 1.5);
 
         /// <summary>
         /// Gets the mode of the distribution.
@@ -147,7 +146,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the median of the distribution.
         /// </summary>
-        public double Median => _scale*Math.Sqrt(Math.Log(4.0));
+        public double Median => _scale * Math.Sqrt(Math.Log(4.0));
 
         /// <summary>
         /// Gets the minimum of the distribution.
@@ -167,7 +166,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDF"/>
         public double Density(double x)
         {
-            return (x/(_scale*_scale))*Math.Exp(-x*x/(2.0*_scale*_scale));
+            return (x / (_scale * _scale)) * Math.Exp(-x * x / (2.0 * _scale * _scale));
         }
 
         /// <summary>
@@ -178,7 +177,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDFLn"/>
         public double DensityLn(double x)
         {
-            return Math.Log(x/(_scale*_scale)) - (x*x/(2.0*_scale*_scale));
+            return Math.Log(x / (_scale * _scale)) - (x * x / (2.0 * _scale * _scale));
         }
 
         /// <summary>
@@ -189,7 +188,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="CDF"/>
         public double CumulativeDistribution(double x)
         {
-            return 1.0 - Math.Exp(-x*x/(2.0*_scale*_scale));
+            return 1.0 - Math.Exp(-x * x / (2.0 * _scale * _scale));
         }
 
         /// <summary>
@@ -201,7 +200,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="InvCDF"/>
         public double InverseCumulativeDistribution(double p)
         {
-            return _scale*Math.Sqrt(-2*Math.Log(1 - p));
+            return _scale * Math.Sqrt(-2 * Math.Log(1 - p));
         }
 
         /// <summary>
@@ -230,24 +229,24 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _scale);
         }
 
-        static double SampleUnchecked(System.Random rnd, double scale)
+        private static double SampleUnchecked(System.Random rnd, double scale)
         {
-            return scale*Math.Sqrt(-2.0*Math.Log(rnd.NextDouble()));
+            return scale * Math.Sqrt(-2.0 * Math.Log(rnd.NextDouble()));
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double scale)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double scale)
         {
-            return rnd.NextDoubleSequence().Select(x => scale*Math.Sqrt(-2.0*Math.Log(x)));
+            return rnd.NextDoubleSequence().Select(x => scale * Math.Sqrt(-2.0 * Math.Log(x)));
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double scale)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double scale)
         {
             rnd.NextDoubles(values);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    values[i] = scale*Math.Sqrt(-2.0*Math.Log(values[i]));
+                    values[i] = scale * Math.Sqrt(-2.0 * Math.Log(values[i]));
                 }
             });
         }
@@ -266,7 +265,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return (x/(scale*scale))*Math.Exp(-x*x/(2.0*scale*scale));
+            return (x / (scale * scale)) * Math.Exp(-x * x / (2.0 * scale * scale));
         }
 
         /// <summary>
@@ -283,7 +282,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return Math.Log(x/(scale*scale)) - (x*x/(2.0*scale*scale));
+            return Math.Log(x / (scale * scale)) - (x * x / (2.0 * scale * scale));
         }
 
         /// <summary>
@@ -300,7 +299,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return 1.0 - Math.Exp(-x*x/(2.0*scale*scale));
+            return 1.0 - Math.Exp(-x * x / (2.0 * scale * scale));
         }
 
         /// <summary>
@@ -318,7 +317,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return scale*Math.Sqrt(-2*Math.Log(1 - p));
+            return scale * Math.Sqrt(-2 * Math.Log(1 - p));
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Collections.Generic;
-using AI.BackEnds.DSP.NWaves.Utils;
 
 namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 {
@@ -18,7 +18,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// Upper amplitude level
         /// </summary>
         private double _high;
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -50,6 +50,6 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
             return (float)(_rand.NextDouble() * (_high - _low) + _low);
         }
 
-        private Random _rand = new Random();
+        private readonly Random _rand = new Random();
     }
 }

@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
 {
@@ -65,32 +65,32 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <summary>
         /// The decomposed upper triangular matrix.
         /// </summary>
-        SparseMatrix _upper;
+        private SparseMatrix _upper;
 
         /// <summary>
         /// The decomposed lower triangular matrix.
         /// </summary>
-        SparseMatrix _lower;
+        private SparseMatrix _lower;
 
         /// <summary>
         /// The array containing the pivot values.
         /// </summary>
-        int[] _pivots;
+        private int[] _pivots;
 
         /// <summary>
         /// The fill level.
         /// </summary>
-        double _fillLevel = DefaultFillLevel;
+        private double _fillLevel = DefaultFillLevel;
 
         /// <summary>
         /// The drop tolerance.
         /// </summary>
-        double _dropTolerance = DefaultDropTolerance;
+        private double _dropTolerance = DefaultDropTolerance;
 
         /// <summary>
         /// The pivot tolerance.
         /// </summary>
-        double _pivotTolerance;
+        private double _pivotTolerance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ILUTPPreconditioner"/> class with the default settings.
@@ -269,8 +269,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <returns>The pivot array.</returns>
         internal int[] Pivots()
         {
-            var result = new int[_pivots.Length];
-            for (var i = 0; i < _pivots.Length; i++)
+            int[] result = new int[_pivots.Length];
+            for (int i = 0; i < _pivots.Length; i++)
             {
                 result[i] = _pivots[i];
             }
@@ -300,7 +300,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
                 throw new ArgumentException("Matrix must be square.", nameof(matrix));
             }
 
-            var sparseMatrix = matrix as SparseMatrix ?? SparseMatrix.OfMatrix(matrix);
+            SparseMatrix sparseMatrix = matrix as SparseMatrix ?? SparseMatrix.OfMatrix(matrix);
 
             // The creation of the preconditioner follows the following algorithm.
             // spaceLeft = lfilNnz * nnz(A)
@@ -355,30 +355,30 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
 
             // Create the pivot array
             _pivots = new int[sparseMatrix.RowCount];
-            for (var i = 0; i < _pivots.Length; i++)
+            for (int i = 0; i < _pivots.Length; i++)
             {
                 _pivots[i] = i;
             }
 
-            var workVector = new DenseVector(sparseMatrix.RowCount);
-            var rowVector = new DenseVector(sparseMatrix.ColumnCount);
-            var indexSorting = new int[sparseMatrix.RowCount];
+            DenseVector workVector = new DenseVector(sparseMatrix.RowCount);
+            DenseVector rowVector = new DenseVector(sparseMatrix.ColumnCount);
+            int[] indexSorting = new int[sparseMatrix.RowCount];
 
             // spaceLeft = lfilNnz * nnz(A)
-            var spaceLeft = (int) _fillLevel*sparseMatrix.NonZerosCount;
+            int spaceLeft = (int)_fillLevel * sparseMatrix.NonZerosCount;
 
             // for i = 1, .. , n
-            for (var i = 0; i < sparseMatrix.RowCount; i++)
+            for (int i = 0; i < sparseMatrix.RowCount; i++)
             {
                 // w = a(i,*)
                 sparseMatrix.Row(i, workVector);
 
                 // pivot the row
                 PivotRow(workVector);
-                var vectorNorm = workVector.InfinityNorm();
+                double vectorNorm = workVector.InfinityNorm();
 
                 // for j = 1, .. , i - 1)
-                for (var j = 0; j < i; j++)
+                for (int j = 0; j < i; j++)
                 {
                     // if (w(j) != 0)
                     // {
@@ -394,7 +394,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
                     if (workVector[j] != 0.0)
                     {
                         // Calculate the multiplication factors that go into the L matrix
-                        workVector[j] = workVector[j]/_upper[j, j];
+                        workVector[j] = workVector[j] / _upper[j, j];
                         if (Math.Abs(workVector[j]) < _dropTolerance)
                         {
                             workVector[j] = 0.0;
@@ -408,7 +408,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
 
                             // zero out columnVector[k] because we don't need that
                             // one anymore for k = 0 to k = j
-                            for (var k = 0; k <= j; k++)
+                            for (int k = 0; k <= j; k++)
                             {
                                 rowVector[k] = 0.0;
                             }
@@ -420,29 +420,29 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
                 }
 
                 // for j = i, .. ,n
-                for (var j = i; j < sparseMatrix.RowCount; j++)
+                for (int j = i; j < sparseMatrix.RowCount; j++)
                 {
                     // if w(j) <= dropTol * ||A(i,*)||
                     // {
                     //     w(j) = 0
                     // }
-                    if (Math.Abs(workVector[j]) <= _dropTolerance*vectorNorm)
+                    if (Math.Abs(workVector[j]) <= _dropTolerance * vectorNorm)
                     {
                         workVector[j] = 0.0;
                     }
                 }
 
                 // spaceRow = spaceLeft / (n - i + 1) // Determine the space for this row
-                var spaceRow = spaceLeft/(sparseMatrix.RowCount - i + 1);
+                int spaceRow = spaceLeft / (sparseMatrix.RowCount - i + 1);
 
                 // lfil = spaceRow / 2  // space for this row of L
-                var fillLevel = spaceRow/2;
+                int fillLevel = spaceRow / 2;
                 FindLargestItems(0, i - 1, indexSorting, workVector);
 
                 // l(i,j) = w(j) for j = 1, .. , i -1 // only the largest lfil elements
-                var lowerNonZeroCount = 0;
-                var count = 0;
-                for (var j = 0; j < i; j++)
+                int lowerNonZeroCount = 0;
+                int count = 0;
+                for (int j = 0; j < i; j++)
                 {
                     if ((count > fillLevel) || (indexSorting[j] == -1))
                     {
@@ -460,9 +460,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
                 fillLevel = spaceRow - lowerNonZeroCount;
 
                 // u(i,j) = w(j) for j = i + 1, .. , n // only the largest lfil - 1 elements
-                var upperNonZeroCount = 0;
+                int upperNonZeroCount = 0;
                 count = 0;
-                for (var j = 0; j < sparseMatrix.RowCount - i; j++)
+                for (int j = 0; j < sparseMatrix.RowCount - i; j++)
                 {
                     if ((count > fillLevel - 1) || (indexSorting[j] == -1))
                     {
@@ -490,14 +490,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
                 // -1 values.
                 if ((i + 1) < (sparseMatrix.RowCount - 1))
                 {
-                    if (Math.Abs(workVector[i]) < _pivotTolerance*Math.Abs(workVector[indexSorting[0]]))
+                    if (Math.Abs(workVector[i]) < _pivotTolerance * Math.Abs(workVector[indexSorting[0]]))
                     {
                         // swap columns of u (which holds the values of A in the
                         // sections that haven't been partitioned yet.
                         SwapColumns(_upper, i, indexSorting[0]);
 
                         // Update P
-                        var temp = _pivots[i];
+                        int temp = _pivots[i];
                         _pivots[i] = _pivots[indexSorting[0]];
                         _pivots[indexSorting[0]] = temp;
                     }
@@ -507,7 +507,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
                 spaceLeft -= lowerNonZeroCount + upperNonZeroCount;
             }
 
-            for (var i = 0; i < _lower.RowCount; i++)
+            for (int i = 0; i < _lower.RowCount; i++)
             {
                 _lower[i, i] = 1.0;
             }
@@ -517,19 +517,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// Pivot elements in the <paramref name="row"/> according to internal pivot array
         /// </summary>
         /// <param name="row">Row <see cref="VectorMathNet"/> to pivot in</param>
-        void PivotRow(VectorMathNet<double> row)
+        private void PivotRow(VectorMathNet<double> row)
         {
-            var knownPivots = new Dictionary<int, int>();
+            Dictionary<int, int> knownPivots = new Dictionary<int, int>();
 
             // pivot the row
-            for (var i = 0; i < row.Count; i++)
+            for (int i = 0; i < row.Count; i++)
             {
                 if ((_pivots[i] != i) && (!PivotMapFound(knownPivots, i)))
                 {
                     // store the pivots in the hashtable
                     knownPivots.Add(_pivots[i], i);
 
-                    var t = row[i];
+                    double t = row[i];
                     row[i] = row[_pivots[i]];
                     row[_pivots[i]] = t;
                 }
@@ -542,7 +542,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <param name="knownPivots">Pivots already done</param>
         /// <param name="currentItem">Current item to pivot</param>
         /// <returns><c>true</c> if performed, otherwise <c>false</c></returns>
-        bool PivotMapFound(Dictionary<int, int> knownPivots, int currentItem)
+        private bool PivotMapFound(Dictionary<int, int> knownPivots, int currentItem)
         {
             if (knownPivots.ContainsKey(_pivots[currentItem]))
             {
@@ -569,11 +569,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <param name="matrix">Source <see cref="MatrixMathNet"/>.</param>
         /// <param name="firstColumn">First column index to swap</param>
         /// <param name="secondColumn">Second column index to swap</param>
-        static void SwapColumns(MatrixMathNet<double> matrix, int firstColumn, int secondColumn)
+        private static void SwapColumns(MatrixMathNet<double> matrix, int firstColumn, int secondColumn)
         {
-            for (var i = 0; i < matrix.RowCount; i++)
+            for (int i = 0; i < matrix.RowCount; i++)
             {
-                var temp = matrix[i, firstColumn];
+                double temp = matrix[i, firstColumn];
                 matrix[i, firstColumn] = matrix[i, secondColumn];
                 matrix[i, secondColumn] = temp;
             }
@@ -586,15 +586,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <param name="upperBound">Sort till upper bound</param>
         /// <param name="sortedIndices">Array with sorted vector indices</param>
         /// <param name="values">Source <see cref="VectorMathNet"/></param>
-        static void FindLargestItems(int lowerBound, int upperBound, int[] sortedIndices, VectorMathNet<double> values)
+        private static void FindLargestItems(int lowerBound, int upperBound, int[] sortedIndices, VectorMathNet<double> values)
         {
             // Copy the indices for the values into the array
-            for (var i = 0; i < upperBound + 1 - lowerBound; i++)
+            for (int i = 0; i < upperBound + 1 - lowerBound; i++)
             {
                 sortedIndices[i] = lowerBound + i;
             }
 
-            for (var i = upperBound + 1 - lowerBound; i < sortedIndices.Length; i++)
+            for (int i = upperBound + 1 - lowerBound; i < sortedIndices.Length; i++)
             {
                 sortedIndices[i] = -1;
             }
@@ -626,37 +626,37 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
             // Solve equation here
             // Pivot(vector, result);
             // Solve L*Y = B(piv,:)
-            var rowValues = new DenseVector(_lower.RowCount);
-            for (var i = 0; i < _lower.RowCount; i++)
+            DenseVector rowValues = new DenseVector(_lower.RowCount);
+            for (int i = 0; i < _lower.RowCount; i++)
             {
                 _lower.Row(i, rowValues);
 
-                var sum = 0.0;
-                for (var j = 0; j < i; j++)
+                double sum = 0.0;
+                for (int j = 0; j < i; j++)
                 {
-                    sum += rowValues[j]*lhs[j];
+                    sum += rowValues[j] * lhs[j];
                 }
 
                 lhs[i] = rhs[i] - sum;
             }
 
             // Solve U*X = Y;
-            for (var i = _upper.RowCount - 1; i > -1; i--)
+            for (int i = _upper.RowCount - 1; i > -1; i--)
             {
                 _upper.Row(i, rowValues);
 
-                var sum = 0.0;
-                for (var j = _upper.RowCount - 1; j > i; j--)
+                double sum = 0.0;
+                for (int j = _upper.RowCount - 1; j > i; j--)
                 {
-                    sum += rowValues[j]*lhs[j];
+                    sum += rowValues[j] * lhs[j];
                 }
 
-                lhs[i] = 1/rowValues[i]*(lhs[i] - sum);
+                lhs[i] = 1 / rowValues[i] * (lhs[i] - sum);
             }
 
             // We have a column pivot so we only need to pivot the
             // end result not the incoming right hand side vector
-            var temp = lhs.Clone();
+            VectorMathNet<double> temp = lhs.Clone();
 
             Pivot(temp, lhs);
         }
@@ -666,9 +666,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// </summary>
         /// <param name="vector">Source <see cref="VectorMathNet"/>.</param>
         /// <param name="result">Result <see cref="VectorMathNet"/> after pivoting.</param>
-        void Pivot(VectorMathNet<double> vector, VectorMathNet<double> result)
+        private void Pivot(VectorMathNet<double> vector, VectorMathNet<double> result)
         {
-            for (var i = 0; i < _pivots.Length; i++)
+            for (int i = 0; i < _pivots.Length; i++)
             {
                 result[i] = vector[_pivots[i]];
             }
@@ -698,7 +698,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
             // array. Ignore the rest of the indices.
             if (lowerBound > 0)
             {
-                for (var i = 0; i < (upperBound - lowerBound + 1); i++)
+                for (int i = 0; i < (upperBound - lowerBound + 1); i++)
                 {
                     Exchange(sortedIndices, i, i + lowerBound);
                 }
@@ -718,10 +718,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <param name="upperBound">The stopping index.</param>
         /// <param name="sortedIndices">An array that will contain the sorted indices once the algorithm finishes.</param>
         /// <param name="values">The <see cref="VectorMathNet"/> that contains the values that need to be sorted.</param>
-        static void HeapSortDoublesIndices(int lowerBound, int upperBound, int[] sortedIndices, VectorMathNet<double> values)
+        private static void HeapSortDoublesIndices(int lowerBound, int upperBound, int[] sortedIndices, VectorMathNet<double> values)
         {
-            var start = ((upperBound - lowerBound + 1) / 2) - 1 + lowerBound;
-            var end = (upperBound - lowerBound + 1) - 1 + lowerBound;
+            int start = ((upperBound - lowerBound + 1) / 2) - 1 + lowerBound;
+            int end = (upperBound - lowerBound + 1) - 1 + lowerBound;
 
             BuildDoubleIndexHeap(start, upperBound - lowerBound + 1, sortedIndices, values);
 
@@ -740,7 +740,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <param name="count">Length of <paramref name="values"/></param>
         /// <param name="sortedIndices">Indices of <paramref name="values"/></param>
         /// <param name="values">Target <see cref="VectorMathNet"/></param>
-        static void BuildDoubleIndexHeap(int start, int count, int[] sortedIndices, VectorMathNet<double> values)
+        private static void BuildDoubleIndexHeap(int start, int count, int[] sortedIndices, VectorMathNet<double> values)
         {
             while (start >= 0)
             {
@@ -756,13 +756,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <param name="values">Target <see cref="VectorMathNet"/></param>
         /// <param name="begin">Root position</param>
         /// <param name="count">Length of <paramref name="values"/></param>
-        static void SiftDoubleIndices(int[] sortedIndices, VectorMathNet<double> values, int begin, int count)
+        private static void SiftDoubleIndices(int[] sortedIndices, VectorMathNet<double> values, int begin, int count)
         {
-            var root = begin;
+            int root = begin;
 
             while (root * 2 < count)
             {
-                var child = root * 2;
+                int child = root * 2;
                 if ((child < count - 1) && (values[sortedIndices[child]] > values[sortedIndices[child + 1]]))
                 {
                     child += 1;
@@ -792,10 +792,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// </summary>
         /// <param name="values">Array of values to sort</param>
         /// <param name="count">Length of <paramref name="values"/></param>
-        static void HeapSortIntegers(int[] values, int count)
+        private static void HeapSortIntegers(int[] values, int count)
         {
-            var start = (count / 2) - 1;
-            var end = count - 1;
+            int start = (count / 2) - 1;
+            int end = count - 1;
 
             BuildHeap(values, start, count);
 
@@ -813,7 +813,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <param name="values">Target values array</param>
         /// <param name="start">Root position</param>
         /// <param name="count">Length of <paramref name="values"/></param>
-        static void BuildHeap(int[] values, int start, int count)
+        private static void BuildHeap(int[] values, int start, int count)
         {
             while (start >= 0)
             {
@@ -828,13 +828,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <param name="values">Target value array</param>
         /// <param name="start">Root position</param>
         /// <param name="count">Length of <paramref name="values"/></param>
-        static void Sift(int[] values, int start, int count)
+        private static void Sift(int[] values, int start, int count)
         {
-            var root = start;
+            int root = start;
 
             while (root * 2 < count)
             {
-                var child = root * 2;
+                int child = root * 2;
                 if ((child < count - 1) && (values[child] > values[child + 1]))
                 {
                     child += 1;
@@ -858,9 +858,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Solvers
         /// <param name="values">Target values array</param>
         /// <param name="first">First value to exchange</param>
         /// <param name="second">Second value to exchange</param>
-        static void Exchange(int[] values, int first, int second)
+        private static void Exchange(int[] values, int first, int second)
         {
-            var t = values[first];
+            int t = values[first];
             values[first] = values[second];
             values[second] = t;
         }

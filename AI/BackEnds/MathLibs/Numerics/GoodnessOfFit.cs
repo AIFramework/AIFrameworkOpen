@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Statistics;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Statistics;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics
 {
@@ -45,7 +45,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>Squared Person product-momentum correlation coefficient.</returns>
         public static double RSquared(IEnumerable<double> modelledValues, IEnumerable<double> observedValues)
         {
-            var corr = CorrelationMathNet.Pearson(modelledValues, observedValues);
+            double corr = CorrelationMathNet.Pearson(modelledValues, observedValues);
             return corr * corr;
         }
 
@@ -97,7 +97,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                     }
                     double currentM = ieM.Current;
                     double currentO = ieO.Current;
-                    var diff = currentM - currentO;
+                    double diff = currentM - currentO;
                     accumulator += diff * diff;
                     n++;
                 }
@@ -119,8 +119,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>Coefficient of determination.</returns>
         public static double CoefficientOfDetermination(IEnumerable<double> modelledValues, IEnumerable<double> observedValues)
         {
-            var y = observedValues;
-            var f = modelledValues;
+            IEnumerable<double> y = observedValues;
+            IEnumerable<double> f = modelledValues;
             int n = 0;
 
             double meanY = 0;
@@ -155,11 +155,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                     double scaleDeltaY = deltaY / ++n;
 
                     meanY += scaleDeltaY;
-                    ssTot += scaleDeltaY* deltaY* (n - 1);
+                    ssTot += scaleDeltaY * deltaY * (n - 1);
 
                     // This calculation is as safe as ssTot
                     // in the case when a constant is added to both y and f.
-                    ssRes += (currentY - currentF)* (currentY-currentF);
+                    ssRes += (currentY - currentF) * (currentY - currentF);
                 }
 
                 if (ieF.MoveNext())
@@ -167,7 +167,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                     throw new ArgumentOutOfRangeException(nameof(observedValues), "The array arguments must have the same length.");
                 }
             }
-            return 1 - ssRes/ssTot;
+            return 1 - ssRes / ssTot;
         }
     }
 }

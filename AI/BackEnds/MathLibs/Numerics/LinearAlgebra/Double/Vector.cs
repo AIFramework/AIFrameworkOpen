@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
 {
@@ -145,7 +145,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         protected override void DoMultiply(double scalar, VectorMathNet<double> result)
         {
-            Map(x => x*scalar, result, Zeros.AllowSkip);
+            Map(x => x * scalar, result, Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         protected override void DoDivide(double divisor, VectorMathNet<double> result)
         {
-            Map(x => x/divisor, result, divisor == 0.0 ? Zeros.Include : Zeros.AllowSkip);
+            Map(x => x / divisor, result, divisor == 0.0 ? Zeros.Include : Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <param name="result">The vector to store the result of the division.</param>
         protected override void DoDivideByThis(double dividend, VectorMathNet<double> result)
         {
-            Map(x => dividend/x, result, Zeros.Include);
+            Map(x => dividend / x, result, Zeros.Include);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <param name="result">The vector to store the result of the pointwise multiplication.</param>
         protected override void DoPointwiseMultiply(VectorMathNet<double> other, VectorMathNet<double> result)
         {
-            Map2((x, y) => x*y, other, result, Zeros.AllowSkip);
+            Map2((x, y) => x * y, other, result, Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <param name="result">The vector to store the result of the pointwise division.</param>
         protected override void DoPointwiseDivide(VectorMathNet<double> divisor, VectorMathNet<double> result)
         {
-            Map2((x, y) => x/y, divisor, result, Zeros.Include);
+            Map2((x, y) => x / y, divisor, result, Zeros.Include);
         }
 
         /// <summary>
@@ -332,8 +332,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The sum of a[i]*b[i] for all i.</returns>
         protected override double DoDotProduct(VectorMathNet<double> other)
         {
-            var dot = 0.0;
-            for (var i = 0; i < Count; i++)
+            double dot = 0.0;
+            for (int i = 0; i < Count; i++)
             {
                 dot += At(i) * other.At(i);
             }
@@ -451,11 +451,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The index of absolute minimum element.</returns>
         public override int AbsoluteMinimumIndex()
         {
-            var index = 0;
-            var min = Math.Abs(At(index));
-            for (var i = 1; i < Count; i++)
+            int index = 0;
+            double min = Math.Abs(At(index));
+            for (int i = 1; i < Count; i++)
             {
-                var test = Math.Abs(At(i));
+                double test = Math.Abs(At(i));
                 if (test < min)
                 {
                     index = i;
@@ -481,11 +481,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The index of absolute maximum element.</returns>
         public override int AbsoluteMaximumIndex()
         {
-            var index = 0;
-            var max = Math.Abs(At(index));
-            for (var i = 1; i < Count; i++)
+            int index = 0;
+            double max = Math.Abs(At(index));
+            for (int i = 1; i < Count; i++)
             {
-                var test = Math.Abs(At(i));
+                double test = Math.Abs(At(i));
                 if (test > max)
                 {
                     index = i;
@@ -502,8 +502,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The sum of the vector's elements.</returns>
         public override double Sum()
         {
-            var sum = 0.0;
-            for (var i = 0; i < Count; i++)
+            double sum = 0.0;
+            for (int i = 0; i < Count; i++)
             {
                 sum += At(i);
             }
@@ -516,8 +516,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The sum of the absolute values.</returns>
         public override double L1Norm()
         {
-            var sum = 0.0;
-            for (var i = 0; i < Count; i++)
+            double sum = 0.0;
+            for (int i = 0; i < Count; i++)
             {
                 sum += Math.Abs(At(i));
             }
@@ -553,18 +553,32 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public override double Norm(double p)
         {
-            if (p < 0d) throw new ArgumentOutOfRangeException(nameof(p));
+            if (p < 0d)
+            {
+                throw new ArgumentOutOfRangeException(nameof(p));
+            }
 
-            if (p == 1d) return L1Norm();
-            if (p == 2d) return L2Norm();
-            if (double.IsPositiveInfinity(p)) return InfinityNorm();
+            if (p == 1d)
+            {
+                return L1Norm();
+            }
 
-            var sum = 0d;
-            for (var index = 0; index < Count; index++)
+            if (p == 2d)
+            {
+                return L2Norm();
+            }
+
+            if (double.IsPositiveInfinity(p))
+            {
+                return InfinityNorm();
+            }
+
+            double sum = 0d;
+            for (int index = 0; index < Count; index++)
             {
                 sum += Math.Pow(Math.Abs(At(index)), p);
             }
-            return Math.Pow(sum, 1.0/p);
+            return Math.Pow(sum, 1.0 / p);
         }
 
         /// <summary>
@@ -573,11 +587,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The index of maximum element.</returns>
         public override int MaximumIndex()
         {
-            var index = 0;
-            var max = At(index);
-            for (var i = 1; i < Count; i++)
+            int index = 0;
+            double max = At(index);
+            for (int i = 1; i < Count; i++)
             {
-                var test = At(i);
+                double test = At(i);
                 if (test > max)
                 {
                     index = i;
@@ -594,11 +608,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The index of minimum element.</returns>
         public override int MinimumIndex()
         {
-            var index = 0;
-            var min = At(index);
-            for (var i = 1; i < Count; i++)
+            int index = 0;
+            double min = At(index);
+            for (int i = 1; i < Count; i++)
             {
-                var test = At(i);
+                double test = At(i);
                 if (test < min)
                 {
                     index = i;
@@ -626,7 +640,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             }
 
             double norm = Norm(p);
-            var clone = Clone();
+            VectorMathNet<double> clone = Clone();
             if (norm == 0d)
             {
                 return clone;

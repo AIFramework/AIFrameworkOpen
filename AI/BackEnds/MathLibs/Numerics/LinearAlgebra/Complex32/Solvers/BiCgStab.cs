@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
 {
@@ -70,7 +70,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
         /// <param name="residual">Residual values in <see cref="VectorMathNet"/>.</param>
         /// <param name="x">Instance of the <see cref="VectorMathNet"/> x.</param>
         /// <param name="b">Instance of the <see cref="VectorMathNet"/> b.</param>
-        static void CalculateTrueResidual(MatrixMathNet<Numerics.Complex32> matrix, VectorMathNet<Numerics.Complex32> residual, VectorMathNet<Numerics.Complex32> x, VectorMathNet<Numerics.Complex32> b)
+        private static void CalculateTrueResidual(MatrixMathNet<Numerics.Complex32> matrix, VectorMathNet<Numerics.Complex32> residual, VectorMathNet<Numerics.Complex32> x, VectorMathNet<Numerics.Complex32> b)
         {
             // -Ax = residual
             matrix.Multiply(x, residual);
@@ -123,22 +123,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
             // Compute r_0 = b - Ax_0 for some initial guess x_0
             // In this case we take x_0 = vector
             // This is basically a SAXPY so it could be made a lot faster
-            var residuals = new DenseVector(matrix.RowCount);
+            DenseVector residuals = new DenseVector(matrix.RowCount);
             CalculateTrueResidual(matrix, residuals, result, input);
 
             // Choose r~ (for example, r~ = r_0)
-            var tempResiduals = residuals.Clone();
+            VectorMathNet<Numerics.Complex32> tempResiduals = residuals.Clone();
 
             // create seven temporary vectors needed to hold temporary
             // coefficients. All vectors are mangled in each iteration.
             // These are defined here to prevent stressing the garbage collector
-            var vecP = new DenseVector(residuals.Count);
-            var vecPdash = new DenseVector(residuals.Count);
-            var nu = new DenseVector(residuals.Count);
-            var vecS = new DenseVector(residuals.Count);
-            var vecSdash = new DenseVector(residuals.Count);
-            var temp = new DenseVector(residuals.Count);
-            var temp2 = new DenseVector(residuals.Count);
+            DenseVector vecP = new DenseVector(residuals.Count);
+            DenseVector vecPdash = new DenseVector(residuals.Count);
+            DenseVector nu = new DenseVector(residuals.Count);
+            DenseVector vecS = new DenseVector(residuals.Count);
+            DenseVector vecSdash = new DenseVector(residuals.Count);
+            DenseVector temp = new DenseVector(residuals.Count);
+            DenseVector temp2 = new DenseVector(residuals.Count);
 
             // create some temporary float variables that are needed
             // to hold values in between iterations
@@ -146,11 +146,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
             Numerics.Complex32 alpha = 0;
             Numerics.Complex32 omega = 0;
 
-            var iterationNumber = 0;
+            int iterationNumber = 0;
             while (iterator.DetermineStatus(iterationNumber, result, input, residuals) == IterationStatus.Continue)
             {
                 // rho_(i-1) = r~^T r_(i-1) // dotproduct r~ and r_(i-1)
-                var oldRho = currentRho;
+                Numerics.Complex32 oldRho = currentRho;
                 currentRho = tempResiduals.ConjugateDotProduct(residuals);
 
                 // if (rho_(i-1) == 0) // METHOD FAILS
@@ -164,7 +164,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                 if (iterationNumber != 0)
                 {
                     // beta_(i-1) = (rho_(i-1)/rho_(i-2))(alpha_(i-1)/omega(i-1))
-                    var beta = (currentRho/oldRho)*(alpha/omega);
+                    Numerics.Complex32 beta = (currentRho / oldRho) * (alpha / omega);
 
                     // p_i = r_(i-1) + beta_(i-1)(p_(i-1) - omega_(i-1) * nu_(i-1))
                     nu.Multiply(-omega, temp);
@@ -188,7 +188,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                 matrix.Multiply(vecPdash, nu);
 
                 // alpha_i = rho_(i-1)/ (r~^T nu_i) = rho / dotproduct(r~ and nu_i)
-                alpha = currentRho*1/tempResiduals.ConjugateDotProduct(nu);
+                alpha = currentRho * 1 / tempResiduals.ConjugateDotProduct(nu);
 
                 // s = r_(i-1) - alpha_i nu_i
                 nu.Multiply(-alpha, temp);
@@ -232,7 +232,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Solvers
                 matrix.Multiply(vecSdash, temp);
 
                 // omega_i = temp^T s / temp^T temp
-                omega = temp.ConjugateDotProduct(vecS)/temp.ConjugateDotProduct(temp);
+                omega = temp.ConjugateDotProduct(vecS) / temp.ConjugateDotProduct(temp);
 
                 // x_i = x_(i-1) + alpha_i p^ + omega_i s^
                 temp.Multiply(-omega, residuals);

@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorization
 {
@@ -59,14 +59,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentException>(matrix);
             }
 
-            var q = (DenseMatrix)matrix.Clone();
-            var r = new DenseMatrix(matrix.ColumnCount, matrix.ColumnCount);
+            DenseMatrix q = (DenseMatrix)matrix.Clone();
+            DenseMatrix r = new DenseMatrix(matrix.ColumnCount, matrix.ColumnCount);
             Factorize(q.Values, q.RowCount, q.ColumnCount, r.Values);
 
             return new DenseGramSchmidt(q, r);
         }
 
-        DenseGramSchmidt(MatrixMathNet<Complex> q, MatrixMathNet<Complex> rFull)
+        private DenseGramSchmidt(MatrixMathNet<Complex> q, MatrixMathNet<Complex> rFull)
             : base(q, rFull)
         {
         }
@@ -78,12 +78,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="rowsQ">Number of rows in <see cref="MatrixMathNet{T}"/> Q.</param>
         /// <param name="columnsQ">Number of columns in <see cref="MatrixMathNet{T}"/> Q.</param>
         /// <param name="r">On exit is filled by <see cref="MatrixMathNet{T}"/> R.</param>
-        static void Factorize(Complex[] q, int rowsQ, int columnsQ, Complex[] r)
+        private static void Factorize(Complex[] q, int rowsQ, int columnsQ, Complex[] r)
         {
-            for (var k = 0; k < columnsQ; k++)
+            for (int k = 0; k < columnsQ; k++)
             {
-                var norm = 0.0;
-                for (var i = 0; i < rowsQ; i++)
+                double norm = 0.0;
+                for (int i = 0; i < rowsQ; i++)
                 {
                     norm += q[(k * rowsQ) + i].Magnitude * q[(k * rowsQ) + i].Magnitude;
                 }
@@ -95,26 +95,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 }
 
                 r[(k * columnsQ) + k] = norm;
-                for (var i = 0; i < rowsQ; i++)
+                for (int i = 0; i < rowsQ; i++)
                 {
                     q[(k * rowsQ) + i] /= norm;
                 }
 
-                for (var j = k + 1; j < columnsQ; j++)
+                for (int j = k + 1; j < columnsQ; j++)
                 {
-                    var k1 = k;
-                    var j1 = j;
+                    int k1 = k;
+                    int j1 = j;
 
-                    var dot = Complex.Zero;
-                    for (var index = 0; index < rowsQ; index++)
+                    Complex dot = Complex.Zero;
+                    for (int index = 0; index < rowsQ; index++)
                     {
                         dot += q[(k1 * rowsQ) + index].Conjugate() * q[(j1 * rowsQ) + index];
                     }
 
                     r[(j * columnsQ) + k] = dot;
-                    for (var i = 0; i < rowsQ; i++)
+                    for (int i = 0; i < rowsQ; i++)
                     {
-                        var value = q[(j * rowsQ) + i] - (q[(k * rowsQ) + i] * dot);
+                        Complex value = q[(j * rowsQ) + i] - (q[(k * rowsQ) + i] * dot);
                         q[(j * rowsQ) + i] = value;
                     }
                 }
@@ -148,7 +148,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
 
             if (input is DenseMatrix dinput && result is DenseMatrix dresult)
             {
-                LinearAlgebraControl.Provider.QRSolveFactored(((DenseMatrix) Q).Values, ((DenseMatrix) FullR).Values, Q.RowCount, FullR.ColumnCount, null, dinput.Values, input.ColumnCount, dresult.Values, QRMethod.Thin);
+                LinearAlgebraControl.Provider.QRSolveFactored(((DenseMatrix)Q).Values, ((DenseMatrix)FullR).Values, Q.RowCount, FullR.ColumnCount, null, dinput.Values, input.ColumnCount, dresult.Values, QRMethod.Thin);
             }
             else
             {
@@ -178,7 +178,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
 
             if (input is DenseVector dinput && result is DenseVector dresult)
             {
-                LinearAlgebraControl.Provider.QRSolveFactored(((DenseMatrix) Q).Values, ((DenseMatrix) FullR).Values, Q.RowCount, FullR.ColumnCount, null, dinput.Values, 1, dresult.Values, QRMethod.Thin);
+                LinearAlgebraControl.Provider.QRSolveFactored(((DenseMatrix)Q).Values, ((DenseMatrix)FullR).Values, Q.RowCount, FullR.ColumnCount, null, dinput.Values, 1, dresult.Values, QRMethod.Thin);
             }
             else
             {

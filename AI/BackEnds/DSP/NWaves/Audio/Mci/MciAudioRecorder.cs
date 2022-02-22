@@ -17,8 +17,8 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
         /// <param name="bitsPerSample">Number of bits per sample (8, 16, 24 or 32)</param>
         public void StartRecording(int samplingRate = 44100, short channelCount = 1, short bitsPerSample = 16)
         {
-            var mciCommand = "open new type waveaudio alias capture";
-            var result = Mci.SendString(mciCommand, null, 0, 0);
+            string mciCommand = "open new type waveaudio alias capture";
+            int result = Mci.SendString(mciCommand, null, 0, 0);
 
             if (result != 0)
             {
@@ -44,7 +44,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
         /// <param name="destination">Output WAV file containing recorderd sound</param>
         public void StopRecording(string destination)
         {
-            var mciCommand = "stop capture";
+            string mciCommand = "stop capture";
             Mci.SendString(mciCommand, null, 0, 0);
 
             mciCommand = string.Format("save capture {0}", destination);

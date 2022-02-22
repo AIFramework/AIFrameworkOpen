@@ -1,5 +1,5 @@
-﻿using System;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+﻿using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion.Subproblems
 {
@@ -15,16 +15,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion.Subprob
             //
             // positive β is used for the quadratic formula
 
-            var z = alpha * sd;
-            var d = gn - z;
+            VectorMathNet<double> z = alpha * sd;
+            VectorMathNet<double> d = gn - z;
 
-            var a = d.DotProduct(d);
-            var b = 2.0 * z.DotProduct(d);
-            var c = z.DotProduct(z) - delta * delta;
+            double a = d.DotProduct(d);
+            double b = 2.0 * z.DotProduct(d);
+            double c = z.DotProduct(z) - delta * delta;
 
-            var aux = b + ((b >= 0) ? 1.0 : -1.0) * Math.Sqrt(b * b - 4.0 * a * c);
-            var beta1 = -aux / 2.0 / a;
-            var beta2 = -2.0 * c / aux;
+            double aux = b + ((b >= 0) ? 1.0 : -1.0) * Math.Sqrt(b * b - 4.0 * a * c);
+            double beta1 = -aux / 2.0 / a;
+            double beta2 = -2.0 * c / aux;
 
             // return sorted beta
             return beta1 < beta2 ? (beta1, beta2) : (beta2, beta1);

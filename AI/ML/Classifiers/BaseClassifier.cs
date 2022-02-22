@@ -50,7 +50,7 @@ namespace AI.ML.Classifiers
 
         public static T Load(string path)
         {
-            return BinarySerializer.Load<T> (path);
+            return BinarySerializer.Load<T>(path);
         }
 
         public static T Load(Stream stream)

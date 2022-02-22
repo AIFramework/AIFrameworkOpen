@@ -64,7 +64,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// Flat-top window
         /// </summary>
         Flattop,
-        
+
         /// <summary>
         /// Window for cepstral liftering
         /// </summary>

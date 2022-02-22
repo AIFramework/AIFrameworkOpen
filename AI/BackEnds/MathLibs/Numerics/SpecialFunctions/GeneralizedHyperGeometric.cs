@@ -48,14 +48,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>The real value of the Rising Factorial for x and n</returns>
         public static double RisingFactorial(double x, int n)
         {
-                double accumulator = 1.0;
+            double accumulator = 1.0;
 
-                for (int k = 0; k < n; k++)
-                {
-                    accumulator *= (x + k);
-                }
-                return accumulator;
+            for (int k = 0; k < n; k++)
+            {
+                accumulator *= (x + k);
             }
+            return accumulator;
+        }
 
         /// <summary>
         /// Computes the Falling Factorial (Pochhammer function)  x -> x(n), n>= 0. see: https://en.wikipedia.org/wiki/Falling_and_rising_factorials
@@ -63,13 +63,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>The real value of the Falling Factorial for x and n</returns>
         public static double FallingFactorial(double x, int n)
         {
-                double accumulator = 1.0;
+            double accumulator = 1.0;
 
-                for (int k = 0; k < n; k++)
-                {
-                    accumulator *= (x - k);
-                }
-                return accumulator;
+            for (int k = 0; k < n; k++)
+            {
+                accumulator *= (x - k);
+            }
+            return accumulator;
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         }
 
         //Calculate each iteration of the function
-        static double HGIncrement(double[] a, double[] b, int z, int currentN)
+        private static double HGIncrement(double[] a, double[] b, int z, int currentN)
         {
             double incrementAs = 1.0;
             double incrementBs = 1.0;

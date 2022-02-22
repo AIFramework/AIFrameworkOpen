@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
 {
@@ -49,7 +49,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// <exception cref="NonConvergenceException"></exception>
         public static double[] FindRoot(Func<double[], double[]> f, double[] initialGuess, double accuracy = 1e-8, int maxIterations = 100, double jacobianStepSize = 1.0e-4)
         {
-            if (TryFindRootWithJacobianStep(f, initialGuess, accuracy, maxIterations, jacobianStepSize, out var root))
+            if (TryFindRootWithJacobianStep(f, initialGuess, accuracy, maxIterations, jacobianStepSize, out double[] root))
             {
                 return root;
             }
@@ -72,10 +72,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
                 throw new ArgumentOutOfRangeException(nameof(accuracy), "Must be greater than zero.");
             }
 
-            var x = new DenseVector(initialGuess);
+            DenseVector x = new DenseVector(initialGuess);
 
             double[] y0 = f(initialGuess);
-            var y = new DenseVector(y0);
+            DenseVector y = new DenseVector(y0);
             double g = y.L2Norm();
 
             MatrixMathNet<double> B = CalculateApproximateJacobian(f, initialGuess, y0, jacobianStepSize);
@@ -84,21 +84,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
             {
                 for (int i = 0; i <= maxIterations; i++)
                 {
-                    var dx = (DenseVector) (-B.LU().Solve(y));
-                    var xnew = x + dx;
-                    var ynew = new DenseVector(f(xnew.Values));
+                    DenseVector dx = (DenseVector)(-B.LU().Solve(y));
+                    DenseVector xnew = x + dx;
+                    DenseVector ynew = new DenseVector(f(xnew.Values));
                     double gnew = ynew.L2Norm();
 
                     if (gnew > g)
                     {
-                        double g2 = g*g;
-                        double scale = g2/(g2 + gnew*gnew);
+                        double g2 = g * g;
+                        double scale = g2 / (g2 + gnew * gnew);
                         if (scale == 0.0)
                         {
                             scale = 1.0e-4;
                         }
 
-                        dx = scale*dx;
+                        dx = scale * dx;
                         xnew = x + dx;
                         ynew = new DenseVector(f(xnew.Values));
                         gnew = ynew.L2Norm();
@@ -148,26 +148,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// <param name="x0">The argument (initial guess).</param>
         /// <param name="y0">The result (of initial guess).</param>
         /// <param name="jacobianStepSize">Relative step size for calculating the Jacobian.</param>
-        static MatrixMathNet<double> CalculateApproximateJacobian(Func<double[], double[]> f, double[] x0, double[] y0, double jacobianStepSize)
+        private static MatrixMathNet<double> CalculateApproximateJacobian(Func<double[], double[]> f, double[] x0, double[] y0, double jacobianStepSize)
         {
             int dim = x0.Length;
-            var B = new DenseMatrix(dim);
+            DenseMatrix B = new DenseMatrix(dim);
 
-            var x = new double[dim];
+            double[] x = new double[dim];
             Array.Copy(x0, 0, x, 0, dim);
 
             for (int j = 0; j < dim; j++)
             {
-                double h = (1.0+Math.Abs(x0[j]))*jacobianStepSize;
+                double h = (1.0 + Math.Abs(x0[j])) * jacobianStepSize;
 
-                var xj = x[j];
+                double xj = x[j];
                 x[j] = xj + h;
                 double[] y = f(x);
                 x[j] = xj;
 
                 for (int i = 0; i < dim; i++)
                 {
-                    B.At(i, j, (y[i] - y0[i])/h);
+                    B.At(i, j, (y[i] - y0[i]) / h);
                 }
             }
 

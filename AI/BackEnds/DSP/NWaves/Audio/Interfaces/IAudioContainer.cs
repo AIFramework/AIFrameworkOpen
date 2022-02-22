@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using AI.BackEnds.DSP.NWaves.Signals;
+﻿using AI.BackEnds.DSP.NWaves.Signals;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.DSP.NWaves.Audio.Interfaces
 {

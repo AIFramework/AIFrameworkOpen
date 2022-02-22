@@ -1,7 +1,7 @@
-﻿using System;
-using AI.BackEnds.DSP.NWaves.Filters.Base;
+﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Operations
 {
@@ -73,19 +73,19 @@ namespace AI.BackEnds.DSP.NWaves.Operations
             float k = (AlphaMin - AlphaMax) / (SnrMax - SnrMin);
             float b = AlphaMax - k * SnrMin;
 
-            for (var j = 1; j <= _fftSize / 2; j++)
+            for (int j = 1; j <= _fftSize / 2; j++)
             {
-                var power = re[j] * re[j] + im[j] * im[j];
-                var phase = Math.Atan2(im[j], re[j]);
+                float power = re[j] * re[j] + im[j] * im[j];
+                double phase = Math.Atan2(im[j], re[j]);
 
-                var noisePower = _noiseEstimate[j];
+                float noisePower = _noiseEstimate[j];
 
-                var snr = 10 * Math.Log10(power / noisePower);
-                var alpha = Math.Max(Math.Min(k * snr + b, AlphaMax), AlphaMin);
+                double snr = 10 * Math.Log10(power / noisePower);
+                double alpha = Math.Max(Math.Min(k * snr + b, AlphaMax), AlphaMin);
 
-                var diff = power - alpha * noisePower;
+                double diff = power - alpha * noisePower;
 
-                var mag = Math.Sqrt(Math.Max(diff, Beta * noisePower));
+                double mag = Math.Sqrt(Math.Max(diff, Beta * noisePower));
 
                 filteredRe[j] = (float)(mag * Math.Cos(phase));
                 filteredIm[j] = (float)(mag * Math.Sin(phase));
@@ -105,15 +105,15 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                 endPos = noise.Length + endPos + 1;
             }
 
-            var numFrames = 0;
+            int numFrames = 0;
 
-            for (var pos = startPos; pos + _fftSize < endPos; pos += _hopSize, numFrames++)
+            for (int pos = startPos; pos + _fftSize < endPos; pos += _hopSize, numFrames++)
             {
                 noise.FastCopyTo(_noiseBuf, _fftSize, pos);
 
                 _fft.PowerSpectrum(_noiseBuf, _noiseSpectrum, false);
 
-                for (var j = 1; j <= _fftSize / 2; j++)
+                for (int j = 1; j <= _fftSize / 2; j++)
                 {
                     _noiseAcc[j] += _noiseSpectrum[j];
                 }
@@ -121,7 +121,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
             // (including smoothing)
 
-            for (var j = 1; j <= _fftSize / 2; j++)
+            for (int j = 1; j <= _fftSize / 2; j++)
             {
                 _noiseEstimate[j] = (_noiseAcc[j - 1] + _noiseAcc[j] + _noiseAcc[j + 1]) / (3 * numFrames);
             }

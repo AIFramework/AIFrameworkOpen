@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -43,9 +43,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Geometric : IDiscreteDistribution
     {
-        System.Random _random;
-
-        readonly double _p;
+        private System.Random _random;
+        private readonly double _p;
 
         /// <summary>
         /// Initializes a new instance of the Geometric class.
@@ -79,9 +78,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             return $"Geometric(p = {_p})";
@@ -113,28 +112,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => 1.0/_p;
+        public double Mean => 1.0 / _p;
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => (1.0 - _p)/(_p*_p);
+        public double Variance => (1.0 - _p) / (_p * _p);
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => Math.Sqrt(1.0 - _p)/_p;
+        public double StdDev => Math.Sqrt(1.0 - _p) / _p;
 
         /// <summary>
         /// Gets the entropy of the distribution.
         /// </summary>
-        public double Entropy => ((-_p*Math.Log(_p, 2.0)) - ((1.0 - _p)*Math.Log(1.0 - _p, 2.0)))/_p;
+        public double Entropy => ((-_p * Math.Log(_p, 2.0)) - ((1.0 - _p) * Math.Log(1.0 - _p, 2.0))) / _p;
 
         /// <summary>
         /// Gets the skewness of the distribution.
         /// </summary>
         /// <remarks>Throws a not supported exception.</remarks>
-        public double Skewness => (2.0 - _p)/Math.Sqrt(1.0 - _p);
+        public double Skewness => (2.0 - _p) / Math.Sqrt(1.0 - _p);
 
         /// <summary>
         /// Gets the mode of the distribution.
@@ -144,7 +143,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the median of the distribution.
         /// </summary>
-        public double Median => _p == 0.0 ? double.PositiveInfinity : _p == 1.0 ? 1.0 : Math.Ceiling(-Constants.Ln2/Math.Log(1 - _p));
+        public double Median => _p == 0.0 ? double.PositiveInfinity : _p == 1.0 ? 1.0 : Math.Ceiling(-Constants.Ln2 / Math.Log(1 - _p));
 
         /// <summary>
         /// Gets the smallest element in the domain of the distributions which can be represented by an integer.
@@ -168,7 +167,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            return Math.Pow(1.0 - _p, k - 1)*_p;
+            return Math.Pow(1.0 - _p, k - 1) * _p;
         }
 
         /// <summary>
@@ -183,7 +182,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return double.NegativeInfinity;
             }
 
-            return ((k - 1)*Math.Log(1.0 - _p)) + Math.Log(_p);
+            return ((k - 1) * Math.Log(1.0 - _p)) + Math.Log(_p);
         }
 
         /// <summary>
@@ -214,7 +213,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            return Math.Pow(1.0 - p, k - 1)*p;
+            return Math.Pow(1.0 - p, k - 1) * p;
         }
 
         /// <summary>
@@ -235,7 +234,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return double.NegativeInfinity;
             }
 
-            return ((k - 1)*Math.Log(1.0 - p)) + Math.Log(p);
+            return ((k - 1) * Math.Log(1.0 - p)) + Math.Log(p);
         }
 
         /// <summary>
@@ -261,12 +260,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="rnd">The random number generator to use.</param>
         /// <param name="p">The probability (p) of generating one. Range: 0 ≤ p ≤ 1.</param>
         /// <returns>One sample from the distribution implied by <paramref name="p"/>.</returns>
-        static int SampleUnchecked(System.Random rnd, double p)
+        private static int SampleUnchecked(System.Random rnd, double p)
         {
             return p == 1.0 ? 1 : (int)Math.Ceiling(Math.Log(1.0 - rnd.NextDouble(), 1.0 - p));
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, double p)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, double p)
         {
             if (p == 1.0)
             {
@@ -280,7 +279,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return;
             }
 
-            var uniform = rnd.NextDoubles(values.Length);
+            double[] uniform = rnd.NextDoubles(values.Length);
             double rp = 1.0 - p;
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
@@ -291,7 +290,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             });
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, double p)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, double p)
         {
             if (p == 1.0)
             {

@@ -82,24 +82,30 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
             Array.Clear(_re, 0, _re.Length);
             Array.Clear(_im, 0, _im.Length);
 
-            var fftHalfSize = _fftSize / 2;
+            int fftHalfSize = _fftSize / 2;
 
             // synthesize spectrum:
 
-            for (var i = 1; i <= _amplitudes.Length; i++)
+            for (int i = 1; i <= _amplitudes.Length; i++)
             {
-                if (_amplitudes[i - 1] == 0) continue;
+                if (_amplitudes[i - 1] == 0)
+                {
+                    continue;
+                }
 
-                var bwHz = (Math.Pow(2, _bw / 1200) - 1.0) * _frequency * Math.Pow(i, _bwScale);
-                var fi = _frequency * i / SamplingRate;
-                var bwi = bwHz / (2.0 * SamplingRate);
+                double bwHz = (Math.Pow(2, _bw / 1200) - 1.0) * _frequency * Math.Pow(i, _bwScale);
+                float fi = _frequency * i / SamplingRate;
+                double bwi = bwHz / (2.0 * SamplingRate);
 
-                var s = (int)(fi * fftHalfSize);
-                
-                if (s >= fftHalfSize) continue;
+                int s = (int)(fi * fftHalfSize);
 
-                var h = 1.0;
-                var j = s;
+                if (s >= fftHalfSize)
+                {
+                    continue;
+                }
+
+                double h = 1.0;
+                int j = s;
                 while (h > 1e-10)
                 {
                     h = Profile(1.0 * j / fftHalfSize - fi, bwi);
@@ -116,10 +122,10 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 
             // generate samples from synthesized spectrum:
 
-            for (var i = 0; i < _re.Length; i++)
+            for (int i = 0; i < _re.Length; i++)
             {
-                var mag = _re[i];
-                var phase = _rand.NextDouble() * 2 * Math.PI;
+                float mag = _re[i];
+                double phase = _rand.NextDouble() * 2 * Math.PI;
 
                 _re[i] = (float)(mag * Math.Cos(phase));
                 _im[i] = (float)(mag * Math.Sin(phase));
@@ -127,14 +133,17 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 
             _fft.Inverse(_re, _im, _samples);
 
-            var norm = 1 / _samples.Max();
+            float norm = 1 / _samples.Max();
 
-            for (var i = 0; i < _samples.Length; _samples[i++] *= norm) ;
+            for (int i = 0; i < _samples.Length; _samples[i++] *= norm)
+            {
+                ;
+            }
         }
 
         protected double Profile(double f, double bw)
         {
-            var x = f / bw;
+            double x = f / bw;
             return Math.Exp(-x * x) / bw;
         }
 
@@ -163,7 +172,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
             }
 
             padSynth.SetAmplitudeArray(amplitudes);
-            
+
             return padSynth;
         }
     }

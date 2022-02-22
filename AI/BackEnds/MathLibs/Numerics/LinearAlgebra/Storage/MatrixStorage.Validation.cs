@@ -35,7 +35,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
     public partial class MatrixStorage<T>
     {
-        void ValidateRange(int row, int column)
+        private void ValidateRange(int row, int column)
         {
             if ((uint)row >= (uint)RowCount)
             {
@@ -48,7 +48,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void ValidateSubMatrixRange<TU>(MatrixStorage<TU> target,
+        private void ValidateSubMatrixRange<TU>(MatrixStorage<TU> target,
             int sourceRowIndex, int targetRowIndex, int rowCount,
             int sourceColumnIndex, int targetColumnIndex, int columnCount)
             where TU : struct, IEquatable<TU>, IFormattable
@@ -75,8 +75,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentOutOfRangeException(nameof(sourceColumnIndex));
             }
 
-            var sourceRowMax = sourceRowIndex + rowCount;
-            var sourceColumnMax = sourceColumnIndex + columnCount;
+            int sourceRowMax = sourceRowIndex + rowCount;
+            int sourceColumnMax = sourceColumnIndex + columnCount;
 
             if (sourceRowMax > RowCount)
             {
@@ -100,8 +100,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
                 throw new ArgumentOutOfRangeException(nameof(targetColumnIndex));
             }
 
-            var targetRowMax = targetRowIndex + rowCount;
-            var targetColumnMax = targetColumnIndex + columnCount;
+            int targetRowMax = targetRowIndex + rowCount;
+            int targetColumnMax = targetColumnIndex + columnCount;
 
             if (targetRowMax > target.RowCount)
             {
@@ -114,7 +114,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void ValidateRowRange<TU>(VectorStorage<TU> target, int rowIndex)
+        private void ValidateRowRange<TU>(VectorStorage<TU> target, int rowIndex)
             where TU : struct, IEquatable<TU>, IFormattable
         {
             if ((uint)rowIndex >= (uint)RowCount)
@@ -128,7 +128,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void ValidateColumnRange<TU>(VectorStorage<TU> target, int columnIndex)
+        private void ValidateColumnRange<TU>(VectorStorage<TU> target, int columnIndex)
             where TU : struct, IEquatable<TU>, IFormattable
         {
             if ((uint)columnIndex >= (uint)ColumnCount)
@@ -142,7 +142,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void ValidateSubRowRange<TU>(VectorStorage<TU> target, int rowIndex,
+        private void ValidateSubRowRange<TU>(VectorStorage<TU> target, int rowIndex,
             int sourceColumnIndex, int targetColumnIndex, int columnCount)
             where TU : struct, IEquatable<TU>, IFormattable
         {
@@ -181,7 +181,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
         }
 
-        void ValidateSubColumnRange<TU>(VectorStorage<TU> target, int columnIndex,
+        private void ValidateSubColumnRange<TU>(VectorStorage<TU> target, int columnIndex,
             int sourceRowIndex, int targetRowIndex, int rowCount)
             where TU : struct, IEquatable<TU>, IFormattable
         {

@@ -15,7 +15,7 @@
         /// <summary>
         /// Internal array for imaginary parts
         /// </summary>
-        private float[] _im;
+        private readonly float[] _im;
 
         /// <summary>
         /// Constructor
@@ -34,14 +34,14 @@
         /// <param name="re"></param>
         public void Direct(float[] re)
         {
-            for (var i = 0; i < _im.Length; i++)
+            for (int i = 0; i < _im.Length; i++)
             {
                 _im[i] = 0;
             }
 
             _fft.Direct(re, _im);
 
-            for (var i = 0; i < re.Length; i++)
+            for (int i = 0; i < re.Length; i++)
             {
                 re[i] -= _im[i];
             }
@@ -54,10 +54,10 @@
         public void Inverse(float[] re)
         {
             _im[0] = 0;
-            
-            for (var i = 1; i <= re.Length / 2; i++)
+
+            for (int i = 1; i <= re.Length / 2; i++)
             {
-                var x = (re[Size - i] - re[i]) * 0.5f;
+                float x = (re[Size - i] - re[i]) * 0.5f;
                 _im[i] = x;
                 _im[Size - i] = -x;
 
@@ -67,7 +67,7 @@
 
             _fft.Inverse(re, _im);
 
-            for (var i = 0; i < re.Length; i++)
+            for (int i = 0; i < re.Length; i++)
             {
                 re[i] /= Size;
             }

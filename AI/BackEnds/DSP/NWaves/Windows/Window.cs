@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Linq;
-using AI.BackEnds.DSP.NWaves.Utils;
 
 namespace AI.BackEnds.DSP.NWaves.Windows
 {
@@ -77,7 +77,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <returns>Triangular window</returns>
         public static float[] Triangular(int length)
         {
-            var n = length - 1;
+            int n = length - 1;
             return Enumerable.Range(0, length)
                              .Select(i => 1.0 - 2 * Math.Abs(i - n / 2.0) / length)
                              .ToFloats();
@@ -90,7 +90,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <returns>Hamming window</returns>
         public static float[] Hamming(int length)
         {
-            var n = 2 * Math.PI / (length - 1);
+            double n = 2 * Math.PI / (length - 1);
             return Enumerable.Range(0, length)
                              .Select(i => 0.54 - 0.46 * Math.Cos(i * n))
                              .ToFloats();
@@ -103,7 +103,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <returns>Blackman window</returns>
         public static float[] Blackman(int length)
         {
-            var n = 2 * Math.PI / (length - 1);
+            double n = 2 * Math.PI / (length - 1);
             return Enumerable.Range(0, length)
                              .Select(i => 0.42 - 0.5 * Math.Cos(i * n) + 0.08 * Math.Cos(2 * i * n))
                              .ToFloats();
@@ -116,7 +116,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <returns>Hann window</returns>
         public static float[] Hann(int length)
         {
-            var n = 2 * Math.PI / (length - 1);
+            double n = 2 * Math.PI / (length - 1);
             return Enumerable.Range(0, length)
                              .Select(i => 0.5 * (1 - Math.Cos(i * n)))
                              .ToFloats();
@@ -129,7 +129,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <returns>Gaussian window</returns>
         public static float[] Gaussian(int length)
         {
-            var n = (length - 1) / 2;
+            int n = (length - 1) / 2;
             return Enumerable.Range(0, length)
                              .Select(i => Math.Exp(-0.5 * Math.Pow((i - n) / (0.4 * n), 2)))
                              .ToFloats();
@@ -142,7 +142,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <returns>Kaiser window</returns>
         public static float[] Kaiser(int length, double alpha = 12.0)
         {
-            var n = 2.0 / (length - 1);
+            double n = 2.0 / (length - 1);
             return Enumerable.Range(0, length)
                              .Select(i => MathUtils.I0(alpha * Math.Sqrt(1 - (i * n - 1) * (i * n - 1))) / MathUtils.I0(alpha))
                              .ToFloats();
@@ -155,10 +155,10 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <returns>KBD window</returns>
         public static float[] Kbd(int length, double alpha = 4.0)
         {
-            var kbd = new float[length];
+            float[] kbd = new float[length];
 
-            var n = 4.0 / length;
-            var sum = 0.0;
+            double n = 4.0 / length;
+            double sum = 0.0;
 
             for (int i = 0; i <= length / 2; i++)
             {
@@ -180,7 +180,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// </summary>
         public static float[] BartlettHann(int length)
         {
-            var n = 1.0 / (length - 1);
+            double n = 1.0 / (length - 1);
             return Enumerable.Range(0, length)
                              .Select(i => 0.62 - 0.48 * Math.Abs(i * n - 0.5) - 0.38 * Math.Cos(2 * Math.PI * i * n))
                              .ToFloats();
@@ -191,7 +191,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// </summary>
         public static float[] Lanczos(int length)
         {
-            var n = 2.0 / (length - 1);
+            double n = 2.0 / (length - 1);
             return Enumerable.Range(0, length)
                              .Select(i => MathUtils.Sinc(i * n - 1))
                              .ToFloats();
@@ -202,7 +202,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// </summary>
         public static float[] PowerOfSine(int length, double alpha = 1.5)
         {
-            var n = Math.PI / length;
+            double n = Math.PI / length;
             return Enumerable.Range(0, length)
                              .Select(i => Math.Pow(Math.Sin(i * n), alpha))
                              .ToFloats();
@@ -213,7 +213,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// </summary>
         public static float[] Flattop(int length)
         {
-            var n = 2 * Math.PI / (length - 1);
+            double n = 2 * Math.PI / (length - 1);
             return Enumerable.Range(0, length)
                              .Select(i => 0.216 - 0.417 * Math.Cos(i * n) + 0.278 * Math.Cos(2 * i * n) - 0.084 * Math.Cos(3 * i * n) + 0.007 * Math.Cos(4 * i * n))
                              .ToFloats();
@@ -230,7 +230,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
             {
                 return Rectangular(length);
             }
-            
+
             return Enumerable.Range(0, length)
                              .Select(i => 1 + l * Math.Sin(Math.PI * i / l) / 2)
                              .ToFloats();

@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -42,7 +42,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
     public class BfgsBMinimizer : BfgsMinimizerBase
     {
         public BfgsBMinimizer(double gradientTolerance, double parameterTolerance, double functionProgressTolerance, int maximumIterations = 1000)
-            : base(gradientTolerance,parameterTolerance,functionProgressTolerance,maximumIterations)
+            : base(gradientTolerance, parameterTolerance, functionProgressTolerance, maximumIterations)
         {
         }
 
@@ -59,27 +59,37 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             _lowerBound = lowerBound;
             _upperBound = upperBound;
             if (!objective.IsGradientSupported)
+            {
                 throw new IncompatibleObjectiveException("Gradient not supported in objective function, but required for BFGS minimization.");
+            }
 
             // Check that dimensions match
             if (lowerBound.Count != upperBound.Count || lowerBound.Count != initialGuess.Count)
+            {
                 throw new ArgumentException("Dimensions of bounds and/or initial guess do not match.");
+            }
 
             // Check that initial guess is feasible
             for (int ii = 0; ii < initialGuess.Count; ++ii)
+            {
                 if (initialGuess[ii] < lowerBound[ii] || initialGuess[ii] > upperBound[ii])
+                {
                     throw new ArgumentException("Initial guess is not in the feasible region");
+                }
+            }
 
             objective.EvaluateAt(initialGuess);
             ValidateGradientAndObjective(objective);
 
             // Check that we're not already done
-            var currentExitCondition = ExitCriteriaSatisfied(objective, null, 0);
+            ExitCondition currentExitCondition = ExitCriteriaSatisfied(objective, null, 0);
             if (currentExitCondition != ExitCondition.None)
+            {
                 return new MinimizationResult(objective, 0, currentExitCondition);
+            }
 
             // Set up line search algorithm
-            var lineSearcher = new StrongWolfeLineSearch(1e-4, 0.9, Math.Max(ParameterTolerance, 1e-5), maxIterations: 1000);
+            StrongWolfeLineSearch lineSearcher = new StrongWolfeLineSearch(1e-4, 0.9, Math.Max(ParameterTolerance, 1e-5), maxIterations: 1000);
 
             // Declare state variables
             VectorMathNet<double> reducedSolution1, reducedGradient, reducedInitialPoint, reducedCauchyPoint, solution1;
@@ -87,14 +97,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             List<int> reducedMap;
 
             // First step
-            var pseudoHessian = CreateMatrix.DiagonalIdentity<double>(initialGuess.Count);
+            MatrixMathNet<double> pseudoHessian = CreateMatrix.DiagonalIdentity<double>(initialGuess.Count);
 
             // Determine active set
-            var gradientProjectionResult = QuadraticGradientProjectionSearch.Search(objective.Point, objective.Gradient, pseudoHessian, lowerBound, upperBound);
-            var cauchyPoint = gradientProjectionResult.CauchyPoint;
-            var fixedCount = gradientProjectionResult.FixedCount;
-            var isFixed = gradientProjectionResult.IsFixed;
-            var freeCount = lowerBound.Count - fixedCount;
+            QuadraticGradientProjectionSearch.GradientProjectionResult gradientProjectionResult = QuadraticGradientProjectionSearch.Search(objective.Point, objective.Gradient, pseudoHessian, lowerBound, upperBound);
+            VectorMathNet<double> cauchyPoint = gradientProjectionResult.CauchyPoint;
+            int fixedCount = gradientProjectionResult.FixedCount;
+            List<bool> isFixed = gradientProjectionResult.IsFixed;
+            int freeCount = lowerBound.Count - fixedCount;
 
             if (freeCount > 0)
             {
@@ -116,16 +126,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 solution1 = cauchyPoint;
             }
 
-            var directionFromCauchy = solution1 - cauchyPoint;
-            var maxStepFromCauchyPoint = FindMaxStep(cauchyPoint, directionFromCauchy, lowerBound, upperBound);
+            VectorMathNet<double> directionFromCauchy = solution1 - cauchyPoint;
+            double maxStepFromCauchyPoint = FindMaxStep(cauchyPoint, directionFromCauchy, lowerBound, upperBound);
 
-            var solution2 = cauchyPoint + Math.Min(maxStepFromCauchyPoint, 1.0)*directionFromCauchy;
+            VectorMathNet<double> solution2 = cauchyPoint + Math.Min(maxStepFromCauchyPoint, 1.0) * directionFromCauchy;
 
-            var lineSearchDirection = solution2 - objective.Point;
-            var maxLineSearchStep = FindMaxStep(objective.Point, lineSearchDirection, lowerBound, upperBound);
-            var estStepSize = -objective.Gradient*lineSearchDirection/(lineSearchDirection*pseudoHessian*lineSearchDirection);
+            VectorMathNet<double> lineSearchDirection = solution2 - objective.Point;
+            double maxLineSearchStep = FindMaxStep(objective.Point, lineSearchDirection, lowerBound, upperBound);
+            double estStepSize = -objective.Gradient * lineSearchDirection / (lineSearchDirection * pseudoHessian * lineSearchDirection);
 
-            var startingStepSize = Math.Min(Math.Max(estStepSize, 1.0), maxLineSearchStep);
+            double startingStepSize = Math.Min(Math.Max(estStepSize, 1.0), maxLineSearchStep);
 
             // Line search
             LineSearchResult lineSearchResult;
@@ -138,16 +148,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 throw new InnerOptimizationException("Line search failed.", e);
             }
 
-            var previousPoint = objective.Fork();
-            var candidatePoint = lineSearchResult.FunctionInfoAtMinimum;
+            IObjectiveFunction previousPoint = objective.Fork();
+            IObjectiveFunction candidatePoint = lineSearchResult.FunctionInfoAtMinimum;
             ValidateGradientAndObjective(candidatePoint);
 
             // Check that we're not done
             currentExitCondition = ExitCriteriaSatisfied(candidatePoint, previousPoint, 0);
             if (currentExitCondition != ExitCondition.None)
+            {
                 return new MinimizationResult(candidatePoint, 0, currentExitCondition);
+            }
 
-            var step = candidatePoint.Point - initialGuess;
+            VectorMathNet<double> step = candidatePoint.Point - initialGuess;
 
             // Subsequent steps
             int totalLineSearchSteps = lineSearchResult.Iterations;
@@ -156,7 +168,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             int iterations = DoBfgsUpdate(ref currentExitCondition, lineSearcher, ref pseudoHessian, ref lineSearchDirection, ref previousPoint, ref lineSearchResult, ref candidatePoint, ref step, ref totalLineSearchSteps, ref iterationsWithNontrivialLineSearch);
 
             if (iterations == MaximumIterations && currentExitCondition == ExitCondition.None)
+            {
                 throw new MaximumIterationsException(FormattableString.Invariant($"Maximum iterations ({MaximumIterations}) reached."));
+            }
 
             return new MinimizationWithLineSearchResult(candidatePoint, iterations, currentExitCondition, totalLineSearchSteps, iterationsWithNontrivialLineSearch);
         }
@@ -169,13 +183,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             VectorMathNet<double> step)
         {
             VectorMathNet<double> lineSearchDirection;
-            var y = candidatePoint.Gradient - previousPoint.Gradient;
+            VectorMathNet<double> y = candidatePoint.Gradient - previousPoint.Gradient;
 
             double sy = step * y;
             if (sy > 0.0) // only do update if it will create a positive definite matrix
             {
-                var Hs = pseudoHessian * step;
-                var sHs = step * pseudoHessian * step;
+                VectorMathNet<double> Hs = pseudoHessian * step;
+                double sHs = step * pseudoHessian * step;
                 pseudoHessian = pseudoHessian + y.OuterProduct(y) * (1.0 / sy) - Hs.OuterProduct(Hs) * (1.0 / sHs);
             }
             else
@@ -184,19 +198,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             }
 
             // Determine active set
-            var gradientProjectionResult = QuadraticGradientProjectionSearch.Search(candidatePoint.Point, candidatePoint.Gradient, pseudoHessian, _lowerBound, _upperBound);
-            var cauchyPoint = gradientProjectionResult.CauchyPoint;
-            var fixedCount = gradientProjectionResult.FixedCount;
-            var isFixed = gradientProjectionResult.IsFixed;
-            var freeCount = _lowerBound.Count - fixedCount;
+            QuadraticGradientProjectionSearch.GradientProjectionResult gradientProjectionResult = QuadraticGradientProjectionSearch.Search(candidatePoint.Point, candidatePoint.Gradient, pseudoHessian, _lowerBound, _upperBound);
+            VectorMathNet<double> cauchyPoint = gradientProjectionResult.CauchyPoint;
+            int fixedCount = gradientProjectionResult.FixedCount;
+            List<bool> isFixed = gradientProjectionResult.IsFixed;
+            int freeCount = _lowerBound.Count - fixedCount;
             VectorMathNet<double> solution1;
             if (freeCount > 0)
             {
-                var reducedGradient = new DenseVector(freeCount);
-                var reducedHessian = new DenseMatrix(freeCount, freeCount);
-                var reducedMap = new List<int>(freeCount);
-                var reducedInitialPoint = new DenseVector(freeCount);
-                var reducedCauchyPoint = new DenseVector(freeCount);
+                DenseVector reducedGradient = new DenseVector(freeCount);
+                DenseMatrix reducedHessian = new DenseMatrix(freeCount, freeCount);
+                List<int> reducedMap = new List<int>(freeCount);
+                DenseVector reducedInitialPoint = new DenseVector(freeCount);
+                DenseVector reducedCauchyPoint = new DenseVector(freeCount);
 
                 CreateReducedData(candidatePoint.Point, cauchyPoint, isFixed, _lowerBound, _upperBound, candidatePoint.Gradient, pseudoHessian, reducedInitialPoint, reducedCauchyPoint, reducedGradient, reducedHessian, reducedMap);
 
@@ -210,10 +224,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 solution1 = cauchyPoint;
             }
 
-            var directionFromCauchy = solution1 - cauchyPoint;
-            var maxStepFromCauchyPoint = FindMaxStep(cauchyPoint, directionFromCauchy, _lowerBound, _upperBound);
+            VectorMathNet<double> directionFromCauchy = solution1 - cauchyPoint;
+            double maxStepFromCauchyPoint = FindMaxStep(cauchyPoint, directionFromCauchy, _lowerBound, _upperBound);
 
-            var solution2 = cauchyPoint + Math.Min(maxStepFromCauchyPoint, 1.0) * directionFromCauchy;
+            VectorMathNet<double> solution2 = cauchyPoint + Math.Min(maxStepFromCauchyPoint, 1.0) * directionFromCauchy;
 
             lineSearchDirection = solution2 - candidatePoint.Point;
             maxLineSearchStep = FindMaxStep(candidatePoint.Point, lineSearchDirection, _lowerBound, _upperBound);
@@ -230,37 +244,48 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             return lineSearchDirection;
         }
 
-        static VectorMathNet<double> ReducedToFull(List<int> reducedMap, VectorMathNet<double> reducedVector, VectorMathNet<double> fullVector)
+        private static VectorMathNet<double> ReducedToFull(List<int> reducedMap, VectorMathNet<double> reducedVector, VectorMathNet<double> fullVector)
         {
-            var output = fullVector.Clone();
+            VectorMathNet<double> output = fullVector.Clone();
             for (int ii = 0; ii < reducedMap.Count; ++ii)
+            {
                 output[reducedMap[ii]] = reducedVector[ii];
+            }
+
             return output;
         }
 
-        VectorMathNet<double> _lowerBound;
-        VectorMathNet<double> _upperBound;
+        private VectorMathNet<double> _lowerBound;
+        private VectorMathNet<double> _upperBound;
 
-        static double FindMaxStep(VectorMathNet<double> startingPoint, VectorMathNet<double> searchDirection, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound)
+        private static double FindMaxStep(VectorMathNet<double> startingPoint, VectorMathNet<double> searchDirection, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound)
         {
-            double maxStep = Double.PositiveInfinity;
+            double maxStep = double.PositiveInfinity;
             for (int ii = 0; ii < startingPoint.Count; ++ii)
             {
                 double paramMaxStep;
                 if (searchDirection[ii] > 0)
-                    paramMaxStep = (upperBound[ii] - startingPoint[ii])/searchDirection[ii];
+                {
+                    paramMaxStep = (upperBound[ii] - startingPoint[ii]) / searchDirection[ii];
+                }
                 else if (searchDirection[ii] < 0)
-                    paramMaxStep = (startingPoint[ii] - lowerBound[ii])/-searchDirection[ii];
+                {
+                    paramMaxStep = (startingPoint[ii] - lowerBound[ii]) / -searchDirection[ii];
+                }
                 else
-                    paramMaxStep = Double.PositiveInfinity;
+                {
+                    paramMaxStep = double.PositiveInfinity;
+                }
 
                 if (paramMaxStep < maxStep)
+                {
                     maxStep = paramMaxStep;
+                }
             }
             return maxStep;
         }
 
-        static void CreateReducedData(VectorMathNet<double> initialPoint, VectorMathNet<double> cauchyPoint, List<bool> isFixed, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound, VectorMathNet<double> gradient, MatrixMathNet<double> pseudoHessian, VectorMathNet<double> reducedInitialPoint, VectorMathNet<double> reducedCauchyPoint, VectorMathNet<double> reducedGradient, MatrixMathNet<double> reducedHessian, List<int> reducedMap)
+        private static void CreateReducedData(VectorMathNet<double> initialPoint, VectorMathNet<double> cauchyPoint, List<bool> isFixed, VectorMathNet<double> lowerBound, VectorMathNet<double> upperBound, VectorMathNet<double> gradient, MatrixMathNet<double> pseudoHessian, VectorMathNet<double> reducedInitialPoint, VectorMathNet<double> reducedCauchyPoint, VectorMathNet<double> reducedGradient, MatrixMathNet<double> reducedHessian, List<int> reducedMap)
         {
             int ll = 0;
             for (int ii = 0; ii < lowerBound.Count; ++ii)
@@ -295,13 +320,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             bool atUpperBound = _upperBound[ii] - candidatePoint.Point[ii] < VerySmall;
 
             if (atLowerBound && atUpperBound)
+            {
                 projectedGradient = 0.0;
+            }
             else if (atLowerBound)
+            {
                 projectedGradient = Math.Min(candidatePoint.Gradient[ii], 0.0);
+            }
             else if (atUpperBound)
+            {
                 projectedGradient = Math.Max(candidatePoint.Gradient[ii], 0.0);
+            }
             else
+            {
                 projectedGradient = base.GetProjectedGradient(candidatePoint, ii);
+            }
+
             return projectedGradient;
         }
     }

@@ -59,28 +59,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <exception cref="NonConvergenceException"></exception>
         public static UserSvd Create(MatrixMathNet<Complex> matrix, bool computeVectors)
         {
-            var nm = Math.Min(matrix.RowCount + 1, matrix.ColumnCount);
-            var matrixCopy = matrix.Clone();
+            int nm = Math.Min(matrix.RowCount + 1, matrix.ColumnCount);
+            MatrixMathNet<Complex> matrixCopy = matrix.Clone();
 
-            var s = VectorMathNet<Complex>.Build.SameAs(matrixCopy, nm);
-            var u = MatrixMathNet<Complex>.Build.SameAs(matrixCopy, matrixCopy.RowCount, matrixCopy.RowCount, fullyMutable: true);
-            var vt = MatrixMathNet<Complex>.Build.SameAs(matrixCopy, matrixCopy.ColumnCount, matrixCopy.ColumnCount, fullyMutable: true);
+            VectorMathNet<Complex> s = VectorMathNet<Complex>.Build.SameAs(matrixCopy, nm);
+            MatrixMathNet<Complex> u = MatrixMathNet<Complex>.Build.SameAs(matrixCopy, matrixCopy.RowCount, matrixCopy.RowCount, fullyMutable: true);
+            MatrixMathNet<Complex> vt = MatrixMathNet<Complex>.Build.SameAs(matrixCopy, matrixCopy.ColumnCount, matrixCopy.ColumnCount, fullyMutable: true);
 
             const int maxiter = 1000;
-            var e = new Complex[matrixCopy.ColumnCount];
-            var work = new Complex[matrixCopy.RowCount];
+            Complex[] e = new Complex[matrixCopy.ColumnCount];
+            Complex[] work = new Complex[matrixCopy.RowCount];
 
             int i, j;
             int l, lp1;
             Complex t;
 
-            var ncu = matrixCopy.RowCount;
+            int ncu = matrixCopy.RowCount;
 
             // Reduce matrixCopy to bidiagonal form, storing the diagonal elements
             // In s and the super-diagonal elements in e.
-            var nct = Math.Min(matrixCopy.RowCount - 1, matrixCopy.ColumnCount);
-            var nrt = Math.Max(0, Math.Min(matrixCopy.ColumnCount - 2, matrixCopy.RowCount));
-            var lu = Math.Max(nct, nrt);
+            int nct = Math.Min(matrixCopy.RowCount - 1, matrixCopy.ColumnCount);
+            int nrt = Math.Max(0, Math.Min(matrixCopy.ColumnCount - 2, matrixCopy.RowCount));
+            int lu = Math.Max(nct, nrt);
             for (l = 0; l < lu; l++)
             {
                 lp1 = l + 1;
@@ -95,7 +95,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                             s[l] = Csign(s[l], matrixCopy.At(l, l));
                         }
 
-                        CscalColumn(matrixCopy, matrixCopy.RowCount, l, l, 1.0/s[l]);
+                        CscalColumn(matrixCopy, matrixCopy.RowCount, l, l, 1.0 / s[l]);
                         matrixCopy.At(l, l, (Complex.One + matrixCopy.At(l, l)));
                     }
 
@@ -109,12 +109,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                         if (s[l].Magnitude != 0.0)
                         {
                             // Apply the transformation.
-                            t = -Cdotc(matrixCopy, matrixCopy.RowCount, l, j, l)/matrixCopy.At(l, l);
+                            t = -Cdotc(matrixCopy, matrixCopy.RowCount, l, j, l) / matrixCopy.At(l, l);
                             if (t != Complex.Zero)
                             {
-                                for (var ii = l; ii < matrixCopy.RowCount; ii++)
+                                for (int ii = l; ii < matrixCopy.RowCount; ii++)
                                 {
-                                    matrixCopy.At(ii, j, matrixCopy.At(ii, j) + (t*matrixCopy.At(ii, l)));
+                                    matrixCopy.At(ii, j, matrixCopy.At(ii, j) + (t * matrixCopy.At(ii, l)));
                                 }
                             }
                         }
@@ -140,7 +140,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 }
 
                 // Compute the l-th row transformation and place the l-th super-diagonal in e(l).
-                var enorm = Cnrm2Vector(e, lp1);
+                double enorm = Cnrm2Vector(e, lp1);
                 e[l] = enorm;
                 if (e[l].Magnitude != 0.0)
                 {
@@ -149,7 +149,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                         e[l] = Csign(e[l], e[lp1]);
                     }
 
-                    CscalVector(e, lp1, 1.0/e[l]);
+                    CscalVector(e, lp1, 1.0 / e[l]);
                     e[lp1] = Complex.One + e[lp1];
                 }
 
@@ -166,21 +166,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                     {
                         if (e[j] != Complex.Zero)
                         {
-                            for (var ii = lp1; ii < matrixCopy.RowCount; ii++)
+                            for (int ii = lp1; ii < matrixCopy.RowCount; ii++)
                             {
-                                work[ii] += e[j]*matrixCopy.At(ii, j);
+                                work[ii] += e[j] * matrixCopy.At(ii, j);
                             }
                         }
                     }
 
                     for (j = lp1; j < matrixCopy.ColumnCount; j++)
                     {
-                        var ww = (-e[j]/e[lp1]).Conjugate();
+                        Complex ww = (-e[j] / e[lp1]).Conjugate();
                         if (ww != Complex.Zero)
                         {
-                            for (var ii = lp1; ii < matrixCopy.RowCount; ii++)
+                            for (int ii = lp1; ii < matrixCopy.RowCount; ii++)
                             {
-                                matrixCopy.At(ii, j, matrixCopy.At(ii, j) + (ww*work[ii]));
+                                matrixCopy.At(ii, j, matrixCopy.At(ii, j) + (ww * work[ii]));
                             }
                         }
                     }
@@ -197,9 +197,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
             }
 
             // Set up the final bidiagonal matrixCopy or order m.
-            var m = Math.Min(matrixCopy.ColumnCount, matrixCopy.RowCount + 1);
-            var nctp1 = nct + 1;
-            var nrtp1 = nrt + 1;
+            int m = Math.Min(matrixCopy.ColumnCount, matrixCopy.RowCount + 1);
+            int nctp1 = nct + 1;
+            int nrtp1 = nrt + 1;
             if (nct < matrixCopy.ColumnCount)
             {
                 s[nctp1 - 1] = matrixCopy.At((nctp1 - 1), (nctp1 - 1));
@@ -236,12 +236,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                     {
                         for (j = l + 1; j < ncu; j++)
                         {
-                            t = -Cdotc(u, matrixCopy.RowCount, l, j, l)/u.At(l, l);
+                            t = -Cdotc(u, matrixCopy.RowCount, l, j, l) / u.At(l, l);
                             if (t != Complex.Zero)
                             {
-                                for (var ii = l; ii < matrixCopy.RowCount; ii++)
+                                for (int ii = l; ii < matrixCopy.RowCount; ii++)
                                 {
-                                    u.At(ii, j, u.At(ii, j) + (t*u.At(ii, l)));
+                                    u.At(ii, j, u.At(ii, j) + (t * u.At(ii, l)));
                                 }
                             }
                         }
@@ -277,12 +277,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                         {
                             for (j = lp1; j < matrixCopy.ColumnCount; j++)
                             {
-                                t = -Cdotc(vt, matrixCopy.ColumnCount, l, j, lp1)/vt.At(lp1, l);
+                                t = -Cdotc(vt, matrixCopy.ColumnCount, l, j, lp1) / vt.At(lp1, l);
                                 if (t != Complex.Zero)
                                 {
-                                    for (var ii = l; ii < matrixCopy.ColumnCount; ii++)
+                                    for (int ii = l; ii < matrixCopy.ColumnCount; ii++)
                                     {
-                                        vt.At(ii, j, vt.At(ii, j) + (t*vt.At(ii, l)));
+                                        vt.At(ii, j, vt.At(ii, j) + (t * vt.At(ii, l)));
                                     }
                                 }
                             }
@@ -305,11 +305,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 if (s[i].Magnitude != 0.0)
                 {
                     t = s[i].Magnitude;
-                    r = s[i]/t;
+                    r = s[i] / t;
                     s[i] = t;
                     if (i < m - 1)
                     {
-                        e[i] = e[i]/r;
+                        e[i] = e[i] / r;
                     }
 
                     if (computeVectors)
@@ -327,9 +327,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 if (e[i].Magnitude != 0.0)
                 {
                     t = e[i].Magnitude;
-                    r = t/e[i];
+                    r = t / e[i];
                     e[i] = t;
-                    s[i + 1] = s[i + 1]*r;
+                    s[i + 1] = s[i + 1] * r;
                     if (computeVectors)
                     {
                         CscalColumn(vt, matrixCopy.ColumnCount, i + 1, 0, r);
@@ -338,8 +338,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
             }
 
             // Main iteration loop for the singular values.
-            var mn = m;
-            var iter = 0;
+            int mn = m;
+            int iter = 0;
 
             while (m > 0)
             {
@@ -422,12 +422,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 double sn;
                 switch (kase)
                 {
-                        // Deflate negligible VectorS[m].
+                    // Deflate negligible VectorS[m].
                     case 1:
                         f = e[m - 2].Real;
                         e[m - 2] = Complex.Zero;
                         double t1;
-                        for (var kk = l; kk < m - 1; kk++)
+                        for (int kk = l; kk < m - 1; kk++)
                         {
                             k = m - 2 - kk + l;
                             t1 = s[k].Real;
@@ -435,8 +435,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                             s[k] = t1;
                             if (k != l)
                             {
-                                f = -sn*e[k - 1].Real;
-                                e[k - 1] = cs*e[k - 1];
+                                f = -sn * e[k - 1].Real;
+                                e[k - 1] = cs * e[k - 1];
                             }
 
                             if (computeVectors)
@@ -447,7 +447,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
 
                         break;
 
-                        // Split at negligible VectorS[l].
+                    // Split at negligible VectorS[l].
                     case 2:
                         f = e[l - 1].Real;
                         e[l - 1] = Complex.Zero;
@@ -456,8 +456,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                             t1 = s[k].Real;
                             Srotg(ref t1, ref f, out cs, out sn);
                             s[k] = t1;
-                            f = -sn*e[k].Real;
-                            e[k] = cs*e[k];
+                            f = -sn * e[k].Real;
+                            e[k] = cs * e[k];
                             if (computeVectors)
                             {
                                 Csrot(u, matrixCopy.RowCount, k, l - 1, cs, sn);
@@ -466,37 +466,37 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
 
                         break;
 
-                        // Perform one qr step.
+                    // Perform one qr step.
                     case 3:
                         // Calculate the shift.
-                        var scale = 0.0;
+                        double scale = 0.0;
                         scale = Math.Max(scale, s[m - 1].Magnitude);
                         scale = Math.Max(scale, s[m - 2].Magnitude);
                         scale = Math.Max(scale, e[m - 2].Magnitude);
                         scale = Math.Max(scale, s[l].Magnitude);
                         scale = Math.Max(scale, e[l].Magnitude);
-                        var sm = s[m - 1].Real/scale;
-                        var smm1 = s[m - 2].Real/scale;
-                        var emm1 = e[m - 2].Real/scale;
-                        var sl = s[l].Real/scale;
-                        var el = e[l].Real/scale;
-                        var b = (((smm1 + sm)*(smm1 - sm)) + (emm1*emm1))/2.0;
-                        var c = (sm*emm1)*(sm*emm1);
-                        var shift = 0.0;
+                        double sm = s[m - 1].Real / scale;
+                        double smm1 = s[m - 2].Real / scale;
+                        double emm1 = e[m - 2].Real / scale;
+                        double sl = s[l].Real / scale;
+                        double el = e[l].Real / scale;
+                        double b = (((smm1 + sm) * (smm1 - sm)) + (emm1 * emm1)) / 2.0;
+                        double c = (sm * emm1) * (sm * emm1);
+                        double shift = 0.0;
 
                         if (b != 0.0 || c != 0.0)
                         {
-                            shift = Math.Sqrt((b*b) + c);
+                            shift = Math.Sqrt((b * b) + c);
                             if (b < 0.0)
                             {
                                 shift = -shift;
                             }
 
-                            shift = c/(b + shift);
+                            shift = c / (b + shift);
                         }
 
-                        f = ((sl + sm)*(sl - sm)) + shift;
-                        var g = sl*el;
+                        f = ((sl + sm) * (sl - sm)) + shift;
+                        double g = sl * el;
 
                         // Chase zeros.
                         for (k = l; k < m - 1; k++)
@@ -507,10 +507,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                                 e[k - 1] = f;
                             }
 
-                            f = (cs*s[k].Real) + (sn*e[k].Real);
-                            e[k] = (cs*e[k]) - (sn*s[k]);
-                            g = sn*s[k + 1].Real;
-                            s[k + 1] = cs*s[k + 1];
+                            f = (cs * s[k].Real) + (sn * e[k].Real);
+                            e[k] = (cs * e[k]) - (sn * s[k]);
+                            g = sn * s[k + 1].Real;
+                            s[k + 1] = cs * s[k + 1];
                             if (computeVectors)
                             {
                                 Csrot(vt, matrixCopy.ColumnCount, k, k + 1, cs, sn);
@@ -518,10 +518,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
 
                             Srotg(ref f, ref g, out cs, out sn);
                             s[k] = f;
-                            f = (cs*e[k].Real) + (sn*s[k + 1].Real);
-                            s[k + 1] = (-sn*e[k]) + (cs*s[k + 1]);
-                            g = sn*e[k + 1].Real;
-                            e[k + 1] = cs*e[k + 1];
+                            f = (cs * e[k].Real) + (sn * s[k + 1].Real);
+                            s[k + 1] = (-sn * e[k]) + (cs * s[k + 1]);
+                            g = sn * e[k + 1].Real;
+                            e[k + 1] = cs * e[k + 1];
                             if (computeVectors && k < matrixCopy.RowCount)
                             {
                                 Csrot(u, matrixCopy.RowCount, k, k + 1, cs, sn);
@@ -532,7 +532,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                         iter = iter + 1;
                         break;
 
-                        // Convergence.
+                    // Convergence.
                     case 4:
                         // Make the singular value  positive
                         if (s[l].Real < 0.0)
@@ -585,7 +585,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
             if (matrixCopy.RowCount < matrixCopy.ColumnCount)
             {
                 nm--;
-                var tmp = VectorMathNet<Complex>.Build.SameAs(matrixCopy, nm);
+                VectorMathNet<Complex> tmp = VectorMathNet<Complex>.Build.SameAs(matrixCopy, nm);
                 for (i = 0; i < nm; i++)
                 {
                     tmp[i] = s[i];
@@ -597,7 +597,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
             return new UserSvd(s, u, vt, computeVectors);
         }
 
-        UserSvd(VectorMathNet<Complex> s, MatrixMathNet<Complex> u, MatrixMathNet<Complex> vt, bool vectorsComputed)
+        private UserSvd(VectorMathNet<Complex> s, MatrixMathNet<Complex> u, MatrixMathNet<Complex> vt, bool vectorsComputed)
             : base(s, u, vt, vectorsComputed)
         {
         }
@@ -608,9 +608,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="z1">Complex value z1</param>
         /// <param name="z2">Complex value z2</param>
         /// <returns>Result multiplication of signum function and absolute value</returns>
-        static Complex Csign(Complex z1, Complex z2)
+        private static Complex Csign(Complex z1, Complex z2)
         {
-            return z1.Magnitude*(z2/z2.Magnitude);
+            return z1.Magnitude * (z2 / z2.Magnitude);
         }
 
         /// <summary>
@@ -620,11 +620,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="rowCount">The number of rows in <paramref name="a"/></param>
         /// <param name="columnA">Column A index to swap</param>
         /// <param name="columnB">Column B index to swap</param>
-        static void Swap(MatrixMathNet<Complex> a, int rowCount, int columnA, int columnB)
+        private static void Swap(MatrixMathNet<Complex> a, int rowCount, int columnA, int columnB)
         {
-            for (var i = 0; i < rowCount; i++)
+            for (int i = 0; i < rowCount; i++)
             {
-                var z = a.At(i, columnA);
+                Complex z = a.At(i, columnA);
                 a.At(i, columnA, a.At(i, columnB));
                 a.At(i, columnB, z);
             }
@@ -638,11 +638,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="column">Column to scale</param>
         /// <param name="rowStart">Row to scale from</param>
         /// <param name="z">Scale value</param>
-        static void CscalColumn(MatrixMathNet<Complex> a, int rowCount, int column, int rowStart, Complex z)
+        private static void CscalColumn(MatrixMathNet<Complex> a, int rowCount, int column, int rowStart, Complex z)
         {
-            for (var i = rowStart; i < rowCount; i++)
+            for (int i = rowStart; i < rowCount; i++)
             {
-                a.At(i, column, a.At(i, column)*z);
+                a.At(i, column, a.At(i, column) * z);
             }
         }
 
@@ -652,11 +652,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="a">Source vector</param>
         /// <param name="start">Row to scale from</param>
         /// <param name="z">Scale value</param>
-        static void CscalVector(Complex[] a, int start, Complex z)
+        private static void CscalVector(Complex[] a, int start, Complex z)
         {
-            for (var i = start; i < a.Length; i++)
+            for (int i = start; i < a.Length; i++)
             {
-                a[i] = a[i]*z;
+                a[i] = a[i] * z;
             }
         }
 
@@ -669,19 +669,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="c">Contains the parameter c associated with the Givens rotation</param>
         /// <param name="s">Contains the parameter s associated with the Givens rotation</param>
         /// <remarks>This is equivalent to the DROTG LAPACK routine.</remarks>
-        static void Srotg(ref double da, ref double db, out double c, out double s)
+        private static void Srotg(ref double da, ref double db, out double c, out double s)
         {
             double r, z;
 
-            var roe = db;
-            var absda = Math.Abs(da);
-            var absdb = Math.Abs(db);
+            double roe = db;
+            double absda = Math.Abs(da);
+            double absdb = Math.Abs(db);
             if (absda > absdb)
             {
                 roe = da;
             }
 
-            var scale = absda + absdb;
+            double scale = absda + absdb;
             if (scale == 0.0)
             {
                 c = 1.0;
@@ -691,16 +691,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
             }
             else
             {
-                var sda = da/scale;
-                var sdb = db/scale;
-                r = scale*Math.Sqrt((sda*sda) + (sdb*sdb));
+                double sda = da / scale;
+                double sdb = db / scale;
+                r = scale * Math.Sqrt((sda * sda) + (sdb * sdb));
                 if (roe < 0.0)
                 {
                     r = -r;
                 }
 
-                c = da/r;
-                s = db/r;
+                c = da / r;
+                s = db / r;
                 z = 1.0;
                 if (absda > absdb)
                 {
@@ -709,7 +709,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
 
                 if (absdb >= absda && c != 0.0)
                 {
-                    z = 1.0/c;
+                    z = 1.0 / c;
                 }
             }
 
@@ -725,12 +725,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="column">Column index</param>
         /// <param name="rowStart">Start row index</param>
         /// <returns>Norm2 (Euclidean norm) of the column</returns>
-        static double Cnrm2Column(MatrixMathNet<Complex> a, int rowCount, int column, int rowStart)
+        private static double Cnrm2Column(MatrixMathNet<Complex> a, int rowCount, int column, int rowStart)
         {
-            var s = 0.0;
-            for (var i = rowStart; i < rowCount; i++)
+            double s = 0.0;
+            for (int i = rowStart; i < rowCount; i++)
             {
-                s += a.At(i, column).Magnitude*a.At(i, column).Magnitude;
+                s += a.At(i, column).Magnitude * a.At(i, column).Magnitude;
             }
 
             return Math.Sqrt(s);
@@ -742,12 +742,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="a">Source vector</param>
         /// <param name="rowStart">Start index</param>
         /// <returns>Norm2 (Euclidean norm) of the vector</returns>
-        static double Cnrm2Vector(Complex[] a, int rowStart)
+        private static double Cnrm2Vector(Complex[] a, int rowStart)
         {
-            var s = 0.0;
-            for (var i = rowStart; i < a.Length; i++)
+            double s = 0.0;
+            for (int i = rowStart; i < a.Length; i++)
             {
-                s += a[i].Magnitude*a[i].Magnitude;
+                s += a[i].Magnitude * a[i].Magnitude;
             }
 
             return Math.Sqrt(s);
@@ -762,12 +762,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="columnB">Index of column B</param>
         /// <param name="rowStart">Starting row index</param>
         /// <returns>Dot product value</returns>
-        static Complex Cdotc(MatrixMathNet<Complex> a, int rowCount, int columnA, int columnB, int rowStart)
+        private static Complex Cdotc(MatrixMathNet<Complex> a, int rowCount, int columnA, int columnB, int rowStart)
         {
-            var z = Complex.Zero;
-            for (var i = rowStart; i < rowCount; i++)
+            Complex z = Complex.Zero;
+            for (int i = rowStart; i < rowCount; i++)
             {
-                z += a.At(i, columnA).Conjugate()*a.At(i, columnB);
+                z += a.At(i, columnA).Conjugate() * a.At(i, columnB);
             }
 
             return z;
@@ -783,12 +783,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="columnB">Index of column B</param>
         /// <param name="c">scalar cos value</param>
         /// <param name="s">scalar sin value</param>
-        static void Csrot(MatrixMathNet<Complex> a, int rowCount, int columnA, int columnB, double c, double s)
+        private static void Csrot(MatrixMathNet<Complex> a, int rowCount, int columnA, int columnB, double c, double s)
         {
-            for (var i = 0; i < rowCount; i++)
+            for (int i = 0; i < rowCount; i++)
             {
-                var z = (c*a.At(i, columnA)) + (s*a.At(i, columnB));
-                var tmp = (c*a.At(i, columnB)) - (s*a.At(i, columnA));
+                Complex z = (c * a.At(i, columnA)) + (s * a.At(i, columnB));
+                Complex tmp = (c * a.At(i, columnB)) - (s * a.At(i, columnA));
                 a.At(i, columnB, tmp);
                 a.At(i, columnA, z);
             }
@@ -824,21 +824,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 throw new ArgumentException("Matrix column dimensions must agree.");
             }
 
-            var mn = Math.Min(U.RowCount, VT.ColumnCount);
-            var bn = input.ColumnCount;
+            int mn = Math.Min(U.RowCount, VT.ColumnCount);
+            int bn = input.ColumnCount;
 
-            var tmp = new Complex[VT.ColumnCount];
+            Complex[] tmp = new Complex[VT.ColumnCount];
 
-            for (var k = 0; k < bn; k++)
+            for (int k = 0; k < bn; k++)
             {
-                for (var j = 0; j < VT.ColumnCount; j++)
+                for (int j = 0; j < VT.ColumnCount; j++)
                 {
-                    var value = Complex.Zero;
+                    Complex value = Complex.Zero;
                     if (j < mn)
                     {
-                        for (var i = 0; i < U.RowCount; i++)
+                        for (int i = 0; i < U.RowCount; i++)
                         {
-                            value += U.At(i, j).Conjugate()*input.At(i, k);
+                            value += U.At(i, j).Conjugate() * input.At(i, k);
                         }
 
                         value /= S[j];
@@ -847,12 +847,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                     tmp[j] = value;
                 }
 
-                for (var j = 0; j < VT.ColumnCount; j++)
+                for (int j = 0; j < VT.ColumnCount; j++)
                 {
-                    var value = Complex.Zero;
-                    for (var i = 0; i < VT.ColumnCount; i++)
+                    Complex value = Complex.Zero;
+                    for (int i = 0; i < VT.ColumnCount; i++)
                     {
-                        value += VT.At(i, j).Conjugate()*tmp[i];
+                        value += VT.At(i, j).Conjugate() * tmp[i];
                     }
 
                     result.At(j, k, value);
@@ -885,16 +885,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentException>(VT, result);
             }
 
-            var mn = Math.Min(U.RowCount, VT.ColumnCount);
-            var tmp = new Complex[VT.ColumnCount];
-            for (var j = 0; j < VT.ColumnCount; j++)
+            int mn = Math.Min(U.RowCount, VT.ColumnCount);
+            Complex[] tmp = new Complex[VT.ColumnCount];
+            for (int j = 0; j < VT.ColumnCount; j++)
             {
-                var value = Complex.Zero;
+                Complex value = Complex.Zero;
                 if (j < mn)
                 {
-                    for (var i = 0; i < U.RowCount; i++)
+                    for (int i = 0; i < U.RowCount; i++)
                     {
-                        value += U.At(i, j).Conjugate()*input[i];
+                        value += U.At(i, j).Conjugate() * input[i];
                     }
 
                     value /= S[j];
@@ -903,12 +903,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 tmp[j] = value;
             }
 
-            for (var j = 0; j < VT.ColumnCount; j++)
+            for (int j = 0; j < VT.ColumnCount; j++)
             {
-                var value = Complex.Zero;
-                for (var i = 0; i < VT.ColumnCount; i++)
+                Complex value = Complex.Zero;
+                for (int i = 0; i < VT.ColumnCount; i++)
                 {
-                    value += VT.At(i, j).Conjugate()*tmp[i];
+                    value += VT.At(i, j).Conjugate() * tmp[i];
                 }
 
                 result[j] = value;

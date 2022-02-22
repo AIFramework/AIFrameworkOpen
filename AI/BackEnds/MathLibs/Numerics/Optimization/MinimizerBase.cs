@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -80,7 +80,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 double mostProgress = 0.0;
                 for (int ii = 0; ii < candidatePoint.Point.Count; ++ii)
                 {
-                    var tmp = Math.Abs(candidatePoint.Point[ii] - lastPoint.Point[ii]) /
+                    double tmp = Math.Abs(candidatePoint.Point[ii] - lastPoint.Point[ii]) /
                         Math.Max(Math.Abs(lastPoint.Point[ii]), 1.0);
                     mostProgress = Math.Max(mostProgress, tmp);
                 }
@@ -91,7 +91,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 
                 double functionChange = candidatePoint.Value - lastPoint.Value;
                 if (iterations > 500 && functionChange < 0 && Math.Abs(functionChange) < FunctionProgressTolerance)
+                {
                     return ExitCondition.LackOfProgress;
+                }
             }
 
             return ExitCondition.None;
@@ -104,13 +106,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 
         protected void ValidateGradientAndObjective(IObjectiveFunctionEvaluation eval)
         {
-            foreach (var x in eval.Gradient)
+            foreach (double x in eval.Gradient)
             {
-                if (Double.IsNaN(x) || Double.IsInfinity(x))
+                if (double.IsNaN(x) || double.IsInfinity(x))
+                {
                     throw new EvaluationException("Non-finite gradient returned.", eval);
+                }
             }
-            if (Double.IsNaN(eval.Value) || Double.IsInfinity(eval.Value))
+            if (double.IsNaN(eval.Value) || double.IsInfinity(eval.Value))
+            {
                 throw new EvaluationException("Non-finite objective function returned.", eval);
+            }
         }
     }
 }

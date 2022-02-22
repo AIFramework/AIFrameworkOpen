@@ -29,8 +29,8 @@
 
 using System;
 using System.Collections.Generic;
-using Complex = System.Numerics.Complex;
 using System.Runtime;
+using Complex = System.Numerics.Complex;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics
 {
@@ -86,7 +86,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             // don't replace this with "Magnitude"!
-            var mod = SpecialFunctions.Hypotenuse(complex.Real, complex.Imaginary);
+            double mod = SpecialFunctions.Hypotenuse(complex.Real, complex.Imaginary);
             if (mod == 0.0d)
             {
                 return Complex.Zero;
@@ -262,17 +262,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 
             Complex result;
 
-            var absReal = Math.Abs(complex.Real);
-            var absImag = Math.Abs(complex.Imaginary);
+            double absReal = Math.Abs(complex.Real);
+            double absImag = Math.Abs(complex.Imaginary);
             double w;
             if (absReal >= absImag)
             {
-                var ratio = complex.Imaginary / complex.Real;
+                double ratio = complex.Imaginary / complex.Real;
                 w = Math.Sqrt(absReal) * Math.Sqrt(0.5 * (1.0 + Math.Sqrt(1.0 + (ratio * ratio))));
             }
             else
             {
-                var ratio = complex.Real / complex.Imaginary;
+                double ratio = complex.Real / complex.Imaginary;
                 w = Math.Sqrt(absImag) * Math.Sqrt(0.5 * (Math.Abs(ratio) + Math.Sqrt(1.0 + (ratio * ratio))));
             }
 
@@ -297,7 +297,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static (Complex, Complex) SquareRoots(this Complex complex)
         {
-            var principal = SquareRoot(complex);
+            Complex principal = SquareRoot(complex);
             return (principal, -principal);
         }
 
@@ -306,9 +306,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public static (Complex, Complex, Complex) CubicRoots(this Complex complex)
         {
-            var r = Math.Pow(complex.Magnitude, 1d/3d);
-            var theta = complex.Phase/3;
-            const double shift = Constants.Pi2/3;
+            double r = Math.Pow(complex.Magnitude, 1d / 3d);
+            double theta = complex.Phase / 3;
+            const double shift = Constants.Pi2 / 3;
             return (Complex.FromPolarCoordinates(r, theta),
                 Complex.FromPolarCoordinates(r, theta + shift),
                 Complex.FromPolarCoordinates(r, theta - shift));
@@ -489,9 +489,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             // keywords
-            var numberFormatInfo = formatProvider.GetNumberFormatInfo();
-            var textInfo = formatProvider.GetTextInfo();
-            var keywords =
+            System.Globalization.NumberFormatInfo numberFormatInfo = formatProvider.GetNumberFormatInfo();
+            System.Globalization.TextInfo textInfo = formatProvider.GetTextInfo();
+            string[] keywords =
                 new[]
                 {
                     textInfo.ListSeparator, numberFormatInfo.NaNSymbol,
@@ -500,12 +500,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 };
 
             // lexing
-            var tokens = new LinkedList<string>();
+            LinkedList<string> tokens = new LinkedList<string>();
             GlobalizationHelper.Tokenize(tokens.AddFirst(value), keywords, 0);
-            var token = tokens.First;
+            LinkedListNode<string> token = tokens.First;
 
             // parse the left part
-            var leftPart = ParsePart(ref token, out var isLeftPartImaginary, formatProvider);
+            double leftPart = ParsePart(ref token, out bool isLeftPartImaginary, formatProvider);
             if (token == null)
             {
                 return isLeftPartImaginary ? new Complex(0, leftPart) : new Complex(leftPart, 0);
@@ -523,14 +523,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                     throw new FormatException();
                 }
 
-                var rightPart = ParsePart(ref token, out _, formatProvider);
+                double rightPart = ParsePart(ref token, out _, formatProvider);
 
                 return new Complex(leftPart, rightPart);
             }
             else
             {
                 // format: real + imag
-                var rightPart = ParsePart(ref token, out var isRightPartImaginary, formatProvider);
+                double rightPart = ParsePart(ref token, out bool isRightPartImaginary, formatProvider);
 
                 if (!(isLeftPartImaginary ^ isRightPartImaginary))
                 {
@@ -553,7 +553,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </param>
         /// <returns>Resulting part as double.</returns>
         /// <exception cref="FormatException"/>
-        static double ParsePart(ref LinkedListNode<string> token, out bool imaginary, IFormatProvider format)
+        private static double ParsePart(ref LinkedListNode<string> token, out bool imaginary, IFormatProvider format)
         {
             imaginary = false;
             if (token == null)
@@ -572,7 +572,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 }
             }
 
-            var negative = false;
+            bool negative = false;
             if (token.Value == "-")
             {
                 negative = true;
@@ -585,8 +585,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             // handle prefix imaginary symbol
-            if (String.Compare(token.Value, "i", StringComparison.OrdinalIgnoreCase) == 0
-                || String.Compare(token.Value, "j", StringComparison.OrdinalIgnoreCase) == 0)
+            if (string.Compare(token.Value, "i", StringComparison.OrdinalIgnoreCase) == 0
+                || string.Compare(token.Value, "j", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 imaginary = true;
                 token = token.Next;
@@ -597,11 +597,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 }
             }
 
-            var value = GlobalizationHelper.ParseDouble(ref token, format.GetCultureInfo());
+            double value = GlobalizationHelper.ParseDouble(ref token, format.GetCultureInfo());
 
             // handle suffix imaginary symbol
-            if (token != null && (String.Compare(token.Value, "i", StringComparison.OrdinalIgnoreCase) == 0
-                                  || String.Compare(token.Value, "j", StringComparison.OrdinalIgnoreCase) == 0))
+            if (token != null && (string.Compare(token.Value, "i", StringComparison.OrdinalIgnoreCase) == 0
+                                  || string.Compare(token.Value, "j", StringComparison.OrdinalIgnoreCase) == 0))
             {
                 if (imaginary)
                 {

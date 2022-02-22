@@ -61,33 +61,33 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
             }
 
             // Create an array for the pivot indices.
-            var order = matrix.RowCount;
-            var factors = matrix.Clone();
-            var pivots = new int[order];
+            int order = matrix.RowCount;
+            MatrixMathNet<double> factors = matrix.Clone();
+            int[] pivots = new int[order];
 
             // Initialize the pivot matrix to the identity permutation.
-            for (var i = 0; i < order; i++)
+            for (int i = 0; i < order; i++)
             {
                 pivots[i] = i;
             }
 
-            var vectorLUcolj = new double[order];
-            for (var j = 0; j < order; j++)
+            double[] vectorLUcolj = new double[order];
+            for (int j = 0; j < order; j++)
             {
                 // Make a copy of the j-th column to localize references.
-                for (var i = 0; i < order; i++)
+                for (int i = 0; i < order; i++)
                 {
                     vectorLUcolj[i] = factors.At(i, j);
                 }
 
                 // Apply previous transformations.
-                for (var i = 0; i < order; i++)
+                for (int i = 0; i < order; i++)
                 {
-                    var kmax = Math.Min(i, j);
-                    var s = 0.0;
-                    for (var k = 0; k < kmax; k++)
+                    int kmax = Math.Min(i, j);
+                    double s = 0.0;
+                    for (int k = 0; k < kmax; k++)
                     {
-                        s += factors.At(i, k)*vectorLUcolj[k];
+                        s += factors.At(i, k) * vectorLUcolj[k];
                     }
 
                     vectorLUcolj[i] -= s;
@@ -95,8 +95,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
                 }
 
                 // Find pivot and exchange if necessary.
-                var p = j;
-                for (var i = j + 1; i < order; i++)
+                int p = j;
+                for (int i = j + 1; i < order; i++)
                 {
                     if (Math.Abs(vectorLUcolj[i]) > Math.Abs(vectorLUcolj[p]))
                     {
@@ -106,9 +106,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
 
                 if (p != j)
                 {
-                    for (var k = 0; k < order; k++)
+                    for (int k = 0; k < order; k++)
                     {
-                        var temp = factors.At(p, k);
+                        double temp = factors.At(p, k);
                         factors.At(p, k, factors.At(j, k));
                         factors.At(j, k, temp);
                     }
@@ -119,9 +119,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
                 // Compute multipliers.
                 if (j < order & factors.At(j, j) != 0.0)
                 {
-                    for (var i = j + 1; i < order; i++)
+                    for (int i = j + 1; i < order; i++)
                     {
-                        factors.At(i, j, (factors.At(i, j)/factors.At(j, j)));
+                        factors.At(i, j, (factors.At(i, j) / factors.At(j, j)));
                     }
                 }
             }
@@ -129,7 +129,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
             return new UserLU(factors, pivots);
         }
 
-        UserLU(MatrixMathNet<double> factors, int[] pivots)
+        private UserLU(MatrixMathNet<double> factors, int[] pivots)
             : base(factors, pivots)
         {
         }
@@ -170,50 +170,50 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
 
             // Copy the contents of input to result.
             input.CopyTo(result);
-            for (var i = 0; i < Pivots.Length; i++)
+            for (int i = 0; i < Pivots.Length; i++)
             {
                 if (Pivots[i] == i)
                 {
                     continue;
                 }
 
-                var p = Pivots[i];
-                for (var j = 0; j < result.ColumnCount; j++)
+                int p = Pivots[i];
+                for (int j = 0; j < result.ColumnCount; j++)
                 {
-                    var temp = result.At(p, j);
+                    double temp = result.At(p, j);
                     result.At(p, j, result.At(i, j));
                     result.At(i, j, temp);
                 }
             }
 
-            var order = Factors.RowCount;
+            int order = Factors.RowCount;
 
             // Solve L*Y = P*B
-            for (var k = 0; k < order; k++)
+            for (int k = 0; k < order; k++)
             {
-                for (var i = k + 1; i < order; i++)
+                for (int i = k + 1; i < order; i++)
                 {
-                    for (var j = 0; j < result.ColumnCount; j++)
+                    for (int j = 0; j < result.ColumnCount; j++)
                     {
-                        var temp = result.At(k, j)*Factors.At(i, k);
+                        double temp = result.At(k, j) * Factors.At(i, k);
                         result.At(i, j, result.At(i, j) - temp);
                     }
                 }
             }
 
             // Solve U*X = Y;
-            for (var k = order - 1; k >= 0; k--)
+            for (int k = order - 1; k >= 0; k--)
             {
-                for (var j = 0; j < result.ColumnCount; j++)
+                for (int j = 0; j < result.ColumnCount; j++)
                 {
-                    result.At(k, j, (result.At(k, j)/Factors.At(k, k)));
+                    result.At(k, j, (result.At(k, j) / Factors.At(k, k)));
                 }
 
-                for (var i = 0; i < k; i++)
+                for (int i = 0; i < k; i++)
                 {
-                    for (var j = 0; j < result.ColumnCount; j++)
+                    for (int j = 0; j < result.ColumnCount; j++)
                     {
-                        var temp = result.At(k, j)*Factors.At(i, k);
+                        double temp = result.At(k, j) * Factors.At(i, k);
                         result.At(i, j, result.At(i, j) - temp);
                     }
                 }
@@ -251,37 +251,37 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
 
             // Copy the contents of input to result.
             input.CopyTo(result);
-            for (var i = 0; i < Pivots.Length; i++)
+            for (int i = 0; i < Pivots.Length; i++)
             {
                 if (Pivots[i] == i)
                 {
                     continue;
                 }
 
-                var p = Pivots[i];
-                var temp = result[p];
+                int p = Pivots[i];
+                double temp = result[p];
                 result[p] = result[i];
                 result[i] = temp;
             }
 
-            var order = Factors.RowCount;
+            int order = Factors.RowCount;
 
             // Solve L*Y = P*B
-            for (var k = 0; k < order; k++)
+            for (int k = 0; k < order; k++)
             {
-                for (var i = k + 1; i < order; i++)
+                for (int i = k + 1; i < order; i++)
                 {
-                    result[i] -= result[k]*Factors.At(i, k);
+                    result[i] -= result[k] * Factors.At(i, k);
                 }
             }
 
             // Solve U*X = Y;
-            for (var k = order - 1; k >= 0; k--)
+            for (int k = order - 1; k >= 0; k--)
             {
                 result[k] /= Factors.At(k, k);
-                for (var i = 0; i < k; i++)
+                for (int i = 0; i < k; i++)
                 {
-                    result[i] -= result[k]*Factors.At(i, k);
+                    result[i] -= result[k] * Factors.At(i, k);
                 }
             }
         }
@@ -292,9 +292,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double.Factorizati
         /// <returns>The inverse of this matrix.</returns>
         public override MatrixMathNet<double> Inverse()
         {
-            var order = Factors.RowCount;
-            var inverse = MatrixMathNet<double>.Build.SameAs(Factors, order, order);
-            for (var i = 0; i < order; i++)
+            int order = Factors.RowCount;
+            MatrixMathNet<double> inverse = MatrixMathNet<double>.Build.SameAs(Factors, order, order);
+            for (int i = 0; i < order; i++)
             {
                 inverse.At(i, i, 1.0);
             }

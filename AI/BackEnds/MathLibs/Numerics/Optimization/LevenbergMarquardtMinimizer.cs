@@ -28,14 +28,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             double[] lowerBound = null, double[] upperBound = null, double[] scales = null, bool[] isFixed = null)
         {
             if (objective == null)
+            {
                 throw new ArgumentNullException(nameof(objective));
-            if (initialGuess == null)
-                throw new ArgumentNullException(nameof(initialGuess));
+            }
 
-            var lb = (lowerBound == null) ? null : CreateVector.Dense(lowerBound);
-            var ub = (upperBound == null) ? null : CreateVector.Dense(upperBound);
-            var sc = (scales == null) ? null : CreateVector.Dense(scales);
-            var fx = isFixed?.ToList();
+            if (initialGuess == null)
+            {
+                throw new ArgumentNullException(nameof(initialGuess));
+            }
+
+            VectorMathNet<double> lb = (lowerBound == null) ? null : CreateVector.Dense(lowerBound);
+            VectorMathNet<double> ub = (upperBound == null) ? null : CreateVector.Dense(upperBound);
+            VectorMathNet<double> sc = (scales == null) ? null : CreateVector.Dense(scales);
+            List<bool> fx = isFixed?.ToList();
 
             return Minimum(objective, CreateVector.DenseOfArray(initialGuess), lb, ub, sc, fx, InitialMu, GradientTolerance, StepTolerance, FunctionTolerance, MaximumIterations);
         }
@@ -91,7 +96,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             //    Availble Online from: http://people.duke.edu/~hpgavin/ce281/lm.pdf
 
             if (objective == null)
+            {
                 throw new ArgumentNullException(nameof(objective));
+            }
 
             ValidateBounds(initialGuess, lowerBound, upperBound, scales);
 
@@ -100,9 +107,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             ExitCondition exitCondition = ExitCondition.None;
 
             // First, calculate function values and setup variables
-            var P = ProjectToInternalParameters(initialGuess); // current internal parameters
-            var Pstep = VectorMathNet<double>.Build.Dense(P.Count); // the change of parameters
-            var RSS = EvaluateFunction(objective, P);  // Residual Sum of Squares = R'R
+            VectorMathNet<double> P = ProjectToInternalParameters(initialGuess); // current internal parameters
+            VectorMathNet<double> Pstep = VectorMathNet<double>.Build.Dense(P.Count); // the change of parameters
+            double RSS = EvaluateFunction(objective, P);  // Residual Sum of Squares = R'R
 
             if (maximumIterations < 0)
             {
@@ -129,8 +136,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             }
 
             // Evaluate gradient and Hessian
-            var (Gradient, Hessian) = EvaluateJacobian(objective, P);
-            var diagonalOfHessian = Hessian.Diagonal(); // diag(H)
+            (VectorMathNet<double> Gradient, MatrixMathNet<double> Hessian) = EvaluateJacobian(objective, P);
+            VectorMathNet<double> diagonalOfHessian = Hessian.Diagonal(); // diag(H)
 
             // if ||g||oo <= gtol, found and stop
             if (Gradient.InfinityNorm() <= gradientTolerance)
@@ -164,9 +171,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                         break;
                     }
 
-                    var Pnew = P + Pstep; // new parameters to test
+                    VectorMathNet<double> Pnew = P + Pstep; // new parameters to test
                     // evaluate function at Pnew
-                    var RSSnew = EvaluateFunction(objective, Pnew);
+                    double RSSnew = EvaluateFunction(objective, Pnew);
 
                     if (double.IsNaN(RSSnew))
                     {
@@ -176,8 +183,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 
                     // calculate the ratio of the actual to the predicted reduction.
                     // ρ = (RSS - RSSnew) / (Δp'(μΔp - g))
-                    var predictedReduction = Pstep.DotProduct(mu * Pstep - Gradient);
-                    var rho = (predictedReduction != 0)
+                    double predictedReduction = Pstep.DotProduct(mu * Pstep - Gradient);
+                    double rho = (predictedReduction != 0)
                             ? (RSS - RSSnew) / predictedReduction
                             : 0;
 

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Collections.Generic;
-using AI.BackEnds.DSP.NWaves.Utils;
 
 namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 {
@@ -40,13 +40,13 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         public override float NextSample()
         {
-            var mean = (_low + _high) / 2;
+            double mean = (_low + _high) / 2;
             _low -= mean;
             _high -= mean;
 
-            var white = _rand.NextDouble() * (_high - _low) + _low;
+            double white = _rand.NextDouble() * (_high - _low) + _low;
 
-            var red = (_prev + (0.02 * white)) / 1.02;
+            double red = (_prev + (0.02 * white)) / 1.02;
             _prev = red;
             return (float)(red * 3.5 + mean);
         }
@@ -64,6 +64,6 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 
         private double _prev;
 
-        private Random _rand = new Random();
+        private readonly Random _rand = new Random();
     }
 }

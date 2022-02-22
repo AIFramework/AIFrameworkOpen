@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -45,8 +45,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// <param name="parameterTolerance">The parameter tolerance</param>
         /// <param name="functionProgressTolerance">The function progress tolerance</param>
         /// <param name="maximumIterations">The maximum number of iterations</param>
-        public BfgsMinimizer(double gradientTolerance, double parameterTolerance, double functionProgressTolerance, int maximumIterations=1000)
-            :base(gradientTolerance,parameterTolerance,functionProgressTolerance,maximumIterations)
+        public BfgsMinimizer(double gradientTolerance, double parameterTolerance, double functionProgressTolerance, int maximumIterations = 1000)
+            : base(gradientTolerance, parameterTolerance, functionProgressTolerance, maximumIterations)
         {
         }
 
@@ -59,7 +59,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         public MinimizationResult FindMinimum(IObjectiveFunction objective, VectorMathNet<double> initialGuess)
         {
             if (!objective.IsGradientSupported)
+            {
                 throw new IncompatibleObjectiveException("Gradient not supported in objective function, but required for BFGS minimization.");
+            }
 
             objective.EvaluateAt(initialGuess);
             ValidateGradientAndObjective(objective);
@@ -67,17 +69,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             // Check that we're not already done
             ExitCondition currentExitCondition = ExitCriteriaSatisfied(objective, null, 0);
             if (currentExitCondition != ExitCondition.None)
+            {
                 return new MinimizationResult(objective, 0, currentExitCondition);
+            }
 
             // Set up line search algorithm
-            var lineSearcher = new WeakWolfeLineSearch(1e-4, 0.9, Math.Max(ParameterTolerance, 1e-10), 1000);
+            WeakWolfeLineSearch lineSearcher = new WeakWolfeLineSearch(1e-4, 0.9, Math.Max(ParameterTolerance, 1e-10), 1000);
 
             // First step
-            var inversePseudoHessian = CreateMatrix.DenseIdentity<double>(initialGuess.Count);
-            var lineSearchDirection = -objective.Gradient;
-            var stepSize = 100 * GradientTolerance / (lineSearchDirection * lineSearchDirection);
+            MatrixMathNet<double> inversePseudoHessian = CreateMatrix.DenseIdentity<double>(initialGuess.Count);
+            VectorMathNet<double> lineSearchDirection = -objective.Gradient;
+            double stepSize = 100 * GradientTolerance / (lineSearchDirection * lineSearchDirection);
 
-            var previousPoint = objective;
+            IObjectiveFunction previousPoint = objective;
 
             LineSearchResult lineSearchResult;
             try
@@ -93,10 +97,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 throw new InnerOptimizationException("Line search failed.", e);
             }
 
-            var candidate = lineSearchResult.FunctionInfoAtMinimum;
+            IObjectiveFunction candidate = lineSearchResult.FunctionInfoAtMinimum;
             ValidateGradientAndObjective(candidate);
 
-            var step = candidate.Point - initialGuess;
+            VectorMathNet<double> step = candidate.Point - initialGuess;
 
             // Subsequent steps
             MatrixMathNet<double> I = CreateMatrix.DiagonalIdentity<double>(initialGuess.Count);
@@ -106,7 +110,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             iterations = DoBfgsUpdate(ref currentExitCondition, lineSearcher, ref inversePseudoHessian, ref lineSearchDirection, ref previousPoint, ref lineSearchResult, ref candidate, ref step, ref totalLineSearchSteps, ref iterationsWithNontrivialLineSearch);
 
             if (iterations == MaximumIterations && currentExitCondition == ExitCondition.None)
+            {
                 throw new MaximumIterationsException(FormattableString.Invariant($"Maximum iterations ({MaximumIterations}) reached."));
+            }
 
             return new MinimizationWithLineSearchResult(candidate, iterations, ExitCondition.AbsoluteGradient, totalLineSearchSteps, iterationsWithNontrivialLineSearch);
         }
@@ -122,7 +128,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             maxLineSearchStep = double.PositiveInfinity;
 
             VectorMathNet<double> lineSearchDirection;
-            var y = candidate.Gradient - previousPoint.Gradient;
+            VectorMathNet<double> y = candidate.Gradient - previousPoint.Gradient;
 
             double sy = step * y;
             inversePseudoHessian = inversePseudoHessian + ((sy + y * inversePseudoHessian * y) / Math.Pow(sy, 2.0)) * step.OuterProduct(step) - ((inversePseudoHessian * y.ToColumnMatrix()) * step.ToRowMatrix() + step.ToColumnMatrix() * (y.ToRowMatrix() * inversePseudoHessian)) * (1.0 / sy);

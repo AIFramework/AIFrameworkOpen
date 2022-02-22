@@ -27,16 +27,16 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
 {
@@ -54,20 +54,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         /// <remarks>Using this instead of the RowCount property to speed up calculating
         /// a matrix index in the data array.</remarks>
-        readonly int _rowCount;
+        private readonly int _rowCount;
 
         /// <summary>
         /// Number of columns.
         /// </summary>
         /// <remarks>Using this instead of the ColumnCount property to speed up calculating
         /// a matrix index in the data array.</remarks>
-        readonly int _columnCount;
+        private readonly int _columnCount;
 
         /// <summary>
         /// Gets the matrix's data.
         /// </summary>
         /// <value>The matrix's data.</value>
-        readonly Complex32[] _values;
+        private readonly Complex32[] _values;
 
         /// <summary>
         /// Create a new dense matrix straight from an initialized matrix storage instance.
@@ -216,7 +216,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseMatrix OfColumnVectors(params VectorMathNet<Complex32>[] columns)
         {
-            var storage = new VectorStorage<Complex32>[columns.Length];
+            VectorStorage<Complex32>[] storage = new VectorStorage<Complex32>[columns.Length];
             for (int i = 0; i < columns.Length; i++)
             {
                 storage[i] = columns[i].Storage;
@@ -283,7 +283,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseMatrix OfRowVectors(params VectorMathNet<Complex32>[] rows)
         {
-            var storage = new VectorStorage<Complex32>[rows.Length];
+            VectorStorage<Complex32>[] storage = new VectorStorage<Complex32>[rows.Length];
             for (int i = 0; i < rows.Length; i++)
             {
                 storage[i] = rows[i].Storage;
@@ -308,7 +308,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseMatrix OfDiagonalVector(VectorMathNet<Complex32> diagonal)
         {
-            var m = new DenseMatrix(diagonal.Count, diagonal.Count);
+            DenseMatrix m = new DenseMatrix(diagonal.Count, diagonal.Count);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -320,7 +320,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseMatrix OfDiagonalVector(int rows, int columns, VectorMathNet<Complex32> diagonal)
         {
-            var m = new DenseMatrix(rows, columns);
+            DenseMatrix m = new DenseMatrix(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -332,7 +332,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseMatrix OfDiagonalArray(Complex32[] diagonal)
         {
-            var m = new DenseMatrix(diagonal.Length, diagonal.Length);
+            DenseMatrix m = new DenseMatrix(diagonal.Length, diagonal.Length);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -344,7 +344,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseMatrix OfDiagonalArray(int rows, int columns, Complex32[] diagonal)
         {
-            var m = new DenseMatrix(rows, columns);
+            DenseMatrix m = new DenseMatrix(rows, columns);
             m.SetDiagonal(diagonal);
             return m;
         }
@@ -354,7 +354,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseMatrix Create(int rows, int columns, Complex32 value)
         {
-            if (value == Complex32.Zero) return new DenseMatrix(rows, columns);
+            if (value == Complex32.Zero)
+            {
+                return new DenseMatrix(rows, columns);
+            }
+
             return new DenseMatrix(DenseColumnMajorMatrixStorage<Complex32>.OfValue(rows, columns, value));
         }
 
@@ -371,7 +375,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseMatrix CreateDiagonal(int rows, int columns, Complex32 value)
         {
-            if (value == Complex32.Zero) return new DenseMatrix(rows, columns);
+            if (value == Complex32.Zero)
+            {
+                return new DenseMatrix(rows, columns);
+            }
+
             return new DenseMatrix(DenseColumnMajorMatrixStorage<Complex32>.OfDiagonalInit(rows, columns, i => value));
         }
 
@@ -396,7 +404,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
         /// </summary>
         public static DenseMatrix CreateRandom(int rows, int columns, IContinuousDistribution distribution)
         {
-            return new DenseMatrix(new DenseColumnMajorMatrixStorage<Complex32>(rows, columns, Generate.RandomComplex32(rows*columns, distribution)));
+            return new DenseMatrix(new DenseColumnMajorMatrixStorage<Complex32>(rows, columns, Generate.RandomComplex32(rows * columns, distribution)));
         }
 
         /// <summary>
@@ -467,7 +475,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
             {
                 CommonParallel.For(0, _values.Length, 4096, (a, b) =>
                 {
-                    var v = denseResult._values;
+                    Complex32[] v = denseResult._values;
                     for (int i = a; i < b; i++)
                     {
                         v[i] = _values[i] + scalar;
@@ -500,7 +508,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
             if (other.Storage is DiagonalMatrixStorage<Complex32> diagonalOther)
             {
                 Storage.CopyToUnchecked(result.Storage, ExistingData.Clear);
-                var diagonal = diagonalOther.Data;
+                Complex32[] diagonal = diagonalOther.Data;
                 for (int i = 0; i < diagonal.Length; i++)
                 {
                     result.At(i, i, result.At(i, i) + diagonal[i]);
@@ -522,7 +530,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
             {
                 CommonParallel.For(0, _values.Length, 4096, (a, b) =>
                 {
-                    var v = denseResult._values;
+                    Complex32[] v = denseResult._values;
                     for (int i = a; i < b; i++)
                     {
                         v[i] = _values[i] - scalar;
@@ -553,7 +561,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
             if (other.Storage is DiagonalMatrixStorage<Complex32> diagonalOther)
             {
                 CopyTo(result);
-                var diagonal = diagonalOther.Data;
+                Complex32[] diagonal = diagonalOther.Data;
                 for (int i = 0; i < diagonal.Length; i++)
                 {
                     result.At(i, i, result.At(i, i) - diagonal[i]);
@@ -627,8 +635,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
 
             if (other.Storage is DiagonalMatrixStorage<Complex32> diagonalOther)
             {
-                var diagonal = diagonalOther.Data;
-                var d = Math.Min(ColumnCount, other.ColumnCount);
+                Complex32[] diagonal = diagonalOther.Data;
+                int d = Math.Min(ColumnCount, other.ColumnCount);
                 if (d < other.ColumnCount)
                 {
                     result.ClearSubMatrix(0, RowCount, ColumnCount, other.ColumnCount - ColumnCount);
@@ -638,7 +646,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
                 {
                     for (int i = 0; i < RowCount; i++)
                     {
-                        result.At(i, j, _values[index]*diagonal[j]);
+                        result.At(i, j, _values[index] * diagonal[j]);
                         index++;
                     }
                 }
@@ -674,8 +682,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
 
             if (other.Storage is DiagonalMatrixStorage<Complex32> diagonalOther)
             {
-                var diagonal = diagonalOther.Data;
-                var d = Math.Min(ColumnCount, other.RowCount);
+                Complex32[] diagonal = diagonalOther.Data;
+                int d = Math.Min(ColumnCount, other.RowCount);
                 if (d < other.RowCount)
                 {
                     result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
@@ -685,7 +693,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
                 {
                     for (int i = 0; i < RowCount; i++)
                     {
-                        result.At(i, j, _values[index]*diagonal[j]);
+                        result.At(i, j, _values[index] * diagonal[j]);
                         index++;
                     }
                 }
@@ -721,14 +729,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
 
             if (other.Storage is DiagonalMatrixStorage<Complex32> diagonalOther)
             {
-                var diagonal = diagonalOther.Data;
-                var conjugateDiagonal = new Complex32[diagonal.Length];
+                Complex32[] diagonal = diagonalOther.Data;
+                Complex32[] conjugateDiagonal = new Complex32[diagonal.Length];
                 for (int i = 0; i < diagonal.Length; i++)
                 {
                     conjugateDiagonal[i] = diagonal[i].Conjugate();
                 }
 
-                var d = Math.Min(ColumnCount, other.RowCount);
+                int d = Math.Min(ColumnCount, other.RowCount);
                 if (d < other.RowCount)
                 {
                     result.ClearSubMatrix(0, RowCount, ColumnCount, other.RowCount - ColumnCount);
@@ -738,7 +746,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
                 {
                     for (int i = 0; i < RowCount; i++)
                     {
-                        result.At(i, j, _values[index]*conjugateDiagonal[j]);
+                        result.At(i, j, _values[index] * conjugateDiagonal[j]);
                         index++;
                     }
                 }
@@ -829,8 +837,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
 
             if (other.Storage is DiagonalMatrixStorage<Complex32> diagonalOther)
             {
-                var diagonal = diagonalOther.Data;
-                var d = Math.Min(RowCount, other.ColumnCount);
+                Complex32[] diagonal = diagonalOther.Data;
+                int d = Math.Min(RowCount, other.ColumnCount);
                 if (d < other.ColumnCount)
                 {
                     result.ClearSubMatrix(0, ColumnCount, RowCount, other.ColumnCount - RowCount);
@@ -840,7 +848,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
                 {
                     for (int j = 0; j < d; j++)
                     {
-                        result.At(i, j, _values[index]*diagonal[j]);
+                        result.At(i, j, _values[index] * diagonal[j]);
                         index++;
                     }
                     index += (RowCount - d);
@@ -877,8 +885,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
 
             if (other.Storage is DiagonalMatrixStorage<Complex32> diagonalOther)
             {
-                var diagonal = diagonalOther.Data;
-                var d = Math.Min(RowCount, other.ColumnCount);
+                Complex32[] diagonal = diagonalOther.Data;
+                int d = Math.Min(RowCount, other.ColumnCount);
                 if (d < other.ColumnCount)
                 {
                     result.ClearSubMatrix(0, ColumnCount, RowCount, other.ColumnCount - RowCount);
@@ -888,7 +896,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
                 {
                     for (int j = 0; j < d; j++)
                     {
-                        result.At(i, j, _values[index].Conjugate()*diagonal[j]);
+                        result.At(i, j, _values[index].Conjugate() * diagonal[j]);
                         index++;
                     }
                     index += (RowCount - d);
@@ -979,8 +987,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
                 throw new ArgumentException("Matrix must be square.");
             }
 
-            var sum = Complex32.Zero;
-            for (var i = 0; i < _rowCount; i++)
+            Complex32 sum = Complex32.Zero;
+            for (int i = 0; i < _rowCount; i++)
             {
                 sum += _values[(i * _rowCount) + i];
             }
@@ -1208,12 +1216,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
                 return false;
             }
 
-            for (var j = 0; j < ColumnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                var index = j * RowCount;
-                for (var i = j + 1; i < RowCount; i++)
+                int index = j * RowCount;
+                for (int i = j + 1; i < RowCount; i++)
                 {
-                    if (_values[(i*ColumnCount) + j] != _values[index + i])
+                    if (_values[(i * ColumnCount) + j] != _values[index + i])
                     {
                         return false;
                     }
@@ -1234,7 +1242,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
             }
 
             int stride = RowCount + 1;
-            for (var k = 0; k < _values.Length; k += stride)
+            for (int k = 0; k < _values.Length; k += stride)
             {
                 if (!_values[k].IsReal())
                 {
@@ -1242,12 +1250,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32
                 }
             }
 
-            for (var j = 0; j < ColumnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                var index = j * RowCount;
-                for (var i = j + 1; i < RowCount; i++)
+                int index = j * RowCount;
+                for (int i = j + 1; i < RowCount; i++)
                 {
-                    if (_values[(i*ColumnCount) + j] != _values[index + i].Conjugate())
+                    if (_values[(i * ColumnCount) + j] != _values[index + i].Conjugate())
                     {
                         return false;
                     }

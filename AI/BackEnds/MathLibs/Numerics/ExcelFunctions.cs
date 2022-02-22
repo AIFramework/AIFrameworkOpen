@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Statistics;
+using System;
 using System.Runtime;
 
 // ReSharper disable InconsistentNaming
@@ -85,7 +85,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double TInv(double probability, int degreesFreedom)
         {
-            return -StudentT.InvCDF(0d, 1d, degreesFreedom, probability/2);
+            return -StudentT.InvCDF(0d, 1d, degreesFreedom, probability / 2);
         }
 
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
@@ -115,13 +115,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double GammaDist(double x, double alpha, double beta, bool cumulative)
         {
-            return cumulative ? Gamma.CDF(alpha, 1/beta, x) : Gamma.PDF(alpha, 1/beta, x);
+            return cumulative ? Gamma.CDF(alpha, 1 / beta, x) : Gamma.PDF(alpha, 1 / beta, x);
         }
 
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double GammaInv(double probability, double alpha, double beta)
         {
-            return Gamma.InvCDF(alpha, 1/beta, probability);
+            return Gamma.InvCDF(alpha, 1 / beta, probability);
         }
 
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]

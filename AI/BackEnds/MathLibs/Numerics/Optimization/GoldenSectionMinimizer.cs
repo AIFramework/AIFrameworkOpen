@@ -39,7 +39,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         public double LowerExpansionFactor { get; set; }
         public double UpperExpansionFactor { get; set; }
 
-        public GoldenSectionMinimizer(double xTolerance=1e-5, int maxIterations=1000, int maxExpansionSteps=10, double lowerExpansionFactor=2.0, double upperExpansionFactor=2.0)
+        public GoldenSectionMinimizer(double xTolerance = 1e-5, int maxIterations = 1000, int maxExpansionSteps = 10, double lowerExpansionFactor = 2.0, double upperExpansionFactor = 2.0)
         {
             XTolerance = xTolerance;
             MaximumIterations = maxIterations;
@@ -53,14 +53,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             return Minimum(objective, lowerBound, upperBound, XTolerance, MaximumIterations, MaximumExpansionSteps, LowerExpansionFactor, UpperExpansionFactor);
         }
 
-        public static ScalarMinimizationResult Minimum(IScalarObjectiveFunction objective, double lowerBound, double upperBound, double xTolerance=1e-5, int maxIterations=1000, int maxExpansionSteps=10, double lowerExpansionFactor=2.0, double upperExpansionFactor=2.0)
+        public static ScalarMinimizationResult Minimum(IScalarObjectiveFunction objective, double lowerBound, double upperBound, double xTolerance = 1e-5, int maxIterations = 1000, int maxExpansionSteps = 10, double lowerExpansionFactor = 2.0, double upperExpansionFactor = 2.0)
         {
             if (upperBound <= lowerBound)
             {
                 throw new OptimizationException("Lower bound must be lower than upper bound.");
             }
 
-            double middlePointX = lowerBound + (upperBound - lowerBound)/(1 + Constants.GoldenRatio);
+            double middlePointX = lowerBound + (upperBound - lowerBound) / (1 + Constants.GoldenRatio);
             IScalarObjectiveFunctionEvaluation lower = objective.Evaluate(lowerBound);
             IScalarObjectiveFunctionEvaluation middle = objective.Evaluate(middlePointX);
             IScalarObjectiveFunctionEvaluation upper = objective.Evaluate(upperBound);
@@ -74,17 +74,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             {
                 if (lower.Value < middle.Value)
                 {
-                    lowerBound = 0.5*(upperBound + lowerBound) - lowerExpansionFactor*0.5*(upperBound - lowerBound);
+                    lowerBound = 0.5 * (upperBound + lowerBound) - lowerExpansionFactor * 0.5 * (upperBound - lowerBound);
                     lower = objective.Evaluate(lowerBound);
                 }
 
                 if (upper.Value < middle.Value)
                 {
-                    upperBound = 0.5*(upperBound + lowerBound) + upperExpansionFactor*0.5*(upperBound - lowerBound);
+                    upperBound = 0.5 * (upperBound + lowerBound) + upperExpansionFactor * 0.5 * (upperBound - lowerBound);
                     upper = objective.Evaluate(upperBound);
                 }
 
-                middlePointX = lowerBound + (upperBound - lowerBound)/(1 + Constants.GoldenRatio);
+                middlePointX = lowerBound + (upperBound - lowerBound) / (1 + Constants.GoldenRatio);
                 middle = objective.Evaluate(middlePointX);
 
                 expansionSteps += 1;
@@ -99,12 +99,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             while (Math.Abs(upper.Point - lower.Point) > xTolerance && iterations < maxIterations)
             {
                 // Recompute middle point on each iteration to avoid loss of precision
-                middlePointX = lower.Point + (upper.Point - lower.Point)/(1 + Constants.GoldenRatio);
+                middlePointX = lower.Point + (upper.Point - lower.Point) / (1 + Constants.GoldenRatio);
                 middle = objective.Evaluate(middlePointX);
                 ValueChecker(middle.Value, middlePointX);
 
                 double testX = lower.Point + (upper.Point - middle.Point);
-                var test = objective.Evaluate(testX);
+                IScalarObjectiveFunctionEvaluation test = objective.Evaluate(testX);
                 ValueChecker(test.Value, testX);
 
                 if (test.Point < middle.Point)
@@ -141,9 +141,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             return new ScalarMinimizationResult(middle, iterations, ExitCondition.BoundTolerance);
         }
 
-        static void ValueChecker(double value, double point)
+        private static void ValueChecker(double value, double point)
         {
-            if (Double.IsNaN(value) || Double.IsInfinity(value))
+            if (double.IsNaN(value) || double.IsInfinity(value))
             {
                 throw new Exception("Objective function returned non-finite value.");
             }

@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -41,10 +41,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class DiscreteUniform : IDiscreteDistribution
     {
-        System.Random _random;
-
-        readonly int _lower;
-        readonly int _upper;
+        private System.Random _random;
+        private readonly int _lower;
+        private readonly int _upper;
 
         /// <summary>
         /// Initializes a new instance of the DiscreteUniform class.
@@ -82,10 +81,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="string"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -124,17 +123,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => (_lower + _upper)/2.0;
+        public double Mean => (_lower + _upper) / 2.0;
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => Math.Sqrt((((_upper - _lower + 1.0)*(_upper - _lower + 1.0)) - 1.0)/12.0);
+        public double StdDev => Math.Sqrt((((_upper - _lower + 1.0) * (_upper - _lower + 1.0)) - 1.0) / 12.0);
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => (((_upper - _lower + 1.0)*(_upper - _lower + 1.0)) - 1.0)/12.0;
+        public double Variance => (((_upper - _lower + 1.0) * (_upper - _lower + 1.0)) - 1.0) / 12.0;
 
         /// <summary>
         /// Gets the entropy of the distribution.
@@ -159,12 +158,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mode of the distribution; since every element in the domain has the same probability this method returns the middle one.
         /// </summary>
-        public int Mode => (int)Math.Floor((_lower + _upper)/2.0);
+        public int Mode => (int)Math.Floor((_lower + _upper) / 2.0);
 
         /// <summary>
         /// Gets the median of the distribution.
         /// </summary>
-        public double Median => (_lower + _upper)/2.0;
+        public double Median => (_lower + _upper) / 2.0;
 
         /// <summary>
         /// Computes the probability mass (PMF) at k, i.e. P(X = k).
@@ -210,7 +209,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return k >= lower && k <= upper ? 1.0/(upper - lower + 1) : 0.0;
+            return k >= lower && k <= upper ? 1.0 / (upper - lower + 1) : 0.0;
         }
 
         /// <summary>
@@ -255,7 +254,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 1.0;
             }
 
-            return Math.Min(1.0, (Math.Floor(x) - lower + 1)/(upper - lower + 1));
+            return Math.Min(1.0, (Math.Floor(x) - lower + 1) / (upper - lower + 1));
         }
 
         /// <summary>
@@ -265,17 +264,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="lower">Lower bound, inclusive. Range: lower ≤ upper.</param>
         /// <param name="upper">Upper bound, inclusive. Range: lower ≤ upper.</param>
         /// <returns>A random sample from the discrete uniform distribution.</returns>
-        static int SampleUnchecked(System.Random rnd, int lower, int upper)
+        private static int SampleUnchecked(System.Random rnd, int lower, int upper)
         {
             return rnd.Next(lower, upper + 1);
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, int lower, int upper)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, int lower, int upper)
         {
             rnd.NextInt32s(values, lower, upper + 1);
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, int lower, int upper)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, int lower, int upper)
         {
             return rnd.NextInt32Sequence(lower, upper + 1);
         }

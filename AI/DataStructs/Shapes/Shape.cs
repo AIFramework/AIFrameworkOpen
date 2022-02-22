@@ -128,7 +128,7 @@ namespace AI.DataStructs.Shapes
         /// <returns></returns>
         public virtual Shape Expand(int newDimensionLength)
         {
-            var newShape = _values.ToList();
+            System.Collections.Generic.List<int> newShape = _values.ToList();
             newShape.Add(newDimensionLength);
             return new Shape(newShape.ToArray());
         }

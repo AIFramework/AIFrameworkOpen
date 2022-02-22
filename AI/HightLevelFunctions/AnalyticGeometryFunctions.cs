@@ -38,8 +38,10 @@ namespace AI.HightLevelFunctions
             double dot = 0;
 
             for (int i = 0; i < vector.Count; i++)
+            {
                 dot += vector[i] * vector2[i];
-            
+            }
+
             return dot;
         }
         /// <summary>

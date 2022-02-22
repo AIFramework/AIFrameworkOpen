@@ -303,7 +303,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return Clone();
             }
 
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoAdd(scalar, result);
             return result;
         }
@@ -343,7 +343,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentOutOfRangeException>(this, other);
             }
 
-            var result = Build.SameAs(this, other, RowCount, ColumnCount);
+            MatrixMathNet<T> result = Build.SameAs(this, other, RowCount, ColumnCount);
             DoAdd(other, result);
             return result;
         }
@@ -381,7 +381,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return Clone();
             }
 
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoSubtract(scalar, result);
             return result;
         }
@@ -415,7 +415,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A new matrix containing the subtraction of the scalar and this matrix.</returns>
         public MatrixMathNet<T> SubtractFrom(T scalar)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoSubtractFrom(scalar, result);
             return result;
         }
@@ -449,7 +449,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentOutOfRangeException>(this, other);
             }
 
-            var result = Build.SameAs(this, other, RowCount, ColumnCount);
+            MatrixMathNet<T> result = Build.SameAs(this, other, RowCount, ColumnCount);
             DoSubtract(other, result);
             return result;
         }
@@ -492,7 +492,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return Build.SameAs(this);
             }
 
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoMultiply(scalar, result);
             return result;
         }
@@ -547,7 +547,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new DivideByZeroException();
             }
 
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoDivide(scalar, result);
             return result;
         }
@@ -591,7 +591,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The result of the division.</returns>
         public MatrixMathNet<T> DivideByThis(T scalar)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoDivideByThis(scalar, result);
             return result;
         }
@@ -630,7 +630,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, rightSide, "rightSide");
             }
 
-            var ret = VectorMathNet<T>.Build.SameAs(this, rightSide, RowCount);
+            VectorMathNet<T> ret = VectorMathNet<T>.Build.SameAs(this, rightSide, RowCount);
             DoMultiply(rightSide, ret);
             return ret;
         }
@@ -656,7 +656,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 
             if (ReferenceEquals(rightSide, result))
             {
-                var tmp = VectorMathNet<T>.Build.SameAs(result);
+                VectorMathNet<T> tmp = VectorMathNet<T>.Build.SameAs(result);
                 DoMultiply(rightSide, tmp);
                 tmp.CopyTo(result);
             }
@@ -679,7 +679,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, leftSide, "leftSide");
             }
 
-            var ret = VectorMathNet<T>.Build.SameAs(this, leftSide, ColumnCount);
+            VectorMathNet<T> ret = VectorMathNet<T>.Build.SameAs(this, leftSide, ColumnCount);
             DoLeftMultiply(leftSide, ret);
             return ret;
         }
@@ -705,7 +705,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 
             if (ReferenceEquals(leftSide, result))
             {
-                var tmp = VectorMathNet<T>.Build.SameAs(result);
+                VectorMathNet<T> tmp = VectorMathNet<T>.Build.SameAs(result);
                 DoLeftMultiply(leftSide, tmp);
                 tmp.CopyTo(result);
             }
@@ -741,7 +741,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 
             if (ReferenceEquals(this, result) || ReferenceEquals(other, result))
             {
-                var tmp = Build.SameAs(result);
+                MatrixMathNet<T> tmp = Build.SameAs(result);
                 DoMultiply(other, tmp);
                 tmp.CopyTo(result);
             }
@@ -764,7 +764,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, other);
             }
 
-            var result = Build.SameAs(this, other, RowCount, other.ColumnCount);
+            MatrixMathNet<T> result = Build.SameAs(this, other, RowCount, other.ColumnCount);
             DoMultiply(other, result);
             return result;
         }
@@ -785,7 +785,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 
             if (ReferenceEquals(this, result) || ReferenceEquals(other, result))
             {
-                var tmp = Build.SameAs(result);
+                MatrixMathNet<T> tmp = Build.SameAs(result);
                 DoTransposeAndMultiply(other, tmp);
                 tmp.CopyTo(result);
             }
@@ -808,7 +808,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, other);
             }
 
-            var result = Build.SameAs(this, other, RowCount, other.RowCount);
+            MatrixMathNet<T> result = Build.SameAs(this, other, RowCount, other.RowCount);
             DoTransposeAndMultiply(other, result);
             return result;
         }
@@ -826,7 +826,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, rightSide, "rightSide");
             }
 
-            var result = VectorMathNet<T>.Build.SameAs(this, rightSide, ColumnCount);
+            VectorMathNet<T> result = VectorMathNet<T>.Build.SameAs(this, rightSide, ColumnCount);
             DoTransposeThisAndMultiply(rightSide, result);
             return result;
         }
@@ -852,7 +852,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 
             if (ReferenceEquals(rightSide, result))
             {
-                var tmp = VectorMathNet<T>.Build.SameAs(result);
+                VectorMathNet<T> tmp = VectorMathNet<T>.Build.SameAs(result);
                 DoTransposeThisAndMultiply(rightSide, tmp);
                 tmp.CopyTo(result);
             }
@@ -878,7 +878,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 
             if (ReferenceEquals(this, result) || ReferenceEquals(other, result))
             {
-                var tmp = Build.SameAs(result);
+                MatrixMathNet<T> tmp = Build.SameAs(result);
                 DoTransposeThisAndMultiply(other, tmp);
                 tmp.CopyTo(result);
             }
@@ -901,7 +901,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, other);
             }
 
-            var result = Build.SameAs(this, other, ColumnCount, other.ColumnCount);
+            MatrixMathNet<T> result = Build.SameAs(this, other, ColumnCount, other.ColumnCount);
             DoTransposeThisAndMultiply(other, result);
             return result;
         }
@@ -924,7 +924,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 
             if (ReferenceEquals(this, result) || ReferenceEquals(other, result))
             {
-                var tmp = Build.SameAs(result);
+                MatrixMathNet<T> tmp = Build.SameAs(result);
                 DoConjugateTransposeAndMultiply(other, tmp);
                 tmp.CopyTo(result);
             }
@@ -947,7 +947,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, other);
             }
 
-            var result = Build.SameAs(this, other, RowCount, other.RowCount);
+            MatrixMathNet<T> result = Build.SameAs(this, other, RowCount, other.RowCount);
             DoConjugateTransposeAndMultiply(other, result);
             return result;
         }
@@ -965,7 +965,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, rightSide, "rightSide");
             }
 
-            var result = VectorMathNet<T>.Build.SameAs(this, rightSide, ColumnCount);
+            VectorMathNet<T> result = VectorMathNet<T>.Build.SameAs(this, rightSide, ColumnCount);
             DoConjugateTransposeThisAndMultiply(rightSide, result);
             return result;
         }
@@ -991,7 +991,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 
             if (ReferenceEquals(rightSide, result))
             {
-                var tmp = VectorMathNet<T>.Build.SameAs(result);
+                VectorMathNet<T> tmp = VectorMathNet<T>.Build.SameAs(result);
                 DoConjugateTransposeThisAndMultiply(rightSide, tmp);
                 tmp.CopyTo(result);
             }
@@ -1017,7 +1017,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 
             if (ReferenceEquals(this, result) || ReferenceEquals(other, result))
             {
-                var tmp = Build.SameAs(result);
+                MatrixMathNet<T> tmp = Build.SameAs(result);
                 DoConjugateTransposeThisAndMultiply(other, tmp);
                 tmp.CopyTo(result);
             }
@@ -1040,12 +1040,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, other);
             }
 
-            var result = Build.SameAs(this, other, ColumnCount, other.ColumnCount);
+            MatrixMathNet<T> result = Build.SameAs(this, other, ColumnCount, other.ColumnCount);
             DoConjugateTransposeThisAndMultiply(other, result);
             return result;
         }
 
-        static MatrixMathNet<T> IntPower(int exponent, MatrixMathNet<T> x, MatrixMathNet<T> y, MatrixMathNet<T> work)
+        private static MatrixMathNet<T> IntPower(int exponent, MatrixMathNet<T> x, MatrixMathNet<T> y, MatrixMathNet<T> work)
         {
             // We try to be smart about not allocating more matrices than needed
             // and to minimize the number of multiplications (not optimal on either though)
@@ -1062,14 +1062,29 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                     return x;
                 }
 
-                if (work == null) work = y.Multiply(x); else y.Multiply(x, work);
+                if (work == null)
+                {
+                    work = y.Multiply(x);
+                }
+                else
+                {
+                    y.Multiply(x, work);
+                }
+
                 return work;
             }
 
             // return y*x^2
             if (exponent == 2)
             {
-                if (work == null) work = x.Multiply(x); else x.Multiply(x, work);
+                if (work == null)
+                {
+                    work = x.Multiply(x);
+                }
+                else
+                {
+                    x.Multiply(x, work);
+                }
 
                 // return x^2
                 if (y == null)
@@ -1085,23 +1100,47 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             if (exponent.IsEven())
             {
                 // we store the new x in work, keep the y as is and reuse the old x as new work matrix.
-                if (work == null) work = x.Multiply(x); else x.Multiply(x, work);
-                return IntPower(exponent/2, work, y, x);
+                if (work == null)
+                {
+                    work = x.Multiply(x);
+                }
+                else
+                {
+                    x.Multiply(x, work);
+                }
+
+                return IntPower(exponent / 2, work, y, x);
             }
 
             // recursive n <-- (n-1)/2, y <-- x, x <-- x^2
             if (y == null)
             {
                 // we store the new x in work, directly use the old x as y. no work matrix.
-                if (work == null) work = x.Multiply(x); else x.Multiply(x, work);
-                return IntPower((exponent - 1)/2, work, x, null);
+                if (work == null)
+                {
+                    work = x.Multiply(x);
+                }
+                else
+                {
+                    x.Multiply(x, work);
+                }
+
+                return IntPower((exponent - 1) / 2, work, x, null);
             }
 
             // recursive n <-- (n-1)/2, y <-- y*x, x <-- x^2
             // we store the new y in work, the new x in y, and reuse the old x as work
-            if (work == null) work = y.Multiply(x); else y.Multiply(x, work);
+            if (work == null)
+            {
+                work = y.Multiply(x);
+            }
+            else
+            {
+                y.Multiply(x, work);
+            }
+
             x.Multiply(x, y);
-            return IntPower((exponent - 1)/2, y, work, x);
+            return IntPower((exponent - 1) / 2, y, work, x);
         }
 
         /// <summary>
@@ -1135,7 +1174,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return;
             }
 
-            var res = IntPower(exponent, Clone(), null, result);
+            MatrixMathNet<T> res = IntPower(exponent, Clone(), null, result);
             if (!ReferenceEquals(res, result))
             {
                 res.CopyTo(result);
@@ -1148,12 +1187,30 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="exponent">The positive integer exponent to raise the matrix to.</param>
         public MatrixMathNet<T> Power(int exponent)
         {
-            if (RowCount != ColumnCount) throw new ArgumentException("Matrix must be square.");
-            if (exponent < 0) throw new ArgumentException("Value must not be negative (zero is ok).");
+            if (RowCount != ColumnCount)
+            {
+                throw new ArgumentException("Matrix must be square.");
+            }
 
-            if (exponent == 0) return Build.DiagonalIdentity(RowCount, ColumnCount);
-            if (exponent == 1) return this;
-            if (exponent == 2) return Multiply(this);
+            if (exponent < 0)
+            {
+                throw new ArgumentException("Value must not be negative (zero is ok).");
+            }
+
+            if (exponent == 0)
+            {
+                return Build.DiagonalIdentity(RowCount, ColumnCount);
+            }
+
+            if (exponent == 1)
+            {
+                return this;
+            }
+
+            if (exponent == 2)
+            {
+                return Multiply(this);
+            }
 
             return IntPower(exponent, Clone(), null, null);
         }
@@ -1164,7 +1221,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A matrix containing the negated values.</returns>
         public MatrixMathNet<T> Negate()
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoNegate(result);
             return result;
         }
@@ -1190,7 +1247,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A matrix containing the conjugated values.</returns>
         public MatrixMathNet<T> Conjugate()
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoConjugate(result);
             return result;
         }
@@ -1218,7 +1275,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A matrix containing the results.</returns>
         public MatrixMathNet<T> Modulus(T divisor)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoModulus(divisor, result);
             return result;
         }
@@ -1247,7 +1304,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A matrix containing the results.</returns>
         public MatrixMathNet<T> ModulusByThis(T dividend)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoModulusByThis(dividend, result);
             return result;
         }
@@ -1276,7 +1333,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A matrix containing the results.</returns>
         public MatrixMathNet<T> Remainder(T divisor)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoRemainder(divisor, result);
             return result;
         }
@@ -1305,7 +1362,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A matrix containing the results.</returns>
         public MatrixMathNet<T> RemainderByThis(T dividend)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoRemainderByThis(dividend, result);
             return result;
         }
@@ -1339,7 +1396,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, other, "other");
             }
 
-            var result = Build.SameAs(this, other);
+            MatrixMathNet<T> result = Build.SameAs(this, other);
             DoPointwiseMultiply(other, result);
             return result;
         }
@@ -1374,7 +1431,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, divisor);
             }
 
-            var result = Build.SameAs(this, divisor);
+            MatrixMathNet<T> result = Build.SameAs(this, divisor);
             DoPointwiseDivide(divisor, result);
             return result;
         }
@@ -1402,7 +1459,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="exponent">The exponent to raise this matrix values to.</param>
         public MatrixMathNet<T> PointwisePower(T exponent)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoPointwisePower(exponent, result);
             return result;
         }
@@ -1434,7 +1491,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, exponent);
             }
 
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoPointwisePower(exponent, result);
             return result;
         }
@@ -1468,7 +1525,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, divisor);
             }
 
-            var result = Build.SameAs(this, divisor);
+            MatrixMathNet<T> result = Build.SameAs(this, divisor);
             DoPointwiseModulus(divisor, result);
             return result;
         }
@@ -1504,7 +1561,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, divisor);
             }
 
-            var result = Build.SameAs(this, divisor);
+            MatrixMathNet<T> result = Build.SameAs(this, divisor);
             DoPointwiseRemainder(divisor, result);
             return result;
         }
@@ -1537,7 +1594,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>New instance of matrix which is the result</returns>
         protected MatrixMathNet<T> PointwiseUnary(Action<MatrixMathNet<T>> f)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             f(result);
             return result;
         }
@@ -1575,7 +1632,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw DimensionsDontMatch<ArgumentException>(this, other);
             }
 
-            var result = Build.SameAs(this, other);
+            MatrixMathNet<T> result = Build.SameAs(this, other);
             f(other, result);
             return result;
         }
@@ -1589,7 +1646,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="result">The matrix to store the result.</param>
         /// <returns>The resulting matrix</returns>
         /// <exception cref="ArgumentException">If this matrix and <paramref name="other"/> are not the same dimension.</exception>
-        protected void PointwiseBinary(Action<MatrixMathNet<T>,MatrixMathNet<T>> f, MatrixMathNet<T> other, MatrixMathNet<T> result)
+        protected void PointwiseBinary(Action<MatrixMathNet<T>, MatrixMathNet<T>> f, MatrixMathNet<T> other, MatrixMathNet<T> result)
         {
             if (ColumnCount != result.ColumnCount || RowCount != result.RowCount || ColumnCount != other.ColumnCount || RowCount != other.RowCount)
             {
@@ -1983,7 +2040,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public virtual VectorMathNet<T>[] Kernel()
         {
-            var svd = Svd(true);
+            Factorization.Svd<T> svd = Svd(true);
             return svd.VT.EnumerateRows(svd.Rank, ColumnCount - svd.Rank).ToArray();
         }
 
@@ -1993,7 +2050,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public virtual VectorMathNet<T>[] Range()
         {
-            var svd = Svd(true);
+            Factorization.Svd<T> svd = Svd(true);
             return svd.U.EnumerateColumns(0, svd.Rank).ToArray();
         }
 
@@ -2020,7 +2077,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The Kronecker product of the two matrices.</returns>
         public MatrixMathNet<T> KroneckerProduct(MatrixMathNet<T> other)
         {
-            var result = Build.SameAs(this, other, RowCount*other.RowCount, ColumnCount*other.ColumnCount);
+            MatrixMathNet<T> result = Build.SameAs(this, other, RowCount * other.RowCount, ColumnCount * other.ColumnCount);
             KroneckerProduct(other, result);
             return result;
         }
@@ -2034,16 +2091,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <exception cref="ArgumentException">If the result matrix's dimensions are not (this.Rows * lower.rows) x (this.Columns * lower.Columns).</exception>
         public virtual void KroneckerProduct(MatrixMathNet<T> other, MatrixMathNet<T> result)
         {
-            if (result.RowCount != (RowCount*other.RowCount) || result.ColumnCount != (ColumnCount*other.ColumnCount))
+            if (result.RowCount != (RowCount * other.RowCount) || result.ColumnCount != (ColumnCount * other.ColumnCount))
             {
                 throw DimensionsDontMatch<ArgumentOutOfRangeException>(this, other, result);
             }
 
-            for (var j = 0; j < ColumnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                for (var i = 0; i < RowCount; i++)
+                for (int i = 0; i < RowCount; i++)
                 {
-                    result.SetSubMatrix(i*other.RowCount, other.RowCount, j*other.ColumnCount, other.ColumnCount, At(i, j)*other);
+                    result.SetSubMatrix(i * other.RowCount, other.RowCount, j * other.ColumnCount, other.ColumnCount, At(i, j) * other);
                 }
             }
         }
@@ -2054,7 +2111,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="scalar">The scalar value to compare to.</param>
         public MatrixMathNet<T> PointwiseMinimum(T scalar)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoPointwiseMinimum(scalar, result);
             return result;
         }
@@ -2081,7 +2138,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="scalar">The scalar value to compare to.</param>
         public MatrixMathNet<T> PointwiseMaximum(T scalar)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoPointwiseMaximum(scalar, result);
             return result;
         }
@@ -2108,7 +2165,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="scalar">The scalar value to compare to.</param>
         public MatrixMathNet<T> PointwiseAbsoluteMinimum(T scalar)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoPointwiseAbsoluteMinimum(scalar, result);
             return result;
         }
@@ -2135,7 +2192,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="scalar">The scalar value to compare to.</param>
         public MatrixMathNet<T> PointwiseAbsoluteMaximum(T scalar)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoPointwiseAbsoluteMaximum(scalar, result);
             return result;
         }
@@ -2162,7 +2219,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="other">The matrix with the values to compare to.</param>
         public MatrixMathNet<T> PointwiseMinimum(MatrixMathNet<T> other)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoPointwiseMinimum(other, result);
             return result;
         }
@@ -2189,7 +2246,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="other">The matrix with the values to compare to.</param>
         public MatrixMathNet<T> PointwiseMaximum(MatrixMathNet<T> other)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoPointwiseMaximum(other, result);
             return result;
         }
@@ -2216,7 +2273,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="other">The matrix with the values to compare to.</param>
         public MatrixMathNet<T> PointwiseAbsoluteMinimum(MatrixMathNet<T> other)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoPointwiseAbsoluteMinimum(other, result);
             return result;
         }
@@ -2243,7 +2300,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="other">The matrix with the values to compare to.</param>
         public MatrixMathNet<T> PointwiseAbsoluteMaximum(MatrixMathNet<T> other)
         {
-            var result = Build.SameAs(this);
+            MatrixMathNet<T> result = Build.SameAs(this);
             DoPointwiseAbsoluteMaximum(other, result);
             return result;
         }
@@ -2336,21 +2393,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         internal static Exception DimensionsDontMatch<TException>(MatrixMathNet<T> left, MatrixMathNet<T> right, MatrixMathNet<T> result, string paramName = null)
             where TException : Exception
         {
-            var message = $"Matrix dimensions must agree: op1 is {left.RowCount}x{left.ColumnCount}, op2 is {right.RowCount}x{right.ColumnCount}, op3 is {result.RowCount}x{result.ColumnCount}.";
+            string message = $"Matrix dimensions must agree: op1 is {left.RowCount}x{left.ColumnCount}, op2 is {right.RowCount}x{right.ColumnCount}, op3 is {result.RowCount}x{result.ColumnCount}.";
             return CreateException<TException>(message, paramName);
         }
 
         internal static Exception DimensionsDontMatch<TException>(MatrixMathNet<T> left, MatrixMathNet<T> right, string paramName = null)
             where TException : Exception
         {
-            var message = $"Matrix dimensions must agree: op1 is {left.RowCount}x{left.ColumnCount}, op2 is {right.RowCount}x{right.ColumnCount}.";
+            string message = $"Matrix dimensions must agree: op1 is {left.RowCount}x{left.ColumnCount}, op2 is {right.RowCount}x{right.ColumnCount}.";
             return CreateException<TException>(message, paramName);
         }
 
         internal static Exception DimensionsDontMatch<TException>(MatrixMathNet<T> matrix)
             where TException : Exception
         {
-            var message = $"Matrix dimensions must agree: {matrix.RowCount}x{matrix.ColumnCount}.";
+            string message = $"Matrix dimensions must agree: {matrix.RowCount}x{matrix.ColumnCount}.";
             return CreateException<TException>(message);
         }
 
@@ -2378,14 +2435,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             return DimensionsDontMatch<TException>(left.ToColumnMatrix(), right.ToColumnMatrix(), paramName);
         }
 
-        static Exception CreateException<TException>(string message, string paramName = null)
+        private static Exception CreateException<TException>(string message, string paramName = null)
             where TException : Exception
         {
-            if (typeof (TException) == typeof (ArgumentException))
+            if (typeof(TException) == typeof(ArgumentException))
             {
                 return new ArgumentException(message, paramName);
             }
-            if (typeof (TException) == typeof (ArgumentOutOfRangeException))
+            if (typeof(TException) == typeof(ArgumentOutOfRangeException))
             {
                 return new ArgumentOutOfRangeException(paramName, message);
             }

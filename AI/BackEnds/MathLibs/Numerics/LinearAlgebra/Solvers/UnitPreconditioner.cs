@@ -42,7 +42,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
         /// The coefficient matrix on which this preconditioner operates.
         /// Is used to check dimensions on the different vectors that are processed.
         /// </summary>
-        int _size;
+        private int _size;
 
         /// <summary>
         /// Initializes the preconditioner and loads the internal data structures.

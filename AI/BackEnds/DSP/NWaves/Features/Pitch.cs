@@ -36,24 +36,24 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 endPos = signal.Length;
             }
 
-            var pitch1 = (int)(1.0 * samplingRate / high);    // 2,5 ms = 400Hz
-            var pitch2 = (int)(1.0 * samplingRate / low);     // 12,5 ms = 80Hz
+            int pitch1 = (int)(1.0 * samplingRate / high);    // 2,5 ms = 400Hz
+            int pitch2 = (int)(1.0 * samplingRate / low);     // 12,5 ms = 80Hz
 
-            var block = new DiscreteSignal(samplingRate, signal)[startPos, endPos].Samples;
+            float[] block = new DiscreteSignal(samplingRate, signal)[startPos, endPos].Samples;
 
-            var fftSize = MathUtils.NextPowerOfTwo(2 * block.Length - 1);
+            int fftSize = MathUtils.NextPowerOfTwo(2 * block.Length - 1);
 
-            var cc = new float[fftSize];
+            float[] cc = new float[fftSize];
 
             new Convolver(fftSize).CrossCorrelate(block, block.FastCopy(), cc);
 
-            var start = pitch1 + block.Length - 1;
-            var end = Math.Min(start + pitch2, cc.Length);
+            int start = pitch1 + block.Length - 1;
+            int end = Math.Min(start + pitch2, cc.Length);
 
-            var max = start < cc.Length ? cc[start] : 0;
+            float max = start < cc.Length ? cc[start] : 0;
 
-            var peakIndex = start;
-            for (var k = start; k < end; k++)
+            int peakIndex = start;
+            for (int k = start; k < end; k++)
             {
                 if (cc[k] > max)
                 {
@@ -105,27 +105,34 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 endPos = signal.Length;
             }
 
-            var maxPositive = 0.0f;
-            var minNegative = 0.0f;
+            float maxPositive = 0.0f;
+            float minNegative = 0.0f;
 
-            for (var i = startPos; i < endPos; i++)
+            for (int i = startPos; i < endPos; i++)
             {
-                if (signal[i] > 0 && signal[i] > maxPositive) maxPositive = signal[i];
-                if (signal[i] < 0 && signal[i] < minNegative) minNegative = signal[i];
+                if (signal[i] > 0 && signal[i] > maxPositive)
+                {
+                    maxPositive = signal[i];
+                }
+
+                if (signal[i] < 0 && signal[i] < minNegative)
+                {
+                    minNegative = signal[i];
+                }
             }
 
-            var highThreshold = highSchmittThreshold < 1e9f ? highSchmittThreshold : 0.75f * maxPositive;
-            var lowThreshold = lowSchmittThreshold > -1e9f ? lowSchmittThreshold : 0.75f * minNegative;
+            float highThreshold = highSchmittThreshold < 1e9f ? highSchmittThreshold : 0.75f * maxPositive;
+            float lowThreshold = lowSchmittThreshold > -1e9f ? lowSchmittThreshold : 0.75f * minNegative;
 
-            var zcr = 0;
-            var firstCrossed = endPos;
-            var lastCrossed = startPos;
+            int zcr = 0;
+            int firstCrossed = endPos;
+            int lastCrossed = startPos;
 
             // Schmitt trigger:
 
-            var isCurrentHigh = false;
+            bool isCurrentHigh = false;
 
-            var j = startPos;
+            int j = startPos;
             for (; j < endPos - 1; j++)
             {
                 if (signal[j] < highThreshold && signal[j + 1] >= highThreshold && !isCurrentHigh)
@@ -210,28 +217,28 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 endPos = signal.Length;
             }
 
-            var pitch1 = (int)(1.0 * samplingRate / high);    // 2,5 ms = 400Hz
-            var pitch2 = (int)(1.0 * samplingRate / low);     // 12,5 ms = 80Hz
+            int pitch1 = (int)(1.0 * samplingRate / high);    // 2,5 ms = 400Hz
+            int pitch2 = (int)(1.0 * samplingRate / low);     // 12,5 ms = 80Hz
 
-            var length = (endPos - startPos) / 2;
+            int length = (endPos - startPos) / 2;
 
             // cumulative mean difference function (CMDF):
 
-            var cmdf = new float[length];
+            float[] cmdf = new float[length];
 
-            for (var i = 0; i < length; i++)
+            for (int i = 0; i < length; i++)
             {
-                for (var j = 0; j < length; j++)
+                for (int j = 0; j < length; j++)
                 {
-                    var diff = signal[j + startPos] - signal[i + j + startPos];
+                    float diff = signal[j + startPos] - signal[i + j + startPos];
                     cmdf[i] += diff * diff;
                 }
             }
 
             cmdf[0] = 1;
 
-            var sum = 0.0f;
-            for (var i = 1; i < length; i++)
+            float sum = 0.0f;
+            for (int i = 1; i < length; i++)
             {
                 sum += cmdf[i];
                 cmdf[i] *= i / sum;
@@ -239,13 +246,17 @@ namespace AI.BackEnds.DSP.NWaves.Features
 
             // adjust t according to some threshold:
 
-            var t = pitch1;     // focusing on range [pitch1 .. pitch2]
+            int t = pitch1;     // focusing on range [pitch1 .. pitch2]
 
             for (; t < pitch2; t++)
             {
                 if (cmdf[t] < cmdfThreshold)
                 {
-                    while (t + 1 < pitch2 && cmdf[t + 1] < cmdf[t]) t++;
+                    while (t + 1 < pitch2 && cmdf[t + 1] < cmdf[t])
+                    {
+                        t++;
+                    }
+
                     break;
                 }
             }
@@ -259,8 +270,8 @@ namespace AI.BackEnds.DSP.NWaves.Features
 
             // parabolic interpolation:
 
-            var x1 = t < 1 ? t : t - 1;
-            var x2 = t + 1 < length ? t + 1 : t;
+            int x1 = t < 1 ? t : t - 1;
+            int x2 = t + 1 < length ? t + 1 : t;
 
             if (t == x1)
             {
@@ -337,10 +348,10 @@ namespace AI.BackEnds.DSP.NWaves.Features
 
             signal.ApplyWindow(WindowTypes.Hann);
 
-            var size = fftSize > 0 ? fftSize : MathUtils.NextPowerOfTwo(signal.Length);
-            var fft = new RealFft(size);
+            int size = fftSize > 0 ? fftSize : MathUtils.NextPowerOfTwo(signal.Length);
+            RealFft fft = new RealFft(size);
 
-            var spectrum = fft.PowerSpectrum(signal, false).Samples;
+            float[] spectrum = fft.PowerSpectrum(signal, false).Samples;
 
             return FromHss(spectrum, signal.SamplingRate, low, high);
         }
@@ -358,22 +369,22 @@ namespace AI.BackEnds.DSP.NWaves.Features
                                     float low = 80,
                                     float high = 400)
         {
-            var sumSpectrum = spectrum.FastCopy();
+            float[] sumSpectrum = spectrum.FastCopy();
 
-            var fftSize = (spectrum.Length - 1) * 2;
+            int fftSize = (spectrum.Length - 1) * 2;
 
-            var startIdx = (int)(low * fftSize / samplingRate) + 1;
-            var endIdx = (int)(high * fftSize / samplingRate) + 1;
-            var decimations = Math.Min(spectrum.Length / endIdx, 10);
+            int startIdx = (int)(low * fftSize / samplingRate) + 1;
+            int endIdx = (int)(high * fftSize / samplingRate) + 1;
+            int decimations = Math.Min(spectrum.Length / endIdx, 10);
 
-            var hssIndex = 0;
-            var maxHss = 0.0f;
+            int hssIndex = 0;
+            float maxHss = 0.0f;
 
-            for (var j = startIdx; j < endIdx; j++)
+            for (int j = startIdx; j < endIdx; j++)
             {
                 sumSpectrum[j] *= 1.5f;         // slightly emphasize 1st component
 
-                for (var k = 2; k < decimations; k++)
+                for (int k = 2; k < decimations; k++)
                 {
                     sumSpectrum[j] += (spectrum[j * k - 1] + spectrum[j * k] + spectrum[j * k + 1]) / 3;
                 }
@@ -417,10 +428,10 @@ namespace AI.BackEnds.DSP.NWaves.Features
 
             signal.ApplyWindow(WindowTypes.Hann);
 
-            var size = fftSize > 0 ? fftSize : MathUtils.NextPowerOfTwo(signal.Length);
-            var fft = new RealFft(size);
+            int size = fftSize > 0 ? fftSize : MathUtils.NextPowerOfTwo(signal.Length);
+            RealFft fft = new RealFft(size);
 
-            var spectrum = fft.PowerSpectrum(signal, false).Samples;
+            float[] spectrum = fft.PowerSpectrum(signal, false).Samples;
 
             return FromHps(spectrum, signal.SamplingRate, low, high);
         }
@@ -438,20 +449,20 @@ namespace AI.BackEnds.DSP.NWaves.Features
                                     float low = 80,
                                     float high = 400)
         {
-            var sumSpectrum = spectrum.FastCopy();
+            float[] sumSpectrum = spectrum.FastCopy();
 
-            var fftSize = (spectrum.Length - 1) * 2;
+            int fftSize = (spectrum.Length - 1) * 2;
 
-            var startIdx = (int)(low * fftSize / samplingRate) + 1;
-            var endIdx = (int)(high * fftSize / samplingRate) + 1;
-            var decimations = Math.Min(spectrum.Length / endIdx, 10);
+            int startIdx = (int)(low * fftSize / samplingRate) + 1;
+            int endIdx = (int)(high * fftSize / samplingRate) + 1;
+            int decimations = Math.Min(spectrum.Length / endIdx, 10);
 
-            var hpsIndex = 0;
-            var maxHps = 0.0f;
+            int hpsIndex = 0;
+            float maxHps = 0.0f;
 
-            for (var j = startIdx; j < endIdx; j++)
+            for (int j = startIdx; j < endIdx; j++)
             {
-                for (var k = 2; k < decimations; k++)
+                for (int k = 2; k < decimations; k++)
                 {
                     sumSpectrum[j] *= (spectrum[j * k - 1] + spectrum[j * k] + spectrum[j * k + 1]) / 3;
                 }
@@ -495,10 +506,10 @@ namespace AI.BackEnds.DSP.NWaves.Features
 
             signal.ApplyWindow(WindowTypes.Hann);
 
-            var size = fftSize > 0 ? fftSize : MathUtils.NextPowerOfTwo(signal.Length);
-            var fft = new RealFft(size);
+            int size = fftSize > 0 ? fftSize : MathUtils.NextPowerOfTwo(signal.Length);
+            RealFft fft = new RealFft(size);
 
-            var spectrum = fft.PowerSpectrum(signal, false).Samples;
+            float[] spectrum = fft.PowerSpectrum(signal, false).Samples;
 
             return FromSpectralPeaks(spectrum, signal.SamplingRate, low, high);
         }
@@ -516,12 +527,12 @@ namespace AI.BackEnds.DSP.NWaves.Features
                                               float low = 80,
                                               float high = 400)
         {
-            var fftSize = (spectrum.Length - 1) * 2;
+            int fftSize = (spectrum.Length - 1) * 2;
 
-            var startIdx = (int)(low * fftSize / samplingRate) + 1;
-            var endIdx = (int)(high * fftSize / samplingRate) + 1;
+            int startIdx = (int)(low * fftSize / samplingRate) + 1;
+            int endIdx = (int)(high * fftSize / samplingRate) + 1;
 
-            for (var k = startIdx + 1; k < endIdx; k++)
+            for (int k = startIdx + 1; k < endIdx; k++)
             {
                 if (spectrum[k] > spectrum[k - 1] && spectrum[k] > spectrum[k - 2] &&
                     spectrum[k] > spectrum[k + 1] && spectrum[k] > spectrum[k + 2])
@@ -552,7 +563,7 @@ namespace AI.BackEnds.DSP.NWaves.Features
                                          int cepstrumSize = 256,
                                          int fftSize = 1024)
         {
-            var samplingRate = signal.SamplingRate;
+            int samplingRate = signal.SamplingRate;
 
             if (endPos == -1)
             {
@@ -564,17 +575,17 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 signal = signal[startPos, endPos];
             }
 
-            var pitch1 = (int)(1.0 * samplingRate / high);                              // 2,5 ms = 400Hz
-            var pitch2 = Math.Min(cepstrumSize - 1, (int)(1.0 * samplingRate / low));   // 12,5 ms = 80Hz
+            int pitch1 = (int)(1.0 * samplingRate / high);                              // 2,5 ms = 400Hz
+            int pitch2 = Math.Min(cepstrumSize - 1, (int)(1.0 * samplingRate / low));   // 12,5 ms = 80Hz
 
-            var cepstrum = new float[cepstrumSize];
+            float[] cepstrum = new float[cepstrumSize];
 
-            var cepstralTransform = new CepstralTransform(cepstrumSize, fftSize);
+            CepstralTransform cepstralTransform = new CepstralTransform(cepstrumSize, fftSize);
             cepstralTransform.RealCepstrum(signal.Samples, cepstrum);
 
-            var max = cepstrum[pitch1];
-            var peakIndex = pitch1;
-            for (var k = pitch1 + 1; k <= pitch2; k++)
+            float max = cepstrum[pitch1];
+            int peakIndex = pitch1;
+            for (int k = pitch1 + 1; k <= pitch2; k++)
             {
                 if (cepstrum[k] > max)
                 {

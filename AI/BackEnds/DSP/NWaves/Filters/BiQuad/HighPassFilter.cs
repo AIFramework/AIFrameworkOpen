@@ -39,9 +39,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
             Freq = freq;
             Q = q;
 
-            var omega = 2 * Math.PI * freq;
-            var alpha = Math.Sin(omega) / (2 * q);
-            var cosw = Math.Cos(omega);
+            double omega = 2 * Math.PI * freq;
+            double alpha = Math.Sin(omega) / (2 * q);
+            double cosw = Math.Cos(omega);
 
             _b[0] = (float)((1 + cosw) / 2);
             _b[1] = (float)(-(1 + cosw));

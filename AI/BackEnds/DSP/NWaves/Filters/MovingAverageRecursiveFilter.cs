@@ -41,7 +41,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <returns></returns>
         private static float[] MakeNumerator(int size)
         {
-            var b = new float[size + 1];
+            float[] b = new float[size + 1];
 
             b[0] = 1f / size;
             b[size] = -b[0];
@@ -63,13 +63,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters
                 return base.ApplyTo(signal, method);
             }
 
-            var input = signal.Samples;
-            var size = Size;
+            float[] input = signal.Samples;
+            int size = Size;
 
-            var output = new float[input.Length];
+            float[] output = new float[input.Length];
 
-            var b0 = _b[0];
-            var bs = _b[Size];
+            float b0 = _b[0];
+            float bs = _b[Size];
 
             output[0] = input[0] * b0;
 
@@ -93,10 +93,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <returns></returns>
         public override float Process(float sample)
         {
-            var b0 = _b[0];
-            var bs = _b[Size];
+            float b0 = _b[0];
+            float bs = _b[Size];
 
-            var output = b0 * sample + bs * _delayLineB[_delayLineOffsetB] + _out1;
+            float output = b0 * sample + bs * _delayLineB[_delayLineOffsetB] + _out1;
 
             _delayLineB[_delayLineOffsetB] = sample;
             _out1 = output;

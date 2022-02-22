@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorization
 {
@@ -60,8 +60,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                     throw new ArgumentException("Matrix must be square.");
                 }
 
-                var det = Complex.One;
-                for (var i = 0; i < FullR.ColumnCount; i++)
+                Complex det = Complex.One;
+                for (int i = 0; i < FullR.ColumnCount; i++)
                 {
                     det *= FullR.At(i, i);
                     if (FullR.At(i, i).Magnitude.AlmostEqual(0.0))
@@ -82,7 +82,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         {
             get
             {
-                for (var i = 0; i < FullR.ColumnCount; i++)
+                for (int i = 0; i < FullR.ColumnCount; i++)
                 {
                     if (FullR.At(i, i).Magnitude.AlmostEqual(0.0))
                     {

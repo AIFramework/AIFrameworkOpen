@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Features;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 {
@@ -120,14 +120,14 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
         /// <param name="options">Options</param>
         public Mpeg7SpectralFeaturesExtractor(MultiFeatureOptions options) : base(options)
         {
-            var featureList = options.FeatureList;
+            string featureList = options.FeatureList;
 
             if (featureList == "all" || featureList == "full")
             {
                 featureList = FeatureSet;
             }
 
-            var features = featureList.Split(',', '+', '-', ';', ':')
+            List<string> features = featureList.Split(',', '+', '-', ';', ':')
                                       .Select(f => f.Trim().ToLower())
                                       .ToList();
 
@@ -149,7 +149,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
                     case "flatness":
                         if (_parameters?.ContainsKey("minLevel") ?? false)
                         {
-                            var minLevel = (float)_parameters["minLevel"];
+                            float minLevel = (float)_parameters["minLevel"];
                             return (spectrum, freqs) => Spectral.Flatness(spectrum, minLevel);
                         }
                         else
@@ -161,7 +161,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
                     case "noiseness":
                         if (_parameters?.ContainsKey("noiseFrequency") ?? false)
                         {
-                            var noiseFrequency = (float)_parameters["noiseFrequency"];
+                            float noiseFrequency = (float)_parameters["noiseFrequency"];
                             return (spectrum, freqs) => Spectral.Noiseness(spectrum, freqs, noiseFrequency);
                         }
                         else
@@ -172,7 +172,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
                     case "rolloff":
                         if (_parameters?.ContainsKey("rolloffPercent") ?? false)
                         {
-                            var rolloffPercent = (float)_parameters["rolloffPercent"];
+                            float rolloffPercent = (float)_parameters["rolloffPercent"];
                             return (spectrum, freqs) => Spectral.Rolloff(spectrum, freqs, rolloffPercent);
                         }
                         else
@@ -213,7 +213,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
             _frequencyBands = options.FrequencyBands ?? FilterBanks.OctaveBands(6, SamplingRate);
             _filterbank = FilterBanks.Rectangular(_blockSize, SamplingRate, _frequencyBands);
 
-            var cfs = _frequencyBands.Select(b => b.Item2).ToList();
+            List<double> cfs = _frequencyBands.Select(b => b.Item2).ToList();
             // insert zero frequency so that it'll be ignored during calculations
             // just like in case of FFT spectrum (0th DC component)
             cfs.Insert(0, 0);
@@ -245,7 +245,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
                 featureList = HarmonicSet;
             }
 
-            var features = featureList.Split(',', '+', '-', ';', ':')
+            List<string> features = featureList.Split(',', '+', '-', ';', ':')
                                       .Select(f => f.Trim().ToLower())
                                       .ToList();
 
@@ -357,11 +357,11 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 
             // apply filterbank (ignoring 0th coefficient)
 
-            for (var k = 0; k < _filterbank.Length; k++)
+            for (int k = 0; k < _filterbank.Length; k++)
             {
                 _mappedSpectrum[k + 1] = 0.0f;
 
-                for (var j = 0; j < _spectrum.Length; j++)
+                for (int j = 0; j < _spectrum.Length; j++)
                 {
                     _mappedSpectrum[k + 1] += _filterbank[k][j] * _spectrum[j];
                 }
@@ -369,7 +369,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 
             // extract spectral features
 
-            for (var j = 0; j < _extractors.Count; j++)
+            for (int j = 0; j < _extractors.Count; j++)
             {
                 features[j] = _extractors[j](_mappedSpectrum, _frequencies);
             }
@@ -378,12 +378,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 
             if (_harmonicExtractors != null)
             {
-                var pitch = _pitchTrack == null ? _pitchEstimator(_spectrum) : _pitchTrack[_pitchPos++];
+                float pitch = _pitchTrack == null ? _pitchEstimator(_spectrum) : _pitchTrack[_pitchPos++];
 
                 _peaksDetector(_spectrum, _peaks, _peakFrequencies, SamplingRate, pitch);
 
-                var offset = _extractors.Count;
-                for (var j = 0; j < _harmonicExtractors.Count; j++)
+                int offset = _extractors.Count;
+                for (int j = 0; j < _harmonicExtractors.Count; j++)
                 {
                     features[j + offset] = _harmonicExtractors[j](_spectrum, _peaks, _peakFrequencies);
                 }
@@ -394,7 +394,10 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
         /// True if computations can be done in parallel
         /// </summary>
         /// <returns></returns>
-        public override bool IsParallelizable() => _pitchTrack == null;
+        public override bool IsParallelizable()
+        {
+            return _pitchTrack == null;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
@@ -402,8 +405,8 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
         /// <returns></returns>
         public override FeatureExtractor ParallelCopy()
         {
-            var spectralFeatureSet = string.Join(",", FeatureDescriptions.Take(_extractors.Count));
-            var options = new MultiFeatureOptions
+            string spectralFeatureSet = string.Join(",", FeatureDescriptions.Take(_extractors.Count));
+            MultiFeatureOptions options = new MultiFeatureOptions
             {
                 SamplingRate = SamplingRate,
                 FeatureList = spectralFeatureSet,
@@ -416,7 +419,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
                 Parameters = _parameters
             };
 
-            var copy = new Mpeg7SpectralFeaturesExtractor(options)
+            Mpeg7SpectralFeaturesExtractor copy = new Mpeg7SpectralFeaturesExtractor(options)
             {
                 _extractors = _extractors,
                 _pitchTrack = _pitchTrack
@@ -424,7 +427,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 
             if (_harmonicExtractors != null)
             {
-                var harmonicFeatureSet = string.Join(",", FeatureDescriptions.Skip(_extractors.Count));
+                string harmonicFeatureSet = string.Join(",", FeatureDescriptions.Skip(_extractors.Count));
                 copy.IncludeHarmonicFeatures(harmonicFeatureSet, _peaks.Length, _pitchEstimator);
             }
 

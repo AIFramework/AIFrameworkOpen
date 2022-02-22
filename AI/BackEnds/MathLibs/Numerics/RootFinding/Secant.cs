@@ -50,7 +50,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
         /// <exception cref="NonConvergenceException"></exception>
         public static double FindRoot(Func<double, double> f, double guess, double secondGuess, double lowerBound = double.MinValue, double upperBound = double.MaxValue, double accuracy = 1e-8, int maxIterations = 100)
         {
-            if (TryFindRoot(f, guess, secondGuess, lowerBound, upperBound, accuracy, maxIterations, out var root))
+            if (TryFindRoot(f, guess, secondGuess, lowerBound, upperBound, accuracy, maxIterations, out double root))
             {
                 return root;
             }

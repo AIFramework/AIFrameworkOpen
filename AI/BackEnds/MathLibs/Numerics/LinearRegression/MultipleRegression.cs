@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
 {
@@ -179,7 +179,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <returns>Best fitting list of model parameters β for each element in the predictor-arrays.</returns>
         public static T[] NormalEquations<T>(T[][] x, T[] y, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var predictor = MatrixMathNet<T>.Build.DenseOfRowArrays(x);
+            MatrixMathNet<T> predictor = MatrixMathNet<T>.Build.DenseOfRowArrays(x);
             if (intercept)
             {
                 predictor = predictor.InsertColumn(0, VectorMathNet<T>.Build.Dense(predictor.RowCount, VectorMathNet<T>.One));
@@ -195,7 +195,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
                 throw new ArgumentException($"A regression of the requested order requires at least {predictor.ColumnCount} samples. Only {y.Length} samples have been provided.");
             }
 
-            var response = VectorMathNet<T>.Build.Dense(y);
+            VectorMathNet<T> response = VectorMathNet<T>.Build.Dense(y);
             return predictor.TransposeThisAndMultiply(predictor).Cholesky().Solve(predictor.TransposeThisAndMultiply(response)).ToArray();
         }
 
@@ -208,7 +208,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <returns>Best fitting list of model parameters β for each element in the predictor-arrays.</returns>
         public static T[] NormalEquations<T>(IEnumerable<Tuple<T[], T>> samples, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var (u, v) = samples.UnpackSinglePass();
+            (T[][] u, T[] v) = samples.UnpackSinglePass();
             return NormalEquations(u, v, intercept);
         }
 
@@ -221,7 +221,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <returns>Best fitting list of model parameters β for each element in the predictor-arrays.</returns>
         public static T[] NormalEquations<T>(IEnumerable<(T[], T)> samples, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var (u, v) = samples.UnpackSinglePass();
+            (T[][] u, T[] v) = samples.UnpackSinglePass();
             return NormalEquations(u, v, intercept);
         }
 
@@ -279,7 +279,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <returns>Best fitting list of model parameters β for each element in the predictor-arrays.</returns>
         public static T[] QR<T>(T[][] x, T[] y, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var predictor = MatrixMathNet<T>.Build.DenseOfRowArrays(x);
+            MatrixMathNet<T> predictor = MatrixMathNet<T>.Build.DenseOfRowArrays(x);
             if (intercept)
             {
                 predictor = predictor.InsertColumn(0, VectorMathNet<T>.Build.Dense(predictor.RowCount, VectorMathNet<T>.One));
@@ -307,7 +307,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <returns>Best fitting list of model parameters β for each element in the predictor-arrays.</returns>
         public static T[] QR<T>(IEnumerable<Tuple<T[], T>> samples, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var (u, v) = samples.UnpackSinglePass();
+            (T[][] u, T[] v) = samples.UnpackSinglePass();
             return QR(u, v, intercept);
         }
 
@@ -320,7 +320,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <returns>Best fitting list of model parameters β for each element in the predictor-arrays.</returns>
         public static T[] QR<T>(IEnumerable<(T[], T)> samples, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var (u, v) = samples.UnpackSinglePass();
+            (T[][] u, T[] v) = samples.UnpackSinglePass();
             return QR(u, v, intercept);
         }
 
@@ -378,7 +378,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <returns>Best fitting list of model parameters β for each element in the predictor-arrays.</returns>
         public static T[] Svd<T>(T[][] x, T[] y, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var predictor = MatrixMathNet<T>.Build.DenseOfRowArrays(x);
+            MatrixMathNet<T> predictor = MatrixMathNet<T>.Build.DenseOfRowArrays(x);
             if (intercept)
             {
                 predictor = predictor.InsertColumn(0, VectorMathNet<T>.Build.Dense(predictor.RowCount, VectorMathNet<T>.One));
@@ -406,7 +406,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <returns>Best fitting list of model parameters β for each element in the predictor-arrays.</returns>
         public static T[] Svd<T>(IEnumerable<Tuple<T[], T>> samples, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var (u, v) = samples.UnpackSinglePass();
+            (T[][] u, T[] v) = samples.UnpackSinglePass();
             return Svd(u, v, intercept);
         }
 
@@ -419,7 +419,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearRegression
         /// <returns>Best fitting list of model parameters β for each element in the predictor-arrays.</returns>
         public static T[] Svd<T>(IEnumerable<(T[], T)> samples, bool intercept = false) where T : struct, IEquatable<T>, IFormattable
         {
-            var (u, v) = samples.UnpackSinglePass();
+            (T[][] u, T[] v) = samples.UnpackSinglePass();
             return Svd(u, v, intercept);
         }
     }

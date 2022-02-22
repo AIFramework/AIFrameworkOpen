@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -51,7 +51,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             return Minimum(objective, initialGuess, GradientTolerance, MaximumIterations, UseLineSearch);
         }
 
-        public static MinimizationResult Minimum(IObjectiveFunction objective, VectorMathNet<double> initialGuess, double gradientTolerance=1e-8, int maxIterations=1000, bool useLineSearch=false)
+        public static MinimizationResult Minimum(IObjectiveFunction objective, VectorMathNet<double> initialGuess, double gradientTolerance = 1e-8, int maxIterations = 1000, bool useLineSearch = false)
         {
             if (!objective.IsGradientSupported)
             {
@@ -72,7 +72,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             }
 
             // Set up line search algorithm
-            var lineSearcher = new WeakWolfeLineSearch(1e-4, 0.9, 1e-4, maxIterations: 1000);
+            WeakWolfeLineSearch lineSearcher = new WeakWolfeLineSearch(1e-4, 0.9, 1e-4, maxIterations: 1000);
 
             // Subsequent steps
             int iterations = 0;
@@ -83,7 +83,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             {
                 ValidateHessian(objective);
 
-                var searchDirection = objective.Hessian.LU().Solve(-objective.Gradient);
+                VectorMathNet<double> searchDirection = objective.Hessian.LU().Solve(-objective.Gradient);
                 if (searchDirection * objective.Gradient >= 0)
                 {
                     searchDirection = -objective.Gradient;
@@ -125,24 +125,24 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             return new MinimizationWithLineSearchResult(objective, iterations, ExitCondition.AbsoluteGradient, totalLineSearchSteps, iterationsWithNontrivialLineSearch);
         }
 
-        static void ValidateGradient(IObjectiveFunctionEvaluation eval)
+        private static void ValidateGradient(IObjectiveFunctionEvaluation eval)
         {
-            foreach (var x in eval.Gradient)
+            foreach (double x in eval.Gradient)
             {
-                if (Double.IsNaN(x) || Double.IsInfinity(x))
+                if (double.IsNaN(x) || double.IsInfinity(x))
                 {
                     throw new EvaluationException("Non-finite gradient returned.", eval);
                 }
             }
         }
 
-        static void ValidateHessian(IObjectiveFunctionEvaluation eval)
+        private static void ValidateHessian(IObjectiveFunctionEvaluation eval)
         {
             for (int ii = 0; ii < eval.Hessian.RowCount; ++ii)
             {
                 for (int jj = 0; jj < eval.Hessian.ColumnCount; ++jj)
                 {
-                    if (Double.IsNaN(eval.Hessian[ii, jj]) || Double.IsInfinity(eval.Hessian[ii, jj]))
+                    if (double.IsNaN(eval.Hessian[ii, jj]) || double.IsInfinity(eval.Hessian[ii, jj]))
                     {
                         throw new EvaluationException("Non-finite Hessian returned.", eval);
                     }

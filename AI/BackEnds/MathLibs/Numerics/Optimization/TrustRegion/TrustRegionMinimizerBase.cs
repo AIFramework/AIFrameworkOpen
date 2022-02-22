@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion
 {
@@ -35,10 +35,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion
         public NonlinearMinimizationResult FindMinimum(IObjectiveModel objective, double[] initialGuess,
             double[] lowerBound = null, double[] upperBound = null, double[] scales = null, bool[] isFixed = null)
         {
-            var lb = (lowerBound == null) ? null : CreateVector.Dense(lowerBound);
-            var ub = (upperBound == null) ? null : CreateVector.Dense(upperBound);
-            var sc = (scales == null) ? null : CreateVector.Dense(scales);
-            var fx = (isFixed == null) ? null : isFixed.ToList();
+            VectorMathNet<double> lb = (lowerBound == null) ? null : CreateVector.Dense(lowerBound);
+            VectorMathNet<double> ub = (upperBound == null) ? null : CreateVector.Dense(upperBound);
+            VectorMathNet<double> sc = (scales == null) ? null : CreateVector.Dense(scales);
+            List<bool> fx = (isFixed == null) ? null : isFixed.ToList();
 
             return Minimum(Subproblem, objective, CreateVector.DenseOfArray(initialGuess), lb, ub, sc, fx,
                 GradientTolerance, StepTolerance, FunctionTolerance, RadiusTolerance, MaximumIterations);
@@ -99,7 +99,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion
             double eta = 0;
 
             if (objective == null)
+            {
                 throw new ArgumentNullException(nameof(objective));
+            }
 
             ValidateBounds(initialGuess, lowerBound, upperBound, scales);
 
@@ -108,9 +110,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion
             ExitCondition exitCondition = ExitCondition.None;
 
             // First, calculate function values and setup variables
-            var P = ProjectToInternalParameters(initialGuess); // current internal parameters
-            var Pstep = VectorMathNet<double>.Build.Dense(P.Count); // the change of parameters
-            var RSS = EvaluateFunction(objective, initialGuess); // Residual Sum of Squares
+            VectorMathNet<double> P = ProjectToInternalParameters(initialGuess); // current internal parameters
+            VectorMathNet<double> Pstep = VectorMathNet<double>.Build.Dense(P.Count); // the change of parameters
+            double RSS = EvaluateFunction(objective, initialGuess); // Residual Sum of Squares
 
             if (maximumIterations < 0)
             {
@@ -137,7 +139,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion
             }
 
             // evaluate projected gradient and Hessian
-            var (Gradient, Hessian) = EvaluateJacobian(objective, P);
+            (VectorMathNet<double> Gradient, MatrixMathNet<double> Hessian) = EvaluateJacobian(objective, P);
 
             // if ||g||_oo <= gtol, found and stop
             if (Gradient.InfinityNorm() <= gradientTolerance)
@@ -166,7 +168,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion
                 hitBoundary = subproblem.HitBoundary;
 
                 // predicted reduction = L(0) - L(Δp) = -Δp'g - 1/2 * Δp'HΔp
-                var predictedReduction = -Gradient.DotProduct(Pstep) - 0.5 * Pstep.DotProduct(Hessian * Pstep);
+                double predictedReduction = -Gradient.DotProduct(Pstep) - 0.5 * Pstep.DotProduct(Hessian * Pstep);
 
                 if (Pstep.L2Norm() <= stepTolerance * (stepTolerance + P.L2Norm()))
                 {
@@ -174,9 +176,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.TrustRegion
                     break;
                 }
 
-                var Pnew = P + Pstep; // parameters to test
+                VectorMathNet<double> Pnew = P + Pstep; // parameters to test
                 // evaluate function at Pnew
-                var RSSnew = EvaluateFunction(objective, Pnew);
+                double RSSnew = EvaluateFunction(objective, Pnew);
 
                 // if RSS == NaN, stop
                 if (double.IsNaN(RSSnew))

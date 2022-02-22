@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.Signals;
+﻿using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Utils;
 using AI.BackEnds.DSP.NWaves.Windows;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
@@ -78,18 +78,18 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             // pre-allocate memory:
 
-            var len = (samples.Length - _windowSize) / _hopSize;
+            int len = (samples.Length - _windowSize) / _hopSize;
 
-            var stft = new List<Tuple<float[], float[]>>(len + 1);
+            List<Tuple<float[], float[]>> stft = new List<Tuple<float[], float[]>>(len + 1);
 
-            for (var i = 0; i <= len; i++)
+            for (int i = 0; i <= len; i++)
             {
                 stft.Add(new Tuple<float[], float[]>(new float[_fftSize], new float[_fftSize]));
             }
 
             // stft:
 
-            var windowedBuffer = new float[_fftSize];
+            float[] windowedBuffer = new float[_fftSize];
 
             for (int pos = 0, i = 0; pos + _windowSize < samples.Length; pos += _hopSize, i++)
             {
@@ -97,10 +97,10 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
                 windowedBuffer.ApplyWindow(_windowSamples);
 
-                var tuple = stft[i];
+                Tuple<float[], float[]> tuple = stft[i];
 
-                var re = tuple.Item1;
-                var im = tuple.Item2;
+                float[] re = tuple.Item1;
+                float[] im = tuple.Item2;
 
                 _fft.Direct(windowedBuffer, re, im);
             }
@@ -115,29 +115,29 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns></returns>
         public float[] Inverse(List<Tuple<float[], float[]>> stft)
         {
-            var spectraCount = stft.Count;
-            var output = new float[spectraCount * _hopSize + _fftSize];
+            int spectraCount = stft.Count;
+            float[] output = new float[spectraCount * _hopSize + _fftSize];
 
-            var buf = new float[_fftSize];
+            float[] buf = new float[_fftSize];
 
-            var pos = 0;
-            for (var i = 0; i < spectraCount; i++)
+            int pos = 0;
+            for (int i = 0; i < spectraCount; i++)
             {
-                var tuple = stft[i];
+                Tuple<float[], float[]> tuple = stft[i];
 
-                var re = tuple.Item1;
-                var im = tuple.Item2;
+                float[] re = tuple.Item1;
+                float[] im = tuple.Item2;
 
                 _fft.Inverse(re, im, buf);
 
                 // windowing and reconstruction
 
-                for (var j = 0; j < _windowSize; j++)
+                for (int j = 0; j < _windowSize; j++)
                 {
                     output[pos + j] += buf[j] * _windowSamples[j];
                 }
 
-                for (var j = 0; j < _hopSize; j++)
+                for (int j = 0; j < _hopSize; j++)
                 {
                     output[pos + j] *= _gain;
                 }
@@ -145,7 +145,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                 pos += _hopSize;
             }
 
-            for (var j = 0; j < _windowSize; j++)
+            for (int j = 0; j < _windowSize; j++)
             {
                 output[pos + j] *= _gain;
             }
@@ -173,19 +173,19 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             // pre-allocate memory:
 
-            var len = (samples.Length - _windowSize) / _hopSize;
+            int len = (samples.Length - _windowSize) / _hopSize;
 
-            var spectrogram = new List<float[]>(len + 1);
+            List<float[]> spectrogram = new List<float[]>(len + 1);
 
-            for (var i = 0; i <= len; i++)
+            for (int i = 0; i <= len; i++)
             {
                 spectrogram.Add(new float[_fftSize / 2 + 1]);
             }
 
             // spectrogram:
 
-            var windowedBuffer = new float[_fftSize];
-            
+            float[] windowedBuffer = new float[_fftSize];
+
             for (int pos = 0, i = 0; pos + _windowSize < samples.Length; pos += _hopSize, i++)
             {
                 samples.FastCopyTo(windowedBuffer, _windowSize, pos);
@@ -220,22 +220,22 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             // pre-allocate memory:
 
-            var len = (samples.Length - _windowSize) / _hopSize;
+            int len = (samples.Length - _windowSize) / _hopSize;
 
-            var mag = new List<float[]>(len + 1);
-            var phase = new List<float[]>(len + 1);
+            List<float[]> mag = new List<float[]>(len + 1);
+            List<float[]> phase = new List<float[]>(len + 1);
 
-            for (var i = 0; i <= len; i++)
+            for (int i = 0; i <= len; i++)
             {
                 mag.Add(new float[_fftSize / 2 + 1]);
                 phase.Add(new float[_fftSize / 2 + 1]);
             }
 
             // magnitude-phase spectrogram:
-            
-            var windowedBuffer = new float[_fftSize];
-            var re = new float[_fftSize / 2 + 1];
-            var im = new float[_fftSize / 2 + 1];
+
+            float[] windowedBuffer = new float[_fftSize];
+            float[] re = new float[_fftSize / 2 + 1];
+            float[] im = new float[_fftSize / 2 + 1];
 
             for (int pos = 0, i = 0; pos + _windowSize < samples.Length; pos += _hopSize, i++)
             {
@@ -245,7 +245,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
                 _fft.Direct(windowedBuffer, re, im);
 
-                for (var j = 0; j <= _fftSize / 2; j++)
+                for (int j = 0; j <= _fftSize / 2; j++)
                 {
                     mag[i][j] = (float)Math.Sqrt(re[j] * re[j] + im[j] * im[j]);
                     phase[i][j] = (float)Math.Atan2(im[j], re[j]);
@@ -272,20 +272,20 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns></returns>
         public float[] ReconstructMagnitudePhase(MagnitudePhaseList spectrogram)
         {
-            var spectraCount = spectrogram.Magnitudes.Count;
-            var output = new float[spectraCount * _hopSize + _windowSize];
+            int spectraCount = spectrogram.Magnitudes.Count;
+            float[] output = new float[spectraCount * _hopSize + _windowSize];
 
-            var mag = spectrogram.Magnitudes;
-            var phase = spectrogram.Phases;
+            List<float[]> mag = spectrogram.Magnitudes;
+            List<float[]> phase = spectrogram.Phases;
 
-            var buf = new float[_fftSize];
-            var re = new float[_fftSize / 2 + 1];
-            var im = new float[_fftSize / 2 + 1];
+            float[] buf = new float[_fftSize];
+            float[] re = new float[_fftSize / 2 + 1];
+            float[] im = new float[_fftSize / 2 + 1];
 
-            var pos = 0;
-            for (var i = 0; i < spectraCount; i++)
+            int pos = 0;
+            for (int i = 0; i < spectraCount; i++)
             {
-                for (var j = 0; j <= _fftSize / 2; j++)
+                for (int j = 0; j <= _fftSize / 2; j++)
                 {
                     re[j] = (float)(mag[i][j] * Math.Cos(phase[i][j]));
                     im[j] = (float)(mag[i][j] * Math.Sin(phase[i][j]));
@@ -295,12 +295,12 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
                 // windowing and reconstruction
 
-                for (var j = 0; j < _windowSize; j++)
+                for (int j = 0; j < _windowSize; j++)
                 {
                     output[pos + j] += buf[j] * _windowSamples[j];
                 }
 
-                for (var j = 0; j < _hopSize; j++)
+                for (int j = 0; j < _hopSize; j++)
                 {
                     output[pos + j] *= _gain;
                 }
@@ -308,7 +308,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                 pos += _hopSize;
             }
 
-            for (var j = 0; j < _windowSize; j++)
+            for (int j = 0; j < _windowSize; j++)
             {
                 output[pos + j] *= _gain;
             }

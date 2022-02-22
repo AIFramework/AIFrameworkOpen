@@ -1,6 +1,6 @@
-﻿using System;
-using AI.BackEnds.DSP.NWaves.Signals;
+﻿using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
@@ -94,17 +94,17 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             // complex logarithm of magnitude spectrum
 
             // the most difficult part is phase unwrapping which is slightly different from MathUtils.Unwrap
-            
-            var offset = 0.0;
+
+            double offset = 0.0;
             _unwrapped[0] = 0.0;
 
-            var prevPhase = Math.Atan2(_imagSpectrum[0], _realSpectrum[0]);
+            double prevPhase = Math.Atan2(_imagSpectrum[0], _realSpectrum[0]);
 
-            for (var n = 1; n < _unwrapped.Length; n++)
+            for (int n = 1; n < _unwrapped.Length; n++)
             {
-                var phase = Math.Atan2(_imagSpectrum[n], _realSpectrum[n]);
+                double phase = Math.Atan2(_imagSpectrum[n], _realSpectrum[n]);
 
-                var delta = phase - prevPhase;
+                double delta = phase - prevPhase;
 
                 if (delta > Math.PI)
                 {
@@ -119,14 +119,14 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                 prevPhase = phase;
             }
 
-            var mid = _realSpectrum.Length / 2;
-            var delay = Math.Round(_unwrapped[mid] / Math.PI);
+            int mid = _realSpectrum.Length / 2;
+            double delay = Math.Round(_unwrapped[mid] / Math.PI);
 
-            for (var i = 0; i < _realSpectrum.Length; i++)
+            for (int i = 0; i < _realSpectrum.Length; i++)
             {
                 _unwrapped[i] -= Math.PI * delay * i / mid;
 
-                var mag = Math.Sqrt(_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]);
+                double mag = Math.Sqrt(_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]);
 
                 _realSpectrum[i] = (float)Math.Log(mag + float.Epsilon, _logBase);
                 _imagSpectrum[i] = (float)_unwrapped[i];
@@ -142,7 +142,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             // normalize
 
-            for (var i = 0; i < cepstrum.Length; i++)
+            for (int i = 0; i < cepstrum.Length; i++)
             {
                 cepstrum[i] /= _fft.Size;
             }
@@ -157,7 +157,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns></returns>
         public DiscreteSignal Direct(DiscreteSignal signal)
         {
-            var cepstrum = new float[Size];
+            float[] cepstrum = new float[Size];
             Direct(signal.Samples, cepstrum);
             return new DiscreteSignal(signal.SamplingRate, cepstrum);
         }
@@ -182,12 +182,12 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             // complex exp() of spectrum
 
-            var mid = _realSpectrum.Length / 2;
+            int mid = _realSpectrum.Length / 2;
 
-            for (var i = 0; i < _realSpectrum.Length; i++)
+            for (int i = 0; i < _realSpectrum.Length; i++)
             {
-                var mag = _realSpectrum[i];
-                var phase = _imagSpectrum[i] + Math.PI * delay * i / mid;
+                float mag = _realSpectrum[i];
+                double phase = _imagSpectrum[i] + Math.PI * delay * i / mid;
 
                 _realSpectrum[i] = (float)(Math.Pow(_logBase, mag) * Math.Cos(phase));
                 _imagSpectrum[i] = (float)(Math.Pow(_logBase, mag) * Math.Sin(phase));
@@ -203,7 +203,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             // normalize
 
-            for (var i = 0; i < output.Length; i++)
+            for (int i = 0; i < output.Length; i++)
             {
                 output[i] /= _fft.Size;
             }
@@ -216,7 +216,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns></returns>
         public DiscreteSignal Inverse(DiscreteSignal cepstrum)
         {
-            var output = new float[_realSpectrum.Length];
+            float[] output = new float[_realSpectrum.Length];
             Inverse(cepstrum.Samples, output);
             return new DiscreteSignal(cepstrum.SamplingRate, output);
         }
@@ -242,9 +242,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             // logarithm of magnitude spectrum
 
-            for (var i = 0; i < _realSpectrum.Length; i++)
+            for (int i = 0; i < _realSpectrum.Length; i++)
             {
-                var mag = Math.Sqrt(_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]);
+                double mag = Math.Sqrt(_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]);
 
                 _realSpectrum[i] = (float)Math.Log(mag + float.Epsilon, _logBase);
                 _imagSpectrum[i] = 0.0f;
@@ -260,7 +260,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             // normalize
 
-            for (var i = 0; i < cepstrum.Length; i++)
+            for (int i = 0; i < cepstrum.Length; i++)
             {
                 cepstrum[i] /= _fft.Size;
             }
@@ -276,9 +276,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             RealCepstrum(input, cepstrum);
 
-            for (var i = 0; i < cepstrum.Length; i++)
+            for (int i = 0; i < cepstrum.Length; i++)
             {
-                var pc = 4 * cepstrum[i] * cepstrum[i];
+                float pc = 4 * cepstrum[i] * cepstrum[i];
 
                 cepstrum[i] = pc;
             }
@@ -297,9 +297,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             // use this free memory block for storing reversed cepstrum
             cepstrum.FastCopyTo(_realSpectrum, cepstrum.Length);
 
-            for (var i = 0; i < cepstrum.Length; i++)
+            for (int i = 0; i < cepstrum.Length; i++)
             {
-                var pc = cepstrum[i] - _realSpectrum[cepstrum.Length - 1 - i];
+                float pc = cepstrum[i] - _realSpectrum[cepstrum.Length - 1 - i];
 
                 cepstrum[i] = pc * pc;
             }

@@ -27,14 +27,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 {
@@ -57,7 +57,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// Gets the matrix's data.
         /// </summary>
         /// <value>The matrix's data.</value>
-        readonly Complex[] _data;
+        private readonly Complex[] _data;
 
         /// <summary>
         /// Create a new diagonal matrix straight from an initialized matrix storage instance.
@@ -78,8 +78,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <exception cref="ArgumentException">If the order is less than one.</exception>
         public DiagonalMatrix(int order)
             : this(new DiagonalMatrixStorage<Complex>(order, order))
-         {
-         }
+        {
+        }
 
         /// <summary>
         /// Create a new diagonal matrix with the given number of rows and columns.
@@ -99,7 +99,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         public DiagonalMatrix(int rows, int columns, Complex diagonalValue)
             : this(rows, columns)
         {
-            for (var i = 0; i < _data.Length; i++)
+            for (int i = 0; i < _data.Length; i++)
             {
                 _data[i] = diagonalValue;
             }
@@ -206,7 +206,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             }
 
             result.Clear();
-            for (var i = 0; i < _data.Length; i++)
+            for (int i = 0; i < _data.Length; i++)
             {
                 result.At(i, i, -_data[i]);
             }
@@ -225,7 +225,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             }
 
             result.Clear();
-            for (var i = 0; i < _data.Length; i++)
+            for (int i = 0; i < _data.Length; i++)
             {
                 result.At(i, i, _data[i].Conjugate());
             }
@@ -312,7 +312,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoMultiply(VectorMathNet<Complex> rightSide, VectorMathNet<Complex> result)
         {
-            var d = Math.Min(ColumnCount, RowCount);
+            int d = Math.Min(ColumnCount, RowCount);
             if (d < RowCount)
             {
                 result.ClearSubVector(ColumnCount, RowCount - ColumnCount);
@@ -327,9 +327,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 }
             }
 
-            for (var i = 0; i < d; i++)
+            for (int i = 0; i < d; i++)
             {
-                result.At(i, _data[i]*rightSide.At(i));
+                result.At(i, _data[i] * rightSide.At(i));
             }
         }
 
@@ -342,8 +342,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         {
             if (other is DiagonalMatrix diagonalOther && result is DiagonalMatrix diagonalResult)
             {
-                var thisDataCopy = new Complex[diagonalResult._data.Length];
-                var otherDataCopy = new Complex[diagonalResult._data.Length];
+                Complex[] thisDataCopy = new Complex[diagonalResult._data.Length];
+                Complex[] otherDataCopy = new Complex[diagonalResult._data.Length];
                 Array.Copy(_data, 0, thisDataCopy, 0, (diagonalResult._data.Length > _data.Length) ? _data.Length : diagonalResult._data.Length);
                 Array.Copy(diagonalOther._data, 0, otherDataCopy, 0, (diagonalResult._data.Length > diagonalOther._data.Length) ? diagonalOther._data.Length : diagonalResult._data.Length);
                 LinearAlgebraControl.Provider.PointWiseMultiplyArrays(thisDataCopy, otherDataCopy, diagonalResult._data);
@@ -352,9 +352,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 
             if (other.Storage is DenseColumnMajorMatrixStorage<Complex> denseOther)
             {
-                var dense = denseOther.Data;
-                var diagonal = _data;
-                var d = Math.Min(denseOther.RowCount, RowCount);
+                Complex[] dense = denseOther.Data;
+                Complex[] diagonal = _data;
+                int d = Math.Min(denseOther.RowCount, RowCount);
                 if (d < RowCount)
                 {
                     result.ClearSubMatrix(denseOther.RowCount, RowCount - denseOther.RowCount, 0, denseOther.ColumnCount);
@@ -364,7 +364,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 {
                     for (int j = 0; j < d; j++)
                     {
-                        result.At(j, i, dense[index]*diagonal[j]);
+                        result.At(j, i, dense[index] * diagonal[j]);
                         index++;
                     }
                     index += (denseOther.RowCount - d);
@@ -374,12 +374,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 
             if (ColumnCount == RowCount)
             {
-                other.Storage.MapIndexedTo(result.Storage, (i, j, x) => x*_data[i], Zeros.AllowSkip, ExistingData.Clear);
+                other.Storage.MapIndexedTo(result.Storage, (i, j, x) => x * _data[i], Zeros.AllowSkip, ExistingData.Clear);
             }
             else
             {
                 result.Clear();
-                other.Storage.MapSubMatrixIndexedTo(result.Storage, (i, j, x) => x*_data[i], 0, 0, Math.Min(RowCount, other.RowCount), 0, 0, other.ColumnCount, Zeros.AllowSkip, ExistingData.AssumeZeros);
+                other.Storage.MapSubMatrixIndexedTo(result.Storage, (i, j, x) => x * _data[i], 0, 0, Math.Min(RowCount, other.RowCount), 0, 0, other.ColumnCount, Zeros.AllowSkip, ExistingData.AssumeZeros);
             }
         }
 
@@ -392,8 +392,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         {
             if (other is DiagonalMatrix diagonalOther && result is DiagonalMatrix diagonalResult)
             {
-                var thisDataCopy = new Complex[diagonalResult._data.Length];
-                var otherDataCopy = new Complex[diagonalResult._data.Length];
+                Complex[] thisDataCopy = new Complex[diagonalResult._data.Length];
+                Complex[] otherDataCopy = new Complex[diagonalResult._data.Length];
                 Array.Copy(_data, 0, thisDataCopy, 0, (diagonalResult._data.Length > _data.Length) ? _data.Length : diagonalResult._data.Length);
                 Array.Copy(diagonalOther._data, 0, otherDataCopy, 0, (diagonalResult._data.Length > diagonalOther._data.Length) ? diagonalOther._data.Length : diagonalResult._data.Length);
                 LinearAlgebraControl.Provider.PointWiseMultiplyArrays(thisDataCopy, otherDataCopy, diagonalResult._data);
@@ -402,9 +402,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 
             if (other.Storage is DenseColumnMajorMatrixStorage<Complex> denseOther)
             {
-                var dense = denseOther.Data;
-                var diagonal = _data;
-                var d = Math.Min(denseOther.ColumnCount, RowCount);
+                Complex[] dense = denseOther.Data;
+                Complex[] diagonal = _data;
+                int d = Math.Min(denseOther.ColumnCount, RowCount);
                 if (d < RowCount)
                 {
                     result.ClearSubMatrix(denseOther.ColumnCount, RowCount - denseOther.ColumnCount, 0, denseOther.RowCount);
@@ -414,7 +414,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 {
                     for (int i = 0; i < denseOther.RowCount; i++)
                     {
-                        result.At(j, i, dense[index]*diagonal[j]);
+                        result.At(j, i, dense[index] * diagonal[j]);
                         index++;
                     }
                 }
@@ -433,8 +433,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         {
             if (other is DiagonalMatrix diagonalOther && result is DiagonalMatrix diagonalResult)
             {
-                var thisDataCopy = new Complex[diagonalResult._data.Length];
-                var otherDataCopy = new Complex[diagonalResult._data.Length];
+                Complex[] thisDataCopy = new Complex[diagonalResult._data.Length];
+                Complex[] otherDataCopy = new Complex[diagonalResult._data.Length];
                 Array.Copy(_data, 0, thisDataCopy, 0, (diagonalResult._data.Length > _data.Length) ? _data.Length : diagonalResult._data.Length);
                 Array.Copy(diagonalOther._data, 0, otherDataCopy, 0, (diagonalResult._data.Length > diagonalOther._data.Length) ? diagonalOther._data.Length : diagonalResult._data.Length);
                 // TODO: merge/MulByConj
@@ -445,9 +445,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 
             if (other.Storage is DenseColumnMajorMatrixStorage<Complex> denseOther)
             {
-                var dense = denseOther.Data;
-                var diagonal = _data;
-                var d = Math.Min(denseOther.ColumnCount, RowCount);
+                Complex[] dense = denseOther.Data;
+                Complex[] diagonal = _data;
+                int d = Math.Min(denseOther.ColumnCount, RowCount);
                 if (d < RowCount)
                 {
                     result.ClearSubMatrix(denseOther.ColumnCount, RowCount - denseOther.ColumnCount, 0, denseOther.RowCount);
@@ -457,7 +457,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 {
                     for (int i = 0; i < denseOther.RowCount; i++)
                     {
-                        result.At(j, i, dense[index].Conjugate()*diagonal[j]);
+                        result.At(j, i, dense[index].Conjugate() * diagonal[j]);
                         index++;
                     }
                 }
@@ -476,8 +476,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         {
             if (other is DiagonalMatrix diagonalOther && result is DiagonalMatrix diagonalResult)
             {
-                var thisDataCopy = new Complex[diagonalResult._data.Length];
-                var otherDataCopy = new Complex[diagonalResult._data.Length];
+                Complex[] thisDataCopy = new Complex[diagonalResult._data.Length];
+                Complex[] otherDataCopy = new Complex[diagonalResult._data.Length];
                 Array.Copy(_data, 0, thisDataCopy, 0, (diagonalResult._data.Length > _data.Length) ? _data.Length : diagonalResult._data.Length);
                 Array.Copy(diagonalOther._data, 0, otherDataCopy, 0, (diagonalResult._data.Length > diagonalOther._data.Length) ? diagonalOther._data.Length : diagonalResult._data.Length);
                 LinearAlgebraControl.Provider.PointWiseMultiplyArrays(thisDataCopy, otherDataCopy, diagonalResult._data);
@@ -486,9 +486,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 
             if (other.Storage is DenseColumnMajorMatrixStorage<Complex> denseOther)
             {
-                var dense = denseOther.Data;
-                var diagonal = _data;
-                var d = Math.Min(denseOther.RowCount, ColumnCount);
+                Complex[] dense = denseOther.Data;
+                Complex[] diagonal = _data;
+                int d = Math.Min(denseOther.RowCount, ColumnCount);
                 if (d < ColumnCount)
                 {
                     result.ClearSubMatrix(denseOther.RowCount, ColumnCount - denseOther.RowCount, 0, denseOther.ColumnCount);
@@ -498,7 +498,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 {
                     for (int j = 0; j < d; j++)
                     {
-                        result.At(j, i, dense[index]*diagonal[j]);
+                        result.At(j, i, dense[index] * diagonal[j]);
                         index++;
                     }
                     index += (denseOther.RowCount - d);
@@ -508,12 +508,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 
             if (ColumnCount == RowCount)
             {
-                other.Storage.MapIndexedTo(result.Storage, (i, j, x) => x*_data[i], Zeros.AllowSkip, ExistingData.Clear);
+                other.Storage.MapIndexedTo(result.Storage, (i, j, x) => x * _data[i], Zeros.AllowSkip, ExistingData.Clear);
             }
             else
             {
                 result.Clear();
-                other.Storage.MapSubMatrixIndexedTo(result.Storage, (i, j, x) => x*_data[i], 0, 0, other.RowCount, 0, 0, other.ColumnCount, Zeros.AllowSkip, ExistingData.AssumeZeros);
+                other.Storage.MapSubMatrixIndexedTo(result.Storage, (i, j, x) => x * _data[i], 0, 0, other.RowCount, 0, 0, other.ColumnCount, Zeros.AllowSkip, ExistingData.AssumeZeros);
             }
         }
 
@@ -526,8 +526,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         {
             if (other is DiagonalMatrix diagonalOther && result is DiagonalMatrix diagonalResult)
             {
-                var thisDataCopy = new Complex[diagonalResult._data.Length];
-                var otherDataCopy = new Complex[diagonalResult._data.Length];
+                Complex[] thisDataCopy = new Complex[diagonalResult._data.Length];
+                Complex[] otherDataCopy = new Complex[diagonalResult._data.Length];
                 Array.Copy(_data, 0, thisDataCopy, 0, (diagonalResult._data.Length > _data.Length) ? _data.Length : diagonalResult._data.Length);
                 Array.Copy(diagonalOther._data, 0, otherDataCopy, 0, (diagonalResult._data.Length > diagonalOther._data.Length) ? diagonalOther._data.Length : diagonalResult._data.Length);
                 // TODO: merge/MulByConj
@@ -538,14 +538,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 
             if (other.Storage is DenseColumnMajorMatrixStorage<Complex> denseOther)
             {
-                var dense = denseOther.Data;
-                var conjugateDiagonal = new Complex[_data.Length];
+                Complex[] dense = denseOther.Data;
+                Complex[] conjugateDiagonal = new Complex[_data.Length];
                 for (int i = 0; i < _data.Length; i++)
                 {
                     conjugateDiagonal[i] = _data[i].Conjugate();
                 }
 
-                var d = Math.Min(denseOther.RowCount, ColumnCount);
+                int d = Math.Min(denseOther.RowCount, ColumnCount);
                 if (d < ColumnCount)
                 {
                     result.ClearSubMatrix(denseOther.RowCount, ColumnCount - denseOther.RowCount, 0, denseOther.ColumnCount);
@@ -555,7 +555,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 {
                     for (int j = 0; j < d; j++)
                     {
-                        result.At(j, i, dense[index]*conjugateDiagonal[j]);
+                        result.At(j, i, dense[index] * conjugateDiagonal[j]);
                         index++;
                     }
                     index += (denseOther.RowCount - d);
@@ -573,7 +573,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoTransposeThisAndMultiply(VectorMathNet<Complex> rightSide, VectorMathNet<Complex> result)
         {
-            var d = Math.Min(ColumnCount, RowCount);
+            int d = Math.Min(ColumnCount, RowCount);
             if (d < ColumnCount)
             {
                 result.ClearSubVector(RowCount, ColumnCount - RowCount);
@@ -588,9 +588,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 }
             }
 
-            for (var i = 0; i < d; i++)
+            for (int i = 0; i < d; i++)
             {
-                result.At(i, _data[i]*rightSide.At(i));
+                result.At(i, _data[i] * rightSide.At(i));
             }
         }
 
@@ -601,7 +601,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoConjugateTransposeThisAndMultiply(VectorMathNet<Complex> rightSide, VectorMathNet<Complex> result)
         {
-            var d = Math.Min(ColumnCount, RowCount);
+            int d = Math.Min(ColumnCount, RowCount);
             if (d < ColumnCount)
             {
                 result.ClearSubVector(RowCount, ColumnCount - RowCount);
@@ -618,9 +618,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 }
             }
 
-            for (var i = 0; i < d; i++)
+            for (int i = 0; i < d; i++)
             {
-                result.At(i, _data[i].Conjugate()*rightSide.At(i));
+                result.At(i, _data[i].Conjugate() * rightSide.At(i));
             }
         }
 
@@ -639,14 +639,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 
             if (result is DiagonalMatrix diagResult)
             {
-                LinearAlgebraControl.Provider.ScaleArray(1.0/divisor, _data, diagResult._data);
+                LinearAlgebraControl.Provider.ScaleArray(1.0 / divisor, _data, diagResult._data);
                 return;
             }
 
             result.Clear();
             for (int i = 0; i < _data.Length; i++)
             {
-                result.At(i, i, _data[i]/divisor);
+                result.At(i, i, _data[i] / divisor);
             }
         }
 
@@ -659,12 +659,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         {
             if (result is DiagonalMatrix diagResult)
             {
-                var resultData = diagResult._data;
+                Complex[] resultData = diagResult._data;
                 CommonParallel.For(0, _data.Length, 4096, (a, b) =>
                 {
                     for (int i = a; i < b; i++)
                     {
-                        resultData[i] = dividend/_data[i];
+                        resultData[i] = dividend / _data[i];
                     }
                 });
                 return;
@@ -673,7 +673,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             result.Clear();
             for (int i = 0; i < _data.Length; i++)
             {
-                result.At(i, i, dividend/_data[i]);
+                result.At(i, i, dividend / _data[i]);
             }
         }
 
@@ -779,9 +779,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The condition number of the matrix.</returns>
         public override Complex ConditionNumber()
         {
-            var maxSv = double.NegativeInfinity;
-            var minSv = double.PositiveInfinity;
-            foreach (var t in _data)
+            double maxSv = double.NegativeInfinity;
+            double minSv = double.PositiveInfinity;
+            foreach (Complex t in _data)
             {
                 maxSv = Math.Max(maxSv, t.Magnitude);
                 minSv = Math.Min(minSv, t.Magnitude);
@@ -801,8 +801,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 throw new ArgumentException("Matrix must be square.");
             }
 
-            var inverse = (DiagonalMatrix)Clone();
-            for (var i = 0; i < _data.Length; i++)
+            DiagonalMatrix inverse = (DiagonalMatrix)Clone();
+            for (int i = 0; i < _data.Length; i++)
             {
                 if (_data[i] != 0.0)
                 {
@@ -844,7 +844,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             }
 
             result.Clear();
-            for (var i = 0; i < _data.Length; i++)
+            for (int i = 0; i < _data.Length; i++)
             {
                 result.At(i, i, _data[i]);
             }
@@ -897,7 +897,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             }
 
             result.Clear();
-            for (var i = 0; i < _data.Length; i++)
+            for (int i = 0; i < _data.Length; i++)
             {
                 result.At(i, i, _data[i]);
             }
@@ -946,7 +946,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// is not positive.</exception>
         public override MatrixMathNet<Complex> SubMatrix(int rowIndex, int rowCount, int columnIndex, int columnCount)
         {
-            var target = rowIndex == columnIndex
+            MatrixMathNet<Complex> target = rowIndex == columnIndex
                 ? (MatrixMathNet<Complex>)new DiagonalMatrix(rowCount, columnCount)
                 : new SparseMatrix(rowCount, columnCount);
 
@@ -989,7 +989,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// </summary>
         public sealed override bool IsHermitian()
         {
-            for (var k = 0; k < _data.Length; k ++)
+            for (int k = 0; k < _data.Length; k++)
             {
                 if (!_data[k].IsReal())
                 {

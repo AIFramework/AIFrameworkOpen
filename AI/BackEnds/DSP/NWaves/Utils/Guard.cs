@@ -40,7 +40,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
 
         public static void AgainstNotPowerOfTwo(int n, string argName = "Parameter")
         {
-            var pow = (int)Math.Log(n, 2);
+            int pow = (int)Math.Log(n, 2);
 
             if (n != 1 << pow)
             {
@@ -58,7 +58,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
 
         public static void AgainstIncorrectFilterParams(double[] freqs, double[] desired, double[] weights)
         {
-            var n = freqs.Length;
+            int n = freqs.Length;
 
             if (n < 4 || n % 2 != 0)
             {

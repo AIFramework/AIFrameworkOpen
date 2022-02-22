@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.Operations;
+﻿using AI.BackEnds.DSP.NWaves.Operations;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
@@ -65,7 +65,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             get => _tf ?? new TransferFunction(_b.Take(_numeratorSize).ToDoubles(), _a.Take(_denominatorSize).ToDoubles());
             protected set => _tf = value;
         }
-       
+
         /// <summary>
         /// Default length of truncated impulse response
         /// </summary>
@@ -95,14 +95,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             _b = new float[_numeratorSize * 2];
 
-            for (var i = 0; i < _numeratorSize; i++)
+            for (int i = 0; i < _numeratorSize; i++)
             {
                 _b[i] = _b[_numeratorSize + i] = b.ElementAt(i);
             }
 
             _a = new float[_denominatorSize * 2];
 
-            for (var i = 0; i < _denominatorSize; i++)
+            for (int i = 0; i < _denominatorSize; i++)
             {
                 _a[i] = _a[_denominatorSize + i] = a.ElementAt(i);
             }
@@ -153,20 +153,20 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             {
                 case FilteringMethod.OverlapAdd:       // are you sure you wanna do this? It's IIR filter!
                 case FilteringMethod.OverlapSave:
-                {
-                    var length = Math.Max(DefaultImpulseResponseLength, _denominatorSize + _numeratorSize);
-                    var fftSize = MathUtils.NextPowerOfTwo(4 * length);
-                    var ir = new DiscreteSignal(signal.SamplingRate, Tf.ImpulseResponse(length).ToFloats());
-                    return Operation.BlockConvolve(signal, ir, fftSize, method);
-                }
+                    {
+                        int length = Math.Max(DefaultImpulseResponseLength, _denominatorSize + _numeratorSize);
+                        int fftSize = MathUtils.NextPowerOfTwo(4 * length);
+                        DiscreteSignal ir = new DiscreteSignal(signal.SamplingRate, Tf.ImpulseResponse(length).ToFloats());
+                        return Operation.BlockConvolve(signal, ir, fftSize, method);
+                    }
                 case FilteringMethod.DifferenceEquation:
-                {
-                    return ApplyFilterDirectly(signal);
-                }
+                    {
+                        return ApplyFilterDirectly(signal);
+                    }
                 default:
-                {
-                    return new DiscreteSignal(signal.SamplingRate, signal.Samples.Select(s => Process(s)));
-                }
+                    {
+                        return new DiscreteSignal(signal.SamplingRate, signal.Samples.Select(s => Process(s)));
+                    }
             }
         }
 
@@ -177,7 +177,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public override float Process(float sample)
         {
-            var output = 0f;
+            float output = 0f;
 
             _delayLineB[_delayLineOffsetB] = sample;
             _delayLineA[_delayLineOffsetA] = 0;
@@ -215,19 +215,25 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public DiscreteSignal ApplyFilterDirectly(DiscreteSignal signal)
         {
-            var input = signal.Samples;
+            float[] input = signal.Samples;
 
-            var output = new float[input.Length];
+            float[] output = new float[input.Length];
 
-            for (var n = 0; n < input.Length; n++)
+            for (int n = 0; n < input.Length; n++)
             {
-                for (var k = 0; k < _numeratorSize; k++)
+                for (int k = 0; k < _numeratorSize; k++)
                 {
-                    if (n >= k) output[n] += _b[k] * input[n - k];
+                    if (n >= k)
+                    {
+                        output[n] += _b[k] * input[n - k];
+                    }
                 }
-                for (var m = 1; m < _denominatorSize; m++)
+                for (int m = 1; m < _denominatorSize; m++)
                 {
-                    if (n >= m) output[n] -= _a[m] * output[n - m];
+                    if (n >= m)
+                    {
+                        output[n] -= _a[m] * output[n - m];
+                    }
                 }
             }
 
@@ -242,7 +248,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         {
             if (b.Length == _numeratorSize)
             {
-                for (var i = 0; i < _numeratorSize; i++)
+                for (int i = 0; i < _numeratorSize; i++)
                 {
                     _b[i] = _b[_numeratorSize + i] = b[i];
                 }
@@ -257,7 +263,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         {
             if (a.Length == _denominatorSize)
             {
-                for (var i = 0; i < _denominatorSize; i++)
+                for (int i = 0; i < _denominatorSize; i++)
                 {
                     _a[i] = _a[_denominatorSize + i] = a[i];
                 }
@@ -272,8 +278,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             _delayLineOffsetB = _numeratorSize - 1;
             _delayLineOffsetA = _denominatorSize - 1;
 
-            for (var i = 0; i < _delayLineB.Length; _delayLineB[i++] = 0) { }
-            for (var i = 0; i < _delayLineA.Length; _delayLineA[i++] = 0) { }
+            for (int i = 0; i < _delayLineB.Length; _delayLineB[i++] = 0) { }
+            for (int i = 0; i < _delayLineA.Length; _delayLineA[i++] = 0) { }
         }
 
         /// <summary>
@@ -281,7 +287,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// </summary>
         public void Normalize()
         {
-            var a0 = _a[0];
+            float a0 = _a[0];
 
             if (Math.Abs(a0 - 1) < 1e-10f)
             {
@@ -293,8 +299,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                 throw new ArgumentException("The coefficient a[0] can not be zero!");
             }
 
-            for (var i = 0; i < _a.Length; _a[i++] /= a0) { }
-            for (var i = 0; i < _b.Length; _b[i++] /= a0) { }
+            for (int i = 0; i < _a.Length; _a[i++] /= a0) { }
+            for (int i = 0; i < _b.Length; _b[i++] /= a0) { }
 
             _tf?.Normalize();
         }
@@ -307,7 +313,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public static IirFilter operator *(IirFilter filter1, LtiFilter filter2)
         {
-            var tf = filter1.Tf * filter2.Tf;
+            TransferFunction tf = filter1.Tf * filter2.Tf;
 
             return new IirFilter(tf.Numerator, tf.Denominator);
         }
@@ -320,7 +326,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public static IirFilter operator +(IirFilter filter1, LtiFilter filter2)
         {
-            var tf = filter1.Tf + filter2.Tf;
+            TransferFunction tf = filter1.Tf + filter2.Tf;
 
             return new IirFilter(tf.Numerator, tf.Denominator);
         }

@@ -49,7 +49,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
     public abstract class Svd<T> : ISolver<T>
         where T : struct, IEquatable<T>, IFormattable
     {
-        readonly Lazy<MatrixMathNet<T>> _lazyW;
+        private readonly Lazy<MatrixMathNet<T>> _lazyW;
 
         /// <summary>Indicating whether U and VT matrices have been computed during SVD factorization.</summary>
         protected readonly bool VectorsComputed;
@@ -65,14 +65,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
             _lazyW = new Lazy<MatrixMathNet<T>>(ComputeW);
         }
 
-        MatrixMathNet<T> ComputeW()
+        private MatrixMathNet<T> ComputeW()
         {
-            var rows = U.RowCount;
-            var columns = VT.ColumnCount;
-            var result = MatrixMathNet<T>.Build.SameAs(U, rows, columns);
-            for (var i = 0; i < rows; i++)
+            int rows = U.RowCount;
+            int columns = VT.ColumnCount;
+            MatrixMathNet<T> result = MatrixMathNet<T>.Build.SameAs(U, rows, columns);
+            for (int i = 0; i < rows; i++)
             {
-                for (var j = 0; j < columns; j++)
+                for (int j = 0; j < columns; j++)
                 {
                     if (i == j)
                     {
@@ -140,7 +140,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
                 throw new InvalidOperationException("The singular vectors were not computed.");
             }
 
-            var x = MatrixMathNet<T>.Build.SameAs(U, VT.ColumnCount, input.ColumnCount, fullyMutable: true);
+            MatrixMathNet<T> x = MatrixMathNet<T>.Build.SameAs(U, VT.ColumnCount, input.ColumnCount, fullyMutable: true);
             Solve(input, x);
             return x;
         }
@@ -164,7 +164,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization
                 throw new InvalidOperationException("The singular vectors were not computed.");
             }
 
-            var x = VectorMathNet<T>.Build.SameAs(U, VT.ColumnCount);
+            VectorMathNet<T> x = VectorMathNet<T>.Build.SameAs(U, VT.ColumnCount);
             Solve(input, x);
             return x;
         }

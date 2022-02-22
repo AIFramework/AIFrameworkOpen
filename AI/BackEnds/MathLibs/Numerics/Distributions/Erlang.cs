@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -41,10 +41,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Erlang : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly int _shape;
-        readonly double _rate;
+        private System.Random _random;
+        private readonly int _shape;
+        private readonly double _rate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Erlang"/> class.
@@ -90,7 +89,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="randomSource">The random number generator which is used to draw random samples. Optional, can be null.</param>
         public static Erlang WithShapeScale(int shape, double scale, System.Random randomSource = null)
         {
-            return new Erlang(shape, 1.0/scale, randomSource);
+            return new Erlang(shape, 1.0 / scale, randomSource);
         }
 
         /// <summary>
@@ -137,7 +136,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the scale of the Erlang distribution.
         /// </summary>
-        public double Scale => 1.0/_rate;
+        public double Scale => 1.0 / _rate;
 
         /// <summary>
         /// Gets or sets the random number generator which is used to draw random samples.
@@ -165,7 +164,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return _shape/_rate;
+                return _shape / _rate;
             }
         }
 
@@ -186,7 +185,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return _shape/(_rate*_rate);
+                return _shape / (_rate * _rate);
             }
         }
 
@@ -207,7 +206,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return Math.Sqrt(_shape)/_rate;
+                return Math.Sqrt(_shape) / _rate;
             }
         }
 
@@ -228,7 +227,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return _shape - Math.Log(_rate) + SpecialFunctions.GammaLn(_shape) + ((1.0 - _shape)*SpecialFunctions.DiGamma(_shape));
+                return _shape - Math.Log(_rate) + SpecialFunctions.GammaLn(_shape) + ((1.0 - _shape) * SpecialFunctions.DiGamma(_shape));
             }
         }
 
@@ -249,7 +248,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return 2.0/Math.Sqrt(_shape);
+                return 2.0 / Math.Sqrt(_shape);
             }
         }
 
@@ -275,7 +274,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return (_shape - 1.0)/_rate;
+                return (_shape - 1.0) / _rate;
             }
         }
 
@@ -383,7 +382,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (shape == 1.0)
             {
-                return rate*Math.Exp(-rate*x);
+                return rate * Math.Exp(-rate * x);
             }
 
             if (shape > 160.0)
@@ -391,7 +390,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return Math.Exp(PDFLn(shape, rate, x));
             }
 
-            return Math.Pow(rate, shape)*Math.Pow(x, shape - 1.0)*Math.Exp(-rate*x)/SpecialFunctions.Gamma(shape);
+            return Math.Pow(rate, shape) * Math.Pow(x, shape - 1.0) * Math.Exp(-rate * x) / SpecialFunctions.Gamma(shape);
         }
 
         /// <summary>
@@ -421,10 +420,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (shape == 1.0)
             {
-                return Math.Log(rate) - (rate*x);
+                return Math.Log(rate) - (rate * x);
             }
 
-            return (shape*Math.Log(rate)) + ((shape - 1.0)*Math.Log(x)) - (rate*x) - SpecialFunctions.GammaLn(shape);
+            return (shape * Math.Log(rate)) + ((shape - 1.0) * Math.Log(x)) - (rate * x) - SpecialFunctions.GammaLn(shape);
         }
 
         /// <summary>
@@ -452,7 +451,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            return SpecialFunctions.GammaLowerRegularized(shape, x*rate);
+            return SpecialFunctions.GammaLowerRegularized(shape, x * rate);
         }
 
         /// <summary>

@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding;
+using System;
 using Complex = System.Numerics.Complex;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics
@@ -43,12 +43,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="maxIterations">Maximum number of iterations. Example: 100.</param>
         public static double OfFunction(Func<double, double> f, double lowerBound, double upperBound, double accuracy = 1e-8, int maxIterations = 100)
         {
-            if (!ZeroCrossingBracketing.ExpandReduce(f, ref lowerBound, ref upperBound, 1.6, maxIterations, maxIterations*10))
+            if (!ZeroCrossingBracketing.ExpandReduce(f, ref lowerBound, ref upperBound, 1.6, maxIterations, maxIterations * 10))
             {
                 throw new NonConvergenceException("The algorithm has failed, exceeded the number of iterations allowed or there is no root within the provided bounds.");
             }
 
-            if (Brent.TryFindRoot(f, lowerBound, upperBound, accuracy, maxIterations, out var root))
+            if (Brent.TryFindRoot(f, lowerBound, upperBound, accuracy, maxIterations, out double root))
             {
                 return root;
             }
@@ -70,9 +70,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="maxIterations">Maximum number of iterations. Example: 100.</param>
         public static double OfFunctionDerivative(Func<double, double> f, Func<double, double> df, double lowerBound, double upperBound, double accuracy = 1e-8, int maxIterations = 100)
         {
-            double root;
 
-            if (RobustNewtonRaphson.TryFindRoot(f, df, lowerBound, upperBound, accuracy, maxIterations, 20, out root))
+            if (RobustNewtonRaphson.TryFindRoot(f, df, lowerBound, upperBound, accuracy, maxIterations, 20, out double root))
             {
                 return root;
             }
@@ -88,15 +87,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         {
             if (b == 0d)
             {
-                var t = new Complex(-c/a, 0d).SquareRoot();
+                Complex t = new Complex(-c / a, 0d).SquareRoot();
                 return (t, -t);
             }
 
-            var q = b > 0d
-                ? -0.5*(b + new Complex(b*b - 4*a*c, 0d).SquareRoot())
-                : -0.5*(b - new Complex(b*b - 4*a*c, 0d).SquareRoot());
+            Complex q = b > 0d
+                ? -0.5 * (b + new Complex(b * b - 4 * a * c, 0d).SquareRoot())
+                : -0.5 * (b - new Complex(b * b - 4 * a * c, 0d).SquareRoot());
 
-            return (q/a, c/q);
+            return (q / a, c / q);
         }
 
         /// <summary>
@@ -143,16 +142,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             // transform to map to [-1..1] interval
-            double location = 0.5*(intervalBegin + intervalEnd);
-            double scale = 0.5*(intervalEnd - intervalBegin);
+            double location = 0.5 * (intervalBegin + intervalEnd);
+            double scale = 0.5 * (intervalEnd - intervalBegin);
 
             // evaluate first kind chebychev nodes
-            double angleFactor = Constants.Pi/(2*degree);
+            double angleFactor = Constants.Pi / (2 * degree);
 
-            var samples = new double[degree];
+            double[] samples = new double[degree];
             for (int i = 0; i < samples.Length; i++)
             {
-                samples[i] = location + scale*Math.Cos(((2*i) + 1)*angleFactor);
+                samples[i] = location + scale * Math.Cos(((2 * i) + 1) * angleFactor);
             }
             return samples;
         }
@@ -172,16 +171,16 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             // transform to map to [-1..1] interval
-            double location = 0.5*(intervalBegin + intervalEnd);
-            double scale = 0.5*(intervalEnd - intervalBegin);
+            double location = 0.5 * (intervalBegin + intervalEnd);
+            double scale = 0.5 * (intervalEnd - intervalBegin);
 
             // evaluate second kind chebychev nodes
-            double angleFactor = Constants.Pi/(degree + 1);
+            double angleFactor = Constants.Pi / (degree + 1);
 
-            var samples = new double[degree];
+            double[] samples = new double[degree];
             for (int i = 0; i < samples.Length; i++)
             {
-                samples[i] = location + scale*Math.Cos((i + 1)*angleFactor);
+                samples[i] = location + scale * Math.Cos((i + 1) * angleFactor);
             }
             return samples;
         }

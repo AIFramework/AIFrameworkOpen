@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -43,9 +43,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Chi : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _freedom;
+        private System.Random _random;
+        private readonly double _freedom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Chi"/> class.
@@ -113,12 +112,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => Constants.Sqrt2*(SpecialFunctions.Gamma((_freedom + 1.0)/2.0)/SpecialFunctions.Gamma(_freedom/2.0));
+        public double Mean => Constants.Sqrt2 * (SpecialFunctions.Gamma((_freedom + 1.0) / 2.0) / SpecialFunctions.Gamma(_freedom / 2.0));
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => _freedom - (Mean*Mean);
+        public double Variance => _freedom - (Mean * Mean);
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
@@ -128,7 +127,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the entropy of the distribution.
         /// </summary>
-        public double Entropy => SpecialFunctions.GammaLn(_freedom/2.0) + ((_freedom - Math.Log(2) - ((_freedom - 1.0)*SpecialFunctions.DiGamma(_freedom/2.0)))/2.0);
+        public double Entropy => SpecialFunctions.GammaLn(_freedom / 2.0) + ((_freedom - Math.Log(2) - ((_freedom - 1.0) * SpecialFunctions.DiGamma(_freedom / 2.0))) / 2.0);
 
         /// <summary>
         /// Gets the skewness of the distribution.
@@ -137,8 +136,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var sigma = StdDev;
-                return (Mean*(1.0 - (2.0*(sigma*sigma))))/(sigma*sigma*sigma);
+                double sigma = StdDev;
+                return (Mean * (1.0 - (2.0 * (sigma * sigma)))) / (sigma * sigma * sigma);
             }
         }
 
@@ -238,10 +237,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="rnd">The random number generator to use.</param>
         /// <param name="freedom">The degrees of freedom (k) of the distribution. Range: k > 0.</param>
         /// <returns>a random number from the distribution.</returns>
-        static double SampleUnchecked(System.Random rnd, int freedom)
+        private static double SampleUnchecked(System.Random rnd, int freedom)
         {
             double sum = 0;
-            for (var i = 0; i < freedom; i++)
+            for (int i = 0; i < freedom; i++)
             {
                 sum += Math.Pow(Normal.Sample(rnd, 0.0, 1.0), 2);
             }
@@ -249,19 +248,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return Math.Sqrt(sum);
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, int freedom)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, int freedom)
         {
-            var standard = new double[values.Length*freedom];
+            double[] standard = new double[values.Length * freedom];
             Normal.SamplesUnchecked(rnd, standard, 0.0, 1.0);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    int k = i*freedom;
+                    int k = i * freedom;
                     double sum = 0;
                     for (int j = 0; j < freedom; j++)
                     {
-                        sum += standard[k + j]*standard[k + j];
+                        sum += standard[k + j] * standard[k + j];
                     }
 
                     values[i] = Math.Sqrt(sum);
@@ -269,7 +268,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             });
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, int freedom)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, int freedom)
         {
             while (true)
             {
@@ -301,7 +300,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return Math.Exp(PDFLn(freedom, x));
             }
 
-            return (Math.Pow(2.0, 1.0 - (freedom/2.0))*Math.Pow(x, freedom - 1.0)*Math.Exp(-x*x/2.0))/SpecialFunctions.Gamma(freedom/2.0);
+            return (Math.Pow(2.0, 1.0 - (freedom / 2.0)) * Math.Pow(x, freedom - 1.0) * Math.Exp(-x * x / 2.0)) / SpecialFunctions.Gamma(freedom / 2.0);
         }
 
         /// <summary>
@@ -323,7 +322,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return double.NegativeInfinity;
             }
 
-            return ((1.0 - (freedom/2.0))*Math.Log(2.0)) + ((freedom - 1.0)*Math.Log(x)) - (x*x/2.0) - SpecialFunctions.GammaLn(freedom/2.0);
+            return ((1.0 - (freedom / 2.0)) * Math.Log(2.0)) + ((freedom - 1.0) * Math.Log(x)) - (x * x / 2.0) - SpecialFunctions.GammaLn(freedom / 2.0);
         }
 
         /// <summary>
@@ -350,7 +349,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 1.0;
             }
 
-            return SpecialFunctions.GammaLowerRegularized(freedom/2.0, x*x/2.0);
+            return SpecialFunctions.GammaLowerRegularized(freedom / 2.0, x * x / 2.0);
         }
 
         /// <summary>

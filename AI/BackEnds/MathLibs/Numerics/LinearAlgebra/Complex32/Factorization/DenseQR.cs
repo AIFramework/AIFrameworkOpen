@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factorization
 {
@@ -49,7 +49,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
         /// <summary>
         ///  Gets or sets Tau vector. Contains additional information on Q - used for native solver.
         /// </summary>
-        Complex32[] Tau { get; set; }
+        private Complex32[] Tau { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DenseQR"/> class. This object will compute the
@@ -66,7 +66,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentException>(matrix);
             }
 
-            var tau = new Complex32[Math.Min(matrix.RowCount, matrix.ColumnCount)];
+            Complex32[] tau = new Complex32[Math.Min(matrix.RowCount, matrix.ColumnCount)];
             MatrixMathNet<Complex32> q;
             MatrixMathNet<Complex32> r;
 
@@ -74,19 +74,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
             {
                 r = matrix.Clone();
                 q = new DenseMatrix(matrix.RowCount);
-                LinearAlgebraControl.Provider.QRFactor(((DenseMatrix) r).Values, matrix.RowCount, matrix.ColumnCount, ((DenseMatrix) q).Values, tau);
+                LinearAlgebraControl.Provider.QRFactor(((DenseMatrix)r).Values, matrix.RowCount, matrix.ColumnCount, ((DenseMatrix)q).Values, tau);
             }
             else
             {
                 q = matrix.Clone();
                 r = new DenseMatrix(matrix.ColumnCount);
-                LinearAlgebraControl.Provider.ThinQRFactor(((DenseMatrix) q).Values, matrix.RowCount, matrix.ColumnCount, ((DenseMatrix) r).Values, tau);
+                LinearAlgebraControl.Provider.ThinQRFactor(((DenseMatrix)q).Values, matrix.RowCount, matrix.ColumnCount, ((DenseMatrix)r).Values, tau);
             }
 
             return new DenseQR(q, r, method, tau);
         }
 
-        DenseQR(MatrixMathNet<Complex32> q, MatrixMathNet<Complex32> rFull, QRMethod method, Complex32[] tau)
+        private DenseQR(MatrixMathNet<Complex32> q, MatrixMathNet<Complex32> rFull, QRMethod method, Complex32[] tau)
             : base(q, rFull, method)
         {
             Tau = tau;
@@ -119,7 +119,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
 
             if (input is DenseMatrix dinput && result is DenseMatrix dresult)
             {
-                LinearAlgebraControl.Provider.QRSolveFactored(((DenseMatrix) Q).Values, ((DenseMatrix) FullR).Values, Q.RowCount, FullR.ColumnCount, Tau, dinput.Values, input.ColumnCount, dresult.Values, Method);
+                LinearAlgebraControl.Provider.QRSolveFactored(((DenseMatrix)Q).Values, ((DenseMatrix)FullR).Values, Q.RowCount, FullR.ColumnCount, Tau, dinput.Values, input.ColumnCount, dresult.Values, Method);
             }
             else
             {
@@ -149,7 +149,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
 
             if (input is DenseVector dinput && result is DenseVector dresult)
             {
-                LinearAlgebraControl.Provider.QRSolveFactored(((DenseMatrix) Q).Values, ((DenseMatrix) FullR).Values, Q.RowCount, FullR.ColumnCount, Tau, dinput.Values, 1, dresult.Values, Method);
+                LinearAlgebraControl.Provider.QRSolveFactored(((DenseMatrix)Q).Values, ((DenseMatrix)FullR).Values, Q.RowCount, FullR.ColumnCount, Tau, dinput.Values, 1, dresult.Values, Method);
             }
             else
             {

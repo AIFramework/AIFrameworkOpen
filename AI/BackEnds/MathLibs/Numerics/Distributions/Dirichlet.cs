@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -39,9 +39,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Dirichlet : IDistribution
     {
-        System.Random _random;
-
-        readonly double[] _alpha;
+        private System.Random _random;
+        private readonly double[] _alpha;
 
         /// <summary>
         /// Initializes a new instance of the Dirichlet class. The distribution will
@@ -84,8 +83,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         public Dirichlet(double alpha, int k)
         {
             // Create a parameter structure.
-            var parm = new double[k];
-            for (var i = 0; i < k; i++)
+            double[] parm = new double[k];
+            for (int i = 0; i < k; i++)
             {
                 parm[i] = alpha;
             }
@@ -108,8 +107,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         public Dirichlet(double alpha, int k, System.Random randomSource)
         {
             // Create a parameter structure.
-            var parm = new double[k];
-            for (var i = 0; i < k; i++)
+            double[] parm = new double[k];
+            for (int i = 0; i < k; i++)
             {
                 parm[i] = alpha;
             }
@@ -124,10 +123,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="string"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -141,11 +140,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="alpha">The parameters of the Dirichlet distribution.</param>
         public static bool IsValidParameterSet(double[] alpha)
         {
-            var allzero = true;
+            bool allzero = true;
 
             for (int i = 0; i < alpha.Length; i++)
             {
-                var t = alpha[i];
+                double t = alpha[i];
                 if (t < 0.0)
                 {
                     return false;
@@ -182,7 +181,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the sum of the Dirichlet parameters.
         /// </summary>
-        double AlphaSum => _alpha.Sum();
+        private double AlphaSum => _alpha.Sum();
 
         /// <summary>
         /// Gets the mean of the Dirichlet distribution.
@@ -191,11 +190,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var sum = AlphaSum;
-                var parm = new double[Dimension];
-                for (var i = 0; i < Dimension; i++)
+                double sum = AlphaSum;
+                double[] parm = new double[Dimension];
+                for (int i = 0; i < Dimension; i++)
                 {
-                    parm[i] = _alpha[i]/sum;
+                    parm[i] = _alpha[i] / sum;
                 }
 
                 return parm;
@@ -209,11 +208,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var s = AlphaSum;
-                var v = new double[_alpha.Length];
-                for (var i = 0; i < _alpha.Length; i++)
+                double s = AlphaSum;
+                double[] v = new double[_alpha.Length];
+                for (int i = 0; i < _alpha.Length; i++)
                 {
-                    v[i] = _alpha[i]*(s - _alpha[i])/(s*s*(s + 1.0));
+                    v[i] = _alpha[i] * (s - _alpha[i]) / (s * s * (s + 1.0));
                 }
 
                 return v;
@@ -227,8 +226,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var num = _alpha.Sum(t => (t - 1)*SpecialFunctions.DiGamma(t));
-                return SpecialFunctions.GammaLn(AlphaSum) + ((AlphaSum - Dimension)*SpecialFunctions.DiGamma(AlphaSum)) - num;
+                double num = _alpha.Sum(t => (t - 1) * SpecialFunctions.DiGamma(t));
+                return SpecialFunctions.GammaLn(AlphaSum) + ((AlphaSum - Dimension) * SpecialFunctions.DiGamma(AlphaSum)) - num;
             }
         }
 
@@ -256,24 +255,24 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentNullException(nameof(x));
             }
 
-            var shortVersion = x.Length == (_alpha.Length - 1);
+            bool shortVersion = x.Length == (_alpha.Length - 1);
             if ((x.Length != _alpha.Length) && !shortVersion)
             {
                 throw new ArgumentException("x");
             }
 
-            var term = 0.0;
-            var sumxi = 0.0;
-            var sumalpha = 0.0;
-            for (var i = 0; i < x.Length; i++)
+            double term = 0.0;
+            double sumxi = 0.0;
+            double sumalpha = 0.0;
+            for (int i = 0; i < x.Length; i++)
             {
-                var xi = x[i];
+                double xi = x[i];
                 if ((xi <= 0.0) || (xi >= 1.0))
                 {
                     return 0.0;
                 }
 
-                term += (_alpha[i] - 1.0)*Math.Log(xi) - SpecialFunctions.GammaLn(_alpha[i]);
+                term += (_alpha[i] - 1.0) * Math.Log(xi) - SpecialFunctions.GammaLn(_alpha[i]);
                 sumxi += xi;
                 sumalpha += _alpha[i];
             }
@@ -286,7 +285,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return 0.0;
                 }
 
-                term += (_alpha[_alpha.Length - 1] - 1.0)*Math.Log(1.0 - sumxi) - SpecialFunctions.GammaLn(_alpha[_alpha.Length - 1]);
+                term += (_alpha[_alpha.Length - 1] - 1.0) * Math.Log(1.0 - sumxi) - SpecialFunctions.GammaLn(_alpha[_alpha.Length - 1]);
                 sumalpha += _alpha[_alpha.Length - 1];
             }
             else if (!sumxi.AlmostEqualRelative(1.0, 8))
@@ -319,10 +318,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var n = alpha.Length;
-            var gv = new double[n];
-            var sum = 0.0;
-            for (var i = 0; i < n; i++)
+            int n = alpha.Length;
+            double[] gv = new double[n];
+            double sum = 0.0;
+            for (int i = 0; i < n; i++)
             {
                 if (alpha[i] == 0.0)
                 {
@@ -336,7 +335,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 sum += gv[i];
             }
 
-            for (var i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
             {
                 gv[i] /= sum;
             }

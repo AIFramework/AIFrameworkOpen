@@ -128,7 +128,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
             }
 
             // If all else fails, perform element wise comparison.
-            for (var index = 0; index < Length; index++)
+            for (int index = 0; index < Length; index++)
             {
                 if (!At(index).Equals(other.At(index)))
                 {
@@ -159,13 +159,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         /// </returns>
         public override int GetHashCode()
         {
-            var hashNum = Math.Min(Length, 25);
+            int hashNum = Math.Min(Length, 25);
             int hash = 17;
             unchecked
             {
-                for (var i = 0; i < hashNum; i++)
+                for (int i = 0; i < hashNum; i++)
                 {
-                    hash = hash*31 + At(i).GetHashCode();
+                    hash = hash * 31 + At(i).GetHashCode();
                 }
             }
             return hash;
@@ -175,7 +175,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual void Clear()
         {
-            for (var i = 0; i < Length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 At(i, Zero);
             }
@@ -183,7 +183,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual void Clear(int index, int count)
         {
-            for (var i = index; i < index + count; i++)
+            for (int i = index; i < index + count; i++)
             {
                 At(i, Zero);
             }
@@ -296,7 +296,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             if (ReferenceEquals(this, target))
             {
-                var tmp = new T[count];
+                T[] tmp = new T[count];
                 for (int i = 0; i < tmp.Length; i++)
                 {
                     tmp[i] = At(i + sourceIndex);
@@ -377,7 +377,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual T[] ToArray()
         {
-            var ret = new T[Length];
+            T[] ret = new T[Length];
             for (int i = 0; i < ret.Length; i++)
             {
                 ret[i] = At(i);
@@ -394,7 +394,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual IEnumerable<T> Enumerate()
         {
-            for (var i = 0; i < Length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 yield return At(i);
             }
@@ -402,7 +402,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual IEnumerable<(int, T)> EnumerateIndexed()
         {
-            for (var i = 0; i < Length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 yield return (i, At(i));
             }
@@ -410,9 +410,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual IEnumerable<T> EnumerateNonZero()
         {
-            for (var i = 0; i < Length; i++)
+            for (int i = 0; i < Length; i++)
             {
-                var x = At(i);
+                T x = At(i);
                 if (!Zero.Equals(x))
                 {
                     yield return x;
@@ -422,9 +422,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
 
         public virtual IEnumerable<(int, T)> EnumerateNonZeroIndexed()
         {
-            for (var i = 0; i < Length; i++)
+            for (int i = 0; i < Length; i++)
             {
-                var x = At(i);
+                T x = At(i);
                 if (!Zero.Equals(x))
                 {
                     yield return (i, x);
@@ -438,7 +438,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             for (int i = 0; i < Length; i++)
             {
-                var item = At(i);
+                T item = At(i);
                 if (predicate(item))
                 {
                     return new Tuple<int, T>(i, item);
@@ -468,8 +468,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage
         {
             for (int i = 0; i < Length; i++)
             {
-                var item = At(i);
-                var otherItem = other.At(i);
+                T item = At(i);
+                TOther otherItem = other.At(i);
                 if (predicate(item, otherItem))
                 {
                     return new Tuple<int, T, TOther>(i, item, otherItem);

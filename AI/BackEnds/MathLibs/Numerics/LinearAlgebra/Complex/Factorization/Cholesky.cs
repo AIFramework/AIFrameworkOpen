@@ -56,11 +56,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         {
             get
             {
-                var det = Complex.One;
-                for (var j = 0; j < Factor.RowCount; j++)
+                Complex det = Complex.One;
+                for (int j = 0; j < Factor.RowCount; j++)
                 {
-                    var d = Factor.At(j, j);
-                    det *= d*d;
+                    Complex d = Factor.At(j, j);
+                    det *= d * d;
                 }
 
                 return det;
@@ -74,10 +74,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         {
             get
             {
-                var det = Complex.Zero;
-                for (var j = 0; j < Factor.RowCount; j++)
+                Complex det = Complex.Zero;
+                for (int j = 0; j < Factor.RowCount; j++)
                 {
-                    det += 2.0*Factor.At(j, j).Ln();
+                    det += 2.0 * Factor.At(j, j).Ln();
                 }
 
                 return det;

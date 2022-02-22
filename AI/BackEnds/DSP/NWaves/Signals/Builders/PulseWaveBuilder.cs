@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Collections.Generic;
-using AI.BackEnds.DSP.NWaves.Utils;
 
 namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 {
@@ -54,7 +54,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         public override float NextSample()
         {
-            var sample = _n <= (int)(_pulse * SamplingRate) ? _high : _low;
+            double sample = _n <= (int)(_pulse * SamplingRate) ? _high : _low;
 
             if (++_n == (int)(_period * SamplingRate))
             {

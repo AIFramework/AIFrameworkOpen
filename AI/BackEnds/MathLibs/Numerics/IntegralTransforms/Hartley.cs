@@ -44,7 +44,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.IntegralTransforms
         /// <returns>Corresponding frequency-space vector.</returns>
         public static double[] NaiveForward(double[] timeSpace, HartleyOptions options)
         {
-            var frequencySpace = Naive(timeSpace);
+            double[] frequencySpace = Naive(timeSpace);
             ForwardScaleByOptions(options, frequencySpace);
             return frequencySpace;
         }
@@ -57,7 +57,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.IntegralTransforms
         /// <returns>Corresponding time-space vector.</returns>
         public static double[] NaiveInverse(double[] frequencySpace, HartleyOptions options)
         {
-            var timeSpace = Naive(frequencySpace);
+            double[] timeSpace = Naive(frequencySpace);
             InverseScaleByOptions(options, timeSpace);
             return timeSpace;
         }
@@ -67,7 +67,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.IntegralTransforms
         /// </summary>
         /// <param name="options">Fourier Transform Convention Options.</param>
         /// <param name="samples">Sample Vector.</param>
-        static void ForwardScaleByOptions(HartleyOptions options, double[] samples)
+        private static void ForwardScaleByOptions(HartleyOptions options, double[] samples)
         {
             if ((options & HartleyOptions.NoScaling) == HartleyOptions.NoScaling ||
                 (options & HartleyOptions.AsymmetricScaling) == HartleyOptions.AsymmetricScaling)
@@ -75,7 +75,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.IntegralTransforms
                 return;
             }
 
-            var scalingFactor = Math.Sqrt(1.0/samples.Length);
+            double scalingFactor = Math.Sqrt(1.0 / samples.Length);
             for (int i = 0; i < samples.Length; i++)
             {
                 samples[i] *= scalingFactor;
@@ -87,14 +87,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.IntegralTransforms
         /// </summary>
         /// <param name="options">Fourier Transform Convention Options.</param>
         /// <param name="samples">Sample Vector.</param>
-        static void InverseScaleByOptions(HartleyOptions options, double[] samples)
+        private static void InverseScaleByOptions(HartleyOptions options, double[] samples)
         {
             if ((options & HartleyOptions.NoScaling) == HartleyOptions.NoScaling)
             {
                 return;
             }
 
-            var scalingFactor = 1.0/samples.Length;
+            double scalingFactor = 1.0 / samples.Length;
             if ((options & HartleyOptions.AsymmetricScaling) != HartleyOptions.AsymmetricScaling)
             {
                 scalingFactor = Math.Sqrt(scalingFactor);

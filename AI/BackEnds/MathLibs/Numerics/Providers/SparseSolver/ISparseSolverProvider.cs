@@ -53,7 +53,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.SparseSolver
         /// <summary>
         /// The operation was successful.
         /// </summary>
-        MKL_DSS_SUCCESS = 0, 
+        MKL_DSS_SUCCESS = 0,
         MKL_DSS_ZERO_PIVOT = -1,
         MKL_DSS_OUT_OF_MEMORY = -2,
         MKL_DSS_FAILURE = -3,

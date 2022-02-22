@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -43,9 +43,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </remarks>
     public class Poisson : IDiscreteDistribution
     {
-        System.Random _random;
-
-        readonly double _lambda;
+        private System.Random _random;
+        private readonly double _lambda;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Poisson"/> class.
@@ -81,10 +80,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="string"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -133,12 +132,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// Gets the entropy of the distribution.
         /// </summary>
         /// <remarks>Approximation, see Wikipedia <a href="http://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a></remarks>
-        public double Entropy => (0.5*Math.Log(Constants.Pi2*Constants.E*_lambda)) - (1.0/(12.0*_lambda)) - (1.0/(24.0*_lambda*_lambda)) - (19.0/(360.0*_lambda*_lambda*_lambda));
+        public double Entropy => (0.5 * Math.Log(Constants.Pi2 * Constants.E * _lambda)) - (1.0 / (12.0 * _lambda)) - (1.0 / (24.0 * _lambda * _lambda)) - (19.0 / (360.0 * _lambda * _lambda * _lambda));
 
         /// <summary>
         /// Gets the skewness of the distribution.
         /// </summary>
-        public double Skewness => 1.0/Math.Sqrt(_lambda);
+        public double Skewness => 1.0 / Math.Sqrt(_lambda);
 
         /// <summary>
         /// Gets the smallest element in the domain of the distributions which can be represented by an integer.
@@ -159,7 +158,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// Gets the median of the distribution.
         /// </summary>
         /// <remarks>Approximation, see Wikipedia <a href="http://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a></remarks>
-        public double Median => Math.Floor(_lambda + (1.0/3.0) - (0.02/_lambda));
+        public double Median => Math.Floor(_lambda + (1.0 / 3.0) - (0.02 / _lambda));
 
         /// <summary>
         /// Computes the probability mass (PMF) at k, i.e. P(X = k).
@@ -168,7 +167,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the probability mass at location <paramref name="k"/>.</returns>
         public double Probability(int k)
         {
-            return Math.Exp(-_lambda + (k*Math.Log(_lambda)) - SpecialFunctions.FactorialLn(k));
+            return Math.Exp(-_lambda + (k * Math.Log(_lambda)) - SpecialFunctions.FactorialLn(k));
         }
 
         /// <summary>
@@ -178,7 +177,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>the log probability mass at location <paramref name="k"/>.</returns>
         public double ProbabilityLn(int k)
         {
-            return -_lambda + (k*Math.Log(_lambda)) - SpecialFunctions.FactorialLn(k);
+            return -_lambda + (k * Math.Log(_lambda)) - SpecialFunctions.FactorialLn(k);
         }
 
         /// <summary>
@@ -204,7 +203,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return Math.Exp(-lambda + (k*Math.Log(lambda)) - SpecialFunctions.FactorialLn(k));
+            return Math.Exp(-lambda + (k * Math.Log(lambda)) - SpecialFunctions.FactorialLn(k));
         }
 
         /// <summary>
@@ -220,7 +219,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return -lambda + (k*Math.Log(lambda)) - SpecialFunctions.FactorialLn(k);
+            return -lambda + (k * Math.Log(lambda)) - SpecialFunctions.FactorialLn(k);
         }
 
         /// <summary>
@@ -246,20 +245,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="rnd">The random source to use.</param>
         /// <param name="lambda">The lambda (λ) parameter of the Poisson distribution. Range: λ > 0.</param>
         /// <returns>A random sample from the Poisson distribution.</returns>
-        static int SampleUnchecked(System.Random rnd, double lambda)
+        private static int SampleUnchecked(System.Random rnd, double lambda)
         {
             return (lambda < 30.0) ? DoSampleShort(rnd, lambda) : DoSampleLarge(rnd, lambda);
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, double lambda)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, double lambda)
         {
             if (lambda < 30.0)
             {
-                var limit = Math.Exp(-lambda);
+                double limit = Math.Exp(-lambda);
                 for (int i = 0; i < values.Length; i++)
                 {
-                    var count = 0;
-                    for (var product = rnd.NextDouble(); product >= limit; product *= rnd.NextDouble())
+                    int count = 0;
+                    for (double product = rnd.NextDouble(); product >= limit; product *= rnd.NextDouble())
                     {
                         count++;
                     }
@@ -269,27 +268,27 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
             else
             {
-                var c = 0.767 - (3.36/lambda);
-                var beta = Math.PI/Math.Sqrt(3.0*lambda);
-                var alpha = beta*lambda;
-                var k = Math.Log(c) - lambda - Math.Log(beta);
+                double c = 0.767 - (3.36 / lambda);
+                double beta = Math.PI / Math.Sqrt(3.0 * lambda);
+                double alpha = beta * lambda;
+                double k = Math.Log(c) - lambda - Math.Log(beta);
                 for (int i = 0; i < values.Length; i++)
                 {
-                    for (;;)
+                    for (; ; )
                     {
-                        var u = rnd.NextDouble();
-                        var x = (alpha - Math.Log((1.0 - u)/u))/beta;
-                        var n = (int)Math.Floor(x + 0.5);
+                        double u = rnd.NextDouble();
+                        double x = (alpha - Math.Log((1.0 - u) / u)) / beta;
+                        int n = (int)Math.Floor(x + 0.5);
                         if (n < 0)
                         {
                             continue;
                         }
 
-                        var v = rnd.NextDouble();
-                        var y = alpha - (beta*x);
-                        var temp = 1.0 + Math.Exp(y);
-                        var lhs = y + Math.Log(v/(temp*temp));
-                        var rhs = k + (n*Math.Log(lambda)) - SpecialFunctions.FactorialLn(n);
+                        double v = rnd.NextDouble();
+                        double y = alpha - (beta * x);
+                        double temp = 1.0 + Math.Exp(y);
+                        double lhs = y + Math.Log(v / (temp * temp));
+                        double rhs = k + (n * Math.Log(lambda)) - SpecialFunctions.FactorialLn(n);
                         if (lhs <= rhs)
                         {
                             values[i] = n;
@@ -300,7 +299,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, double lambda)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, double lambda)
         {
             if (lambda < 30.0)
             {
@@ -324,11 +323,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="rnd">The random source to use.</param>
         /// <param name="lambda">The lambda (λ) parameter of the Poisson distribution. Range: λ > 0.</param>
         /// <returns>A random sample from the Poisson distribution.</returns>
-        static int DoSampleShort(System.Random rnd, double lambda)
+        private static int DoSampleShort(System.Random rnd, double lambda)
         {
-            var limit = Math.Exp(-lambda);
-            var count = 0;
-            for (var product = rnd.NextDouble(); product >= limit; product *= rnd.NextDouble())
+            double limit = Math.Exp(-lambda);
+            int count = 0;
+            for (double product = rnd.NextDouble(); product >= limit; product *= rnd.NextDouble())
             {
                 count++;
             }
@@ -345,28 +344,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <remarks>"Rejection method PA" from "The Computer Generation of Poisson Random Variables" by A. C. Atkinson,
         /// Journal of the Royal Statistical Society Series C (Applied Statistics) Vol. 28, No. 1. (1979)
         /// The article is on pages 29-35. The algorithm given here is on page 32. </remarks>
-        static int DoSampleLarge(System.Random rnd, double lambda)
+        private static int DoSampleLarge(System.Random rnd, double lambda)
         {
-            var c = 0.767 - (3.36/lambda);
-            var beta = Math.PI/Math.Sqrt(3.0*lambda);
-            var alpha = beta*lambda;
-            var k = Math.Log(c) - lambda - Math.Log(beta);
+            double c = 0.767 - (3.36 / lambda);
+            double beta = Math.PI / Math.Sqrt(3.0 * lambda);
+            double alpha = beta * lambda;
+            double k = Math.Log(c) - lambda - Math.Log(beta);
 
-            for (;;)
+            for (; ; )
             {
-                var u = rnd.NextDouble();
-                var x = (alpha - Math.Log((1.0 - u)/u))/beta;
-                var n = (int)Math.Floor(x + 0.5);
+                double u = rnd.NextDouble();
+                double x = (alpha - Math.Log((1.0 - u) / u)) / beta;
+                int n = (int)Math.Floor(x + 0.5);
                 if (n < 0)
                 {
                     continue;
                 }
 
-                var v = rnd.NextDouble();
-                var y = alpha - (beta*x);
-                var temp = 1.0 + Math.Exp(y);
-                var lhs = y + Math.Log(v/(temp*temp));
-                var rhs = k + (n*Math.Log(lambda)) - SpecialFunctions.FactorialLn(n);
+                double v = rnd.NextDouble();
+                double y = alpha - (beta * x);
+                double temp = 1.0 + Math.Exp(y);
+                double lhs = y + Math.Log(v / (temp * temp));
+                double rhs = k + (n * Math.Log(lambda)) - SpecialFunctions.FactorialLn(n);
                 if (lhs <= rhs)
                 {
                     return n;

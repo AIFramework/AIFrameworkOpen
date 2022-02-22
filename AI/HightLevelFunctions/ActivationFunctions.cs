@@ -11,7 +11,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Softmax
         /// </summary>
-        public static Vector Softmax(Vector inp) 
+        public static Vector Softmax(Vector inp)
         {
             Vector exp = inp.Transform(Math.Exp);
             return exp / exp.Sum();

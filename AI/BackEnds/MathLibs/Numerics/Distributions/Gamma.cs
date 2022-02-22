@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -50,10 +50,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </remarks>
     public class Gamma : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _shape;
-        readonly double _rate;
+        private System.Random _random;
+        private readonly double _shape;
+        private readonly double _rate;
 
         /// <summary>
         /// Initializes a new instance of the Gamma class.
@@ -99,7 +98,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="randomSource">The random number generator which is used to draw random samples. Optional, can be null.</param>
         public static Gamma WithShapeScale(double shape, double scale, System.Random randomSource = null)
         {
-            return new Gamma(shape, 1.0/scale, randomSource);
+            return new Gamma(shape, 1.0 / scale, randomSource);
         }
 
         /// <summary>
@@ -146,7 +145,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets or sets the scale (θ) of the Gamma distribution.
         /// </summary>
-        public double Scale => 1.0/_rate;
+        public double Scale => 1.0 / _rate;
 
         /// <summary>
         /// Gets or sets the random number generator which is used to draw random samples.
@@ -174,7 +173,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return _shape/_rate;
+                return _shape / _rate;
             }
         }
 
@@ -195,7 +194,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return _shape/(_rate*_rate);
+                return _shape / (_rate * _rate);
             }
         }
 
@@ -216,7 +215,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return Math.Sqrt(_shape/(_rate*_rate));
+                return Math.Sqrt(_shape / (_rate * _rate));
             }
         }
 
@@ -237,7 +236,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return _shape - Math.Log(_rate) + SpecialFunctions.GammaLn(_shape) + ((1.0 - _shape)*SpecialFunctions.DiGamma(_shape));
+                return _shape - Math.Log(_rate) + SpecialFunctions.GammaLn(_shape) + ((1.0 - _shape) * SpecialFunctions.DiGamma(_shape));
             }
         }
 
@@ -258,7 +257,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return 2.0/Math.Sqrt(_shape);
+                return 2.0 / Math.Sqrt(_shape);
             }
         }
 
@@ -279,7 +278,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.NaN;
                 }
 
-                return (_shape - 1.0)/_rate;
+                return (_shape - 1.0) / _rate;
             }
         }
 
@@ -386,39 +385,39 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return shape;
             }
 
-            var a = shape;
-            var alphafix = 1.0;
+            double a = shape;
+            double alphafix = 1.0;
 
             // Fix when alpha is less than one.
             if (shape < 1.0)
             {
                 a = shape + 1.0;
-                alphafix = Math.Pow(rnd.NextDouble(), 1.0/shape);
+                alphafix = Math.Pow(rnd.NextDouble(), 1.0 / shape);
             }
 
-            var d = a - (1.0/3.0);
-            var c = 1.0/Math.Sqrt(9.0*d);
+            double d = a - (1.0 / 3.0);
+            double c = 1.0 / Math.Sqrt(9.0 * d);
             while (true)
             {
-                var x = Normal.Sample(rnd, 0.0, 1.0);
-                var v = 1.0 + (c*x);
+                double x = Normal.Sample(rnd, 0.0, 1.0);
+                double v = 1.0 + (c * x);
                 while (v <= 0.0)
                 {
                     x = Normal.Sample(rnd, 0.0, 1.0);
-                    v = 1.0 + (c*x);
+                    v = 1.0 + (c * x);
                 }
 
-                v = v*v*v;
-                var u = rnd.NextDouble();
-                x = x*x;
-                if (u < 1.0 - (0.0331*x*x))
+                v = v * v * v;
+                double u = rnd.NextDouble();
+                x = x * x;
+                if (u < 1.0 - (0.0331 * x * x))
                 {
-                    return alphafix*d*v/rate;
+                    return alphafix * d * v / rate;
                 }
 
-                if (Math.Log(u) < (0.5*x) + (d*(1.0 - v + Math.Log(v))))
+                if (Math.Log(u) < (0.5 * x) + (d * (1.0 - v + Math.Log(v))))
                 {
-                    return alphafix*d*v/rate;
+                    return alphafix * d * v / rate;
                 }
             }
         }
@@ -466,7 +465,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (shape == 1.0)
             {
-                return rate*Math.Exp(-rate*x);
+                return rate * Math.Exp(-rate * x);
             }
 
             if (shape > 160.0)
@@ -474,7 +473,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return Math.Exp(PDFLn(shape, rate, x));
             }
 
-            return Math.Pow(rate, shape)*Math.Pow(x, shape - 1.0)*Math.Exp(-rate*x)/SpecialFunctions.Gamma(shape);
+            return Math.Pow(rate, shape) * Math.Pow(x, shape - 1.0) * Math.Exp(-rate * x) / SpecialFunctions.Gamma(shape);
         }
 
         /// <summary>
@@ -504,10 +503,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (shape == 1.0)
             {
-                return Math.Log(rate) - (rate*x);
+                return Math.Log(rate) - (rate * x);
             }
 
-            return (shape*Math.Log(rate)) + ((shape - 1.0)*Math.Log(x)) - (rate*x) - SpecialFunctions.GammaLn(shape);
+            return (shape * Math.Log(rate)) + ((shape - 1.0) * Math.Log(x)) - (rate * x) - SpecialFunctions.GammaLn(shape);
         }
 
         /// <summary>
@@ -535,7 +534,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            return SpecialFunctions.GammaLowerRegularized(shape, x*rate);
+            return SpecialFunctions.GammaLowerRegularized(shape, x * rate);
         }
 
         /// <summary>
@@ -554,7 +553,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return SpecialFunctions.GammaLowerRegularizedInv(shape, p)/rate;
+            return SpecialFunctions.GammaLowerRegularizedInv(shape, p) / rate;
         }
 
         /// <summary>

@@ -48,10 +48,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
             Q = q;
             Gain = gain;
 
-            var ga = Math.Pow(10, gain / 40);
-            var omega = 2 * Math.PI * freq;
-            var alpha = Math.Sin(omega) / (2 * q);
-            var cosw = Math.Cos(omega);
+            double ga = Math.Pow(10, gain / 40);
+            double omega = 2 * Math.PI * freq;
+            double alpha = Math.Sin(omega) / (2 * q);
+            double cosw = Math.Cos(omega);
 
             _b[0] = (float)(1 + alpha * ga);
             _b[1] = (float)(-2 * cosw);

@@ -33,13 +33,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.SparseSolver
 {
     public static class SparseSolverControl
     {
-        const string EnvVarSSProvider = "MathNetNumericsSSProvider";
-
-        static ISparseSolverProvider _sparseSolverProvider;
-        static readonly object StaticLock = new object();
-
-        const string MklTypeName = "AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL.SparseSolver.MklSparseSolverControl, AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL";
-        static readonly ProviderProbe<ISparseSolverProvider> MklProbe = new ProviderProbe<ISparseSolverProvider>(MklTypeName, AppSwitches.DisableMklNativeProvider);
+        private const string EnvVarSSProvider = "MathNetNumericsSSProvider";
+        private static ISparseSolverProvider _sparseSolverProvider;
+        private static readonly object StaticLock = new object();
+        private const string MklTypeName = "AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL.SparseSolver.MklSparseSolverControl, AI.BackEnds.MathLibs.MathNet.Numerics.Providers.MKL";
+        private static readonly ProviderProbe<ISparseSolverProvider> MklProbe = new ProviderProbe<ISparseSolverProvider>(MklTypeName, AppSwitches.DisableMklNativeProvider);
 
         /// <summary>
         /// Optional path to try to load native provider binaries from,
@@ -79,10 +77,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.SparseSolver
             }
         }
 
-        public static void UseManaged() => Provider = ManagedSparseSolverProvider.Instance;
+        public static void UseManaged()
+        {
+            Provider = ManagedSparseSolverProvider.Instance;
+        }
 
-        public static void UseNativeMKL() => Provider = MklProbe.Create();
-        public static bool TryUseNativeMKL() => TryUse(MklProbe.TryCreate());
+        public static void UseNativeMKL()
+        {
+            Provider = MklProbe.Create();
+        }
+
+        public static bool TryUseNativeMKL()
+        {
+            return TryUse(MklProbe.TryCreate());
+        }
 
         /// <summary>
         /// Try to use a native provider, if available.
@@ -146,7 +154,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.SparseSolver
                 return;
             }
 
-            var value = Environment.GetEnvironmentVariable(EnvVarSSProvider);
+            string value = Environment.GetEnvironmentVariable(EnvVarSSProvider);
             switch (value != null ? value.ToUpperInvariant() : string.Empty)
             {
 
@@ -160,6 +168,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.SparseSolver
             }
         }
 
-        public static void FreeResources() => Provider.FreeResources();
+        public static void FreeResources()
+        {
+            Provider.FreeResources();
+        }
     }
 }

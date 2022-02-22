@@ -41,7 +41,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
 
         public DiscreteSignal ApplyTo(DiscreteSignal signal, FilteringMethod method = FilteringMethod.Auto)
         {
-            var output = new float[signal.Length];
+            float[] output = new float[signal.Length];
 
             int i = 0, j = 0;
 
@@ -72,22 +72,22 @@ namespace AI.BackEnds.DSP.NWaves.Filters
 
             _buf[_n] = sample;
 
-            var mu = 0.0f;
-            for (var i = 0; i < _size; i++)
+            float mu = 0.0f;
+            for (int i = 0; i < _size; i++)
             {
                 mu += _buf[i];
             }
             mu /= _size;
 
-            var sigma = 0.0f;
-            for (var i = 0; i < _size; i++)
+            float sigma = 0.0f;
+            for (int i = 0; i < _size; i++)
             {
                 sigma += _buf[i] * _buf[i];
             }
             sigma /= _size;
             sigma -= mu * mu;
 
-            var prevSample = _n > 0 ? _buf[_n - 1] : _buf[_size - 1];
+            float prevSample = _n > 0 ? _buf[_n - 1] : _buf[_size - 1];
             _n++;
 
             return sigma < _noise ? mu : (float)(mu + (prevSample - mu) * (1 - _noise / sigma));
@@ -97,7 +97,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         {
             _n = _size / 2;
 
-            for (var i = 0; i < _buf.Length; i++)
+            for (int i = 0; i < _buf.Length; i++)
             {
                 _buf[i] = 0;
             }
@@ -105,6 +105,6 @@ namespace AI.BackEnds.DSP.NWaves.Filters
 
         private int _n;
 
-        private float[] _buf;
+        private readonly float[] _buf;
     }
 }

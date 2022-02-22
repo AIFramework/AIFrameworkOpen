@@ -4,8 +4,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
     public static class RandomSeed
     {
-        static readonly object Lock = new object();
-        static readonly System.Security.Cryptography.RandomNumberGenerator MasterRng = System.Security.Cryptography.RandomNumberGenerator.Create();
+        private static readonly object Lock = new object();
+        private static readonly System.Security.Cryptography.RandomNumberGenerator MasterRng = System.Security.Cryptography.RandomNumberGenerator.Create();
 
         /// <summary>
         /// Provides a time-dependent seed value, matching the default behavior of System.Random.
@@ -36,7 +36,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         {
             lock (Lock)
             {
-                var bytes = new byte[4];
+                byte[] bytes = new byte[4];
                 MasterRng.GetBytes(bytes);
                 return BitConverter.ToInt32(bytes, 0);
             }

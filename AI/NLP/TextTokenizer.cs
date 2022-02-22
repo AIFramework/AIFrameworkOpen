@@ -47,7 +47,7 @@ namespace AI.NLP
         /// <param name="isStem">Whether to stem the text</param>
         /// <param name="deleted">Deleted characters (default [',' ';' '*' '?' '!' '.'])  </param>
         /// <param name="separaters">Characters or strings to separate words (default ["\t" " " "\n"])</param>
-        public TextTokenizer(bool isLower = true, bool isStem = false, char[] deleted = null, string[] separaters = null) 
+        public TextTokenizer(bool isLower = true, bool isStem = false, char[] deleted = null, string[] separaters = null)
         {
             DelChars = deleted ?? new[] { ',', ';', '*', '?', '!', '.' };
             Separaters = separaters ?? new[] { "\t", " " };
@@ -56,7 +56,7 @@ namespace AI.NLP
         }
 
 
-        public void Train(string text) 
+        public void Train(string text)
         {
             string inp = Preproc(text);
             ProbabilityDictionary probabilityDictionary = new ProbabilityDictionary(false, false, IsStem);
@@ -69,10 +69,10 @@ namespace AI.NLP
                     dictionary.Add(dic[i].Word, i);
                 }
             }
-            else 
+            else
             {
                 int len = Math.Min(WordCount, dic.Length);
-                
+
                 for (int i = 0; i < len; i++)
                 {
                     dictionary.Add(dic[i].Word, i);
@@ -81,7 +81,7 @@ namespace AI.NLP
 
             Words = new string[dictionary.Count];
 
-            foreach (var word in dictionary)
+            foreach (KeyValuePair<string, int> word in dictionary)
             {
                 Words[word.Value] = word.Key;
             }
@@ -98,7 +98,7 @@ namespace AI.NLP
 
             for (int i = 0; i < len; i++)
             {
-                string word = IsStem? Stemmers.StemmerRus.TransformingWord(array[i]): array[i];
+                string word = IsStem ? Stemmers.StemmerRus.TransformingWord(array[i]) : array[i];
                 if (dictionary.ContainsKey(word))
                 {
                     vec[i] = dictionary[word];
@@ -118,27 +118,29 @@ namespace AI.NLP
             string wordP = IsStem ? Stemmers.StemmerRus.TransformingWord(outp) : outp;
 
             if (dictionary.ContainsKey(wordP))
+            {
                 return dictionary[wordP];
+            }
 
             return dictionary.Count;
         }
 
         public Vector GetWord2OneHot(string word)
         {
-            Vector ret = new Vector(dictionary.Count+1);
-            
+            Vector ret = new Vector(dictionary.Count + 1);
+
             int indMax = GetWord2Token(word);
             ret[indMax] = 1;
-            
+
             return ret;
         }
 
-        public int GetDimWithUnKnowWord() 
+        public int GetDimWithUnKnowWord()
         {
             return dictionary.Count + 1;
         }
 
-        private string Preproc(string text) 
+        private string Preproc(string text)
         {
             string outp = text;
 
@@ -149,7 +151,7 @@ namespace AI.NLP
                     Separaters[i] = Separaters[i].Replace(" ", "");
                 }
 
-                outp = outp.Replace(" "," ");
+                outp = outp.Replace(" ", " ");
             }
 
             for (int i = 0; i < DelChars.Length; i++)
@@ -172,7 +174,7 @@ namespace AI.NLP
 
             while (outp.Contains("  "))
             {
-                outp = outp.Replace("  "," ");
+                outp = outp.Replace("  ", " ");
             }
 
             return outp;

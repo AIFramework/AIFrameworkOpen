@@ -77,23 +77,23 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         {
             // spectrogram memory will be reused for harmonic magnitudes
 
-            var harmonicSpectrogram = _stft.MagnitudePhaseSpectrogram(signal);
-            var harmonicMagnitudes = harmonicSpectrogram.Magnitudes;
+            MagnitudePhaseList harmonicSpectrogram = _stft.MagnitudePhaseSpectrogram(signal);
+            List<float[]> harmonicMagnitudes = harmonicSpectrogram.Magnitudes;
 
             // median filtering along frequency axis:
 
-            var percussiveMagnitudes = new List<float[]>(harmonicMagnitudes.Count);
+            List<float[]> percussiveMagnitudes = new List<float[]>(harmonicMagnitudes.Count);
 
-            for (var i = 0; i < harmonicMagnitudes.Count; i++)
+            for (int i = 0; i < harmonicMagnitudes.Count; i++)
             {
-                var mag = new DiscreteSignal(1, harmonicMagnitudes[i]);
+                DiscreteSignal mag = new DiscreteSignal(1, harmonicMagnitudes[i]);
                 percussiveMagnitudes.Add(_medianPercussive.ApplyTo(mag).Samples);
                 _medianPercussive.Reset();
             }
 
             // median filtering along time axis:
 
-            for (var j = 0; j <= _stft.Size / 2; j++)
+            for (int j = 0; j <= _stft.Size / 2; j++)
             {
                 int i = 0, k = 0;
 
@@ -104,7 +104,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
                 for (; i < harmonicMagnitudes.Count - _medianHarmonic.Size / 2; i++, k++)
                 {
-                    var h = _medianHarmonic.Process(harmonicMagnitudes[k][j]);
+                    float h = _medianHarmonic.Process(harmonicMagnitudes[k][j]);
 
                     harmonicMagnitudes[i][j] *= _mask(h, percussiveMagnitudes[k][j]);
                     percussiveMagnitudes[i][j] *= _mask(percussiveMagnitudes[k][j], h);
@@ -112,7 +112,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
                 for (k = 0; k < _medianHarmonic.Size / 2; i++, k++)     // don't forget last samples
                 {
-                    var h = _medianHarmonic.Process(0);
+                    float h = _medianHarmonic.Process(0);
 
                     harmonicMagnitudes[i][j] *= _mask(h, percussiveMagnitudes[i][j]);
                     percussiveMagnitudes[i][j] *= _mask(percussiveMagnitudes[i][j], h);
@@ -121,7 +121,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                 _medianHarmonic.Reset();
             }
 
-            var percussiveSpectrogram = new MagnitudePhaseList
+            MagnitudePhaseList percussiveSpectrogram = new MagnitudePhaseList
             {
                 Magnitudes = percussiveMagnitudes,
                 Phases = harmonicSpectrogram.Phases
@@ -137,27 +137,36 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <returns>Harmonic signal and percussive signal</returns>
         public new Tuple<DiscreteSignal, DiscreteSignal> EvaluateSignals(DiscreteSignal signal)
         {
-            var tuple = EvaluateSpectrograms(signal);
+            Tuple<MagnitudePhaseList, MagnitudePhaseList> tuple = EvaluateSpectrograms(signal);
 
-            var harmonicSpectrogram = tuple.Item1;
-            var percussiveSpectrogram = tuple.Item2;
+            MagnitudePhaseList harmonicSpectrogram = tuple.Item1;
+            MagnitudePhaseList percussiveSpectrogram = tuple.Item2;
 
             // reconstruct harmonic part:
 
-            var harmonic = new DiscreteSignal(signal.SamplingRate, _stft.ReconstructMagnitudePhase(harmonicSpectrogram));
+            DiscreteSignal harmonic = new DiscreteSignal(signal.SamplingRate, _stft.ReconstructMagnitudePhase(harmonicSpectrogram));
 
             // reconstruct percussive part:
 
-            var percussive = new DiscreteSignal(signal.SamplingRate, _stft.ReconstructMagnitudePhase(percussiveSpectrogram));
+            DiscreteSignal percussive = new DiscreteSignal(signal.SamplingRate, _stft.ReconstructMagnitudePhase(percussiveSpectrogram));
 
             return new Tuple<DiscreteSignal, DiscreteSignal>(harmonic, percussive);
         }
 
-        private float BinaryMask(float h, float p) => h > p ? 1 : 0;
+        private float BinaryMask(float h, float p)
+        {
+            return h > p ? 1 : 0;
+        }
 
-        private float WienerMask1(float h, float p) => h + p > 1e-10 ? h / (h + p) : 0;
+        private float WienerMask1(float h, float p)
+        {
+            return h + p > 1e-10 ? h / (h + p) : 0;
+        }
 
-        private float WienerMask2(float h, float p) => h + p > 1e-10 ? h * h / (h * h + p * p) : 0;
+        private float WienerMask2(float h, float p)
+        {
+            return h + p > 1e-10 ? h * h / (h * h + p * p) : 0;
+        }
     }
 
     /// <summary>

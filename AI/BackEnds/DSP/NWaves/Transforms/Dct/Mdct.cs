@@ -11,7 +11,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// Internal DCT-IV transformer
         /// </summary>
         private readonly IDct _dct;
-        
+
         /// <summary>
         /// Internal temporary buffer
         /// </summary>
@@ -46,7 +46,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             {
                 _temp[n] = input[n - N / 2] - input[3 * N / 2 - 1 - n];
             }
-            
+
             _dct.Direct(_temp, output);
         }
 
@@ -88,8 +88,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             Direct(input, output);
 
-            var norm = 2 * (float)Math.Sqrt(2 * _dct.Size);
-            for (var i = 0; i < output.Length; output[i++] /= norm) ;
+            float norm = 2 * (float)Math.Sqrt(2 * _dct.Size);
+            for (int i = 0; i < output.Length; output[i++] /= norm)
+            {
+                ;
+            }
         }
 
         /// <summary>
@@ -101,8 +104,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             Inverse(input, output);
 
-            var norm = (float)Math.Sqrt(2 * _dct.Size);
-            for (int i = 0; i < output.Length; output[i++] /= norm) ;
+            float norm = (float)Math.Sqrt(2 * _dct.Size);
+            for (int i = 0; i < output.Length; output[i++] /= norm)
+            {
+                ;
+            }
         }
     }
 }

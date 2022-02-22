@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -42,10 +42,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class FisherSnedecor : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _freedom1;
-        readonly double _freedom2;
+        private System.Random _random;
+        private readonly double _freedom1;
+        private readonly double _freedom2;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FisherSnedecor"/> class.
@@ -132,7 +131,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                return _freedom2/(_freedom2 - 2.0);
+                return _freedom2 / (_freedom2 - 2.0);
             }
         }
 
@@ -148,7 +147,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                return (2.0*_freedom2*_freedom2*(_freedom1 + _freedom2 - 2.0))/(_freedom1*(_freedom2 - 2.0)*(_freedom2 - 2.0)*(_freedom2 - 4.0));
+                return (2.0 * _freedom2 * _freedom2 * (_freedom1 + _freedom2 - 2.0)) / (_freedom1 * (_freedom2 - 2.0) * (_freedom2 - 2.0) * (_freedom2 - 4.0));
             }
         }
 
@@ -174,7 +173,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                return (((2.0*_freedom1) + _freedom2 - 2.0)*Math.Sqrt(8.0*(_freedom2 - 4.0)))/((_freedom2 - 6.0)*Math.Sqrt(_freedom1*(_freedom1 + _freedom2 - 2.0)));
+                return (((2.0 * _freedom1) + _freedom2 - 2.0) * Math.Sqrt(8.0 * (_freedom2 - 4.0))) / ((_freedom2 - 6.0) * Math.Sqrt(_freedom1 * (_freedom1 + _freedom2 - 2.0)));
             }
         }
 
@@ -190,7 +189,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                return (_freedom2*(_freedom1 - 2.0))/(_freedom1*(_freedom2 + 2.0));
+                return (_freedom2 * (_freedom1 - 2.0)) / (_freedom1 * (_freedom2 + 2.0));
             }
         }
 
@@ -217,7 +216,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDF"/>
         public double Density(double x)
         {
-            return Math.Sqrt(Math.Pow(_freedom1*x, _freedom1)*Math.Pow(_freedom2, _freedom2)/Math.Pow((_freedom1*x) + _freedom2, _freedom1 + _freedom2))/(x*SpecialFunctions.Beta(_freedom1/2.0, _freedom2/2.0));
+            return Math.Sqrt(Math.Pow(_freedom1 * x, _freedom1) * Math.Pow(_freedom2, _freedom2) / Math.Pow((_freedom1 * x) + _freedom2, _freedom1 + _freedom2)) / (x * SpecialFunctions.Beta(_freedom1 / 2.0, _freedom2 / 2.0));
         }
 
         /// <summary>
@@ -239,7 +238,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="CDF"/>
         public double CumulativeDistribution(double x)
         {
-            return SpecialFunctions.BetaRegularized(_freedom1/2.0, _freedom2/2.0, _freedom1*x/((_freedom1*x) + _freedom2));
+            return SpecialFunctions.BetaRegularized(_freedom1 / 2.0, _freedom2 / 2.0, _freedom1 * x / ((_freedom1 * x) + _freedom2));
         }
 
         /// <summary>
@@ -288,26 +287,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="d1">The first degree of freedom (d1) of the distribution. Range: d1 > 0.</param>
         /// <param name="d2">The second degree of freedom (d2) of the distribution. Range: d2 > 0.</param>
         /// <returns>a <c>FisherSnedecor</c> distributed random number.</returns>
-        static double SampleUnchecked(System.Random rnd, double d1, double d2)
+        private static double SampleUnchecked(System.Random rnd, double d1, double d2)
         {
-            return (ChiSquared.Sample(rnd, d1)*d2)/(ChiSquared.Sample(rnd, d2)*d1);
+            return (ChiSquared.Sample(rnd, d1) * d2) / (ChiSquared.Sample(rnd, d2) * d1);
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double d1, double d2)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double d1, double d2)
         {
-            var values2 = new double[values.Length];
+            double[] values2 = new double[values.Length];
             ChiSquared.SamplesUnchecked(rnd, values, d1);
             ChiSquared.SamplesUnchecked(rnd, values2, d2);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    values[i] = (values[i]*d2)/(values2[i]*d1);
+                    values[i] = (values[i] * d2) / (values2[i] * d1);
                 }
             });
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double d1, double d2)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double d1, double d2)
         {
             while (true)
             {
@@ -330,7 +329,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return Math.Sqrt(Math.Pow(d1*x, d1)*Math.Pow(d2, d2)/Math.Pow((d1*x) + d2, d1 + d2))/(x*SpecialFunctions.Beta(d1/2.0, d2/2.0));
+            return Math.Sqrt(Math.Pow(d1 * x, d1) * Math.Pow(d2, d2) / Math.Pow((d1 * x) + d2, d1 + d2)) / (x * SpecialFunctions.Beta(d1 / 2.0, d2 / 2.0));
         }
 
         /// <summary>
@@ -361,7 +360,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return SpecialFunctions.BetaRegularized(d1/2.0, d2/2.0, d1*x/(d1*x + d2));
+            return SpecialFunctions.BetaRegularized(d1 / 2.0, d2 / 2.0, d1 * x / (d1 * x + d2));
         }
 
         /// <summary>
@@ -382,7 +381,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             return Brent.FindRoot(
-                x => SpecialFunctions.BetaRegularized(d1/2.0, d2/2.0, d1*x/(d1*x + d2)) - p,
+                x => SpecialFunctions.BetaRegularized(d1 / 2.0, d2 / 2.0, d1 * x / (d1 * x + d2)) - p,
                 0, 1000, accuracy: 1e-12);
         }
 

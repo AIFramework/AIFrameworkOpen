@@ -42,7 +42,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <summary>
         /// Entry _indices[i] represents the location to which i is permuted to.
         /// </summary>
-        readonly int[] _indices;
+        private readonly int[] _indices;
 
         #endregion fields
 
@@ -83,7 +83,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>The inverse of the permutation.</returns>
         public Permutation Inverse()
         {
-            var invIdx = new int[Dimension];
+            int[] invIdx = new int[Dimension];
             for (int i = 0; i < invIdx.Length; i++)
             {
                 invIdx[_indices[i]] = i;
@@ -103,7 +103,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>A permutation generated from a sequence of inversions.</returns>
         public static Permutation FromInversions(int[] inv)
         {
-            var idx = new int[inv.Length];
+            int[] idx = new int[inv.Length];
             for (int i = 0; i < inv.Length; i++)
             {
                 idx[i] = i;
@@ -132,14 +132,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <returns>A sequence of inversions.</returns>
         public int[] ToInversions()
         {
-            var idx = (int[])_indices.Clone();
+            int[] idx = (int[])_indices.Clone();
 
             for (int i = 0; i < idx.Length; i++)
             {
                 if (idx[i] != i)
                 {
                     int q = Array.FindIndex(idx, i + 1, x => x == i);
-                    var t = idx[i];
+                    int t = idx[i];
                     idx[i] = q;
                     idx[q] = t;
                 }
@@ -154,9 +154,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="indices">An array which represents where each integer is permuted too: indices[i] represents that integer i
         /// is permuted to location indices[i].</param>
         /// <returns>True if <paramref name="indices"/> represents a proper permutation, <c>false</c> otherwise.</returns>
-        static bool CheckForProperPermutation(int[] indices)
+        private static bool CheckForProperPermutation(int[] indices)
         {
-            var idxCheck = new bool[indices.Length];
+            bool[] idxCheck = new bool[indices.Length];
 
             for (int i = 0; i < indices.Length; i++)
             {

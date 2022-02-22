@@ -27,27 +27,23 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
 {
     internal class LazyObjectiveFunction : IObjectiveFunction
     {
-        readonly Func<VectorMathNet<double>, double> _function;
-        readonly Func<VectorMathNet<double>, VectorMathNet<double>> _gradient;
-        readonly Func<VectorMathNet<double>, MatrixMathNet<double>> _hessian;
-
-        VectorMathNet<double> _point;
-
-        bool _hasFunctionValue;
-        double _functionValue;
-
-        bool _hasGradientValue;
-        VectorMathNet<double> _gradientValue;
-
-        bool _hasHessianValue;
-        MatrixMathNet<double> _hessianValue;
+        private readonly Func<VectorMathNet<double>, double> _function;
+        private readonly Func<VectorMathNet<double>, VectorMathNet<double>> _gradient;
+        private readonly Func<VectorMathNet<double>, MatrixMathNet<double>> _hessian;
+        private VectorMathNet<double> _point;
+        private bool _hasFunctionValue;
+        private double _functionValue;
+        private bool _hasGradientValue;
+        private VectorMathNet<double> _gradientValue;
+        private bool _hasHessianValue;
+        private MatrixMathNet<double> _hessianValue;
 
         public LazyObjectiveFunction(Func<VectorMathNet<double>, double> function, Func<VectorMathNet<double>, VectorMathNet<double>> gradient = null, Func<VectorMathNet<double>, MatrixMathNet<double>> hessian = null)
         {

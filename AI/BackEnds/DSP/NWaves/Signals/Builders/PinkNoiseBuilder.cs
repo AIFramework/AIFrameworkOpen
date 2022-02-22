@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Collections.Generic;
-using AI.BackEnds.DSP.NWaves.Utils;
 
 namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 {
@@ -33,18 +33,18 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
             _low = -1.0;
             _high = 1.0;
         }
-        
+
         /// <summary>
         /// Method implements Paul Kellet's algorithm.
         /// </summary>
         /// <returns></returns>
         public override float NextSample()
         {
-            var mean = (_low + _high) / 2;
+            double mean = (_low + _high) / 2;
             _low -= mean;
             _high -= mean;
 
-            var white = _rand.NextDouble() * (_high - _low) + _low;
+            double white = _rand.NextDouble() * (_high - _low) + _low;
 
             _b0 = 0.99886f * _b0 + white * 0.0555179f;
             _b1 = 0.99332f * _b1 + white * 0.0750759f;
@@ -52,7 +52,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
             _b3 = 0.86650f * _b3 + white * 0.3104856f;
             _b4 = 0.55000f * _b4 + white * 0.5329522f;
             _b5 = -0.7616f * _b5 - white * 0.0168980f;
-            var pink = (_b0 + _b1 + _b2 + _b3 + _b4 + _b5 + _b6 + white * 0.5362) * 0.11 + mean;
+            double pink = (_b0 + _b1 + _b2 + _b3 + _b4 + _b5 + _b6 + white * 0.5362) * 0.11 + mean;
             _b6 = white * 0.115926;
 
             return (float)pink;
@@ -71,6 +71,6 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 
         private double _b0, _b1, _b2, _b3, _b4, _b5, _b6;
 
-        private Random _rand = new Random();
+        private readonly Random _rand = new Random();
     }
 }

@@ -29,8 +29,8 @@
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
 {
-    using System;
     using Distributions;
+    using System;
 
     /// <summary>
     /// The Hybrid (also called Hamiltonian) Monte Carlo produces samples from distribution P using a set
@@ -52,7 +52,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// Evaluates the energy function of the target distribution.
         /// </summary>
-        readonly DensityLn<T> _energy;
+        private readonly DensityLn<T> _energy;
 
         /// <summary>
         /// The current location of the sampler.
@@ -62,22 +62,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// The number of burn iterations between two samples.
         /// </summary>
-        int _burnInterval;
+        private int _burnInterval;
 
         /// <summary>
         /// The size of each step in the Hamiltonian equation.
         /// </summary>
-        double _stepSize;
+        private double _stepSize;
 
         /// <summary>
         /// The number of iterations in the Hamiltonian equation.
         /// </summary>
-        int _frogLeapSteps;
+        private int _frogLeapSteps;
 
         /// <summary>
         /// The algorithm used for differentiation.
         /// </summary>
-        readonly DiffMethod _diff;
+        private readonly DiffMethod _diff;
 
         /// <summary>
         /// Gets or sets the number of iterations in between returning samples.

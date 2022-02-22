@@ -50,10 +50,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
     /// </summary>
     public static class Control
     {
-        static int _maxDegreeOfParallelism;
-        static int _parallelizeOrder;
-        static int _parallelizeElements;
-        static string _nativeProviderHintPath;
+        private static int _maxDegreeOfParallelism;
+        private static int _parallelizeOrder;
+        private static int _parallelizeElements;
+        private static string _nativeProviderHintPath;
 
         static Control()
         {
@@ -316,10 +316,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 .OfType<AssemblyInformationalVersionAttribute>()
                 .FirstOrDefault();
 #else
-            var versionAttribute = typeof(Control).GetTypeInfo().Assembly.GetCustomAttribute(typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute;
+            AssemblyInformationalVersionAttribute versionAttribute = typeof(Control).GetTypeInfo().Assembly.GetCustomAttribute(typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute;
 #endif
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.AppendLine("Math.NET Numerics Configuration:");
             sb.AppendLine($"Version {versionAttribute?.InformationalVersion}");
 #if NET5_0
@@ -352,13 +352,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             sb.AppendLine($"Framework: {RuntimeInformation.FrameworkDescription}");
             sb.AppendLine($"Process Architecture: {RuntimeInformation.ProcessArchitecture}");
 #endif
-            var processorArchitecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
-            if (!String.IsNullOrEmpty(processorArchitecture))
+            string processorArchitecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+            if (!string.IsNullOrEmpty(processorArchitecture))
             {
                 sb.AppendLine($"Processor Architecture: {processorArchitecture}");
             }
-            var processorId = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
-            if (!String.IsNullOrEmpty(processorId))
+            string processorId = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+            if (!string.IsNullOrEmpty(processorId))
             {
                 sb.AppendLine($"Processor Identifier: {processorId}");
             }

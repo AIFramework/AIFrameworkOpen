@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorization
 {
@@ -64,26 +64,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
             MatrixMathNet<Complex> q;
             MatrixMathNet<Complex> r;
 
-            var minmn = Math.Min(matrix.RowCount, matrix.ColumnCount);
-            var u = new Complex[minmn][];
+            int minmn = Math.Min(matrix.RowCount, matrix.ColumnCount);
+            Complex[][] u = new Complex[minmn][];
 
             if (method == QRMethod.Full)
             {
                 r = matrix.Clone();
                 q = MatrixMathNet<Complex>.Build.SameAs(matrix, matrix.RowCount, matrix.RowCount, fullyMutable: true);
 
-                for (var i = 0; i < matrix.RowCount; i++)
+                for (int i = 0; i < matrix.RowCount; i++)
                 {
                     q.At(i, i, 1.0f);
                 }
 
-                for (var i = 0; i < minmn; i++)
+                for (int i = 0; i < minmn; i++)
                 {
                     u[i] = GenerateColumn(r, i, i);
                     ComputeQR(u[i], r, i, matrix.RowCount, i + 1, matrix.ColumnCount, Control.MaxDegreeOfParallelism);
                 }
 
-                for (var i = minmn - 1; i >= 0; i--)
+                for (int i = minmn - 1; i >= 0; i--)
                 {
                     ComputeQR(u[i], q, i, matrix.RowCount, i, matrix.RowCount, Control.MaxDegreeOfParallelism);
                 }
@@ -92,7 +92,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
             {
                 q = matrix.Clone();
 
-                for (var i = 0; i < minmn; i++)
+                for (int i = 0; i < minmn; i++)
                 {
                     u[i] = GenerateColumn(q, i, i);
                     ComputeQR(u[i], q, i, matrix.RowCount, i + 1, matrix.ColumnCount, Control.MaxDegreeOfParallelism);
@@ -101,12 +101,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 r = q.SubMatrix(0, matrix.ColumnCount, 0, matrix.ColumnCount);
                 q.Clear();
 
-                for (var i = 0; i < matrix.ColumnCount; i++)
+                for (int i = 0; i < matrix.ColumnCount; i++)
                 {
                     q.At(i, i, 1.0f);
                 }
 
-                for (var i = minmn - 1; i >= 0; i--)
+                for (int i = minmn - 1; i >= 0; i--)
                 {
                     ComputeQR(u[i], q, i, matrix.RowCount, i, matrix.ColumnCount, Control.MaxDegreeOfParallelism);
                 }
@@ -115,7 +115,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
             return new UserQR(q, r, method);
         }
 
-        UserQR(MatrixMathNet<Complex> q, MatrixMathNet<Complex> rFull, QRMethod method)
+        private UserQR(MatrixMathNet<Complex> q, MatrixMathNet<Complex> rFull, QRMethod method)
             : base(q, rFull, method)
         {
         }
@@ -127,18 +127,18 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="row">The first row</param>
         /// <param name="column">Column index</param>
         /// <returns>Generated vector</returns>
-        static Complex[] GenerateColumn(MatrixMathNet<Complex> a, int row, int column)
+        private static Complex[] GenerateColumn(MatrixMathNet<Complex> a, int row, int column)
         {
-            var ru = a.RowCount - row;
-            var u = new Complex[ru];
+            int ru = a.RowCount - row;
+            Complex[] u = new Complex[ru];
 
-            for (var i = row; i < a.RowCount; i++)
+            for (int i = row; i < a.RowCount; i++)
             {
                 u[i - row] = a.At(i, column);
                 a.At(i, column, 0.0);
             }
 
-            var norm = u.Aggregate(Complex.Zero, (current, t) => current + (t.Magnitude*t.Magnitude));
+            Complex norm = u.Aggregate(Complex.Zero, (current, t) => current + (t.Magnitude * t.Magnitude));
             norm = norm.SquareRoot();
 
             if (row == a.RowCount - 1 || norm.Magnitude == 0)
@@ -150,22 +150,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
 
             if (u[0].Magnitude != 0.0)
             {
-                norm = norm.Magnitude*(u[0]/u[0].Magnitude);
+                norm = norm.Magnitude * (u[0] / u[0].Magnitude);
             }
 
             a.At(row, column, -norm);
 
-            for (var i = 0; i < ru; i++)
+            for (int i = 0; i < ru; i++)
             {
                 u[i] /= norm;
             }
 
             u[0] += 1.0;
 
-            var s = (1.0/u[0]).SquareRoot();
-            for (var i = 0; i < ru; i++)
+            Complex s = (1.0 / u[0]).SquareRoot();
+            for (int i = 0; i < ru; i++)
             {
-                u[i] = u[i].Conjugate()*s;
+                u[i] = u[i].Conjugate() * s;
             }
 
             return u;
@@ -181,19 +181,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         /// <param name="columnStart">The first column</param>
         /// <param name="columnDim">The last column</param>
         /// <param name="availableCores">Number of available CPUs</param>
-        static void ComputeQR(Complex[] u, MatrixMathNet<Complex> a, int rowStart, int rowDim, int columnStart, int columnDim, int availableCores)
+        private static void ComputeQR(Complex[] u, MatrixMathNet<Complex> a, int rowStart, int rowDim, int columnStart, int columnDim, int availableCores)
         {
             if (rowDim < rowStart || columnDim < columnStart)
             {
                 return;
             }
 
-            var tmpColCount = columnDim - columnStart;
+            int tmpColCount = columnDim - columnStart;
 
             if ((availableCores > 1) && (tmpColCount > 200))
             {
-                var tmpSplit = columnStart + (tmpColCount/2);
-                var tmpCores = availableCores/2;
+                int tmpSplit = columnStart + (tmpColCount / 2);
+                int tmpCores = availableCores / 2;
 
                 CommonParallel.Invoke(
                     () => ComputeQR(u, a, rowStart, rowDim, columnStart, tmpSplit, tmpCores),
@@ -201,17 +201,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
             }
             else
             {
-                for (var j = columnStart; j < columnDim; j++)
+                for (int j = columnStart; j < columnDim; j++)
                 {
-                    var scale = Complex.Zero;
-                    for (var i = rowStart; i < rowDim; i++)
+                    Complex scale = Complex.Zero;
+                    for (int i = rowStart; i < rowDim; i++)
                     {
-                        scale += u[i - rowStart]*a.At(i, j);
+                        scale += u[i - rowStart] * a.At(i, j);
                     }
 
-                    for (var i = rowStart; i < rowDim; i++)
+                    for (int i = rowStart; i < rowDim; i++)
                     {
-                        a.At(i, j, a.At(i, j) - (u[i - rowStart].Conjugate()*scale));
+                        a.At(i, j, a.At(i, j) - (u[i - rowStart].Conjugate() * scale));
                     }
                 }
             }
@@ -242,23 +242,23 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 throw new ArgumentException("Matrix column dimensions must agree.");
             }
 
-            var inputCopy = input.Clone();
+            MatrixMathNet<Complex> inputCopy = input.Clone();
 
             // Compute Y = transpose(Q)*B
-            var column = new Complex[FullR.RowCount];
-            for (var j = 0; j < input.ColumnCount; j++)
+            Complex[] column = new Complex[FullR.RowCount];
+            for (int j = 0; j < input.ColumnCount; j++)
             {
-                for (var k = 0; k < FullR.RowCount; k++)
+                for (int k = 0; k < FullR.RowCount; k++)
                 {
                     column[k] = inputCopy.At(k, j);
                 }
 
-                for (var i = 0; i < FullR.RowCount; i++)
+                for (int i = 0; i < FullR.RowCount; i++)
                 {
-                    var s = Complex.Zero;
-                    for (var k = 0; k < FullR.RowCount; k++)
+                    Complex s = Complex.Zero;
+                    for (int k = 0; k < FullR.RowCount; k++)
                     {
-                        s += Q.At(k, i).Conjugate()*column[k];
+                        s += Q.At(k, i).Conjugate() * column[k];
                     }
 
                     inputCopy.At(i, j, s);
@@ -266,25 +266,25 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
             }
 
             // Solve R*X = Y;
-            for (var k = FullR.ColumnCount - 1; k >= 0; k--)
+            for (int k = FullR.ColumnCount - 1; k >= 0; k--)
             {
-                for (var j = 0; j < input.ColumnCount; j++)
+                for (int j = 0; j < input.ColumnCount; j++)
                 {
-                    inputCopy.At(k, j, inputCopy.At(k, j)/FullR.At(k, k));
+                    inputCopy.At(k, j, inputCopy.At(k, j) / FullR.At(k, k));
                 }
 
-                for (var i = 0; i < k; i++)
+                for (int i = 0; i < k; i++)
                 {
-                    for (var j = 0; j < input.ColumnCount; j++)
+                    for (int j = 0; j < input.ColumnCount; j++)
                     {
-                        inputCopy.At(i, j, inputCopy.At(i, j) - (inputCopy.At(k, j)*FullR.At(i, k)));
+                        inputCopy.At(i, j, inputCopy.At(i, j) - (inputCopy.At(k, j) * FullR.At(i, k)));
                     }
                 }
             }
 
-            for (var i = 0; i < FullR.ColumnCount; i++)
+            for (int i = 0; i < FullR.ColumnCount; i++)
             {
-                for (var j = 0; j < inputCopy.ColumnCount; j++)
+                for (int j = 0; j < inputCopy.ColumnCount; j++)
                 {
                     result.At(i, j, inputCopy.At(i, j));
                 }
@@ -311,37 +311,37 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
                 throw MatrixMathNet.DimensionsDontMatch<ArgumentException>(FullR, result);
             }
 
-            var inputCopy = input.Clone();
+            VectorMathNet<Complex> inputCopy = input.Clone();
 
             // Compute Y = transpose(Q)*B
-            var column = new Complex[FullR.RowCount];
-            for (var k = 0; k < FullR.RowCount; k++)
+            Complex[] column = new Complex[FullR.RowCount];
+            for (int k = 0; k < FullR.RowCount; k++)
             {
                 column[k] = inputCopy[k];
             }
 
-            for (var i = 0; i < FullR.RowCount; i++)
+            for (int i = 0; i < FullR.RowCount; i++)
             {
-                var s = Complex.Zero;
-                for (var k = 0; k < FullR.RowCount; k++)
+                Complex s = Complex.Zero;
+                for (int k = 0; k < FullR.RowCount; k++)
                 {
-                    s += Q.At(k, i).Conjugate()*column[k];
+                    s += Q.At(k, i).Conjugate() * column[k];
                 }
 
                 inputCopy[i] = s;
             }
 
             // Solve R*X = Y;
-            for (var k = FullR.ColumnCount - 1; k >= 0; k--)
+            for (int k = FullR.ColumnCount - 1; k >= 0; k--)
             {
                 inputCopy[k] /= FullR.At(k, k);
-                for (var i = 0; i < k; i++)
+                for (int i = 0; i < k; i++)
                 {
-                    inputCopy[i] -= inputCopy[k]*FullR.At(i, k);
+                    inputCopy[i] -= inputCopy[k] * FullR.At(i, k);
                 }
             }
 
-            for (var i = 0; i < FullR.ColumnCount; i++)
+            for (int i = 0; i < FullR.ColumnCount; i++)
             {
                 result[i] = inputCopy[i];
             }

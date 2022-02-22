@@ -79,31 +79,31 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             //special cases
             if (n == 0)
             {
-                return Math.Exp(-1.0d*x)/x;
+                return Math.Exp(-1.0d * x) / x;
             }
             else if (x == 0.0d)
             {
-                return 1.0d/(ndbl - 1.0d);
+                return 1.0d / (ndbl - 1.0d);
             }
             //general cases
             //continued fraction for large x
             if (x > 1.0d)
             {
                 b = x + n;
-                c = 1.0d/nearDoubleMin;
-                d = 1.0d/b;
+                c = 1.0d / nearDoubleMin;
+                d = 1.0d / b;
                 h = d;
                 for (i = 1; i <= maxIterations; i++)
                 {
-                    a = -1.0d*i*((ndbl - 1.0d) + i);
+                    a = -1.0d * i * ((ndbl - 1.0d) + i);
                     b += 2.0d;
-                    d = 1.0d/(a*d + b);
-                    c = b + a/c;
-                    del = c*d;
-                    h = h*del;
+                    d = 1.0d / (a * d + b);
+                    c = b + a / c;
+                    del = c * d;
+                    h = h * del;
                     if (Math.Abs(del - 1.0d) < epsilon)
                     {
-                        return h*Math.Exp(-x);
+                        return h * Math.Exp(-x);
                     }
                 }
                 throw new ArithmeticException(FormattableString.Invariant($"Continued fraction failed to converge for x={x}, n={n})"));
@@ -111,25 +111,25 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             //series computation for small x
             else
             {
-                result = ((ndbl - 1.0d) != 0 ? 1.0/(ndbl - 1.0d) : (-1.0d*Math.Log(x) - Constants.EulerMascheroni)); //Set first term.
+                result = ((ndbl - 1.0d) != 0 ? 1.0 / (ndbl - 1.0d) : (-1.0d * Math.Log(x) - Constants.EulerMascheroni)); //Set first term.
                 for (i = 1; i <= maxIterations; i++)
                 {
-                    factorial *= (-1.0d*x/i);
+                    factorial *= (-1.0d * x / i);
                     if (i != (ndbl - 1.0d))
                     {
-                        del = -factorial/(i - (ndbl - 1.0d));
+                        del = -factorial / (i - (ndbl - 1.0d));
                     }
                     else
                     {
-                        psi = -1.0d*Constants.EulerMascheroni;
+                        psi = -1.0d * Constants.EulerMascheroni;
                         for (ii = 1; ii <= (ndbl - 1.0d); ii++)
                         {
-                            psi += (1.0d/ii);
+                            psi += (1.0d / ii);
                         }
-                        del = factorial*(-1.0d*Math.Log(x) + psi);
+                        del = factorial * (-1.0d * Math.Log(x) + psi);
                     }
                     result += del;
-                    if (Math.Abs(del) < Math.Abs(result)*epsilon)
+                    if (Math.Abs(del) < Math.Abs(result) * epsilon)
                     {
                         return result;
                     }

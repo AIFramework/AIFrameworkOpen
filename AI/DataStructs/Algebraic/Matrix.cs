@@ -356,7 +356,7 @@ namespace AI.DataStructs.Algebraic
 
             return C;
         }
-        
+
         public static Matrix operator *(Matrix A, double k)
         {
             Matrix C = new Matrix(A.Height, A.Width);
@@ -369,7 +369,7 @@ namespace AI.DataStructs.Algebraic
 
             return C;
         }
-        
+
         public static Matrix operator /(Matrix A, double k)
         {
             Matrix C = new Matrix(A.Height, A.Width);

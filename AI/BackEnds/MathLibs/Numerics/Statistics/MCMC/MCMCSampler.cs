@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
 {
@@ -85,7 +85,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <summary>
         /// The random number generator for this class.
         /// </summary>
-        System.Random _randomNumberGenerator;
+        private System.Random _randomNumberGenerator;
 
         /// <summary>
         /// Keeps track of the number of accepted samples.
@@ -131,7 +131,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Statistics.Mcmc
         /// <returns>An array of samples.</returns>
         public virtual T[] Sample(int n)
         {
-            var ret = new T[n];
+            T[] ret = new T[n];
             for (int i = 0; i < n; i++)
             {
                 ret[i] = Sample();

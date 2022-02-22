@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Utils;
 using AI.BackEnds.DSP.NWaves.Windows;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
 {
@@ -34,18 +34,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
         /// <summary>
         /// String annotations (or simply names) of delta features (1st order derivatives)
         /// </summary>
-        public virtual List<string> DeltaFeatureDescriptions
-        {
-            get { return FeatureDescriptions.Select(d => "delta_" + d).ToList(); }
-        }
+        public virtual List<string> DeltaFeatureDescriptions => FeatureDescriptions.Select(d => "delta_" + d).ToList();
 
         /// <summary>
         /// String annotations (or simply names) of delta-delta features (2nd order derivatives)
         /// </summary>
-        public virtual List<string> DeltaDeltaFeatureDescriptions
-        {
-            get { return FeatureDescriptions.Select(d => "delta_delta_" + d).ToList(); }
-        }
+        public virtual List<string> DeltaDeltaFeatureDescriptions => FeatureDescriptions.Select(d => "delta_delta_" + d).ToList();
 
         /// <summary>
         /// Length of analysis frame (in seconds)
@@ -130,12 +124,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
         {
             Guard.AgainstInvalidRange(startSample, endSample, "starting pos", "ending pos");
 
-            var frameSize = FrameSize;
-            var hopSize = HopSize;
-            var prevSample = startSample > 0 ? samples[startSample - 1] : 0f;
-            var lastSample = endSample - frameSize;
+            int frameSize = FrameSize;
+            int hopSize = HopSize;
+            float prevSample = startSample > 0 ? samples[startSample - 1] : 0f;
+            int lastSample = endSample - frameSize;
 
-            var block = new float[_blockSize];
+            float[] block = new float[_blockSize];
 
 
             // Main processing loop:
@@ -154,16 +148,16 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
 
                 samples.FastCopyTo(block, frameSize, sample);  // copy FrameSize samples to 'block' buffer
 
-                for (var k = frameSize; k < block.Length; block[k++] = 0) { }    // pad zeros to blockSize
+                for (int k = frameSize; k < block.Length; block[k++] = 0) { }    // pad zeros to blockSize
 
 
                 // (optionally) do pre-emphasis ==========================================================
 
                 if (_preEmphasis > 1e-10f)
                 {
-                    for (var k = 0; k < frameSize; k++)
+                    for (int k = 0; k < frameSize; k++)
                     {
-                        var y = block[k] - prevSample * _preEmphasis;
+                        float y = block[k] - prevSample * _preEmphasis;
                         prevSample = block[k];
                         block[k] = y;
                     }
@@ -195,10 +189,10 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
         {
             // pre-allocate memory for data:
 
-            var totalCount = (endSample - FrameSize - startSample) / HopSize + 1;
+            int totalCount = (endSample - FrameSize - startSample) / HopSize + 1;
 
-            var featureVectors = new List<float[]>(totalCount);
-            for (var i = 0; i < totalCount; i++)
+            List<float[]> featureVectors = new List<float[]>(totalCount);
+            for (int i = 0; i < totalCount; i++)
             {
                 featureVectors.Add(new float[FeatureCount]);
             }
@@ -267,20 +261,26 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
         public virtual void Reset()
         {
         }
-        
+
         #region parallelization
 
         /// <summary>
         /// True if computations can be done in parallel
         /// </summary>
         /// <returns></returns>
-        public virtual bool IsParallelizable() => false;
+        public virtual bool IsParallelizable()
+        {
+            return false;
+        }
 
         /// <summary>
         /// Copy of current extractor that can work in parallel
         /// </summary>
         /// <returns></returns>
-        public virtual FeatureExtractor ParallelCopy() => null;
+        public virtual FeatureExtractor ParallelCopy()
+        {
+            return null;
+        }
 
         /// <summary>
         /// Parallel computation (returns chunks of fecture vector lists)
@@ -297,30 +297,30 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
                 throw new NotImplementedException("Current configuration of the extractor does not support parallel computation");
             }
 
-            var threadCount = parallelThreads > 0 ? parallelThreads : Environment.ProcessorCount;
-            var chunkSize = (endSample - startSample) / threadCount;
+            int threadCount = parallelThreads > 0 ? parallelThreads : Environment.ProcessorCount;
+            int chunkSize = (endSample - startSample) / threadCount;
 
             if (chunkSize < FrameSize)  // don't parallelize too short signals
             {
                 return new List<float[]>[] { ComputeFrom(samples, startSample, endSample) };
             }
 
-            var extractors = new FeatureExtractor[threadCount];
+            FeatureExtractor[] extractors = new FeatureExtractor[threadCount];
             extractors[0] = this;
-            for (var i = 1; i < threadCount; i++)
+            for (int i = 1; i < threadCount; i++)
             {
                 extractors[i] = ParallelCopy();
             }
 
             // ============== carefully define the sample positions for merging ===============
 
-            var startPositions = new int[threadCount];
-            var endPositions = new int[threadCount];
+            int[] startPositions = new int[threadCount];
+            int[] endPositions = new int[threadCount];
 
-            var hopCount = (chunkSize - FrameSize) / HopSize;
+            int hopCount = (chunkSize - FrameSize) / HopSize;
 
-            var lastPosition = startSample - 1;
-            for (var i = 0; i < threadCount; i++)
+            int lastPosition = startSample - 1;
+            for (int i = 0; i < threadCount; i++)
             {
                 startPositions[i] = lastPosition + 1;
                 endPositions[i] = lastPosition + hopCount * HopSize + FrameSize;
@@ -331,7 +331,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
 
             // =========================== actual parallel computing ===========================
 
-            var featureVectors = new List<float[]>[threadCount];
+            List<float[]>[] featureVectors = new List<float[]>[threadCount];
 
             Parallel.For(0, threadCount, i =>
             {
@@ -351,11 +351,11 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
         /// <returns></returns>
         public virtual List<float[]> ParallelComputeFrom(float[] samples, int startSample, int endSample, int parallelThreads = 0)
         {
-            var chunks = ParallelChunksComputeFrom(samples, startSample, endSample, parallelThreads);
+            List<float[]>[] chunks = ParallelChunksComputeFrom(samples, startSample, endSample, parallelThreads);
 
-            var featureVectors = new List<float[]>();
+            List<float[]> featureVectors = new List<float[]>();
 
-            foreach (var vectors in chunks)
+            foreach (List<float[]> vectors in chunks)
             {
                 featureVectors.AddRange(vectors);
             }

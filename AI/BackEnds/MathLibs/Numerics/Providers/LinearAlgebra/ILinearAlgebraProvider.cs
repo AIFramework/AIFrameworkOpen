@@ -62,22 +62,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra
         /// <summary>
         /// The 1-norm.
         /// </summary>
-        OneNorm = (byte) '1',
+        OneNorm = (byte)'1',
 
         /// <summary>
         /// The Frobenius norm.
         /// </summary>
-        FrobeniusNorm = (byte) 'f',
+        FrobeniusNorm = (byte)'f',
 
         /// <summary>
         /// The infinity norm.
         /// </summary>
-        InfinityNorm = (byte) 'i',
+        InfinityNorm = (byte)'i',
 
         /// <summary>
         /// The largest absolute value norm.
         /// </summary>
-        LargestAbsoluteValue = (byte) 'm'
+        LargestAbsoluteValue = (byte)'m'
     }
 
     /// <summary>

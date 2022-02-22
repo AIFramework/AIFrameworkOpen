@@ -62,8 +62,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         {
             get
             {
-                var det = Complex.One;
-                for (var i = 0; i < EigenValues.Count; i++)
+                Complex det = Complex.One;
+                for (int i = 0; i < EigenValues.Count; i++)
                 {
                     det *= EigenValues[i];
 
@@ -85,8 +85,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         {
             get
             {
-                var rank = 0;
-                for (var i = 0; i < EigenValues.Count; i++)
+                int rank = 0;
+                for (int i = 0; i < EigenValues.Count; i++)
                 {
                     if (EigenValues[i].AlmostEqual(Complex.Zero))
                     {
@@ -108,7 +108,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex.Factorizat
         {
             get
             {
-                for (var i = 0; i < EigenValues.Count; i++)
+                for (int i = 0; i < EigenValues.Count; i++)
                 {
                     if (EigenValues[i].AlmostEqual(Complex.Zero))
                     {

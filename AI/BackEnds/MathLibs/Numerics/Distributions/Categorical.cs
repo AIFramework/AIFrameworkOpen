@@ -27,12 +27,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Statistics;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -52,10 +52,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </remarks>
     public class Categorical : IDiscreteDistribution
     {
-        System.Random _random;
-
-        readonly double[] _pmfNormalized;
-        readonly double[] _cdfUnnormalized;
+        private System.Random _random;
+        private readonly double[] _pmfNormalized;
+        private readonly double[] _cdfUnnormalized;
 
         /// <summary>
         /// Initializes a new instance of the Categorical class.
@@ -93,11 +92,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             // Extract normalized probability mass
-            var sum = _cdfUnnormalized[_cdfUnnormalized.Length - 1];
+            double sum = _cdfUnnormalized[_cdfUnnormalized.Length - 1];
             _pmfNormalized = new double[probabilityMass.Length];
             for (int i = 0; i < probabilityMass.Length; i++)
             {
-                _pmfNormalized[i] = probabilityMass[i]/sum;
+                _pmfNormalized[i] = probabilityMass[i] / sum;
             }
         }
 
@@ -115,10 +114,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             // The probability distribution vector.
-            var p = new double[histogram.BucketCount];
+            double[] p = new double[histogram.BucketCount];
 
             // Fill in the distribution vector.
-            for (var i = 0; i < histogram.BucketCount; i++)
+            for (int i = 0; i < histogram.BucketCount; i++)
             {
                 p[i] = histogram[i].Count;
             }
@@ -139,11 +138,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
 
             // Extract normalized probability mass
-            var sum = _cdfUnnormalized[_cdfUnnormalized.Length - 1];
+            double sum = _cdfUnnormalized[_cdfUnnormalized.Length - 1];
             _pmfNormalized = new double[p.Length];
             for (int i2 = 0; i2 < p.Length; i2++)
             {
-                _pmfNormalized[i2] = p[i2]/sum;
+                _pmfNormalized[i2] = p[i2] / sum;
             }
         }
 
@@ -163,7 +162,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>If any of the probabilities are negative returns <c>false</c>, or if the sum of parameters is 0.0; otherwise <c>true</c></returns>
         public static bool IsValidProbabilityMass(double[] p)
         {
-            var sum = 0.0;
+            double sum = 0.0;
             for (int i = 0; i < p.Length; i++)
             {
                 double t = p[i];
@@ -185,7 +184,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>If any of the probabilities are negative returns <c>false</c>, or if the sum of parameters is 0.0; otherwise <c>true</c></returns>
         public static bool IsValidCumulativeDistribution(double[] cdf)
         {
-            var last = 0.0;
+            double last = 0.0;
             for (int i = 0; i < cdf.Length; i++)
             {
                 double t = cdf[i];
@@ -224,10 +223,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 // Mean = E[X] = Sum(x * p(x), x=0..N-1)
                 // where f(x) is the probability mass function, and N is the number of categories.
-                var sum = 0.0;
+                double sum = 0.0;
                 for (int i = 0; i < _pmfNormalized.Length; i++)
                 {
-                    sum += i*_pmfNormalized[i];
+                    sum += i * _pmfNormalized[i];
                 }
 
                 return sum;
@@ -247,12 +246,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             get
             {
                 // Variance = E[(X-E[X])^2] = E[X^2] - (E[X])^2 = Sum(p(x) * (x - E[X])^2), x=0..N-1)
-                var m = Mean;
-                var sum = 0.0;
+                double m = Mean;
+                double sum = 0.0;
                 for (int i = 0; i < _pmfNormalized.Length; i++)
                 {
-                    var r = i - m;
-                    sum += r*r*_pmfNormalized[i];
+                    double r = i - m;
+                    sum += r * r * _pmfNormalized[i];
                 }
 
                 return sum;
@@ -262,10 +261,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the entropy of the distribution.
         /// </summary>
-        public double Entropy
-        {
-            get { return -_pmfNormalized.Sum(p => p*Math.Log(p)); }
-        }
+        public double Entropy => -_pmfNormalized.Sum(p => p * Math.Log(p));
 
         /// <summary>
         /// Gets the skewness of the distribution.
@@ -351,7 +347,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 1.0;
             }
 
-            return _cdfUnnormalized[(int)Math.Floor(x)]/_cdfUnnormalized[_cdfUnnormalized.Length - 1];
+            return _cdfUnnormalized[(int)Math.Floor(x)] / _cdfUnnormalized[_cdfUnnormalized.Length - 1];
         }
 
         /// <summary>
@@ -367,7 +363,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentOutOfRangeException(nameof(probability));
             }
 
-            var denormalizedProbability = probability*_cdfUnnormalized[_cdfUnnormalized.Length - 1];
+            double denormalizedProbability = probability * _cdfUnnormalized[_cdfUnnormalized.Length - 1];
             int idx = Array.BinarySearch(_cdfUnnormalized, denormalizedProbability);
             if (idx < 0)
             {
@@ -401,7 +397,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            return probabilityMass[k]/probabilityMass.Sum();
+            return probabilityMass[k] / probabilityMass.Sum();
         }
 
         /// <summary>
@@ -441,8 +437,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 1.0;
             }
 
-            var cdfUnnormalized = ProbabilityMassToCumulativeDistribution(probabilityMass);
-            return cdfUnnormalized[(int)Math.Floor(x)]/cdfUnnormalized[cdfUnnormalized.Length - 1];
+            double[] cdfUnnormalized = ProbabilityMassToCumulativeDistribution(probabilityMass);
+            return cdfUnnormalized[(int)Math.Floor(x)] / cdfUnnormalized[cdfUnnormalized.Length - 1];
         }
 
         /// <summary>
@@ -465,8 +461,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentOutOfRangeException(nameof(probability));
             }
 
-            var cdfUnnormalized = ProbabilityMassToCumulativeDistribution(probabilityMass);
-            var denormalizedProbability = probability*cdfUnnormalized[cdfUnnormalized.Length - 1];
+            double[] cdfUnnormalized = ProbabilityMassToCumulativeDistribution(probabilityMass);
+            double denormalizedProbability = probability * cdfUnnormalized[cdfUnnormalized.Length - 1];
             int idx = Array.BinarySearch(cdfUnnormalized, denormalizedProbability);
             if (idx < 0)
             {
@@ -495,7 +491,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentOutOfRangeException(nameof(probability));
             }
 
-            var denormalizedProbability = probability*cdfUnnormalized[cdfUnnormalized.Length - 1];
+            double denormalizedProbability = probability * cdfUnnormalized[cdfUnnormalized.Length - 1];
             int idx = Array.BinarySearch(cdfUnnormalized, denormalizedProbability);
             if (idx < 0)
             {
@@ -514,7 +510,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>An array representing the unnormalized cumulative distribution function.</returns>
         internal static double[] ProbabilityMassToCumulativeDistribution(double[] probabilityMass)
         {
-            var cdfUnnormalized = new double[probabilityMass.Length];
+            double[] cdfUnnormalized = new double[probabilityMass.Length];
             cdfUnnormalized[0] = probabilityMass[0];
             for (int i = 1; i < probabilityMass.Length; i++)
             {
@@ -533,8 +529,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         internal static int SampleUnchecked(System.Random rnd, double[] cdfUnnormalized)
         {
             // TODO : use binary search to speed up this procedure.
-            double u = rnd.NextDouble()*cdfUnnormalized[cdfUnnormalized.Length - 1];
-            var idx = 0;
+            double u = rnd.NextDouble() * cdfUnnormalized[cdfUnnormalized.Length - 1];
+            int idx = 0;
 
             if (u == 0.0d)
             {
@@ -553,7 +549,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return idx;
         }
 
-        static void SamplesUnchecked(System.Random rnd, int[] values, double[] cdfUnnormalized)
+        private static void SamplesUnchecked(System.Random rnd, int[] values, double[] cdfUnnormalized)
         {
             // TODO : use binary search to speed up this procedure.
             double[] uniform = rnd.NextDoubles(values.Length);
@@ -562,8 +558,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 for (int i = a; i < b; i++)
                 {
-                    var u = uniform[i]*w;
-                    var idx = 0;
+                    double u = uniform[i] * w;
+                    int idx = 0;
 
                     if (u == 0.0d)
                     {
@@ -584,7 +580,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             });
         }
 
-        static IEnumerable<int> SamplesUnchecked(System.Random rnd, double[] cdfUnnormalized)
+        private static IEnumerable<int> SamplesUnchecked(System.Random rnd, double[] cdfUnnormalized)
         {
             while (true)
             {
@@ -631,7 +627,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
+            double[] cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
             return SampleUnchecked(rnd, cdf);
         }
 
@@ -648,7 +644,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
+            double[] cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
             return SamplesUnchecked(rnd, cdf);
         }
 
@@ -666,7 +662,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
+            double[] cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
             SamplesUnchecked(rnd, values, cdf);
         }
 
@@ -682,7 +678,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
+            double[] cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
             return SampleUnchecked(SystemRandomSource.Default, cdf);
         }
 
@@ -698,7 +694,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
+            double[] cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
             return SamplesUnchecked(SystemRandomSource.Default, cdf);
         }
 
@@ -715,7 +711,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            var cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
+            double[] cdf = ProbabilityMassToCumulativeDistribution(probabilityMass);
             SamplesUnchecked(SystemRandomSource.Default, values, cdf);
         }
 

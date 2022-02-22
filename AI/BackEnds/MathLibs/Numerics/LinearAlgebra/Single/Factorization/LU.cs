@@ -55,8 +55,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorizati
         {
             get
             {
-                var det = 1.0f;
-                for (var j = 0; j < Factors.RowCount; j++)
+                float det = 1.0f;
+                for (int j = 0; j < Factors.RowCount; j++)
                 {
                     if (Pivots[j] != j)
                     {

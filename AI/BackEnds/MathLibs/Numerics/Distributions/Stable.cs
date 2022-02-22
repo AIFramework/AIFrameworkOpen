@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using System;
 using System.Collections.Generic;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -43,12 +43,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Stable : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _alpha;
-        readonly double _beta;
-        readonly double _scale;
-        readonly double _location;
+        private System.Random _random;
+        private readonly double _alpha;
+        private readonly double _beta;
+        private readonly double _scale;
+        private readonly double _location;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Stable"/> class.
@@ -168,7 +167,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 if (_alpha == 2d)
                 {
-                    return 2.0*_scale*_scale;
+                    return 2.0 * _scale * _scale;
                 }
 
                 return double.PositiveInfinity;
@@ -184,7 +183,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 if (_alpha == 2d)
                 {
-                    return Constants.Sqrt2*_scale;
+                    return Constants.Sqrt2 * _scale;
                 }
 
                 return double.PositiveInfinity;
@@ -309,37 +308,37 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="scale">The scale (c) of the distribution. Range: c > 0.</param>
         /// <param name="location">The location (μ) of the distribution.</param>
         /// <returns>a random number from the distribution.</returns>
-        static double SampleUnchecked(System.Random rnd, double alpha, double beta, double scale, double location)
+        private static double SampleUnchecked(System.Random rnd, double alpha, double beta, double scale, double location)
         {
-            var randTheta = ContinuousUniform.Sample(rnd, -Constants.PiOver2, Constants.PiOver2);
-            var randW = Exponential.Sample(rnd, 1.0);
+            double randTheta = ContinuousUniform.Sample(rnd, -Constants.PiOver2, Constants.PiOver2);
+            double randW = Exponential.Sample(rnd, 1.0);
 
             if (!1.0.AlmostEqual(alpha))
             {
-                var theta = (1.0/alpha)*Math.Atan(beta*Math.Tan(Constants.PiOver2*alpha));
-                var angle = alpha*(randTheta + theta);
-                var part1 = beta*Math.Tan(Constants.PiOver2*alpha);
+                double theta = (1.0 / alpha) * Math.Atan(beta * Math.Tan(Constants.PiOver2 * alpha));
+                double angle = alpha * (randTheta + theta);
+                double part1 = beta * Math.Tan(Constants.PiOver2 * alpha);
 
-                var factor = Math.Pow(1.0 + (part1*part1), 1.0/(2.0*alpha));
-                var factor1 = Math.Sin(angle)/Math.Pow(Math.Cos(randTheta), 1.0/alpha);
-                var factor2 = Math.Pow(Math.Cos(randTheta - angle)/randW, (1 - alpha)/alpha);
+                double factor = Math.Pow(1.0 + (part1 * part1), 1.0 / (2.0 * alpha));
+                double factor1 = Math.Sin(angle) / Math.Pow(Math.Cos(randTheta), 1.0 / alpha);
+                double factor2 = Math.Pow(Math.Cos(randTheta - angle) / randW, (1 - alpha) / alpha);
 
-                return location + scale*(factor*factor1*factor2);
+                return location + scale * (factor * factor1 * factor2);
             }
             else
             {
-                var part1 = Constants.PiOver2 + (beta*randTheta);
-                var summand = part1*Math.Tan(randTheta);
-                var subtrahend = beta*Math.Log(Constants.PiOver2*randW*Math.Cos(randTheta)/part1);
+                double part1 = Constants.PiOver2 + (beta * randTheta);
+                double summand = part1 * Math.Tan(randTheta);
+                double subtrahend = beta * Math.Log(Constants.PiOver2 * randW * Math.Cos(randTheta) / part1);
 
-                return location + scale*Constants.TwoInvPi*(summand - subtrahend);
+                return location + scale * Constants.TwoInvPi * (summand - subtrahend);
             }
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double alpha, double beta, double scale, double location)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double alpha, double beta, double scale, double location)
         {
-            var randThetas = new double[values.Length];
-            var randWs = new double[values.Length];
+            double[] randThetas = new double[values.Length];
+            double[] randWs = new double[values.Length];
             ContinuousUniform.SamplesUnchecked(rnd, randThetas, -Constants.PiOver2, Constants.PiOver2);
             Exponential.SamplesUnchecked(rnd, randWs, 1.0);
 
@@ -347,35 +346,35 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 for (int i = 0; i < values.Length; i++)
                 {
-                    var randTheta = randThetas[i];
+                    double randTheta = randThetas[i];
 
-                    var theta = (1.0/alpha)*Math.Atan(beta*Math.Tan(Constants.PiOver2*alpha));
-                    var angle = alpha*(randTheta + theta);
-                    var part1 = beta*Math.Tan(Constants.PiOver2*alpha);
+                    double theta = (1.0 / alpha) * Math.Atan(beta * Math.Tan(Constants.PiOver2 * alpha));
+                    double angle = alpha * (randTheta + theta);
+                    double part1 = beta * Math.Tan(Constants.PiOver2 * alpha);
 
-                    var factor = Math.Pow(1.0 + (part1*part1), 1.0/(2.0*alpha));
-                    var factor1 = Math.Sin(angle)/Math.Pow(Math.Cos(randTheta), 1.0/alpha);
-                    var factor2 = Math.Pow(Math.Cos(randTheta - angle)/randWs[i], (1 - alpha)/alpha);
+                    double factor = Math.Pow(1.0 + (part1 * part1), 1.0 / (2.0 * alpha));
+                    double factor1 = Math.Sin(angle) / Math.Pow(Math.Cos(randTheta), 1.0 / alpha);
+                    double factor2 = Math.Pow(Math.Cos(randTheta - angle) / randWs[i], (1 - alpha) / alpha);
 
-                    values[i] = location + scale*(factor*factor1*factor2);
+                    values[i] = location + scale * (factor * factor1 * factor2);
                 }
             }
             else
             {
                 for (int i = 0; i < values.Length; i++)
                 {
-                    var randTheta = randThetas[i];
+                    double randTheta = randThetas[i];
 
-                    var part1 = Constants.PiOver2 + (beta*randTheta);
-                    var summand = part1*Math.Tan(randTheta);
-                    var subtrahend = beta*Math.Log(Constants.PiOver2*randWs[i]*Math.Cos(randTheta)/part1);
+                    double part1 = Constants.PiOver2 + (beta * randTheta);
+                    double summand = part1 * Math.Tan(randTheta);
+                    double subtrahend = beta * Math.Log(Constants.PiOver2 * randWs[i] * Math.Cos(randTheta) / part1);
 
-                    values[i] = location + scale*Constants.TwoInvPi*(summand - subtrahend);
+                    values[i] = location + scale * Constants.TwoInvPi * (summand - subtrahend);
                 }
             }
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double alpha, double beta, double scale, double location)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double alpha, double beta, double scale, double location)
         {
             while (true)
             {
@@ -428,7 +427,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (alpha == 2d)
             {
-                return Normal.PDF(location, Constants.Sqrt2*scale, x);
+                return Normal.PDF(location, Constants.Sqrt2 * scale, x);
             }
 
             if (alpha == 1d && beta == 0d)
@@ -438,7 +437,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (alpha == 0.5d && beta == 1d && x >= location)
             {
-                return (Math.Sqrt(scale/Constants.Pi2)*Math.Exp(-scale/(2*(x - location))))/Math.Pow(x - location, 1.5);
+                return (Math.Sqrt(scale / Constants.Pi2) * Math.Exp(-scale / (2 * (x - location)))) / Math.Pow(x - location, 1.5);
             }
 
             throw new NotSupportedException();
@@ -463,7 +462,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (alpha == 2d)
             {
-                return Normal.PDFLn(location, Constants.Sqrt2*scale, x);
+                return Normal.PDFLn(location, Constants.Sqrt2 * scale, x);
             }
 
             if (alpha == 1d && beta == 0d)
@@ -473,7 +472,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (alpha == 0.5d && beta == 1d && x >= location)
             {
-                return Math.Log(scale/Constants.Pi2)/2 - scale/(2*(x - location)) - 1.5*Math.Log(x - location);
+                return Math.Log(scale / Constants.Pi2) / 2 - scale / (2 * (x - location)) - 1.5 * Math.Log(x - location);
             }
 
             throw new NotSupportedException();
@@ -498,7 +497,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (alpha == 2d)
             {
-                return Normal.CDF(location, Constants.Sqrt2*scale, x);
+                return Normal.CDF(location, Constants.Sqrt2 * scale, x);
             }
 
             if (alpha == 1d && beta == 0d)
@@ -508,7 +507,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             if (alpha == 0.5d && beta == 1d)
             {
-                return SpecialFunctions.Erfc(Math.Sqrt(scale/(2*(x - location))));
+                return SpecialFunctions.Erfc(Math.Sqrt(scale / (2 * (x - location))));
             }
 
             throw new NotSupportedException();

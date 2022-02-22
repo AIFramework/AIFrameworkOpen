@@ -14,7 +14,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         public static DiscreteSignal Process(this IOnlineFilter filter,
                                                   DiscreteSignal input)
         {
-            var output = new float [input.Length];
+            float[] output = new float[input.Length];
             filter.Process(input.Samples, output, output.Length);
             return new DiscreteSignal(input.SamplingRate, output);
         }
@@ -39,7 +39,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                 count = input.Length;
             }
 
-            var endPos = inputPos + count;
+            int endPos = inputPos + count;
 
             for (int n = inputPos, m = outputPos; n < endPos; n++, m++)
             {
@@ -61,10 +61,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                                                         DiscreteSignal signal,
                                                         int frameSize = 4096)
         {
-            var input = signal.Samples;
-            var output = new float[input.Length];
+            float[] input = signal.Samples;
+            float[] output = new float[input.Length];
 
-            var i = 0;
+            int i = 0;
             for (; i + frameSize < input.Length; i += frameSize)
             {
                 filter.Process(input, output, frameSize, i, i);

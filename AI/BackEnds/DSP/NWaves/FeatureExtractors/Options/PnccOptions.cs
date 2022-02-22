@@ -26,8 +26,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
         {
             get
             {
-                var errors = base.Errors;
-                if (FeatureCount <= 0) errors.Add("Positive number of PNCC coefficients must be specified");
+                List<string> errors = base.Errors;
+                if (FeatureCount <= 0)
+                {
+                    errors.Add("Positive number of PNCC coefficients must be specified");
+                }
+
                 return errors;
             }
         }

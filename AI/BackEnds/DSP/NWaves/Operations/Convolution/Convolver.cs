@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.Signals;
+﻿using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 {
@@ -63,14 +63,14 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         /// <returns>Convolution signal of length N + M - 1</returns>
         public DiscreteSignal Convolve(DiscreteSignal signal, DiscreteSignal kernel)
         {
-            var length = signal.Length + kernel.Length - 1;
+            int length = signal.Length + kernel.Length - 1;
 
             if (_fft == null)
             {
                 PrepareMemory(MathUtils.NextPowerOfTwo(length));
             }
 
-            var output = new float[_fftSize];
+            float[] output = new float[_fftSize];
 
             Convolve(signal.Samples, kernel.Samples, output);
 
@@ -101,10 +101,10 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             // 2) do complex multiplication of spectra and normalize
 
-            for (var i = 0; i <= _fftSize / 2; i++)
+            for (int i = 0; i <= _fftSize / 2; i++)
             {
-                var re = _real1[i] * _real2[i] - _imag1[i] * _imag2[i];
-                var im = _real1[i] * _imag2[i] + _imag1[i] * _real2[i];
+                float re = _real1[i] * _real2[i] - _imag1[i] * _imag2[i];
+                float im = _real1[i] * _imag2[i] + _imag1[i] * _real2[i];
                 _real1[i] = re / _fftSize;
                 _imag1[i] = im / _fftSize;
             }
@@ -122,7 +122,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         /// <returns></returns>
         public DiscreteSignal CrossCorrelate(DiscreteSignal signal1, DiscreteSignal signal2)
         {
-            var reversedKernel = new DiscreteSignal(signal2.SamplingRate, signal2.Samples.Reverse());
+            DiscreteSignal reversedKernel = new DiscreteSignal(signal2.SamplingRate, signal2.Samples.Reverse());
 
             return Convolve(signal1, reversedKernel);
         }
@@ -142,11 +142,11 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         {
             // reverse second signal
 
-            var kernelLength = input2.Length - 1;
+            int kernelLength = input2.Length - 1;
 
-            for (var i = 0; i < kernelLength / 2; i++)
+            for (int i = 0; i < kernelLength / 2; i++)
             {
-                var tmp = input2[i];
+                float tmp = input2[i];
                 input2[i] = input2[kernelLength - i];
                 input2[kernelLength - i] = tmp;
             }

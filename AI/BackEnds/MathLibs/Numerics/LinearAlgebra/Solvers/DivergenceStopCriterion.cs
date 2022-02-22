@@ -40,27 +40,27 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
         /// <summary>
         /// The maximum relative increase the residual may experience without triggering a divergence warning.
         /// </summary>
-        double _maximumRelativeIncrease;
+        private double _maximumRelativeIncrease;
 
         /// <summary>
         /// The number of iterations over which a residual increase should be tracked before issuing a divergence warning.
         /// </summary>
-        int _minimumNumberOfIterations;
+        private int _minimumNumberOfIterations;
 
         /// <summary>
         /// The status of the calculation
         /// </summary>
-        IterationStatus _status = IterationStatus.Continue;
+        private IterationStatus _status = IterationStatus.Continue;
 
         /// <summary>
         /// The array that holds the tracking information.
         /// </summary>
-        double[] _residualHistory;
+        private double[] _residualHistory;
 
         /// <summary>
         /// The iteration number of the last iteration.
         /// </summary>
-        int _lastIteration = -1;
+        private int _lastIteration = -1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DivergenceStopCriterion{T}"/> class with the specified maximum
@@ -164,7 +164,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
 
             // We always track the residual.
             // Move the old versions one element up in the array.
-            for (var i = 1; i < _residualHistory.Length; i++)
+            for (int i = 1; i < _residualHistory.Length; i++)
             {
                 _residualHistory[i - 1] = _residualHistory[i];
             }
@@ -192,17 +192,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
         /// Detect if solution is diverging
         /// </summary>
         /// <returns><c>true</c> if diverging, otherwise <c>false</c></returns>
-        bool IsDiverging()
+        private bool IsDiverging()
         {
             // Run for each variable
-            for (var i = 1; i < _residualHistory.Length; i++)
+            for (int i = 1; i < _residualHistory.Length; i++)
             {
-                var difference = _residualHistory[i] - _residualHistory[i - 1];
+                double difference = _residualHistory[i] - _residualHistory[i - 1];
 
                 // Divergence is occurring if:
                 // - the last residual is larger than the previous one
                 // - the relative increase of the residual is larger than the setting allows
-                if ((difference < 0) || (_residualHistory[i - 1]*(1 + _maximumRelativeIncrease) >= _residualHistory[i]))
+                if ((difference < 0) || (_residualHistory[i - 1] * (1 + _maximumRelativeIncrease) >= _residualHistory[i]))
                 {
                     // No divergence taking place within the required number of iterations
                     // So reset and stop the iteration. There is no way we can get to the
@@ -217,7 +217,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
         /// <summary>
         /// Gets required history Length
         /// </summary>
-        int RequiredHistoryLength
+        private int RequiredHistoryLength
         {
             [DebuggerStepThrough]
             get => _minimumNumberOfIterations + 1;

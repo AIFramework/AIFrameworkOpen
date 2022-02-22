@@ -50,7 +50,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         public override float NextSample()
         {
-            var sample = (float)(_low + (_high - _low) * MathUtils.Sinc(_n * _frequency / SamplingRate));
+            float sample = (float)(_low + (_high - _low) * MathUtils.Sinc(_n * _frequency / SamplingRate));
             _n++;
             return sample;
         }

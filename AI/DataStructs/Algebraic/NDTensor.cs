@@ -71,7 +71,7 @@ namespace AI.DataStructs.Algebraic
         #endregion
 
         #region Технические методы
-        #pragma warning disable CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
+#pragma warning disable CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
 
         public override bool Equals(object obj)
         {
@@ -90,7 +90,7 @@ namespace AI.DataStructs.Algebraic
             return this == other;
         }
 
-        #pragma warning restore CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
+#pragma warning restore CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
         #endregion
 
         #region Сериализация

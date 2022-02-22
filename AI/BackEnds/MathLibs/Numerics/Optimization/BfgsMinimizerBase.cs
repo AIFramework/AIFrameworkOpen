@@ -27,9 +27,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -49,7 +49,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             int iterations;
             for (iterations = 1; iterations < MaximumIterations; ++iterations)
             {
-                lineSearchDirection = CalculateSearchDirection(ref inversePseudoHessian, out var maxLineSearchStep, out var startingStepSize, previousPoint, candidate, step);
+                lineSearchDirection = CalculateSearchDirection(ref inversePseudoHessian, out double maxLineSearchStep, out double startingStepSize, previousPoint, candidate, step);
 
                 try
                 {
@@ -69,7 +69,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 
                 currentExitCondition = ExitCriteriaSatisfied(candidate, previousPoint, iterations);
                 if (currentExitCondition != ExitCondition.None)
+                {
                     break;
+                }
             }
 
             return iterations;

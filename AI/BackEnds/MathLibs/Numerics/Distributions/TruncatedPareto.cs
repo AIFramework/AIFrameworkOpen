@@ -35,7 +35,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
     public class TruncatedPareto : IContinuousDistribution
     {
-        System.Random _random;
+        private System.Random _random;
 
         /// <summary>
         /// Initializes a new instance of the TruncatedPareto class.
@@ -74,7 +74,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="truncation">The truncation (T) of the distribution. Range: T > xm.</param>
         public static bool IsValidParameterSet(double scale, double shape, double truncation)
         {
-            var allFinite = scale.IsFinite() && shape.IsFinite() && truncation.IsFinite();
+            bool allFinite = scale.IsFinite() && shape.IsFinite() && truncation.IsFinite();
             return allFinite && scale > 0.0 && shape > 0.0 && truncation > scale;
         }
 
@@ -164,9 +164,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         {
             get
             {
-                var mean = Mean;
-                var variance = Variance;
-                var std = StdDev;
+                double mean = Mean;
+                double variance = Variance;
+                double std = StdDev;
                 return (GetMoment(3) - 3.0 * mean * variance - mean * mean * mean) / (std * std * std);
             }
         }
@@ -267,7 +267,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return;
             }
             double[] uniforms = rnd.NextDoubles(values.Length);
-            for (var j = 0; j < values.Length; ++j)
+            for (int j = 0; j < values.Length; ++j)
             {
                 values[j] = InvCDFUncheckedImpl(scale, shape, truncation, uniforms[j]);
             }
@@ -396,33 +396,43 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return CumulativeDistributionImpl(scale, shape, truncation, x);
         }
 
-        static double DensityImpl(double scale, double shape, double truncation, double x)
+        private static double DensityImpl(double scale, double shape, double truncation, double x)
         {
             if (x < scale || x > truncation)
+            {
                 return 0;
+            }
             else
+            {
                 return (shape * Math.Pow(scale, shape) * Math.Pow(x, -shape - 1)) / (1 - Math.Pow(scale / truncation, shape));
+            }
         }
 
-        static double DensityLnImpl(double scale, double shape, double truncation, double x)
+        private static double DensityLnImpl(double scale, double shape, double truncation, double x)
         {
             return Math.Log(DensityImpl(scale, shape, truncation, x));
         }
 
-        static double CumulativeDistributionImpl(double scale, double shape, double truncation, double x)
+        private static double CumulativeDistributionImpl(double scale, double shape, double truncation, double x)
         {
             if (x <= scale)
+            {
                 return 0;
+            }
             else if (x >= truncation)
+            {
                 return 1;
+            }
             else
+            {
                 return (1 - Math.Pow(scale, shape) * Math.Pow(x, -shape)) / (1 - Math.Pow(scale / truncation, shape));
+            }
         }
 
-        static double InvCDFUncheckedImpl(double scale, double shape, double truncation, double p)
+        private static double InvCDFUncheckedImpl(double scale, double shape, double truncation, double p)
         {
-            var numerator = p * Math.Pow(truncation, shape) - p * Math.Pow(scale, shape) - Math.Pow(truncation, shape);
-            var denominator = Math.Pow(truncation, shape) * Math.Pow(scale, shape);
+            double numerator = p * Math.Pow(truncation, shape) - p * Math.Pow(scale, shape) - Math.Pow(truncation, shape);
+            double denominator = Math.Pow(truncation, shape) * Math.Pow(scale, shape);
             return Math.Pow(-numerator / denominator, -(1 / shape));
         }
     }

@@ -30,11 +30,11 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
-using Complex = System.Numerics.Complex;
 using BigInteger = System.Numerics.BigInteger;
-using System.Runtime;
+using Complex = System.Numerics.Complex;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics
 {
@@ -73,13 +73,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// The real component of the complex number.
         /// </summary>
         [DataMember(Order = 1)]
-        readonly float _real;
+        private readonly float _real;
 
         /// <summary>
         /// The imaginary component of the complex number.
         /// </summary>
         [DataMember(Order = 2)]
-        readonly float _imag;
+        private readonly float _imag;
 
         /// <summary>
         /// Initializes a new instance of the Complex32 structure with the given real
@@ -182,9 +182,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             get
             {
                 if (float.IsNaN(_real) || float.IsNaN(_imag))
+                {
                     return float.NaN;
+                }
+
                 if (float.IsInfinity(_real) || float.IsInfinity(_imag))
+                {
                     return float.PositiveInfinity;
+                }
+
                 float a = Math.Abs(_real);
                 float b = Math.Abs(_imag);
                 if (a > b)
@@ -240,7 +246,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 }
 
                 // don't replace this with "Magnitude"!
-                var mod = SpecialFunctions.Hypotenuse(_real, _imag);
+                float mod = SpecialFunctions.Hypotenuse(_real, _imag);
                 if (mod == 0.0f)
                 {
                     return Zero;
@@ -334,7 +340,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </returns>
         public Complex32 Exponential()
         {
-            var exp = (float)Math.Exp(_real);
+            float exp = (float)Math.Exp(_real);
             if (IsReal())
             {
                 return new Complex32(exp, 0.0f);
@@ -456,17 +462,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
 
             Complex32 result;
 
-            var absReal = Math.Abs(Real);
-            var absImag = Math.Abs(Imaginary);
+            float absReal = Math.Abs(Real);
+            float absImag = Math.Abs(Imaginary);
             double w;
             if (absReal >= absImag)
             {
-                var ratio = Imaginary / Real;
+                float ratio = Imaginary / Real;
                 w = Math.Sqrt(absReal) * Math.Sqrt(0.5 * (1.0f + Math.Sqrt(1.0f + (ratio * ratio))));
             }
             else
             {
-                var ratio = Real / Imaginary;
+                float ratio = Real / Imaginary;
                 w = Math.Sqrt(absImag) * Math.Sqrt(0.5 * (Math.Abs(ratio) + Math.Sqrt(1.0f + (ratio * ratio))));
             }
 
@@ -491,7 +497,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </summary>
         public (Complex32, Complex32) SquareRoots()
         {
-            var principal = SquareRoot();
+            Complex32 principal = SquareRoot();
             return (principal, -principal);
         }
 
@@ -655,9 +661,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             float c = divisor.Real;
             float d = divisor.Imaginary;
             if (Math.Abs(d) <= Math.Abs(c))
+            {
                 return InternalDiv(a, b, c, d, false);
+            }
+
             return InternalDiv(b, a, d, c, true);
         }
+
         /// <summary>
         ///  Helper method for dividing.
         /// </summary>
@@ -667,7 +677,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// <param name="d">Im second</param>
         /// <param name="swapped"></param>
         /// <returns></returns>
-        static Complex32 InternalDiv(float a, float b, float c, float d, bool swapped)
+        private static Complex32 InternalDiv(float a, float b, float c, float d, bool swapped)
         {
             float r = d / c;
             float t = 1 / (c + d * r);
@@ -683,7 +693,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 f = (b - d * (a / c)) * t;
             }
             if (swapped)
+            {
                 f = -f;
+            }
+
             return new Complex32(e, f);
         }
 
@@ -707,7 +720,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             float c = divisor.Real;
             float d = divisor.Imaginary;
             if (Math.Abs(d) <= Math.Abs(c))
+            {
                 return InternalDiv(dividend, 0, c, d, false);
+            }
+
             return InternalDiv(0, dividend, d, c, true);
         }
 
@@ -910,9 +926,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             // keywords
-            var numberFormatInfo = formatProvider.GetNumberFormatInfo();
-            var textInfo = formatProvider.GetTextInfo();
-            var keywords =
+            NumberFormatInfo numberFormatInfo = formatProvider.GetNumberFormatInfo();
+            TextInfo textInfo = formatProvider.GetTextInfo();
+            string[] keywords =
                 new[]
                 {
                     textInfo.ListSeparator, numberFormatInfo.NaNSymbol,
@@ -921,12 +937,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 };
 
             // lexing
-            var tokens = new LinkedList<string>();
+            LinkedList<string> tokens = new LinkedList<string>();
             GlobalizationHelper.Tokenize(tokens.AddFirst(value), keywords, 0);
-            var token = tokens.First;
+            LinkedListNode<string> token = tokens.First;
 
             // parse the left part
-            var leftPart = ParsePart(ref token, out var isLeftPartImaginary, formatProvider);
+            float leftPart = ParsePart(ref token, out bool isLeftPartImaginary, formatProvider);
             if (token == null)
             {
                 return isLeftPartImaginary ? new Complex32(0, leftPart) : new Complex32(leftPart, 0);
@@ -944,14 +960,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                     throw new FormatException();
                 }
 
-                var rightPart = ParsePart(ref token, out _, formatProvider);
+                float rightPart = ParsePart(ref token, out _, formatProvider);
 
                 return new Complex32(leftPart, rightPart);
             }
             else
             {
                 // format: real + imag
-                var rightPart = ParsePart(ref token, out var isRightPartImaginary, formatProvider);
+                float rightPart = ParsePart(ref token, out bool isRightPartImaginary, formatProvider);
 
                 if (!(isLeftPartImaginary ^ isRightPartImaginary))
                 {
@@ -974,7 +990,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
         /// </param>
         /// <returns>Resulting part as float.</returns>
         /// <exception cref="FormatException"/>
-        static float ParsePart(ref LinkedListNode<string> token, out bool imaginary, IFormatProvider format)
+        private static float ParsePart(ref LinkedListNode<string> token, out bool imaginary, IFormatProvider format)
         {
             imaginary = false;
             if (token == null)
@@ -993,7 +1009,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 }
             }
 
-            var negative = false;
+            bool negative = false;
             if (token.Value == "-")
             {
                 negative = true;
@@ -1006,8 +1022,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             }
 
             // handle prefix imaginary symbol
-            if (String.Compare(token.Value, "i", StringComparison.OrdinalIgnoreCase) == 0
-                || String.Compare(token.Value, "j", StringComparison.OrdinalIgnoreCase) == 0)
+            if (string.Compare(token.Value, "i", StringComparison.OrdinalIgnoreCase) == 0
+                || string.Compare(token.Value, "j", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 imaginary = true;
                 token = token.Next;
@@ -1018,11 +1034,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 }
             }
 
-            var value = GlobalizationHelper.ParseSingle(ref token, format.GetCultureInfo());
+            float value = GlobalizationHelper.ParseSingle(ref token, format.GetCultureInfo());
 
             // handle suffix imaginary symbol
-            if (token != null && (String.Compare(token.Value, "i", StringComparison.OrdinalIgnoreCase) == 0
-                                  || String.Compare(token.Value, "j", StringComparison.OrdinalIgnoreCase) == 0))
+            if (token != null && (string.Compare(token.Value, "i", StringComparison.OrdinalIgnoreCase) == 0
+                                  || string.Compare(token.Value, "j", StringComparison.OrdinalIgnoreCase) == 0))
             {
                 if (imaginary)
                 {

@@ -42,7 +42,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         /// </summary>
         public int FunctionEvaluations => _df.Evaluations;
 
-        readonly NumericalDerivative _df;
+        private readonly NumericalDerivative _df;
 
         /// <summary>
         /// Creates a numerical Hessian object with a three point central difference method.
@@ -82,20 +82,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Differentiation
         /// <returns>Hessian tensor.</returns>
         public double[,] Evaluate(Func<double[], double> f, double[] x)
         {
-            var hessian = new double[x.Length, x.Length];
+            double[,] hessian = new double[x.Length, x.Length];
 
             // Compute diagonal elements
-            for (var row = 0; row < x.Length; row++)
+            for (int row = 0; row < x.Length; row++)
             {
                 hessian[row, row] = _df.EvaluatePartialDerivative(f, x, row, 2);
             }
 
             // Compute non-diagonal elements
-            for (var row = 0; row < x.Length; row++)
+            for (int row = 0; row < x.Length; row++)
             {
-                for (var col = 0; col < row; col++)
+                for (int col = 0; col < row; col++)
                 {
-                    var mixedPartial = _df.EvaluateMixedPartialDerivative(f, x, new[] { row, col }, 2);
+                    double mixedPartial = _df.EvaluateMixedPartialDerivative(f, x, new[] { row, col }, 2);
 
                     hessian[row, col] = mixedPartial;
                     hessian[col, row] = mixedPartial;

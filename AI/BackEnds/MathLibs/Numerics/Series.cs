@@ -58,7 +58,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
                 compensation -= y;
                 sum = t;
             }
-            while (Math.Abs(sum) < Math.Abs(factor*current));
+            while (Math.Abs(sum) < Math.Abs(factor * current));
 
             return sum;
         }
@@ -74,7 +74,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics
             double current, sum;
             const double factor = 1 << 16;
 
-            using (var enumerator = infiniteSummands.GetEnumerator())
+            using (IEnumerator<double> enumerator = infiniteSummands.GetEnumerator())
             {
                 if (!enumerator.MoveNext())
                 {

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.Operations.Convolution;
+﻿using AI.BackEnds.DSP.NWaves.Operations.Convolution;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
@@ -80,7 +80,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             _b = new float[_kernelSize * 2];
 
-            for (var i = 0; i < _kernelSize; i++)
+            for (int i = 0; i < _kernelSize; i++)
             {
                 _b[i] = _b[_kernelSize + i] = kernel.ElementAt(i);
             }
@@ -121,7 +121,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <param name="signal"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public override DiscreteSignal ApplyTo(DiscreteSignal signal, 
+        public override DiscreteSignal ApplyTo(DiscreteSignal signal,
                                                FilteringMethod method = FilteringMethod.Auto)
         {
             if (_kernelSize >= KernelSizeForBlockConvolution && method == FilteringMethod.Auto)
@@ -132,25 +132,25 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             switch (method)
             {
                 case FilteringMethod.OverlapAdd:
-                {
-                    var fftSize = MathUtils.NextPowerOfTwo(4 * _kernelSize);
-                    var blockConvolver = OlaBlockConvolver.FromFilter(this, fftSize);
-                    return blockConvolver.ApplyTo(signal);
-                }
+                    {
+                        int fftSize = MathUtils.NextPowerOfTwo(4 * _kernelSize);
+                        OlaBlockConvolver blockConvolver = OlaBlockConvolver.FromFilter(this, fftSize);
+                        return blockConvolver.ApplyTo(signal);
+                    }
                 case FilteringMethod.OverlapSave:
-                {
-                    var fftSize = MathUtils.NextPowerOfTwo(4 * _kernelSize);
-                    var blockConvolver = OlsBlockConvolver.FromFilter(this, fftSize);
-                    return blockConvolver.ApplyTo(signal);
-                }
+                    {
+                        int fftSize = MathUtils.NextPowerOfTwo(4 * _kernelSize);
+                        OlsBlockConvolver blockConvolver = OlsBlockConvolver.FromFilter(this, fftSize);
+                        return blockConvolver.ApplyTo(signal);
+                    }
                 case FilteringMethod.DifferenceEquation:
-                {
-                    return ApplyFilterDirectly(signal);
-                }
+                    {
+                        return ApplyFilterDirectly(signal);
+                    }
                 default:
-                {
-                    return new DiscreteSignal(signal.SamplingRate, ProcessAllSamples(signal.Samples));
-                }
+                    {
+                        return new DiscreteSignal(signal.SamplingRate, ProcessAllSamples(signal.Samples));
+                    }
             }
         }
 
@@ -163,7 +163,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         {
             _delayLine[_delayLineOffset] = sample;
 
-            var output = 0f;
+            float output = 0f;
 
             for (int i = 0, j = _kernelSize - _delayLineOffset; i < _kernelSize; i++, j++)
             {
@@ -187,14 +187,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public float[] ProcessAllSamples(float[] samples)
         {
-            var filtered = new float[samples.Length + _kernelSize - 1];
+            float[] filtered = new float[samples.Length + _kernelSize - 1];
 
-            var k = 0;
-            foreach (var sample in samples)
+            int k = 0;
+            foreach (float sample in samples)
             {
                 _delayLine[_delayLineOffset] = sample;
 
-                var output = 0f;
+                float output = 0f;
 
                 for (int i = 0, j = _kernelSize - _delayLineOffset; i < _kernelSize; i++, j++)
                 {
@@ -225,13 +225,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public DiscreteSignal ApplyFilterDirectly(DiscreteSignal signal)
         {
-            var input = signal.Samples;
+            float[] input = signal.Samples;
 
-            var output = new float[input.Length + _kernelSize - 1];
+            float[] output = new float[input.Length + _kernelSize - 1];
 
-            for (var n = 0; n < output.Length; n++)
+            for (int n = 0; n < output.Length; n++)
             {
-                for (var k = 0; k < _kernelSize; k++)
+                for (int k = 0; k < _kernelSize; k++)
                 {
                     if (n >= k && n < input.Length + k)
                     {
@@ -251,7 +251,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         {
             if (kernel.Length == _kernelSize)
             {
-                for (var i = 0; i < _kernelSize; i++)
+                for (int i = 0; i < _kernelSize; i++)
                 {
                     _b[i] = _b[_kernelSize + i] = kernel[i];
                 }
@@ -276,7 +276,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public static FirFilter operator *(FirFilter filter1, FirFilter filter2)
         {
-            var tf = filter1.Tf * filter2.Tf;
+            TransferFunction tf = filter1.Tf * filter2.Tf;
 
             return new FirFilter(tf.Numerator);
         }
@@ -289,7 +289,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public static IirFilter operator *(FirFilter filter1, IirFilter filter2)
         {
-            var tf = filter1.Tf * filter2.Tf;
+            TransferFunction tf = filter1.Tf * filter2.Tf;
 
             return new IirFilter(tf.Numerator, tf.Denominator);
         }
@@ -302,7 +302,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public static FirFilter operator +(FirFilter filter1, FirFilter filter2)
         {
-            var tf = filter1.Tf + filter2.Tf;
+            TransferFunction tf = filter1.Tf + filter2.Tf;
 
             return new FirFilter(tf.Numerator);
         }
@@ -315,7 +315,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns></returns>
         public static IirFilter operator +(FirFilter filter1, IirFilter filter2)
         {
-            var tf = filter1.Tf + filter2.Tf;
+            TransferFunction tf = filter1.Tf + filter2.Tf;
 
             return new IirFilter(tf.Numerator, tf.Denominator);
         }

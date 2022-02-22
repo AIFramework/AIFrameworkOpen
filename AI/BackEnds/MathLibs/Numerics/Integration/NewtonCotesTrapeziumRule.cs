@@ -55,7 +55,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                 throw new ArgumentNullException(nameof(f));
             }
 
-            return (intervalEnd - intervalBegin)/2*(f(intervalBegin) + f(intervalEnd));
+            return (intervalEnd - intervalBegin) / 2 * (f(intervalBegin) + f(intervalEnd));
         }
 
         /// <summary>
@@ -95,10 +95,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                 throw new ArgumentOutOfRangeException(nameof(numberOfPartitions), "Value must be positive (and not zero).");
             }
 
-            double step = (intervalEnd - intervalBegin)/numberOfPartitions;
+            double step = (intervalEnd - intervalBegin) / numberOfPartitions;
 
             double offset = step;
-            double sum = 0.5*(f(intervalBegin) + f(intervalEnd));
+            double sum = 0.5 * (f(intervalBegin) + f(intervalEnd));
             for (int i = 0; i < numberOfPartitions - 1; i++)
             {
                 // NOTE (ruegg, 2009-01-07): Do not combine intervalBegin and offset (numerical stability!)
@@ -106,7 +106,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                 offset += step;
             }
 
-            return step*sum;
+            return step * sum;
         }
 
         /// <summary>
@@ -160,17 +160,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
 
             int numberOfPartitions = 1;
             double step = intervalEnd - intervalBegin;
-            double sum = 0.5*step*(f(intervalBegin) + f(intervalEnd));
+            double sum = 0.5 * step * (f(intervalBegin) + f(intervalEnd));
             for (int k = 0; k < 20; k++)
             {
                 double midpointsum = 0;
                 for (int i = 0; i < numberOfPartitions; i++)
                 {
-                    midpointsum += f(intervalBegin + ((i + 0.5)*step));
+                    midpointsum += f(intervalBegin + ((i + 0.5) * step));
                 }
 
                 midpointsum *= step;
-                sum = 0.5*(sum + midpointsum);
+                sum = 0.5 * (sum + midpointsum);
                 step *= 0.5;
                 numberOfPartitions *= 2;
 
@@ -256,12 +256,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                 throw new ArgumentNullException(nameof(levelWeights));
             }
 
-            double linearSlope = 0.5*(intervalEnd - intervalBegin);
-            double linearOffset = 0.5*(intervalEnd + intervalBegin);
-            targetRelativeError /= 5*linearSlope;
+            double linearSlope = 0.5 * (intervalEnd - intervalBegin);
+            double linearOffset = 0.5 * (intervalEnd + intervalBegin);
+            targetRelativeError /= 5 * linearSlope;
 
-            using (var abcissasIterator = levelAbscissas.GetEnumerator())
-            using (var weightsIterator = levelWeights.GetEnumerator())
+            using (IEnumerator<double[]> abcissasIterator = levelAbscissas.GetEnumerator())
+            using (IEnumerator<double[]> weightsIterator = levelWeights.GetEnumerator())
             {
                 double step = levelOneStep;
 
@@ -271,10 +271,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                 double[] abcissasL1 = abcissasIterator.Current;
                 double[] weightsL1 = weightsIterator.Current;
 
-                double sum = f(linearOffset)*weightsL1[0];
+                double sum = f(linearOffset) * weightsL1[0];
                 for (int i = 1; i < abcissasL1.Length; i++)
                 {
-                    sum += weightsL1[i]*(f((linearSlope*abcissasL1[i]) + linearOffset) + f(-(linearSlope*abcissasL1[i]) + linearOffset));
+                    sum += weightsL1[i] * (f((linearSlope * abcissasL1[i]) + linearOffset) + f(-(linearSlope * abcissasL1[i]) + linearOffset));
                 }
 
                 sum *= step;
@@ -289,11 +289,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                     double midpointsum = 0;
                     for (int i = 0; i < abcissas.Length; i++)
                     {
-                        midpointsum += weights[i]*(f((linearSlope*abcissas[i]) + linearOffset) + f(-(linearSlope*abcissas[i]) + linearOffset));
+                        midpointsum += weights[i] * (f((linearSlope * abcissas[i]) + linearOffset) + f(-(linearSlope * abcissas[i]) + linearOffset));
                     }
 
                     midpointsum *= step;
-                    sum = 0.5*(sum + midpointsum);
+                    sum = 0.5 * (sum + midpointsum);
                     step *= 0.5;
 
                     double delta = Math.Abs(sum - midpointsum);
@@ -304,7 +304,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                         continue;
                     }
 
-                    double r = Math.Log(delta)/Math.Log(previousDelta);
+                    double r = Math.Log(delta) / Math.Log(previousDelta);
                     previousDelta = delta;
 
                     if (r > 1.9 && r < 2.1)
@@ -319,7 +319,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                     }
                 }
 
-                return sum*linearSlope;
+                return sum * linearSlope;
             }
         }
 
@@ -359,8 +359,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
             double linearOffset = 0.5 * (intervalEnd + intervalBegin);
             targetRelativeError /= 5 * linearSlope;
 
-            using (var abcissasIterator = levelAbscissas.GetEnumerator())
-            using (var weightsIterator = levelWeights.GetEnumerator())
+            using (IEnumerator<double[]> abcissasIterator = levelAbscissas.GetEnumerator())
+            using (IEnumerator<double[]> weightsIterator = levelWeights.GetEnumerator())
             {
                 double step = levelOneStep;
 

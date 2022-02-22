@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -50,10 +50,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </remarks>
     public class Beta : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _shapeA;
-        readonly double _shapeB;
+        private System.Random _random;
+        private readonly double _shapeA;
+        private readonly double _shapeB;
 
         /// <summary>
         /// Initializes a new instance of the Beta class.
@@ -165,19 +164,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return 0.0;
                 }
 
-                return _shapeA/(_shapeA + _shapeB);
+                return _shapeA / (_shapeA + _shapeB);
             }
         }
 
         /// <summary>
         /// Gets the variance of the Beta distribution.
         /// </summary>
-        public double Variance => (_shapeA*_shapeB)/((_shapeA + _shapeB)*(_shapeA + _shapeB)*(_shapeA + _shapeB + 1.0));
+        public double Variance => (_shapeA * _shapeB) / ((_shapeA + _shapeB) * (_shapeA + _shapeB) * (_shapeA + _shapeB + 1.0));
 
         /// <summary>
         /// Gets the standard deviation of the Beta distribution.
         /// </summary>
-        public double StdDev => Math.Sqrt((_shapeA*_shapeB)/((_shapeA + _shapeB)*(_shapeA + _shapeB)*(_shapeA + _shapeB + 1.0)));
+        public double StdDev => Math.Sqrt((_shapeA * _shapeB) / ((_shapeA + _shapeB) * (_shapeA + _shapeB) * (_shapeA + _shapeB + 1.0)));
 
         /// <summary>
         /// Gets the entropy of the Beta distribution.
@@ -202,9 +201,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 }
 
                 return SpecialFunctions.BetaLn(_shapeA, _shapeB)
-                       - ((_shapeA - 1.0)*SpecialFunctions.DiGamma(_shapeA))
-                       - ((_shapeB - 1.0)*SpecialFunctions.DiGamma(_shapeB))
-                       + ((_shapeA + _shapeB - 2.0)*SpecialFunctions.DiGamma(_shapeA + _shapeB));
+                       - ((_shapeA - 1.0) * SpecialFunctions.DiGamma(_shapeA))
+                       - ((_shapeB - 1.0) * SpecialFunctions.DiGamma(_shapeB))
+                       + ((_shapeA + _shapeB - 2.0) * SpecialFunctions.DiGamma(_shapeA + _shapeB));
             }
         }
 
@@ -245,8 +244,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return -2.0;
                 }
 
-                return 2.0*(_shapeB - _shapeA)*Math.Sqrt(_shapeA + _shapeB + 1.0)
-                       /((_shapeA + _shapeB + 2.0)*Math.Sqrt(_shapeA*_shapeB));
+                return 2.0 * (_shapeB - _shapeA) * Math.Sqrt(_shapeA + _shapeB + 1.0)
+                       / ((_shapeA + _shapeB + 2.0) * Math.Sqrt(_shapeA * _shapeB));
             }
         }
 
@@ -292,7 +291,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return 0.5;
                 }
 
-                return (_shapeA - 1)/(_shapeA + _shapeB - 2);
+                return (_shapeA - 1) / (_shapeA + _shapeB - 2);
             }
         }
 
@@ -392,26 +391,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <returns>a random number from the Beta distribution.</returns>
         internal static double SampleUnchecked(System.Random rnd, double a, double b)
         {
-            var x = Gamma.SampleUnchecked(rnd, a, 1.0);
-            var y = Gamma.SampleUnchecked(rnd, b, 1.0);
-            return x/(x + y);
+            double x = Gamma.SampleUnchecked(rnd, a, 1.0);
+            double y = Gamma.SampleUnchecked(rnd, b, 1.0);
+            return x / (x + y);
         }
 
         internal static void SamplesUnchecked(System.Random rnd, double[] values, double a, double b)
         {
-            var y = new double[values.Length];
+            double[] y = new double[values.Length];
             Gamma.SamplesUnchecked(rnd, values, a, 1.0);
             Gamma.SamplesUnchecked(rnd, y, b, 1.0);
             CommonParallel.For(0, values.Length, 4096, (aa, bb) =>
             {
                 for (int i = aa; i < bb; i++)
                 {
-                    values[i] = values[i]/(values[i] + y[i]);
+                    values[i] = values[i] / (values[i] + y[i]);
                 }
             });
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double a, double b)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double a, double b)
         {
             while (true)
             {
@@ -484,8 +483,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return Math.Exp(PDFLn(a, b, x));
             }
 
-            var bb = SpecialFunctions.Gamma(a + b)/(SpecialFunctions.Gamma(a)*SpecialFunctions.Gamma(b));
-            return bb*Math.Pow(x, a - 1.0)*Math.Pow(1.0 - x, b - 1.0);
+            double bb = SpecialFunctions.Gamma(a + b) / (SpecialFunctions.Gamma(a) * SpecialFunctions.Gamma(b));
+            return bb * Math.Pow(x, a - 1.0) * Math.Pow(1.0 - x, b - 1.0);
         }
 
         /// <summary>
@@ -543,9 +542,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return 0.0;
             }
 
-            var aa = SpecialFunctions.GammaLn(a + b) - SpecialFunctions.GammaLn(a) - SpecialFunctions.GammaLn(b);
-            var bb = x == 0.0 ? (a == 1.0 ? 0.0 : double.NegativeInfinity) : (a - 1.0)*Math.Log(x);
-            var cc = x == 1.0 ? (b == 1.0 ? 0.0 : double.NegativeInfinity) : (b - 1.0)*Math.Log(1.0 - x);
+            double aa = SpecialFunctions.GammaLn(a + b) - SpecialFunctions.GammaLn(a) - SpecialFunctions.GammaLn(b);
+            double bb = x == 0.0 ? (a == 1.0 ? 0.0 : double.NegativeInfinity) : (a - 1.0) * Math.Log(x);
+            double cc = x == 1.0 ? (b == 1.0 ? 0.0 : double.NegativeInfinity) : (b - 1.0) * Math.Log(1.0 - x);
 
             return aa + bb + cc;
         }

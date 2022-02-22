@@ -17,7 +17,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <summary>
         /// Half of FFT size (for calculations)
         /// </summary>
-        private int _fftSize;
+        private readonly int _fftSize;
 
         /// <summary>
         /// Precomputed cosines
@@ -32,7 +32,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <summary>
         /// Precomputed coefficients
         /// </summary>
-        private float[] _ar, _br, _ai, _bi;
+        private readonly float[] _ar, _br, _ai, _bi;
 
         /// <summary>
         /// Internal buffers
@@ -60,7 +60,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             // precompute coefficients:
 
-            var tblSize = (int)Math.Log(_fftSize, 2);
+            int tblSize = (int)Math.Log(_fftSize, 2);
 
             _cosTbl = new float[tblSize];
             _sinTbl = new float[tblSize];
@@ -76,9 +76,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             _ai = new float[_fftSize];
             _bi = new float[_fftSize];
 
-            var f = Math.PI / _fftSize;
+            double f = Math.PI / _fftSize;
 
-            for (var i = 0; i < _fftSize; i++)
+            for (int i = 0; i < _fftSize; i++)
             {
                 _ar[i] = (float)(0.5 * (1 - Math.Sin(f * i)));
                 _ai[i] = (float)(-0.5 * Math.Cos(f * i));
@@ -103,33 +103,33 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                 _im[i] = input[k++];
             }
 
-            var L = _fftSize;
-            var M = _fftSize >> 1;
-            var S = _fftSize - 1;
-            var ti = 0;
+            int L = _fftSize;
+            int M = _fftSize >> 1;
+            int S = _fftSize - 1;
+            int ti = 0;
             while (L >= 2)
             {
-                var l = L >> 1;
-                var u1 = 1.0f;
-                var u2 = 0.0f;
-                var c = _cosTbl[ti];
-                var s = -_sinTbl[ti];
+                int l = L >> 1;
+                float u1 = 1.0f;
+                float u2 = 0.0f;
+                float c = _cosTbl[ti];
+                float s = -_sinTbl[ti];
                 ti++;
-                for (var j = 0; j < l; j++)
+                for (int j = 0; j < l; j++)
                 {
-                    for (var i = j; i < _fftSize; i += L)
+                    for (int i = j; i < _fftSize; i += L)
                     {
-                        var p = i + l;
-                        var t1 = _re[i] + _re[p];
-                        var t2 = _im[i] + _im[p];
-                        var t3 = _re[i] - _re[p];
-                        var t4 = _im[i] - _im[p];
+                        int p = i + l;
+                        float t1 = _re[i] + _re[p];
+                        float t2 = _im[i] + _im[p];
+                        float t3 = _re[i] - _re[p];
+                        float t4 = _im[i] - _im[p];
                         _re[p] = t3 * u1 - t4 * u2;
                         _im[p] = t4 * u1 + t3 * u2;
                         _re[i] = t1;
                         _im[i] = t2;
                     }
-                    var u3 = u1 * c - u2 * s;
+                    float u3 = u1 * c - u2 * s;
                     u2 = u2 * c + u1 * s;
                     u1 = u3;
                 }
@@ -139,14 +139,14 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             {
                 if (i > j)
                 {
-                    var t1 = _re[j];
-                    var t2 = _im[j];
+                    float t1 = _re[j];
+                    float t2 = _im[j];
                     _re[j] = _re[i];
                     _im[j] = _im[i];
                     _re[i] = t1;
                     _im[i] = t2;
                 }
-                var k = M;
+                int k = M;
                 while (j >= k)
                 {
                     j -= k;
@@ -160,7 +160,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             re[0] = _re[0] * _ar[0] - _im[0] * _ai[0] + _re[0] * _br[0] + _im[0] * _bi[0];
             im[0] = _im[0] * _ar[0] + _re[0] * _ai[0] + _re[0] * _bi[0] - _im[0] * _br[0];
 
-            for (var k = 1; k < _fftSize; k++)
+            for (int k = 1; k < _fftSize; k++)
             {
                 re[k] = _re[k] * _ar[k] - _im[k] * _ai[k] + _re[_fftSize - k] * _br[k] + _im[_fftSize - k] * _bi[k];
                 im[k] = _im[k] * _ar[k] + _re[k] * _ai[k] + _re[_fftSize - k] * _bi[k] - _im[_fftSize - k] * _br[k];
@@ -180,7 +180,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             // do the first step:
 
-            for (var k = 0; k < _fftSize; k++)
+            for (int k = 0; k < _fftSize; k++)
             {
                 _re[k] = re[k] * _ar[k] + im[k] * _ai[k] + re[_fftSize - k] * _br[k] - im[_fftSize - k] * _bi[k];
                 _im[k] = im[k] * _ar[k] - re[k] * _ai[k] - re[_fftSize - k] * _bi[k] - im[_fftSize - k] * _br[k];
@@ -188,33 +188,33 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             // do half-size complex FFT:
 
-            var L = _fftSize;
-            var M = _fftSize >> 1;
-            var S = _fftSize - 1;
-            var ti = 0;
+            int L = _fftSize;
+            int M = _fftSize >> 1;
+            int S = _fftSize - 1;
+            int ti = 0;
             while (L >= 2)
             {
-                var l = L >> 1;
-                var u1 = 1.0f;
-                var u2 = 0.0f;
-                var c = _cosTbl[ti];
-                var s = _sinTbl[ti];
+                int l = L >> 1;
+                float u1 = 1.0f;
+                float u2 = 0.0f;
+                float c = _cosTbl[ti];
+                float s = _sinTbl[ti];
                 ti++;
-                for (var j = 0; j < l; j++)
+                for (int j = 0; j < l; j++)
                 {
-                    for (var i = j; i < _fftSize; i += L)
+                    for (int i = j; i < _fftSize; i += L)
                     {
-                        var p = i + l;
-                        var t1 = _re[i] + _re[p];
-                        var t2 = _im[i] + _im[p];
-                        var t3 = _re[i] - _re[p];
-                        var t4 = _im[i] - _im[p];
+                        int p = i + l;
+                        float t1 = _re[i] + _re[p];
+                        float t2 = _im[i] + _im[p];
+                        float t3 = _re[i] - _re[p];
+                        float t4 = _im[i] - _im[p];
                         _re[p] = t3 * u1 - t4 * u2;
                         _im[p] = t4 * u1 + t3 * u2;
                         _re[i] = t1;
                         _im[i] = t2;
                     }
-                    var u3 = u1 * c - u2 * s;
+                    float u3 = u1 * c - u2 * s;
                     u2 = u2 * c + u1 * s;
                     u1 = u3;
                 }
@@ -224,14 +224,14 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             {
                 if (i > j)
                 {
-                    var t1 = _re[j];
-                    var t2 = _im[j];
+                    float t1 = _re[j];
+                    float t2 = _im[j];
                     _re[j] = _re[i];
                     _im[j] = _im[i];
                     _re[i] = t1;
                     _im[i] = t2;
                 }
-                var k = M;
+                int k = M;
                 while (j >= k)
                 {
                     j -= k;
@@ -259,7 +259,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         {
             // do the first step:
 
-            for (var k = 0; k < _fftSize; k++)
+            for (int k = 0; k < _fftSize; k++)
             {
                 _re[k] = re[k] * _ar[k] + im[k] * _ai[k] + re[_fftSize - k] * _br[k] - im[_fftSize - k] * _bi[k];
                 _im[k] = im[k] * _ar[k] - re[k] * _ai[k] - re[_fftSize - k] * _bi[k] - im[_fftSize - k] * _br[k];
@@ -267,33 +267,33 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             // do half-size complex FFT:
 
-            var L = _fftSize;
-            var M = _fftSize >> 1;
-            var S = _fftSize - 1;
-            var ti = 0;
+            int L = _fftSize;
+            int M = _fftSize >> 1;
+            int S = _fftSize - 1;
+            int ti = 0;
             while (L >= 2)
             {
-                var l = L >> 1;
-                var u1 = 1.0f;
-                var u2 = 0.0f;
-                var c = _cosTbl[ti];
-                var s = _sinTbl[ti];
+                int l = L >> 1;
+                float u1 = 1.0f;
+                float u2 = 0.0f;
+                float c = _cosTbl[ti];
+                float s = _sinTbl[ti];
                 ti++;
-                for (var j = 0; j < l; j++)
+                for (int j = 0; j < l; j++)
                 {
-                    for (var i = j; i < _fftSize; i += L)
+                    for (int i = j; i < _fftSize; i += L)
                     {
-                        var p = i + l;
-                        var t1 = _re[i] + _re[p];
-                        var t2 = _im[i] + _im[p];
-                        var t3 = _re[i] - _re[p];
-                        var t4 = _im[i] - _im[p];
+                        int p = i + l;
+                        float t1 = _re[i] + _re[p];
+                        float t2 = _im[i] + _im[p];
+                        float t3 = _re[i] - _re[p];
+                        float t4 = _im[i] - _im[p];
                         _re[p] = t3 * u1 - t4 * u2;
                         _im[p] = t4 * u1 + t3 * u2;
                         _re[i] = t1;
                         _im[i] = t2;
                     }
-                    var u3 = u1 * c - u2 * s;
+                    float u3 = u1 * c - u2 * s;
                     u2 = u2 * c + u1 * s;
                     u1 = u3;
                 }
@@ -303,14 +303,14 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             {
                 if (i > j)
                 {
-                    var t1 = _re[j];
-                    var t2 = _im[j];
+                    float t1 = _re[j];
+                    float t2 = _im[j];
                     _re[j] = _re[i];
                     _im[j] = _im[i];
                     _re[i] = t1;
                     _im[i] = t2;
                 }
-                var k = M;
+                int k = M;
                 while (j >= k)
                 {
                     j -= k;
@@ -346,14 +346,14 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             if (normalize)
             {
-                for (var i = 0; i < spectrum.Length; i++)
+                for (int i = 0; i < spectrum.Length; i++)
                 {
                     spectrum[i] = (float)(Math.Sqrt(_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]) / _fftSize);
                 }
             }
             else
             {
-                for (var i = 0; i < spectrum.Length; i++)
+                for (int i = 0; i < spectrum.Length; i++)
                 {
                     spectrum[i] = (float)(Math.Sqrt(_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]));
                 }
@@ -378,14 +378,14 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             if (normalize)
             {
-                for (var i = 0; i < spectrum.Length; i++)
+                for (int i = 0; i < spectrum.Length; i++)
                 {
                     spectrum[i] = (_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]) / _fftSize;
                 }
             }
             else
             {
-                for (var i = 0; i < spectrum.Length; i++)
+                for (int i = 0; i < spectrum.Length; i++)
                 {
                     spectrum[i] = _realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i];
                 }
@@ -400,7 +400,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns></returns>
         public DiscreteSignal MagnitudeSpectrum(DiscreteSignal signal, bool normalize = false)
         {
-            var spectrum = new float[_fftSize + 1];
+            float[] spectrum = new float[_fftSize + 1];
             MagnitudeSpectrum(signal.Samples, spectrum, normalize);
             return new DiscreteSignal(signal.SamplingRate, spectrum);
         }
@@ -413,7 +413,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns></returns>
         public DiscreteSignal PowerSpectrum(DiscreteSignal signal, bool normalize = true)
         {
-            var spectrum = new float[_fftSize + 1];
+            float[] spectrum = new float[_fftSize + 1];
             PowerSpectrum(signal.Samples, spectrum, normalize);
             return new DiscreteSignal(signal.SamplingRate, spectrum);
         }
@@ -429,12 +429,12 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                 throw new ArgumentException("FFT shift is not supported for arrays with odd lengths");
             }
 
-            var mid = samples.Length / 2;
+            int mid = samples.Length / 2;
 
-            for (var i = 0; i < samples.Length / 2; i++)
+            for (int i = 0; i < samples.Length / 2; i++)
             {
-                var shift = i + mid;
-                var tmp = samples[i];
+                int shift = i + mid;
+                float tmp = samples[i];
                 samples[i] = samples[shift];
                 samples[shift] = tmp;
             }

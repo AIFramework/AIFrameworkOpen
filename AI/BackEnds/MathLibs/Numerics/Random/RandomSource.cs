@@ -42,8 +42,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
     [DataContract(Namespace = "urn:MathNet/Numerics/Random")]
     public abstract class RandomSource : System.Random
     {
-        readonly bool _threadSafe;
-        readonly object _lock = new object();
+        private readonly bool _threadSafe;
+        private readonly object _lock = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RandomSource"/> class using
@@ -76,7 +76,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             {
                 lock (_lock)
                 {
-                    for (var i = 0; i < values.Length; i++)
+                    for (int i = 0; i < values.Length; i++)
                     {
                         values[i] = DoSample();
                     }
@@ -84,7 +84,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             }
             else
             {
-                for (var i = 0; i < values.Length; i++)
+                for (int i = 0; i < values.Length; i++)
                 {
                     values[i] = DoSample();
                 }
@@ -97,7 +97,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <param name="count">The size of the array to fill.</param>
         public double[] NextDoubles(int count)
         {
-            var values = new double[count];
+            double[] values = new double[count];
             NextDoubles(values);
             return values;
         }
@@ -112,7 +112,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 yield return NextDouble();
             }
 
-            var buffer = new double[64];
+            double[] buffer = new double[64];
             while (true)
             {
                 NextDoubles(buffer);
@@ -240,7 +240,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             {
                 lock (_lock)
                 {
-                    for (var i = 0; i < values.Length; i++)
+                    for (int i = 0; i < values.Length; i++)
                     {
                         values[i] = DoSampleInteger();
                     }
@@ -248,7 +248,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             }
             else
             {
-                for (var i = 0; i < values.Length; i++)
+                for (int i = 0; i < values.Length; i++)
                 {
                     values[i] = DoSampleInteger();
                 }
@@ -261,7 +261,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <param name="count">The size of the array to fill.</param>
         public int[] NextInt32s(int count)
         {
-            var values = new int[count];
+            int[] values = new int[count];
             NextInt32s(values);
             return values;
         }
@@ -298,7 +298,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             {
                 lock (_lock)
                 {
-                    for (var i = 0; i < values.Length; i++)
+                    for (int i = 0; i < values.Length; i++)
                     {
                         values[i] = DoSampleInteger(maxExclusive);
                     }
@@ -306,7 +306,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             }
             else
             {
-                for (var i = 0; i < values.Length; i++)
+                for (int i = 0; i < values.Length; i++)
                 {
                     values[i] = DoSampleInteger(maxExclusive);
                 }
@@ -320,7 +320,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <param name="maxExclusive">The exclusive upper bound of the random number returned. Range: maxExclusive ≥ 1.</param>
         public int[] NextInt32s(int count, int maxExclusive)
         {
-            var values = new int[count];
+            int[] values = new int[count];
             NextInt32s(values, maxExclusive);
             return values;
         }
@@ -342,7 +342,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             // Fast case: Only minInclusive is allowed to be returned. No sampling is needed.
             if (maxExclusive == minInclusive + 1)
             {
-                for (var i = 0; i < values.Length; i++)
+                for (int i = 0; i < values.Length; i++)
                 {
                     values[i] = minInclusive;
                 }
@@ -368,7 +368,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             {
                 lock (_lock)
                 {
-                    for (var i = 0; i < values.Length; i++)
+                    for (int i = 0; i < values.Length; i++)
                     {
                         values[i] = DoSampleInteger(minInclusive, maxExclusive);
                     }
@@ -376,7 +376,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
             }
             else
             {
-                for (var i = 0; i < values.Length; i++)
+                for (int i = 0; i < values.Length; i++)
                 {
                     values[i] = DoSampleInteger(minInclusive, maxExclusive);
                 }
@@ -391,7 +391,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// <param name="maxExclusive">The exclusive upper bound of the random number returned. Range: maxExclusive > minExclusive.</param>
         public int[] NextInt32s(int count, int minInclusive, int maxExclusive)
         {
-            var values = new int[count];
+            int[] values = new int[count];
             NextInt32s(values, minInclusive, maxExclusive);
             return values;
         }
@@ -406,7 +406,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 yield return Next();
             }
 
-            var buffer = new int[64];
+            int[] buffer = new int[64];
             while (true)
             {
                 NextInt32s(buffer);
@@ -434,7 +434,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 yield return Next(minInclusive, maxExclusive);
             }
 
-            var buffer = new int[64];
+            int[] buffer = new int[64];
             while (true)
             {
                 NextInt32s(buffer, minInclusive, maxExclusive);
@@ -505,7 +505,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected virtual void DoSampleBytes(byte[] buffer)
         {
-            for (var i = 0; i < buffer.Length; i++)
+            for (int i = 0; i < buffer.Length; i++)
             {
                 buffer[i] = (byte)(DoSampleInteger() % 256);
             }
@@ -517,14 +517,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected virtual int DoSampleInt32WithNBits(int bitCount)
         {
-			// Fast case: Only 0 is allowed to be returned
+            // Fast case: Only 0 is allowed to be returned
             // No random call is needed
             if (bitCount == 0)
             {
                 return 0;
             }
 
-            var bytes = new byte[4];
+            byte[] bytes = new byte[4];
             DoSampleBytes(bytes);
 
             // every bit with independent uniform distribution
@@ -541,14 +541,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected virtual long DoSampleInt64WithNBits(int bitCount)
         {
-			// Fast case: Only 0 is allowed to be returned
+            // Fast case: Only 0 is allowed to be returned
             // No random call is needed
             if (bitCount == 0)
             {
                 return 0;
             }
 
-            var bytes = new byte[8];
+            byte[] bytes = new byte[8];
             DoSampleBytes(bytes);
 
             // every bit with independent uniform distribution

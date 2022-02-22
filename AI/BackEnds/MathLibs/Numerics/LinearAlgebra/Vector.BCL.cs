@@ -27,13 +27,13 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 {
@@ -53,11 +53,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
         /// <returns>
-        ///     <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         public sealed override bool Equals(object obj)
         {
@@ -91,7 +91,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             for (int i = 0; i < Count; ++i)
             {
                 if (At(i).Equals(item))
+                {
                     return i;
+                }
             }
             return -1;
         }
@@ -121,10 +123,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         bool ICollection<T>.Contains(T item)
         {
             // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var x in this)
+            foreach (T x in this)
             {
                 if (x.Equals(item))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -146,7 +150,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         object IList.this[int index]
         {
             get => Storage[index];
-            set => Storage[index] = (T) value;
+            set => Storage[index] = (T)value;
         }
 
         int IList.IndexOf(object value)
@@ -156,7 +160,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return -1;
             }
 
-            return ((IList<T>) this).IndexOf((T) value);
+            return ((IList<T>)this).IndexOf((T)value);
         }
 
         bool IList.Contains(object value)
@@ -166,7 +170,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return false;
             }
 
-            return ((ICollection<T>) this).Contains((T) value);
+            return ((ICollection<T>)this).Contains((T)value);
         }
 
         void IList.Insert(int index, object value)
@@ -204,7 +208,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("Array must have exactly one dimension (and not be null).", nameof(array));
             }
 
-            Storage.CopySubVectorTo(new DenseVectorStorage<T>(array.Length, (T[]) array), 0, index, Count);
+            Storage.CopySubVectorTo(new DenseVectorStorage<T>(array.Length, (T[])array), 0, index, Count);
         }
 
         /// <summary>
@@ -243,14 +247,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             maxPerColumn = Math.Max(maxPerColumn, 3);
             maxCharactersWidth = Math.Max(maxCharactersWidth, 16);
 
-            var columns = new List<Tuple<int, string[]>>();
+            List<Tuple<int, string[]>> columns = new List<Tuple<int, string[]>>();
             int chars = 0;
             int offset = 0;
             while (offset < Count)
             {
                 // full column
                 int height = Math.Min(maxPerColumn, Count - offset);
-                var candidate = FormatCompleteColumn(offset, height, formatValue);
+                Tuple<int, string[]> candidate = FormatCompleteColumn(offset, height, formatValue);
                 chars += candidate.Item1 + padding;
                 if (chars > maxCharactersWidth && offset > 0)
                 {
@@ -263,17 +267,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             {
                 // we're not done yet, but adding the last column has failed
                 // --> make the last column partial
-                var last = columns[columns.Count - 1];
-                var c = last.Item2;
+                Tuple<int, string[]> last = columns[columns.Count - 1];
+                string[] c = last.Item2;
                 c[c.Length - 2] = ellipsis;
                 c[c.Length - 1] = formatValue(At(Count - 1));
             }
 
             int rows = columns[0].Item2.Length;
             int cols = columns.Count;
-            var array = new string[rows, cols];
+            string[,] array = new string[rows, cols];
             int colIndex = 0;
-            foreach (var column in columns)
+            foreach (Tuple<int, string[]> column in columns)
             {
                 for (int k = 0; k < column.Item2.Length; k++)
                 {
@@ -288,12 +292,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             return array;
         }
 
-        static string FormatStringArrayToString(string[,] array, string columnSeparator, string rowSeparator)
+        private static string FormatStringArrayToString(string[,] array, string columnSeparator, string rowSeparator)
         {
-            var rows = array.GetLength(0);
-            var cols = array.GetLength(1);
+            int rows = array.GetLength(0);
+            int cols = array.GetLength(1);
 
-            var widths = new int[cols];
+            int[] widths = new int[cols];
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < cols; j++)
@@ -302,7 +306,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 }
             }
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < rows; i++)
             {
                 sb.Append(array[i, 0].PadLeft(widths[0]));
@@ -316,11 +320,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             return sb.ToString();
         }
 
-        Tuple<int, string[]> FormatCompleteColumn(int offset, int height, Func<T, string> formatValue)
+        private Tuple<int, string[]> FormatCompleteColumn(int offset, int height, Func<T, string> formatValue)
         {
-            var c = new string[height];
+            string[] c = new string[height];
             int index = 0;
-            for (var k = 0; k < height; k++)
+            for (int k = 0; k < height; k++)
             {
                 c[index++] = formatValue(At(offset + k));
             }

@@ -27,12 +27,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 {
@@ -46,7 +46,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
     [DebuggerDisplay("SparseVector {Count}-Complex {NonZerosCount}-NonZero")]
     public class SparseVector : VectorMathNet
     {
-        readonly SparseVectorStorage<Complex> _storage;
+        private readonly SparseVectorStorage<Complex> _storage;
 
         /// <summary>
         /// Gets the number of non zero elements in the vector.
@@ -160,8 +160,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             if (ReferenceEquals(this, result))
             {
                 //populate a new vector with the scalar
-                var vnonZeroValues = new Complex[Count];
-                var vnonZeroIndices = new int[Count];
+                Complex[] vnonZeroValues = new Complex[Count];
+                int[] vnonZeroIndices = new int[Count];
                 for (int index = 0; index < Count; index++)
                 {
                     vnonZeroIndices[index] = index;
@@ -169,8 +169,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 }
 
                 //populate the non zero values from this
-                var indices = _storage.Indices;
-                var values = _storage.Values;
+                int[] indices = _storage.Indices;
+                Complex[] values = _storage.Values;
                 for (int j = 0; j < _storage.ValueCount; j++)
                 {
                     vnonZeroValues[indices[j]] = values[j] + scalar;
@@ -183,7 +183,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             }
             else
             {
-                for (var index = 0; index < Count; index++)
+                for (int index = 0; index < Count; index++)
                 {
                     result.At(index, At(index) + scalar);
                 }
@@ -204,7 +204,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             if (other is SparseVector otherSparse && result is SparseVector resultSparse)
             {
                 // TODO (ruegg, 2011-10-11): Options to optimize?
-                var otherStorage = otherSparse._storage;
+                SparseVectorStorage<Complex> otherStorage = otherSparse._storage;
                 if (ReferenceEquals(this, resultSparse))
                 {
                     int i = 0, j = 0;
@@ -212,7 +212,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                     {
                         if (i >= _storage.ValueCount || _storage.Indices[i] > otherStorage.Indices[j])
                         {
-                            var otherValue = otherStorage.Values[j];
+                            Complex otherValue = otherStorage.Values[j];
                             if (!Complex.Zero.Equals(otherValue))
                             {
                                 _storage.InsertAtIndexUnchecked(i++, otherStorage.Indices[j], otherValue);
@@ -239,7 +239,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                     {
                         if (j >= otherStorage.ValueCount || i < _storage.ValueCount && _storage.Indices[i] <= otherStorage.Indices[j])
                         {
-                            var next = _storage.Indices[i];
+                            int next = _storage.Indices[i];
                             if (next != last)
                             {
                                 last = next;
@@ -250,7 +250,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                         }
                         else
                         {
-                            var next = otherStorage.Indices[j];
+                            int next = otherStorage.Indices[j];
                             if (next != last)
                             {
                                 last = next;
@@ -302,7 +302,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             if (other is SparseVector otherSparse && result is SparseVector resultSparse)
             {
                 // TODO (ruegg, 2011-10-11): Options to optimize?
-                var otherStorage = otherSparse._storage;
+                SparseVectorStorage<Complex> otherStorage = otherSparse._storage;
                 if (ReferenceEquals(this, resultSparse))
                 {
                     int i = 0, j = 0;
@@ -310,7 +310,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                     {
                         if (i >= _storage.ValueCount || _storage.Indices[i] > otherStorage.Indices[j])
                         {
-                            var otherValue = otherStorage.Values[j];
+                            Complex otherValue = otherStorage.Values[j];
                             if (!Complex.Zero.Equals(otherValue))
                             {
                                 _storage.InsertAtIndexUnchecked(i++, otherStorage.Indices[j], -otherValue);
@@ -337,7 +337,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                     {
                         if (j >= otherStorage.ValueCount || i < _storage.ValueCount && _storage.Indices[i] <= otherStorage.Indices[j])
                         {
-                            var next = _storage.Indices[i];
+                            int next = _storage.Indices[i];
                             if (next != last)
                             {
                                 last = next;
@@ -348,7 +348,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                         }
                         else
                         {
-                            var next = otherStorage.Indices[j];
+                            int next = otherStorage.Indices[j];
                             if (next != last)
                             {
                                 last = next;
@@ -388,7 +388,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             else
             {
                 result.Clear();
-                for (var index = 0; index < _storage.ValueCount; index++)
+                for (int index = 0; index < _storage.ValueCount; index++)
                 {
                     result.At(_storage.Indices[index], -_storage.Values[index]);
                 }
@@ -407,7 +407,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 {
                     sparseResult._storage.ValueCount = _storage.ValueCount;
                     sparseResult._storage.Indices = new int[_storage.ValueCount];
-                    Buffer.BlockCopy(_storage.Indices, 0, sparseResult._storage.Indices, 0, _storage.ValueCount*Constants.SizeOfInt);
+                    Buffer.BlockCopy(_storage.Indices, 0, sparseResult._storage.Indices, 0, _storage.ValueCount * Constants.SizeOfInt);
                     sparseResult._storage.Values = new Complex[_storage.ValueCount];
                     Array.Copy(_storage.Values, 0, sparseResult._storage.Values, 0, _storage.ValueCount);
                 }
@@ -417,7 +417,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             }
 
             result.Clear();
-            for (var index = 0; index < _storage.ValueCount; index++)
+            for (int index = 0; index < _storage.ValueCount; index++)
             {
                 result.At(_storage.Indices[index], _storage.Values[index].Conjugate());
             }
@@ -450,7 +450,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             else
             {
                 result.Clear();
-                for (var index = 0; index < _storage.ValueCount; index++)
+                for (int index = 0; index < _storage.ValueCount; index++)
                 {
                     result.At(_storage.Indices[index], scalar * _storage.Values[index]);
                 }
@@ -464,17 +464,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The sum of a[i]*b[i] for all i.</returns>
         protected override Complex DoDotProduct(VectorMathNet<Complex> other)
         {
-            var result = Complex.Zero;
+            Complex result = Complex.Zero;
             if (ReferenceEquals(this, other))
             {
-                for (var i = 0; i < _storage.ValueCount; i++)
+                for (int i = 0; i < _storage.ValueCount; i++)
                 {
                     result += _storage.Values[i] * _storage.Values[i];
                 }
             }
             else
             {
-                for (var i = 0; i < _storage.ValueCount; i++)
+                for (int i = 0; i < _storage.ValueCount; i++)
                 {
                     result += _storage.Values[i] * other.At(_storage.Indices[i]);
                 }
@@ -489,17 +489,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The sum of conj(a[i])*b[i] for all i.</returns>
         protected override Complex DoConjugateDotProduct(VectorMathNet<Complex> other)
         {
-            var result = Complex.Zero;
+            Complex result = Complex.Zero;
             if (ReferenceEquals(this, other))
             {
-                for (var i = 0; i < _storage.ValueCount; i++)
+                for (int i = 0; i < _storage.ValueCount; i++)
                 {
                     result += _storage.Values[i].Conjugate() * _storage.Values[i];
                 }
             }
             else
             {
-                for (var i = 0; i < _storage.ValueCount; i++)
+                for (int i = 0; i < _storage.ValueCount; i++)
                 {
                     result += _storage.Values[i].Conjugate() * other.At(_storage.Indices[i]);
                 }
@@ -657,11 +657,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 return 0;
             }
 
-            var index = 0;
-            var min = _storage.Values[index].Magnitude;
-            for (var i = 1; i < _storage.ValueCount; i++)
+            int index = 0;
+            double min = _storage.Values[index].Magnitude;
+            for (int i = 1; i < _storage.ValueCount; i++)
             {
-                var test = _storage.Values[i].Magnitude;
+                double test = _storage.Values[i].Magnitude;
                 if (test < min)
                 {
                     index = i;
@@ -684,11 +684,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                 return 0;
             }
 
-            var index = 0;
-            var max = _storage.Values[index].Magnitude;
-            for (var i = 1; i < _storage.ValueCount; i++)
+            int index = 0;
+            double max = _storage.Values[index].Magnitude;
+            for (int i = 1; i < _storage.ValueCount; i++)
             {
-                var test = _storage.Values[i].Magnitude;
+                double test = _storage.Values[i].Magnitude;
                 if (test > max)
                 {
                     index = i;
@@ -705,8 +705,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The sum of the vector's elements.</returns>
         public override Complex Sum()
         {
-            var result = Complex.Zero;
-            for (var i = 0; i < _storage.ValueCount; i++)
+            Complex result = Complex.Zero;
+            for (int i = 0; i < _storage.ValueCount; i++)
             {
                 result += _storage.Values[i];
             }
@@ -720,7 +720,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         public override double L1Norm()
         {
             double result = 0d;
-            for (var i = 0; i < _storage.ValueCount; i++)
+            for (int i = 0; i < _storage.ValueCount; i++)
             {
                 result += _storage.Values[i].Magnitude;
             }
@@ -743,19 +743,33 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>Scalar <c>ret = ( ∑|this[i]|^p )^(1/p)</c></returns>
         public override double Norm(double p)
         {
-            if (p < 0d) throw new ArgumentOutOfRangeException(nameof(p));
+            if (p < 0d)
+            {
+                throw new ArgumentOutOfRangeException(nameof(p));
+            }
 
             if (_storage.ValueCount == 0)
             {
                 return 0d;
             }
 
-            if (p == 1d) return L1Norm();
-            if (p == 2d) return L2Norm();
-            if (double.IsPositiveInfinity(p)) return InfinityNorm();
+            if (p == 1d)
+            {
+                return L1Norm();
+            }
+
+            if (p == 2d)
+            {
+                return L2Norm();
+            }
+
+            if (double.IsPositiveInfinity(p))
+            {
+                return InfinityNorm();
+            }
 
             double sum = 0d;
-            for (var index = 0; index < _storage.ValueCount; index++)
+            for (int index = 0; index < _storage.ValueCount; index++)
             {
                 sum += Math.Pow(_storage.Values[index].Magnitude, p);
             }
@@ -771,7 +785,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
         {
             if (ReferenceEquals(this, other) && ReferenceEquals(this, result))
             {
-                for (var i = 0; i < _storage.ValueCount; i++)
+                for (int i = 0; i < _storage.ValueCount; i++)
                 {
                     _storage.Values[i] *= _storage.Values[i];
                 }
@@ -832,11 +846,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
             }
 
             // parsing
-            var strongTokens = value.Split(new[] { formatProvider.GetTextInfo().ListSeparator }, StringSplitOptions.RemoveEmptyEntries);
-            var data = new List<Complex>();
+            string[] strongTokens = value.Split(new[] { formatProvider.GetTextInfo().ListSeparator }, StringSplitOptions.RemoveEmptyEntries);
+            List<Complex> data = new List<Complex>();
             foreach (string strongToken in strongTokens)
             {
-                var weakTokens = strongToken.Split(new[] { " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] weakTokens = strongToken.Split(new[] { " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
                 string current = string.Empty;
                 for (int i = 0; i < weakTokens.Length; i++)
                 {
@@ -845,7 +859,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
                     {
                         continue;
                     }
-                    var ahead = i < weakTokens.Length - 1 ? weakTokens[i + 1] : string.Empty;
+                    string ahead = i < weakTokens.Length - 1 ? weakTokens[i + 1] : string.Empty;
                     if (ahead.StartsWith("+") || ahead.StartsWith("-"))
                     {
                         continue;
@@ -926,7 +940,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex
 
         public override string ToTypeString()
         {
-            return FormattableString.Invariant($"SparseVector {Count}-Complex {NonZerosCount / (double) Count:P2} Filled");
+            return FormattableString.Invariant($"SparseVector {Count}-Complex {NonZerosCount / (double)Count:P2} Filled");
         }
     }
 }

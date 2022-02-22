@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -42,9 +42,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Exponential : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _rate;
+        private System.Random _random;
+        private readonly double _rate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Exponential"/> class.
@@ -112,17 +111,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the mean of the distribution.
         /// </summary>
-        public double Mean => 1.0/_rate;
+        public double Mean => 1.0 / _rate;
 
         /// <summary>
         /// Gets the variance of the distribution.
         /// </summary>
-        public double Variance => 1.0/(_rate*_rate);
+        public double Variance => 1.0 / (_rate * _rate);
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => 1.0/_rate;
+        public double StdDev => 1.0 / _rate;
 
         /// <summary>
         /// Gets the entropy of the distribution.
@@ -142,7 +141,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the median of the distribution.
         /// </summary>
-        public double Median => Math.Log(2.0)/_rate;
+        public double Median => Math.Log(2.0) / _rate;
 
         /// <summary>
         /// Gets the minimum of the distribution.
@@ -162,7 +161,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDF"/>
         public double Density(double x)
         {
-            return x < 0.0 ? 0.0 : _rate*Math.Exp(-_rate*x);
+            return x < 0.0 ? 0.0 : _rate * Math.Exp(-_rate * x);
         }
 
         /// <summary>
@@ -173,7 +172,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDFLn"/>
         public double DensityLn(double x)
         {
-            return Math.Log(_rate) - (_rate*x);
+            return Math.Log(_rate) - (_rate * x);
         }
 
         /// <summary>
@@ -184,7 +183,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="CDF"/>
         public double CumulativeDistribution(double x)
         {
-            return x < 0.0 ? 0.0 : 1.0 - Math.Exp(-_rate*x);
+            return x < 0.0 ? 0.0 : 1.0 - Math.Exp(-_rate * x);
         }
 
         /// <summary>
@@ -196,7 +195,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="InvCDF"/>
         public double InverseCumulativeDistribution(double p)
         {
-            return p >= 1.0 ? double.PositiveInfinity : -Math.Log(1 - p)/_rate;
+            return p >= 1.0 ? double.PositiveInfinity : -Math.Log(1 - p) / _rate;
         }
 
         /// <summary>
@@ -225,15 +224,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _rate);
         }
 
-        static double SampleUnchecked(System.Random rnd, double rate)
+        private static double SampleUnchecked(System.Random rnd, double rate)
         {
-            var r = rnd.NextDouble();
+            double r = rnd.NextDouble();
             while (r == 0.0)
             {
                 r = rnd.NextDouble();
             }
 
-            return -Math.Log(r)/rate;
+            return -Math.Log(r) / rate;
         }
 
         internal static void SamplesUnchecked(System.Random rnd, double[] values, double rate)
@@ -244,20 +243,20 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 for (int i = a; i < b; i++)
                 {
                     // this happens very rarely
-                    var r = values[i];
+                    double r = values[i];
                     while (r == 0.0)
                     {
                         r = rnd.NextDouble();
                     }
 
-                    values[i] = -Math.Log(r)/rate;
+                    values[i] = -Math.Log(r) / rate;
                 }
             });
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double rate)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double rate)
         {
-            return rnd.NextDoubleSequence().Where(r => r != 0.0).Select(r => -Math.Log(r)/rate);
+            return rnd.NextDoubleSequence().Where(r => r != 0.0).Select(r => -Math.Log(r) / rate);
         }
 
         /// <summary>
@@ -274,7 +273,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return x < 0.0 ? 0.0 : rate*Math.Exp(-rate*x);
+            return x < 0.0 ? 0.0 : rate * Math.Exp(-rate * x);
         }
 
         /// <summary>
@@ -291,7 +290,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return Math.Log(rate) - (rate*x);
+            return Math.Log(rate) - (rate * x);
         }
 
         /// <summary>
@@ -308,7 +307,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return x < 0.0 ? 0.0 : 1.0 - Math.Exp(-rate*x);
+            return x < 0.0 ? 0.0 : 1.0 - Math.Exp(-rate * x);
         }
 
         /// <summary>
@@ -326,7 +325,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return p >= 1.0 ? double.PositiveInfinity : -Math.Log(1 - p)/rate;
+            return p >= 1.0 ? double.PositiveInfinity : -Math.Log(1 - p) / rate;
         }
 
         /// <summary>

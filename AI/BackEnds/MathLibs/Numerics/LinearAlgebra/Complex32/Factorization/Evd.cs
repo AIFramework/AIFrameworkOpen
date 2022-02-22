@@ -27,8 +27,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factorization
 {
@@ -64,12 +64,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
         {
             get
             {
-                var det = Complex.One;
-                for (var i = 0; i < EigenValues.Count; i++)
+                Complex det = Complex.One;
+                for (int i = 0; i < EigenValues.Count; i++)
                 {
                     det *= EigenValues[i];
 
-                    if (((Complex32) EigenValues[i]).AlmostEqual(Complex32.Zero))
+                    if (((Complex32)EigenValues[i]).AlmostEqual(Complex32.Zero))
                     {
                         return 0;
                     }
@@ -87,10 +87,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
         {
             get
             {
-                var rank = 0;
-                for (var i = 0; i < EigenValues.Count; i++)
+                int rank = 0;
+                for (int i = 0; i < EigenValues.Count; i++)
                 {
-                    if (((Complex32) EigenValues[i]).AlmostEqual(Complex32.Zero))
+                    if (((Complex32)EigenValues[i]).AlmostEqual(Complex32.Zero))
                     {
                         continue;
                     }
@@ -110,7 +110,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
         {
             get
             {
-                for (var i = 0; i < EigenValues.Count; i++)
+                for (int i = 0; i < EigenValues.Count; i++)
                 {
                     if (EigenValues[i].AlmostEqual(Complex.Zero))
                     {

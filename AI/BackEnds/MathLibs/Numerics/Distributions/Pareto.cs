@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -44,10 +44,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// </summary>
     public class Pareto : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _scale;
-        readonly double _shape;
+        private System.Random _random;
+        private readonly double _scale;
+        private readonly double _shape;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pareto"/> class.
@@ -136,7 +135,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                return _shape*_scale/(_shape - 1.0);
+                return _shape * _scale / (_shape - 1.0);
             }
         }
 
@@ -152,24 +151,24 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     return double.PositiveInfinity;
                 }
 
-                return _scale*_scale*_shape/((_shape - 1.0)*(_shape - 1.0)*(_shape - 2.0));
+                return _scale * _scale * _shape / ((_shape - 1.0) * (_shape - 1.0) * (_shape - 2.0));
             }
         }
 
         /// <summary>
         /// Gets the standard deviation of the distribution.
         /// </summary>
-        public double StdDev => (_scale*Math.Sqrt(_shape))/(Math.Abs(_shape - 1.0)*Math.Sqrt(_shape - 2.0));
+        public double StdDev => (_scale * Math.Sqrt(_shape)) / (Math.Abs(_shape - 1.0) * Math.Sqrt(_shape - 2.0));
 
         /// <summary>
         /// Gets the entropy of the distribution.
         /// </summary>
-        public double Entropy => Math.Log(_shape/_scale) - (1.0/_shape) - 1.0;
+        public double Entropy => Math.Log(_shape / _scale) - (1.0 / _shape) - 1.0;
 
         /// <summary>
         /// Gets the skewness of the distribution.
         /// </summary>
-        public double Skewness => (2.0*(_shape + 1.0)/(_shape - 3.0))*Math.Sqrt((_shape - 2.0)/_shape);
+        public double Skewness => (2.0 * (_shape + 1.0) / (_shape - 3.0)) * Math.Sqrt((_shape - 2.0) / _shape);
 
         /// <summary>
         /// Gets the mode of the distribution.
@@ -179,7 +178,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <summary>
         /// Gets the median of the distribution.
         /// </summary>
-        public double Median => _scale*Math.Pow(2.0, 1.0/_shape);
+        public double Median => _scale * Math.Pow(2.0, 1.0 / _shape);
 
         /// <summary>
         /// Gets the minimum of the distribution.
@@ -199,7 +198,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDF"/>
         public double Density(double x)
         {
-            return _shape*Math.Pow(_scale, _shape)/Math.Pow(x, _shape + 1.0);
+            return _shape * Math.Pow(_scale, _shape) / Math.Pow(x, _shape + 1.0);
         }
 
         /// <summary>
@@ -210,7 +209,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="PDFLn"/>
         public double DensityLn(double x)
         {
-            return Math.Log(_shape) + _shape*Math.Log(_scale) - (_shape + 1.0)*Math.Log(x);
+            return Math.Log(_shape) + _shape * Math.Log(_scale) - (_shape + 1.0) * Math.Log(x);
         }
 
         /// <summary>
@@ -221,7 +220,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="CDF"/>
         public double CumulativeDistribution(double x)
         {
-            return 1.0 - Math.Pow(_scale/x, _shape);
+            return 1.0 - Math.Pow(_scale / x, _shape);
         }
 
         /// <summary>
@@ -233,7 +232,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <seealso cref="InvCDF"/>
         public double InverseCumulativeDistribution(double p)
         {
-            return _scale*Math.Pow(1.0 - p, -1.0/_shape);
+            return _scale * Math.Pow(1.0 - p, -1.0 / _shape);
         }
 
         /// <summary>
@@ -262,26 +261,26 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, _scale, _shape);
         }
 
-        static double SampleUnchecked(System.Random rnd, double scale, double shape)
+        private static double SampleUnchecked(System.Random rnd, double scale, double shape)
         {
-            return scale*Math.Pow(rnd.NextDouble(), -1.0/shape);
+            return scale * Math.Pow(rnd.NextDouble(), -1.0 / shape);
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double scale, double shape)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double scale, double shape)
         {
-            var power = -1.0/shape;
-            return rnd.NextDoubleSequence().Select(x => scale*Math.Pow(x, power));
+            double power = -1.0 / shape;
+            return rnd.NextDoubleSequence().Select(x => scale * Math.Pow(x, power));
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double scale, double shape)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double scale, double shape)
         {
-            var power = -1.0/shape;
+            double power = -1.0 / shape;
             rnd.NextDoubles(values);
             CommonParallel.For(0, values.Length, 4096, (a, b) =>
             {
                 for (int i = a; i < b; i++)
                 {
-                    values[i] = scale*Math.Pow(values[i], power);
+                    values[i] = scale * Math.Pow(values[i], power);
                 }
             });
         }
@@ -301,7 +300,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return shape*Math.Pow(scale, shape)/Math.Pow(x, shape + 1.0);
+            return shape * Math.Pow(scale, shape) / Math.Pow(x, shape + 1.0);
         }
 
         /// <summary>
@@ -319,7 +318,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return Math.Log(shape) + shape*Math.Log(scale) - (shape + 1.0)*Math.Log(x);
+            return Math.Log(shape) + shape * Math.Log(scale) - (shape + 1.0) * Math.Log(x);
         }
 
         /// <summary>
@@ -337,7 +336,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return 1.0 - Math.Pow(scale/x, shape);
+            return 1.0 - Math.Pow(scale / x, shape);
         }
 
         /// <summary>
@@ -356,7 +355,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return scale*Math.Pow(1.0 - p, -1.0/shape);
+            return scale * Math.Pow(1.0 - p, -1.0 / shape);
         }
 
         /// <summary>
@@ -373,7 +372,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 throw new ArgumentException("Invalid parametrization for the distribution.");
             }
 
-            return scale*Math.Pow(rnd.NextDouble(), -1.0/shape);
+            return scale * Math.Pow(rnd.NextDouble(), -1.0 / shape);
         }
 
         /// <summary>

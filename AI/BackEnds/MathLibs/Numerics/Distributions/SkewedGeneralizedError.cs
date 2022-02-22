@@ -55,9 +55,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// whether they are in the allowed range.</para></remarks>
     public class SkewedGeneralizedError : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _skewness;
+        private System.Random _random;
+        private readonly double _skewness;
 
         /// <summary>
         /// Initializes a new instance of the SkewedGeneralizedError class. This is a generalized error distribution
@@ -171,45 +170,45 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         public double Median =>
             Skew == 0 ? Mean : InverseCumulativeDistribution(0.5);
 
-        double CalculateSkewness()
+        private double CalculateSkewness()
         {
             if (Skew == 0)
             {
                 return 0.0;
             }
 
-            var piPow = Math.Pow(Constants.Pi, 3.0 / 2.0);
-            var g1 = SpecialFunctions.Gamma(1.0 / P);
-            var g2 = SpecialFunctions.Gamma(0.5 + 1.0 / P);
-            var g3 = SpecialFunctions.Gamma(3.0 / P);
-            var g4 = SpecialFunctions.Gamma(4.0 / P);
+            double piPow = Math.Pow(Constants.Pi, 3.0 / 2.0);
+            double g1 = SpecialFunctions.Gamma(1.0 / P);
+            double g2 = SpecialFunctions.Gamma(0.5 + 1.0 / P);
+            double g3 = SpecialFunctions.Gamma(3.0 / P);
+            double g4 = SpecialFunctions.Gamma(4.0 / P);
 
-            var t1 = Skew * Scale * Scale * Scale / (piPow * g1);
-            var t2 = Math.Pow(2.0, (6.0 + P) / P) * Skew * Skew * Math.Pow(g2, 3.0) * g1;
-            var t3 = 3.0 * Math.Pow(4.0, 1.0 / P) * Constants.Pi * (1.0 + 3.0 * Skew * Skew) * g2 * g3;
-            var t4 = 4.0 * piPow * (1.0 + Skew * Skew) * g4;
+            double t1 = Skew * Scale * Scale * Scale / (piPow * g1);
+            double t2 = Math.Pow(2.0, (6.0 + P) / P) * Skew * Skew * Math.Pow(g2, 3.0) * g1;
+            double t3 = 3.0 * Math.Pow(4.0, 1.0 / P) * Constants.Pi * (1.0 + 3.0 * Skew * Skew) * g2 * g3;
+            double t4 = 4.0 * piPow * (1.0 + Skew * Skew) * g4;
 
             return t1 * (t2 - t3 + t4);
         }
 
-        static double AdjustScale(double scale, double skew, double p)
+        private static double AdjustScale(double scale, double skew, double p)
         {
-            var g1 = SpecialFunctions.Gamma(3.0 / p);
-            var g2 = SpecialFunctions.Gamma(0.5 + 1.0 / p);
-            var g3 = SpecialFunctions.Gamma(1.0 / p);
-            var g4 = SpecialFunctions.Gamma(1.0 / p);
-            var n1 = Constants.Pi * (1.0 + 3.0 * skew * skew) * g1;
-            var n2 = Math.Pow(16.0, 1.0 / p) * skew * skew * Math.Pow(g2, 2) * g3;
-            var d = Constants.Pi * g4;
+            double g1 = SpecialFunctions.Gamma(3.0 / p);
+            double g2 = SpecialFunctions.Gamma(0.5 + 1.0 / p);
+            double g3 = SpecialFunctions.Gamma(1.0 / p);
+            double g4 = SpecialFunctions.Gamma(1.0 / p);
+            double n1 = Constants.Pi * (1.0 + 3.0 * skew * skew) * g1;
+            double n2 = Math.Pow(16.0, 1.0 / p) * skew * skew * Math.Pow(g2, 2) * g3;
+            double d = Constants.Pi * g4;
             return scale / Math.Sqrt((n1 - n2) / d);
         }
 
-        static double AdjustX(double x, double scale, double skew, double p)
+        private static double AdjustX(double x, double scale, double skew, double p)
         {
             return x + AdjustAddend(scale, skew, p);
         }
 
-        static double AdjustAddend(double scale, double skew, double p)
+        private static double AdjustAddend(double scale, double skew, double p)
         {
             return (Math.Pow(2.0, 2.0 / p) * scale * skew * SpecialFunctions.Gamma(1.0 / 2.0 + 1.0 / p)) /
                 Constants.SqrtPi;
@@ -225,10 +224,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             scale = AdjustScale(scale, skew, p);
             x = AdjustX(x, scale, skew, p);
 
-           // p / (2 * sigma * gamma(1 / p) * exp((abs(x - mu) / (sigma * (1 + lambda * sgn(x - mu)))) ^ p))
-            var d1 = Math.Abs(x - location);
-            var d2 = scale * (1.0 + skew * Math.Sign(x - location));
-            var d3 = 2.0 * scale * SpecialFunctions.Gamma(1.0 / p);
+            // p / (2 * sigma * gamma(1 / p) * exp((abs(x - mu) / (sigma * (1 + lambda * sgn(x - mu)))) ^ p))
+            double d1 = Math.Abs(x - location);
+            double d2 = scale * (1.0 + skew * Math.Sign(x - location));
+            double d3 = 2.0 * scale * SpecialFunctions.Gamma(1.0 / p);
             return p / (Math.Exp(Math.Pow(d1 / d2, p)) * d3);
         }
 
@@ -256,14 +255,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             scale = AdjustScale(scale, skew, p);
             x = AdjustX(x, scale, skew, p) - location;
 
-            var flip = x < 0;
+            bool flip = x < 0;
             if (flip)
             {
                 skew = -skew;
                 x = -x;
             }
 
-            var res = (1.0 - skew) / 2.0 + (1.0 + skew) / 2.0 * Gamma.CDF(1.0 / p, 1.0, Math.Pow(x / (scale * (1.0 + skew)), p));
+            double res = (1.0 - skew) / 2.0 + (1.0 + skew) / 2.0 * Gamma.CDF(1.0 / p, 1.0, Math.Pow(x / (scale * (1.0 + skew)), p));
             return flip ? 1.0 - res : res;
         }
 
@@ -276,18 +275,21 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 
             scale = AdjustScale(scale, skew, p);
 
-            var flip = pr < (1.0 - skew) / 2.0;
-            var lambda = skew;
+            bool flip = pr < (1.0 - skew) / 2.0;
+            double lambda = skew;
             if (flip)
             {
                 pr = 1.0 - pr;
                 lambda = -lambda;
             }
 
-            var res = scale * (1.0 + lambda) * Math.Pow(Gamma.InvCDF(1.0 / p, 1.0, 2 * pr / (1.0 + lambda) + (lambda - 1.0) / (lambda + 1.0)), 1.0 / p);
+            double res = scale * (1.0 + lambda) * Math.Pow(Gamma.InvCDF(1.0 / p, 1.0, 2 * pr / (1.0 + lambda) + (lambda - 1.0) / (lambda + 1.0)), 1.0 / p);
 
             if (flip)
+            {
                 res = -res;
+            }
+
             res += location;
             return res - AdjustAddend(scale, skew, p);
         }
@@ -327,13 +329,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             return SamplesUnchecked(_random, Location, Scale, Skew, P);
         }
 
-        static double SampleUnchecked(System.Random rnd, double location, double scale, double skew, double p)
+        private static double SampleUnchecked(System.Random rnd, double location, double scale, double skew, double p)
         {
-            var u = ContinuousUniform.Sample(rnd, 0, 1);
+            double u = ContinuousUniform.Sample(rnd, 0, 1);
             return InvCDF(location, scale, skew, p, u);
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double location, double scale, double skew, double p)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double location, double scale, double skew, double p)
         {
             for (int i = 0; i < values.Length; i++)
             {
@@ -341,7 +343,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             }
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double location, double scale, double skew, double p)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double location, double scale, double skew, double p)
         {
             while (true)
             {

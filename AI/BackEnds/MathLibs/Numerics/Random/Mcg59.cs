@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System;
+using System.Collections.Generic;
 using System.Runtime;
+using System.Runtime.Serialization;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
 {
@@ -41,12 +41,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
     [DataContract(Namespace = "urn:MathNet/Numerics/Random")]
     public class Mcg59 : RandomSource
     {
-        const ulong Modulus = 576460752303423488;
-        const ulong Multiplier = 302875106592253;
-        const double Reciprocal = 1.0/Modulus;
+        private const ulong Modulus = 576460752303423488;
+        private const ulong Multiplier = 302875106592253;
+        private const double Reciprocal = 1.0 / Modulus;
 
         [DataMember(Order = 1)]
-        ulong _xn;
+        private ulong _xn;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Mcg59"/> class using
@@ -79,7 +79,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 seed = 1;
             }
 
-            _xn = (uint)seed%Modulus;
+            _xn = (uint)seed % Modulus;
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 seed = 1;
             }
 
-            _xn = (uint)seed%Modulus;
+            _xn = (uint)seed % Modulus;
         }
 
         /// <summary>
@@ -103,8 +103,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         /// </summary>
         protected sealed override double DoSample()
         {
-            double ret = _xn*Reciprocal;
-            _xn = (_xn*Multiplier)%Modulus;
+            double ret = _xn * Reciprocal;
+            _xn = (_xn * Multiplier) % Modulus;
             return ret;
         }
 
@@ -119,12 +119,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 seed = 1;
             }
 
-            ulong xn = (uint)seed%Modulus;
+            ulong xn = (uint)seed % Modulus;
 
             for (int i = 0; i < values.Length; i++)
             {
-                values[i] = xn*Reciprocal;
-                xn = (xn*Multiplier)%Modulus;
+                values[i] = xn * Reciprocal;
+                xn = (xn * Multiplier) % Modulus;
             }
         }
 
@@ -135,7 +135,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public static double[] Doubles(int length, int seed)
         {
-            var data = new double[length];
+            double[] data = new double[length];
             Doubles(data, seed);
             return data;
         }
@@ -151,12 +151,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Random
                 seed = 1;
             }
 
-            ulong xn = (uint)seed%Modulus;
+            ulong xn = (uint)seed % Modulus;
 
             while (true)
             {
-                yield return xn*Reciprocal;
-                xn = (xn*Multiplier)%Modulus;
+                yield return xn * Reciprocal;
+                xn = (xn * Multiplier) % Modulus;
             }
         }
     }

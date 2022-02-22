@@ -44,11 +44,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             EvaluateCovariance(modelInfo);
         }
 
-        void EvaluateCovariance(IObjectiveModel objective)
+        private void EvaluateCovariance(IObjectiveModel objective)
         {
             objective.EvaluateAt(objective.Point); // Hessian may be not yet updated.
 
-            var Hessian = objective.Hessian;
+            MatrixMathNet<double> Hessian = objective.Hessian;
             if (Hessian == null || objective.DegreeOfFreedom < 1)
             {
                 Covariance = null;
@@ -63,9 +63,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             {
                 StandardErrors = Covariance.Diagonal().PointwiseSqrt();
 
-                var correlation = Covariance.Clone();
-                var d = correlation.Diagonal().PointwiseSqrt();
-                var dd = d.OuterProduct(d);
+                MatrixMathNet<double> correlation = Covariance.Clone();
+                VectorMathNet<double> d = correlation.Diagonal().PointwiseSqrt();
+                MatrixMathNet<double> dd = d.OuterProduct(d);
                 Correlation = correlation.PointwiseDivide(dd);
             }
             else

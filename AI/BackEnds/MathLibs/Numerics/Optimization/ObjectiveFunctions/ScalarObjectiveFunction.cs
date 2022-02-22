@@ -33,11 +33,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
 {
     internal class LazyScalarObjectiveFunctionEvaluation : IScalarObjectiveFunctionEvaluation
     {
-        double? _value;
-        double? _derivative;
-        double? _secondDerivative;
-        readonly ScalarObjectiveFunction _objectiveObject;
-        readonly double _point;
+        private double? _value;
+        private double? _derivative;
+        private double? _secondDerivative;
+        private readonly ScalarObjectiveFunction _objectiveObject;
+        private readonly double _point;
 
         public LazyScalarObjectiveFunctionEvaluation(ScalarObjectiveFunction f, double point)
         {
@@ -45,19 +45,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
             _point = point;
         }
 
-        double SetValue()
+        private double SetValue()
         {
             _value = _objectiveObject.Objective(_point);
             return _value.Value;
         }
 
-        double SetDerivative()
+        private double SetDerivative()
         {
             _derivative = _objectiveObject.Derivative(_point);
             return _derivative.Value;
         }
 
-        double SetSecondDerivative()
+        private double SetSecondDerivative()
         {
             _secondDerivative = _objectiveObject.SecondDerivative(_point);
             return _secondDerivative.Value;
@@ -89,7 +89,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.ObjectiveFunctions
             SecondDerivative = null;
         }
 
-        public ScalarObjectiveFunction(Func<double, double> objective, Func<double, double> derivative, Func<double,double> secondDerivative)
+        public ScalarObjectiveFunction(Func<double, double> objective, Func<double, double> derivative, Func<double, double> secondDerivative)
         {
             Objective = objective;
             Derivative = derivative;

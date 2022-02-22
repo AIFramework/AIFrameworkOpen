@@ -228,7 +228,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         }
 
         #region Технические методы
-        #pragma warning disable CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
+#pragma warning disable CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
 
         public override string ToString()
         {
@@ -246,7 +246,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             return sb.ToString();
         }
 
-        #pragma warning restore CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
+#pragma warning restore CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
         #endregion
 
         #region Сериализация

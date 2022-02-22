@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single.Factorization;
 using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
+using System;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 {
@@ -147,7 +147,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The matrix to store the result of the multiplication.</param>
         protected override void DoMultiply(float scalar, MatrixMathNet<float> result)
         {
-            Map(x => x*scalar, result, Zeros.AllowSkip);
+            Map(x => x * scalar, result, Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -157,12 +157,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoMultiply(VectorMathNet<float> rightSide, VectorMathNet<float> result)
         {
-            for (var i = 0; i < RowCount; i++)
+            for (int i = 0; i < RowCount; i++)
             {
-                var s = 0.0f;
-                for (var j = 0; j < ColumnCount; j++)
+                float s = 0.0f;
+                for (int j = 0; j < ColumnCount; j++)
                 {
-                    s += At(i, j)*rightSide[j];
+                    s += At(i, j) * rightSide[j];
                 }
                 result[i] = s;
             }
@@ -175,14 +175,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoMultiply(MatrixMathNet<float> other, MatrixMathNet<float> result)
         {
-            for (var i = 0; i < RowCount; i++)
+            for (int i = 0; i < RowCount; i++)
             {
-                for (var j = 0; j < other.ColumnCount; j++)
+                for (int j = 0; j < other.ColumnCount; j++)
                 {
-                    var s = 0.0f;
-                    for (var k = 0; k < ColumnCount; k++)
+                    float s = 0.0f;
+                    for (int k = 0; k < ColumnCount; k++)
                     {
-                        s += At(i, k)*other.At(k, j);
+                        s += At(i, k) * other.At(k, j);
                     }
                     result.At(i, j, s);
                 }
@@ -196,7 +196,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The matrix to store the result of the division.</param>
         protected override void DoDivide(float divisor, MatrixMathNet<float> result)
         {
-            Map(x => x/divisor, result, divisor == 0.0f ? Zeros.Include : Zeros.AllowSkip);
+            Map(x => x / divisor, result, divisor == 0.0f ? Zeros.Include : Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The matrix to store the result of the division.</param>
         protected override void DoDivideByThis(float dividend, MatrixMathNet<float> result)
         {
-            Map(x => dividend/x, result, Zeros.Include);
+            Map(x => dividend / x, result, Zeros.Include);
         }
 
         /// <summary>
@@ -216,14 +216,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoTransposeAndMultiply(MatrixMathNet<float> other, MatrixMathNet<float> result)
         {
-            for (var j = 0; j < other.RowCount; j++)
+            for (int j = 0; j < other.RowCount; j++)
             {
-                for (var i = 0; i < RowCount; i++)
+                for (int i = 0; i < RowCount; i++)
                 {
-                    var s = 0.0f;
-                    for (var k = 0; k < ColumnCount; k++)
+                    float s = 0.0f;
+                    for (int k = 0; k < ColumnCount; k++)
                     {
-                        s += At(i, k)*other.At(j, k);
+                        s += At(i, k) * other.At(j, k);
                     }
                     result.At(i, j, s);
                 }
@@ -247,14 +247,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoTransposeThisAndMultiply(MatrixMathNet<float> other, MatrixMathNet<float> result)
         {
-            for (var j = 0; j < other.ColumnCount; j++)
+            for (int j = 0; j < other.ColumnCount; j++)
             {
-                for (var i = 0; i < ColumnCount; i++)
+                for (int i = 0; i < ColumnCount; i++)
                 {
-                    var s = 0.0f;
-                    for (var k = 0; k < RowCount; k++)
+                    float s = 0.0f;
+                    for (int k = 0; k < RowCount; k++)
                     {
-                        s += At(k, i)*other.At(k, j);
+                        s += At(k, i) * other.At(k, j);
                     }
                     result.At(i, j, s);
                 }
@@ -278,12 +278,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoTransposeThisAndMultiply(VectorMathNet<float> rightSide, VectorMathNet<float> result)
         {
-            for (var j = 0; j < ColumnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                var s = 0.0f;
-                for (var i = 0; i < RowCount; i++)
+                float s = 0.0f;
+                for (int i = 0; i < RowCount; i++)
                 {
-                    s += At(i, j)*rightSide[i];
+                    s += At(i, j) * rightSide[i];
                 }
                 result[j] = s;
             }
@@ -350,7 +350,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The matrix to store the result of the pointwise multiplication.</param>
         protected override void DoPointwiseMultiply(MatrixMathNet<float> other, MatrixMathNet<float> result)
         {
-            Map2((x, y) => x*y, other, result, Zeros.AllowSkip);
+            Map2((x, y) => x * y, other, result, Zeros.AllowSkip);
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <param name="result">The matrix to store the result of the pointwise division.</param>
         protected override void DoPointwiseDivide(MatrixMathNet<float> divisor, MatrixMathNet<float> result)
         {
-            Map2((x, y) => x/y, divisor, result, Zeros.Include);
+            Map2((x, y) => x / y, divisor, result, Zeros.Include);
         }
 
         /// <summary>
@@ -498,14 +498,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public override MatrixMathNet<float> PseudoInverse()
         {
-            var svd = Svd(true);
-            var w = svd.W;
-            var s = svd.S;
+            Svd<float> svd = Svd(true);
+            MatrixMathNet<float> w = svd.W;
+            VectorMathNet<float> s = svd.S;
             float tolerance = (float)(Math.Max(RowCount, ColumnCount) * svd.L2Norm * Precision.SinglePrecision);
 
             for (int i = 0; i < s.Count; i++)
             {
-                s[i] = s[i] < tolerance ? 0 : 1/s[i];
+                s[i] = s[i] < tolerance ? 0 : 1 / s[i];
             }
 
             w.SetDiagonal(s);
@@ -524,8 +524,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 throw new ArgumentException("Matrix must be square.");
             }
 
-            var sum = 0.0f;
-            for (var i = 0; i < RowCount; i++)
+            float sum = 0.0f;
+            for (int i = 0; i < RowCount; i++)
             {
                 sum += At(i, i);
             }
@@ -579,11 +579,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <returns>The maximum absolute column sum of the matrix.</returns>
         public override double L1Norm()
         {
-            var norm = 0d;
-            for (var j = 0; j < ColumnCount; j++)
+            double norm = 0d;
+            for (int j = 0; j < ColumnCount; j++)
             {
-                var s = 0d;
-                for (var i = 0; i < RowCount; i++)
+                double s = 0d;
+                for (int i = 0; i < RowCount; i++)
                 {
                     s += Math.Abs(At(i, j));
                 }
@@ -596,11 +596,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <returns>The maximum absolute row sum of the matrix.</returns>
         public override double InfinityNorm()
         {
-            var norm = 0d;
-            for (var i = 0; i < RowCount; i++)
+            double norm = 0d;
+            for (int i = 0; i < RowCount; i++)
             {
-                var s = 0d;
-                for (var j = 0; j < ColumnCount; j++)
+                double s = 0d;
+                for (int j = 0; j < ColumnCount; j++)
                 {
                     s += Math.Abs(At(i, j));
                 }
@@ -613,10 +613,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <returns>The square root of the sum of the squared values.</returns>
         public override double FrobeniusNorm()
         {
-            var transpose = Transpose();
-            var aat = this*transpose;
-            var norm = 0d;
-            for (var i = 0; i < RowCount; i++)
+            MatrixMathNet<float> transpose = Transpose();
+            MatrixMathNet<float> aat = this * transpose;
+            double norm = 0d;
+            for (int i = 0; i < RowCount; i++)
             {
                 norm += aat.At(i, i);
             }
@@ -634,10 +634,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 throw new ArgumentOutOfRangeException(nameof(norm), "Value must be positive.");
             }
 
-            var ret = new double[RowCount];
+            double[] ret = new double[RowCount];
             if (norm == 2.0)
             {
-                Storage.FoldByRowUnchecked(ret, (s, x) => s + x*x, (x, c) => Math.Sqrt(x), ret, Zeros.AllowSkip);
+                Storage.FoldByRowUnchecked(ret, (s, x) => s + x * x, (x, c) => Math.Sqrt(x), ret, Zeros.AllowSkip);
             }
             else if (norm == 1.0)
             {
@@ -649,7 +649,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             }
             else
             {
-                double invnorm = 1.0/norm;
+                double invnorm = 1.0 / norm;
                 Storage.FoldByRowUnchecked(ret, (s, x) => s + Math.Pow(Math.Abs(x), norm), (x, c) => Math.Pow(x, invnorm), ret, Zeros.AllowSkip);
             }
             return VectorMathNet<double>.Build.Dense(ret);
@@ -666,10 +666,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
                 throw new ArgumentOutOfRangeException(nameof(norm), "Value must be positive.");
             }
 
-            var ret = new double[ColumnCount];
+            double[] ret = new double[ColumnCount];
             if (norm == 2.0)
             {
-                Storage.FoldByColumnUnchecked(ret, (s, x) => s + x*x, (x, c) => Math.Sqrt(x), ret, Zeros.AllowSkip);
+                Storage.FoldByColumnUnchecked(ret, (s, x) => s + x * x, (x, c) => Math.Sqrt(x), ret, Zeros.AllowSkip);
             }
             else if (norm == 1.0)
             {
@@ -681,7 +681,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             }
             else
             {
-                double invnorm = 1.0/norm;
+                double invnorm = 1.0 / norm;
                 Storage.FoldByColumnUnchecked(ret, (s, x) => s + Math.Pow(Math.Abs(x), norm), (x, c) => Math.Pow(x, invnorm), ret, Zeros.AllowSkip);
             }
             return VectorMathNet<double>.Build.Dense(ret);
@@ -693,14 +693,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public sealed override MatrixMathNet<float> NormalizeRows(double norm)
         {
-            var norminv = ((DenseVectorStorage<double>)RowNorms(norm).Storage).Data;
+            double[] norminv = ((DenseVectorStorage<double>)RowNorms(norm).Storage).Data;
             for (int i = 0; i < norminv.Length; i++)
             {
-                norminv[i] = norminv[i] == 0d ? 1d : 1d/norminv[i];
+                norminv[i] = norminv[i] == 0d ? 1d : 1d / norminv[i];
             }
 
-            var result = Build.SameAs(this, RowCount, ColumnCount);
-            Storage.MapIndexedTo(result.Storage, (i, j, x) => (float)norminv[i]*x, Zeros.AllowSkip, ExistingData.AssumeZeros);
+            MatrixMathNet<float> result = Build.SameAs(this, RowCount, ColumnCount);
+            Storage.MapIndexedTo(result.Storage, (i, j, x) => (float)norminv[i] * x, Zeros.AllowSkip, ExistingData.AssumeZeros);
             return result;
         }
 
@@ -710,14 +710,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public sealed override MatrixMathNet<float> NormalizeColumns(double norm)
         {
-            var norminv = ((DenseVectorStorage<double>)ColumnNorms(norm).Storage).Data;
+            double[] norminv = ((DenseVectorStorage<double>)ColumnNorms(norm).Storage).Data;
             for (int i = 0; i < norminv.Length; i++)
             {
-                norminv[i] = norminv[i] == 0d ? 1d : 1d/norminv[i];
+                norminv[i] = norminv[i] == 0d ? 1d : 1d / norminv[i];
             }
 
-            var result = Build.SameAs(this, RowCount, ColumnCount);
-            Storage.MapIndexedTo(result.Storage, (i, j, x) => (float)norminv[j]*x, Zeros.AllowSkip, ExistingData.AssumeZeros);
+            MatrixMathNet<float> result = Build.SameAs(this, RowCount, ColumnCount);
+            Storage.MapIndexedTo(result.Storage, (i, j, x) => (float)norminv[j] * x, Zeros.AllowSkip, ExistingData.AssumeZeros);
             return result;
         }
 
@@ -726,7 +726,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public override VectorMathNet<float> RowSums()
         {
-            var ret = new float[RowCount];
+            float[] ret = new float[RowCount];
             Storage.FoldByRowUnchecked(ret, (s, x) => s + x, (x, c) => x, ret, Zeros.AllowSkip);
             return VectorMathNet<float>.Build.Dense(ret);
         }
@@ -736,7 +736,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public override VectorMathNet<float> RowAbsoluteSums()
         {
-            var ret = new float[RowCount];
+            float[] ret = new float[RowCount];
             Storage.FoldByRowUnchecked(ret, (s, x) => s + Math.Abs(x), (x, c) => x, ret, Zeros.AllowSkip);
             return VectorMathNet<float>.Build.Dense(ret);
         }
@@ -746,7 +746,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public override VectorMathNet<float> ColumnSums()
         {
-            var ret = new float[ColumnCount];
+            float[] ret = new float[ColumnCount];
             Storage.FoldByColumnUnchecked(ret, (s, x) => s + x, (x, c) => x, ret, Zeros.AllowSkip);
             return VectorMathNet<float>.Build.Dense(ret);
         }
@@ -756,7 +756,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public override VectorMathNet<float> ColumnAbsoluteSums()
         {
-            var ret = new float[ColumnCount];
+            float[] ret = new float[ColumnCount];
             Storage.FoldByColumnUnchecked(ret, (s, x) => s + Math.Abs(x), (x, c) => x, ret, Zeros.AllowSkip);
             return VectorMathNet<float>.Build.Dense(ret);
         }

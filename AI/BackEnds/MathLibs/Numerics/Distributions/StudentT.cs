@@ -27,10 +27,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using AI.BackEnds.MathLibs.MathNet.Numerics.Random;
 using AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding;
+using System;
+using System.Collections.Generic;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
 {
@@ -57,11 +57,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
     /// to <c>false</c>, all parameter checks can be turned off.</para></remarks>
     public class StudentT : IContinuousDistribution
     {
-        System.Random _random;
-
-        readonly double _location;
-        readonly double _scale;
-        readonly double _freedom;
+        private System.Random _random;
+        private readonly double _location;
+        private readonly double _scale;
+        private readonly double _freedom;
 
         /// <summary>
         /// Initializes a new instance of the StudentT class. This is a Student t-distribution with location 0.0
@@ -174,12 +173,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 if (double.IsPositiveInfinity(_freedom))
                 {
-                    return _scale*_scale;
+                    return _scale * _scale;
                 }
 
                 if (_freedom > 2.0)
                 {
-                    return _freedom*_scale*_scale/(_freedom - 2.0);
+                    return _freedom * _scale * _scale / (_freedom - 2.0);
                 }
 
                 return _freedom > 1.0 ? double.PositiveInfinity : double.NaN;
@@ -195,12 +194,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             {
                 if (double.IsPositiveInfinity(_freedom))
                 {
-                    return Math.Sqrt(_scale*_scale);
+                    return Math.Sqrt(_scale * _scale);
                 }
 
                 if (_freedom > 2.0)
                 {
-                    return Math.Sqrt(_freedom*_scale*_scale/(_freedom - 2.0));
+                    return Math.Sqrt(_freedom * _scale * _scale / (_freedom - 2.0));
                 }
 
                 return _freedom > 1.0 ? double.PositiveInfinity : double.NaN;
@@ -219,8 +218,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                     throw new NotSupportedException();
                 }
 
-                return (((_freedom + 1.0)/2.0)*(SpecialFunctions.DiGamma((1.0 + _freedom)/2.0) - SpecialFunctions.DiGamma(_freedom/2.0)))
-                       + Math.Log(Math.Sqrt(_freedom)*SpecialFunctions.Beta(_freedom/2.0, 1.0/2.0));
+                return (((_freedom + 1.0) / 2.0) * (SpecialFunctions.DiGamma((1.0 + _freedom) / 2.0) - SpecialFunctions.DiGamma(_freedom / 2.0)))
+                       + Math.Log(Math.Sqrt(_freedom) * SpecialFunctions.Beta(_freedom / 2.0, 1.0 / 2.0));
             }
         }
 
@@ -313,22 +312,22 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
         /// <param name="scale">The scale (σ) of the distribution. Range: σ > 0.</param>
         /// <param name="freedom">The degrees of freedom (ν) for the distribution. Range: ν > 0.</param>
         /// <returns>a random number from the standard student-t distribution.</returns>
-        static double SampleUnchecked(System.Random rnd, double location, double scale, double freedom)
+        private static double SampleUnchecked(System.Random rnd, double location, double scale, double freedom)
         {
-            var gamma = Gamma.SampleUnchecked(rnd, 0.5*freedom, 0.5);
-            return Normal.Sample(rnd, location, scale*Math.Sqrt(freedom/gamma));
+            double gamma = Gamma.SampleUnchecked(rnd, 0.5 * freedom, 0.5);
+            return Normal.Sample(rnd, location, scale * Math.Sqrt(freedom / gamma));
         }
 
-        static void SamplesUnchecked(System.Random rnd, double[] values, double location, double scale, double freedom)
+        private static void SamplesUnchecked(System.Random rnd, double[] values, double location, double scale, double freedom)
         {
-            Gamma.SamplesUnchecked(rnd, values, 0.5*freedom, 0.5);
+            Gamma.SamplesUnchecked(rnd, values, 0.5 * freedom, 0.5);
             for (int i = 0; i < values.Length; i++)
             {
-                values[i] = Normal.Sample(rnd, location, scale*Math.Sqrt(freedom/values[i]));
+                values[i] = Normal.Sample(rnd, location, scale * Math.Sqrt(freedom / values[i]));
             }
         }
 
-        static IEnumerable<double> SamplesUnchecked(System.Random rnd, double location, double scale, double freedom)
+        private static IEnumerable<double> SamplesUnchecked(System.Random rnd, double location, double scale, double freedom)
         {
             while (true)
             {
@@ -384,11 +383,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return Normal.PDF(location, scale, x);
             }
 
-            var d = (x - location)/scale;
-            return Math.Exp(SpecialFunctions.GammaLn((freedom + 1.0)/2.0) - SpecialFunctions.GammaLn(freedom/2.0))
-                   *Math.Pow(1.0 + (d*d/freedom), -0.5*(freedom + 1.0))
-                   /Math.Sqrt(freedom*Math.PI)
-                   /scale;
+            double d = (x - location) / scale;
+            return Math.Exp(SpecialFunctions.GammaLn((freedom + 1.0) / 2.0) - SpecialFunctions.GammaLn(freedom / 2.0))
+                   * Math.Pow(1.0 + (d * d / freedom), -0.5 * (freedom + 1.0))
+                   / Math.Sqrt(freedom * Math.PI)
+                   / scale;
         }
 
         /// <summary>
@@ -413,11 +412,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return Normal.PDFLn(location, scale, x);
             }
 
-            var d = (x - location)/scale;
-            return SpecialFunctions.GammaLn((freedom + 1.0)/2.0)
-                   - (0.5*((freedom + 1.0)*Math.Log(1.0 + (d*d/freedom))))
-                   - SpecialFunctions.GammaLn(freedom/2.0)
-                   - (0.5*Math.Log(freedom*Math.PI)) - Math.Log(scale);
+            double d = (x - location) / scale;
+            return SpecialFunctions.GammaLn((freedom + 1.0) / 2.0)
+                   - (0.5 * ((freedom + 1.0) * Math.Log(1.0 + (d * d / freedom))))
+                   - SpecialFunctions.GammaLn(freedom / 2.0)
+                   - (0.5 * Math.Log(freedom * Math.PI)) - Math.Log(scale);
         }
 
         /// <summary>
@@ -442,9 +441,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
                 return Normal.CDF(location, scale, x);
             }
 
-            var k = (x - location)/scale;
-            var h = freedom/(freedom + (k*k));
-            var ib = 0.5*SpecialFunctions.BetaRegularized(freedom/2.0, 0.5, h);
+            double k = (x - location) / scale;
+            double h = freedom / (freedom + (k * k));
+            double ib = 0.5 * SpecialFunctions.BetaRegularized(freedom / 2.0, 0.5, h);
             return x <= location ? ib : 1.0 - ib;
         }
 
@@ -480,9 +479,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Distributions
             // TODO PERF: We must implement this explicitly instead of solving for CDF^-1
             return Brent.FindRoot(x =>
             {
-                var k = (x - location)/scale;
-                var h = freedom/(freedom + (k*k));
-                var ib = 0.5*SpecialFunctions.BetaRegularized(freedom/2.0, 0.5, h);
+                double k = (x - location) / scale;
+                double h = freedom / (freedom + (k * k));
+                double ib = 0.5 * SpecialFunctions.BetaRegularized(freedom / 2.0, 0.5, h);
                 return x <= location ? ib - p : 1.0 - ib - p;
             }, -800, 800, accuracy: 1e-12);
         }

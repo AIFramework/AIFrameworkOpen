@@ -35,18 +35,18 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
             if (power == 2)
             {
-                for (var i = 0; i < _magnitudes.Count; i++)
+                for (int i = 0; i < _magnitudes.Count; i++)
                 {
-                    for (var j = 0; j < _magnitudes[i].Length; j++)
+                    for (int j = 0; j < _magnitudes[i].Length; j++)
                     {
                         _magnitudes[i][j] = (float)Math.Sqrt(_magnitudes[i][j]);
                     }
                 }
             }
 
-            for (var i = 0; i < _magnitudes.Count; i++)
+            for (int i = 0; i < _magnitudes.Count; i++)
             {
-                for (var j = 0; j < _magnitudes[i].Length; j++)
+                for (int j = 0; j < _magnitudes[i].Length; j++)
                 {
                     _magnitudes[i][j] *= 20; // how to calculate this compensation?
                 }
@@ -60,16 +60,16 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <returns>Reconstructed signal</returns>
         public float[] Iterate(float[] signal = null)
         {
-            var magPhase = new MagnitudePhaseList() { Magnitudes = _magnitudes };
+            MagnitudePhaseList magPhase = new MagnitudePhaseList() { Magnitudes = _magnitudes };
 
             if (signal == null)
             {
-                var spectrumSize = _magnitudes[0].Length;
+                int spectrumSize = _magnitudes[0].Length;
 
-                var r = new Random();
-                var randomPhases = new List<float[]>();
+                Random r = new Random();
+                List<float[]> randomPhases = new List<float[]>();
 
-                for (var i = 0; i < _magnitudes.Count; i++)
+                for (int i = 0; i < _magnitudes.Count; i++)
                 {
                     randomPhases.Add(Enumerable.Range(0, spectrumSize)
                                                .Select(s => (float)(2 * Math.PI * r.NextDouble()))
@@ -93,9 +93,9 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <returns></returns>
         public float[] Reconstruct(int iterations = 20)
         {
-            var reconstructed = Iterate();
+            float[] reconstructed = Iterate();
 
-            for (var i = 0; i < iterations - 1; i++)
+            for (int i = 0; i < iterations - 1; i++)
             {
                 reconstructed = Iterate(reconstructed);
             }

@@ -43,8 +43,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
     /// </remarks>
     public class BulirschStoerRationalInterpolation : IInterpolation
     {
-        readonly double[] _x;
-        readonly double[] _y;
+        private readonly double[] _x;
+        private readonly double[] _y;
 
         /// <param name="x">Sample Points t, sorted ascendingly.</param>
         /// <param name="y">Sample Values x(t), sorted ascendingly by x.</param>
@@ -116,8 +116,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
             const double tiny = 1.0e-25;
             int n = _x.Length;
 
-            var c = new double[n];
-            var d = new double[n];
+            double[] c = new double[n];
+            double[] d = new double[n];
 
             int nearestIndex = 0;
             double nearestDistance = Math.Abs(t - _x[0]);
@@ -147,7 +147,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                 for (int i = 0; i < n - level; i++)
                 {
                     double hp = _x[i + level] - t;
-                    double ho = (_x[i] - t)*d[i]/hp;
+                    double ho = (_x[i] - t) * d[i] / hp;
 
                     double den = ho - c[i + 1];
                     if (den.AlmostEqual(0.0))
@@ -155,12 +155,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
                         return double.NaN; // zero-div, singularity
                     }
 
-                    den = (c[i + 1] - d[i])/den;
-                    d[i] = c[i + 1]*den;
-                    c[i] = ho*den;
+                    den = (c[i + 1] - d[i]) / den;
+                    d[i] = c[i + 1] * den;
+                    c[i] = ho * den;
                 }
 
-                x += (2*nearestIndex) < (n - level)
+                x += (2 * nearestIndex) < (n - level)
                     ? c[nearestIndex]
                     : d[--nearestIndex];
             }
@@ -173,26 +173,38 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Interpolation
         /// </summary>
         /// <param name="t">Point t to interpolate at.</param>
         /// <returns>Interpolated first derivative at point t.</returns>
-        double IInterpolation.Differentiate(double t) => throw new NotSupportedException();
+        double IInterpolation.Differentiate(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Differentiate twice at point t. NOT SUPPORTED.
         /// </summary>
         /// <param name="t">Point t to interpolate at.</param>
         /// <returns>Interpolated second derivative at point t.</returns>
-        double IInterpolation.Differentiate2(double t) => throw new NotSupportedException();
+        double IInterpolation.Differentiate2(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Indefinite integral at point t. NOT SUPPORTED.
         /// </summary>
         /// <param name="t">Point t to integrate at.</param>
-        double IInterpolation.Integrate(double t) => throw new NotSupportedException();
+        double IInterpolation.Integrate(double t)
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Definite integral between points a and b. NOT SUPPORTED.
         /// </summary>
         /// <param name="a">Left bound of the integration interval [a,b].</param>
         /// <param name="b">Right bound of the integration interval [a,b].</param>
-        double IInterpolation.Integrate(double a, double b) => throw new NotSupportedException();
+        double IInterpolation.Integrate(double a, double b)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

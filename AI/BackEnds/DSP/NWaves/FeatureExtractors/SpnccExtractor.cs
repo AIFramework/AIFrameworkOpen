@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
+﻿using AI.BackEnds.DSP.NWaves.FeatureExtractors.Base;
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
 using AI.BackEnds.DSP.NWaves.Transforms;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 {
@@ -21,8 +21,12 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         {
             get
             {
-                var names = Enumerable.Range(0, FeatureCount).Select(i => "spncc" + i).ToList();
-                if (_includeEnergy) names[0] = "log_En";
+                List<string> names = Enumerable.Range(0, FeatureCount).Select(i => "spncc" + i).ToList();
+                if (_includeEnergy)
+                {
+                    names[0] = "log_En";
+                }
+
                 return names;
             }
         }
@@ -85,7 +89,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         {
             FeatureCount = options.FeatureCount;
 
-            var filterbankSize = options.FilterBankSize;
+            int filterbankSize = options.FilterBankSize;
 
             if (options.FilterBank == null)
             {
@@ -142,15 +146,15 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // 3) mean power normalization:
 
-            var sumPower = 0.0f;
-            for (var j = 0; j < _filteredSpectrum.Length; j++)
+            float sumPower = 0.0f;
+            for (int j = 0; j < _filteredSpectrum.Length; j++)
             {
                 sumPower += _filteredSpectrum[j];
             }
 
             _mean = LambdaMu * _mean + (1 - LambdaMu) * sumPower;
 
-            for (var j = 0; j < _filteredSpectrum.Length; j++)
+            for (int j = 0; j < _filteredSpectrum.Length; j++)
             {
                 _filteredSpectrum[j] *= meanPower / _mean;
             }
@@ -159,14 +163,14 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             if (_power != 0)
             {
-                for (var j = 0; j < _filteredSpectrum.Length; j++)
+                for (int j = 0; j < _filteredSpectrum.Length; j++)
                 {
                     _filteredSpectrum[j] = (float)Math.Pow(_filteredSpectrum[j], 1.0 / _power);
                 }
             }
             else
             {
-                for (var j = 0; j < _filteredSpectrum.Length; j++)
+                for (int j = 0; j < _filteredSpectrum.Length; j++)
                 {
                     _filteredSpectrum[j] = (float)Math.Log10(_filteredSpectrum[j] + float.Epsilon);
                 }

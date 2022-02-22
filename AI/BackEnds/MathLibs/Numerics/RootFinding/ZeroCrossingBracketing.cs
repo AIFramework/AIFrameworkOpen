@@ -46,7 +46,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
                 yield break;
             }
 
-            double subdiv = (upperBound - lowerBound)/subdivisions;
+            double subdiv = (upperBound - lowerBound) / subdivisions;
             double smin = lowerBound;
             int sign = Math.Sign(fmin);
 
@@ -101,12 +101,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.RootFinding
 
                 if (Math.Abs(fmin) < Math.Abs(fmax))
                 {
-                    lowerBound += factor*(lowerBound - upperBound);
+                    lowerBound += factor * (lowerBound - upperBound);
                     fmin = f(lowerBound);
                 }
                 else
                 {
-                    upperBound += factor*(upperBound - lowerBound);
+                    upperBound += factor * (upperBound - lowerBound);
                     fmax = f(upperBound);
                 }
             }

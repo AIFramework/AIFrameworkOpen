@@ -57,7 +57,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         public override float NextSample()
         {
-            var sample = Math.Cos(2 * Math.PI * _frequency / SamplingRate * _n + _phase);
+            double sample = Math.Cos(2 * Math.PI * _frequency / SamplingRate * _n + _phase);
 
             // map it to [min, max] range:
 

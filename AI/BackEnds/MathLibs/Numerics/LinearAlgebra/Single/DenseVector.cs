@@ -27,14 +27,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
 {
@@ -50,12 +50,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <summary>
         /// Number of elements
         /// </summary>
-        readonly int _length;
+        private readonly int _length;
 
         /// <summary>
         /// Gets the vector's data.
         /// </summary>
-        readonly float[] _values;
+        private readonly float[] _values;
 
         /// <summary>
         /// Create a new dense vector straight from an initialized vector storage instance.
@@ -147,7 +147,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseVector Create(int length, float value)
         {
-            if (value == 0f) return new DenseVector(length);
+            if (value == 0f)
+            {
+                return new DenseVector(length);
+            }
+
             return new DenseVector(DenseVectorStorage<float>.OfValue(length, value));
         }
 
@@ -164,7 +168,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// </summary>
         public static DenseVector CreateRandom(int length, IContinuousDistribution distribution)
         {
-            var samples = Generate.RandomSingle(length, distribution);
+            float[] samples = Generate.RandomSingle(length, distribution);
             return new DenseVector(new DenseVectorStorage<float>(length, samples));
         }
 
@@ -528,11 +532,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <returns>The index of absolute minimum element.</returns>
         public override int AbsoluteMinimumIndex()
         {
-            var index = 0;
-            var min = Math.Abs(_values[index]);
-            for (var i = 1; i < _length; i++)
+            int index = 0;
+            float min = Math.Abs(_values[index]);
+            for (int i = 1; i < _length; i++)
             {
-                var test = Math.Abs(_values[i]);
+                float test = Math.Abs(_values[i]);
                 if (test < min)
                 {
                     index = i;
@@ -549,11 +553,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <returns>The index of absolute maximum element.</returns>
         public override int AbsoluteMaximumIndex()
         {
-            var index = 0;
-            var max = Math.Abs(_values[index]);
-            for (var i = 1; i < _length; i++)
+            int index = 0;
+            float max = Math.Abs(_values[index]);
+            for (int i = 1; i < _length; i++)
             {
-                var test = Math.Abs(_values[i]);
+                float test = Math.Abs(_values[i]);
                 if (test > max)
                 {
                     index = i;
@@ -570,9 +574,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <returns>The index of maximum element.</returns>
         public override int MaximumIndex()
         {
-            var index = 0;
-            var max = _values[0];
-            for (var i = 1; i < _length; i++)
+            int index = 0;
+            float max = _values[0];
+            for (int i = 1; i < _length; i++)
             {
                 if (max < _values[i])
                 {
@@ -590,9 +594,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <returns>The index of minimum element.</returns>
         public override int MinimumIndex()
         {
-            var index = 0;
-            var min = _values[0];
-            for (var i = 1; i < _length; i++)
+            int index = 0;
+            float min = _values[0];
+            for (int i = 1; i < _length; i++)
             {
                 if (min > _values[i])
                 {
@@ -610,8 +614,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <returns>The sum of the vector's elements.</returns>
         public override float Sum()
         {
-            var sum = 0f;
-            for (var i = 0; i < _length; i++)
+            float sum = 0f;
+            for (int i = 0; i < _length; i++)
             {
                 sum += _values[i];
             }
@@ -625,7 +629,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         public override double L1Norm()
         {
             double sum = 0d;
-            for (var i = 0; i < _length; i++)
+            for (int i = 0; i < _length; i++)
             {
                 sum += Math.Abs(_values[i]);
             }
@@ -658,14 +662,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
         /// <returns>Scalar <c>ret = ( ∑|this[i]|^p )^(1/p)</c></returns>
         public override double Norm(double p)
         {
-            if (p < 0d) throw new ArgumentOutOfRangeException(nameof(p));
+            if (p < 0d)
+            {
+                throw new ArgumentOutOfRangeException(nameof(p));
+            }
 
-            if (p == 1d) return L1Norm();
-            if (p == 2d) return L2Norm();
-            if (double.IsPositiveInfinity(p)) return InfinityNorm();
+            if (p == 1d)
+            {
+                return L1Norm();
+            }
+
+            if (p == 2d)
+            {
+                return L2Norm();
+            }
+
+            if (double.IsPositiveInfinity(p))
+            {
+                return InfinityNorm();
+            }
 
             double sum = 0d;
-            for (var index = 0; index < _length; index++)
+            for (int index = 0; index < _length; index++)
             {
                 sum += Math.Pow(Math.Abs(_values[index]), p);
             }
@@ -774,9 +792,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Single
             }
 
             // parsing
-            var tokens = value.Split(new[] { formatProvider.GetTextInfo().ListSeparator, " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
-            var data = tokens.Select(t => float.Parse(t, NumberStyles.Any, formatProvider)).ToArray();
-            if (data.Length == 0) throw new FormatException();
+            string[] tokens = value.Split(new[] { formatProvider.GetTextInfo().ListSeparator, " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
+            float[] data = tokens.Select(t => float.Parse(t, NumberStyles.Any, formatProvider)).ToArray();
+            if (data.Length == 0)
+            {
+                throw new FormatException();
+            }
+
             return new DenseVector(data);
         }
 

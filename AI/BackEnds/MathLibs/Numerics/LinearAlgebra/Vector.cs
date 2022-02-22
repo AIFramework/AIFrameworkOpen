@@ -27,12 +27,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
 {
@@ -76,13 +76,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
             [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
-            get { return Storage[index]; }
+            get => Storage[index];
 
 #if !NET40
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
             [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
-            set { Storage[index] = value; }
+            set => Storage[index] = value;
         }
 
         /// <summary>Gets the value at the given <paramref name="index"/> without range checking..</summary>
@@ -154,7 +154,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A deep-copy clone of the vector.</returns>
         public VectorMathNet<T> Clone()
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             Storage.CopyToUnchecked(result.Storage, ExistingData.AssumeZeros);
             return result;
         }
@@ -167,7 +167,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <exception cref="ArgumentException">If <paramref name="values"/> is not the same size as this vector.</exception>
         public void SetValues(T[] values)
         {
-            var source = new DenseVectorStorage<T>(Count, values);
+            DenseVectorStorage<T> source = new DenseVectorStorage<T>(Count, values);
             source.CopyTo(Storage);
         }
 
@@ -200,7 +200,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <exception cref="ArgumentException">If <paramref name="count"/> is not positive.</exception>
         public VectorMathNet<T> SubVector(int index, int count)
         {
-            var target = Build.SameAs(this, count);
+            VectorMathNet<T> target = Build.SameAs(this, count);
             Storage.CopySubVectorTo(target.Storage, index, 0, count, ExistingData.AssumeZeros);
             return target;
         }
@@ -269,7 +269,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </returns>
         public MatrixMathNet<T> ToColumnMatrix()
         {
-            var result = MatrixMathNet<T>.Build.SameAs(this, Count, 1);
+            MatrixMathNet<T> result = MatrixMathNet<T>.Build.SameAs(this, Count, 1);
             Storage.CopyToColumnUnchecked(result.Storage, 0, ExistingData.AssumeZeros);
             return result;
         }
@@ -282,7 +282,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </returns>
         public MatrixMathNet<T> ToRowMatrix()
         {
-            var result = MatrixMathNet<T>.Build.SameAs(this, 1, Count);
+            MatrixMathNet<T> result = MatrixMathNet<T>.Build.SameAs(this, 1, Count);
             Storage.CopyToRowUnchecked(result.Storage, 0, ExistingData.AssumeZeros);
             return result;
         }
@@ -434,7 +434,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         public VectorMathNet<TU> Map<TU>(Func<T, TU> f, Zeros zeros = Zeros.AllowSkip)
             where TU : struct, IEquatable<TU>, IFormattable
         {
-            var result = VectorMathNet<TU>.Build.SameAs(this);
+            VectorMathNet<TU> result = VectorMathNet<TU>.Build.SameAs(this);
             Storage.MapToUnchecked(result.Storage, f, zeros, ExistingData.AssumeZeros);
             return result;
         }
@@ -448,7 +448,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         public VectorMathNet<TU> MapIndexed<TU>(Func<int, T, TU> f, Zeros zeros = Zeros.AllowSkip)
             where TU : struct, IEquatable<TU>, IFormattable
         {
-            var result = VectorMathNet<TU>.Build.SameAs(this);
+            VectorMathNet<TU> result = VectorMathNet<TU>.Build.SameAs(this);
             Storage.MapIndexedToUnchecked(result.Storage, f, zeros, ExistingData.AssumeZeros);
             return result;
         }
@@ -466,7 +466,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// </summary>
         public VectorMathNet<T> Map2(Func<T, T, T> f, VectorMathNet<T> other, Zeros zeros = Zeros.AllowSkip)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             Storage.Map2To(result.Storage, other.Storage, f, zeros, ExistingData.AssumeZeros);
             return result;
         }

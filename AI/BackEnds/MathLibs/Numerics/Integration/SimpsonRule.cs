@@ -50,8 +50,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                 throw new ArgumentNullException(nameof(f));
             }
 
-            double midpoint = (intervalEnd + intervalBegin)/2;
-            return (intervalEnd - intervalBegin)/6*(f(intervalBegin) + f(intervalEnd) + (4*f(midpoint)));
+            double midpoint = (intervalEnd + intervalBegin) / 2;
+            return (intervalEnd - intervalBegin) / 6 * (f(intervalBegin) + f(intervalEnd) + (4 * f(midpoint)));
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
                 throw new ArgumentException("Value must be even.", nameof(numberOfPartitions));
             }
 
-            double step = (intervalEnd - intervalBegin)/numberOfPartitions;
-            double factor = step/3;
+            double step = (intervalEnd - intervalBegin) / numberOfPartitions;
+            double factor = step / 3;
 
             double offset = step;
             int m = 4;
@@ -88,12 +88,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Integration
             for (int i = 0; i < numberOfPartitions - 1; i++)
             {
                 // NOTE (cdrnet, 2009-01-07): Do not combine intervalBegin and offset (numerical stability)
-                sum += m*f(intervalBegin + offset);
+                sum += m * f(intervalBegin + offset);
                 m = 6 - m;
                 offset += step;
             }
 
-            return factor*sum;
+            return factor * sum;
         }
     }
 }

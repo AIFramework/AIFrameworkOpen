@@ -122,8 +122,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="result">The matrix to store the result of the product.</param>
         protected void DoOuterProduct(VectorMathNet<T> other, MatrixMathNet<T> result)
         {
-            var work = Build.Dense(Count);
-            for (var i = 0; i < other.Count; i++)
+            VectorMathNet<T> work = Build.Dense(Count);
+            for (int i = 0; i < other.Count; i++)
             {
                 DoMultiply(other.At(i), work);
                 result.SetColumn(i, work);
@@ -271,7 +271,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return Clone();
             }
 
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoAdd(scalar, result);
             return result;
         }
@@ -311,7 +311,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("All vectors must have the same dimensionality.", nameof(other));
             }
 
-            var result = Build.SameAs(this, other);
+            VectorMathNet<T> result = Build.SameAs(this, other);
             DoAdd(other, result);
             return result;
         }
@@ -345,7 +345,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return Clone();
             }
 
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoSubtract(scalar, result);
             return result;
         }
@@ -379,7 +379,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A new vector containing the subtraction of the scalar and this vector.</returns>
         public VectorMathNet<T> SubtractFrom(T scalar)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoSubtractFrom(scalar, result);
             return result;
         }
@@ -407,7 +407,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <remarks>Added as an alternative to the unary negation operator.</remarks>
         public VectorMathNet<T> Negate()
         {
-            var retrunVector = Build.SameAs(this);
+            VectorMathNet<T> retrunVector = Build.SameAs(this);
             DoNegate(retrunVector);
             return retrunVector;
         }
@@ -439,7 +439,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("All vectors must have the same dimensionality.", nameof(other));
             }
 
-            var result = Build.SameAs(this, other);
+            VectorMathNet<T> result = Build.SameAs(this, other);
             DoSubtract(other, result);
             return result;
         }
@@ -467,7 +467,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>Conjugated vector</returns>
         public VectorMathNet<T> Conjugate()
         {
-            var retrunVector = Build.SameAs(this);
+            VectorMathNet<T> retrunVector = Build.SameAs(this);
             DoConjugate(retrunVector);
             return retrunVector;
         }
@@ -503,7 +503,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return Build.SameAs(this);
             }
 
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoMultiply(scalar, result);
             return result;
         }
@@ -545,7 +545,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <seealso cref="ConjugateDotProduct"/>
         public T DotProduct(VectorMathNet<T> other)
         {
-            if (Count != other.Count) throw new ArgumentException("All vectors must have the same dimensionality.", nameof(other));
+            if (Count != other.Count)
+            {
+                throw new ArgumentException("All vectors must have the same dimensionality.", nameof(other));
+            }
 
             return DoDotProduct(other);
         }
@@ -560,7 +563,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <seealso cref="DotProduct"/>
         public T ConjugateDotProduct(VectorMathNet<T> other)
         {
-            if (Count != other.Count) throw new ArgumentException("All vectors must have the same dimensionality.", nameof(other));
+            if (Count != other.Count)
+            {
+                throw new ArgumentException("All vectors must have the same dimensionality.", nameof(other));
+            }
 
             return DoConjugateDotProduct(other);
         }
@@ -577,7 +583,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 return Clone();
             }
 
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoDivide(scalar, result);
             return result;
         }
@@ -611,7 +617,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A new vector that is the division of the vector and the scalar.</returns>
         public VectorMathNet<T> DivideByThis(T scalar)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoDivideByThis(scalar, result);
             return result;
         }
@@ -640,7 +646,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A vector containing the result.</returns>
         public VectorMathNet<T> Modulus(T divisor)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoModulus(divisor, result);
             return result;
         }
@@ -669,7 +675,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A vector containing the result.</returns>
         public VectorMathNet<T> ModulusByThis(T dividend)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoModulusByThis(dividend, result);
             return result;
         }
@@ -698,7 +704,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A vector containing the result.</returns>
         public VectorMathNet<T> Remainder(T divisor)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoRemainder(divisor, result);
             return result;
         }
@@ -727,7 +733,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>A vector containing the result.</returns>
         public VectorMathNet<T> RemainderByThis(T dividend)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoRemainderByThis(dividend, result);
             return result;
         }
@@ -761,7 +767,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("All vectors must have the same dimensionality.", nameof(other));
             }
 
-            var result = Build.SameAs(this, other);
+            VectorMathNet<T> result = Build.SameAs(this, other);
             DoPointwiseMultiply(other, result);
             return result;
         }
@@ -801,7 +807,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("All vectors must have the same dimensionality.", nameof(divisor));
             }
 
-            var result = Build.SameAs(this, divisor);
+            VectorMathNet<T> result = Build.SameAs(this, divisor);
             DoPointwiseDivide(divisor, result);
             return result;
         }
@@ -834,7 +840,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="exponent">The exponent to raise this vector values to.</param>
         public VectorMathNet<T> PointwisePower(T exponent)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoPointwisePower(exponent, result);
             return result;
         }
@@ -866,7 +872,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("All vectors must have the same dimensionality.", nameof(exponent));
             }
 
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoPointwisePower(exponent, result);
             return result;
         }
@@ -905,7 +911,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("All vectors must have the same dimensionality.", nameof(divisor));
             }
 
-            var result = Build.SameAs(this, divisor);
+            VectorMathNet<T> result = Build.SameAs(this, divisor);
             DoPointwiseModulus(divisor, result);
             return result;
         }
@@ -945,7 +951,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("All vectors must have the same dimensionality.", nameof(divisor));
             }
 
-            var result = Build.SameAs(this, divisor);
+            VectorMathNet<T> result = Build.SameAs(this, divisor);
             DoPointwiseRemainder(divisor, result);
             return result;
         }
@@ -983,7 +989,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>New instance of vector which is the result</returns>
         protected VectorMathNet<T> PointwiseUnary(Action<VectorMathNet<T>> f)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             f(result);
             return result;
         }
@@ -1016,7 +1022,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <returns>The resulting vector</returns>
         protected VectorMathNet<T> PointwiseBinary(Action<T, VectorMathNet<T>> f, T other)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             f(other, result);
             return result;
         }
@@ -1055,7 +1061,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
                 throw new ArgumentException("All vectors must have the same dimensionality.", nameof(other));
             }
 
-            var result = Build.SameAs(this, other);
+            VectorMathNet<T> result = Build.SameAs(this, other);
             f(other, result);
             return result;
         }
@@ -1419,7 +1425,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="other">The other vector</param>
         public MatrixMathNet<T> OuterProduct(VectorMathNet<T> other)
         {
-            var matrix = MatrixMathNet<T>.Build.SameAs(this, Count, other.Count);
+            MatrixMathNet<T> matrix = MatrixMathNet<T>.Build.SameAs(this, Count, other.Count);
             DoOuterProduct(other, matrix);
             return matrix;
         }
@@ -1450,7 +1456,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="scalar">The scalar value to compare to.</param>
         public VectorMathNet<T> PointwiseMinimum(T scalar)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoPointwiseMinimum(scalar, result);
             return result;
         }
@@ -1477,7 +1483,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="scalar">The scalar value to compare to.</param>
         public VectorMathNet<T> PointwiseMaximum(T scalar)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoPointwiseMaximum(scalar, result);
             return result;
         }
@@ -1504,7 +1510,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="scalar">The scalar value to compare to.</param>
         public VectorMathNet<T> PointwiseAbsoluteMinimum(T scalar)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoPointwiseAbsoluteMinimum(scalar, result);
             return result;
         }
@@ -1531,7 +1537,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="scalar">The scalar value to compare to.</param>
         public VectorMathNet<T> PointwiseAbsoluteMaximum(T scalar)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoPointwiseAbsoluteMaximum(scalar, result);
             return result;
         }
@@ -1558,7 +1564,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="other">The vector with the values to compare to.</param>
         public VectorMathNet<T> PointwiseMinimum(VectorMathNet<T> other)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoPointwiseMinimum(other, result);
             return result;
         }
@@ -1585,7 +1591,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="other">The vector with the values to compare to.</param>
         public VectorMathNet<T> PointwiseMaximum(VectorMathNet<T> other)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoPointwiseMaximum(other, result);
             return result;
         }
@@ -1612,7 +1618,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="other">The vector with the values to compare to.</param>
         public VectorMathNet<T> PointwiseAbsoluteMinimum(VectorMathNet<T> other)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoPointwiseAbsoluteMinimum(other, result);
             return result;
         }
@@ -1639,7 +1645,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra
         /// <param name="other">The vector with the values to compare to.</param>
         public VectorMathNet<T> PointwiseAbsoluteMaximum(VectorMathNet<T> other)
         {
-            var result = Build.SameAs(this);
+            VectorMathNet<T> result = Build.SameAs(this);
             DoPointwiseAbsoluteMaximum(other, result);
             return result;
         }

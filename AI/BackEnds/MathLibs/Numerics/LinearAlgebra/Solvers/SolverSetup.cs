@@ -44,17 +44,17 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
         /// <param name="typesToExclude">The <see cref="IIterativeSolver{T}"/> types that should not be loaded.</param>
         public static IEnumerable<IIterativeSolverSetup<T>> LoadFromAssembly(Assembly assembly, bool ignoreFailed = true, params Type[] typesToExclude)
         {
-            Type setupInterfaceType = typeof (IIterativeSolverSetup<T>);
+            Type setupInterfaceType = typeof(IIterativeSolverSetup<T>);
             IEnumerable<Type> candidates = assembly.GetTypes()
                 .Where(type => !type.IsAbstract && !type.IsEnum && !type.IsInterface && type.IsVisible)
                 .Where(type => type.GetInterfaces().Any(setupInterfaceType.IsAssignableFrom));
 
-            var setups = new List<IIterativeSolverSetup<T>>();
-            foreach (var type in candidates)
+            List<IIterativeSolverSetup<T>> setups = new List<IIterativeSolverSetup<T>>();
+            foreach (Type type in candidates)
             {
                 try
                 {
-                    setups.Add((IIterativeSolverSetup<T>) Activator.CreateInstance(type));
+                    setups.Add((IIterativeSolverSetup<T>)Activator.CreateInstance(type));
                 }
                 catch
                 {
@@ -65,10 +65,10 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Solvers
                 }
             }
 
-            var excludedTypes = new List<Type>(typesToExclude);
+            List<Type> excludedTypes = new List<Type>(typesToExclude);
             return setups
                 .Where(s => !excludedTypes.Any(t => t.IsAssignableFrom(s.SolverType) || t.IsAssignableFrom(s.PreconditionerType)))
-                .OrderBy(s => s.SolutionSpeed/s.Reliability);
+                .OrderBy(s => s.SolutionSpeed / s.Reliability);
         }
 
         /// <summary>

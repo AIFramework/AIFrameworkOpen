@@ -28,9 +28,9 @@
 // </copyright>
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Threading
 {
@@ -39,7 +39,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Threading
     /// </summary>
     internal static class CommonParallel
     {
-        static ParallelOptions CreateParallelOptions()
+        private static ParallelOptions CreateParallelOptions()
         {
             return new ParallelOptions
             {
@@ -56,7 +56,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Threading
         /// <param name="body">The body to be invoked for each iteration range.</param>
         public static void For(int fromInclusive, int toExclusive, Action<int, int> body)
         {
-            For(fromInclusive, toExclusive, Math.Max(1, (toExclusive - fromInclusive)/Control.MaxDegreeOfParallelism), body);
+            For(fromInclusive, toExclusive, Math.Max(1, (toExclusive - fromInclusive) / Control.MaxDegreeOfParallelism), body);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Threading
                 throw new ArgumentOutOfRangeException(nameof(rangeSize));
             }
 
-            var length = toExclusive - fromInclusive;
+            int length = toExclusive - fromInclusive;
 
             // Special case: nothing to do
             if (length <= 0)
@@ -97,7 +97,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Threading
             }
 
             // Special case: not worth to parallelize, inline
-            if (Control.MaxDegreeOfParallelism < 2 || (rangeSize*2) > length)
+            if (Control.MaxDegreeOfParallelism < 2 || (rangeSize * 2) > length)
             {
                 body(fromInclusive, toExclusive);
                 return;
@@ -183,7 +183,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Threading
             // Special case: straight execution without parallelism
             if (Control.MaxDegreeOfParallelism < 2)
             {
-                var mapped = new T[toExclusive - fromInclusive];
+                T[] mapped = new T[toExclusive - fromInclusive];
                 for (int k = 0; k < mapped.Length; k++)
                 {
                     mapped[k] = select(k + fromInclusive);
@@ -193,15 +193,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Threading
             }
 
             // Common case
-            var intermediateResults = new List<T>();
-            var syncLock = new object();
+            List<T> intermediateResults = new List<T>();
+            object syncLock = new object();
             Parallel.ForEach(
                 Partitioner.Create(fromInclusive, toExclusive),
                 CreateParallelOptions(),
                 () => new List<T>(),
                 (range, loop, localData) =>
                 {
-                    var mapped = new T[range.Item2 - range.Item1];
+                    T[] mapped = new T[range.Item2 - range.Item1];
                     for (int k = 0; k < mapped.Length; k++)
                     {
                         mapped[k] = select(k + range.Item1);
@@ -254,7 +254,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Threading
             // Special case: straight execution without parallelism
             if (Control.MaxDegreeOfParallelism < 2)
             {
-                var mapped = new TOut[array.Length];
+                TOut[] mapped = new TOut[array.Length];
                 for (int k = 0; k < mapped.Length; k++)
                 {
                     mapped[k] = select(k, array[k]);
@@ -264,15 +264,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Threading
             }
 
             // Common case
-            var intermediateResults = new List<TOut>();
-            var syncLock = new object();
+            List<TOut> intermediateResults = new List<TOut>();
+            object syncLock = new object();
             Parallel.ForEach(
                 Partitioner.Create(0, array.Length),
                 CreateParallelOptions(),
                 () => new List<TOut>(),
                 (range, loop, localData) =>
                 {
-                    var mapped = new TOut[range.Item2 - range.Item1];
+                    TOut[] mapped = new TOut[range.Item2 - range.Item1];
                     for (int k = 0; k < mapped.Length; k++)
                     {
                         mapped[k] = select(k + range.Item1, array[k + range.Item1]);

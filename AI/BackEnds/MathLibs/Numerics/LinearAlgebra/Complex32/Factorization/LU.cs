@@ -57,8 +57,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Complex32.Factoriz
         {
             get
             {
-                var det = Complex32.One;
-                for (var j = 0; j < Factors.RowCount; j++)
+                Complex32 det = Complex32.One;
+                for (int j = 0; j < Factors.RowCount; j++)
                 {
                     if (Pivots[j] != j)
                     {

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using AI.BackEnds.DSP.NWaves.Audio.Interfaces;
+using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AI.BackEnds.DSP.NWaves.Audio.Interfaces;
-using AI.BackEnds.DSP.NWaves.Signals;
 
 namespace AI.BackEnds.DSP.NWaves.Audio
 {
@@ -47,7 +47,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         /// <exception>Possible null exception</exception>
         public WaveFile(Stream waveStream, bool normalized = true)
         {
-            using (var reader = new BinaryReader(waveStream))
+            using (BinaryReader reader = new BinaryReader(waveStream))
             {
                 if (reader.ReadInt32() != 0x46464952)     // "RIFF"
                 {
@@ -64,11 +64,11 @@ namespace AI.BackEnds.DSP.NWaves.Audio
 
                 // try to find "fmt " header in the file:
 
-                var fmtPosition = reader.BaseStream.Position;
+                long fmtPosition = reader.BaseStream.Position;
                 while (fmtPosition != reader.BaseStream.Length - 1)
                 {
                     reader.BaseStream.Position = fmtPosition;
-                    var fmtId = reader.ReadInt32();
+                    int fmtId = reader.ReadInt32();
                     if (fmtId == 0x20746D66)
                     {
                         break;
@@ -81,7 +81,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
                     throw new FormatException("NOT fmt !");
                 }
 
-                var fmtSize = reader.ReadInt32();
+                int fmtSize = reader.ReadInt32();
 
                 WaveFormat waveFmt;
                 waveFmt.AudioFormat = reader.ReadInt16();
@@ -95,18 +95,18 @@ namespace AI.BackEnds.DSP.NWaves.Audio
 
                 if (fmtSize == 18)
                 {
-                    var fmtExtraSize = reader.ReadInt16();
+                    short fmtExtraSize = reader.ReadInt16();
                     reader.ReadBytes(fmtExtraSize);
                 }
 
                 // there may be some wavefile meta info here,
                 // so try to find "data" header in the file:
 
-                var dataPosition = reader.BaseStream.Position;
+                long dataPosition = reader.BaseStream.Position;
                 while (dataPosition != reader.BaseStream.Length - 1)
                 {
                     reader.BaseStream.Position = dataPosition;
-                    var dataId = reader.ReadInt32();
+                    int dataId = reader.ReadInt32();
                     if (dataId == 0x61746164)
                     {
                         break;
@@ -119,14 +119,14 @@ namespace AI.BackEnds.DSP.NWaves.Audio
                     throw new FormatException("NOT data!");
                 }
 
-                var length = reader.ReadInt32();
+                int length = reader.ReadInt32();
 
                 length /= waveFmt.ChannelCount;
                 length /= (waveFmt.BitsPerSample / 8);
 
                 Signals = new List<DiscreteSignal>();
 
-                for (var i = 0; i < waveFmt.ChannelCount; i++)
+                for (int i = 0; i < waveFmt.ChannelCount; i++)
                 {
                     Signals.Add(new DiscreteSignal(waveFmt.SamplingRate, length));
                 }
@@ -134,60 +134,72 @@ namespace AI.BackEnds.DSP.NWaves.Audio
                 switch (waveFmt.BitsPerSample)
                 {
                     case 8:
-                    {
-                        for (var i = 0; i < length; i++)
                         {
-                            for (var j = 0; j < waveFmt.ChannelCount; j++)
+                            for (int i = 0; i < length; i++)
                             {
-                                Signals[j][i] = reader.ReadByte() - 128;
-                                if (normalized) Signals[j][i] /= 128;
+                                for (int j = 0; j < waveFmt.ChannelCount; j++)
+                                {
+                                    Signals[j][i] = reader.ReadByte() - 128;
+                                    if (normalized)
+                                    {
+                                        Signals[j][i] /= 128;
+                                    }
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
 
                     case 16:
-                    {
-                        for (var i = 0; i < length; i++)
                         {
-                            for (var j = 0; j < waveFmt.ChannelCount; j++)
+                            for (int i = 0; i < length; i++)
                             {
-                                Signals[j][i] = reader.ReadInt16();
-                                if (normalized) Signals[j][i] /= 32768;
+                                for (int j = 0; j < waveFmt.ChannelCount; j++)
+                                {
+                                    Signals[j][i] = reader.ReadInt16();
+                                    if (normalized)
+                                    {
+                                        Signals[j][i] /= 32768;
+                                    }
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
 
                     case 32:
-                    {
-                        for (var i = 0; i < length; i++)
                         {
-                            for (var j = 0; j < waveFmt.ChannelCount; j++)
+                            for (int i = 0; i < length; i++)
                             {
-                                Signals[j][i] = reader.ReadInt32();
-                                if (normalized) Signals[j][i] /= 2147483648;
+                                for (int j = 0; j < waveFmt.ChannelCount; j++)
+                                {
+                                    Signals[j][i] = reader.ReadInt32();
+                                    if (normalized)
+                                    {
+                                        Signals[j][i] /= 2147483648;
+                                    }
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
 
                     case 24:
-                    {
-                        for (var i = 0; i < length; i++)
                         {
-                            for (var j = 0; j < waveFmt.ChannelCount; j++)
+                            for (int i = 0; i < length; i++)
                             {
-                                var b1 = reader.ReadByte();
-                                var b2 = reader.ReadByte();
-                                var b3 = reader.ReadByte();
+                                for (int j = 0; j < waveFmt.ChannelCount; j++)
+                                {
+                                    byte b1 = reader.ReadByte();
+                                    byte b2 = reader.ReadByte();
+                                    byte b3 = reader.ReadByte();
 
-                                Signals[j][i] = (b1 << 8 | b2 << 16 | b3 << 24);
-                                if (normalized) Signals[j][i] /= 2147483648;
+                                    Signals[j][i] = (b1 << 8 | b2 << 16 | b3 << 24);
+                                    if (normalized)
+                                    {
+                                        Signals[j][i] /= 2147483648;
+                                    }
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
 
                     default:
                         throw new ArgumentException(
@@ -208,24 +220,24 @@ namespace AI.BackEnds.DSP.NWaves.Audio
                 throw new ArgumentException("At least one signal must be provided");
             }
 
-            var samplingRate = signals[0].SamplingRate;
+            int samplingRate = signals[0].SamplingRate;
             if (signals.Any(s => s.SamplingRate != samplingRate))
             {
                 throw new ArgumentException("Signals must be sampled at the same sampling rate");
             }
 
-            var length = signals[0].Length;
+            int length = signals[0].Length;
             if (signals.Any(s => s.Length != length))
             {
                 throw new ArgumentException("Signals must have the same length");
             }
-            
+
             if (!SupportedBitDepths.Contains(bitsPerSample))
             {
                 throw new ArgumentException(
                             "Wrong bit depth! Supported values are: " + string.Join(", ", SupportedBitDepths));
             }
-            
+
             WaveFormat waveFmt;
             waveFmt.AudioFormat = 1;                        // PCM
             waveFmt.ChannelCount = (short)signals.Count;    // number of channels
@@ -245,7 +257,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         /// </summary>
         /// <param name="signal">Signal to be loaded into container</param>
         /// <param name="bitsPerSample">Bit depth</param>
-        public WaveFile(DiscreteSignal signal, short bitsPerSample = 16) : this(new [] { signal }, bitsPerSample)
+        public WaveFile(DiscreteSignal signal, short bitsPerSample = 16) : this(new[] { signal }, bitsPerSample)
         {
         }
 
@@ -256,15 +268,15 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         /// <param name="normalized">Normalization flag</param>
         public void SaveTo(Stream waveStream, bool normalized = true)
         {
-            using (var writer = new BinaryWriter(waveStream))
+            using (BinaryWriter writer = new BinaryWriter(waveStream))
             {
-                var length = Signals[0].Length;
+                int length = Signals[0].Length;
 
                 writer.Write(0x46464952);     // "RIFF"
-                
-                var dataSize = length * WaveFmt.ChannelCount * WaveFmt.BitsPerSample / 8;
 
-                var fileSize = 36 + dataSize;
+                int dataSize = length * WaveFmt.ChannelCount * WaveFmt.BitsPerSample / 8;
+
+                int fileSize = 36 + dataSize;
                 writer.Write(fileSize);
 
                 writer.Write(0x45564157);     // "WAVE"
@@ -277,67 +289,67 @@ namespace AI.BackEnds.DSP.NWaves.Audio
                 writer.Write(WaveFmt.ByteRate);
                 writer.Write(WaveFmt.Align);
                 writer.Write(WaveFmt.BitsPerSample);
-                
+
                 writer.Write(0x61746164);      // "data"
                 writer.Write(dataSize);
 
                 switch (WaveFmt.BitsPerSample)
                 {
                     case 8:
-                    {
-                        for (var i = 0; i < length; i++)
                         {
-                            for (var j = 0; j < WaveFmt.ChannelCount; j++)
+                            for (int i = 0; i < length; i++)
                             {
-                                var sample = normalized ? Signals[j][i] * 128 + 128 : Signals[j][i];
-                                writer.Write((sbyte) sample);
+                                for (int j = 0; j < WaveFmt.ChannelCount; j++)
+                                {
+                                    float sample = normalized ? Signals[j][i] * 128 + 128 : Signals[j][i];
+                                    writer.Write((sbyte)sample);
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
 
                     case 16:
-                    {
-                        for (var i = 0; i < length; i++)
                         {
-                            for (var j = 0; j < WaveFmt.ChannelCount; j++)
+                            for (int i = 0; i < length; i++)
                             {
-                                var sample = normalized ? Signals[j][i] * 32768 : Signals[j][i];
-                                writer.Write((short) sample);
+                                for (int j = 0; j < WaveFmt.ChannelCount; j++)
+                                {
+                                    float sample = normalized ? Signals[j][i] * 32768 : Signals[j][i];
+                                    writer.Write((short)sample);
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
 
                     case 32:
-                    {
-                        for (var i = 0; i < length; i++)
                         {
-                            for (var j = 0; j < WaveFmt.ChannelCount; j++)
+                            for (int i = 0; i < length; i++)
                             {
-                                var sample = normalized ? Signals[j][i] * 2147483648 : Signals[j][i];
-                                writer.Write((int) sample);
+                                for (int j = 0; j < WaveFmt.ChannelCount; j++)
+                                {
+                                    float sample = normalized ? Signals[j][i] * 2147483648 : Signals[j][i];
+                                    writer.Write((int)sample);
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
 
                     case 24:
-                    {
-                        for (var i = 0; i < length; i++)
                         {
-                            for (var j = 0; j < WaveFmt.ChannelCount; j++)
+                            for (int i = 0; i < length; i++)
                             {
-                                var sample = normalized ? Signals[j][i] * 2147483648 : Signals[j][i];
-                                var s = (int) sample;
+                                for (int j = 0; j < WaveFmt.ChannelCount; j++)
+                                {
+                                    float sample = normalized ? Signals[j][i] * 2147483648 : Signals[j][i];
+                                    int s = (int)sample;
 
-                                var b = (byte)(s >> 8);  writer.Write(b);
+                                    byte b = (byte)(s >> 8); writer.Write(b);
                                     b = (byte)(s >> 16); writer.Write(b);
                                     b = (byte)(s >> 24); writer.Write(b);
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
                 }
             }
         }
@@ -369,17 +381,17 @@ namespace AI.BackEnds.DSP.NWaves.Audio
                     return Signals[0];
                 }
 
-                var length = Signals[0].Length;
+                int length = Signals[0].Length;
 
                 // 1) SUMMING
 
                 if (channel == Channels.Sum)
                 {
-                    var sumSamples = new float[length];
+                    float[] sumSamples = new float[length];
 
-                    for (var i = 0; i < sumSamples.Length; i++)
+                    for (int i = 0; i < sumSamples.Length; i++)
                     {
-                        for (var j = 0; j < Signals.Count; j++)
+                        for (int j = 0; j < Signals.Count; j++)
                         {
                             sumSamples[i] += Signals[j][i];
                         }
@@ -392,11 +404,11 @@ namespace AI.BackEnds.DSP.NWaves.Audio
 
                 if (channel == Channels.Average)
                 {
-                    var avgSamples = new float [length];
+                    float[] avgSamples = new float[length];
 
-                    for (var i = 0; i < avgSamples.Length; i++)
+                    for (int i = 0; i < avgSamples.Length; i++)
                     {
-                        for (var j = 0; j < Signals.Count; j++)
+                        for (int j = 0; j < Signals.Count; j++)
                         {
                             avgSamples[i] += Signals[j][i];
                         }
@@ -408,12 +420,12 @@ namespace AI.BackEnds.DSP.NWaves.Audio
 
                 // 3) if it ain't mono, we start ACTUALLY interleaving:
 
-                var samples = new float[WaveFmt.ChannelCount * length];
+                float[] samples = new float[WaveFmt.ChannelCount * length];
 
-                var idx = 0;
-                for (var i = 0; i < length; i++)
+                int idx = 0;
+                for (int i = 0; i < length; i++)
                 {
-                    for (var j = 0; j < WaveFmt.ChannelCount; j++)
+                    for (int j = 0; j < WaveFmt.ChannelCount; j++)
                     {
                         samples[idx++] = Signals[j][i];
                     }

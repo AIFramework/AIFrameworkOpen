@@ -24,11 +24,22 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
         {
             get
             {
-                var errors = new List<string>();
+                List<string> errors = new List<string>();
 
-                if (SamplingRate <= 0) errors.Add("Positive sampling rate must be specified");
-                if (FrameDuration <= 0) errors.Add("Positive frame duration must be specified");
-                if (HopDuration <= 0) errors.Add("Positive hop duration must be specified");
+                if (SamplingRate <= 0)
+                {
+                    errors.Add("Positive sampling rate must be specified");
+                }
+
+                if (FrameDuration <= 0)
+                {
+                    errors.Add("Positive frame duration must be specified");
+                }
+
+                if (HopDuration <= 0)
+                {
+                    errors.Add("Positive hop duration must be specified");
+                }
 
                 return errors;
             }

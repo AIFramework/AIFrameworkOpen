@@ -27,11 +27,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Optimization.LineSearch;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
 {
@@ -47,7 +47,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         /// Creates L-BFGS minimizer
         /// </summary>
         /// <param name="memory">Numbers of gradients and steps to store.</param>
-        public LimitedMemoryBfgsMinimizer(double gradientTolerance, double parameterTolerance, double functionProgressTolerance, int memory, int maximumIterations=1000) : base(gradientTolerance, parameterTolerance, functionProgressTolerance, maximumIterations)
+        public LimitedMemoryBfgsMinimizer(double gradientTolerance, double parameterTolerance, double functionProgressTolerance, int memory, int maximumIterations = 1000) : base(gradientTolerance, parameterTolerance, functionProgressTolerance, maximumIterations)
         {
             Memory = memory;
         }
@@ -61,7 +61,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
         public MinimizationResult FindMinimum(IObjectiveFunction objective, VectorMathNet<double> initialGuess)
         {
             if (!objective.IsGradientSupported)
+            {
                 throw new IncompatibleObjectiveException("Gradient not supported in objective function, but required for L-BFGS minimization.");
+            }
 
             objective.EvaluateAt(initialGuess);
             ValidateGradientAndObjective(objective);
@@ -69,17 +71,19 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             // Check that we're not already done
             ExitCondition currentExitCondition = ExitCriteriaSatisfied(objective, null, 0);
             if (currentExitCondition != ExitCondition.None)
+            {
                 return new MinimizationResult(objective, 0, currentExitCondition);
+            }
 
             // Set up line search algorithm
-            var lineSearcher = new WeakWolfeLineSearch(1e-4, 0.9, Math.Max(ParameterTolerance, 1e-10), 1000);
+            WeakWolfeLineSearch lineSearcher = new WeakWolfeLineSearch(1e-4, 0.9, Math.Max(ParameterTolerance, 1e-10), 1000);
 
             // First step
 
-            var lineSearchDirection = -objective.Gradient;
-            var stepSize = 100 * GradientTolerance / (lineSearchDirection * lineSearchDirection);
+            VectorMathNet<double> lineSearchDirection = -objective.Gradient;
+            double stepSize = 100 * GradientTolerance / (lineSearchDirection * lineSearchDirection);
 
-            var previousPoint = objective;
+            IObjectiveFunction previousPoint = objective;
 
             LineSearchResult lineSearchResult;
             try
@@ -95,14 +99,14 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 throw new InnerOptimizationException("Line search failed.", e);
             }
 
-            var candidate = lineSearchResult.FunctionInfoAtMinimum;
+            IObjectiveFunction candidate = lineSearchResult.FunctionInfoAtMinimum;
             ValidateGradientAndObjective(candidate);
 
-            var step = candidate.Point - initialGuess;
-            var yk = candidate.Gradient - previousPoint.Gradient;
-            var ykhistory = new List<VectorMathNet<double>>() {yk};
-            var skhistory = new List<VectorMathNet<double>>() {step};
-            var rhokhistory = new List<double>() {1.0/yk.DotProduct(step)};
+            VectorMathNet<double> step = candidate.Point - initialGuess;
+            VectorMathNet<double> yk = candidate.Gradient - previousPoint.Gradient;
+            List<VectorMathNet<double>> ykhistory = new List<VectorMathNet<double>>() { yk };
+            List<VectorMathNet<double>> skhistory = new List<VectorMathNet<double>>() { step };
+            List<double> rhokhistory = new List<double>() { 1.0 / yk.DotProduct(step) };
 
             // Subsequent steps
             int iterations = 1;
@@ -112,9 +116,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             while (iterations++ < MaximumIterations && previousPoint.Gradient.Norm(2) >= GradientTolerance)
             {
                 lineSearchDirection = -ApplyLbfgsUpdate(previousPoint, ykhistory, skhistory, rhokhistory);
-                var directionalDerivative = previousPoint.Gradient.DotProduct(lineSearchDirection);
+                double directionalDerivative = previousPoint.Gradient.DotProduct(lineSearchDirection);
                 if (directionalDerivative > 0)
+                {
                     throw new InnerOptimizationException("Direction is not a descent direction.");
+                }
+
                 try
                 {
                     lineSearchResult = lineSearcher.FindConformingStep(previousPoint, lineSearchDirection, 1.0);
@@ -133,12 +140,15 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
                 candidate = lineSearchResult.FunctionInfoAtMinimum;
                 currentExitCondition = ExitCriteriaSatisfied(candidate, previousPoint, iterations);
                 if (currentExitCondition != ExitCondition.None)
+                {
                     break;
+                }
+
                 step = candidate.Point - previousPoint.Point;
                 yk = candidate.Gradient - previousPoint.Gradient;
                 ykhistory.Add(yk);
                 skhistory.Add(step);
-                rhokhistory.Add(1.0/yk.DotProduct(step));
+                rhokhistory.Add(1.0 / yk.DotProduct(step));
                 previousPoint = candidate;
                 if (ykhistory.Count > Memory)
                 {
@@ -149,28 +159,30 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.Optimization
             }
 
             if (iterations == MaximumIterations && currentExitCondition == ExitCondition.None)
+            {
                 throw new MaximumIterationsException(FormattableString.Invariant($"Maximum iterations ({MaximumIterations}) reached."));
+            }
 
             return new MinimizationWithLineSearchResult(candidate, iterations, ExitCondition.AbsoluteGradient, totalLineSearchSteps, iterationsWithNontrivialLineSearch);
         }
 
-        VectorMathNet<double> ApplyLbfgsUpdate(IObjectiveFunction previousPoint, List<VectorMathNet<double>> ykhistory, List<VectorMathNet<double>> skhistory, List<double> rhokhistory)
+        private VectorMathNet<double> ApplyLbfgsUpdate(IObjectiveFunction previousPoint, List<VectorMathNet<double>> ykhistory, List<VectorMathNet<double>> skhistory, List<double> rhokhistory)
         {
-            var q = previousPoint.Gradient.Clone();
-            var alphas = new Stack<double>();
+            VectorMathNet<double> q = previousPoint.Gradient.Clone();
+            Stack<double> alphas = new Stack<double>();
             for (int k = ykhistory.Count - 1; k >= 0; k--)
             {
-                var alpha = rhokhistory[k]*q.DotProduct(skhistory[k]);
+                double alpha = rhokhistory[k] * q.DotProduct(skhistory[k]);
                 alphas.Push(alpha);
-                q -= alpha*ykhistory[k];
+                q -= alpha * ykhistory[k];
             }
-            var yk = ykhistory.Last();
-            var sk = skhistory.Last();
-            q *= yk.DotProduct(sk)/yk.DotProduct(yk);
+            VectorMathNet<double> yk = ykhistory.Last();
+            VectorMathNet<double> sk = skhistory.Last();
+            q *= yk.DotProduct(sk) / yk.DotProduct(yk);
             for (int k = 0; k < ykhistory.Count; k++)
             {
-                var beta = rhokhistory[k]*ykhistory[k].DotProduct(q);
-                q += skhistory[k]*(alphas.Pop() - beta);
+                double beta = rhokhistory[k] * ykhistory[k].DotProduct(q);
+                q += skhistory[k] * (alphas.Pop() - beta);
             }
             return q;
         }

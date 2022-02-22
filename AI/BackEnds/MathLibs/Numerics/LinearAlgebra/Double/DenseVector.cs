@@ -27,15 +27,15 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
+using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
+using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Distributions;
-using AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Storage;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Providers.LinearAlgebra;
-using AI.BackEnds.MathLibs.MathNet.Numerics.Threading;
 
 namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
 {
@@ -49,12 +49,12 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Number of elements
         /// </summary>
-        readonly int _length;
+        private readonly int _length;
 
         /// <summary>
         /// Gets the vector's data.
         /// </summary>
-        readonly double[] _values;
+        private readonly double[] _values;
 
         /// <summary>
         /// Create a new dense vector straight from an initialized vector storage instance.
@@ -125,7 +125,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// This new vector will be independent from the enumerable.
         /// A new memory block will be allocated for storing the vector.
         /// </summary>
-        public static DenseVector OfIndexedEnumerable(int length, IEnumerable<Tuple<int,double>> enumerable)
+        public static DenseVector OfIndexedEnumerable(int length, IEnumerable<Tuple<int, double>> enumerable)
         {
             return new DenseVector(DenseVectorStorage<double>.OfIndexedEnumerable(length, enumerable));
         }
@@ -136,7 +136,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// This new vector will be independent from the enumerable.
         /// A new memory block will be allocated for storing the vector.
         /// </summary>
-        public static DenseVector OfIndexedEnumerable(int length, IEnumerable<(int,double)> enumerable)
+        public static DenseVector OfIndexedEnumerable(int length, IEnumerable<(int, double)> enumerable)
         {
             return new DenseVector(DenseVectorStorage<double>.OfIndexedEnumerable(length, enumerable));
         }
@@ -146,7 +146,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// </summary>
         public static DenseVector Create(int length, double value)
         {
-            if (value == 0d) return new DenseVector(length);
+            if (value == 0d)
+            {
+                return new DenseVector(length);
+            }
+
             return new DenseVector(DenseVectorStorage<double>.OfValue(length, value));
         }
 
@@ -163,7 +167,7 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// </summary>
         public static DenseVector CreateRandom(int length, IContinuousDistribution distribution)
         {
-            var samples = Generate.Random(length, distribution);
+            double[] samples = Generate.Random(length, distribution);
             return new DenseVector(new DenseVectorStorage<double>(length, samples));
         }
 
@@ -536,11 +540,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The index of absolute minimum element.</returns>
         public override int AbsoluteMinimumIndex()
         {
-            var index = 0;
-            var min = Math.Abs(_values[index]);
-            for (var i = 1; i < _length; i++)
+            int index = 0;
+            double min = Math.Abs(_values[index]);
+            for (int i = 1; i < _length; i++)
             {
-                var test = Math.Abs(_values[i]);
+                double test = Math.Abs(_values[i]);
                 if (test < min)
                 {
                     index = i;
@@ -557,11 +561,11 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The index of absolute maximum element.</returns>
         public override int AbsoluteMaximumIndex()
         {
-            var index = 0;
-            var max = Math.Abs(_values[index]);
-            for (var i = 1; i < _length; i++)
+            int index = 0;
+            double max = Math.Abs(_values[index]);
+            for (int i = 1; i < _length; i++)
             {
-                var test = Math.Abs(_values[i]);
+                double test = Math.Abs(_values[i]);
                 if (test > max)
                 {
                     index = i;
@@ -578,9 +582,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The index of maximum element.</returns>
         public override int MaximumIndex()
         {
-            var index = 0;
-            var max = _values[0];
-            for (var i = 1; i < _length; i++)
+            int index = 0;
+            double max = _values[0];
+            for (int i = 1; i < _length; i++)
             {
                 if (max < _values[i])
                 {
@@ -598,9 +602,9 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The index of minimum element.</returns>
         public override int MinimumIndex()
         {
-            var index = 0;
-            var min = _values[0];
-            for (var i = 1; i < _length; i++)
+            int index = 0;
+            double min = _values[0];
+            for (int i = 1; i < _length; i++)
             {
                 if (min > _values[i])
                 {
@@ -618,8 +622,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The sum of the vector's elements.</returns>
         public override double Sum()
         {
-            var sum = 0.0;
-            for (var index = 0; index < _length; index++)
+            double sum = 0.0;
+            for (int index = 0; index < _length; index++)
             {
                 sum += _values[index];
             }
@@ -632,8 +636,8 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The sum of the absolute values.</returns>
         public override double L1Norm()
         {
-            var sum = 0d;
-            for (var index = 0; index < _length; index++)
+            double sum = 0d;
+            for (int index = 0; index < _length; index++)
             {
                 sum += Math.Abs(_values[index]);
             }
@@ -666,14 +670,28 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
         /// <returns>Scalar <c>ret = ( ∑|this[i]|^p )^(1/p)</c></returns>
         public override double Norm(double p)
         {
-            if (p < 0d) throw new ArgumentOutOfRangeException(nameof(p));
+            if (p < 0d)
+            {
+                throw new ArgumentOutOfRangeException(nameof(p));
+            }
 
-            if (p == 1d) return L1Norm();
-            if (p == 2d) return L2Norm();
-            if (double.IsPositiveInfinity(p)) return InfinityNorm();
+            if (p == 1d)
+            {
+                return L1Norm();
+            }
 
-            var sum = 0d;
-            for (var index = 0; index < _length; index++)
+            if (p == 2d)
+            {
+                return L2Norm();
+            }
+
+            if (double.IsPositiveInfinity(p))
+            {
+                return InfinityNorm();
+            }
+
+            double sum = 0d;
+            for (int index = 0; index < _length; index++)
             {
                 sum += Math.Pow(Math.Abs(_values[index]), p);
             }
@@ -782,9 +800,13 @@ namespace AI.BackEnds.MathLibs.MathNet.Numerics.LinearAlgebra.Double
             }
 
             // parsing
-            var tokens = value.Split(new[] {formatProvider.GetTextInfo().ListSeparator, " ", "\t"}, StringSplitOptions.RemoveEmptyEntries);
-            var data = tokens.Select(t => double.Parse(t, NumberStyles.Any, formatProvider)).ToArray();
-            if (data.Length == 0) throw new FormatException();
+            string[] tokens = value.Split(new[] { formatProvider.GetTextInfo().ListSeparator, " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
+            double[] data = tokens.Select(t => double.Parse(t, NumberStyles.Any, formatProvider)).ToArray();
+            if (data.Length == 0)
+            {
+                throw new FormatException();
+            }
+
             return new DenseVector(data);
         }
 

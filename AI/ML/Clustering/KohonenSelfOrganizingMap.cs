@@ -12,7 +12,7 @@ namespace AI.ML.Clustering
     /// </summary>
     public class KohonenNet : IClustering
     {
-        public Func<Vector, Vector, double> DistanceFunction { get; set; }
+        public Func<Vector, Vector, double> DistanceFunction { get; set; } = AI.ML.Distances.BaseDist.EuclideanDistance;
 
 
         public Vector[] w;
@@ -57,7 +57,7 @@ namespace AI.ML.Clustering
 
             for (int i = 0; i < w.Length; i++)
             {
-                w[i] = Statistics.Statistic.RandNorm(inpDim, rnd);
+                w[i] = Statistics.Statistic.Rand(inpDim, rnd);
             }
 
             _clusters = clusters;
@@ -86,6 +86,33 @@ namespace AI.ML.Clustering
             return vectors.Select((vector) => Classify(vector)).ToArray();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vect"></param>
+        /// <returns></returns>
+        public int ClassifyAndTrain(Vector vect) 
+        {
+            double newP = 0.0001, old = 1.0 - newP;
+            Vector k = new Vector(_clusters);
+
+            Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, j =>
+            {
+                k[j] = DistanceFunction(vect, w[j]);
+                w[j] = old * w[j] - 0.01 * newP * vect;
+            });
+
+            int ind = k.MinElementIndex();
+            w[ind] += newP * vect;
+
+            return Classify(vect);
+        }
+
+        /// <summary>
+        /// Train kohonen network
+        /// </summary>
+        /// <param name="datasetInp"></param>
+        /// <param name="param"></param>
         public void Train(Vector[] datasetInp, int param)
         {
 

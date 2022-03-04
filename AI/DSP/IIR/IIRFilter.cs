@@ -28,6 +28,11 @@ namespace AI.DSP.IIR
         public Vector B { get; set; }
 
         /// <summary>
+        /// Signal clipping
+        /// </summary>
+        public double Treshold { get; set; } = 1e+300;
+
+        /// <summary>
         /// IIR filter
         /// </summary>
         /// <param name="a">Coefficients a</param>
@@ -55,7 +60,7 @@ namespace AI.DSP.IIR
         /// Filter output
         /// </summary>
         /// <param name="inp">Input</param>
-        public double Outp(double inp)
+        public double FilterOutp(double inp)
         {
 
             // MIT License
@@ -94,6 +99,10 @@ namespace AI.DSP.IIR
                 outp -= outps[i] * A[j];
             }
 
+            //Ограничение сигнала
+            if (outp > Treshold) outp = Treshold;
+            else if (outp < -Treshold) outp = -Treshold;
+
             outps[ofA] = outp;
 
             if (--ofB < 0)
@@ -106,6 +115,7 @@ namespace AI.DSP.IIR
                 ofA = aLen - 1;
             }
 
+            
             return outp;
         }
 
@@ -116,7 +126,7 @@ namespace AI.DSP.IIR
         public Vector FilterOutp(Vector signal)
         {
             Reset();
-            return signal.Transform(Outp);
+            return signal.Transform(FilterOutp);
         }
 
         /// <summary>
@@ -131,7 +141,7 @@ namespace AI.DSP.IIR
             for (int i = 0; i < iteration; i++)
             {
                 Reset();
-                outp = outp.Transform(Outp);
+                outp = outp.Transform(FilterOutp);
             }
 
             return outp;

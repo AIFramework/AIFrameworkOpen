@@ -230,5 +230,33 @@ namespace AI.DSP.IIR
 
             return iir;
         }
+
+        /// <summary>
+        /// Filter load
+        /// </summary>
+        /// <param name="data">Buffer</param>
+        public static IIRFilter Load(byte[] data)
+        {
+            /*
+             * Структура:
+             * Проверочное слово "iir"
+             * Название Unicode
+             * Coefficients a
+             * Coefficients b
+             */
+            InMemoryDataStream bs = new InMemoryDataStream(data, isZipped: true);
+            bs.UnZip();
+            bs.ReadString();
+            string name = bs.ReadString();
+            Vector A = bs.ReadDoubles();
+            Vector B = bs.ReadDoubles();
+
+            IIRFilter iir = new IIRFilter(A, B)
+            {
+                Name = name
+            };
+
+            return iir;
+        }
     }
 }

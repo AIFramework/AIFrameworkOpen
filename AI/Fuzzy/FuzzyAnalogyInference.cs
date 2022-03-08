@@ -42,7 +42,7 @@ namespace AI.Fuzzy
             Matrix ef = new Matrix(ifs[0].Count(), thens[0].Count);
 
             for (int i = 0; i < ifs.Length; i++)
-                ef += GetMatrixG(ifs[i], thens[i]);
+                ef += GetImplicationMatrixG(ifs[i], thens[i]);
 
             return ef / ifs.Length;
         }

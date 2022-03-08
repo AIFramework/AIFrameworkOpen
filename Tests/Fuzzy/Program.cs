@@ -18,7 +18,7 @@ namespace FuzzyL
             Console.WriteLine($"Обучение:\nВектор условия: {ifV}\nВектор следствия: {then}");
 
             Console.WriteLine("\n\nМатрица импликаций: ");
-            var impl = FuzzyAnalogyInference.GetMatrixG(ifV, then);
+            var impl = FuzzyAnalogyInference.GetImplicationMatrixG(ifV, then);
             Console.WriteLine(impl.Round(2).ToString());
 
             Vector x = new Vector(0.3, 0.1, 0.2, 0.9);

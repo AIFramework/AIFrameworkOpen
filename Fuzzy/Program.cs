@@ -21,7 +21,7 @@ namespace FuzzyL
             var impl = FuzzyAnalogyInference.GetMatrixG(ifV, then);
             Console.WriteLine(impl.Round(2).ToString());
 
-            Vector x = new Vector(0.3, 0.1, 0.2, 0.6);
+            Vector x = new Vector(0.3, 0.1, 0.2, 0.9);
 
             Console.WriteLine($"\n\nВектор условия: {x}\nВектор следствия: {FuzzyAnalogyInference.Inference(impl, x)}");
         }

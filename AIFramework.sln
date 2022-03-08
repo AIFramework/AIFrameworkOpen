@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestNNW", "Tests\TestNNW\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextGenTest", "Tests\TextGenTest\TextGenTest.csproj", "{84B720FB-A135-42D1-BFED-1222848D88D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fuzzy", "Fuzzy\Fuzzy.csproj", "{85B77B36-B6EB-483E-BA9C-BB720C5040AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fuzzy", "Tests\Fuzzy\Fuzzy.csproj", "{85B77B36-B6EB-483E-BA9C-BB720C5040AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

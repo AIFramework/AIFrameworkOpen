@@ -16,7 +16,7 @@ namespace AI.Fuzzy
         /// <summary>
         /// Матрица импликаций с применение импликации Гогена
         /// </summary>
-        public static Matrix GetMatrixG(Vector @if, Vector then)
+        public static Matrix GetImplicationMatrixG(Vector @if, Vector then)
         {
             Matrix ef = new Matrix(@if.Count, then.Count);
 
@@ -34,7 +34,7 @@ namespace AI.Fuzzy
         /// <summary>
         /// Усредненная матрица импликаций с применение импликации Гогена
         /// </summary>
-        public static Matrix GetMatrixG(IEnumerable<Vector> ifEn, IEnumerable<Vector> thenEn)
+        public static Matrix GetImplicationMatrixG(IEnumerable<Vector> ifEn, IEnumerable<Vector> thenEn)
         {
             var ifs = ifEn.ToArray();
             var thens = thenEn.ToArray();
@@ -48,9 +48,9 @@ namespace AI.Fuzzy
         }
 
         /// <summary>
-        /// Усредненная матрица импликаций с применение импликации Гогена, с подкреплением
+        /// Усредненная матрица импликаций, обучение с подкреплением
         /// </summary>
-        public static Matrix GetMatrixG(IEnumerable<Matrix> impl, Vector reward, double q = 0.5)
+        public static Matrix GetImplicationMatrix(IEnumerable<Matrix> impl, Vector reward, double q = 0.5)
         {
             Matrix[] matrices = impl.ToArray();
             int n = 0;

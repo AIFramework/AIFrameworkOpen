@@ -34,7 +34,10 @@ namespace AI.ML.Clustering
     [Serializable]
     public class KMeans : IClustering
     {
-        private Vector[] centroids;
+        /// <summary>
+        /// Центроиды
+        /// </summary>
+        public Vector[] Centroids { get; private set; }
         /// <summary>
         /// Максимальное число циклов
         /// </summary>
@@ -65,7 +68,7 @@ namespace AI.ML.Clustering
         }
 
         /// <summary>Цендроиды кластеров</summary>
-        public Vector[] Сentroids => centroids;
+        public Vector[] Сentroids => Centroids;
 
         /// <summary>
         /// Distance function
@@ -79,14 +82,14 @@ namespace AI.ML.Clustering
         {
             get
             {
-                Cluster[] cls = new Cluster[centroids.Length];
+                Cluster[] cls = new Cluster[Centroids.Length];
 
-                for (int i = 0; i < centroids.Length; i++)
+                for (int i = 0; i < Centroids.Length; i++)
                 {
                     cls[i] = new Cluster
                     {
-                        Centr = centroids[i],
-                        Dataset = new Vector[] { centroids[i] }
+                        Centr = Centroids[i],
+                        Dataset = new Vector[] { Centroids[i] }
                     };
                 }
 
@@ -120,7 +123,7 @@ namespace AI.ML.Clustering
             int vectorDim = dataset[0].Count;
             ValidateData(vectorDim, dataset);
 
-            centroids = new Vector[GroupCount];
+            Centroids = new Vector[GroupCount];
             DimentionOfData = vectorDim;
 
             Random random = new Random(seed);
@@ -128,7 +131,7 @@ namespace AI.ML.Clustering
 
             //ToDo: сделать замер времени
             // K-means поиск цендроидов 
-            centroids[0] = dataset[random.Next(vectorCount)];
+            Centroids[0] = dataset[random.Next(vectorCount)];
             for (int groupIndex = 1; groupIndex < GroupCount; groupIndex++)
             {
                 double distSum = 0;
@@ -140,7 +143,7 @@ namespace AI.ML.Clustering
 
                     for (int cluster_index = 0; cluster_index < groupIndex; cluster_index++)
                     {
-                        double dist = DistanceFunction(dataset[vectorIndex], centroids[cluster_index]);
+                        double dist = DistanceFunction(dataset[vectorIndex], Centroids[cluster_index]);
                         if (dist < dist_min)
                         {
                             dist_min = dist;
@@ -157,10 +160,10 @@ namespace AI.ML.Clustering
                     r -= dist_list[vectorIndex];
                     if (r < 0)
                     {
-                        centroids[groupIndex] = dataset[vectorIndex];
+                        Centroids[groupIndex] = dataset[vectorIndex];
                         break;
                     }
-                    centroids[groupIndex] = dataset[vectorCount - 1];
+                    Centroids[groupIndex] = dataset[vectorCount - 1];
                 }
             }
 
@@ -175,22 +178,22 @@ namespace AI.ML.Clustering
                 isChangedLabel = false;
                 count++;
 
-                for (int clusterIndex = 0; clusterIndex < centroids.Length; clusterIndex++)
+                for (int clusterIndex = 0; clusterIndex < Centroids.Length; clusterIndex++)
                 {
-                    centroids[clusterIndex] = new Vector(DimentionOfData);
+                    Centroids[clusterIndex] = new Vector(DimentionOfData);
                 }
 
-                int[] labedCount = new int[centroids.Length];
+                int[] labedCount = new int[Centroids.Length];
 
                 foreach (VectorClass vector in labeledVectors)
                 {
-                    centroids[vector.ClassMark] += vector.Features;
+                    Centroids[vector.ClassMark] += vector.Features;
                     labedCount[vector.ClassMark]++;
                 }
 
-                for (int clusterIndex = 0; clusterIndex < centroids.Length; clusterIndex++)
+                for (int clusterIndex = 0; clusterIndex < Centroids.Length; clusterIndex++)
                 {
-                    centroids[clusterIndex] /= labedCount[clusterIndex];
+                    Centroids[clusterIndex] /= labedCount[clusterIndex];
                 }
 
                 for (int vectorIndex = 0; vectorIndex < vectorCount; vectorIndex++)
@@ -210,7 +213,7 @@ namespace AI.ML.Clustering
         /// <summary>Инизиализация</summary>
         public void Initialize()
         {
-            centroids = null;
+            Centroids = null;
         }
 
         /// <summary>Ближайший вектор</summary>
@@ -219,9 +222,9 @@ namespace AI.ML.Clustering
             double minDist = double.PositiveInfinity;
             int indexClass = 0;
 
-            for (int clusterIndex = 0; clusterIndex < centroids.Length; clusterIndex++)
+            for (int clusterIndex = 0; clusterIndex < Centroids.Length; clusterIndex++)
             {
-                double dist = DistanceFunction(vector, centroids[clusterIndex]);
+                double dist = DistanceFunction(vector, Centroids[clusterIndex]);
                 if (dist < minDist)
                 {
                     minDist = dist;

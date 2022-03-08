@@ -12,14 +12,18 @@ namespace FuzzyL
     {
         static void Main(string[] args)
         {
-            Vector ifV = new Vector(0.3, 0.1, 0.2);
-            Vector then = new Vector(0.1, 0.2, 0.1);
+            Vector ifV = new Vector(0.3, 0.1, 0.2, 0.6);
+            Vector then = new Vector(0.1, 0.2, 0.3, 0.21);
 
+            Console.WriteLine($"Обучение:\nВектор условия: {ifV}\nВектор следствия: {then}");
+
+            Console.WriteLine("\n\nМатрица импликаций: ");
             var impl = FuzzyAnalogyInference.GetMatrixG(ifV, then);
-            Console.WriteLine(impl);
+            Console.WriteLine(impl.Round(2).ToString());
 
+            Vector x = new Vector(0.3, 0.1, 0.2, 0.6);
 
-            Console.WriteLine("\n\n"+FuzzyAnalogyInference.Inference(impl, new Vector(0.3, 0.1, 0.2)));
+            Console.WriteLine($"\n\nВектор условия: {x}\nВектор следствия: {FuzzyAnalogyInference.Inference(impl, x)}");
         }
     }
 }

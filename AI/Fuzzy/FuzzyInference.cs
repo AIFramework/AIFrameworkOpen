@@ -1,4 +1,5 @@
 ﻿using AI.DataStructs.Algebraic;
+using AI.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,14 +34,41 @@ namespace AI.Fuzzy
         /// <summary>
         /// Усредненная матрица импликаций с применение импликации Гогена
         /// </summary>
-        public static Matrix GetMatrixG(Vector[] ifs, Vector[] thens)
+        public static Matrix GetMatrixG(IEnumerable<Vector> ifEn, IEnumerable<Vector> thenEn)
         {
-            Matrix ef = new Matrix(ifs[0].Count, thens[0].Count);
+            var ifs = ifEn.ToArray();
+            var thens = thenEn.ToArray();
+
+            Matrix ef = new Matrix(ifs[0].Count(), thens[0].Count);
 
             for (int i = 0; i < ifs.Length; i++)
                 ef += GetMatrixG(ifs[i], thens[i]);
 
-            return ef/ ifs.Length;
+            return ef / ifs.Length;
+        }
+
+        /// <summary>
+        /// Усредненная матрица импликаций с применение импликации Гогена, с подкреплением
+        /// </summary>
+        public static Matrix GetMatrixG(IEnumerable<Matrix> impl, Vector reward, double q = 0.5)
+        {
+            Matrix[] matrices = impl.ToArray();
+            int n = 0;
+            Matrix ef = new Matrix(matrices[0].Height, matrices[0].Width);
+            Quantile quantile = new Quantile(reward);
+            double treshold = quantile.GetQuantile(q);
+
+            for (int i = 0; i < reward.Count; i++)
+            {
+                if(treshold < reward[i]) 
+                {
+                    n++;
+                    ef += matrices[i];
+                }
+            }
+
+
+            return ef / (n + AI.AISettings.GlobalEps);
         }
 
         /// <summary>

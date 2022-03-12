@@ -49,8 +49,8 @@ namespace FuzzyL
             Vector cl_inp1 = t.Transform(x => Math.Sin(x * 2 * f1 * Math.PI));
             Vector cl_inp2 = t.Transform(x => Math.Sin(x * 2 * f2 * Math.PI));
 
-            Vector cl_output_1 = new Vector(0.9, 0.1);
-            Vector cl_output_2 = new Vector(0.1, 0.9);
+            Vector cl_output_1 = new Vector(1, 0.1);
+            Vector cl_output_2 = new Vector(0.1, 1);
 
             Vector[] cli = new Vector[2*N];
             Vector[] clo = new Vector[2*N];

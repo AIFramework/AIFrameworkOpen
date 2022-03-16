@@ -10,6 +10,7 @@ namespace AI.ML.Clustering
     /// <summary>
     /// Kohonen self-organizing map
     /// </summary>
+    [Serializable]
     public class KohonenNet : IClustering
     {
         public Func<Vector, Vector, double> DistanceFunction { get; set; } = AI.ML.Distances.BaseDist.EuclideanDistance;

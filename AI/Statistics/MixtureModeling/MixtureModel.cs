@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace AI.Statistics.MixtureModeling
 {
+    [Serializable]
     public class MixtureModel : IDistributionWithoutParams
     {
         public bool IsOneD { get; private set; }

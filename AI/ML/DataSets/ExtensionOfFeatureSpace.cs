@@ -7,6 +7,7 @@ namespace AI.ML.DataSets
     /// <summary>
     /// Расширение пространства признаков
     /// </summary>
+    [Serializable]
     public static class ExtensionOfFeatureSpace
     {
         /// <summary>

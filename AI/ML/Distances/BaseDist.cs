@@ -6,6 +6,7 @@ namespace AI.ML.Distances
     /// <summary>
     /// Basic distance functions
     /// </summary>
+    [Serializable]
     public static class BaseDist
     {
         /// <summary>

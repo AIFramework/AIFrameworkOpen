@@ -10,6 +10,7 @@ namespace AI.Fuzzy.Fuzzyficators.FVector
     /// <summary>
     /// Векторный фаззификатор на базе сигмоиды
     /// </summary>
+    [Serializable]
     public class SigmoidVectorFuzzyficator : IFuzzyficatorVector
     {
         private readonly double _beta = 1;

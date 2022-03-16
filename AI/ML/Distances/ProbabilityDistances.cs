@@ -6,6 +6,7 @@ namespace AI.ML.Distances
     /// <summary>
     /// Probability (entropy) distances
     /// </summary>
+    [Serializable]
     public static class ProbabilityDistances
     {
         /// <summary>

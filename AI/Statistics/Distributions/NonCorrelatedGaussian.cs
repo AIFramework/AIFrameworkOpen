@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AI.Statistics.Distributions
 {
+    [Serializable]
     public class NonCorrelatedGaussian : IDistribution
     {
         /// <summary>

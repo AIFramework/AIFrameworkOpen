@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace AI.ML.LinearModelTools
 {
+    [Serializable]
     public class Margin
     {
         public static double GetMargin(float ideal, float outp)

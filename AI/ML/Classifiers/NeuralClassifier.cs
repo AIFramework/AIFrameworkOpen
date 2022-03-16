@@ -3,9 +3,11 @@ using AI.ML.NeuralNetwork;
 using AI.ML.NeuralNetwork.CoreNNW;
 using AI.ML.NeuralNetwork.CoreNNW.Models;
 using AI.ML.NeuralNetwork.CoreNNW.Optimizers;
+using System;
 
 namespace AI.ML.Classifiers
 {
+    [Serializable]
     public class NeuralClassifier : BaseClassifier<NeuralClassifier>
     {
         private readonly NNW _net;

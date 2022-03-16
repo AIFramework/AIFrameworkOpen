@@ -1,10 +1,12 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.Statistics.Distributions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AI.Statistics.MixtureModeling
 {
+    [Serializable]
     public class Bayesian
     {
         private readonly IDistributionWithoutParams[] _distributions;

@@ -1,4 +1,5 @@
 ﻿using AI.DataStructs.Algebraic;
+using System;
 using System.Collections.Generic;
 
 namespace AI.Statistics.Distributions

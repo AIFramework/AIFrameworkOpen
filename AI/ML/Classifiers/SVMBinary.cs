@@ -5,6 +5,7 @@ using System;
 
 namespace AI.ML.Classifiers
 {
+    [Serializable]
     public class SVMBinary : BaseClassifier<SVMBinary>
     {
         public double LearningRate { get; set; } = 0.01;

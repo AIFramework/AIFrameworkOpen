@@ -11,6 +11,7 @@ namespace AI.Fuzzy
     /// <summary>
     /// Нечеткий вывод по аналогии
     /// </summary>
+    [Serializable]
     public class FuzzyAnalogyInference
     {
         /// <summary>

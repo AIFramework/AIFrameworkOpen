@@ -1,5 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.Fuzzy;
+using AI.Fuzzy.Fuzzyficators.FVector;
 using AI.Statistics;
 using System;
 using System.Collections.Generic;
@@ -40,17 +41,21 @@ namespace FuzzyL
         static void CLTest() 
         {
             double f1 = 2;
-            double f2 = 1.5;
+            double f2 = 1.6;
             Vector t = Vector.SeqBeginsWithZero(0.01, 2);
             int N = 10000;
             double k = 1.0;
+
+            SigmoidVectorFuzzyficator sigmoidVectorFuzzyficator = new SigmoidVectorFuzzyficator(4);
 
 
             Vector cl_inp1 = t.Transform(x => Math.Sin(x * 2 * f1 * Math.PI));
             Vector cl_inp2 = t.Transform(x => Math.Sin(x * 2 * f2 * Math.PI));
 
-            Vector cl_output_1 = new Vector(1, 0.1);
-            Vector cl_output_2 = new Vector(0.1, 1);
+            Vector cl_output_1 = new Vector(1, 0);
+            cl_output_1 = sigmoidVectorFuzzyficator.Fuzzyfication(cl_output_1);
+            Vector cl_output_2 = new Vector(0, 1);
+            cl_output_2 = sigmoidVectorFuzzyficator.Fuzzyfication(cl_output_2);
 
             Vector[] cli = new Vector[2*N];
             Vector[] clo = new Vector[2*N];
@@ -59,10 +64,10 @@ namespace FuzzyL
             for (int i = 0; i < N; i++)
             {
                 cli[i] = cl_inp1 + k * Statistic.Rand(cl_inp1.Count);
-                cli[i] = (cli[i] - cli[i].Min()) / (cli[i].Max() - cli[i].Min());
+                cli[i] = sigmoidVectorFuzzyficator.Fuzzyfication(cli[i]);
 
                 cli[i + N] = cl_inp2 + k * Statistic.Rand(cl_inp1.Count);
-                cli[i+N] = (cli[i+N] - cli[i+N].Min()) / (cli[i+N].Max() - cli[i+N].Min());
+                cli[i+N] = sigmoidVectorFuzzyficator.Fuzzyfication(cli[i+N]);
 
 
                 clo[i] = cl_output_1;
@@ -75,12 +80,12 @@ namespace FuzzyL
             // Тестовые векторы
 
             Vector test1 = cl_inp1 + k * Statistic.Rand(cl_inp1.Count);
-            test1 = (test1 - test1.Min()) / (test1.Max() - test1.Min());
+            test1 = sigmoidVectorFuzzyficator.Fuzzyfication(test1);
             Vector test2 = cl_inp2 + k * Statistic.Rand(cl_inp1.Count);
-            test2 = (test2 - test2.Min()) / (test2.Max() - test2.Min());
+            test2 = sigmoidVectorFuzzyficator.Fuzzyfication(test2);
 
-            Console.WriteLine("\ncl_1: "+FuzzyAnalogyInference.Inference(impl, test1).Round(1));
-            Console.WriteLine("cl_2: "+FuzzyAnalogyInference.Inference(impl, test2).Round(1));
+            Console.WriteLine("\ncl_1: "+ sigmoidVectorFuzzyficator.DeFuzzyfication(FuzzyAnalogyInference.Inference(impl, test1)).Round(1));
+            Console.WriteLine("cl_2: "+ sigmoidVectorFuzzyficator.DeFuzzyfication(FuzzyAnalogyInference.Inference(impl, test2)).Round(1));
         }
 
     }

@@ -9,12 +9,6 @@ namespace BackendsTest
             InitializeComponent();
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            TestNumerics parser = new TestNumerics();
-            parser.ShowDialog();
-        }
-
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             DCT_test dct = new DCT_test();

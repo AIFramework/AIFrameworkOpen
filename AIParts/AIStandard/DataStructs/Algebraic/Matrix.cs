@@ -51,6 +51,15 @@ namespace AI.DataStructs.Algebraic
             set => Set(i, j, value);
         }
         /// <summary>
+        /// Доступ по индексу
+        /// </summary>
+        /// <param name="i">Индекс</param>
+        public double this[int i]
+        {
+            get => Data[i];
+            set => Data[i] = value;
+        }
+        /// <summary>
         /// Matrix determinant
         /// </summary>
         /// <returns></returns>

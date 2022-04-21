@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AI\AI.csproj">
-      <Project>{A18E36A4-6D0A-44C9-84AB-4A26B4940E7B}</Project>
-      <Name>AI</Name>
+    <ProjectReference Include="..\..\AIParts\AIStandard\AIStandard.csproj">
+      <Project>{66d175a8-3fb1-4891-917c-b9fa7abff80f}</Project>
+      <Name>AIStandard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

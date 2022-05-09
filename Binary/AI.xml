@@ -11700,6 +11700,13 @@
             <param name="i"></param>
             <param name="j"></param>
         </member>
+        <member name="P:AI.DataStructs.Algebraic.Matrix.Item(System.Int32)">
+            <summary>
+            Get element by indexes
+            </summary>
+            <param name="i"></param>
+            <param name="j"></param>
+        </member>
         <member name="P:AI.DataStructs.Algebraic.Matrix.Determinant">
             <summary>
             Matrix determinant

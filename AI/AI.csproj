@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFrameworks>net47</TargetFrameworks>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<Copyright>Copyright © AIFramework 2.2 Free 2021</Copyright>
 	<AssemblyVersion>2.2.0.0</AssemblyVersion>

@@ -38,6 +38,19 @@ namespace AI.ComputerVision
             return BmpToMatr(bmp);
         }
 
+        public static Matrix LoadAsMatrix(string path, Vector colorW)
+        {
+            Bitmap bmp = GetBitmap(path);
+            return BmpToMatr(bmp, colorW);
+        }
+
+        public static Matrix LoadAsMatrix(string path, Vector colorW, int width, int height)
+        {
+            Bitmap bmp = GetBitmap(path);
+            bmp = new Bitmap(bmp, width, height);
+            return BmpToMatr(bmp, colorW);
+        }
+
         public static Tensor LoadAsTensor(string path)
         {
             Bitmap bmp = GetBitmap(path);
@@ -269,6 +282,31 @@ namespace AI.ComputerVision
                 for (int j = 0; j < H; j++)
                 {
                     Out[j, i] = (b[0, j, i] + b[1, j, i] + b[2, j, i]) / 3.0;
+                }
+            }
+
+            return Out;
+
+        }
+
+        /// <summary>
+        /// Изображение в полутоновую матрицу
+        /// </summary>
+        /// <param name="Bmp">Изображение</param>
+        public static Matrix BmpToMatr(Bitmap Bmp, Vector colorW)
+        {
+
+            int W = Bmp.Width;
+            int H = Bmp.Height; ;
+            Matrix Out = new Matrix(H, W);
+
+            double[,,] b = BaseTransformBmp(Bmp);
+
+            for (int i = 0; i < W; i++)
+            {
+                for (int j = 0; j < H; j++)
+                {
+                    Out[j, i] = colorW[0]*b[0, j, i] + colorW[1] * b[1, j, i] + colorW[2] * b[2, j, i];
                 }
             }
 

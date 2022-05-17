@@ -36,7 +36,7 @@ namespace AI.ComputerVision.ImgTransforms
         /// <param name="img"></param>
         /// <param name="normalyze"></param>
         /// <returns></returns>
-        public Vector CalcHist(Matrix img, bool normalyze = false) 
+        public Vector CalcHist(Matrix img, bool normalyze = false, bool centrNorm = true) 
         {
             double[] ph = _sobelTransformer.Transform(img).PhGrad.Data;
             Vector hist = new Vector(_bins);
@@ -52,6 +52,13 @@ namespace AI.ComputerVision.ImgTransforms
             if (normalyze) 
             {
                 hist /= sum;
+            }
+
+            if (centrNorm) 
+            {
+                int ids = _bins / 2 - 1;
+                hist[ids] = 0;
+                hist[ids] = hist.Mean();
             }
 
             return hist;

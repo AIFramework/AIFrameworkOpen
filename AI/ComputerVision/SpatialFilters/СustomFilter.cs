@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace AI.ComputerVision.SpatialFilters
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CustomFilter : ISpatialFilterGray
     {
         protected Matrix f;

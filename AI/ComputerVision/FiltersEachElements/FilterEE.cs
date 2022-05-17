@@ -1,0 +1,112 @@
+﻿using AI.DataStructs.Algebraic;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AI.ComputerVision.FiltersEachElements
+{
+    /// <summary>
+    /// Базовый класс гамма фильтра
+    /// </summary>
+    public class FilterEE : IFilterEE
+    {
+        Func<double, double> _elFunc;
+        bool _prepNorm;
+        bool _postNorm;
+
+
+        /// <summary>
+        /// Гамма-фильтр
+        /// </summary>
+        /// <param name="elem">Функция фильтра</param>
+        /// <param name="prepNorm">Пред. обработка (минимакс нормализация)</param>
+        /// <param name="postNorm">Пост. обработка (минимакс нормализация)</param>
+        public FilterEE(Func<double, double> elem, bool prepNorm = false, bool postNorm = false)
+        {
+            Init(elem, prepNorm, postNorm);
+        }
+
+
+        /// <summary>
+        /// Гамма-фильтр
+        /// </summary>
+        public FilterEE()
+        {
+            _elFunc = (x) => x;
+            _prepNorm = false;
+            _postNorm = true;
+        }
+
+        /// <summary>
+        /// Фильтрация
+        /// </summary>
+        /// <param name="input">Вход</param>
+        public Matrix Filtration(Matrix input)
+        {
+            Matrix matrix = input.Copy();
+
+            if (_prepNorm)
+                matrix = Minimax(matrix);
+
+            matrix = matrix.Transform(_elFunc);
+
+            if (_postNorm)
+                matrix = 255*Minimax(matrix);
+
+            Normal(matrix);
+
+            return matrix;
+        }
+
+        /// <summary>
+        /// Фильтрация
+        /// </summary>
+        /// <param name="input">Вход</param>
+        public Bitmap Filtration(Bitmap input)
+        {
+            Matrix matrix = ImageMatrixConverter.BmpToMatr(input);
+            Matrix filtred = Filtration(matrix);
+            return new Bitmap(ImageMatrixConverter.ToBitmap(filtred), input.Width, input.Height);
+        }
+
+        /// <summary>
+        /// Фильтрация
+        /// </summary>
+        /// <param name="input">Вход</param>
+        public Bitmap Filtration(string path)
+        {
+            Matrix matrix = ImageMatrixConverter.LoadAsMatrix(path);
+            Matrix filtred = Filtration(matrix);
+            return new Bitmap(ImageMatrixConverter.ToBitmap(filtred), matrix.Width, matrix.Height);
+        }
+
+        public void Init(Func<double, double> elem, bool prepNorm = false, bool postNorm = false) 
+        {
+            _elFunc = elem;
+            _prepNorm = prepNorm;
+            _postNorm = postNorm;
+        }
+
+        //Минимакс нормализация
+        Matrix Minimax(Matrix matrix) 
+        {
+            double min = matrix.Min();
+            double max = matrix.Max();
+
+            return (matrix-min) / (max-min);
+        }
+
+        // Нормализация 0-255
+        void Normal(Matrix img) 
+        {
+            for (int i = 0; i < img.Data.Length; i++)
+            {
+                if (img.Data[i] < 0) img.Data[i] = 0;
+                if (img.Data[i] > 255) img.Data[i] = 255;
+            }
+        }
+    }
+}

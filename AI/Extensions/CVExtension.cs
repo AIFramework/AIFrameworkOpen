@@ -22,6 +22,15 @@ namespace AI.Extensions
         }
 
         /// <summary>
+        /// Преобразование картинки в матрицу (Взвешенные цвета)
+        /// </summary>
+        /// <param name="bitmap">Картинка</param>
+        public static Matrix ToMatrix(this Bitmap bitmap, Vector colorW)
+        {
+            return ImageMatrixConverter.BmpToMatr(bitmap, colorW);
+        }
+
+        /// <summary>
         /// Преобразование картинки в матрицу
         /// </summary>
         /// <param name="bitmap">Картинка</param>
@@ -32,6 +41,7 @@ namespace AI.Extensions
             Bitmap bmp = new Bitmap(bitmap, newWidth, newHeight);
             return ImageMatrixConverter.BmpToMatr(bmp);
         }
+
 
         /// <summary>
         /// Преобразование картинки в тензор

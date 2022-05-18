@@ -691,7 +691,11 @@ namespace AI.DataStructs.Algebraic
 
             }
 
-            return (sq - m * m) / n;
+            n = n > 0 ? n : AISettings.GlobalEps;
+            m /= n;
+            sq /= n;
+
+            return sq - m * m;
         }
         /// <summary>
         /// Среднеквадратичное отклонение

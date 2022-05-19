@@ -49,12 +49,12 @@ namespace AI.ComputerVision.FiltersEachElements
             Matrix matrix = input.Copy();
 
             if (_prepNorm)
-                matrix = Minimax(matrix);
+                matrix = matrix.Minimax();
 
             matrix = matrix.Transform(_elFunc);
 
             if (_postNorm)
-                matrix = 255*Minimax(matrix);
+                matrix = 255*matrix.Minimax();
 
             Normal(matrix);
 
@@ -90,14 +90,7 @@ namespace AI.ComputerVision.FiltersEachElements
             _postNorm = postNorm;
         }
 
-        //Минимакс нормализация
-        Matrix Minimax(Matrix matrix) 
-        {
-            double min = matrix.Min();
-            double max = matrix.Max();
-
-            return (matrix-min) / (max-min);
-        }
+        
 
         // Нормализация 0-255
         void Normal(Matrix img) 

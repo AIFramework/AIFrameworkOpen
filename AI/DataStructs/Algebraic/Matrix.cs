@@ -784,6 +784,19 @@ namespace AI.DataStructs.Algebraic
 
             return outp;
         }
+
+        /// <summary>
+        /// Минимакс нормализация
+        /// </summary>
+        /// <returns></returns>
+        public Matrix Minimax()
+        {
+            double min = Min();
+            double max = Max();
+
+            return (this - min) / (max - min);
+        }
+
         /// <summary>
         ///  Представление матрицы как вектора
         /// </summary>

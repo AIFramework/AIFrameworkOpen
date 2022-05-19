@@ -1,6 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.ML.NeuralNetwork;
 using AI.ML.NeuralNetwork.CoreNNW;
+using AI.ML.NeuralNetwork.CoreNNW.Loss;
 using AI.ML.NeuralNetwork.CoreNNW.Models;
 using AI.ML.NeuralNetwork.CoreNNW.Optimizers;
 using System;
@@ -16,6 +17,8 @@ namespace AI.ML.Classifiers
         public int EpochesToPass { get; set; } = 10;
         public IOptimizer Optimizer { get; set; } = new Adam();
         public float ValSplit { get; set; } = 0f;
+
+        public ILoss Loss { get; set; } = new CrossEntropyWithSoftmax();
 
         /// <summary>
         /// 
@@ -46,7 +49,7 @@ namespace AI.ML.Classifiers
             return _net.Forward(input, Graph).ToVector();
         }
 
-        public void Train(Vector[] features, int[] classes)
+        public override void Train(Vector[] features, int[] classes)
         {
             NeuralNetworkManager manager = new NeuralNetworkManager(_net)
             {
@@ -54,7 +57,8 @@ namespace AI.ML.Classifiers
                 Optimizer = Optimizer,
                 LearningRate = LearningRate,
                 Graph = Graph,
-                ValSplit = ValSplit
+                ValSplit = ValSplit,
+                Loss = Loss
             };
 
             Vector[] outps = new Vector[classes.Length];

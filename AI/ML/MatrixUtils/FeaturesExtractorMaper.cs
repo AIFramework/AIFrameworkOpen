@@ -5,17 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AI.ComputerVision.ImgML
+namespace AI.ML.MatrixUtils
 {
-    /// <summary>
-    /// Формирователь карт
-    /// </summary>
-    public class Maper
+    public class FeaturesExtractorMaper
     {
-        Func<Matrix, double> _transformer;
+        Func<Matrix, Vector> _transformer;
 
-        public Maper() { }
-        public Maper(Func<Matrix, double> transformFunction) 
+        public FeaturesExtractorMaper() { }
+        public FeaturesExtractorMaper(Func<Matrix, Vector> transformFunction)
         {
             _transformer = transformFunction;
         }
@@ -27,17 +24,17 @@ namespace AI.ComputerVision.ImgML
         /// <param name="sizeH"></param>
         /// <param name="sizeW"></param>
         /// <returns></returns>
-        public Matrix CreateMap(Matrix img, int sizeH = 10, int sizeW = 10) 
+        public Vector[] CreateMap(Matrix img, int sizeH = 10, int sizeW = 10)
         {
             int stepsH = (img.Height - 1) / sizeH;
             int stepsW = (img.Width - 1) / sizeW;
-            Matrix map = new Matrix(stepsH, stepsW);
+            Vector[] map = new Vector[stepsH*stepsW];
 
-            for (int i = 0; i < stepsH; i++)
+            for (int i = 0, k = 0; i < stepsH; i++)
             {
                 for (int j = 0; j < stepsW; j++)
                 {
-                    map[i, j] = _transformer(img.Region(j * sizeW, i *sizeH, sizeW, sizeH));
+                    map[k++] = _transformer(img.Region(j * sizeW, i * sizeH, sizeW, sizeH));
                 }
             }
 

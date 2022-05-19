@@ -40,4 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ComputerVision\ImgML\" />
+  </ItemGroup>
+
 </Project>

@@ -173,6 +173,20 @@ namespace AI.ML.Classifiers
                 AddClass(dataset[i].Features, dataset[i].ClassMark);
             }
         }
+
+        /// <summary>
+        /// Training a classifier based on the vector-label dataset(Группировка)
+        /// </summary>
+        /// <param name="dataset">Vector-label dataset</param>
+        public void TrainGroup(VectorIntDataset dataset)
+        {
+            VectorIntDataset data = dataset.GroupMean();
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                AddClass(data[i].Features, data[i].ClassMark);
+            }
+        }
         /// <summary>
         /// Save to file
         /// </summary>

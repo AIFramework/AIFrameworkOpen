@@ -9,6 +9,44 @@ using System.Text;
 namespace AI.ML.DataSets
 {
     /// <summary>
+    /// Группа объектов одного класса
+    /// </summary>
+    public class GroupeVidData
+    {
+        public int GroupeMark;
+        public List<Vector> GroupeFeatures = new List<Vector>();
+
+        public GroupeVidData()
+        {
+
+        }
+
+        public GroupeVidData(int gMark, Vector features)
+        {
+            GroupeMark = gMark;
+            GroupeFeatures.Add(features);
+        }
+
+        public Vector Mean => Statistic.MeanVector(GroupeFeatures);
+        public Vector Std => Statistic.EnsembleStd(GroupeFeatures);
+
+        /// <summary>
+        /// Возвращет индекс первого вхождения заданной метки класса
+        /// </summary>
+        /// <param name="lbl">Метка класса</param>
+        public static int IndexLbl(IEnumerable<GroupeVidData> data, int lbl)
+        {
+            int i = 0;
+            foreach (var item in data)
+            {
+                if (lbl == item.GroupeMark) return i;
+                i++;
+            }
+            return -1;
+        }
+    }
+
+    /// <summary>
     /// Датасет
     /// </summary>
     [Serializable]
@@ -69,10 +107,10 @@ namespace AI.ML.DataSets
 
 
         /// <summary>
-        /// Корреляционная матрица признаков
+        /// Получение векторов признаков
         /// </summary>
-        /// <returns>Нормированная кор. матрица</returns>
-        public Matrix CorrMatrFeatures()
+        /// <returns></returns>
+        public Vector[] GetFeatures() 
         {
             Vector[] vects = new Vector[Count];
 
@@ -81,6 +119,17 @@ namespace AI.ML.DataSets
                 vects[i] = this[i].Features.Clone();
             }
 
+            return vects;
+        }
+
+        /// <summary>
+        /// Корреляционная матрица признаков
+        /// </summary>
+        /// <returns>Нормированная кор. матрица</returns>
+        public Matrix CorrMatrFeatures()
+        {
+
+            var vects = GetFeatures();
 
             Vector[] vects2 = new Vector[vects[0].Count];
 
@@ -99,27 +148,23 @@ namespace AI.ML.DataSets
             return Matrix.GetCorrelationMatrixNorm(vects2);
         }
 
+
         /// <summary>
         /// Получение вектора дисперсии и среднего вектора
         /// </summary>
         public void DispMeanResult()
         {
-            Vector[] vects = new Vector[Count];
-
-            for (int i = 0; i < vects.Length; i++)
-            {
-                vects[i] = this[i].Features;
-            }
-
+            Vector[] vects = GetFeatures();
             mean = Statistic.MeanVector(vects);
             disp = Statistic.EnsembleDispersion(vects);
         }
+
 
         /// <summary>
         /// Нормализация датасета
         /// </summary>
         /// <returns>Датасет</returns>
-        public VectorIntDataset Normalise()
+        public VectorIntDataset ZNormalise(string pathZData = "z_norm", bool isSave = true)
         {
 
             DispMeanResult();
@@ -129,6 +174,20 @@ namespace AI.ML.DataSets
             VectorIntDataset vid = new VectorIntDataset();
             Vector std = FunctionsForEachElements.Sqrt(disp);
 
+            // Сохранение параметров нормализации
+            if (isSave)
+            {
+                if (!Directory.Exists(pathZData))
+                    Directory.CreateDirectory(pathZData);
+
+                string stdPath = $"{pathZData}\\std.vect";
+                string meanPath = Path.Combine(pathZData, "mean.vect");
+
+                mean.Save(meanPath);
+                std.Save(stdPath);
+            }
+
+            //Нормализация
             for (int i = 0; i < Count; i++)
             {
                 vid.Add(new VectorClass
@@ -141,6 +200,7 @@ namespace AI.ML.DataSets
 
             return vid;
         }
+
 
         /// <summary>
         /// Удаление похожих векторов из разных классов
@@ -261,7 +321,9 @@ namespace AI.ML.DataSets
 
             for (int i = 0; i < Count; i++)
             {
-                stringBuilder.Append(this[i].Features.ToString());
+                string features = this[i].Features.ToString();
+                features = features.Replace(' ', separator).Replace("[", "").Replace("]", "");
+                stringBuilder.Append(features);
                 stringBuilder.Append(separator);
                 stringBuilder.Append(this[i].ClassMark);
                 stringBuilder.Append("\n");
@@ -270,5 +332,48 @@ namespace AI.ML.DataSets
             File.WriteAllText(path, stringBuilder.ToString());
         }
 
+
+        /// <summary>
+        /// Группирует классы вычисляя средний вектор признаков
+        /// </summary>
+        public VectorIntDataset GroupMean()
+        {
+            var data = GetGroupes();
+            VectorIntDataset vid = new VectorIntDataset(data.Length);
+
+            foreach (var item in data)
+                    vid.Add(new VectorClass(item.Mean, item.GroupeMark)); 
+            return vid;
+        }
+
+        /// <summary>
+        /// Группирует датасет по классам
+        /// </summary>
+        /// <returns></returns>
+        public GroupeVidData[] GetGroupes() 
+        {
+            List<GroupeVidData> vidG = new List<GroupeVidData>();
+
+            foreach (var item in this)
+            {
+                var ind = GroupeVidData.IndexLbl(vidG, item.ClassMark);
+                if (ind == -1) vidG.Add(new GroupeVidData(item.ClassMark, item.Features));
+                else vidG[ind].GroupeFeatures.Add(item.Features);
+            }
+
+            return vidG.ToArray();
+        }
+
+        /// <summary>
+        /// Возвращет индекс первого вхождения заданной метки класса
+        /// </summary>
+        /// <param name="lbl">Метка класса</param>
+        public int IndexLbl(int lbl)
+        {
+            for (int i = 0; i < Count; i++)
+                if (lbl == this[i].ClassMark) return i;
+
+            return -1;
+        }
     }
 }

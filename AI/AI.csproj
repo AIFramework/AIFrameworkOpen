@@ -13,6 +13,8 @@
 	<Description>Framework for easy development of signal processing systems, texts, time series, etc. using machine learning methods</Description>
 	<Version>2.2</Version>
 	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	<LangVersion>10.0</LangVersion>
+	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net472|AnyCPU'">

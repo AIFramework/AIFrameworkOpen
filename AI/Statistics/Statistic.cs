@@ -1,6 +1,8 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.HightLevelFunctions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace AI.Statistics
@@ -824,10 +826,11 @@ namespace AI.Statistics
         /// </summary>
         /// <param name="vectors">Dataset</param>
         /// <returns>Средний вектор</returns>
-        public static Vector MeanVector(Vector[] vectors)
+        public static Vector MeanVector(IEnumerable<Vector> vectors)
         {
-            Vector output = Functions.Summ(vectors);
-            output /= vectors.Length;
+            Vector[] data = vectors.ToArray();
+            Vector output = Functions.Summ(data);
+            output /= data.Length;
             return output;
         }
 
@@ -882,11 +885,31 @@ namespace AI.Statistics
         /// <summary>
         /// Дисперсия по ансамлю
         /// </summary>
-        /// <param name="ensemble">Ансамбль векторов</param>
-        public static Vector EnsembleDispersion(Vector[] ensemble)
+        /// <param name="vectors">Ансамбль векторов</param>
+        public static Vector EnsembleDispersion(IEnumerable<Vector> vectors)
         {
+            Vector[] ensemble = vectors.ToArray();
             Vector res = new Vector(ensemble[0].Count);
             Vector mean = MeanVector(ensemble);
+
+            for (int i = 0; i < ensemble.Length; i++)
+            {
+                res += (ensemble[i] - mean).Transform(x => Math.Pow(x, 2));
+            }
+
+            res /= ensemble.Length - 1;
+
+            return res;
+        }
+
+        /// <summary>
+        /// Дисперсия по ансамлю(использует предрассчитанный вектор средних)
+        /// </summary>
+        /// <param name="ensemble">Ансамбль векторов</param>
+        /// <param name="mean">Вектор средних</param>
+        public static Vector EnsembleDispersion(Vector[] ensemble, Vector mean)
+        {
+            Vector res = new Vector(ensemble[0].Count);
 
             for (int i = 0; i < ensemble.Length; i++)
             {
@@ -902,9 +925,20 @@ namespace AI.Statistics
         /// СКО по ансамлю
         /// </summary>
         /// <param name="ensemble">Ансамбль векторов</param>
-        public static Vector EnsembleStd(Vector[] ensemble)
+        public static Vector EnsembleStd(IEnumerable<Vector> ensemble)
         {
             Vector res = EnsembleDispersion(ensemble);
+
+            return res.Transform(Math.Sqrt);
+        }
+
+        /// <summary>
+        /// СКО по ансамлю
+        /// </summary>
+        /// <param name="ensemble">Ансамбль векторов</param>
+        public static Vector EnsembleStd(Vector[] ensemble, Vector mean)
+        {
+            Vector res = EnsembleDispersion(ensemble, mean);
 
             return res.Transform(Math.Sqrt);
         }

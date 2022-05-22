@@ -1,6 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace AI.ML.MatrixUtils
     public class Maper
     {
         Func<Matrix, double> _transformer;
+
 
         public Maper() { }
         public Maper(Func<Matrix, double> transformFunction) 
@@ -60,7 +62,7 @@ namespace AI.ML.MatrixUtils
                     map[k++] = _transformer(img.Region(j * sizeW, i * sizeH, sizeW, sizeH));
                 }
             }
-
+            
             return map;
         }
     }

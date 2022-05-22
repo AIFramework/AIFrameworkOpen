@@ -14,7 +14,7 @@ namespace AI.ML.Classifiers
         private readonly NNW _net;
         public IGraph Graph { get; set; } = new GraphCPU(false);
         public float LearningRate { get; set; } = 0.001f;
-        public int EpochesToPass { get; set; } = 10;
+        public int EpochesToPass { get; set; } = 100;
         public IOptimizer Optimizer { get; set; } = new Adam();
         public float ValSplit { get; set; } = 0f;
 

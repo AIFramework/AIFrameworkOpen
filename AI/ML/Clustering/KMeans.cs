@@ -210,6 +210,17 @@ namespace AI.ML.Clustering
             }
         }
 
+        /// <summary>
+        /// Доучивание
+        /// </summary>
+        /// <param name="vect">Вектор</param>
+        /// <param name="lr">Скорость обучения</param>
+        public void OnlineTuning(Vector vect, double lr=0.01) 
+        {
+            int index = Classify(vect);
+            Centroids[index] += lr * vect;
+        }
+
         /// <summary>Инизиализация</summary>
         public void Initialize()
         {

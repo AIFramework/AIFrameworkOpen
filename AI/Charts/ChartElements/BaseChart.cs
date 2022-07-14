@@ -2,6 +2,7 @@
 using AI.DataStructs.Algebraic;
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace AI.Charts.ChartElements
@@ -11,6 +12,7 @@ namespace AI.Charts.ChartElements
     {
         public string Name { get; private set; }
         public Series Series { get; private set; }
+        private readonly Chart _chart;
 
         protected IData data;
         public IData Data => data;
@@ -23,6 +25,7 @@ namespace AI.Charts.ChartElements
             Series = new Series();
             chart.Legends[0].Enabled = false;
             chart.Series.Add(Series);
+            _chart = chart;
         }
 
         public BaseChart(Chart chart, string name)
@@ -40,6 +43,7 @@ namespace AI.Charts.ChartElements
             }
 
             chart.Series.Add(Series);
+            _chart = chart;
         }
 
         public virtual void SetColor(Color color)
@@ -68,32 +72,35 @@ namespace AI.Charts.ChartElements
 
         public virtual void Recalc(double min, double max)
         {
-            Series.Points.Clear();
-
-            int minI = data.IndexValueNeighborhoodMin(min);
-            int maxI = data.IndexValueNeighborhoodMin(max);
-
-            if (minI != 0)
+            _chart.BeginInvoke((MethodInvoker)(() =>
             {
-                minI--;
-            }
+                Series.Points.Clear();
 
-            if (maxI != data.Count - 1)
-            {
-                maxI++;
-            }
+                int minI = data.IndexValueNeighborhoodMin(min);
+                int maxI = data.IndexValueNeighborhoodMin(max);
 
-            Vector xN = data.GetRegionX(minI, maxI);
-            Vector yN = data.GetRegionY(minI, maxI);
+                if (minI != 0)
+                {
+                    minI--;
+                }
 
-            Tuple<Vector, Vector> dat = ReducMethod(xN, yN);
-            xN = dat.Item1;
-            yN = dat.Item2;
+                if (maxI != data.Count - 1)
+                {
+                    maxI++;
+                }
 
-            for (int j = 0; j < xN.Count; j++)
-            {
-                Series.Points.AddXY(xN[j], yN[j]);
-            }
+                Vector xN = data.GetRegionX(minI, maxI);
+                Vector yN = data.GetRegionY(minI, maxI);
+
+                Tuple<Vector, Vector> dat = ReducMethod(xN, yN);
+                xN = dat.Item1;
+                yN = dat.Item2;
+
+                for (int j = 0; j < xN.Count; j++)
+                {
+                    Series.Points.AddXY(xN[j], yN[j]);
+                }
+            }));
         }
 
 

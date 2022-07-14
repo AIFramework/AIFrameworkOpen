@@ -807,7 +807,7 @@ namespace AI.Statistics
                 Dy += dy * dy;
             }
 
-            cor /= Math.Sqrt(Dx * Dy);
+            cor /= Math.Sqrt(Dx * Dy+1e-8);
 
             return cor;
         }

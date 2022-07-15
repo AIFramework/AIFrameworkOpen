@@ -72,7 +72,39 @@ namespace AI.Charts.ChartElements
 
         public virtual void Recalc(double min, double max)
         {
-            _chart.BeginInvoke((MethodInvoker)(() =>
+            if (_chart.InvokeRequired)
+            {
+                _chart.BeginInvoke((MethodInvoker)(() =>
+                {
+                    Series.Points.Clear();
+
+                    int minI = data.IndexValueNeighborhoodMin(min);
+                    int maxI = data.IndexValueNeighborhoodMin(max);
+
+                    if (minI != 0)
+                    {
+                        minI--;
+                    }
+
+                    if (maxI != data.Count - 1)
+                    {
+                        maxI++;
+                    }
+
+                    Vector xN = data.GetRegionX(minI, maxI);
+                    Vector yN = data.GetRegionY(minI, maxI);
+
+                    Tuple<Vector, Vector> dat = ReducMethod(xN, yN);
+                    xN = dat.Item1;
+                    yN = dat.Item2;
+
+                    for (int j = 0; j < xN.Count; j++)
+                    {
+                        Series.Points.AddXY(xN[j], yN[j]);
+                    }
+                }));
+            }
+            else 
             {
                 Series.Points.Clear();
 
@@ -100,7 +132,7 @@ namespace AI.Charts.ChartElements
                 {
                     Series.Points.AddXY(xN[j], yN[j]);
                 }
-            }));
+            }
         }
 
 

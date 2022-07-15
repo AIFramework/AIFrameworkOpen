@@ -106,7 +106,7 @@ namespace AI.Charts.Control
         {
             InitializeComponent();
             chart1.MouseWheel += Chart1_MouseWheel;
-            //Clear();
+            Clear();
         }
 
 
@@ -214,9 +214,9 @@ namespace AI.Charts.Control
             chart1.BeginInvoke((MethodInvoker)(() =>
             {
                 Vector x = Vector.SeqBeginsWithZero(1, y.Count);
-                chart1.Titles[0].Text = string.Empty;
-                chart1.ChartAreas[0].AxisX.Title = string.Empty;
-                chart1.ChartAreas[0].AxisY.Title = string.Empty;
+                //chart1.Titles[0].Text = string.Empty;
+                //chart1.ChartAreas[0].AxisX.Title = string.Empty;
+                //chart1.ChartAreas[0].AxisY.Title = string.Empty;
                 AddPlot(x, y, name, Color.Black, width, isSpline);
             }));
         }
@@ -520,16 +520,14 @@ namespace AI.Charts.Control
         /// </summary>
         public void Clear()
         {
-            chart1.BeginInvoke((MethodInvoker)(() =>
-            {
-                foreach (IChartElement item in chartElements)
-                {
-                    chart1.Series.Remove(item.Series);
-                }
+            if (chart1.InvokeRequired)
+                chart1.Invoke(new MethodInvoker(ClearInvoked));
 
-                chartElements.Clear();
-            }));
+            else ClearInvoked();
+            
         }
+
+       
 
         #region Контекстное меню
 
@@ -1049,21 +1047,37 @@ namespace AI.Charts.Control
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SetScaleX(double xMin, double xMax)
         {
-            chart1.BeginInvoke((MethodInvoker)(()=>{
+            if (chart1.InvokeRequired)
+            {
+                chart1.Invoke((MethodInvoker)(() =>
+                {
+                    chart1.ChartAreas[0].AxisX.Maximum = xMax;
+                    chart1.ChartAreas[0].AxisX.Minimum = xMin;
+                }));
+            }
+            else
+            {
                 chart1.ChartAreas[0].AxisX.Maximum = xMax;
                 chart1.ChartAreas[0].AxisX.Minimum = xMin;
-            }));
-         
+            }         
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SetScaleY(double yMin, double yMax)
         {
-            chart1.BeginInvoke((MethodInvoker)(() =>
+            if (chart1.InvokeRequired)
+            {
+                chart1.Invoke((MethodInvoker)(() =>
+                {
+                    chart1.ChartAreas[0].AxisY.Maximum = yMax;
+                    chart1.ChartAreas[0].AxisY.Minimum = yMin;
+                }));
+            }
+            else
             {
                 chart1.ChartAreas[0].AxisY.Maximum = yMax;
                 chart1.ChartAreas[0].AxisY.Minimum = yMin;
-            }));
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1113,7 +1127,29 @@ namespace AI.Charts.Control
 
 
 
+        #region Invoked
+        private void ClearInvoked()
+        {
+            foreach (IChartElement item in chartElements)
+            {
+                chart1.Series.Remove(item.Series);
+            }
+            chartElements.Clear();
+        }
 
 
+        private void SetScaleXInvoker(double xMin, double xMax)
+        {
+            chart1.ChartAreas[0].AxisX.Maximum = xMax;
+            chart1.ChartAreas[0].AxisX.Minimum = xMin;
+        }
+
+        private void SetScaleYInvoker(double yMin, double yMax)
+        {
+            chart1.ChartAreas[0].AxisY.Maximum = yMax;
+            chart1.ChartAreas[0].AxisY.Minimum = yMin;
+        }
+
+        #endregion
     }
 }

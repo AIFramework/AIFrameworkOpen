@@ -493,6 +493,40 @@ namespace AI.DataStructs.Algebraic
 
         #region Методы
         /// <summary>
+        /// Adding an item (circular buffer)
+        /// </summary>
+        public void AddCB(double item)
+        {
+            int len = Count;
+            Vector data = new Vector(len);
+
+            for (int i = 1; i < len; i++)
+            {
+                data[i] = this[i - 1];
+
+            }
+
+            data[0] = item;
+            for (int i = 0; i < len; i++)  this[i] = data[i];
+            
+        }
+
+        /// <summary>
+        /// Adding an item (circular buffer to end)
+        /// </summary>
+        public void AddCBE(double item)
+        {
+            int len = Count; // Длинна вектора
+
+            for (int i = 1; i < len; i++)
+            {
+                this[i - 1] = this[i];
+            }
+
+            this[len - 1] = item;
+        }
+
+        /// <summary>
         /// Replacing uncertainty with a number
         /// </summary>
         /// <param name="value"></param>

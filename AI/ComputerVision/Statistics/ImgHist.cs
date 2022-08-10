@@ -69,7 +69,7 @@ namespace AI.ComputerVision.Statistics
         /// </summary>
         /// <param name="img"></param>
         /// <returns></returns>
-        public static Matrix EqualizeHist(Matrix img) 
+        public static Matrix EqualizeHist(Matrix img)
         {
             Vector freq = GetCDF(img);
             Matrix normal = new Matrix(img.Height, img.Width);
@@ -83,10 +83,34 @@ namespace AI.ComputerVision.Statistics
 
             for (int i = 0; i < img.Data.Length; i++)
             {
-                normal[i] = 255 * (FreqFromValue(img[i], freq) - min)/ denom;
+                normal[i] = 255 * (FreqFromValue(img[i], freq) - min) / denom;
             }
 
             return normal;
+        }
+
+        /// <summary>
+        /// Выравнивание гистограммы
+        /// </summary>
+        /// <param name="img"></param>
+        /// <returns></returns>
+        public static Matrix EqualizeHistMiniMax(Matrix img)
+        {
+            Vector freq = GetCDF(img);
+            Matrix normal = new Matrix(img.Height, img.Width);
+            double min = GetMin(freq);
+
+            for (int i = 0; i < freq.Count; i++)
+            {
+                if (freq[i] == 0) freq[i] = min;
+            }
+
+            for (int i = 0; i < img.Data.Length; i++)
+            {
+                normal[i] = FreqFromValue(img[i], freq);
+            }
+
+            return normal.Minimax(255);
         }
     }
 }

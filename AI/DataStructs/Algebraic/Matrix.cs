@@ -789,12 +789,15 @@ namespace AI.DataStructs.Algebraic
         /// Минимакс нормализация
         /// </summary>
         /// <returns></returns>
-        public Matrix Minimax()
+        public Matrix Minimax(double maxValue = 1, double minValue = 0)
         {
             double min = Min();
             double max = Max();
+            double denom = (max - min) / maxValue;
+            min += minValue * denom;
 
-            return (this - min) / (max - min);
+
+            return (this - min) / denom;
         }
 
         /// <summary>

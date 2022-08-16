@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.ONNX", "AI.ONNX\AI.ONNX.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnnxQ", "Tests\OnnxQ\OnnxQ.csproj", "{B54086B3-232E-4A48-8E51-FB416518AC9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.DataPrepaire", "AI.DataPrepaire\AI.DataPrepaire.csproj", "{5A1B2855-7959-4E42-BE77-09A0100CD20A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{B54086B3-232E-4A48-8E51-FB416518AC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B54086B3-232E-4A48-8E51-FB416518AC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B54086B3-232E-4A48-8E51-FB416518AC9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A1B2855-7959-4E42-BE77-09A0100CD20A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A1B2855-7959-4E42-BE77-09A0100CD20A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A1B2855-7959-4E42-BE77-09A0100CD20A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A1B2855-7959-4E42-BE77-09A0100CD20A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

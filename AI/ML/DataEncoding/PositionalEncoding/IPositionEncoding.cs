@@ -19,6 +19,6 @@ namespace AI.ML.DataEncoding.PositionalEncoding
         /// Getting the vector position code
         /// </summary>
         Vector GetCode(double position);
-        
+
     }
 }

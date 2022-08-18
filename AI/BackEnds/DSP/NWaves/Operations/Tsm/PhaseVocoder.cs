@@ -92,15 +92,15 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 
             _gain = 1 / (_fftSize * _window.Select(w => w * w).Sum() / _hopSynthesis);
 
-            _omega = Enumerable.Range(0, _fftSize / 2 + 1)
+            _omega = Enumerable.Range(0, (_fftSize / 2) + 1)
                                .Select(f => 2 * Math.PI * f / _fftSize)
                                .ToArray();
 
             _re = new float[_fftSize];
             _im = new float[_fftSize];
 
-            _prevPhase = new double[_fftSize / 2 + 1];
-            _phaseTotal = new double[_fftSize / 2 + 1];
+            _prevPhase = new double[(_fftSize / 2) + 1];
+            _phaseTotal = new double[(_fftSize / 2) + 1];
         }
 
         /// <summary>
@@ -162,15 +162,15 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         {
             for (int j = 1; j <= _fftSize / 2; j++)
             {
-                double mag = Math.Sqrt(_re[j] * _re[j] + _im[j] * _im[j]);
+                double mag = Math.Sqrt((_re[j] * _re[j]) + (_im[j] * _im[j]));
                 double phase = Math.Atan2(_im[j], _re[j]);
 
                 double delta = phase - _prevPhase[j];
 
-                double deltaUnwrapped = delta - _hopAnalysis * _omega[j];
+                double deltaUnwrapped = delta - (_hopAnalysis * _omega[j]);
                 double deltaWrapped = MathUtils.Mod(deltaUnwrapped + Math.PI, 2 * Math.PI) - Math.PI;
 
-                double freq = _omega[j] + deltaWrapped / _hopAnalysis;
+                double freq = _omega[j] + (deltaWrapped / _hopAnalysis);
 
                 _phaseTotal[j] += _hopSynthesis * freq;
                 _prevPhase[j] = phase;

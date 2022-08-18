@@ -221,7 +221,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 
             // reserve memory for reusable blocks
 
-            _spectrum = new float[_blockSize / 2 + 1];              // buffer for magnitude spectrum
+            _spectrum = new float[(_blockSize / 2) + 1];              // buffer for magnitude spectrum
             _mappedSpectrum = new float[_filterbank.Length + 1];    // buffer for total energies in bands
         }
 

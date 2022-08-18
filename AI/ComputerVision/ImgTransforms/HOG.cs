@@ -1,9 +1,5 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.ComputerVision.ImgTransforms
 {
@@ -12,9 +8,9 @@ namespace AI.ComputerVision.ImgTransforms
     /// </summary>
     public class HOG
     {
-        private SobelTransform _sobelTransformer;
-        private int _bins;
-        private double _k = 0;
+        private readonly SobelTransform _sobelTransformer;
+        private readonly int _bins;
+        private readonly double _k = 0;
 
         public HOG(int bins = 8)
         {
@@ -23,11 +19,11 @@ namespace AI.ComputerVision.ImgTransforms
             _k = _bins / Math.PI;
         }
 
-        public HOG(Matrix maskY, int bins = 8) 
+        public HOG(Matrix maskY, int bins = 8)
         {
             _sobelTransformer = new SobelTransform(maskY);
             _bins = bins;
-            _k = _bins / Math.PI-0.001;
+            _k = (_bins / Math.PI) - 0.001;
         }
 
         /// <summary>
@@ -36,7 +32,7 @@ namespace AI.ComputerVision.ImgTransforms
         /// <param name="img"></param>
         /// <param name="normalyze"></param>
         /// <returns></returns>
-        public Vector CalcHist(Matrix img, bool normalyze = false, bool centrNorm = true) 
+        public Vector CalcHist(Matrix img, bool normalyze = false, bool centrNorm = true)
         {
             double[] ph = _sobelTransformer.Transform(img).PhGrad.Data;
             Vector hist = new Vector(_bins);
@@ -49,14 +45,14 @@ namespace AI.ComputerVision.ImgTransforms
                 sum++;
             }
 
-            if (normalyze) 
+            if (normalyze)
             {
                 hist /= sum;
             }
 
-            if (centrNorm) 
+            if (centrNorm)
             {
-                int ids = _bins / 2 - 1;
+                int ids = (_bins / 2) - 1;
                 hist[ids] = 0;
                 hist[ids] = hist.Mean();
             }

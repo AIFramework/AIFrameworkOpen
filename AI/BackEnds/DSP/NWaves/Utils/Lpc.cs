@@ -36,12 +36,12 @@ namespace AI.BackEnds.DSP.NWaves.Utils
 
                 for (int n = 0; n <= i / 2; n++)
                 {
-                    float tmp = a[i - n] + lambda * a[n];
-                    a[n] = a[n] + lambda * a[i - n];
+                    float tmp = a[i - n] + (lambda * a[n]);
+                    a[n] = a[n] + (lambda * a[i - n]);
                     a[i - n] = tmp;
                 }
 
-                err *= (1.0f - lambda * lambda);
+                err *= 1.0f - (lambda * lambda);
             }
 
             return err;
@@ -67,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                 {
                     acc += k * lpcc[k] * lpc[m - k];
                 }
-                lpcc[m] = -lpc[m] - acc / m;
+                lpcc[m] = -lpc[m] - (acc / m);
             }
 
             for (int m = p; m < n; m++)
@@ -104,7 +104,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                 {
                     acc += k * lpcc[k] * lpc[m - k];
                 }
-                lpc[m] = -lpcc[m] - acc / m;
+                lpc[m] = -lpcc[m] - (acc / m);
             }
 
             return (float)Math.Exp(lpcc[0]);
@@ -118,7 +118,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>LPC order</returns>
         public static int EstimateOrder(int samplingRate)
         {
-            return 2 + samplingRate / 1000;
+            return 2 + (samplingRate / 1000);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             int halfOrder = n / 2;
 
             ComplexDiscreteSignal pPoles = new ComplexDiscreteSignal(1, n);
-            ComplexDiscreteSignal qPoles = new ComplexDiscreteSignal(1, n + 2 * (n % 2));
+            ComplexDiscreteSignal qPoles = new ComplexDiscreteSignal(1, n + (2 * (n % 2)));
 
             int k = 0;
             for (int i = 0; k < halfOrder; i += 2, k++)

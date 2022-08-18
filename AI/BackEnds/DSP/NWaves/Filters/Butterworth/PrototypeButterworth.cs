@@ -11,7 +11,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Butterworth
 
             for (int k = 0; k < order; k++)
             {
-                double theta = Math.PI * (2 * k + 1) / (2 * order);
+                double theta = Math.PI * ((2 * k) + 1) / (2 * order);
 
                 poles[k] = new Complex(-Math.Sin(theta), Math.Cos(theta));
             }

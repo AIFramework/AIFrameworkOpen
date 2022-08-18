@@ -34,7 +34,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <returns></returns>
         public override float Process(float sample)
         {
-            float output = sample - _in1 + _r * _out1;
+            float output = sample - _in1 + (_r * _out1);
 
             _in1 = sample;
             _out1 = output;

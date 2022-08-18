@@ -695,7 +695,7 @@ namespace AI.DataStructs.Algebraic
             m /= n;
             sq /= n;
 
-            return sq - m * m;
+            return sq - (m * m);
         }
         /// <summary>
         /// Среднеквадратичное отклонение
@@ -1131,7 +1131,7 @@ namespace AI.DataStructs.Algebraic
             {
                 for (int j = 0; j < B.Count; j++)
                 {
-                    matr[i, j] = Math.Sqrt(B[j] * B[j] + A[i] * A[i]);
+                    matr[i, j] = Math.Sqrt((B[j] * B[j]) + (A[i] * A[i]));
                 }
             }
 
@@ -1590,8 +1590,8 @@ namespace AI.DataStructs.Algebraic
             unchecked
             {
                 int hash = ((Vector)Data).GetHashCode();
-                hash = hash * 13 + Height;
-                hash = hash * 13 + Width;
+                hash = (hash * 13) + Height;
+                hash = (hash * 13) + Width;
                 return hash;
             }
         }
@@ -1706,7 +1706,7 @@ namespace AI.DataStructs.Algebraic
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int GetIndex(int i, int j)
         {
-            return Width * i + j;
+            return (Width * i) + j;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

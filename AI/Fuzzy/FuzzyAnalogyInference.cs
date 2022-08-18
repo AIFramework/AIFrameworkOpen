@@ -3,8 +3,6 @@ using AI.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.Fuzzy
 {
@@ -61,7 +59,7 @@ namespace AI.Fuzzy
 
             for (int i = 0; i < reward.Count; i++)
             {
-                if(treshold < reward[i]) 
+                if (treshold < reward[i])
                 {
                     n++;
                     ef += matrices[i];
@@ -77,10 +75,10 @@ namespace AI.Fuzzy
         /// </summary>
         /// <param name="matrix">Матрица импликаций</param>
         /// <param name="ifVector">Вектор условия</param>
-        public static Vector Inference(Matrix matrix, Vector ifVector) 
+        public static Vector Inference(Matrix matrix, Vector ifVector)
         {
             Vector then = new Vector(matrix.Width);
-            
+
 
             for (int i = 0; i < matrix.Width; i++)
             {

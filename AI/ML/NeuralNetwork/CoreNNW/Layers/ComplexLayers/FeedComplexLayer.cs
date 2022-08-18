@@ -33,7 +33,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         /// <summary>
         /// Number of learning parameters
         /// </summary>
-        public int TrainableParameters => 2 * (WRe.Shape.Count + BiasRe.Shape.Height) + 6;
+        public int TrainableParameters => (2 * (WRe.Shape.Count + BiasRe.Shape.Height)) + 6;
         /// <summary>
         /// Input dimension
         /// </summary>

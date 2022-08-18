@@ -18,7 +18,7 @@ namespace AI.Extensions
         public static void Shuffle<T>(this T[] data, int? seed = null)
         {
             int size = data.Length;
-            Random random = seed == null? new Random() : new Random(seed.Value);
+            Random random = seed == null ? new Random() : new Random(seed.Value);
 
             for (int i = 0; i < size; i++)
             {

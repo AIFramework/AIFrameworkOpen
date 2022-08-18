@@ -30,7 +30,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>Decibel level</returns>
         public static double ToDecibel(double value, double valueReference = 1.0)
         {
-            return 20 * Math.Log10(value / valueReference + double.Epsilon);
+            return 20 * Math.Log10((value / valueReference) + double.Epsilon);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>Decibel level</returns>
         public static double ToDecibelPower(double value, double valueReference = 1.0)
         {
-            return 10 * Math.Log10(value / valueReference + double.Epsilon);
+            return 10 * Math.Log10((value / valueReference) + double.Epsilon);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static int FreqToPitch(double freq)
         {
-            return (int)Math.Round(69 + 12 * Math.Log(freq / 440, 2), MidpointRounding.AwayFromZero);
+            return (int)Math.Round(69 + (12 * Math.Log(freq / 440, 2)), MidpointRounding.AwayFromZero);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                 throw new ArgumentException("Incorrect octave. Valid octave range is [0, 8]");
             }
 
-            return PitchToFreq(noteIndex + 12 * (octave + 1));
+            return PitchToFreq(noteIndex + (12 * (octave + 1)));
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             int pitch = FreqToPitch(freq);
 
             string note = Notes[pitch % 12];
-            int octave = pitch / 12 - 1;
+            int octave = (pitch / 12) - 1;
 
             return new Tuple<string, int>(note, octave);
         }
@@ -136,7 +136,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>Mel frequency</returns>
         public static double HerzToMel(double herz)
         {
-            return 1127 * Math.Log(herz / 700 + 1); // actually, should be 1127.01048, but HTK and Kaldi seem to use 1127
+            return 1127 * Math.Log((herz / 700) + 1); // actually, should be 1127.01048, but HTK and Kaldi seem to use 1127
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
 
             double logStep = Math.Log(6.4) / 27;
 
-            return herz < minLogHerz ? (herz - minHerz) / sp : minLogMel + Math.Log(herz / minLogHerz) / logStep;
+            return herz < minLogHerz ? (herz - minHerz) / sp : minLogMel + (Math.Log(herz / minLogHerz) / logStep);
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
 
             double logStep = Math.Log(6.4) / 27;
 
-            return mel < minLogMel ? minHerz + sp * mel : minLogHerz * Math.Exp(logStep * (mel - minLogMel));
+            return mel < minLogMel ? minHerz + (sp * mel) : minLogHerz * Math.Exp(logStep * (mel - minLogMel));
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>Bark frequency</returns>
         public static double HerzToBark(double herz)
         {
-            return (26.81 * herz) / (1960 + herz) - 0.53;
+            return (26.81 * herz / (1960 + herz)) - 0.53;
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>Herz frequency</returns>
         public static double BarkToHerz(double bark)
         {
-            return 1960 / (26.81 / (bark + 0.53) - 1);
+            return 1960 / ((26.81 / (bark + 0.53)) - 1);
         }
 
         /// <summary>
@@ -261,34 +261,34 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             {
                 case "B":
                     {
-                        double r = (level2 * freq * 148693636) /
+                        double r = level2 * freq * 148693636 /
                              (
                                 (level2 + 424.36) *
                                  Math.Sqrt(level2 + 25122.25) *
                                 (level2 + 148693636)
                              );
-                        return 20 * Math.Log10(r) + 0.17;
+                        return (20 * Math.Log10(r)) + 0.17;
                     }
 
                 case "C":
                     {
-                        double r = (level2 * 148693636) /
+                        double r = level2 * 148693636 /
                              (
                                  (level2 + 424.36) *
                                  (level2 + 148693636)
                              );
-                        return 20 * Math.Log10(r) + 0.06;
+                        return (20 * Math.Log10(r)) + 0.06;
                     }
 
                 default:
                     {
-                        double r = (level2 * level2 * 148693636) /
+                        double r = level2 * level2 * 148693636 /
                              (
                                  (level2 + 424.36) *
                                   Math.Sqrt((level2 + 11599.29) * (level2 + 544496.41)) *
                                  (level2 + 148693636)
                              );
-                        return 20 * Math.Log10(r) + 2.0;
+                        return (20 * Math.Log10(r)) + 2.0;
                     }
             }
         }

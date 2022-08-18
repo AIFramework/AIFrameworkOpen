@@ -110,7 +110,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             if (_featuregram != null)
             {
-                FeatureCount = _featuregram[0].Length * (_modulationFftSize / 2 + 1);
+                FeatureCount = _featuregram[0].Length * ((_modulationFftSize / 2) + 1);
             }
             else
             {
@@ -131,15 +131,15 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
                 _fft = new RealFft(_fftSize);
 
-                FeatureCount = _filterbank.Length * (_modulationFftSize / 2 + 1);
+                FeatureCount = _filterbank.Length * ((_modulationFftSize / 2) + 1);
 
-                _spectrum = new float[_fftSize / 2 + 1];
+                _spectrum = new float[(_fftSize / 2) + 1];
                 _filteredSpectrum = new float[_filterbank.Length];
                 _block = new float[_fftSize];
             }
 
             _modBlock = new float[_modulationFftSize];
-            _modSpectrum = new float[_modulationFftSize / 2 + 1];
+            _modSpectrum = new float[(_modulationFftSize / 2) + 1];
 
             // feature descriptions
 
@@ -218,7 +218,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                     {
                         for (int k = 0; k < frameSize; k++)
                         {
-                            float y = _block[k] - prevSample * _preEmphasis;
+                            float y = _block[k] - (prevSample * _preEmphasis);
                             prevSample = _block[k];
                             _block[k] = y;
                         }
@@ -291,7 +291,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             i = 0;
             while (i < envelopeLength)
             {
-                float[] vector = new float[_envelopes.Length * (_modulationFftSize / 2 + 1)];
+                float[] vector = new float[_envelopes.Length * ((_modulationFftSize / 2) + 1)];
                 int offset = 0;
 
                 foreach (float[] envelope in _envelopes)
@@ -327,7 +327,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             int length = _filterbank?.Length ?? _featuregram[0].Length;
 
             float[][] spectrum = new float[length][];
-            int spectrumSize = _modulationFftSize / 2 + 1;
+            int spectrumSize = (_modulationFftSize / 2) + 1;
 
             int offset = 0;
             for (int i = 0; i < spectrum.Length; i++)
@@ -353,7 +353,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             float resolution = modulationSamplingRate / _modulationFftSize;
             int freq = (int)Math.Round(herz / resolution);
 
-            int spectrumSize = _modulationFftSize / 2 + 1;
+            int spectrumSize = (_modulationFftSize / 2) + 1;
 
             List<float[]> freqVectors = new List<float[]>();
             foreach (float[] vector in featureVectors)
@@ -361,7 +361,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 float[] spectrum = new float[length];
                 for (int i = 0; i < spectrum.Length; i++)
                 {
-                    spectrum[i] = vector[freq + i * spectrumSize];
+                    spectrum[i] = vector[freq + (i * spectrumSize)];
                 }
                 freqVectors.Add(spectrum);
             }

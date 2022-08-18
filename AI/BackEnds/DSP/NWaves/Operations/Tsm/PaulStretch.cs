@@ -30,7 +30,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         {
             for (int j = 1; j <= _fftSize / 2; j++)
             {
-                double mag = Math.Sqrt(_re[j] * _re[j] + _im[j] * _im[j]);
+                double mag = Math.Sqrt((_re[j] * _re[j]) + (_im[j] * _im[j]));
                 double phase = 2 * Math.PI * _rand.NextDouble();
 
                 _re[j] = (float)(mag * Math.Cos(phase));

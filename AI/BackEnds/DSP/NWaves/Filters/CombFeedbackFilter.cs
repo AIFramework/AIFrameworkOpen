@@ -41,7 +41,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
             float b0 = _b[0];
             float am = _a[_delay];
 
-            float output = b0 * sample - am * _delayLineA[_delayLineOffsetA];
+            float output = (b0 * sample) - (am * _delayLineA[_delayLineOffsetA]);
 
             _delayLineA[_delayLineOffsetA] = output;
 
@@ -79,7 +79,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
             }
             for (int i = _delay, j = 0; i < signal.Length; i++, j++)
             {
-                output[i] = b0 * input[i] - am * output[j];
+                output[i] = (b0 * input[i]) - (am * output[j]);
             }
 
             return new DiscreteSignal(signal.SamplingRate, output);

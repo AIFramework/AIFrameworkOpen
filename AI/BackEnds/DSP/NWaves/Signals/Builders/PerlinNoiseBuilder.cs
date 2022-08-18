@@ -91,7 +91,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         private static double Fade(double t)
         {
-            return t * t * t * (t * (t * 6 - 15) + 10);
+            return t * t * t * ((t * ((t * 6) - 15)) + 10);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         private static double Lerp(double t, double a, double b)
         {
-            return a + t * (b - a);
+            return a + (t * (b - a));
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         public override float NextSample()
         {
-            double sample = GenerateSample(_n * _scale) * (_high - _low) / 2 + (_high + _low) / 2;
+            double sample = (GenerateSample(_n * _scale) * (_high - _low) / 2) + ((_high + _low) / 2);
             _n++;
             return (float)sample;
         }

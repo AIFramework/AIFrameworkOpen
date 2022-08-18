@@ -84,7 +84,7 @@ namespace AI.Charts.Control
         /// <returns></returns>
         private Color GetColor(double value)
         {
-            double position = 599 - (value - min) / len600;
+            double position = 599 - ((value - min) / len600);
             return grad.GetPixel(5, (int)position);
         }
 
@@ -146,11 +146,9 @@ namespace AI.Charts.Control
                     graphics.SmoothingMode = SmoothingMode.HighQuality;
                     graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-                    using (ImageAttributes wrapMode = new ImageAttributes())
-                    {
-                        wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                        graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-                    }
+                    using ImageAttributes wrapMode = new ImageAttributes();
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
                 }
 
                 return destImage;

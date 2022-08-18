@@ -166,7 +166,7 @@ namespace AI.ML.DataSets
             Vector outp = new Vector(centers.Count);
             for (int i = 0; i < centers.Count; i++)
             {
-                double r = Math.Pow((centers[i] - x), 2) / (2 * std * std);
+                double r = Math.Pow(centers[i] - x, 2) / (2 * std * std);
                 outp[i] = Math.Exp(-r);
             }
 
@@ -186,7 +186,7 @@ namespace AI.ML.DataSets
             Vector outp = new Vector(centers.Count);
             for (int i = 0; i < centers.Count; i++)
             {
-                double r = (x - centers[i]);
+                double r = x - centers[i];
                 outp[i] = Math.Sin(r) / r;
                 outp[i] = r < 1e-13 ? 1 : outp[i];
             }

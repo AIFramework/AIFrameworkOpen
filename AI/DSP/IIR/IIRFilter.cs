@@ -115,7 +115,7 @@ namespace AI.DSP.IIR
                 ofA = aLen - 1;
             }
 
-            
+
             return outp;
         }
 

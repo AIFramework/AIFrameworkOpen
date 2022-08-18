@@ -78,7 +78,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         {
             float sample = Math.Abs(input);
 
-            _env = _env < sample ? _ga * _env + (1 - _ga) * sample : _gr * _env + (1 - _ga) * sample;
+            _env = _env < sample ? (_ga * _env) + ((1 - _ga) * sample) : (_gr * _env) + ((1 - _ga) * sample);
 
             return _env;
         }

@@ -52,7 +52,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
 
                 for (int j = 0; j < len; j++)
                 {
-                    int kernelPos = i + filterCount * j;
+                    int kernelPos = i + (filterCount * j);
 
                     if (kernelPos < kernel.Length)
                     {

@@ -143,7 +143,7 @@ namespace AI.ML.AlgorithmAnalysis
             double rec = AverageRecall(real, outAlg);
             double b2 = beta * beta;
 
-            return (1 + b2) * pr * rec / (b2 * pr + rec);
+            return (1 + b2) * pr * rec / ((b2 * pr) + rec);
         }
         /// <summary>
         /// Complete classifier metrics report

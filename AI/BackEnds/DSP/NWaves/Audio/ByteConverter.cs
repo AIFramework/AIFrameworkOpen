@@ -53,7 +53,7 @@
                 {
                     for (int i = n, j = 0; j < floats[n].Length; i += channelCount, j++)
                     {
-                        bytes[i] = (byte)(floats[n][j] * 128 + 128);
+                        bytes[i] = (byte)((floats[n][j] * 128) + 128);
                     }
                 }
             }
@@ -89,7 +89,7 @@
                     {
                         for (int i = 2 * n, j = 0; i < bytes.Length; i += step, j++)
                         {
-                            floats[n][j] = (short)(bytes[i] << 8 | bytes[i + 1]) / 32768f;
+                            floats[n][j] = (short)((bytes[i] << 8) | bytes[i + 1]) / 32768f;
                         }
                     }
                 }
@@ -99,7 +99,7 @@
                     {
                         for (int i = 2 * n, j = 0; i < bytes.Length; i += step, j++)
                         {
-                            floats[n][j] = (short)(bytes[i] << 8 | bytes[i + 1]);
+                            floats[n][j] = (short)((bytes[i] << 8) | bytes[i + 1]);
                         }
                     }
                 }
@@ -112,7 +112,7 @@
                     {
                         for (int i = 2 * n, j = 0; i < bytes.Length; i += step, j++)
                         {
-                            floats[n][j] = (short)(bytes[i] | bytes[i + 1] << 8) / 32768f;
+                            floats[n][j] = (short)(bytes[i] | (bytes[i + 1] << 8)) / 32768f;
                         }
                     }
                 }
@@ -122,7 +122,7 @@
                     {
                         for (int i = 2 * n, j = 0; i < bytes.Length; i += step, j++)
                         {
-                            floats[n][j] = (short)(bytes[i] | bytes[i + 1] << 8);
+                            floats[n][j] = (short)(bytes[i] | (bytes[i + 1] << 8));
                         }
                     }
                 }

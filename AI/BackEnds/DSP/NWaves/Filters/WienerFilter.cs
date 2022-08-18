@@ -50,7 +50,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
                 Process(signal[i]);
             }
 
-            for (; j < signal.Length - _size / 2; j++, i++)   // and begin populating output signal
+            for (; j < signal.Length - (_size / 2); j++, i++)   // and begin populating output signal
             {
                 output[j] = Process(signal[i]);
             }
@@ -90,7 +90,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
             float prevSample = _n > 0 ? _buf[_n - 1] : _buf[_size - 1];
             _n++;
 
-            return sigma < _noise ? mu : (float)(mu + (prevSample - mu) * (1 - _noise / sigma));
+            return sigma < _noise ? mu : (float)(mu + ((prevSample - mu) * (1 - (_noise / sigma))));
         }
 
         public void Reset()

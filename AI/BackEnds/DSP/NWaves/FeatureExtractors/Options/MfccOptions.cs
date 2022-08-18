@@ -34,8 +34,8 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
                     errors.Add("Positive number of MFCC coefficients must be specified");
                 }
 
-                if (FilterBank == null && FilterBankSize < FeatureCount ||
-                    FilterBank != null && FilterBank.Length < FeatureCount)
+                if ((FilterBank == null && FilterBankSize < FeatureCount) ||
+                    (FilterBank != null && FilterBank.Length < FeatureCount))
                 {
                     errors.Add("Number of coefficients must not exceed number of filters");
                 }

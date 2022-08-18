@@ -164,7 +164,7 @@ namespace AI.DSP.DSPCore
                     {
                         for (int i = 0; i < size; i++)
                         {
-                            resPointer[i] = (pointerA[i] * pointerB[i]);
+                            resPointer[i] = pointerA[i] * pointerB[i];
                         }
                     }
                 }
@@ -202,7 +202,7 @@ namespace AI.DSP.DSPCore
         /// <returns></returns>
         public static double[] FastCorrelation(double[] signal)
         {
-            int nMax = 2 * signal.Length - 1;
+            int nMax = (2 * signal.Length) - 1;
 
             double[] signal2 = Fastdif(signal, Expend(signal));
 

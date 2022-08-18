@@ -131,11 +131,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             for (int i = 0; i < output.Length; i++)
             {
-                output[i] = _b[0] * input[i] + _zi[0];
+                output[i] = (_b[0] * input[i]) + _zi[0];
 
                 for (int j = 1; j < _zi.Length; j++)
                 {
-                    _zi[j - 1] = _b[j] * input[i] - _a[j] * output[i] + _zi[j];
+                    _zi[j - 1] = (_b[j] * input[i]) - (_a[j] * output[i]) + _zi[j];
                 }
             }
 
@@ -149,11 +149,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <returns>Output sample</returns>
         public override float Process(float input)
         {
-            float output = _b[0] * input + _zi[0];
+            float output = (_b[0] * input) + _zi[0];
 
             for (int j = 1; j < _zi.Length; j++)
             {
-                _zi[j - 1] = _b[j] * input - _a[j] * output + _zi[j];
+                _zi[j - 1] = (_b[j] * input) - (_a[j] * output) + _zi[j];
             }
 
             return output;
@@ -184,7 +184,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             double[] initialZi = Tf.Zi;
             double[] zi = initialZi.FastCopy();
-            float baseSample = 2 * input[0] - input[padLength];
+            float baseSample = (2 * input[0]) - input[padLength];
 
             for (int i = 0; i < zi.Length; zi[i++] *= baseSample)
             {
@@ -197,7 +197,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             for (int k = 0, i = padLength; i > 0; k++, i--)
             {
-                edgeLeft[k] = Process(2 * baseSample - input[i]);
+                edgeLeft[k] = Process((2 * baseSample) - input[i]);
             }
 
             for (int i = 0; i < input.Length; i++)
@@ -209,7 +209,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             for (int k = 0, i = input.Length - 2; i > input.Length - 2 - padLength; k++, i--)
             {
-                edgeRight[k] = Process(2 * baseSample - input[i]);
+                edgeRight[k] = Process((2 * baseSample) - input[i]);
             }
 
 

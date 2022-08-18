@@ -48,7 +48,7 @@ namespace AI.NLP
             NGram = models[0].Model.Length;
             Array.Copy(models, 0, Models, 0, models.Length);
             ProbabilityVector = prob.Clone();
-            InvertedProbabilityVector = 0.9999 - ProbabilityVector / prob.Max();
+            InvertedProbabilityVector = 0.9999 - (ProbabilityVector / prob.Max());
         }
         #endregion
 
@@ -287,7 +287,7 @@ namespace AI.NLP
                 ProbabilityVector[i] = Models[i].Probability;
             }
 
-            output = (ProbabilityVector / Statistic.MaximalValue(ProbabilityVector));
+            output = ProbabilityVector / Statistic.MaximalValue(ProbabilityVector);
             InvertedProbabilityVector = 0.9999 - output; // создание генеративного вектора
 
             return output;

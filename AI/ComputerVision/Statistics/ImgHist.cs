@@ -1,9 +1,4 @@
 ﻿using AI.DataStructs.Algebraic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.ComputerVision.Statistics
 {
@@ -34,13 +29,13 @@ namespace AI.ComputerVision.Statistics
         /// </summary>
         /// <param name="img"></param>
         /// <returns></returns>
-        public static Vector GetCDF(Matrix img) 
+        public static Vector GetCDF(Matrix img)
         {
-           return  Functions.Integral(Freqs(img));
+            return Functions.Integral(Freqs(img));
         }
 
         // Расчет минимальной ненулевой частоты
-        private static double GetMin(Vector freq) 
+        private static double GetMin(Vector freq)
         {
             double min = double.MaxValue;
 
@@ -58,7 +53,7 @@ namespace AI.ComputerVision.Statistics
         /// <param name="value"></param>
         /// <param name="freqs"></param>
         /// <returns></returns>
-        public static double FreqFromValue(double value, Vector freqs) 
+        public static double FreqFromValue(double value, Vector freqs)
         {
             return freqs[(int)value];
         }

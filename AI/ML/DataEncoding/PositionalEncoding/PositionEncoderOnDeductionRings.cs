@@ -8,7 +8,7 @@ namespace AI.ML.DataEncoding.PositionalEncoding
     {
         public int Dim { get; set; }
 
-        public PositionEncoderOnDeductionRings(int dim) 
+        public PositionEncoderOnDeductionRings(int dim)
         {
             Dim = dim;
         }

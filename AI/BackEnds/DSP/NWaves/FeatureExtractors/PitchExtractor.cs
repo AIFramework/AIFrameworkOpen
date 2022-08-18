@@ -67,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             _low = (float)options.LowFrequency;
             _high = (float)options.HighFrequency;
 
-            _blockSize = MathUtils.NextPowerOfTwo(2 * FrameSize - 1);
+            _blockSize = MathUtils.NextPowerOfTwo((2 * FrameSize) - 1);
             _convolver = new Convolver(_blockSize);
 
             _reversed = new float[FrameSize];

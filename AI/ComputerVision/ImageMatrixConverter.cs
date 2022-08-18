@@ -65,11 +65,9 @@ namespace AI.ComputerVision
             using (Bitmap b = new Bitmap(stream))
             {
                 retval = new Bitmap(b.Width, b.Height, b.PixelFormat);
-                using (Graphics g = Graphics.FromImage(retval))
-                {
-                    g.DrawImage(b, Point.Empty);
-                    g.Flush();
-                }
+                using Graphics g = Graphics.FromImage(retval);
+                g.DrawImage(b, Point.Empty);
+                g.Flush();
             }
             stream.Close();
 
@@ -104,15 +102,15 @@ namespace AI.ComputerVision
                 byte* curpos;
                 fixed (double* _outp = outp)
                 {
-                    double* r = _outp, g = _outp + width * height, b = _outp + 2 * width * height;
+                    double* r = _outp, g = _outp + (width * height), b = _outp + (2 * width * height);
                     for (int h = 0; h < height; h++)
                     {
-                        curpos = ((byte*)bmData.Scan0) + h * bmData.Stride;
+                        curpos = ((byte*)bmData.Scan0) + (h * bmData.Stride);
                         for (int w = 0; w < width; w++)
                         {
-                            *r = *(curpos++); ++r;
-                            *g = *(curpos++); ++g;
-                            *b = *(curpos++); ++b;
+                            *r = *curpos++; ++r;
+                            *g = *curpos++; ++g;
+                            *b = *curpos++; ++b;
                         }
                     }
                 }
@@ -162,15 +160,15 @@ namespace AI.ComputerVision
                 byte* curpos;
                 fixed (double* _rgb = rgb)
                 {
-                    double* _r = _rgb, _g = _rgb + width * height, _b = _rgb + 2 * width * height;
+                    double* _r = _rgb, _g = _rgb + (width * height), _b = _rgb + (2 * width * height);
                     for (int h = 0; h < height; h++)
                     {
-                        curpos = ((byte*)bd.Scan0) + h * bd.Stride;
+                        curpos = ((byte*)bd.Scan0) + (h * bd.Stride);
                         for (int w = 0; w < width; w++)
                         {
-                            *(curpos++) = Limit(*_b); _b++;
-                            *(curpos++) = Limit(*_g); _g++;
-                            *(curpos++) = Limit(*_r); _r++;
+                            *curpos++ = Limit(*_b); _b++;
+                            *curpos++ = Limit(*_g); _g++;
+                            *curpos++ = Limit(*_r); _r++;
                         }
                     }
                 }
@@ -204,13 +202,13 @@ namespace AI.ComputerVision
                     double* c = _gray;
                     for (int h = 0; h < height; h++)
                     {
-                        curpos = ((byte*)bd.Scan0) + h * bd.Stride;
+                        curpos = ((byte*)bd.Scan0) + (h * bd.Stride);
                         for (int w = 0; w < width; w++)
                         {
                             byte color = Limit(*c);
-                            *(curpos++) = color;
-                            *(curpos++) = color;
-                            *(curpos++) = color;
+                            *curpos++ = color;
+                            *curpos++ = color;
+                            *curpos++ = color;
                             c++;
                         }
                     }
@@ -306,7 +304,7 @@ namespace AI.ComputerVision
             {
                 for (int j = 0; j < H; j++)
                 {
-                    Out[j, i] = colorW[0]*b[0, j, i] + colorW[1] * b[1, j, i] + colorW[2] * b[2, j, i];
+                    Out[j, i] = (colorW[0] * b[0, j, i]) + (colorW[1] * b[1, j, i]) + (colorW[2] * b[2, j, i]);
                 }
             }
 
@@ -332,7 +330,7 @@ namespace AI.ComputerVision
             {
                 for (int j = 0; j < H; j++)
                 {
-                    Out[j, i] = (b[2, j, i]);
+                    Out[j, i] = b[2, j, i];
                 }
             }
 
@@ -357,7 +355,7 @@ namespace AI.ComputerVision
             {
                 for (int j = 0; j < H; j++)
                 {
-                    Out[j, i] = (b[1, j, i]);
+                    Out[j, i] = b[1, j, i];
                 }
             }
 
@@ -437,8 +435,8 @@ namespace AI.ComputerVision
 
             float sin = (float)Math.Abs(Math.Sin(angleRotate * Math.PI / 180.0));
             float cos = (float)Math.Abs(Math.Cos(angleRotate * Math.PI / 180.0));
-            float newImgWidth = sin * bmp.Height + cos * bmp.Width;
-            float newImgHeight = sin * bmp.Width + cos * bmp.Height;
+            float newImgWidth = (sin * bmp.Height) + (cos * bmp.Width);
+            float newImgHeight = (sin * bmp.Width) + (cos * bmp.Height);
             float originX = 0f;
             float originY = 0f;
 
@@ -451,7 +449,7 @@ namespace AI.ComputerVision
                 else
                 {
                     originX = newImgWidth;
-                    originY = newImgHeight - sin * bmp.Width;
+                    originY = newImgHeight - (sin * bmp.Width);
                 }
             }
             else
@@ -462,7 +460,7 @@ namespace AI.ComputerVision
                 }
                 else
                 {
-                    originX = newImgWidth - sin * bmp.Height;
+                    originX = newImgWidth - (sin * bmp.Height);
                     originY = newImgHeight;
                 }
             }
@@ -586,20 +584,20 @@ namespace AI.ComputerVision
                 }
                 else
                 {
-                    H = d * (rgb[1] - rgb[2]) + 360;
+                    H = (d * (rgb[1] - rgb[2])) + 360;
                 }
             }
 
             else if (indexMax == 1)
             {
                 d = 60.0 / d;
-                H = d * (rgb[2] - rgb[0]) + 120;
+                H = (d * (rgb[2] - rgb[0])) + 120;
             }
 
             else
             {
                 d = 60.0 / d;
-                H = d * (rgb[0] - rgb[1]) + 240;
+                H = (d * (rgb[0] - rgb[1])) + 240;
             }
 
             return H / 360.0;
@@ -611,7 +609,7 @@ namespace AI.ComputerVision
         /// </summary>
         /// <param name="rgb"></param>
         /// <returns></returns>
-        static public double HComponent(Color rgb)
+        public static double HComponent(Color rgb)
         {
             int[] rgbInt = { rgb.R, rgb.G, rgb.B };
             return HComponent(rgbInt);
@@ -626,7 +624,7 @@ namespace AI.ComputerVision
         {
             try
             {
-                return (int)(intensiv) / 220;
+                return (int)intensiv / 220;
             }
             catch { return 0; }
         }

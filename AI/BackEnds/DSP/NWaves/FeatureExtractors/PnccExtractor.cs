@@ -163,7 +163,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             _includeEnergy = options.IncludeEnergy;
             _logEnergyFloor = options.LogEnergyFloor;
 
-            _spectrum = new float[_blockSize / 2 + 1];
+            _spectrum = new float[(_blockSize / 2) + 1];
             _spectrumQOut = new float[filterbankSize];
             _gammatoneSpectrum = new float[filterbankSize];
             _filteredSpectrumQ = new float[filterbankSize];
@@ -173,7 +173,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             _avgSpectrumQ2 = new float[filterbankSize];
             _smoothedSpectrum = new float[filterbankSize];
 
-            _ringBuffer = new SpectraRingBuffer(2 * M + 1, filterbankSize);
+            _ringBuffer = new SpectraRingBuffer((2 * M) + 1, filterbankSize);
 
             _step = M - 1;
         }
@@ -238,11 +238,11 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             {
                 if (spectrumQ[j] > _spectrumQOut[j])
                 {
-                    _spectrumQOut[j] = LambdaA * _spectrumQOut[j] + (1 - LambdaA) * spectrumQ[j];
+                    _spectrumQOut[j] = (LambdaA * _spectrumQOut[j]) + ((1 - LambdaA) * spectrumQ[j]);
                 }
                 else
                 {
-                    _spectrumQOut[j] = LambdaB * _spectrumQOut[j] + (1 - LambdaB) * spectrumQ[j];
+                    _spectrumQOut[j] = (LambdaB * _spectrumQOut[j]) + ((1 - LambdaB) * spectrumQ[j]);
                 }
             }
 
@@ -258,11 +258,11 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
                 if (_filteredSpectrumQ[j] > _avgSpectrumQ1[j])
                 {
-                    _avgSpectrumQ1[j] = LambdaA * _avgSpectrumQ1[j] + (1 - LambdaA) * _filteredSpectrumQ[j];
+                    _avgSpectrumQ1[j] = (LambdaA * _avgSpectrumQ1[j]) + ((1 - LambdaA) * _filteredSpectrumQ[j]);
                 }
                 else
                 {
-                    _avgSpectrumQ1[j] = LambdaB * _avgSpectrumQ1[j] + (1 - LambdaB) * _filteredSpectrumQ[j];
+                    _avgSpectrumQ1[j] = (LambdaB * _avgSpectrumQ1[j]) + ((1 - LambdaB) * _filteredSpectrumQ[j]);
                 }
 
                 // 3.3) temporal masking
@@ -319,7 +319,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 sumPower += _smoothedSpectrum[j];
             }
 
-            _mean = LambdaMu * _mean + (1 - LambdaMu) * sumPower;
+            _mean = (LambdaMu * _mean) + ((1 - LambdaMu) * sumPower);
 
             for (int j = 0; j < _smoothedSpectrum.Length; j++)
             {
@@ -361,7 +361,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             if (_step == int.MaxValue - 1)
             {
-                _step = 2 * M + 1;
+                _step = (2 * M) + 1;
             }
         }
 
@@ -417,7 +417,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                     AverageSpectrum[j] /= _count;
                 }
 
-                CentralSpectrum = _spectra[(_current + _capacity / 2 + 1) % _capacity];
+                CentralSpectrum = _spectra[(_current + (_capacity / 2) + 1) % _capacity];
 
                 _current = (_current + 1) % _capacity;
             }

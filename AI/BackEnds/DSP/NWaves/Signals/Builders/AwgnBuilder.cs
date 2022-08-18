@@ -50,8 +50,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
             double r = Math.Sqrt(-2 * Math.Log(u1));
             double theta = 2 * Math.PI * u2;
 
-            float sample = (float)(r * Math.Cos(theta) * _sigma + _mu);
-            _next = (float)(r * Math.Sin(theta) * _sigma + _mu);
+            float sample = (float)((r * Math.Cos(theta) * _sigma) + _mu);
+            _next = (float)((r * Math.Sin(theta) * _sigma) + _mu);
 
             return sample;
         }

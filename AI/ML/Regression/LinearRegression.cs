@@ -59,7 +59,7 @@ namespace AI.ML.Regression
             Lrm = new LinearRegressionModel();
             double d = Statistic.СalcVariance(X);
             Lrm.k = Statistic.Cov(X, Y) / (d == 0 ? 1e-9 : d);
-            Lrm.b = Statistic.ExpectedValue(Y) - Lrm.k * Statistic.ExpectedValue(X);
+            Lrm.b = Statistic.ExpectedValue(Y) - (Lrm.k * Statistic.ExpectedValue(X));
         }
 
 
@@ -79,7 +79,7 @@ namespace AI.ML.Regression
         /// <returns>Зависимая переменная</returns>
         public double Predict(double x)
         {
-            return Lrm.k * x + Lrm.b;
+            return (Lrm.k * x) + Lrm.b;
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace AI.DSP.Analyse
         {
             double d = Statistic.СalcVariance(X);
             K = Statistic.Cov(X, Y) / (d == 0 ? 1e-9 : d);
-            B = Statistic.ExpectedValue(Y) - K * Statistic.ExpectedValue(X);
+            B = Statistic.ExpectedValue(Y) - (K * Statistic.ExpectedValue(X));
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace AI.DSP.Analyse
         /// <returns>Зависимая переменная</returns>
         public double Predict(double x)
         {
-            return K * x + B;
+            return (K * x) + B;
         }
 
         /// <summary>

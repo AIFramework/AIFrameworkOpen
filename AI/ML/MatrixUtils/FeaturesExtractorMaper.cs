@@ -1,15 +1,11 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.ML.MatrixUtils
 {
     public class FeaturesExtractorMaper
     {
-        Func<Matrix, Vector> _transformer;
+        private readonly Func<Matrix, Vector> _transformer;
 
         public FeaturesExtractorMaper() { }
         public FeaturesExtractorMaper(Func<Matrix, Vector> transformFunction)
@@ -28,7 +24,7 @@ namespace AI.ML.MatrixUtils
         {
             int stepsH = (img.Height - 1) / sizeH;
             int stepsW = (img.Width - 1) / sizeW;
-            Vector[] map = new Vector[stepsH*stepsW];
+            Vector[] map = new Vector[stepsH * stepsW];
 
             for (int i = 0, k = 0; i < stepsH; i++)
             {

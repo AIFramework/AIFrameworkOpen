@@ -167,7 +167,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
 
             TimeSpan pause = DateTime.Now - _pauseTime;
 
-            _pauseDuration += pause.Duration().Seconds * 1000 + pause.Duration().Milliseconds;
+            _pauseDuration += (pause.Duration().Seconds * 1000) + pause.Duration().Milliseconds;
             _isPaused = false;
         }
 

@@ -39,10 +39,10 @@ namespace AI.Algebra
                         A[k, index] = 0;
                         for (int j = index + 1; j < Count; j++)
                         {
-                            A[k, j] = A[k, j] - A[index, j] * сoef;
+                            A[k, j] = A[k, j] - (A[index, j] * сoef);
                         }
 
-                        B[k] = B[k] - B[index] * сoef;
+                        B[k] = B[k] - (B[index] * сoef);
                     }
                 }
             }

@@ -6,7 +6,7 @@ namespace AI.ComputerVision.SpatialFilters
     {
         public Smoothing()
         {
-            f = new Matrix(3, 3) + 1.0 / 9.0;
+            f = new Matrix(3, 3) + (1.0 / 9.0);
         }
     }
 }

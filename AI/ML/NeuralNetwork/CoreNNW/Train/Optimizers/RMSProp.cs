@@ -40,7 +40,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
                     float g = BaseMethods.GradCulc(m, i, L1, L2, kG, gradClip);
 
 
-                    m.StepCache[i] = m.StepCache[i] * DecayRate + (1 - DecayRate) * g * g;
+                    m.StepCache[i] = (m.StepCache[i] * DecayRate) + ((1 - DecayRate) * g * g);
 
                     m[i] -= learningRate * g / (float)Math.Sqrt(m.StepCache[i] + SmoothEpsilon);
                     m.DifData[i] = 0;

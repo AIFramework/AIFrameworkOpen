@@ -126,7 +126,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             {
                 _unwrapped[i] -= Math.PI * delay * i / mid;
 
-                double mag = Math.Sqrt(_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]);
+                double mag = Math.Sqrt((_realSpectrum[i] * _realSpectrum[i]) + (_imagSpectrum[i] * _imagSpectrum[i]));
 
                 _realSpectrum[i] = (float)Math.Log(mag + float.Epsilon, _logBase);
                 _imagSpectrum[i] = (float)_unwrapped[i];
@@ -187,7 +187,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             for (int i = 0; i < _realSpectrum.Length; i++)
             {
                 float mag = _realSpectrum[i];
-                double phase = _imagSpectrum[i] + Math.PI * delay * i / mid;
+                double phase = _imagSpectrum[i] + (Math.PI * delay * i / mid);
 
                 _realSpectrum[i] = (float)(Math.Pow(_logBase, mag) * Math.Cos(phase));
                 _imagSpectrum[i] = (float)(Math.Pow(_logBase, mag) * Math.Sin(phase));
@@ -244,7 +244,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             for (int i = 0; i < _realSpectrum.Length; i++)
             {
-                double mag = Math.Sqrt(_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]);
+                double mag = Math.Sqrt((_realSpectrum[i] * _realSpectrum[i]) + (_imagSpectrum[i] * _imagSpectrum[i]));
 
                 _realSpectrum[i] = (float)Math.Log(mag + float.Epsilon, _logBase);
                 _imagSpectrum[i] = 0.0f;

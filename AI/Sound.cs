@@ -138,7 +138,7 @@ namespace AI
             Stream waveFileStream = File.OpenWrite(path);
             BinaryWriter br = new BinaryWriter(waveFileStream);
             br.Write(1179011410);
-            br.Write(4 * vector.Count + 36);
+            br.Write((4 * vector.Count) + 36);
             br.Write(1163280727);
             br.Write(544501094);
             br.Write(16);

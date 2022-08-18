@@ -102,7 +102,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                     _medianHarmonic.Process(harmonicMagnitudes[k][j]);
                 }
 
-                for (; i < harmonicMagnitudes.Count - _medianHarmonic.Size / 2; i++, k++)
+                for (; i < harmonicMagnitudes.Count - (_medianHarmonic.Size / 2); i++, k++)
                 {
                     float h = _medianHarmonic.Process(harmonicMagnitudes[k][j]);
 
@@ -165,7 +165,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
         private float WienerMask2(float h, float p)
         {
-            return h + p > 1e-10 ? h * h / (h * h + p * p) : 0;
+            return h + p > 1e-10 ? h * h / ((h * h) + (p * p)) : 0;
         }
     }
 

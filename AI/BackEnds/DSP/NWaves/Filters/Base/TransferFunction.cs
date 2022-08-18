@@ -101,7 +101,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             for (int i = 0; i < a.Length; i++)
             {
-                num[i + 1] = -(a[0][i] - c[i]) + (d[0] - 1) * Denominator[i + 1];
+                num[i + 1] = -(a[0][i] - c[i]) + ((d[0] - 1) * Denominator[i + 1]);
             }
 
             const double ZeroTolerance = 1e-8;
@@ -182,7 +182,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                 double[] c = new double[K - 1];
                 for (int i = 0; i < K - 1; i++)
                 {
-                    c[i] = (num[i + 1] - num[0] * Denominator[i + 1] / a0) / a0;
+                    c[i] = (num[i + 1] - (num[0] * Denominator[i + 1] / a0)) / a0;
                 }
 
                 double[] d = new double[1] { num[0] / a0 };
@@ -226,7 +226,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
                 for (int i = 1; i < size; i++)
                 {
-                    B[i - 1] = b[i] - a[i] * b[0];
+                    B[i - 1] = b[i] - (a[i] * b[0]);
                 }
 
                 MatrixNWaves m = MatrixNWaves.Eye(size - 1) - MatrixNWaves.Companion(a).T;
@@ -247,8 +247,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                 for (int i = 1; i < size - 1; i++)
                 {
                     asum += a[i];
-                    csum += b[i] - a[i] * b[0];
-                    zi[i] = asum * zi[0] - csum;
+                    csum += b[i] - (a[i] * b[0]);
+                    zi[i] = (asum * zi[0]) - csum;
                 }
 
                 return zi;
@@ -309,8 +309,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             Fft64 fft = new Fft64(length);
             fft.Direct(real, imag);
 
-            return new ComplexDiscreteSignal(1, real.Take(length / 2 + 1),
-                                                imag.Take(length / 2 + 1));
+            return new ComplexDiscreteSignal(1, real.Take((length / 2) + 1),
+                                                imag.Take((length / 2) + 1));
         }
 
         /// <summary>
@@ -508,20 +508,18 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <param name="delimiter"></param>
         public static TransferFunction FromCsv(Stream stream, char delimiter = ',')
         {
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                string content = reader.ReadLine();
-                double[] numerator = content.Split(delimiter)
-                                       .Select(s => double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture))
-                                       .ToArray();
+            using StreamReader reader = new StreamReader(stream);
+            string content = reader.ReadLine();
+            double[] numerator = content.Split(delimiter)
+                                   .Select(s => double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture))
+                                   .ToArray();
 
-                content = reader.ReadLine();
-                double[] denominator = content.Split(delimiter)
-                                         .Select(s => double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture))
-                                         .ToArray();
+            content = reader.ReadLine();
+            double[] denominator = content.Split(delimiter)
+                                     .Select(s => double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture))
+                                     .ToArray();
 
-                return new TransferFunction(numerator, denominator);
-            }
+            return new TransferFunction(numerator, denominator);
         }
 
         /// <summary>
@@ -531,14 +529,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <param name="delimiter"></param>
         public void ToCsv(Stream stream, char delimiter = ',')
         {
-            using (StreamWriter writer = new StreamWriter(stream))
-            {
-                string content = string.Join(delimiter.ToString(), Numerator.Select(k => k.ToString(CultureInfo.InvariantCulture)));
-                writer.WriteLine(content);
+            using StreamWriter writer = new StreamWriter(stream);
+            string content = string.Join(delimiter.ToString(), Numerator.Select(k => k.ToString(CultureInfo.InvariantCulture)));
+            writer.WriteLine(content);
 
-                content = string.Join(delimiter.ToString(), Denominator.Select(k => k.ToString(CultureInfo.InvariantCulture)));
-                writer.WriteLine(content);
-            }
+            content = string.Join(delimiter.ToString(), Denominator.Select(k => k.ToString(CultureInfo.InvariantCulture)));
+            writer.WriteLine(content);
         }
     }
 }

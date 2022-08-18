@@ -599,7 +599,7 @@ namespace AI.DataStructs.WithComplexElements
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int GetIndex(int i, int j)
         {
-            return Width * i + j;
+            return (Width * i) + j;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

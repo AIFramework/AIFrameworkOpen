@@ -41,7 +41,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             for (int m = 0; m < _temp.Length / 2; m++)
             {
                 _temp[m] = input[2 * m];
-                _temp[_temp.Length - 1 - m] = input[2 * m + 1];
+                _temp[_temp.Length - 1 - m] = input[(2 * m) + 1];
             }
 
             _fft.Direct(_temp, output);
@@ -51,7 +51,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             int N = _fft.Size;
             for (int i = 0; i < N; i++)
             {
-                output[i] = 2 * (float)(_temp[i] * Math.Cos(0.5 * Math.PI * i / N) - output[i] * Math.Sin(-0.5 * Math.PI * i / N));
+                output[i] = 2 * (float)((_temp[i] * Math.Cos(0.5 * Math.PI * i / N)) - (output[i] * Math.Sin(-0.5 * Math.PI * i / N)));
             }
         }
 
@@ -67,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             for (int m = 0; m < _temp.Length / 2; m++)
             {
                 _temp[m] = input[2 * m];
-                _temp[_temp.Length - 1 - m] = input[2 * m + 1];
+                _temp[_temp.Length - 1 - m] = input[(2 * m) + 1];
             }
 
             _fft.Direct(_temp, output);
@@ -79,7 +79,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             for (int i = 0; i < N; i++)
             {
-                output[i] = 2 * norm * (float)(_temp[i] * Math.Cos(0.5 * Math.PI * i / N) - output[i] * Math.Sin(-0.5 * Math.PI * i / N));
+                output[i] = 2 * norm * (float)((_temp[i] * Math.Cos(0.5 * Math.PI * i / N)) - (output[i] * Math.Sin(-0.5 * Math.PI * i / N)));
             }
 
             output[0] *= (float)Math.Sqrt(0.5);
@@ -108,7 +108,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             for (int m = 0; m < _temp.Length / 2; m++)
             {
                 output[2 * m] = 2 * _temp[m];
-                output[2 * m + 1] = 2 * _temp[N - 1 - m];
+                output[(2 * m) + 1] = 2 * _temp[N - 1 - m];
             }
         }
 

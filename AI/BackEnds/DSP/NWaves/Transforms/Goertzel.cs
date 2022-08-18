@@ -37,7 +37,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             for (int i = 0; i < _fftSize; i++)
             {
-                s = input[i] + s1 * f - s2;
+                s = input[i] + (s1 * f) - s2;
 
                 s2 = s1;
                 s1 = s;

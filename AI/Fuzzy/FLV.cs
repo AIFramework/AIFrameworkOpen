@@ -81,21 +81,21 @@ namespace AI.Fuzzy
         /// </summary>
         public static FLV operator |(FLV a, FLV b)
         {
-            return new FLV(a._flv + b._flv - a._flv * b._flv);
+            return new FLV(a._flv + b._flv - (a._flv * b._flv));
         }
 
         /// <summary>
         /// Импликация Клини
         /// </summary>
-        public static FLV KDImplication(FLV @if, FLV then) 
+        public static FLV KDImplication(FLV @if, FLV then)
         {
-            return Math.Max(1-@if, then);
+            return Math.Max(1 - @if, then);
         }
-        
+
         /// <summary>
         /// Импликация Гогена
         /// </summary>
-        public static FLV GImplication(FLV @if, FLV then) 
+        public static FLV GImplication(FLV @if, FLV then)
         {
             return @if > 0 ? Math.Min(1, then / @if) : 1;
         }

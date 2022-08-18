@@ -51,7 +51,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
                 Process(input[i]);
             }
 
-            for (; j < input.Length - Size / 2; j++, i++)   // and begin populating output signal
+            for (; j < input.Length - (Size / 2); j++, i++)   // and begin populating output signal
             {
                 output[j] = Process(input[i]);
             }

@@ -28,7 +28,7 @@ namespace AI.ML.Distances
         {
             return Functions.Summ(
                 Vector.Crosser(v1, v2,
-                (x, y) => x * Math.Log((x + AISettings.GlobalEps) / (y + AISettings.GlobalEps)) + y * Math.Log((y + AISettings.GlobalEps) / (x + AISettings.GlobalEps))
+                (x, y) => (x * Math.Log((x + AISettings.GlobalEps) / (y + AISettings.GlobalEps))) + (y * Math.Log((y + AISettings.GlobalEps) / (x + AISettings.GlobalEps)))
                 )
                 ) / (2 * v2.Count);
         }

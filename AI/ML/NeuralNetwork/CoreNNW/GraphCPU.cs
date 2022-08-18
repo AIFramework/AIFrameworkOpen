@@ -410,9 +410,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                     float dot = 0;
                     for (int k = 0; k < m1Cols; k++)
                     {
-                        dot += m1[m1Col + k] * m2[m2Cols * k + j];
+                        dot += m1[m1Col + k] * m2[(m2Cols * k) + j];
                     }
-                    returnObj[outcols * i + j] = dot;
+                    returnObj[(outcols * i) + j] = dot;
                 }
             }
             if (IsBackward)
@@ -429,8 +429,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                                 float b = returnObj.DifData[outcol + j];
                                 for (int k = 0; k < m1.Shape.Width; k++)
                                 {
-                                    m1.DifData[m1Cols * i + k] += m2[m2Cols * k + j] * b;
-                                    m2.DifData[m2Cols * k + j] += m1[m1Cols * i + k] * b;
+                                    m1.DifData[(m1Cols * i) + k] += m2[(m2Cols * k) + j] * b;
+                                    m2.DifData[(m2Cols * k) + j] += m1[(m1Cols * i) + k] * b;
                                 }
                             }
                         }
@@ -495,8 +495,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
                                         for (int j = 0; j < m1.Shape.Width; j++)
                                         {
-                                            m1.DifData[m1Cols * i + j] += *pV * b;
-                                            *pVDif += m1[m1Cols * i + j] * b;
+                                            m1.DifData[(m1Cols * i) + j] += *pV * b;
+                                            *pVDif += m1[(m1Cols * i) + j] * b;
                                             pV++; // Следующий элемент входного вектора
                                             pVDif++;
                                         }
@@ -819,8 +819,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         {
             int outpH, outpW, outpD = filters.Length;
 
-            outpH = (input.Shape.Height - filters[0].Shape.Height + padY) / strideY + 1;
-            outpW = (input.Shape.Width - filters[0].Shape.Width + padX) / strideX + 1;
+            outpH = ((input.Shape.Height - filters[0].Shape.Height + padY) / strideY) + 1;
+            outpW = ((input.Shape.Width - filters[0].Shape.Width + padX) / strideX) + 1;
 
             if ((outpW < 1) || (outpH < 1))
             {
@@ -878,7 +878,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                                 for (int x1 = 0; x1 < outpW; x1++, x += strideX)
                                 {
 
-                                    float delt = returnObj.DifData[x1 + outpW * y1 + outpW * outpH * d];
+                                    float delt = returnObj.DifData[x1 + (outpW * y1) + (outpW * outpH * d)];
                                     for (int dy = 0; dy < filter.Shape.Height; dy++)
                                     {
                                         int y2 = y + dy;
@@ -889,8 +889,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                                             {
                                                 for (int fd = 0; fd < filter.Shape.Depth; fd++)
                                                 {
-                                                    filter.DifData[filter.Shape.Width * dy + dx + fd * filter.Shape.Area] += input[y2, ox, fd] * delt;
-                                                    input.DifData[ox + input.Shape.Width * y2 + input.Shape.Area * fd] += filter[dy, dx, fd] * delt;
+                                                    filter.DifData[(filter.Shape.Width * dy) + dx + (fd * filter.Shape.Area)] += input[y2, ox, fd] * delt;
+                                                    input.DifData[ox + (input.Shape.Width * y2) + (input.Shape.Area * fd)] += filter[dy, dx, fd] * delt;
 
                                                 }
                                             }
@@ -912,8 +912,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         {
             int outpH, outpW, outpD = filters.Length;
 
-            outpH = (input.Shape.Height - filters[0].Shape.Height + padY) / strideY + 1;
-            outpW = (input.Shape.Width - filters[0].Shape.Width + padX) / strideX + 1;
+            outpH = ((input.Shape.Height - filters[0].Shape.Height + padY) / strideY) + 1;
+            outpW = ((input.Shape.Width - filters[0].Shape.Width + padX) / strideX) + 1;
             float balanser = outpH * outpD;
             balanser = 1.0f / balanser;
 
@@ -972,7 +972,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                                 int x = -padX;
                                 for (int x1 = 0; x1 < outpW; x1++, x += strideX)
                                 {
-                                    float delt = returnObj.DifData[x1 + outpW * y1 + outpW * outpH * d]; // Расчет дельт и балансировка
+                                    float delt = returnObj.DifData[x1 + (outpW * y1) + (outpW * outpH * d)]; // Расчет дельт и балансировка
                                     for (int dy = 0; dy < filter.Shape.Height; dy++)
                                     {
                                         int y2 = y + dy;
@@ -983,8 +983,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                                             {
                                                 for (int fd = 0; fd < filter.Shape.Depth; fd++)
                                                 {
-                                                    filter.DifData[filter.Shape.Width * dy + dx + fd * filter.Shape.Area] += input[y2, ox, fd] * delt;
-                                                    input.DifData[ox + input.Shape.Width * y2 + input.Shape.Area * fd] += filter[dy, dx, fd] * delt;
+                                                    filter.DifData[(filter.Shape.Width * dy) + dx + (fd * filter.Shape.Area)] += input[y2, ox, fd] * delt;
+                                                    input.DifData[ox + (input.Shape.Width * y2) + (input.Shape.Area * fd)] += filter[dy, dx, fd] * delt;
 
                                                 }
                                             }
@@ -1068,7 +1068,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                             {
                                 for (int x = 0; x < outpW; x++)
                                 {
-                                    input.DifData[input.Shape.Width * maximusY[k] + maximusX[k] + input.Shape.Area * n] = returnObj.DifData[outpW * y + x + n * returnObj.Shape.Area];
+                                    input.DifData[(input.Shape.Width * maximusY[k]) + maximusX[k] + (input.Shape.Area * n)] = returnObj.DifData[(outpW * y) + x + (n * returnObj.Shape.Area)];
                                     k++;
                                 }
                             }
@@ -1111,7 +1111,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// </summary>
         public virtual NNValue UnPooling(NNValue inp, int h, int w)
         {
-            int outpH = inp.Shape.Height * h + 1, outpW = inp.Shape.Width * w + 1, outpD = inp.Shape.Depth;
+            int outpH = (inp.Shape.Height * h) + 1, outpW = (inp.Shape.Width * w) + 1, outpD = inp.Shape.Depth;
             float sq = 1.0f / (h * w);
 
             if ((outpW < 1) || (outpH < 1))
@@ -1145,7 +1145,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                             {
                                 for (int x = 0, x2 = 1; x < inp.Shape.Width; x++, x2 += w)
                                 {
-                                    inp.DifData[inp.Shape.Width * y + x + inp.Shape.Area * n] = returnObj.DifData[outpW * y2 + x2 + returnObj.Shape.Area * n];
+                                    inp.DifData[(inp.Shape.Width * y) + x + (inp.Shape.Area * n)] = returnObj.DifData[(outpW * y2) + x2 + (returnObj.Shape.Area * n)];
                                 }
                             }
                         }
@@ -1200,15 +1200,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                                     int coordX = (int)x1;
                                     int coordY = (int)y1;
 
-                                    bool x1w = (coordX + 1 < inp.Shape.Width);
-                                    bool y1h = (coordY + 1 < inp.Shape.Width);
-                                    bool x10 = (coordX - 1 > -1);
-                                    bool y10 = (coordY - 1 > -1);
-                                    bool x2w = (coordX + 2 < inp.Shape.Width);
-                                    bool y2w = (coordY + 2 < inp.Shape.Height);
+                                    bool x1w = coordX + 1 < inp.Shape.Width;
+                                    bool y1h = coordY + 1 < inp.Shape.Width;
+                                    bool x10 = coordX - 1 > -1;
+                                    bool y10 = coordY - 1 > -1;
+                                    bool x2w = coordX + 2 < inp.Shape.Width;
+                                    bool y2w = coordY + 2 < inp.Shape.Height;
 
-                                    float dif = returnObj.DifData[y_ * returnObj.Shape.Width + x_ + s * returnObj.Shape.Area];
-                                    int index = inp.Shape.Width * (coordY + 0) + (coordX + 0) + inp.Shape.Area * s;
+                                    float dif = returnObj.DifData[(y_ * returnObj.Shape.Width) + x_ + (s * returnObj.Shape.Area)];
+                                    int index = (inp.Shape.Width * (coordY + 0)) + coordX + 0 + (inp.Shape.Area * s);
 
                                     float[] b = CalcB(x1, y1);
 
@@ -1288,7 +1288,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
                                     if (y2w)
                                     {
-                                        inp.DifData[index + 2 * inp.Shape.Width] += dif * b[9];
+                                        inp.DifData[index + (2 * inp.Shape.Width)] += dif * b[9];
                                     }
                                     else
                                     {
@@ -1315,7 +1315,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
                                     if (y2w && x1w)
                                     {
-                                        inp.DifData[index + 2 * inp.Shape.Width + 1] += dif * b[12];
+                                        inp.DifData[index + (2 * inp.Shape.Width) + 1] += dif * b[12];
                                     }
                                     else
                                     {
@@ -1333,7 +1333,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
                                     if (y2w && x10)
                                     {
-                                        inp.DifData[index + 2 * inp.Shape.Width - 1] += dif * b[14];
+                                        inp.DifData[index + (2 * inp.Shape.Width) - 1] += dif * b[14];
                                     }
                                     else
                                     {
@@ -1342,7 +1342,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
                                     if (y2w && x2w)
                                     {
-                                        inp.DifData[index + 2 * inp.Shape.Width + 2] += dif * b[15];
+                                        inp.DifData[index + (2 * inp.Shape.Width) + 2] += dif * b[15];
                                     }
                                     else
                                     {
@@ -1448,8 +1448,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                     {
                         for (int w = 0; w < data.Shape.Width; w++)
                         {
-                            int indData = W * h + w + S * k;
-                            int indRet = W * h + w + S * d;
+                            int indData = (W * h) + w + (S * k);
+                            int indRet = (W * h) + w + (S * d);
 
                             returnObj[i].Data[indRet] = data.Data[indData];
                         }
@@ -1471,8 +1471,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                                 {
                                     for (int w = 0; w < data.Shape.Width; w++)
                                     {
-                                        int indData = W * h + w + S * k;
-                                        int indRet = W * h + w + S * d;
+                                        int indData = (W * h) + w + (S * k);
+                                        int indRet = (W * h) + w + (S * d);
                                         data.DifData[indData] = returnObj[i].DifData[indRet];
                                     }
                                 }
@@ -1496,8 +1496,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             Parallel.For(0, real.Shape.Count, i =>
             {
-                returnObj[0][i] = real[i] * alpha1[0] + im[i] * beta1[0] + im[i] * real[i] * gama1[0];
-                returnObj[1][i] = real[i] * alpha2[0] + im[i] * beta2[0] + im[i] * real[i] * gama2[0];
+                returnObj[0][i] = (real[i] * alpha1[0]) + (im[i] * beta1[0]) + (im[i] * real[i] * gama1[0]);
+                returnObj[1][i] = (real[i] * alpha2[0]) + (im[i] * beta2[0]) + (im[i] * real[i] * gama2[0]);
             });
 
             if (IsBackward)
@@ -1511,8 +1511,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                             float dR = returnObj[0].DifData[i];// производные реальной части
                             float dI = returnObj[1].DifData[i];// производные мнимой части
 
-                            real.DifData[i] += (alpha1[0] + gama1[0] * im[i]) * dR + (alpha2[0] + gama2[0] * im[i]) * dI;
-                            im.DifData[i] += (beta1[0] + gama1[0] * real[i]) * dR + (beta2[0] + gama2[0] * real[i]) * dI;
+                            real.DifData[i] += ((alpha1[0] + (gama1[0] * im[i])) * dR) + ((alpha2[0] + (gama2[0] * im[i])) * dI);
+                            im.DifData[i] += ((beta1[0] + (gama1[0] * real[i])) * dR) + ((beta2[0] + (gama2[0] * real[i])) * dI);
 
                             alpha1.DifData[0] += real[i] * dR;
                             alpha2.DifData[0] += real[i] * dI;
@@ -1573,8 +1573,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                                 {
                                     for (int w = 0; w < W; w++)
                                     {
-                                        int indData = W * h + w + S * d;
-                                        int indRet = W * h + w + S * deep;
+                                        int indData = (W * h) + w + (S * d);
+                                        int indRet = (W * h) + w + (S * deep);
 
                                         values[i].DifData[indData] = returnObj.DifData[indRet];
                                     }
@@ -1660,12 +1660,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 a[i] = tensor[coordY, coordX, d];
             });
 
-            bool x1w = (coordX + 1 < w);
-            bool y1h = (coordY + 1 < h);
-            bool x10 = (coordX - 1 > -1);
-            bool y10 = (coordY - 1 > -1);
-            bool x2w = (coordX + 2 < w);
-            bool y2w = (coordY + 2 < h);
+            bool x1w = coordX + 1 < w;
+            bool y1h = coordY + 1 < h;
+            bool x10 = coordX - 1 > -1;
+            bool y10 = coordY - 1 > -1;
+            bool x2w = coordX + 2 < w;
+            bool y2w = coordY + 2 < h;
 
             if (x1w)
             {

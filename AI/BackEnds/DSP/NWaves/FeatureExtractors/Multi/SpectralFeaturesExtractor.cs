@@ -162,11 +162,11 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
 
             if (frequencies == null)
             {
-                _frequencies = Enumerable.Range(0, _blockSize / 2 + 1)
+                _frequencies = Enumerable.Range(0, (_blockSize / 2) + 1)
                                          .Select(f => f * resolution)
                                          .ToArray();
             }
-            else if (frequencies.Length == _blockSize / 2 + 1)
+            else if (frequencies.Length == (_blockSize / 2) + 1)
             {
                 _frequencies = frequencies;
             }
@@ -183,7 +183,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
                 }
             }
 
-            _spectrum = new float[_blockSize / 2 + 1];  // buffer for magnitude spectrum
+            _spectrum = new float[(_blockSize / 2) + 1];  // buffer for magnitude spectrum
         }
 
         /// <summary>

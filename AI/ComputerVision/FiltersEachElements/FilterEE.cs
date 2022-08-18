@@ -1,10 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.ComputerVision.FiltersEachElements
 {
@@ -13,9 +9,9 @@ namespace AI.ComputerVision.FiltersEachElements
     /// </summary>
     public class FilterEE : IFilterEE
     {
-        Func<double, double> _elFunc;
-        bool _prepNorm;
-        bool _postNorm;
+        private Func<double, double> _elFunc;
+        private bool _prepNorm;
+        private bool _postNorm;
 
 
         /// <summary>
@@ -54,7 +50,7 @@ namespace AI.ComputerVision.FiltersEachElements
             matrix = matrix.Transform(_elFunc);
 
             if (_postNorm)
-                matrix = 255*matrix.Minimax();
+                matrix = 255 * matrix.Minimax();
 
             Normal(matrix);
 
@@ -83,17 +79,17 @@ namespace AI.ComputerVision.FiltersEachElements
             return new Bitmap(ImageMatrixConverter.ToBitmap(filtred), matrix.Width, matrix.Height);
         }
 
-        public void Init(Func<double, double> elem, bool prepNorm = false, bool postNorm = false) 
+        public void Init(Func<double, double> elem, bool prepNorm = false, bool postNorm = false)
         {
             _elFunc = elem;
             _prepNorm = prepNorm;
             _postNorm = postNorm;
         }
 
-        
+
 
         // Нормализация 0-255
-        void Normal(Matrix img) 
+        private void Normal(Matrix img)
         {
             for (int i = 0; i < img.Data.Length; i++)
             {

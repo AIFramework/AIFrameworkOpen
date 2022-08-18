@@ -64,7 +64,7 @@ namespace AI.NLP
                 }
             }
 
-            return Math.Log10(0.1 + D / (count + 0.001));
+            return Math.Log10(0.1 + (D / (count + 0.001)));
         }
 
         /// <summary>

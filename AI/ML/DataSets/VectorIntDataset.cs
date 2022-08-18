@@ -110,7 +110,7 @@ namespace AI.ML.DataSets
         /// Получение векторов признаков
         /// </summary>
         /// <returns></returns>
-        public Vector[] GetFeatures() 
+        public Vector[] GetFeatures()
         {
             Vector[] vects = new Vector[Count];
 
@@ -342,7 +342,7 @@ namespace AI.ML.DataSets
             VectorIntDataset vid = new VectorIntDataset(data.Length);
 
             foreach (var item in data)
-                    vid.Add(new VectorClass(item.Mean, item.GroupeMark)); 
+                vid.Add(new VectorClass(item.Mean, item.GroupeMark));
             return vid;
         }
 
@@ -350,7 +350,7 @@ namespace AI.ML.DataSets
         /// Группирует датасет по классам
         /// </summary>
         /// <returns></returns>
-        public GroupeVidData[] GetGroupes() 
+        public GroupeVidData[] GetGroupes()
         {
             List<GroupeVidData> vidG = new List<GroupeVidData>();
 

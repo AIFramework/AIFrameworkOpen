@@ -244,7 +244,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             _includeEnergy = options.IncludeEnergy;
             _logEnergyFloor = options.LogEnergyFloor;
 
-            _spectrum = new float[_blockSize / 2 + 1];
+            _spectrum = new float[(_blockSize / 2) + 1];
             _bandSpectrum = new float[filterbankSize];
         }
 
@@ -304,8 +304,8 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             for (int k = 0; k < _idftTable.Length; k++)
             {
-                float acc = _idftTable[k][0] * _bandSpectrum[0] +
-                          _idftTable[k][n - 1] * _bandSpectrum[n - 3];  // add values at two duplicated edges right away
+                float acc = (_idftTable[k][0] * _bandSpectrum[0]) +
+                          (_idftTable[k][n - 1] * _bandSpectrum[n - 3]);  // add values at two duplicated edges right away
 
                 for (int j = 1; j < n - 1; j++)
                 {

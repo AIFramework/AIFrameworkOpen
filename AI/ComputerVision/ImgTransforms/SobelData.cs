@@ -6,7 +6,7 @@ namespace AI.ComputerVision.ImgTransforms
     /// <summary>
     /// Данные преобразования Собеля
     /// </summary>
-    public class SobelData 
+    public class SobelData
     {
         /// <summary>
         /// Градиент вдоль оси X
@@ -33,7 +33,7 @@ namespace AI.ComputerVision.ImgTransforms
         {
             get
             {
-                Matrix k = 1.0 / (GradImg+AISettings.GlobalEps);
+                Matrix k = 1.0 / (GradImg + AISettings.GlobalEps);
                 return GradX.AdamarProduct(k).Transform(Math.Acos);
             }
         }
@@ -43,10 +43,10 @@ namespace AI.ComputerVision.ImgTransforms
         /// </summary>
         /// <param name="gradX">Градиент X</param>
         /// <param name="gradY">Градиент Y</param>
-        public SobelData(Matrix gradX, Matrix gradY) 
+        public SobelData(Matrix gradX, Matrix gradY)
         {
             GradX = gradX;
-            GradY = gradY;  
+            GradY = gradY;
         }
     }
 

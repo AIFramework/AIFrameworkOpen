@@ -75,13 +75,13 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                         double t2 = im[i] + im[p];
                         double t3 = re[i] - re[p];
                         double t4 = im[i] - im[p];
-                        re[p] = t3 * u1 - t4 * u2;
-                        im[p] = t4 * u1 + t3 * u2;
+                        re[p] = (t3 * u1) - (t4 * u2);
+                        im[p] = (t4 * u1) + (t3 * u2);
                         re[i] = t1;
                         im[i] = t2;
                     }
-                    double u3 = u1 * c - u2 * s;
-                    u2 = u2 * c + u1 * s;
+                    double u3 = (u1 * c) - (u2 * s);
+                    u2 = (u2 * c) + (u1 * s);
                     u1 = u3;
                 }
                 L >>= 1;
@@ -135,13 +135,13 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                         double t2 = im[i] + im[p];
                         double t3 = re[i] - re[p];
                         double t4 = im[i] - im[p];
-                        re[p] = t3 * u1 - t4 * u2;
-                        im[p] = t4 * u1 + t3 * u2;
+                        re[p] = (t3 * u1) - (t4 * u2);
+                        im[p] = (t4 * u1) + (t3 * u2);
                         re[i] = t1;
                         im[i] = t2;
                     }
-                    double u3 = u1 * c - u2 * s;
-                    u2 = u2 * c + u1 * s;
+                    double u3 = (u1 * c) - (u2 * s);
+                    u2 = (u2 * c) + (u1 * s);
                     u1 = u3;
                 }
                 L >>= 1;

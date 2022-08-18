@@ -38,9 +38,9 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         public PhaseLockingVocoder(double stretch, int hopAnalysis, int fftSize = 0)
             : base(stretch, hopAnalysis, fftSize)
         {
-            _mag = new double[_fftSize / 2 + 1];
-            _phase = new double[_fftSize / 2 + 1];
-            _delta = new double[_fftSize / 2 + 1];
+            _mag = new double[(_fftSize / 2) + 1];
+            _phase = new double[(_fftSize / 2) + 1];
+            _delta = new double[(_fftSize / 2) + 1];
             _peaks = new int[_fftSize / 4];
         }
 
@@ -51,7 +51,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         {
             for (int j = 0; j < _mag.Length; j++)
             {
-                _mag[j] = Math.Sqrt(_re[j] * _re[j] + _im[j] * _im[j]);
+                _mag[j] = Math.Sqrt((_re[j] * _re[j]) + (_im[j] * _im[j]));
                 _phase[j] = Math.Atan2(_im[j], _re[j]);
             }
 
@@ -83,12 +83,12 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 
                 _delta[peakPos] = peakPhase - _prevPhase[peakPos];
 
-                double deltaUnwrapped = _delta[peakPos] - _hopAnalysis * _omega[peakPos];
+                double deltaUnwrapped = _delta[peakPos] - (_hopAnalysis * _omega[peakPos]);
                 double deltaWrapped = MathUtils.Mod(deltaUnwrapped + Math.PI, 2 * Math.PI) - Math.PI;
 
-                double freq = _omega[peakPos] + deltaWrapped / _hopAnalysis;
+                double freq = _omega[peakPos] + (deltaWrapped / _hopAnalysis);
 
-                _phaseTotal[peakPos] = _phaseTotal[peakPos] + _hopSynthesis * freq;
+                _phaseTotal[peakPos] = _phaseTotal[peakPos] + (_hopSynthesis * freq);
 
                 int rightPos = (_peaks[j] + _peaks[j + 1]) / 2;
 

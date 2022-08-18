@@ -135,7 +135,7 @@ namespace AI.HightLevelFunctions
         {
 
             double a = 8 / (3 * Math.PI) * (3 - Math.PI) / (Math.PI - 4),
-                exp1 = (-x * x * (4 / Math.PI) + a * x * x) / (1 + a * x);
+                exp1 = ((-x * x * (4 / Math.PI)) + (a * x * x)) / (1 + (a * x));
             return Math.Sign(x) * Math.Sqrt(1 - Math.Exp(exp1));
         }
         /// <summary>
@@ -169,7 +169,7 @@ namespace AI.HightLevelFunctions
 
             for (int i = 0; i < Count; i++)
             {
-                sequen[i] = began + i * step;
+                sequen[i] = began + (i * step);
             }
 
             return sequen;
@@ -183,7 +183,7 @@ namespace AI.HightLevelFunctions
         public static Vector GenerateTheSequence(double began, double end)
         {
             double n = end - began;
-            int Count = (n % 1 == 0) ? (int)(n) : (int)(n + 1);
+            int Count = (n % 1 == 0) ? (int)n : (int)(n + 1);
 
             Vector sequen = new Vector(Count);
 

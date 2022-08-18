@@ -35,11 +35,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
                 }
                 else if (x[i] < 0)
                 {
-                    valueMatrix[i] = x[i] + x[i] * x[i] / 4;
+                    valueMatrix[i] = x[i] + (x[i] * x[i] / 4);
                 }
                 else
                 {
-                    valueMatrix[i] = x[i] - x[i] * x[i] / 4;
+                    valueMatrix[i] = x[i] - (x[i] * x[i] / 4);
                 }
             }
 
@@ -56,7 +56,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 
             for (int i = 0; i < len; i++)
             {
-                valueMatrix.Data[i] = 1 + x[i] / 2;
+                valueMatrix.Data[i] = 1 + (x[i] / 2);
             }
 
             return valueMatrix;

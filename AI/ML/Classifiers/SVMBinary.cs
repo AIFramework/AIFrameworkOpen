@@ -21,7 +21,7 @@ namespace AI.ML.Classifiers
 
         public SVMBinary(int dim)
         {
-            w = new Vector(dim) + 0.1 / dim;
+            w = new Vector(dim) + (0.1 / dim);
             nW = Math.Sqrt(dim);
         }
 

@@ -24,7 +24,7 @@ namespace AI.HightLevelFunctions
         /// <param name="std">СКО</param>
         public static Vector Gauss(Vector inp, double m, double std)
         {
-            return (1.0 / (std * Math.Sqrt(2 * Math.PI))) * FunctionsForEachElements.Exp(((inp - m).Transform(x => Math.Pow(x, 2))) / (-2 * std * std));
+            return 1.0 / (std * Math.Sqrt(2 * Math.PI)) * FunctionsForEachElements.Exp((inp - m).Transform(x => Math.Pow(x, 2)) / (-2 * std * std));
         }
         /// <summary>
         /// Ф-я Гаусса
@@ -63,7 +63,7 @@ namespace AI.HightLevelFunctions
             {
                 for (int j = 0; j < w; j++)
                 {
-                    matrix[i, j] = Math.Sqrt((i - h05) * (i - h05) + (j - w05) * (j - w05));
+                    matrix[i, j] = Math.Sqrt(((i - h05) * (i - h05)) + ((j - w05) * (j - w05)));
                 }
             }
 
@@ -79,7 +79,7 @@ namespace AI.HightLevelFunctions
         /// <param name="sko">СКО</param>
         public static double Gauss(double Inp, double m, double sko)
         {
-            return (1.0 / (sko * Math.Sqrt(2 * Math.PI))) * Math.Exp(((Inp - m) * (Inp - m)) / (-2 * sko * sko));
+            return 1.0 / (sko * Math.Sqrt(2 * Math.PI)) * Math.Exp((Inp - m) * (Inp - m) / (-2 * sko * sko));
         }
         /// <summary>
         /// Функция Гаусса при x=m -> G(x) = 1
@@ -110,7 +110,7 @@ namespace AI.HightLevelFunctions
         /// <param name="std">СКО</param>
         public static double GaussNorm1(double Inp, double m, double std)
         {
-            return Math.Exp(((Inp - m) * (Inp - m)) / (-2 * std * std));
+            return Math.Exp((Inp - m) * (Inp - m) / (-2 * std * std));
         }
         /// <summary>
         /// Функция вероятность принадлежности при inp = m, out = 1
@@ -137,7 +137,7 @@ namespace AI.HightLevelFunctions
         public static Vector Puasson(Vector inp, double m)
         {
             Vector pow = FunctionsForEachElements.Pow(m, inp);
-            return (pow / FunctionsForEachElements.Factorial(inp)) * Math.Exp(-m);
+            return pow / FunctionsForEachElements.Factorial(inp) * Math.Exp(-m);
         }
     }
 }

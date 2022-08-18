@@ -108,14 +108,14 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
                 int j = s;
                 while (h > 1e-10)
                 {
-                    h = Profile(1.0 * j / fftHalfSize - fi, bwi);
+                    h = Profile((1.0 * j / fftHalfSize) - fi, bwi);
                     _re[j--] += (float)h * _amplitudes[i - 1];
                 }
                 h = 1.0;
                 j = s + 1;
                 while (h > 1e-10)
                 {
-                    h = Profile(1.0 * j / fftHalfSize - fi, bwi);
+                    h = Profile((1.0 * j / fftHalfSize) - fi, bwi);
                     _re[j++] += (float)h * _amplitudes[i - 1];
                 }
             }

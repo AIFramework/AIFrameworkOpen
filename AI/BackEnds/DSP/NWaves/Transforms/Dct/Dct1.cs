@@ -79,11 +79,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             {
                 if ((k & 1) == 0)
                 {
-                    output[k] = (input[0] + input[input.Length - 1]);
+                    output[k] = input[0] + input[input.Length - 1];
                 }
                 else
                 {
-                    output[k] = (input[0] - input[input.Length - 1]);
+                    output[k] = input[0] - input[input.Length - 1];
                 }
 
                 for (int n = 1; n < input.Length - 1; n++)
@@ -101,7 +101,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         public void DirectNorm(float[] input, float[] output)
         {
             float sqrt2 = (float)Math.Sqrt(2);
-            float norm0 = 0.5f * (float)(Math.Sqrt(1.0 / (_dctSize - 1)));
+            float norm0 = 0.5f * (float)Math.Sqrt(1.0 / (_dctSize - 1));
             float norm = norm0 * sqrt2;
 
             for (int k = 0; k < output.Length; k++)
@@ -141,7 +141,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         public void InverseNorm(float[] input, float[] output)
         {
             float sqrt2 = (float)Math.Sqrt(2);
-            float norm0 = 0.5f * (float)(Math.Sqrt(1.0 / (_dctSize - 1)));
+            float norm0 = 0.5f * (float)Math.Sqrt(1.0 / (_dctSize - 1));
             float norm = norm0 * sqrt2;
 
             for (int k = 0; k < output.Length; k++)

@@ -225,8 +225,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals
 
             for (int i = 0; i < length; i++)
             {
-                real[i] = real1[i] * real2[i] - imag1[i] * imag2[i];
-                imag[i] = real1[i] * imag2[i] + imag1[i] * real2[i];
+                real[i] = (real1[i] * real2[i]) - (imag1[i] * imag2[i]);
+                imag[i] = (real1[i] * imag2[i]) + (imag1[i] * real2[i]);
             }
 
             return new ComplexDiscreteSignal(signal1.SamplingRate, real, imag);
@@ -257,9 +257,9 @@ namespace AI.BackEnds.DSP.NWaves.Signals
 
             for (int i = 0; i < length; i++)
             {
-                double den = imag1[i] * imag1[i] + imag2[i] * imag2[i];
-                real[i] = (real1[i] * real2[i] + imag1[i] * imag2[i]) / den;
-                imag[i] = (real2[i] * imag1[i] - imag2[i] * real1[i]) / den;
+                double den = (imag1[i] * imag1[i]) + (imag2[i] * imag2[i]);
+                real[i] = ((real1[i] * real2[i]) + (imag1[i] * imag2[i])) / den;
+                imag[i] = ((real2[i] * imag1[i]) - (imag2[i] * real1[i])) / den;
             }
 
             return new ComplexDiscreteSignal(signal1.SamplingRate, real, imag);
@@ -291,7 +291,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
 
             for (int i = 0; i < magnitude.Length; i++)
             {
-                magnitude[i] = (float)Math.Sqrt(real[i] * real[i] + imag[i] * imag[i]);
+                magnitude[i] = (float)Math.Sqrt((real[i] * real[i]) + (imag[i] * imag[i]));
             }
 
             return magnitude;

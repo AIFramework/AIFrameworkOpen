@@ -17,7 +17,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
 
             for (int k = 0; k < order; k++)
             {
-                double theta = Math.PI * (2 * k + 1) / (2 * order);
+                double theta = Math.PI * ((2 * k) + 1) / (2 * order);
                 double re = -sinh * Math.Sin(theta);
                 double im = cosh * Math.Cos(theta);
                 poles[k] = 1 / new Complex(re, im);
@@ -32,7 +32,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
 
             for (int k = 0; k < order; k++)
             {
-                double theta = Math.PI * (2 * k + 1) / (2 * order);
+                double theta = Math.PI * ((2 * k) + 1) / (2 * order);
                 zeros[k] = new Complex(0, -1 / Math.Cos(theta));
             }
 

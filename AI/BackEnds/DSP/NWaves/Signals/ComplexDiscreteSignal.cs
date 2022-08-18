@@ -193,7 +193,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
                 double[] magnitude = new double[real.Length];
                 for (int i = 0; i < magnitude.Length; i++)
                 {
-                    magnitude[i] = Math.Sqrt(real[i] * real[i] + imag[i] * imag[i]);
+                    magnitude[i] = Math.Sqrt((real[i] * real[i]) + (imag[i] * imag[i]));
                 }
 
                 return magnitude;
@@ -213,7 +213,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
                 double[] magnitude = new double[real.Length];
                 for (int i = 0; i < magnitude.Length; i++)
                 {
-                    magnitude[i] = real[i] * real[i] + imag[i] * imag[i];
+                    magnitude[i] = (real[i] * real[i]) + (imag[i] * imag[i]);
                 }
 
                 return magnitude;

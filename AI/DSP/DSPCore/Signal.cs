@@ -29,7 +29,7 @@ namespace AI.DSP.DSPCore
         /// <param name="fi">Начальная фаза</param>
         public static Vector Sin(Vector t, double A, double f, double fi)
         {
-            return A * FunctionsForEachElements.Sin(t * 2 * Math.PI * f + fi);
+            return A * FunctionsForEachElements.Sin((t * 2 * Math.PI * f) + fi);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace AI.DSP.DSPCore
         /// <param name="fi">Начальная фаза</param>
         public static Vector Sin(Vector t, double A, Vector f, double fi)
         {
-            return A * FunctionsForEachElements.Sin(t * 2 * Math.PI * f + fi);
+            return A * FunctionsForEachElements.Sin((t * 2 * Math.PI * f) + fi);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace AI.DSP.DSPCore
         /// <param name="fi">Начальная фаза</param>
         public static Vector Sin(Vector t, double A, double f, Vector fi)
         {
-            return A * FunctionsForEachElements.Sin(t * 2 * Math.PI * f + fi);
+            return A * FunctionsForEachElements.Sin((t * 2 * Math.PI * f) + fi);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace AI.DSP.DSPCore
         /// <param name="fi">Начальная фаза</param>
         public static Vector Sin(Vector t, Vector A, double f, double fi)
         {
-            return A * FunctionsForEachElements.Sin(t * 2 * Math.PI * f + fi);
+            return A * FunctionsForEachElements.Sin((t * 2 * Math.PI * f) + fi);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace AI.DSP.DSPCore
         public static Vector Frequency(int Count, double fd)
         {
             double dt = 1.0 / fd, df = 1 / (Count * dt);
-            return FunctionsForEachElements.GenerateTheSequence(0, df, (Count) * df).CutAndZero(Count);
+            return FunctionsForEachElements.GenerateTheSequence(0, df, Count * df).CutAndZero(Count);
         }
 
 
@@ -101,7 +101,7 @@ namespace AI.DSP.DSPCore
         public static Vector FrequencyCentr(int Count, double fd)
         {
             double dt = 1.0 / fd, df = 1 / (Count * dt);
-            return FunctionsForEachElements.GenerateTheSequence((-Count / 2.0) * df, df, (Count / 2.0) * df).CutAndZero(Count);
+            return FunctionsForEachElements.GenerateTheSequence(-Count / 2.0 * df, df, Count / 2.0 * df).CutAndZero(Count);
         }
 
         /// <summary>
@@ -382,7 +382,7 @@ namespace AI.DSP.DSPCore
         /// <returns></returns>
         public static double Energe(Vector signal, double fd)
         {
-            double energe = Functions.Summ((signal.Transform(x => Math.Pow(x, 2))));
+            double energe = Functions.Summ(signal.Transform(x => Math.Pow(x, 2)));
             return energe / fd;
         }
 
@@ -402,7 +402,7 @@ namespace AI.DSP.DSPCore
         /// <returns></returns>
         public static Vector LFMRectNP(double f, int f0, int fd, double time)
         {
-            Vector[] v = new Vector[(int)(f * time + 0.99)];
+            Vector[] v = new Vector[(int)((f * time) + 0.99)];
             Vector v1 = OneLFM(f, f0, fd);
 
             for (int i = 0; i < v.Length; i++)
@@ -423,7 +423,7 @@ namespace AI.DSP.DSPCore
             for (int i = 0; i < t.Count; i++)
             {
 
-                arg = 2 * Math.PI * (f0 * t[i] + (f0) * f * t[i] * t[i]);
+                arg = 2 * Math.PI * ((f0 * t[i]) + (f0 * f * t[i] * t[i]));
                 outp[i] = Math.Cos(arg);
             }
 
@@ -448,7 +448,7 @@ namespace AI.DSP.DSPCore
             for (int i = 0; i < t.Count; i++)
             {
 
-                arg = 2 * Math.PI * (f0 * t[i] + (df / time) * t[i] * t[i]);
+                arg = 2 * Math.PI * ((f0 * t[i]) + (df / time * t[i] * t[i]));
                 outp[i] = Math.Cos(arg);
             }
 
@@ -477,7 +477,7 @@ namespace AI.DSP.DSPCore
                 cV[i] = inputSpectr[i];
             }
 
-            end = lenFull - inp.Count / 2;
+            end = lenFull - (inp.Count / 2);
 
             for (; i < end; i++)
             {

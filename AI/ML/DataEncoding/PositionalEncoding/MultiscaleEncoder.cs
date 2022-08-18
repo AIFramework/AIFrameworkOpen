@@ -24,17 +24,17 @@ namespace AI.ML.DataEncoding.PositionalEncoding
         {
             Dim = dim;
             double k = Math.Log(dim, 2);
-            
+
             if (k % 1 != 0)
             {
                 throw new Exception("dim != 2^N");
             }
 
             dims = new int[(int)k];
-            
+
             for (int i = 0; i < dims.Length; i++)
             {
-                dims[i] = dim / (1 << (i+1)); 
+                dims[i] = dim / (1 << (i + 1));
             }
 
             dims[0] += 1;

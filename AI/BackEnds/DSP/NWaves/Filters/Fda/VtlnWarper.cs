@@ -55,8 +55,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             _highVtln = highVtln * Math.Min(1, alpha);
 
             _scale = 1 / alpha;
-            _scaleLeft = (_scale * _lowVtln - lowFreq) / (_lowVtln - lowFreq);
-            _scaleRight = (highFreq - _scale * _highVtln) / (highFreq - _highVtln);
+            _scaleLeft = ((_scale * _lowVtln) - lowFreq) / (_lowVtln - lowFreq);
+            _scaleRight = (highFreq - (_scale * _highVtln)) / (highFreq - _highVtln);
         }
 
         /// <summary>
@@ -68,14 +68,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             if (freq < _lowVtln)
             {
-                return _lowFreq + _scaleLeft * (freq - _lowFreq);
+                return _lowFreq + (_scaleLeft * (freq - _lowFreq));
             }
             else if (freq < _highVtln)
             {
                 return _scale * freq;
             }
 
-            return _highFreq + _scaleRight * (freq - _highFreq);
+            return _highFreq + (_scaleRight * (freq - _highFreq));
         }
     }
 }

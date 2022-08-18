@@ -45,7 +45,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
             if (filter == null)
             {
                 int filterSize = factor > MinResamplingFilterOrder / 2 ?
-                                 2 * factor + 1 :
+                                 (2 * factor) + 1 :
                                  MinResamplingFilterOrder;
 
                 lpFilter = new FirFilter(DesignFilter.FirWinLp(filterSize, 0.5f / factor));
@@ -69,7 +69,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
             }
 
             int filterSize = factor > MinResamplingFilterOrder / 2 ?
-                             2 * factor + 1 :
+                             (2 * factor) + 1 :
                              MinResamplingFilterOrder;
 
             FirFilter lpFilter = filter;
@@ -185,7 +185,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
             {
                 int factor = Math.Max(up, down);
                 int filterSize = factor > MinResamplingFilterOrder / 2 ?
-                                 8 * factor + 1 :
+                                 (8 * factor) + 1 :
                                  MinResamplingFilterOrder;
 
                 lpFilter = new FirFilter(DesignFilter.FirWinLp(filterSize, 0.5f / factor));

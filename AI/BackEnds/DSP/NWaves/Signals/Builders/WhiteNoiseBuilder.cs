@@ -47,7 +47,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         /// <returns></returns>
         public override float NextSample()
         {
-            return (float)(_rand.NextDouble() * (_high - _low) + _low);
+            return (float)((_rand.NextDouble() * (_high - _low)) + _low);
         }
 
         private readonly Random _rand = new Random();

@@ -158,11 +158,9 @@ namespace AI.ML.Regression
             {
                 BinaryFormatter binFormat = new BinaryFormatter();
 
-                using (Stream fStream = new FileStream(path,
-                                           FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    binFormat.Serialize(fStream, this);
-                }
+                using Stream fStream = new FileStream(path,
+                                           FileMode.Create, FileAccess.Write, FileShare.None);
+                binFormat.Serialize(fStream, this);
             }
             catch
             {

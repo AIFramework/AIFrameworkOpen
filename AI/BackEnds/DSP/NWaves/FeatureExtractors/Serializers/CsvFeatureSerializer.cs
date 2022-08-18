@@ -60,35 +60,33 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Serializers
         {
             string comma = _delimiter.ToString();
 
-            using (StreamWriter writer = new StreamWriter(stream))
+            using StreamWriter writer = new StreamWriter(stream);
+            if (_names != null)
             {
-                if (_names != null)
+                string names = string.Join(comma, _names);
+                string header = _timeMarkers == null ? $"{names}" : $"time_pos{comma}{names}";
+                await writer.WriteLineAsync(header).ConfigureAwait(false);
+            }
+
+            if (_timeMarkers == null)
+            {
+                foreach (float[] vector in _vectors)
                 {
-                    string names = string.Join(comma, _names);
-                    string header = _timeMarkers == null ? $"{names}" : $"time_pos{comma}{names}";
-                    await writer.WriteLineAsync(header).ConfigureAwait(false);
+                    string line = string.Join(comma, vector.Select(f => f.ToString(format, CultureInfo.InvariantCulture)));
+
+                    await writer.WriteLineAsync(line).ConfigureAwait(false);
                 }
-
-                if (_timeMarkers == null)
+            }
+            else
+            {
+                for (int i = 0; i < _vectors.Count; i++)
                 {
-                    foreach (float[] vector in _vectors)
-                    {
-                        string line = string.Join(comma, vector.Select(f => f.ToString(format, CultureInfo.InvariantCulture)));
+                    string line = string.Format("{0}{1}{2}",
+                                         _timeMarkers[i].ToString(timeFormat, CultureInfo.InvariantCulture),
+                                         comma,
+                                         string.Join(comma, _vectors[i].Select(f => f.ToString(format, CultureInfo.InvariantCulture))));
 
-                        await writer.WriteLineAsync(line).ConfigureAwait(false);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < _vectors.Count; i++)
-                    {
-                        string line = string.Format("{0}{1}{2}",
-                                             _timeMarkers[i].ToString(timeFormat, CultureInfo.InvariantCulture),
-                                             comma,
-                                             string.Join(comma, _vectors[i].Select(f => f.ToString(format, CultureInfo.InvariantCulture))));
-
-                        await writer.WriteLineAsync(line).ConfigureAwait(false);
-                    }
+                    await writer.WriteLineAsync(line).ConfigureAwait(false);
                 }
             }
         }

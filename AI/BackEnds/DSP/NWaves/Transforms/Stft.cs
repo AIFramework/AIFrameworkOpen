@@ -116,7 +116,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         public float[] Inverse(List<Tuple<float[], float[]>> stft)
         {
             int spectraCount = stft.Count;
-            float[] output = new float[spectraCount * _hopSize + _fftSize];
+            float[] output = new float[(spectraCount * _hopSize) + _fftSize];
 
             float[] buf = new float[_fftSize];
 
@@ -179,7 +179,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             for (int i = 0; i <= len; i++)
             {
-                spectrogram.Add(new float[_fftSize / 2 + 1]);
+                spectrogram.Add(new float[(_fftSize / 2) + 1]);
             }
 
             // spectrogram:
@@ -227,15 +227,15 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             for (int i = 0; i <= len; i++)
             {
-                mag.Add(new float[_fftSize / 2 + 1]);
-                phase.Add(new float[_fftSize / 2 + 1]);
+                mag.Add(new float[(_fftSize / 2) + 1]);
+                phase.Add(new float[(_fftSize / 2) + 1]);
             }
 
             // magnitude-phase spectrogram:
 
             float[] windowedBuffer = new float[_fftSize];
-            float[] re = new float[_fftSize / 2 + 1];
-            float[] im = new float[_fftSize / 2 + 1];
+            float[] re = new float[(_fftSize / 2) + 1];
+            float[] im = new float[(_fftSize / 2) + 1];
 
             for (int pos = 0, i = 0; pos + _windowSize < samples.Length; pos += _hopSize, i++)
             {
@@ -247,7 +247,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
                 for (int j = 0; j <= _fftSize / 2; j++)
                 {
-                    mag[i][j] = (float)Math.Sqrt(re[j] * re[j] + im[j] * im[j]);
+                    mag[i][j] = (float)Math.Sqrt((re[j] * re[j]) + (im[j] * im[j]));
                     phase[i][j] = (float)Math.Atan2(im[j], re[j]);
                 }
             }
@@ -273,14 +273,14 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         public float[] ReconstructMagnitudePhase(MagnitudePhaseList spectrogram)
         {
             int spectraCount = spectrogram.Magnitudes.Count;
-            float[] output = new float[spectraCount * _hopSize + _windowSize];
+            float[] output = new float[(spectraCount * _hopSize) + _windowSize];
 
             List<float[]> mag = spectrogram.Magnitudes;
             List<float[]> phase = spectrogram.Phases;
 
             float[] buf = new float[_fftSize];
-            float[] re = new float[_fftSize / 2 + 1];
-            float[] im = new float[_fftSize / 2 + 1];
+            float[] re = new float[(_fftSize / 2) + 1];
+            float[] im = new float[(_fftSize / 2) + 1];
 
             int pos = 0;
             for (int i = 0; i < spectraCount; i++)

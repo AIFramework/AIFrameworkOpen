@@ -81,10 +81,10 @@ namespace AI.DSP
         {
             IsDbScale = isDbScale;
             Freq = channel.Freq();
-            Data = (IsDbScale) ? channel.GetSpectr().Transform(x => 20 * Math.Log10(x)) : channel.GetSpectr();
+            Data = IsDbScale ? channel.GetSpectr().Transform(x => 20 * Math.Log10(x)) : channel.GetSpectr();
             Name = "Спектр [\"" + channel.Name + "\"]";
             XLable = "Частота [Гц]";
-            YLable = "Амплитуда " + ((IsDbScale) ? "[db]" : channel.YName());
+            YLable = "Амплитуда " + (IsDbScale ? "[db]" : channel.YName());
         }
 
         /// <summary>
@@ -97,10 +97,10 @@ namespace AI.DSP
         {
             IsDbScale = isDbScale;
             Freq = channel.Freq();
-            Data = (IsDbScale) ? channel.GetSpectr(windowWFunc).Transform(x => 20 * Math.Log10(x)) : channel.GetSpectr(windowWFunc);
+            Data = IsDbScale ? channel.GetSpectr(windowWFunc).Transform(x => 20 * Math.Log10(x)) : channel.GetSpectr(windowWFunc);
             Name = "Спектр [\"" + channel.Name + "\"]";
             XLable = "Частота [Гц]";
-            YLable = "Амплитуда " + ((IsDbScale) ? "[db]" : channel.YName());
+            YLable = "Амплитуда " + (IsDbScale ? "[db]" : channel.YName());
         }
     }
 }

@@ -62,7 +62,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
             float b0 = _b[0];
             float bm = _b[_delay];
 
-            float output = b0 * sample + bm * _delayLine[_delayLineOffset];
+            float output = (b0 * sample) + (bm * _delayLine[_delayLineOffset]);
 
             _delayLine[_delayLineOffset] = sample;
 
@@ -102,7 +102,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
             }
             for (; i < signal.Length; i++, j++)
             {
-                output[i] = b0 * input[i] + bm * input[j];
+                output[i] = (b0 * input[i]) + (bm * input[j]);
             }
             for (; i < output.Length; i++, j++)
             {

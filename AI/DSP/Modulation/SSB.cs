@@ -68,15 +68,15 @@ namespace AI.DSP.Modulation
 
             if (sBType == SSBType.Down)
             {
-                Vector v1 = (cos * inphase + sin * qud);
-                Vector v2 = (cos * qud - sin * inphase);//v1 * cos - v2 * sin
-                return new Channel(v1 * cos - v2 * sin, _fd);
+                Vector v1 = (cos * inphase) + (sin * qud);
+                Vector v2 = (cos * qud) - (sin * inphase);//v1 * cos - v2 * sin
+                return new Channel((v1 * cos) - (v2 * sin), _fd);
             }
             else
             {
-                Vector v1 = (sin * qud - cos * inphase);
-                Vector v2 = (cos * qud + sin * inphase);
-                return new Channel(-(v1 * cos - v2 * sin), _fd);
+                Vector v1 = (sin * qud) - (cos * inphase);
+                Vector v2 = (cos * qud) + (sin * inphase);
+                return new Channel(-((v1 * cos) - (v2 * sin)), _fd);
             }
         }
 
@@ -99,7 +99,7 @@ namespace AI.DSP.Modulation
             {
                 for (int i = 0; i < outp.Count; i++)
                 {
-                    outp[i] = normal * (data[i] * Math.Cos(_2pi * i * _dt * _f0) - datHilb[i] * Math.Sin(_2pi * i * _dt * _f0));
+                    outp[i] = normal * ((data[i] * Math.Cos(_2pi * i * _dt * _f0)) - (datHilb[i] * Math.Sin(_2pi * i * _dt * _f0)));
                 }
             }
             // Подавление веррхней полосы
@@ -107,7 +107,7 @@ namespace AI.DSP.Modulation
             {
                 for (int i = 0; i < outp.Count; i++)
                 {
-                    outp[i] = normal * (data[i] * Math.Cos(_2pi * i * _dt * _f0) + datHilb[i] * Math.Sin(_2pi * i * _dt * _f0));
+                    outp[i] = normal * ((data[i] * Math.Cos(_2pi * i * _dt * _f0)) + (datHilb[i] * Math.Sin(_2pi * i * _dt * _f0)));
                 }
             }
 

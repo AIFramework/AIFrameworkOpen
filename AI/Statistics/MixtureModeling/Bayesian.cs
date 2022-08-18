@@ -48,7 +48,7 @@ namespace AI.Statistics.MixtureModeling
         /// <param name="inp">Вход</param>
         public int LogArgmax1D(double inp)
         {
-            Vector logs = (new Vector(_apriori.Count)).TransformByIndex(i => _distributions[i].CulcLogProb(inp) * _apriori[i]);
+            Vector logs = new Vector(_apriori.Count).TransformByIndex(i => _distributions[i].CulcLogProb(inp) * _apriori[i]);
             return logs.MaxElementIndex();
         }
 
@@ -58,7 +58,7 @@ namespace AI.Statistics.MixtureModeling
         /// <param name="inp">Вход</param>
         public int LogArgmaxND(Vector inp)
         {
-            Vector logs = (new Vector(_apriori.Count)).TransformByIndex(i => _distributions[i].CulcLogProb(inp) * _apriori[i]);
+            Vector logs = new Vector(_apriori.Count).TransformByIndex(i => _distributions[i].CulcLogProb(inp) * _apriori[i]);
             return logs.MaxElementIndex();
         }
 

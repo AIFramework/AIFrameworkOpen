@@ -99,11 +99,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// <returns>Output sample</returns>
         public double Process(double input)
         {
-            double output = _b[0] * input + _zi[0];
+            double output = (_b[0] * input) + _zi[0];
 
             for (int j = 1; j < _zi.Length; j++)
             {
-                _zi[j - 1] = _b[j] * input - _a[j] * output + _zi[j];
+                _zi[j - 1] = (_b[j] * input) - (_a[j] * output) + _zi[j];
             }
 
             return output;
@@ -133,7 +133,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 
             double[] initialZi = Tf.Zi;
             double[] zi = initialZi.FastCopy();
-            double baseSample = 2 * signal[0] - signal[padLength];
+            double baseSample = (2 * signal[0]) - signal[padLength];
 
             for (int i = 0; i < zi.Length; zi[i++] *= baseSample)
             {
@@ -146,7 +146,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 
             for (int k = 0, i = padLength; i > 0; k++, i--)
             {
-                edgeLeft[k] = Process(2 * baseSample - signal[i]);
+                edgeLeft[k] = Process((2 * baseSample) - signal[i]);
             }
 
             for (int i = 0; i < signal.Length; i++)
@@ -158,7 +158,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 
             for (int k = 0, i = signal.Length - 2; i > signal.Length - 2 - padLength; k++, i--)
             {
-                edgeRight[k] = Process(2 * baseSample - signal[i]);
+                edgeRight[k] = Process((2 * baseSample) - signal[i]);
             }
 
 

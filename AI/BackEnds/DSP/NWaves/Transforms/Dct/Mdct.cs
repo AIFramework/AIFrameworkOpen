@@ -40,11 +40,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             for (int n = 0; n < N / 2; n++)
             {
-                _temp[n] = -input[3 * N / 2 - 1 - n] - input[3 * N / 2 + n];
+                _temp[n] = -input[(3 * N / 2) - 1 - n] - input[(3 * N / 2) + n];
             }
             for (int n = N / 2; n < N; n++)
             {
-                _temp[n] = input[n - N / 2] - input[3 * N / 2 - 1 - n];
+                _temp[n] = input[n - (N / 2)] - input[(3 * N / 2) - 1 - n];
             }
 
             _dct.Direct(_temp, output);
@@ -61,7 +61,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             _dct.Direct(input, _temp);
 
-            for (int i = N, k = N / 2 - 1; i < 3 * N / 2 && k >= 0; i++, k--)
+            for (int i = N, k = (N / 2) - 1; i < 3 * N / 2 && k >= 0; i++, k--)
             {
                 output[i] = -_temp[k];
             }
@@ -73,7 +73,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             {
                 output[i] = _temp[k];
             }
-            for (int i = N / 2, k = N / 2 - 1; i < N && k >= 0; i++, k--)
+            for (int i = N / 2, k = (N / 2) - 1; i < N && k >= 0; i++, k--)
             {
                 output[i] = -output[k];
             }

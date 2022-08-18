@@ -51,7 +51,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
             float mi = modulationIndex;
 
             System.Collections.Generic.IEnumerable<double> output = Enumerable.Range(0, carrier.Length)
-                                   .Select(i => carrier[i] * (1 + mi * Math.Cos(2 * Math.PI * mf / fs * i)));
+                                   .Select(i => carrier[i] * (1 + (mi * Math.Cos(2 * Math.PI * mf / fs * i))));
 
             return new DiscreteSignal(fs, output.ToFloats());
         }
@@ -75,8 +75,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
             double integral = 0.0;
             System.Collections.Generic.IEnumerable<double> output = Enumerable.Range(0, baseband.Length)
-                                   .Select(i => ca * Math.Cos(2 * Math.PI * cf / fs * i +
-                                                 2 * Math.PI * deviation * (integral += baseband[i])));
+                                   .Select(i => ca * Math.Cos((2 * Math.PI * cf / fs * i) +
+                                                 (2 * Math.PI * deviation * (integral += baseband[i]))));
 
             return new DiscreteSignal(fs, output.ToFloats());
         }
@@ -106,8 +106,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations
             float mi = modulationIndex;
 
             System.Collections.Generic.IEnumerable<double> output = Enumerable.Range(0, length)
-                                   .Select(i => ca * Math.Cos(2 * Math.PI * cf / fs * i +
-                                                mi * Math.Sin(2 * Math.PI * mf / fs * i)));
+                                   .Select(i => ca * Math.Cos((2 * Math.PI * cf / fs * i) +
+                                                (mi * Math.Sin(2 * Math.PI * mf / fs * i))));
 
             return new DiscreteSignal(samplingRate, output.ToFloats());
         }
@@ -134,7 +134,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
             float mi = modulationIndex;
 
             System.Collections.Generic.IEnumerable<double> output = Enumerable.Range(0, length)
-                                   .Select(i => ca * Math.Cos(2 * Math.PI * (cf / fs + mi * i) * i / fs));
+                                   .Select(i => ca * Math.Cos(2 * Math.PI * ((cf / fs) + (mi * i)) * i / fs));
 
             return new DiscreteSignal(fs, output.ToFloats());
         }
@@ -157,7 +157,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
             float cf = carrierFrequency;
 
             System.Collections.Generic.IEnumerable<double> output = Enumerable.Range(0, baseband.Length)
-                                   .Select(i => ca * Math.Cos(2 * Math.PI * cf / fs * i + deviation * baseband[i]));
+                                   .Select(i => ca * Math.Cos((2 * Math.PI * cf / fs * i) + (deviation * baseband[i])));
 
             return new DiscreteSignal(fs, output.ToFloats());
         }

@@ -104,7 +104,7 @@ namespace AI.Charts.ChartElements
                     }
                 }));
             }
-            else 
+            else
             {
                 Series.Points.Clear();
 

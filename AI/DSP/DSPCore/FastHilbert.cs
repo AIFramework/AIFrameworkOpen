@@ -123,7 +123,7 @@ namespace AI.DSP.DSPCore
             sin = Filters.Filter(sin, complexVector, true);
 
 
-            return cos * cos + sin * sin;
+            return (cos * cos) + (sin * sin);
 
         }
 

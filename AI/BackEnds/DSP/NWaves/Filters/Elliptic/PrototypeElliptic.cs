@@ -26,17 +26,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 
             double r = eps_p / eps_s;
 
-            double k1 = Math.Sqrt(1 - r * r);
+            double k1 = Math.Sqrt(1 - (r * r));
             double[] k1_landen = Landen(k1);
 
             Complex kp = Complex.One;
             for (int i = 0; i < order / 2; i++)
             {
-                kp *= Sne((2 * i + 1.0) / order, k1_landen);
+                kp *= Sne(((2 * i) + 1.0) / order, k1_landen);
             }
             kp = Complex.Pow(k1 * k1, order / 2) * Complex.Pow(kp, 4);
 
-            double k = Math.Sqrt(1 - Complex.Abs(kp) * Complex.Abs(kp));
+            double k = Math.Sqrt(1 - (Complex.Abs(kp) * Complex.Abs(kp)));
             double[] k_landen = Landen(k);
 
             Complex v0 = -Complex.ImaginaryOne / order * Asne(Complex.ImaginaryOne / eps_p, r);
@@ -45,9 +45,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 
             for (int i = 0; i < order; i++)
             {
-                double w = (2 * i + 1.0) / order;
+                double w = ((2 * i) + 1.0) / order;
 
-                poles[i] = Complex.ImaginaryOne * Cde(w - Complex.ImaginaryOne * v0, k_landen);
+                poles[i] = Complex.ImaginaryOne * Cde(w - (Complex.ImaginaryOne * v0), k_landen);
             }
 
             return poles;
@@ -62,24 +62,24 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 
             double r = eps_p / eps_s;
 
-            double k1 = Math.Sqrt(1 - r * r);
+            double k1 = Math.Sqrt(1 - (r * r));
             double[] k1_landen = Landen(k1);
 
             Complex kp = Complex.One;
             for (int i = 0; i < order / 2; i++)
             {
-                kp *= Sne((2 * i + 1.0) / order, k1_landen);
+                kp *= Sne(((2 * i) + 1.0) / order, k1_landen);
             }
             kp = Complex.Pow(k1 * k1, order / 2) * Complex.Pow(kp, 4);
 
-            double k = Math.Sqrt(1 - Complex.Abs(kp) * Complex.Abs(kp));
+            double k = Math.Sqrt(1 - (Complex.Abs(kp) * Complex.Abs(kp)));
             double[] k_landen = Landen(k);
 
             Complex[] zeros = new Complex[order];
 
             for (int i = 0; i < order; i++)
             {
-                double w = (2 * i + 1.0) / order;
+                double w = ((2 * i) + 1.0) / order;
 
                 zeros[i] = new Complex(0, -1 / (k * Cde(w, k_landen)).Real);
             }
@@ -99,7 +99,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 
             for (int i = 0; i < iterCount; i++)
             {
-                double kp = Math.Sqrt(1 - k * k);
+                double kp = Math.Sqrt(1 - (k * k));
                 k = (1 - kp) / (1 + kp);
                 coeffs[i] = k;
             }
@@ -119,7 +119,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 
             for (int i = landen.Length - 1; i >= 0; i--)
             {
-                invX = 1 / (1 + landen[i]) * (invX + landen[i] / invX);
+                invX = 1 / (1 + landen[i]) * (invX + (landen[i] / invX));
             }
 
             return 1 / invX;
@@ -137,7 +137,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 
             for (int i = landen.Length - 1; i >= 0; i--)
             {
-                invX = 1 / (1 + landen[i]) * (invX + landen[i] / invX);
+                invX = 1 / (1 + landen[i]) * (invX + (landen[i] / invX));
             }
 
             return 1 / invX;
@@ -157,9 +157,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
                 Complex prevX = x;
                 double prevK = k;
 
-                k = Math.Pow(k / (1 + Math.Sqrt(1 - k * k)), 2);
+                k = Math.Pow(k / (1 + Math.Sqrt(1 - (k * k))), 2);
 
-                x = 2 * x / ((1 + k) * (1 + Complex.Sqrt(1 - prevK * prevK * x * x)));
+                x = 2 * x / ((1 + k) * (1 + Complex.Sqrt(1 - (prevK * prevK * x * x))));
             }
 
             return 2 * Complex.Asin(x) / Math.PI;

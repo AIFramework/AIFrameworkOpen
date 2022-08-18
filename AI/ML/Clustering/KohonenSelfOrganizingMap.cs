@@ -92,7 +92,7 @@ namespace AI.ML.Clustering
         /// </summary>
         /// <param name="vect"></param>
         /// <returns></returns>
-        public int ClassifyAndTrain(Vector vect) 
+        public int ClassifyAndTrain(Vector vect)
         {
             double newP = 0.0001, old = 1.0 - newP;
             Vector k = new Vector(_clusters);
@@ -100,7 +100,7 @@ namespace AI.ML.Clustering
             Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, j =>
             {
                 k[j] = DistanceFunction(vect, w[j]);
-                w[j] = old * w[j] - 0.01 * newP * vect;
+                w[j] = (old * w[j]) - (0.01 * newP * vect);
             });
 
             int ind = k.MinElementIndex();
@@ -151,7 +151,7 @@ namespace AI.ML.Clustering
                 Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, j =>
                 {
                     k[j] = DistanceFunction(dataset[i], w[j]);
-                    w[j] = old * w[j] - 0.1 * newP * dataset[i];
+                    w[j] = (old * w[j]) - (0.1 * newP * dataset[i]);
                 });
 
                 int ind = k.MinElementIndex();

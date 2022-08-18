@@ -93,16 +93,16 @@ namespace AI.Statistics
         /// Гауссовское распределение
         /// </summary>
         /// <returns>Возвращает норм. распред величину СКО = 1, M = 0</returns>
-        static public double Gauss(Random A)
+        public static double Gauss(Random A)
         {
-            double a = 2 * A.NextDouble() - 1,
-            b = 2 * A.NextDouble() - 1,
-            s = a * a + b * b;
+            double a = (2 * A.NextDouble()) - 1,
+            b = (2 * A.NextDouble()) - 1,
+            s = (a * a) + (b * b);
 
             if (a == 0 && b == 0)
             {
                 a = 0.000001;
-                s = a * a + b * b;
+                s = (a * a) + (b * b);
             }
 
             return b * Math.Sqrt(Math.Abs(-2 * Math.Log(s) / s));
@@ -113,7 +113,7 @@ namespace AI.Statistics
         /// Гауссовское распределение
         /// </summary>
         /// <returns>Возвращает норм. распред величину СКО = 1, M = 0</returns>
-        static public double Gauss2(Random A, int n)
+        public static double Gauss2(Random A, int n)
         {
 
             double a = 0;
@@ -691,7 +691,7 @@ namespace AI.Statistics
             {
                 for (int j = 0; j < _vector.Count; j++)
                 {
-                    if (_vector[j] >= (MinValue + i * step) && _vector[j] <= MinValue + (i + 1) * step)// попадение в интервал					
+                    if (_vector[j] >= (MinValue + (i * step)) && _vector[j] <= MinValue + ((i + 1) * step))// попадение в интервал					
                     {
                         A.Y[i]++;
                     }
@@ -706,7 +706,7 @@ namespace AI.Statistics
 
             for (int i = 0; i < A.X.Count; i++)
             {
-                A.X[i] = MinValue + i * step2;
+                A.X[i] = MinValue + (i * step2);
             }
 
             return A;
@@ -741,7 +741,7 @@ namespace AI.Statistics
         /// <returns>Returns the kurtosis coefficient</returns>
         public double Excess()
         {
-            return CentralMoment(4) / (STD * STD * STD * STD) - 3;
+            return (CentralMoment(4) / (STD * STD * STD * STD)) - 3;
         }
 
 
@@ -807,7 +807,7 @@ namespace AI.Statistics
                 Dy += dy * dy;
             }
 
-            cor /= Math.Sqrt(Dx * Dy+1e-8);
+            cor /= Math.Sqrt((Dx * Dy) + 1e-8);
 
             return cor;
         }
@@ -1052,7 +1052,7 @@ namespace AI.Statistics
             double max = vector.Max();
             double min = vector.Min();
 
-            return (max - min) / vector.Count + eps;
+            return ((max - min) / vector.Count) + eps;
         }
 
 

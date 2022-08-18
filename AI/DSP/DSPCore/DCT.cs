@@ -82,7 +82,7 @@ namespace AI.DSP.DSPCore
 
         private static double GetArg(int i, int j, int count)
         {
-            return i * Math.PI * (2 * j + 1) / (2 * count);
+            return i * Math.PI * ((2 * j) + 1) / (2 * count);
         }
 
         /// <summary>

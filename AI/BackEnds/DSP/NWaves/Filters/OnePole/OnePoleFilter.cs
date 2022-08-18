@@ -35,7 +35,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
         /// <returns></returns>
         public override float Process(float sample)
         {
-            float output = _b[0] * sample - _a[1] * _prev;
+            float output = (_b[0] * sample) - (_a[1] * _prev);
             _prev = output;
 
             return output;

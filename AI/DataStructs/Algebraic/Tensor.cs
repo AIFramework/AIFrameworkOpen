@@ -600,9 +600,9 @@ namespace AI.DataStructs.Algebraic
             unchecked
             {
                 int hash = ((Vector)Data).GetHashCode();
-                hash = hash * 13 + Height;
-                hash = hash * 13 + Width;
-                hash = hash * 13 + Depth;
+                hash = (hash * 13) + Height;
+                hash = (hash * 13) + Width;
+                hash = (hash * 13) + Depth;
                 return hash;
             }
         }
@@ -699,7 +699,7 @@ namespace AI.DataStructs.Algebraic
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int GetByIndex(int h, int w, int d)
         {
-            return Width * h + w + (Height * Width) * d;
+            return (Width * h) + w + (Height * Width * d);
         }
         #endregion
     }

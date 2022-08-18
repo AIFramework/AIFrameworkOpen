@@ -49,7 +49,7 @@ namespace AI.ComputerVision
             }
 
 
-            return (int)((countE - countI) / 4.0 + 0.999);// кол-во объектов
+            return (int)(((countE - countI) / 4.0) + 0.999);// кол-во объектов
 
 
         }

@@ -46,7 +46,7 @@
 
             for (int i = 0; i < _kernelSize; i++, offset++)
             {
-                _b[i] = _b[_kernelSize + i] = (1 - _leakage * _mu) * _b[i] + 4 * _mu * e * e * e * _delayLine[offset];
+                _b[i] = _b[_kernelSize + i] = ((1 - (_leakage * _mu)) * _b[i]) + (4 * _mu * e * e * e * _delayLine[offset]);
             }
 
             return y;

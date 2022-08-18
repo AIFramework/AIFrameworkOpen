@@ -246,11 +246,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 		/// Гауссово распределение
 		/// </summary>
 		/// <returns>Возвращает норм. распред величину СКО = 1, M = 0</returns>
-		static public double Gauss(Random A)
+		public static double Gauss(Random A)
         {
-            double a = 2 * A.NextDouble() - 1,
-            b = 2 * A.NextDouble() - 1,
-            s = a * a + b * b;
+            double a = (2 * A.NextDouble()) - 1,
+            b = (2 * A.NextDouble()) - 1,
+            s = (a * a) + (b * b);
 
             if (s == 0 || s > 1)
             {
@@ -359,7 +359,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             NNValue result = new NNValue(h, w, d);
             for (int i = 0; i < result.Data.Length; i++)
             {
-                result.Data[i] = (float)((2 * rnd.NextDouble() - 1) * initParamsStdDev);
+                result.Data[i] = (float)(((2 * rnd.NextDouble()) - 1) * initParamsStdDev);
             }
             return result;
         }
@@ -657,12 +657,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         #region Приватные методы
         private int GetByIndex(int h, int w)
         {
-            return Shape.Width * h + w;
+            return (Shape.Width * h) + w;
         }
 
         private int GetByIndex(int h, int w, int d)
         {
-            return Shape.Width * h + w + Shape.Area * d;
+            return (Shape.Width * h) + w + (Shape.Area * d);
         }
 
         private float GetW(int h, int w)

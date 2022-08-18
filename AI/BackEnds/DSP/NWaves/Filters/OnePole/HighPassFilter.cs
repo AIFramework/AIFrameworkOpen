@@ -28,7 +28,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
         private void SetCoefficients(double freq)
         {
             _a[0] = 1;
-            _a[1] = (float)(Math.Exp(-2 * Math.PI * (0.5 - freq)));
+            _a[1] = (float)Math.Exp(-2 * Math.PI * (0.5 - freq));
 
             _b[0] = 1 - _a[1];
         }

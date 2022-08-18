@@ -30,7 +30,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 
                 if (absX <= 1)
                 {
-                    valueMatrix[i] = 1 - x[i] * x[i] / 2;
+                    valueMatrix[i] = 1 - (x[i] * x[i] / 2);
                 }
                 else if (absX >= 2)
                 {
@@ -38,7 +38,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
                 }
                 else
                 {
-                    valueMatrix[i] = (float)Math.Pow((2 - absX), 2) / 2;
+                    valueMatrix[i] = (float)Math.Pow(2 - absX, 2) / 2;
                 }
             }
 
@@ -68,7 +68,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
                 }
                 else
                 {
-                    valueMatrix[i] = x[i] - 2 * Math.Sign(x[i]);
+                    valueMatrix[i] = x[i] - (2 * Math.Sign(x[i]));
                 }
             }
 

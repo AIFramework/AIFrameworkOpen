@@ -76,7 +76,7 @@ namespace AI.DSP.Modulation
 
             for (int i = 0; i < outp.Count; i++)
             {
-                outp[i] = (1 + data[i] * mDivDataMax) * Math.Sin(_2pi * i * _dt * _f0) / n;
+                outp[i] = (1 + (data[i] * mDivDataMax)) * Math.Sin(_2pi * i * _dt * _f0) / n;
             }
 
             Channel retCh = new Channel(outp, _fd, signal.Name, signal.Description)

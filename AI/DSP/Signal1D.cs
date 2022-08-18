@@ -242,7 +242,7 @@ namespace AI.DSP
         /// <returns>Отсчеты времени</returns>
         public Vector Time()
         {
-            double endT = this[0].ChData.Count / (double)(Fd);
+            double endT = this[0].ChData.Count / (double)Fd;
             return FunctionsForEachElements.GenerateTheSequence(0, Dt, endT).CutAndZero(this[0].ChData.Count);
         }
         /// <summary>

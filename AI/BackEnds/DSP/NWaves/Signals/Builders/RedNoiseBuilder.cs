@@ -44,11 +44,11 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
             _low -= mean;
             _high -= mean;
 
-            double white = _rand.NextDouble() * (_high - _low) + _low;
+            double white = (_rand.NextDouble() * (_high - _low)) + _low;
 
             double red = (_prev + (0.02 * white)) / 1.02;
             _prev = red;
-            return (float)(red * 3.5 + mean);
+            return (float)((red * 3.5) + mean);
         }
 
         public override void Reset()

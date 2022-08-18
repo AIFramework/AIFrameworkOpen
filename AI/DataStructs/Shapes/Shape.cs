@@ -209,7 +209,7 @@ namespace AI.DataStructs.Shapes
                 int hash = 17;
                 foreach (int val in _values)
                 {
-                    hash = hash * 23 + val.GetHashCode();
+                    hash = (hash * 23) + val.GetHashCode();
                 }
                 return hash;
             }

@@ -35,7 +35,7 @@ namespace AI
         #region Core FFT
 
         // Поворотные множ. для обоих преобразований
-        private unsafe static void CalcRotate(int semplesCount, int halfSemplesCount, Complex[] rotateCoefficiens)
+        private static unsafe void CalcRotate(int semplesCount, int halfSemplesCount, Complex[] rotateCoefficiens)
         {
             fixed (Complex* rotateCoef = rotateCoefficiens)
             {
@@ -43,19 +43,19 @@ namespace AI
 
                 for (int i = 0; i < halfSemplesCount; i++)
                 {
-                    *(pointerToRotateCoef++) = Complex.Exp(-1 * 2 * Complex.ImaginaryOne * Math.PI * i / semplesCount); // exp(-jwt)
+                    *pointerToRotateCoef++ = Complex.Exp(-1 * 2 * Complex.ImaginaryOne * Math.PI * i / semplesCount); // exp(-jwt)
                 }
 
                 for (int i = 0; i < halfSemplesCount; i++)
                 {
-                    *(pointerToRotateCoef++) = Complex.Exp(2 * Complex.ImaginaryOne * Math.PI * i / semplesCount); // exp(jwt)
+                    *pointerToRotateCoef++ = Complex.Exp(2 * Complex.ImaginaryOne * Math.PI * i / semplesCount); // exp(jwt)
                 }
             }
 
         }
 
         // Поворотные множ. для одного типа преобразования
-        private unsafe static void CalcRotate(int semplesCount, int halfSemplesCount, Complex[] rotateCoefficiens, bool canonic)
+        private static unsafe void CalcRotate(int semplesCount, int halfSemplesCount, Complex[] rotateCoefficiens, bool canonic)
         {
             fixed (Complex* rotateCoef = rotateCoefficiens)
             {
@@ -65,14 +65,14 @@ namespace AI
                 {
                     for (int i = 0; i < halfSemplesCount; i++)
                     {
-                        *(pointerToRotateCoef++) = Complex.Exp(-1 * 2 * Complex.ImaginaryOne * Math.PI * i / semplesCount); // exp(-jwt)
+                        *pointerToRotateCoef++ = Complex.Exp(-1 * 2 * Complex.ImaginaryOne * Math.PI * i / semplesCount); // exp(-jwt)
                     }
                 }
                 else
                 {
                     for (int i = 0; i < halfSemplesCount; i++)
                     {
-                        *(pointerToRotateCoef++) = Complex.Exp(2 * Complex.ImaginaryOne * Math.PI * i / semplesCount); // exp(jwt)
+                        *pointerToRotateCoef++ = Complex.Exp(2 * Complex.ImaginaryOne * Math.PI * i / semplesCount); // exp(jwt)
                     }
                 }
             }
@@ -119,7 +119,7 @@ namespace AI
                         {
                             for (int k = j, maxK = j + i; k < maxK; k++)
                             {
-                                pointerToRotateCoef = pointerToRotateCoefFixed + (k - j) * (halfLenght / i); // Перерасчет указателя на поворотные множители
+                                pointerToRotateCoef = pointerToRotateCoefFixed + ((k - j) * (halfLenght / i)); // Перерасчет указателя на поворотные множители
                                 Complex oddW = *(pRetFixed + k + i) * *pointerToRotateCoef;
                                 pRet = pRetFixed + k;
                                 Complex evenBuf = *pRet;
@@ -277,7 +277,7 @@ namespace AI
         public static Complex[] CalcIFFT(Complex[] inp)
         {
             ComplexVector cV = new ComplexVector(inp);
-            return (FftS(cV, false) / cV.Count);
+            return FftS(cV, false) / cV.Count;
         }
 
 

@@ -44,7 +44,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
             double cosw = Math.Cos(omega);
 
             _b[0] = (float)((1 + cosw) / 2);
-            _b[1] = (float)(-(1 + cosw));
+            _b[1] = (float)-(1 + cosw);
             _b[2] = _b[0];
 
             _a[0] = (float)(1 + alpha);

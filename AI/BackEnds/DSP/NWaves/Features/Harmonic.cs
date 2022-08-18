@@ -138,7 +138,7 @@ namespace AI.BackEnds.DSP.NWaves.Features
                 int p = peaks[i];
                 float sqr = spectrum[p] * spectrum[p];
 
-                sum += (peakFrequencies[i] - (i + 1) * f0) * sqr;
+                sum += (peakFrequencies[i] - ((i + 1) * f0)) * sqr;
                 squaredSum += sqr;
             }
 

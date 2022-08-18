@@ -18,7 +18,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Loss
             for (int i = 0; i < targetOutput.Data.Length; i++)
             {
                 float errDelta = actualOutput.Data[i] - targetOutput.Data[i];
-                actualOutput.DifData[i] += errDelta + 8 * errDelta * errDelta * errDelta;
+                actualOutput.DifData[i] += errDelta + (8 * errDelta * errDelta * errDelta);
             }
         }
         /// <summary>
@@ -34,7 +34,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Loss
             {
                 float errDelta = actualOutput.Data[i] - targetOutput.Data[i];
                 sqr = errDelta * errDelta;
-                sum += 0.5f * (sqr + 4 * sqr * sqr);
+                sum += 0.5f * (sqr + (4 * sqr * sqr));
             }
             return sum;
         }

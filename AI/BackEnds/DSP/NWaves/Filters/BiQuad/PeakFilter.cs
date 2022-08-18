@@ -53,13 +53,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
             double alpha = Math.Sin(omega) / (2 * q);
             double cosw = Math.Cos(omega);
 
-            _b[0] = (float)(1 + alpha * ga);
+            _b[0] = (float)(1 + (alpha * ga));
             _b[1] = (float)(-2 * cosw);
-            _b[2] = (float)(1 - alpha * ga);
+            _b[2] = (float)(1 - (alpha * ga));
 
-            _a[0] = (float)(1 + alpha / ga);
+            _a[0] = (float)(1 + (alpha / ga));
             _a[1] = (float)(-2 * cosw);
-            _a[2] = (float)(1 - alpha / ga);
+            _a[2] = (float)(1 - (alpha / ga));
 
             Normalize();
         }

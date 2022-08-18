@@ -24,28 +24,26 @@ namespace AI.DataStructs
 
             if (File.Exists(filePath))
             {
-                using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                using FileStream fs = new FileStream(filePath, FileMode.Open);
+                BinaryFormatter formatter = new BinaryFormatter
                 {
-                    BinaryFormatter formatter = new BinaryFormatter
-                    {
-                        AssemblyFormat = FormatterAssemblyStyle.Simple
-                    };
+                    AssemblyFormat = FormatterAssemblyStyle.Simple
+                };
 
-                    if (fs.Length == 0)
-                    {
-                        throw new ArgumentException("File is empty", nameof(filePath));// Файл пуст
-                    }
+                if (fs.Length == 0)
+                {
+                    throw new ArgumentException("File is empty", nameof(filePath));// Файл пуст
+                }
 
-                    object data = formatter.Deserialize(fs);
+                object data = formatter.Deserialize(fs);
 
-                    if (data is T t)
-                    {
-                        return t;
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException($"Not a {typeof(T)}"); // не является нужным типом
-                    }
+                if (data is T t)
+                {
+                    return t;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Not a {typeof(T)}"); // не является нужным типом
                 }
             }
             else
@@ -113,10 +111,8 @@ namespace AI.DataStructs
                 Directory.CreateDirectory(dir);
             }
 
-            using (Stream stream = File.Open(filePath, FileMode.Create))
-            {
-                Save(stream, data);
-            }
+            using Stream stream = File.Open(filePath, FileMode.Create);
+            Save(stream, data);
         }
         /// <summary>
         /// Saving to a stream

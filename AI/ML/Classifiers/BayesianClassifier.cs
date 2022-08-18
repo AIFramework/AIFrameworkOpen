@@ -4,9 +4,6 @@ using AI.Statistics.Distributions;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.ML.Classifiers
 {
@@ -15,9 +12,9 @@ namespace AI.ML.Classifiers
     /// </summary>
     public class BayesianClassifier : IClassifier
     {
-        NonCorrelatedGaussian nonCorrelatedGaussian = new NonCorrelatedGaussian();
-        List<Dictionary<string, Vector>> classifiersParams = new List<Dictionary<string, Vector>>();
-        Vector w = new Vector(0);
+        private readonly NonCorrelatedGaussian nonCorrelatedGaussian = new NonCorrelatedGaussian();
+        private readonly List<Dictionary<string, Vector>> classifiersParams = new List<Dictionary<string, Vector>>();
+        private Vector w = new Vector(0);
 
         public int Classify(Vector inp)
         {
@@ -34,9 +31,9 @@ namespace AI.ML.Classifiers
             Vector classes = new Vector(classifiersParams.Count);
 
             for (int i = 0; i < classifiersParams.Count; i++)
-                classes[i] = w[i]*nonCorrelatedGaussian.CulcProb(inp, classifiersParams[i]);
+                classes[i] = w[i] * nonCorrelatedGaussian.CulcProb(inp, classifiersParams[i]);
 
-            return classes/classes.Sum();
+            return classes / classes.Sum();
         }
 
         public void Save(string path)

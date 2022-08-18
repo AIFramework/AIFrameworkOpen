@@ -1,9 +1,5 @@
 ﻿using AI.ComputerVision.SpatialFilters;
 using AI.DataStructs.Algebraic;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.ComputerVision.ImgTransforms
 {
@@ -17,7 +13,7 @@ namespace AI.ComputerVision.ImgTransforms
         /// <summary>
         /// Преобразование Собеля
         /// </summary>
-        public SobelTransform() 
+        public SobelTransform()
         {
             Matrix maskY = new Matrix(3, 3);
             maskY[0, 0] = -1;
@@ -45,7 +41,7 @@ namespace AI.ComputerVision.ImgTransforms
         /// Запуск расчета
         /// </summary>
         /// <param name="img">Входное изображение</param>
-        public SobelData Transform(Matrix img) 
+        public SobelData Transform(Matrix img)
         {
             return new SobelData(_filterX.Filtration(img),
                 _filterY.Filtration(img));

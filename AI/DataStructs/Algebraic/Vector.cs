@@ -507,8 +507,8 @@ namespace AI.DataStructs.Algebraic
             }
 
             data[0] = item;
-            for (int i = 0; i < len; i++)  this[i] = data[i];
-            
+            for (int i = 0; i < len; i++) this[i] = data[i];
+
         }
 
         /// <summary>
@@ -824,7 +824,7 @@ namespace AI.DataStructs.Algebraic
         /// <param name="n">Decimation factor</param>
         public Vector Downsampling(int n)
         {
-            Vector C = (Count % n == 0) ? new Vector(Count / n) : new Vector(Count / n + 1);
+            Vector C = (Count % n == 0) ? new Vector(Count / n) : new Vector((Count / n) + 1);
 
             for (int i = 0, j = 0; i < Count; i += n, j++)
             {
@@ -1870,7 +1870,7 @@ namespace AI.DataStructs.Algebraic
                 int hash = 17;
                 foreach (double val in this)
                 {
-                    hash = hash * 23 + val.GetHashCode();
+                    hash = (hash * 23) + val.GetHashCode();
                 }
                 return hash;
             }
@@ -1968,13 +1968,10 @@ namespace AI.DataStructs.Algebraic
         public static void SaveAsBinary(string path, Vector vect)
         {
 
-            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
+            using FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            for (int i = 0; i < vect.Count; i++)
             {
-                for (int i = 0; i < vect.Count; i++)
-                {
-                    fs.Write(BitConverter.GetBytes(vect[i]), 0, 8);
-                }
-
+                fs.Write(BitConverter.GetBytes(vect[i]), 0, 8);
             }
         }
 

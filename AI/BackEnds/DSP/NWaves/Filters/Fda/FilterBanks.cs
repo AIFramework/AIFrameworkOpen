@@ -54,7 +54,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             double herzResolution = (double)samplingRate / fftSize;
 
-            double[] herzFrequencies = Enumerable.Range(0, fftSize / 2 + 1)
+            double[] herzFrequencies = Enumerable.Range(0, (fftSize / 2) + 1)
                                             .Select(f => f * herzResolution)
                                             .ToArray();
 
@@ -63,7 +63,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             for (int i = 0; i < filterCount; i++)
             {
-                filterBank[i] = new float[fftSize / 2 + 1];
+                filterBank[i] = new float[(fftSize / 2) + 1];
 
                 Tuple<double, double, double> tuple = frequencies[i];
 
@@ -116,7 +116,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             double herzResolution = (double)samplingRate / fftSize;
 
-            double[] herzFrequencies = Enumerable.Range(0, fftSize / 2 + 1)
+            double[] herzFrequencies = Enumerable.Range(0, (fftSize / 2) + 1)
                                             .Select(f => f * herzResolution)
                                             .ToArray();
 
@@ -125,7 +125,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             for (int i = 0; i < filterCount; i++)
             {
-                filterBank[i] = new float[fftSize / 2 + 1];
+                filterBank[i] = new float[(fftSize / 2) + 1];
 
                 Tuple<double, double, double> tuple = frequencies[i];
 
@@ -170,7 +170,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             for (int i = 0; i < filterBank.Length; i++)
             {
-                TransferFunction filterTf = new TransferFunction(DesignFilter.Fir(fftSize / 4 + 1, filterBank[i]));
+                TransferFunction filterTf = new TransferFunction(DesignFilter.Fir((fftSize / 4) + 1, filterBank[i]));
 
                 filterBank[i] = filterTf.FrequencyResponse(fftSize).Magnitude.ToFloats();
 
@@ -256,7 +256,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 double newResolution = (scaleMapper(highFreq) - scaleMapper(lowFreq)) / (filterCount + 1);
 
                 double[] frequencies = Enumerable.Range(0, filterCount + 2)
-                                            .Select(i => inverseMapper(startingFrequency + i * newResolution))
+                                            .Select(i => inverseMapper(startingFrequency + (i * newResolution)))
                                             .ToArray();
 
                 for (int i = 0; i < filterCount; i++)
@@ -269,7 +269,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                 double newResolution = (scaleMapper(highFreq) - scaleMapper(lowFreq)) / filterCount;
 
                 double[] frequencies = Enumerable.Range(0, filterCount + 1)
-                                            .Select(i => inverseMapper(startingFrequency + i * newResolution))
+                                            .Select(i => inverseMapper(startingFrequency + (i * newResolution)))
                                             .ToArray();
 
                 for (int i = 0; i < filterCount; i++)
@@ -543,7 +543,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             double herzResolution = (double)samplingRate / fftSize;
             double step = highBark / (filterCount - 1);
 
-            double[] binBarks = Enumerable.Range(0, fftSize / 2 + 1)
+            double[] binBarks = Enumerable.Range(0, (fftSize / 2) + 1)
                                      .Select(i => Scale.HerzToBarkSlaney(i * herzResolution))
                                      .ToArray();
 
@@ -553,7 +553,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             for (int i = 0; i < filterCount; i++, midBark += step)
             {
-                filterBank[i] = new float[fftSize / 2 + 1];
+                filterBank[i] = new float[(fftSize / 2) + 1];
 
                 for (int j = 0; j < filterBank[i].Length; j++)
                 {
@@ -600,13 +600,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             for (int i = 1; i <= erbFilterCount; i++)
             {
                 frequencies[erbFilterCount - i] =
-                    -bw + Math.Exp(i * (-Math.Log(highFreq + bw) + Math.Log(lowFreq + bw)) / erbFilterCount) * (highFreq + bw);
+                    -bw + (Math.Exp(i * (-Math.Log(highFreq + bw) + Math.Log(lowFreq + bw)) / erbFilterCount) * (highFreq + bw));
             }
 
-            Complex[] ucirc = new Complex[fftSize / 2 + 1];
+            Complex[] ucirc = new Complex[(fftSize / 2) + 1];
             for (int i = 0; i < ucirc.Length; i++)
             {
-                ucirc[i] = Complex.Exp((2 * Complex.ImaginaryOne * i * Math.PI) / fftSize);
+                ucirc[i] = Complex.Exp(2 * Complex.ImaginaryOne * i * Math.PI / fftSize);
             }
 
             double rootPos = Math.Sqrt(3 + Math.Pow(2, 1.5));
@@ -633,24 +633,24 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
                 double common = -t * Math.Exp(-b * t);
 
-                double k1 = Math.Cos(theta) + rootPos * Math.Sin(theta);
-                double k2 = Math.Cos(theta) - rootPos * Math.Sin(theta);
-                double k3 = Math.Cos(theta) + rootNeg * Math.Sin(theta);
-                double k4 = Math.Cos(theta) - rootNeg * Math.Sin(theta);
+                double k1 = Math.Cos(theta) + (rootPos * Math.Sin(theta));
+                double k2 = Math.Cos(theta) - (rootPos * Math.Sin(theta));
+                double k3 = Math.Cos(theta) + (rootNeg * Math.Sin(theta));
+                double k4 = Math.Cos(theta) - (rootNeg * Math.Sin(theta));
 
                 double a11 = common * k1;
                 double a12 = common * k2;
                 double a13 = common * k3;
                 double a14 = common * k4;
 
-                Complex gainArg = Complex.Exp(Complex.ImaginaryOne * theta - b * t);
+                Complex gainArg = Complex.Exp((Complex.ImaginaryOne * theta) - (b * t));
 
                 float gain = (float)Complex.Abs(
-                                    (itheta - gainArg * k1) *
-                                    (itheta - gainArg * k2) *
-                                    (itheta - gainArg * k3) *
-                                    (itheta - gainArg * k4) *
-                                    Complex.Pow(t * Math.Exp(b * t) / (-1.0 / Math.Exp(b * t) + 1 + itheta * (1 - Math.Exp(b * t))), 4.0));
+                                    (itheta - (gainArg * k1)) *
+                                    (itheta - (gainArg * k2)) *
+                                    (itheta - (gainArg * k3)) *
+                                    (itheta - (gainArg * k4)) *
+                                    Complex.Pow(t * Math.Exp(b * t) / ((-1.0 / Math.Exp(b * t)) + 1 + (itheta * (1 - Math.Exp(b * t)))), 4.0));
 
                 IirFilter filter1 = new IirFilter(new[] { a0, a11, a2 }, new[] { b0, b1, b2 });
                 IirFilter filter2 = new IirFilter(new[] { a0, a12, a2 }, new[] { b0, b1, b2 });

@@ -52,7 +52,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
 
                     float g = BaseMethods.GradCulc(m, i, L1, L2, kG, gradClip);
 
-                    float delt = MomentumInv * (learningRate * g) + Momentum * m.StepCache[i];
+                    float delt = (MomentumInv * (learningRate * g)) + (Momentum * m.StepCache[i]);
                     m[i] -= delt;
                     m.StepCache[i] = delt;
                     m.DifData[i] = 0;

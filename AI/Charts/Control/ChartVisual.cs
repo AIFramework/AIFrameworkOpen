@@ -492,7 +492,7 @@ namespace AI.Charts.Control
 
             for (int i = 0; i < x.Count; i += 2)
             {
-                y1[i] = Math.Sqrt(1 - x[i] * x[i]);
+                y1[i] = Math.Sqrt(1 - (x[i] * x[i]));
                 y1[i + 1] = -y1[i];
             }
 
@@ -524,10 +524,10 @@ namespace AI.Charts.Control
                 chart1.Invoke(new MethodInvoker(ClearInvoked));
 
             else ClearInvoked();
-            
+
         }
 
-       
+
 
         #region Контекстное меню
 
@@ -917,8 +917,8 @@ namespace AI.Charts.Control
                     lenX = MaxX() - MinX();
                     lenY = MaxY() - MinY();
                     double
-                        newMaxX = MaxX() + scale * lenX / 2,
-                        newMinX = MinX() - scale * lenX / 2,
+                        newMaxX = MaxX() + (scale * lenX / 2),
+                        newMinX = MinX() - (scale * lenX / 2),
                         newMaxY,
                         newMinY;
 
@@ -926,15 +926,15 @@ namespace AI.Charts.Control
 
                     if (IsLogScale)
                     {
-                        newMinY = MinY() - scale * lenY / 10;
-                        newMaxY = MaxY() + scale * lenY / 10;
+                        newMinY = MinY() - (scale * lenY / 10);
+                        newMaxY = MaxY() + (scale * lenY / 10);
                         newMinY = newMinY > 0 ? newMinY : 1e-200;
 
                     }
                     else
                     {
-                        newMinY = MinY() - scale * lenY;
-                        newMaxY = MaxY() + scale * lenY;
+                        newMinY = MinY() - (scale * lenY);
+                        newMaxY = MaxY() + (scale * lenY);
                     }
 
                     Vector vstep = chartElements[0].Data.GetX();
@@ -1000,8 +1000,8 @@ namespace AI.Charts.Control
                 }
             }
             double dY = Math.Abs(yMax - yMin);
-            yMin2 = yMin - 0.2 * dY;
-            yMax2 = yMax + dY * 0.2;
+            yMin2 = yMin - (0.2 * dY);
+            yMax2 = yMax + (dY * 0.2);
 
 
             if (IsLogScale)
@@ -1059,7 +1059,7 @@ namespace AI.Charts.Control
             {
                 chart1.ChartAreas[0].AxisX.Maximum = xMax;
                 chart1.ChartAreas[0].AxisX.Minimum = xMin;
-            }         
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

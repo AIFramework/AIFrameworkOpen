@@ -654,8 +654,8 @@ namespace AI.DataStructs.WithComplexElements
             Complex[] centr = new Complex[Count];
             for (int i = 0; i < Count / 2; i++)
             {
-                centr[i] = this[Count / 2 + i];
-                centr[Count / 2 + i] = this[i];
+                centr[i] = this[(Count / 2) + i];
+                centr[(Count / 2) + i] = this[i];
             }
             return new ComplexVector(centr);
         }
@@ -673,7 +673,7 @@ namespace AI.DataStructs.WithComplexElements
             }
             else
             {
-                ret = new ComplexVector(Count / kDecim + 1);
+                ret = new ComplexVector((Count / kDecim) + 1);
             }
 
             int k = 0;
@@ -804,7 +804,7 @@ namespace AI.DataStructs.WithComplexElements
         public static ComplexVector ComplexVectorPhaseDegMagnDb(Vector magnDb, Vector phaseDeg, DbType dbType = DbType.Energy)
         {
             Vector phaseRad = FunctionsForEachElements.GradToRad(phaseDeg);
-            Vector magn = (dbType == DbType.Energy) ? magnDb.Transform(x => Math.Pow(10, (x / 10.0))) : magnDb.Transform(x => Math.Pow(10, (x / 20.0)));
+            Vector magn = (dbType == DbType.Energy) ? magnDb.Transform(x => Math.Pow(10, x / 10.0)) : magnDb.Transform(x => Math.Pow(10, x / 20.0));
             return ComplexVectorPhaseMagn(magn, phaseRad);
         }
 

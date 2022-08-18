@@ -64,7 +64,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                 im[i] *= 2;
             }
 
-            for (int i = re.Length / 2 + 1; i < re.Length; i++)
+            for (int i = (re.Length / 2) + 1; i < re.Length; i++)
             {
                 re[i] = 0.0;
                 im[i] = 0.0;
@@ -102,7 +102,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                 im[i] *= 2;
             }
 
-            for (int i = re.Length / 2 + 1; i < re.Length; i++)
+            for (int i = (re.Length / 2) + 1; i < re.Length; i++)
             {
                 re[i] = 0.0f;
                 im[i] = 0.0f;

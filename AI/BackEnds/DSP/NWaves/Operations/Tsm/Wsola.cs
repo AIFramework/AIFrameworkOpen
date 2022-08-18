@@ -169,7 +169,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 
                 if (posAnalysis > _maxDelta / 2)
                 {
-                    input.FastCopyTo(current, _windowSize + _maxDelta, posAnalysis - _maxDelta / 2);
+                    input.FastCopyTo(current, _windowSize + _maxDelta, posAnalysis - (_maxDelta / 2));
 
                     delta = WaveformSimilarityPos(current, prev, _maxDelta);
                 }
@@ -190,7 +190,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
                     output[posSynthesis + j] *= gain;
                 }
 
-                input.FastCopyTo(prev, _windowSize, posAnalysis + delta - _maxDelta / 2 + _hopSynthesis);
+                input.FastCopyTo(prev, _windowSize, posAnalysis + delta - (_maxDelta / 2) + _hopSynthesis);
             }
 
             return new DiscreteSignal(signal.SamplingRate, output);

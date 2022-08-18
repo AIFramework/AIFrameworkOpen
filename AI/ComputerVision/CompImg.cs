@@ -24,8 +24,8 @@ namespace AI.ComputerVision
 
             Vector m1 = matrix.Data;
             double mean = m1.Average();
-            double min = mean - 2 * m1.Std();
-            double max = mean + 2 * m1.Std();
+            double min = mean - (2 * m1.Std());
+            double max = mean + (2 * m1.Std());
 
             matrix = (matrix - min) / max;
 

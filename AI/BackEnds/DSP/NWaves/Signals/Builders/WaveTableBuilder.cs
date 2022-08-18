@@ -43,7 +43,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 
                 _n += _stride;
 
-                return _samples[idx] + frac * (_samples[(idx + 1) % _samples.Length] - _samples[idx]);
+                return _samples[idx] + (frac * (_samples[(idx + 1) % _samples.Length] - _samples[idx]));
             }
             else
             {

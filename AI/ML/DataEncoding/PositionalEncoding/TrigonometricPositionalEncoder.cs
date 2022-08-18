@@ -21,7 +21,7 @@ namespace AI.ML.DataEncoding.PositionalEncoding
         /// Position (index) coding based on orthogonal trigonometric functions
         /// </summary>
         /// <param name="dim">Output vector dimension</param>
-        public TrigonometricPositionalEncoder(int dim = 512) 
+        public TrigonometricPositionalEncoder(int dim = 512)
         {
             if (dim % 2 == 1)
             {
@@ -30,7 +30,7 @@ namespace AI.ML.DataEncoding.PositionalEncoding
 
             Dim = dim;
 
-            time = new Vector(dim/2);
+            time = new Vector(dim / 2);
             double c = 1.0 / time.Count;
 
             for (int i = 0; i < time.Count; i++)
@@ -55,8 +55,8 @@ namespace AI.ML.DataEncoding.PositionalEncoding
         /// </summary>
         public Vector GetCode(double position)
         {
-            Vector sin = time.Transform(x => Math.Sin(x*position * coef));
-            Vector cos = time.Transform(x => Math.Cos(x*position * coef));
+            Vector sin = time.Transform(x => Math.Sin(x * position * coef));
+            Vector cos = time.Transform(x => Math.Cos(x * position * coef));
             sin.AddRange(cos);
 
             return sin;

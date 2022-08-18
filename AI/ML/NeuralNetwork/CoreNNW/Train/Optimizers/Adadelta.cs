@@ -40,9 +40,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
 
                     m.StepCache2[i] = (m.StepCache2[i] == 0) ? SmoothEpsilon2 : m.StepCache2[i];
 
-                    m.StepCache[i] = m.StepCache[i] * DecayRate + (1 - DecayRate) * g * g;
+                    m.StepCache[i] = (m.StepCache[i] * DecayRate) + ((1 - DecayRate) * g * g);
                     float delta = (float)(g * Math.Sqrt(m.StepCache2[i] + SmoothEpsilon) / Math.Sqrt(m.StepCache[i] + SmoothEpsilon));
-                    m.StepCache2[i] = m.StepCache2[i] * DecayRate + (1 - DecayRate) * delta * delta;
+                    m.StepCache2[i] = (m.StepCache2[i] * DecayRate) + ((1 - DecayRate) * delta * delta);
 
                     m[i] -= learningRate * delta;
                     m.DifData[i] = 0;

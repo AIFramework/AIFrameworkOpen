@@ -150,7 +150,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
                         num += n * (sequence[i + n][j + featureCount] -
                                     sequence[i - n][j + featureCount]);
                     }
-                    vectors[i - N][j + 2 * featureCount] = num / M;
+                    vectors[i - N][j + (2 * featureCount)] = num / M;
                 }
             }
         }

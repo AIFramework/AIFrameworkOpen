@@ -30,7 +30,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
             Freq = freq;
 
             _a[0] = 1;
-            _a[1] = (float)(-Math.Exp(-2 * Math.PI * freq));
+            _a[1] = (float)-Math.Exp(-2 * Math.PI * freq);
 
             _b[0] = 1 + _a[1];
         }

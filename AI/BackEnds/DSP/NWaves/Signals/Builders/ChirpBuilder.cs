@@ -64,11 +64,11 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
             float k = (float)((_f1 - _f0) / Length);
             int fs = SamplingRate;
 
-            double sample = Math.Cos(2 * Math.PI * (_f0 / fs + k * _n) * _n / fs);
+            double sample = Math.Cos(2 * Math.PI * ((_f0 / fs) + (k * _n)) * _n / fs);
 
             // map it to [min, max] range:
 
-            sample = _low + (_high - _low) * (1 + sample) / 2;
+            sample = _low + ((_high - _low) * (1 + sample) / 2);
 
             if (++_n == Length)
             {

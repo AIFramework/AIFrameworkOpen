@@ -30,7 +30,7 @@ namespace AI.DSP.Modulation
         /// <param name="channel">Channel</param>
         public Channel Demodulate(Channel channel)
         {
-            FilterLowButterworth filter = new FilterLowButterworth((int)(_f0), _fd, channel.ChData.Count);
+            FilterLowButterworth filter = new FilterLowButterworth((int)_f0, _fd, channel.ChData.Count);
             Vector cos = Vector.SeqBeginsWithZero(1, channel.ChData.Count) * (Math.PI * 2 * _f0 / _fd);
             cos = cos.Transform(Math.Cos);
             Vector outp = filter.FilterOutp(cos * channel.ChData);

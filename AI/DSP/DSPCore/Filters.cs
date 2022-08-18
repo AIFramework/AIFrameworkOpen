@@ -91,12 +91,12 @@ namespace AI.DSP.DSPCore
 
             for (int i = 1; i < f.Count / 2; i++)
             {
-                kw[i] = 1.0 / (1 + j * Q * (f[i] / f0 - f0 / f[i]));
+                kw[i] = 1.0 / (1 + (j * Q * ((f[i] / f0) - (f0 / f[i]))));
             }
 
             for (int i = f.Count / 2; i < f.Count - 1; i++)
             {
-                kw[i] = 1.0 / (1 + j * Q * (f[i] / (2 * f0) - (2 * f0) / f[i]));
+                kw[i] = 1.0 / (1 + (j * Q * ((f[i] / (2 * f0)) - (2 * f0 / f[i]))));
             }
 
             Sw = Sw * kw;
@@ -309,7 +309,7 @@ namespace AI.DSP.DSPCore
 
             for (int i = 1; i < inp.Count; i++)
             {
-                outp[i] = oldPart * outp[i - 1] + newPart * inp[i];
+                outp[i] = (oldPart * outp[i - 1]) + (newPart * inp[i]);
             }
 
             return outp;
@@ -368,11 +368,11 @@ namespace AI.DSP.DSPCore
             Vector freq = Signal.Frequency(Count, fd);
             Complex j = new Complex(0, 1);
             ComplexVector p_n = new ComplexVector(freq / sr);
-            p_n = p_n / 2 + j * p_n / 2;
+            p_n = (p_n / 2) + (j * p_n / 2);
             int sign = FunctionsForEachElements.MinusOnePow(order);
 
             return ComplexVector.TransformVectorX(p_n, x =>
-            1.0 / (1.0 + sign * Complex.Pow(x, 2 * order))
+            1.0 / (1.0 + (sign * Complex.Pow(x, 2 * order)))
             );
         }
     }

@@ -129,7 +129,7 @@
 
             for (int i = 0; i < _kernelSize; i++)
             {
-                _b[i] = _b[_kernelSize + i] = _b[i] + _gains[i] * e;
+                _b[i] = _b[_kernelSize + i] = _b[i] + (_gains[i] * e);
             }
 
             return y;

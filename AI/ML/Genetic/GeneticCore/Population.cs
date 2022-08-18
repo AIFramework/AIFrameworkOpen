@@ -277,7 +277,7 @@ namespace AI.ML.Genetic.GeneticCore
 
         private double Rbf(double dist, double h)
         {
-            return Math.Exp(-((0.4 * dist * dist) / h));
+            return Math.Exp(-(0.4 * dist * dist / h));
         }
     }
 

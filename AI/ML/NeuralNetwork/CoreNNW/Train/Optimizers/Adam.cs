@@ -46,8 +46,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
                     float mt = 0, vt = 0;
                     float g = BaseMethods.GradCulc(m, i, L1, L2, kG, gradClip);
 
-                    m.StepCache[i] = b1 * m.StepCache[i] + (1 - b1) * g;
-                    m.StepCache2[i] = b2 * m.StepCache2[i] + (1 - b2) * g * g;
+                    m.StepCache[i] = (b1 * m.StepCache[i]) + ((1 - b1) * g);
+                    m.StepCache2[i] = (b2 * m.StepCache2[i]) + ((1 - b2) * g * g);
                     mt = m.StepCache[i] / (1 - newB1);
                     vt = m.StepCache2[i] / (1 - newB2);
 

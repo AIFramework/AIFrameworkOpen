@@ -47,164 +47,162 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         /// <exception>Possible null exception</exception>
         public WaveFile(Stream waveStream, bool normalized = true)
         {
-            using (BinaryReader reader = new BinaryReader(waveStream))
+            using BinaryReader reader = new BinaryReader(waveStream);
+            if (reader.ReadInt32() != 0x46464952)     // "RIFF"
             {
-                if (reader.ReadInt32() != 0x46464952)     // "RIFF"
+                throw new FormatException("NOT RIFF!");
+            }
+
+            // ignore file size
+            reader.ReadInt32();
+
+            if (reader.ReadInt32() != 0x45564157)     // "WAVE"
+            {
+                throw new FormatException("NOT WAVE!");
+            }
+
+            // try to find "fmt " header in the file:
+
+            long fmtPosition = reader.BaseStream.Position;
+            while (fmtPosition != reader.BaseStream.Length - 1)
+            {
+                reader.BaseStream.Position = fmtPosition;
+                int fmtId = reader.ReadInt32();
+                if (fmtId == 0x20746D66)
                 {
-                    throw new FormatException("NOT RIFF!");
+                    break;
                 }
+                fmtPosition++;
+            }
 
-                // ignore file size
-                reader.ReadInt32();
+            if (fmtPosition == reader.BaseStream.Length - 1)
+            {
+                throw new FormatException("NOT fmt !");
+            }
 
-                if (reader.ReadInt32() != 0x45564157)     // "WAVE"
+            int fmtSize = reader.ReadInt32();
+
+            WaveFormat waveFmt;
+            waveFmt.AudioFormat = reader.ReadInt16();
+            waveFmt.ChannelCount = reader.ReadInt16();
+            waveFmt.SamplingRate = reader.ReadInt32();
+            waveFmt.ByteRate = reader.ReadInt32();
+            waveFmt.Align = reader.ReadInt16();
+            waveFmt.BitsPerSample = reader.ReadInt16();
+
+            WaveFmt = waveFmt;
+
+            if (fmtSize == 18)
+            {
+                short fmtExtraSize = reader.ReadInt16();
+                reader.ReadBytes(fmtExtraSize);
+            }
+
+            // there may be some wavefile meta info here,
+            // so try to find "data" header in the file:
+
+            long dataPosition = reader.BaseStream.Position;
+            while (dataPosition != reader.BaseStream.Length - 1)
+            {
+                reader.BaseStream.Position = dataPosition;
+                int dataId = reader.ReadInt32();
+                if (dataId == 0x61746164)
                 {
-                    throw new FormatException("NOT WAVE!");
+                    break;
                 }
+                dataPosition++;
+            }
 
-                // try to find "fmt " header in the file:
+            if (dataPosition == reader.BaseStream.Length - 1)
+            {
+                throw new FormatException("NOT data!");
+            }
 
-                long fmtPosition = reader.BaseStream.Position;
-                while (fmtPosition != reader.BaseStream.Length - 1)
-                {
-                    reader.BaseStream.Position = fmtPosition;
-                    int fmtId = reader.ReadInt32();
-                    if (fmtId == 0x20746D66)
+            int length = reader.ReadInt32();
+
+            length /= waveFmt.ChannelCount;
+            length /= waveFmt.BitsPerSample / 8;
+
+            Signals = new List<DiscreteSignal>();
+
+            for (int i = 0; i < waveFmt.ChannelCount; i++)
+            {
+                Signals.Add(new DiscreteSignal(waveFmt.SamplingRate, length));
+            }
+
+            switch (waveFmt.BitsPerSample)
+            {
+                case 8:
                     {
+                        for (int i = 0; i < length; i++)
+                        {
+                            for (int j = 0; j < waveFmt.ChannelCount; j++)
+                            {
+                                Signals[j][i] = reader.ReadByte() - 128;
+                                if (normalized)
+                                {
+                                    Signals[j][i] /= 128;
+                                }
+                            }
+                        }
                         break;
                     }
-                    fmtPosition++;
-                }
 
-                if (fmtPosition == reader.BaseStream.Length - 1)
-                {
-                    throw new FormatException("NOT fmt !");
-                }
-
-                int fmtSize = reader.ReadInt32();
-
-                WaveFormat waveFmt;
-                waveFmt.AudioFormat = reader.ReadInt16();
-                waveFmt.ChannelCount = reader.ReadInt16();
-                waveFmt.SamplingRate = reader.ReadInt32();
-                waveFmt.ByteRate = reader.ReadInt32();
-                waveFmt.Align = reader.ReadInt16();
-                waveFmt.BitsPerSample = reader.ReadInt16();
-
-                WaveFmt = waveFmt;
-
-                if (fmtSize == 18)
-                {
-                    short fmtExtraSize = reader.ReadInt16();
-                    reader.ReadBytes(fmtExtraSize);
-                }
-
-                // there may be some wavefile meta info here,
-                // so try to find "data" header in the file:
-
-                long dataPosition = reader.BaseStream.Position;
-                while (dataPosition != reader.BaseStream.Length - 1)
-                {
-                    reader.BaseStream.Position = dataPosition;
-                    int dataId = reader.ReadInt32();
-                    if (dataId == 0x61746164)
+                case 16:
                     {
+                        for (int i = 0; i < length; i++)
+                        {
+                            for (int j = 0; j < waveFmt.ChannelCount; j++)
+                            {
+                                Signals[j][i] = reader.ReadInt16();
+                                if (normalized)
+                                {
+                                    Signals[j][i] /= 32768;
+                                }
+                            }
+                        }
                         break;
                     }
-                    dataPosition++;
-                }
 
-                if (dataPosition == reader.BaseStream.Length - 1)
-                {
-                    throw new FormatException("NOT data!");
-                }
-
-                int length = reader.ReadInt32();
-
-                length /= waveFmt.ChannelCount;
-                length /= (waveFmt.BitsPerSample / 8);
-
-                Signals = new List<DiscreteSignal>();
-
-                for (int i = 0; i < waveFmt.ChannelCount; i++)
-                {
-                    Signals.Add(new DiscreteSignal(waveFmt.SamplingRate, length));
-                }
-
-                switch (waveFmt.BitsPerSample)
-                {
-                    case 8:
+                case 32:
+                    {
+                        for (int i = 0; i < length; i++)
                         {
-                            for (int i = 0; i < length; i++)
+                            for (int j = 0; j < waveFmt.ChannelCount; j++)
                             {
-                                for (int j = 0; j < waveFmt.ChannelCount; j++)
+                                Signals[j][i] = reader.ReadInt32();
+                                if (normalized)
                                 {
-                                    Signals[j][i] = reader.ReadByte() - 128;
-                                    if (normalized)
-                                    {
-                                        Signals[j][i] /= 128;
-                                    }
+                                    Signals[j][i] /= 2147483648;
                                 }
                             }
-                            break;
                         }
+                        break;
+                    }
 
-                    case 16:
+                case 24:
+                    {
+                        for (int i = 0; i < length; i++)
                         {
-                            for (int i = 0; i < length; i++)
+                            for (int j = 0; j < waveFmt.ChannelCount; j++)
                             {
-                                for (int j = 0; j < waveFmt.ChannelCount; j++)
+                                byte b1 = reader.ReadByte();
+                                byte b2 = reader.ReadByte();
+                                byte b3 = reader.ReadByte();
+
+                                Signals[j][i] = (b1 << 8) | (b2 << 16) | (b3 << 24);
+                                if (normalized)
                                 {
-                                    Signals[j][i] = reader.ReadInt16();
-                                    if (normalized)
-                                    {
-                                        Signals[j][i] /= 32768;
-                                    }
+                                    Signals[j][i] /= 2147483648;
                                 }
                             }
-                            break;
                         }
+                        break;
+                    }
 
-                    case 32:
-                        {
-                            for (int i = 0; i < length; i++)
-                            {
-                                for (int j = 0; j < waveFmt.ChannelCount; j++)
-                                {
-                                    Signals[j][i] = reader.ReadInt32();
-                                    if (normalized)
-                                    {
-                                        Signals[j][i] /= 2147483648;
-                                    }
-                                }
-                            }
-                            break;
-                        }
-
-                    case 24:
-                        {
-                            for (int i = 0; i < length; i++)
-                            {
-                                for (int j = 0; j < waveFmt.ChannelCount; j++)
-                                {
-                                    byte b1 = reader.ReadByte();
-                                    byte b2 = reader.ReadByte();
-                                    byte b3 = reader.ReadByte();
-
-                                    Signals[j][i] = (b1 << 8 | b2 << 16 | b3 << 24);
-                                    if (normalized)
-                                    {
-                                        Signals[j][i] /= 2147483648;
-                                    }
-                                }
-                            }
-                            break;
-                        }
-
-                    default:
-                        throw new ArgumentException(
-                            "Wrong bit depth! Supported values are: " + string.Join(", ", SupportedBitDepths));
-                }
+                default:
+                    throw new ArgumentException(
+                        "Wrong bit depth! Supported values are: " + string.Join(", ", SupportedBitDepths));
             }
         }
 
@@ -268,89 +266,87 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         /// <param name="normalized">Normalization flag</param>
         public void SaveTo(Stream waveStream, bool normalized = true)
         {
-            using (BinaryWriter writer = new BinaryWriter(waveStream))
+            using BinaryWriter writer = new BinaryWriter(waveStream);
+            int length = Signals[0].Length;
+
+            writer.Write(0x46464952);     // "RIFF"
+
+            int dataSize = length * WaveFmt.ChannelCount * WaveFmt.BitsPerSample / 8;
+
+            int fileSize = 36 + dataSize;
+            writer.Write(fileSize);
+
+            writer.Write(0x45564157);     // "WAVE"
+            writer.Write(0x20746D66);     // "fmt "
+            writer.Write(16);             // fmtSize = 16 for PCM
+
+            writer.Write(WaveFmt.AudioFormat);
+            writer.Write(WaveFmt.ChannelCount);
+            writer.Write(WaveFmt.SamplingRate);
+            writer.Write(WaveFmt.ByteRate);
+            writer.Write(WaveFmt.Align);
+            writer.Write(WaveFmt.BitsPerSample);
+
+            writer.Write(0x61746164);      // "data"
+            writer.Write(dataSize);
+
+            switch (WaveFmt.BitsPerSample)
             {
-                int length = Signals[0].Length;
-
-                writer.Write(0x46464952);     // "RIFF"
-
-                int dataSize = length * WaveFmt.ChannelCount * WaveFmt.BitsPerSample / 8;
-
-                int fileSize = 36 + dataSize;
-                writer.Write(fileSize);
-
-                writer.Write(0x45564157);     // "WAVE"
-                writer.Write(0x20746D66);     // "fmt "
-                writer.Write(16);             // fmtSize = 16 for PCM
-
-                writer.Write(WaveFmt.AudioFormat);
-                writer.Write(WaveFmt.ChannelCount);
-                writer.Write(WaveFmt.SamplingRate);
-                writer.Write(WaveFmt.ByteRate);
-                writer.Write(WaveFmt.Align);
-                writer.Write(WaveFmt.BitsPerSample);
-
-                writer.Write(0x61746164);      // "data"
-                writer.Write(dataSize);
-
-                switch (WaveFmt.BitsPerSample)
-                {
-                    case 8:
+                case 8:
+                    {
+                        for (int i = 0; i < length; i++)
                         {
-                            for (int i = 0; i < length; i++)
+                            for (int j = 0; j < WaveFmt.ChannelCount; j++)
                             {
-                                for (int j = 0; j < WaveFmt.ChannelCount; j++)
-                                {
-                                    float sample = normalized ? Signals[j][i] * 128 + 128 : Signals[j][i];
-                                    writer.Write((sbyte)sample);
-                                }
+                                float sample = normalized ? (Signals[j][i] * 128) + 128 : Signals[j][i];
+                                writer.Write((sbyte)sample);
                             }
-                            break;
                         }
+                        break;
+                    }
 
-                    case 16:
+                case 16:
+                    {
+                        for (int i = 0; i < length; i++)
                         {
-                            for (int i = 0; i < length; i++)
+                            for (int j = 0; j < WaveFmt.ChannelCount; j++)
                             {
-                                for (int j = 0; j < WaveFmt.ChannelCount; j++)
-                                {
-                                    float sample = normalized ? Signals[j][i] * 32768 : Signals[j][i];
-                                    writer.Write((short)sample);
-                                }
+                                float sample = normalized ? Signals[j][i] * 32768 : Signals[j][i];
+                                writer.Write((short)sample);
                             }
-                            break;
                         }
+                        break;
+                    }
 
-                    case 32:
+                case 32:
+                    {
+                        for (int i = 0; i < length; i++)
                         {
-                            for (int i = 0; i < length; i++)
+                            for (int j = 0; j < WaveFmt.ChannelCount; j++)
                             {
-                                for (int j = 0; j < WaveFmt.ChannelCount; j++)
-                                {
-                                    float sample = normalized ? Signals[j][i] * 2147483648 : Signals[j][i];
-                                    writer.Write((int)sample);
-                                }
+                                float sample = normalized ? Signals[j][i] * 2147483648 : Signals[j][i];
+                                writer.Write((int)sample);
                             }
-                            break;
                         }
+                        break;
+                    }
 
-                    case 24:
+                case 24:
+                    {
+                        for (int i = 0; i < length; i++)
                         {
-                            for (int i = 0; i < length; i++)
+                            for (int j = 0; j < WaveFmt.ChannelCount; j++)
                             {
-                                for (int j = 0; j < WaveFmt.ChannelCount; j++)
-                                {
-                                    float sample = normalized ? Signals[j][i] * 2147483648 : Signals[j][i];
-                                    int s = (int)sample;
+                                float sample = normalized ? Signals[j][i] * 2147483648 : Signals[j][i];
+                                int s = (int)sample;
 
-                                    byte b = (byte)(s >> 8); writer.Write(b);
-                                    b = (byte)(s >> 16); writer.Write(b);
-                                    b = (byte)(s >> 24); writer.Write(b);
-                                }
+                                byte b = (byte)(s >> 8); writer.Write(b);
+                                b = (byte)(s >> 16); writer.Write(b);
+                                b = (byte)(s >> 24); writer.Write(b);
                             }
-                            break;
                         }
-                }
+                        break;
+                    }
             }
         }
 

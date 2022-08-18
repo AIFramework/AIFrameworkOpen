@@ -203,7 +203,7 @@ namespace AI.ML.Clustering
                     int label_old = labeled_vector.ClassMark;
                     int labelNew = NearestVector(labeled_vector.Features);
 
-                    isChangedLabel = (label_old != labelNew);
+                    isChangedLabel = label_old != labelNew;
                     labeled_vector.ClassMark = labelNew;
                 }
 
@@ -215,7 +215,7 @@ namespace AI.ML.Clustering
         /// </summary>
         /// <param name="vect">Вектор</param>
         /// <param name="lr">Скорость обучения</param>
-        public void OnlineTuning(Vector vect, double lr=0.01) 
+        public void OnlineTuning(Vector vect, double lr = 0.01)
         {
             int index = Classify(vect);
             Centroids[index] += lr * vect;

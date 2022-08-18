@@ -91,9 +91,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
 
             input.FastCopyTo(_temp, input.Length);
 
-            bool pad = (_waveletLength / 2) % 2 == 0;  // according to MATLAB and pyWavelets implementations,
-                                                       // convolution in case of db3, db5, db7, etc. runs through another samples;
-                                                       // essentially, we're convolving kernel with signal [x_n-1, x0, x1, ..., x_n-2]
+            bool pad = _waveletLength / 2 % 2 == 0;  // according to MATLAB and pyWavelets implementations,
+                                                     // convolution in case of db3, db5, db7, etc. runs through another samples;
+                                                     // essentially, we're convolving kernel with signal [x_n-1, x0, x1, ..., x_n-2]
 
             // NOTE. We are emulating the 'periodization' mode of MATLAB/pywt.
             int h = input.Length;
@@ -115,7 +115,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
 
                     for (int j = 0; j < _waveletLength; j++)
                     {
-                        int k = (i * 2 + j + padding) % h;
+                        int k = ((i * 2) + j + padding) % h;
 
                         output[start] += _temp[k] * _loD[j]; // approximation
                         output[start + halfLen] += _temp[k] * _hiD[j]; // details
@@ -147,7 +147,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
 
             input.FastCopyTo(_temp, input.Length);
 
-            bool pad = (_waveletLength / 2) % 2 == 0;
+            bool pad = _waveletLength / 2 % 2 == 0;
 
             int h = (int)(input.Length / Math.Pow(2, level - 1));
 
@@ -168,9 +168,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
 
                     for (int j = 0; j < _waveletLength; j++)
                     {
-                        int k = (i * 2 + j + padding) % h;
+                        int k = ((i * 2) + j + padding) % h;
 
-                        output[k] += _temp[start] * _loR[j] + _temp[start + halfLen] * _hiR[j];
+                        output[k] += (_temp[start] * _loR[j]) + (_temp[start + halfLen] * _hiR[j]);
                     }
                 }
 
@@ -185,7 +185,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
         /// <returns></returns>
         public int MaxLevel(int length)
         {
-            return (int)(Math.Log(length / (_waveletLength - 1), 2));
+            return (int)Math.Log(length / (_waveletLength - 1), 2);
         }
     }
 }

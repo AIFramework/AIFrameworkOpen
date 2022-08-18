@@ -45,12 +45,12 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             for (int m = 0; m < _temp.Length; m++)
             {
                 float re = input[2 * m];
-                float im = input[N - 1 - 2 * m];
+                float im = input[N - 1 - (2 * m)];
                 double cos = Math.Cos(Math.PI * m / N);
                 double sin = Math.Sin(-Math.PI * m / N);
 
-                _temp[m] = 2 * (float)(re * cos - im * sin);
-                output[m] = 2 * (float)(re * sin + im * cos);
+                _temp[m] = 2 * (float)((re * cos) - (im * sin));
+                output[m] = 2 * (float)((re * sin) + (im * cos));
             };
 
             _fft.Direct(_temp, output);
@@ -61,11 +61,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             {
                 float re = _temp[m];
                 float im = output[m];
-                double cos = Math.Cos(0.5 * Math.PI * (2 * m + 0.5) / N);
-                double sin = Math.Sin(-0.5 * Math.PI * (2 * m + 0.5) / N);
+                double cos = Math.Cos(0.5 * Math.PI * ((2 * m) + 0.5) / N);
+                double sin = Math.Sin(-0.5 * Math.PI * ((2 * m) + 0.5) / N);
 
-                _tempRe[m] = (float)(re * cos - im * sin);
-                _tempIm[m] = (float)(re * sin + im * cos);
+                _tempRe[m] = (float)((re * cos) - (im * sin));
+                _tempIm[m] = (float)((re * sin) + (im * cos));
             };
 
             for (int m = 0, k = 0; m < N; m += 2, k++)

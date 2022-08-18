@@ -45,7 +45,7 @@ namespace AI.DataStructs
                         DownIndex = i * sizeOfVector
                     };
                     diap.Down = vect[diap.DownIndex];
-                    diap.Up = vect[(i + 1) * sizeOfVector - 1];
+                    diap.Up = vect[((i + 1) * sizeOfVector) - 1];
                     diaps.Add(diap);
 
                     Vector data = new Vector(sizeOfVector);

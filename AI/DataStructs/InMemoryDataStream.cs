@@ -76,14 +76,10 @@ namespace AI.DataStructs
             IsForWriting = false;
             IsForReading = true;
 
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    fs.CopyTo(ms);
-                    _data = ms.ToArray();
-                }
-            }
+            using FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+            using MemoryStream ms = new MemoryStream();
+            fs.CopyTo(ms);
+            _data = ms.ToArray();
         }
         /// <summary>
         /// Creates DataStream for reading data from byte array
@@ -128,11 +124,9 @@ namespace AI.DataStructs
             IsForWriting = false;
             IsForReading = true;
 
-            using (MemoryStream ms = new MemoryStream())
-            {
-                stream.CopyTo(ms);
-                _data = ms.ToArray();
-            }
+            using MemoryStream ms = new MemoryStream();
+            stream.CopyTo(ms);
+            _data = ms.ToArray();
         }
         #endregion
 
@@ -2131,10 +2125,8 @@ namespace AI.DataStructs
             {
                 using (GZipStream tinyStream = new GZipStream(memory, CompressionMode.Compress))
                 {
-                    using (MemoryStream ms = ToMemoryStream())
-                    {
-                        ms.CopyTo(tinyStream);
-                    }
+                    using MemoryStream ms = ToMemoryStream();
+                    ms.CopyTo(tinyStream);
                 }
                 byte[] bytes = memory.ToArray();
                 InitFromBytes(bytes, IsForWriting, IsEncrypted, true);
@@ -2155,16 +2147,12 @@ namespace AI.DataStructs
 
             using (MemoryStream ms = ToMemoryStream())
             {
-                using (MemoryStream memory = new MemoryStream())
-                {
-                    using (GZipStream decompres = new GZipStream(ms, CompressionMode.Decompress))
-                    {
-                        decompres.CopyTo(memory);
-                        byte[] b = memory.ToArray();
+                using MemoryStream memory = new MemoryStream();
+                using GZipStream decompres = new GZipStream(ms, CompressionMode.Decompress);
+                decompres.CopyTo(memory);
+                byte[] b = memory.ToArray();
 
-                        InitFromBytes(b, IsForWriting, IsEncrypted, false);
-                    }
-                }
+                InitFromBytes(b, IsForWriting, IsEncrypted, false);
             }
 
             return this;
@@ -2245,10 +2233,8 @@ namespace AI.DataStructs
                 throw new InvalidOperationException("Data is empty");
             }
 
-            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-            {
-                Save(fs);
-            }
+            using FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+            Save(fs);
         }
         /// <summary>
         /// Saves data to the System.IO.Stream
@@ -2454,17 +2440,13 @@ namespace AI.DataStructs
 
                 ICryptoTransform cryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
-                using (MemoryStream msEncrypt = new MemoryStream())
+                using MemoryStream msEncrypt = new MemoryStream();
+                using CryptoStream csEncrypt = new CryptoStream(msEncrypt, cryptor, CryptoStreamMode.Write);
+                using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
                 {
-                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, cryptor, CryptoStreamMode.Write))
-                    {
-                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
-                        {
-                            swEncrypt.Write(plainText);
-                        }
-                        encrypted = msEncrypt.ToArray();
-                    }
+                    swEncrypt.Write(plainText);
                 }
+                encrypted = msEncrypt.ToArray();
             }
             return encrypted;
         }
@@ -2482,16 +2464,10 @@ namespace AI.DataStructs
 
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
-                using (MemoryStream msDecrypt = new MemoryStream(cipherText))
-                {
-                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                        {
-                            base64 = srDecrypt.ReadToEnd();
-                        }
-                    }
-                }
+                using MemoryStream msDecrypt = new MemoryStream(cipherText);
+                using CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
+                using StreamReader srDecrypt = new StreamReader(csDecrypt);
+                base64 = srDecrypt.ReadToEnd();
             }
 
             return Convert.FromBase64String(base64);

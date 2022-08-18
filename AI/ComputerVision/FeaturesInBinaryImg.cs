@@ -93,7 +93,7 @@ namespace AI.ComputerVision
             {
                 cP1 = cV[0].Magnitude;
                 cP2 = cV[cV.Count - 1].Magnitude;
-                k = Math.Sqrt(cP1 * cP1 + cP2 * cP2);
+                k = Math.Sqrt((cP1 * cP1) + (cP2 * cP2));
                 cV /= k;
             }
 

@@ -66,14 +66,14 @@ namespace AI.Statistics.Distributions
         private double CulcProb(double x, double mean, double std)
         {
             double const_ = 1.0 / (Math.Sqrt(Math.PI * 2) * std);
-            double exp = Math.Exp(-0.5 * Math.Pow((x - mean) / (std), 2));
+            double exp = Math.Exp(-0.5 * Math.Pow((x - mean) / std, 2));
             return const_ * exp;
         }
 
         private double CulcLogProb(double x, double mean, double std)
         {
-            double log_const = Math.Log(1.0 / (Math.Sqrt(Math.PI * 2) * std + AISettings.GlobalEps));
-            double log_exp = -0.5 * Math.Pow((x - mean) / (std), 2);
+            double log_const = Math.Log(1.0 / ((Math.Sqrt(Math.PI * 2) * std) + AISettings.GlobalEps));
+            double log_exp = -0.5 * Math.Pow((x - mean) / std, 2);
             return log_const + log_exp;
         }
     }

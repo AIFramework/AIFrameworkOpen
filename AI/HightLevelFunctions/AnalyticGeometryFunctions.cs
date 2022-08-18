@@ -19,21 +19,21 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Cosine of the angle between two vectors
         /// </summary>
-        static public double Cos(Vector vector1, Vector vector2)
+        public static double Cos(Vector vector1, Vector vector2)
         {
             return Dot(vector1, vector2) / Math.Sqrt(Dot(vector2, vector2) * Dot(vector1, vector1));
         }
         /// <summary>
         /// Calculates the Euclidean norm of a vector
         /// </summary>
-        static public double NormVect(Vector vector)
+        public static double NormVect(Vector vector)
         {
             return Math.Sqrt(Functions.Summ(vector * vector));
         }
         /// <summary>
         /// Dot product of 2 vectors
         /// </summary>
-        static public double Dot(Vector vector, Vector vector2)
+        public static double Dot(Vector vector, Vector vector2)
         {
             double dot = 0;
 
@@ -47,7 +47,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Projection of vector A onto vector B
         /// </summary>
-        static public Vector ProectionAtoB(Vector A, Vector B)
+        public static Vector ProectionAtoB(Vector A, Vector B)
         {
             double k = Dot(A, B) / Dot(B, B);
             return k * B;
@@ -56,7 +56,7 @@ namespace AI.HightLevelFunctions
         /// Angle between vectors
         /// </summary>
         /// <returns>Returns the angle in radians</returns>
-        static public double AngleVect(Vector vector, Vector vector2)
+        public static double AngleVect(Vector vector, Vector vector2)
         {
             double a = Dot(vector, vector2), b = NormVect(vector) * NormVect(vector2);
             return Math.Acos(a / b);
@@ -64,7 +64,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Calculates the vector connecting point A to point B
         /// </summary>
-        static public Vector VectorFromAToB(Vector pointA, Vector pointB)
+        public static Vector VectorFromAToB(Vector pointA, Vector pointB)
         {
             if (pointA.Count != pointB.Count)
             {
@@ -76,14 +76,14 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Calculates the distance from point A to B
         /// </summary>
-        static public double DistanceFromAToB(Vector pointA, Vector pointB)
+        public static double DistanceFromAToB(Vector pointA, Vector pointB)
         {
             return NormVect(VectorFromAToB(pointA, pointB));
         }
         /// <summary>
         /// Rotate a vector by specified angles
         /// </summary>
-        static public Vector VectorRotate(Vector inp, double angl, int indAx1, int indAx2)
+        public static Vector VectorRotate(Vector inp, double angl, int indAx1, int indAx2)
         {
             Matrix rotateMatr = new Matrix(inp.Count, inp.Count);
 

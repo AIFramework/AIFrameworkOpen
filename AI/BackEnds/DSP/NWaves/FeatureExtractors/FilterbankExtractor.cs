@@ -130,7 +130,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             // reserve memory for reusable blocks
 
-            _spectrum = new float[_blockSize / 2 + 1];
+            _spectrum = new float[(_blockSize / 2) + 1];
             _bandSpectrum = new float[filterbankSize];
         }
 

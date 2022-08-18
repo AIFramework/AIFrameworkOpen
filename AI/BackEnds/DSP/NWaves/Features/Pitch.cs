@@ -41,7 +41,7 @@ namespace AI.BackEnds.DSP.NWaves.Features
 
             float[] block = new DiscreteSignal(samplingRate, signal)[startPos, endPos].Samples;
 
-            int fftSize = MathUtils.NextPowerOfTwo(2 * block.Length - 1);
+            int fftSize = MathUtils.NextPowerOfTwo((2 * block.Length) - 1);
 
             float[] cc = new float[fftSize];
 
@@ -289,7 +289,7 @@ namespace AI.BackEnds.DSP.NWaves.Features
             }
             else
             {
-                t = (int)(t + (cmdf[x2] - cmdf[x1]) / (2 * cmdf[t] - cmdf[x2] - cmdf[x1]) / 2);
+                t = (int)(t + ((cmdf[x2] - cmdf[x1]) / ((2 * cmdf[t]) - cmdf[x2] - cmdf[x1]) / 2));
             }
 
             return samplingRate / t;
@@ -386,7 +386,7 @@ namespace AI.BackEnds.DSP.NWaves.Features
 
                 for (int k = 2; k < decimations; k++)
                 {
-                    sumSpectrum[j] += (spectrum[j * k - 1] + spectrum[j * k] + spectrum[j * k + 1]) / 3;
+                    sumSpectrum[j] += (spectrum[(j * k) - 1] + spectrum[j * k] + spectrum[(j * k) + 1]) / 3;
                 }
 
                 if (sumSpectrum[j] > maxHss)
@@ -464,7 +464,7 @@ namespace AI.BackEnds.DSP.NWaves.Features
             {
                 for (int k = 2; k < decimations; k++)
                 {
-                    sumSpectrum[j] *= (spectrum[j * k - 1] + spectrum[j * k] + spectrum[j * k + 1]) / 3;
+                    sumSpectrum[j] *= (spectrum[(j * k) - 1] + spectrum[j * k] + spectrum[(j * k) + 1]) / 3;
                 }
 
                 if (sumSpectrum[j] > maxHps)

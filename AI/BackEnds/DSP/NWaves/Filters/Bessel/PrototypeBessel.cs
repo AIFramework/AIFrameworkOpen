@@ -15,7 +15,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
         /// <returns></returns>
         public static double Reverse(int k, int n)
         {
-            return MathUtils.Factorial(2 * n - k) /
+            return MathUtils.Factorial((2 * n) - k) /
                 (Math.Pow(2, n - k) * MathUtils.Factorial(k) * MathUtils.Factorial(n - k));
         }
 

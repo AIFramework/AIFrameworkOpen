@@ -49,7 +49,7 @@ namespace AI.ML.SeqPredict
                 int end = outp.Count;
                 int start = end - window;
                 Vector inp = (outp.GetInterval(start, end) - m) / std;
-                outp.Add(network.Forward(inp)[0] * std + m);
+                outp.Add((network.Forward(inp)[0] * std) + m);
             }
 
             return outp;
@@ -95,8 +95,8 @@ namespace AI.ML.SeqPredict
 
                 for (int j = 0; j < lJ; j++)
                 {
-                    xS[i].Add(X[lJ * i + j]);
-                    yS[i].Add(Y[lJ * i + j]);
+                    xS[i].Add(X[(lJ * i) + j]);
+                    yS[i].Add(Y[(lJ * i) + j]);
                 }
 
             }

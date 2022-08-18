@@ -75,12 +75,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters
 
             for (int n = 1, k = 0; n < size; n++, k++)
             {
-                output[n] = input[n] * b0 + output[k];
+                output[n] = (input[n] * b0) + output[k];
             }
 
             for (int n = size, k = size - 1, delay = 0; n < input.Length; n++, k++, delay++)
             {
-                output[n] = input[delay] * bs + input[n] * b0 + output[k];
+                output[n] = (input[delay] * bs) + (input[n] * b0) + output[k];
             }
 
             return new DiscreteSignal(signal.SamplingRate, output);
@@ -96,7 +96,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
             float b0 = _b[0];
             float bs = _b[Size];
 
-            float output = b0 * sample + bs * _delayLineB[_delayLineOffsetB] + _out1;
+            float output = (b0 * sample) + (bs * _delayLineB[_delayLineOffsetB]) + _out1;
 
             _delayLineB[_delayLineOffsetB] = sample;
             _out1 = output;

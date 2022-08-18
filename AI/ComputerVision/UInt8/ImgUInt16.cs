@@ -16,11 +16,11 @@ namespace AI.ComputerVision.UInt8
         /// <summary>
         /// Ширина
         /// </summary>
-        readonly public int Width;
+        public readonly int Width;
         /// <summary>
         /// Высота
         /// </summary>
-        readonly public int Height;
+        public readonly int Height;
 
         /// <summary>
         /// Доступ к пикселам

@@ -88,13 +88,13 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                         float t2 = im[i] + im[p];
                         float t3 = re[i] - re[p];
                         float t4 = im[i] - im[p];
-                        re[p] = t3 * u1 - t4 * u2;
-                        im[p] = t4 * u1 + t3 * u2;
+                        re[p] = (t3 * u1) - (t4 * u2);
+                        im[p] = (t4 * u1) + (t3 * u2);
                         re[i] = t1;
                         im[i] = t2;
                     }
-                    float u3 = u1 * c - u2 * s;
-                    u2 = u2 * c + u1 * s;
+                    float u3 = (u1 * c) - (u2 * s);
+                    u2 = (u2 * c) + (u1 * s);
                     u1 = u3;
                 }
                 L >>= 1;
@@ -148,13 +148,13 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                         float t2 = im[i] + im[p];
                         float t3 = re[i] - re[p];
                         float t4 = im[i] - im[p];
-                        re[p] = t3 * u1 - t4 * u2;
-                        im[p] = t4 * u1 + t3 * u2;
+                        re[p] = (t3 * u1) - (t4 * u2);
+                        im[p] = (t4 * u1) + (t3 * u2);
                         re[i] = t1;
                         im[i] = t2;
                     }
-                    float u3 = u1 * c - u2 * s;
-                    u2 = u2 * c + u1 * s;
+                    float u3 = (u1 * c) - (u2 * s);
+                    u2 = (u2 * c) + (u1 * s);
                     u1 = u3;
                 }
                 L >>= 1;
@@ -223,7 +223,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
                 for (int i = 1; i < n; i++)
                 {
-                    spectrum[i] = (float)(Math.Sqrt(_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]) / _fftSize);
+                    spectrum[i] = (float)(Math.Sqrt((_realSpectrum[i] * _realSpectrum[i]) + (_imagSpectrum[i] * _imagSpectrum[i])) / _fftSize);
                 }
             }
             else
@@ -233,7 +233,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
                 for (int i = 1; i < n; i++)
                 {
-                    spectrum[i] = (float)(Math.Sqrt(_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]));
+                    spectrum[i] = (float)Math.Sqrt((_realSpectrum[i] * _realSpectrum[i]) + (_imagSpectrum[i] * _imagSpectrum[i]));
                 }
             }
         }
@@ -265,7 +265,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
                 for (int i = 1; i < n; i++)
                 {
-                    spectrum[i] = (_realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i]) / _fftSize;
+                    spectrum[i] = ((_realSpectrum[i] * _realSpectrum[i]) + (_imagSpectrum[i] * _imagSpectrum[i])) / _fftSize;
                 }
             }
             else
@@ -275,7 +275,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
                 for (int i = 1; i < n; i++)
                 {
-                    spectrum[i] = _realSpectrum[i] * _realSpectrum[i] + _imagSpectrum[i] * _imagSpectrum[i];
+                    spectrum[i] = (_realSpectrum[i] * _realSpectrum[i]) + (_imagSpectrum[i] * _imagSpectrum[i]);
                 }
             }
         }
@@ -288,7 +288,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns></returns>
         public DiscreteSignal MagnitudeSpectrum(DiscreteSignal signal, bool normalize = false)
         {
-            float[] spectrum = new float[_fftSize / 2 + 1];
+            float[] spectrum = new float[(_fftSize / 2) + 1];
             MagnitudeSpectrum(signal.Samples, spectrum, normalize);
             return new DiscreteSignal(signal.SamplingRate, spectrum);
         }
@@ -301,7 +301,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <returns></returns>
         public DiscreteSignal PowerSpectrum(DiscreteSignal signal, bool normalize = true)
         {
-            float[] spectrum = new float[_fftSize / 2 + 1];
+            float[] spectrum = new float[(_fftSize / 2) + 1];
             PowerSpectrum(signal.Samples, spectrum, normalize);
             return new DiscreteSignal(signal.SamplingRate, spectrum);
         }

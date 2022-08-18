@@ -124,7 +124,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 
             //compute hidden state as gated, saturated cell activations
             NNValue output = g.Add(
-                g.AdamarMul(outputGate, 
+                g.AdamarMul(outputGate,
                 g.Activate(cellOutputActivation, cellAct)), input);
 
             //rollover activations for next iteration

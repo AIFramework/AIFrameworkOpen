@@ -72,7 +72,7 @@ namespace AI.DSP.Analyse
                 }
                 else
                 {
-                    fResp[i] = (stdCosOut / stdCos + stdSinOut / stdSin) / 2.0;
+                    fResp[i] = ((stdCosOut / stdCos) + (stdSinOut / stdSin)) / 2.0;
                 }
             }
 

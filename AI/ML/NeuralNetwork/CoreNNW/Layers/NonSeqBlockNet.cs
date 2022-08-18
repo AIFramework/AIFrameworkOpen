@@ -24,15 +24,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Number of learning parameters
         /// </summary>
-        public int TrainableParameters 
+        public int TrainableParameters
         {
-            get 
+            get
             {
                 int sum = 0;
                 foreach (var layer in _layers)
                     if (layer is ILearningLayer)
-                       sum += (layer as ILearningLayer).TrainableParameters;
-                
+                        sum += (layer as ILearningLayer).TrainableParameters;
+
                 return sum;
             }
         }
@@ -45,8 +45,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public IActivation ActivationFunction { get; set; }
 
-        Func<NNValue, IGraph, NNValue> _forward;
-        List<ILayer> _layers;
+        private readonly Func<NNValue, IGraph, NNValue> _forward;
+        private readonly List<ILayer> _layers;
 
         /// <summary>
         /// Непоследовательный блок
@@ -89,7 +89,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 
             foreach (var layer in _layers)
             {
-                if (layer is ILearningLayer) 
+                if (layer is ILearningLayer)
                 {
                     block_params.AddRange(
                         (layer as ILearningLayer).GetParameters());
@@ -105,7 +105,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public void InitWeights(Random random)
         {
             foreach (var layer in _layers)
-                 if (layer is ILearningLayer)
+                if (layer is ILearningLayer)
                     (layer as ILearningLayer).InitWeights(random);
         }
         /// <summary>
@@ -120,7 +120,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public void OnlyUse()
         {
-            foreach (var layer in _layers) 
+            foreach (var layer in _layers)
             {
                 layer.OnlyUse();
             }

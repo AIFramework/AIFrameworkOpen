@@ -20,12 +20,10 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Options
 
             try
             {
-                using (System.Xml.XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(stream, Encoding.UTF8, true, true, "  "))
-                {
-                    DataContractJsonSerializer js = new DataContractJsonSerializer(options.GetType());
-                    js.WriteObject(writer, options);
-                    stream.Flush();
-                }
+                using System.Xml.XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(stream, Encoding.UTF8, true, true, "  ");
+                DataContractJsonSerializer js = new DataContractJsonSerializer(options.GetType());
+                js.WriteObject(writer, options);
+                stream.Flush();
             }
             finally
             {

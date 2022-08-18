@@ -58,7 +58,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static double Asinh(double x)
         {
-            return Math.Log(x + Math.Sqrt(x * x + 1));
+            return Math.Log(x + Math.Sqrt((x * x) + 1));
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                     left++;
                 }
 
-                interp[i] = y[left] + (y[right] - y[left]) * (arg[i] - x[left]) / (x[right] - x[left]);
+                interp[i] = y[left] + ((y[right] - y[left]) * (arg[i] - x[left]) / (x[right] - x[left]));
             }
         }
 
@@ -138,8 +138,8 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         {
             for (int k = 0; k < re.Length; k++)
             {
-                double den = (1 - re[k]) * (1 - re[k]) + im[k] * im[k];
-                re[k] = (1 - re[k] * re[k] - im[k] * im[k]) / den;
+                double den = ((1 - re[k]) * (1 - re[k])) + (im[k] * im[k]);
+                re[k] = (1 - (re[k] * re[k]) - (im[k] * im[k])) / den;
                 im[k] = 2 * im[k] / den;
             }
 

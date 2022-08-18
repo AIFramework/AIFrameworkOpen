@@ -17,7 +17,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevI
 
             for (int k = 0; k < order; k++)
             {
-                double theta = Math.PI * (2 * k + 1) / (2 * order);
+                double theta = Math.PI * ((2 * k) + 1) / (2 * order);
                 double re = -sinh * Math.Sin(theta);
                 double im = cosh * Math.Cos(theta);
                 poles[k] = new Complex(re, im);

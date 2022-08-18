@@ -130,8 +130,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             for (int j = 0; j <= halfSize; j++)
             {
-                _convRe[j] = (_blockRe[j] * _kernelSpectrumRe[j] - _blockIm[j] * _kernelSpectrumIm[j]) / halfSize;
-                _convIm[j] = (_blockRe[j] * _kernelSpectrumIm[j] + _blockIm[j] * _kernelSpectrumRe[j]) / halfSize;
+                _convRe[j] = ((_blockRe[j] * _kernelSpectrumRe[j]) - (_blockIm[j] * _kernelSpectrumIm[j])) / halfSize;
+                _convIm[j] = ((_blockRe[j] * _kernelSpectrumIm[j]) + (_blockIm[j] * _kernelSpectrumRe[j])) / halfSize;
             }
 
             _fft.Inverse(_convRe, _convIm, _convRe);

@@ -119,7 +119,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             Order = order;
 
-            K = Order / 2 + 2;
+            K = (Order / 2) + 2;
 
             _freqs = freqs;
 
@@ -147,7 +147,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             for (int i = 0; i < bandSizes.Length; i++)
             {
-                bandSizes[i] = (int)((_freqs[2 * i + 1] - _freqs[2 * i]) / step + 0.5);
+                bandSizes[i] = (int)(((_freqs[(2 * i) + 1] - _freqs[2 * i]) / step) + 0.5);
 
                 gridSize += bandSizes[i];
             }
@@ -169,7 +169,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                     _desired[gi] = desired[i];
                 }
 
-                _grid[gi - 1] = _freqs[2 * i + 1];
+                _grid[gi - 1] = _freqs[(2 * i) + 1];
             }
         }
 
@@ -346,7 +346,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             for (int i = 0, sign = 1; i < K; i++, sign = -sign)
             {
-                _points[i] = _desired[_extrs[i]] - sign * delta / _weights[_extrs[i]];
+                _points[i] = _desired[_extrs[i]] - (sign * delta / _weights[_extrs[i]]);
             }
         }
 
@@ -378,7 +378,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                     sum += lagr[i] * Math.Cos(2 * Math.PI * i * (k - halfOrder) / Order);
                 }
 
-                kernel[k] = (lagr[0] + 2 * sum) / Order;
+                kernel[k] = (lagr[0] + (2 * sum)) / Order;
             }
 
             return kernel;
@@ -391,7 +391,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns></returns>
         private double Gamma(int k)
         {
-            int jet = (K - 1) / 15 + 1;     // as in original Rabiner's code; without it there'll be numerical issues 
+            int jet = ((K - 1) / 15) + 1;     // as in original Rabiner's code; without it there'll be numerical issues 
             double den = 1.0;
 
             for (int j = 0; j < jet; j++)
@@ -482,12 +482,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             double bw = fa - fp;
 
-            double d = (0.005309 * Math.Log10(dp) * Math.Log10(dp) + 0.07114 * Math.Log10(dp) - 0.4761) * Math.Log10(da) -
-                    (0.00266 * Math.Log10(dp) * Math.Log10(dp) + 0.5941 * Math.Log10(dp) + 0.4278);
+            double d = (((0.005309 * Math.Log10(dp) * Math.Log10(dp)) + (0.07114 * Math.Log10(dp)) - 0.4761) * Math.Log10(da)) -
+                    ((0.00266 * Math.Log10(dp) * Math.Log10(dp)) + (0.5941 * Math.Log10(dp)) + 0.4278);
 
-            double f = 0.51244 * (Math.Log10(dp) - Math.Log10(da)) + 11.012;
+            double f = (0.51244 * (Math.Log10(dp) - Math.Log10(da))) + 11.012;
 
-            int l = (int)((d - f * bw * bw) / bw + 1.5);
+            int l = (int)(((d - (f * bw * bw)) / bw) + 1.5);
 
             return l % 2 == 1 ? l : l + 1;
         }

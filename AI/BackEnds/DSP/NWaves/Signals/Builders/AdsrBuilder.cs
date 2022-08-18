@@ -131,7 +131,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
                 cur = _attackAmp;
             }
 
-            _prev = _b * cur - _a * _prev;
+            _prev = (_b * cur) - (_a * _prev);
 
             if (++_n == _release)
             {

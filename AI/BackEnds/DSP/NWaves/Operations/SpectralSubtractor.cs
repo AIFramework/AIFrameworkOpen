@@ -41,10 +41,10 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <param name="hopSize"></param>
         public SpectralSubtractor(float[] noise, int fftSize = 1024, int hopSize = 128) : base(hopSize, fftSize)
         {
-            _noiseEstimate = new float[_fftSize / 2 + 1];
+            _noiseEstimate = new float[(_fftSize / 2) + 1];
             _noiseBuf = new float[_fftSize];
-            _noiseSpectrum = new float[_fftSize / 2 + 1];
-            _noiseAcc = new float[_fftSize / 2 + 2];
+            _noiseSpectrum = new float[(_fftSize / 2) + 1];
+            _noiseAcc = new float[(_fftSize / 2) + 2];
 
             EstimateNoise(noise);
         }
@@ -71,19 +71,19 @@ namespace AI.BackEnds.DSP.NWaves.Operations
                                              float[] filteredRe, float[] filteredIm)
         {
             float k = (AlphaMin - AlphaMax) / (SnrMax - SnrMin);
-            float b = AlphaMax - k * SnrMin;
+            float b = AlphaMax - (k * SnrMin);
 
             for (int j = 1; j <= _fftSize / 2; j++)
             {
-                float power = re[j] * re[j] + im[j] * im[j];
+                float power = (re[j] * re[j]) + (im[j] * im[j]);
                 double phase = Math.Atan2(im[j], re[j]);
 
                 float noisePower = _noiseEstimate[j];
 
                 double snr = 10 * Math.Log10(power / noisePower);
-                double alpha = Math.Max(Math.Min(k * snr + b, AlphaMax), AlphaMin);
+                double alpha = Math.Max(Math.Min((k * snr) + b, AlphaMax), AlphaMin);
 
-                double diff = power - alpha * noisePower;
+                double diff = power - (alpha * noisePower);
 
                 double mag = Math.Sqrt(Math.Max(diff, Beta * noisePower));
 

@@ -55,8 +55,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         {
             double x = _n % _cycles;
             double sample = x < _cycles / 2 ?
-                                _low + 2 * x * (_high - _low) / _cycles :
-                                _high + 2 * (x - _cycles / 2) * (_low - _high) / _cycles;
+                                _low + (2 * x * (_high - _low) / _cycles) :
+                                _high + (2 * (x - (_cycles / 2)) * (_low - _high) / _cycles);
             _n++;
             return (float)sample;
         }

@@ -42,7 +42,7 @@ namespace AI.HightLevelFunctions
         /// <param name="betta">Угол наклона</param>
         public static double InverseSigmoid(double x, double betta = 1)
         {
-            return -Math.Log(1 / x - 1) / betta;
+            return -Math.Log((1 / x) - 1) / betta;
         }
         /// <summary>
         /// Сигмоидальная однополярная активационная ф-я
@@ -51,7 +51,7 @@ namespace AI.HightLevelFunctions
         /// <param name="betta">Угол наклона</param>
         public static Vector InverseSigmoid(Vector x, double betta = 1)
         {
-            return -FunctionsForEachElements.Ln(1 / x - 1) / betta;
+            return -FunctionsForEachElements.Ln((1 / x) - 1) / betta;
         }
         /// <summary>
         /// Сигмоидальная биполярная активационная ф-я

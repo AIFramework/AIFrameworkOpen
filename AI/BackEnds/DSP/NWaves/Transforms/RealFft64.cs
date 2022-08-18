@@ -115,13 +115,13 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                         double t2 = _im[i] + _im[p];
                         double t3 = _re[i] - _re[p];
                         double t4 = _im[i] - _im[p];
-                        _re[p] = t3 * u1 - t4 * u2;
-                        _im[p] = t4 * u1 + t3 * u2;
+                        _re[p] = (t3 * u1) - (t4 * u2);
+                        _im[p] = (t4 * u1) + (t3 * u2);
                         _re[i] = t1;
                         _im[i] = t2;
                     }
-                    double u3 = u1 * c - u2 * s;
-                    u2 = u2 * c + u1 * s;
+                    double u3 = (u1 * c) - (u2 * s);
+                    u2 = (u2 * c) + (u1 * s);
                     u1 = u3;
                 }
                 L >>= 1;
@@ -148,13 +148,13 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             // do the last step:
 
-            re[0] = _re[0] * _ar[0] - _im[0] * _ai[0] + _re[0] * _br[0] + _im[0] * _bi[0];
-            im[0] = _im[0] * _ar[0] + _re[0] * _ai[0] + _re[0] * _bi[0] - _im[0] * _br[0];
+            re[0] = (_re[0] * _ar[0]) - (_im[0] * _ai[0]) + (_re[0] * _br[0]) + (_im[0] * _bi[0]);
+            im[0] = (_im[0] * _ar[0]) + (_re[0] * _ai[0]) + (_re[0] * _bi[0]) - (_im[0] * _br[0]);
 
             for (int k = 1; k < _fftSize; k++)
             {
-                re[k] = _re[k] * _ar[k] - _im[k] * _ai[k] + _re[_fftSize - k] * _br[k] + _im[_fftSize - k] * _bi[k];
-                im[k] = _im[k] * _ar[k] + _re[k] * _ai[k] + _re[_fftSize - k] * _bi[k] - _im[_fftSize - k] * _br[k];
+                re[k] = (_re[k] * _ar[k]) - (_im[k] * _ai[k]) + (_re[_fftSize - k] * _br[k]) + (_im[_fftSize - k] * _bi[k]);
+                im[k] = (_im[k] * _ar[k]) + (_re[k] * _ai[k]) + (_re[_fftSize - k] * _bi[k]) - (_im[_fftSize - k] * _br[k]);
             }
 
             re[_fftSize] = _re[0] - _im[0];
@@ -173,8 +173,8 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             for (int k = 0; k < _fftSize; k++)
             {
-                _re[k] = re[k] * _ar[k] + im[k] * _ai[k] + re[_fftSize - k] * _br[k] - im[_fftSize - k] * _bi[k];
-                _im[k] = im[k] * _ar[k] - re[k] * _ai[k] - re[_fftSize - k] * _bi[k] - im[_fftSize - k] * _br[k];
+                _re[k] = (re[k] * _ar[k]) + (im[k] * _ai[k]) + (re[_fftSize - k] * _br[k]) - (im[_fftSize - k] * _bi[k]);
+                _im[k] = (im[k] * _ar[k]) - (re[k] * _ai[k]) - (re[_fftSize - k] * _bi[k]) - (im[_fftSize - k] * _br[k]);
             }
 
             // do half-size complex FFT:
@@ -200,13 +200,13 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                         double t2 = _im[i] + _im[p];
                         double t3 = _re[i] - _re[p];
                         double t4 = _im[i] - _im[p];
-                        _re[p] = t3 * u1 - t4 * u2;
-                        _im[p] = t4 * u1 + t3 * u2;
+                        _re[p] = (t3 * u1) - (t4 * u2);
+                        _im[p] = (t4 * u1) + (t3 * u2);
                         _re[i] = t1;
                         _im[i] = t2;
                     }
-                    double u3 = u1 * c - u2 * s;
-                    u2 = u2 * c + u1 * s;
+                    double u3 = (u1 * c) - (u2 * s);
+                    u2 = (u2 * c) + (u1 * s);
                     u1 = u3;
                 }
                 L >>= 1;
@@ -252,8 +252,8 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             for (int k = 0; k < _fftSize; k++)
             {
-                _re[k] = re[k] * _ar[k] + im[k] * _ai[k] + re[_fftSize - k] * _br[k] - im[_fftSize - k] * _bi[k];
-                _im[k] = im[k] * _ar[k] - re[k] * _ai[k] - re[_fftSize - k] * _bi[k] - im[_fftSize - k] * _br[k];
+                _re[k] = (re[k] * _ar[k]) + (im[k] * _ai[k]) + (re[_fftSize - k] * _br[k]) - (im[_fftSize - k] * _bi[k]);
+                _im[k] = (im[k] * _ar[k]) - (re[k] * _ai[k]) - (re[_fftSize - k] * _bi[k]) - (im[_fftSize - k] * _br[k]);
             }
 
             // do half-size complex FFT:
@@ -279,13 +279,13 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
                         double t2 = _im[i] + _im[p];
                         double t3 = _re[i] - _re[p];
                         double t4 = _im[i] - _im[p];
-                        _re[p] = t3 * u1 - t4 * u2;
-                        _im[p] = t4 * u1 + t3 * u2;
+                        _re[p] = (t3 * u1) - (t4 * u2);
+                        _im[p] = (t4 * u1) + (t3 * u2);
                         _re[i] = t1;
                         _im[i] = t2;
                     }
-                    double u3 = u1 * c - u2 * s;
-                    u2 = u2 * c + u1 * s;
+                    double u3 = (u1 * c) - (u2 * s);
+                    u2 = (u2 * c) + (u1 * s);
                     u1 = u3;
                 }
                 L >>= 1;

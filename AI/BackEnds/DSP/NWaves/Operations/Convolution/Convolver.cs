@@ -103,8 +103,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             for (int i = 0; i <= _fftSize / 2; i++)
             {
-                float re = _real1[i] * _real2[i] - _imag1[i] * _imag2[i];
-                float im = _real1[i] * _imag2[i] + _imag1[i] * _real2[i];
+                float re = (_real1[i] * _real2[i]) - (_imag1[i] * _imag2[i]);
+                float im = (_real1[i] * _imag2[i]) + (_imag1[i] * _real2[i]);
                 _real1[i] = re / _fftSize;
                 _imag1[i] = im / _fftSize;
             }

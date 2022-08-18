@@ -157,7 +157,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
                 {
                     for (int k = 0; k < frameSize; k++)
                     {
-                        float y = block[k] - prevSample * _preEmphasis;
+                        float y = block[k] - (prevSample * _preEmphasis);
                         prevSample = block[k];
                         block[k] = y;
                     }
@@ -189,7 +189,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
         {
             // pre-allocate memory for data:
 
-            int totalCount = (endSample - FrameSize - startSample) / HopSize + 1;
+            int totalCount = ((endSample - FrameSize - startSample) / HopSize) + 1;
 
             List<float[]> featureVectors = new List<float[]>(totalCount);
             for (int i = 0; i < totalCount; i++)
@@ -211,7 +211,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
         public virtual List<double> TimeMarkers(int vectorCount, double startFrom = 0)
         {
             return Enumerable.Range(0, vectorCount)
-                             .Select(x => startFrom + x * HopDuration)
+                             .Select(x => startFrom + (x * HopDuration))
                              .ToList();
         }
 
@@ -323,7 +323,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
             for (int i = 0; i < threadCount; i++)
             {
                 startPositions[i] = lastPosition + 1;
-                endPositions[i] = lastPosition + hopCount * HopSize + FrameSize;
+                endPositions[i] = lastPosition + (hopCount * HopSize) + FrameSize;
                 lastPosition = endPositions[i] - FrameSize;
             }
 

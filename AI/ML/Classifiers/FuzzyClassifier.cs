@@ -1,13 +1,8 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.Fuzzy;
 using AI.Fuzzy.Fuzzyficators.FVector;
-using AI.ML.DataSets;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.ML.Classifiers
 {
@@ -50,9 +45,9 @@ namespace AI.ML.Classifiers
             Vector fV = FuzzyficatorVectorInp.Fuzzyfication(inp);
             Vector outF = FuzzyAnalogyInference.Inference(ImplMatrix, fV);
             Vector outp = FuzzyficatorVectorOutp.DeFuzzyfication(outF);
-            return outp/outp.Sum();
+            return outp / outp.Sum();
         }
-      
+
 
         /// <summary>
         /// Обучить

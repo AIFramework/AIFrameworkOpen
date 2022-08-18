@@ -304,7 +304,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         {
             IReadOnlyList<DataSequence> sequences = data.Training;
             int len = sequences.Count,
-                passes = (len % batchSize == 0) ? len / batchSize : len / batchSize + 1;
+                passes = (len % batchSize == 0) ? len / batchSize : (len / batchSize) + 1;
 
             for (int j = 0; j < passes; j++)
             {
@@ -439,7 +439,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         {
             float trLoss, valLoss = 0, metric = 0, testLoss;
             trLoss = GetLoss(network, dataSet.Training, dataSet.LossFunction);
-            string report = $"epoch[{(epoch + 1)}/{epochs}]  tr. loss = {trLoss:N3}";
+            string report = $"epoch[{epoch + 1}/{epochs}]  tr. loss = {trLoss:N3}";
             Info.TrainLoss.Add(trLoss);
 
             if (hasValidation)

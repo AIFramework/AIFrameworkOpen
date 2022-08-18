@@ -117,8 +117,8 @@ namespace AI.ML.LinearModelTools
 
             gradB /= n;
             gradW /= n;
-            gradB += l2 * bias + l1 * Math.Sign(bias);
-            gradW += l2 * param + l1 * param.Transform(x => Math.Sign(x));
+            gradB += (l2 * bias) + (l1 * Math.Sign(bias));
+            gradW += (l2 * param) + (l1 * param.Transform(x => Math.Sign(x)));
 
             return new GradientMargin<Vector, double>()
             { GradientW = gradW, Margin = margin, GradientBias = gradB };

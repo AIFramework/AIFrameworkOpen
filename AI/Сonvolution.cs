@@ -18,7 +18,7 @@ namespace AI
         /// </summary>
         /// <param name="signal">Signal</param>
         /// <param name="Ht">Impulse response</param>
-        static public Vector DirectConvolution(Vector signal, Vector Ht)
+        public static Vector DirectConvolution(Vector signal, Vector Ht)
         {
             Vector ht = Ht.Revers();
             int nMax = signal.Count + ht.Count - 1;
@@ -41,7 +41,7 @@ namespace AI
         /// </summary>
         /// <param name="signal">Signal</param>
         /// <param name="Ht">Impulse response</param>
-        static public Vector ConvolutionNormal(Vector signal, Vector Ht)
+        public static Vector ConvolutionNormal(Vector signal, Vector Ht)
         {
             Vector ht = Ht.Revers();
             int nMax = signal.Count + ht.Count - 1;
@@ -68,7 +68,7 @@ namespace AI
         /// <param name="signal">Signal</param>
         /// <param name="ht">Impulse response</param>
         /// <param name="fd">Sampling frequency</param>
-    	static public Vector DirectConvolution(Vector signal, Vector ht, double fd)
+    	public static Vector DirectConvolution(Vector signal, Vector ht, double fd)
         {
             return DirectConvolution(signal, ht) / fd;
         }
@@ -79,7 +79,7 @@ namespace AI
         /// <param name="htLen">Impulse response length</param>
         public static Vector StWithHt(Vector st, int htLen)
         {
-            int nMax = st.Count + 2 * htLen;
+            int nMax = st.Count + (2 * htLen);
             double[] stN = new double[nMax];
 
             for (int j = htLen, max = j + st.Count, i = 0; j < max; j++)
@@ -96,7 +96,7 @@ namespace AI
         /// <param name="htLen">Impulse response length</param>
         public static ComplexVector StWithHt(ComplexVector st, int htLen)
         {
-            int nMax = st.Count + 2 * htLen;
+            int nMax = st.Count + (2 * htLen);
             Complex[] stN = new Complex[nMax];
 
             for (int j = htLen, max = j + st.Count, i = 0; j < max; j++)
@@ -109,7 +109,7 @@ namespace AI
         /// <summary>
         /// Direct convolution complex vector
         /// </summary>
-        static public ComplexVector DirectConvolution(ComplexVector A, ComplexVector B)
+        public static ComplexVector DirectConvolution(ComplexVector A, ComplexVector B)
         {
             int nMax = A.Count + B.Count - 1;
             ComplexVector st, ht;

@@ -28,7 +28,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Number of learning parameters
         /// </summary>
-        public int TrainableParameters => (_aLen + _bLen + 1);
+        public int TrainableParameters => _aLen + _bLen + 1;
         /// <summary>
         /// Добавление для расчета весов
         /// </summary>

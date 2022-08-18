@@ -114,7 +114,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             _fft = new RealFft(_blockSize);
             _dct = new Dct2(filterbankSize);
 
-            _spectrum = new float[_blockSize / 2 + 1];
+            _spectrum = new float[(_blockSize / 2) + 1];
             _filteredSpectrum = new float[filterbankSize];
         }
 
@@ -152,7 +152,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
                 sumPower += _filteredSpectrum[j];
             }
 
-            _mean = LambdaMu * _mean + (1 - LambdaMu) * sumPower;
+            _mean = (LambdaMu * _mean) + ((1 - LambdaMu) * sumPower);
 
             for (int j = 0; j < _filteredSpectrum.Length; j++)
             {

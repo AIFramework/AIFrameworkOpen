@@ -44,7 +44,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
         /// <returns></returns>
         public override double Process(double sample)
         {
-            double output = _b[0] * sample + _b[1] * _in1 + _b[2] * _in2 - _a[1] * _out1 - _a[2] * _out2;
+            double output = (_b[0] * sample) + (_b[1] * _in1) + (_b[2] * _in2) - (_a[1] * _out1) - (_a[2] * _out2);
 
             _in2 = _in1;
             _in1 = sample;

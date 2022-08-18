@@ -48,7 +48,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
 
             for (int i = 0; i < _kernelSize; i++, offset++)
             {
-                _b[i] = _b[_kernelSize + i] = (1 - _leakage * _mu) * _b[i] + _mu * Math.Sign(e) * Math.Sign(_delayLine[offset]);
+                _b[i] = _b[_kernelSize + i] = ((1 - (_leakage * _mu)) * _b[i]) + (_mu * Math.Sign(e) * Math.Sign(_delayLine[offset]));
             }
 
             return y;

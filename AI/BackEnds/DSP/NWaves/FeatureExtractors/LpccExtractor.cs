@@ -64,7 +64,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
 
             _order = options.LpcOrder > 0 ? options.LpcOrder : FeatureCount - 1;
 
-            _blockSize = MathUtils.NextPowerOfTwo(2 * FrameSize - 1);
+            _blockSize = MathUtils.NextPowerOfTwo((2 * FrameSize) - 1);
             _convolver = new Convolver(_blockSize);
 
             _lifterSize = options.LifterSize;

@@ -202,7 +202,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <param name="addDenumInSqrt">Adding a value to a radical expression in the denominator</param>
         public void GeneratorW(Random random, double addDenumInSqrt = 0)
         {
-            double initParamsStdDev = Numerator / Math.Sqrt(FilterStrucuture.FilterH * FilterStrucuture.FilterW * InputShape.Depth + addDenumInSqrt);
+            double initParamsStdDev = Numerator / Math.Sqrt((FilterStrucuture.FilterH * FilterStrucuture.FilterW * InputShape.Depth) + addDenumInSqrt);
 
             for (int i = 0; i < FilterStrucuture.FilterCount; i++)
             {
@@ -233,8 +233,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         private void RestOutShape()
         {
-            int outpH = (InputShape.Height - Filters[0].Shape.Height + _padY) / _strideY + 1;
-            int outpW = (InputShape.Width - Filters[0].Shape.Width + _padX) / _strideX + 1;
+            int outpH = ((InputShape.Height - Filters[0].Shape.Height + _padY) / _strideY) + 1;
+            int outpW = ((InputShape.Width - Filters[0].Shape.Width + _padX) / _strideX) + 1;
             OutputShape = new Shape3D(outpH, outpW, OutputShape.Depth);
         }
         /// <summary>

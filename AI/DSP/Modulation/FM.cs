@@ -71,7 +71,7 @@ namespace AI.DSP.Modulation
         /// <param name="signalIn">Входной сигнал</param>
         private Channel ModulateSimple(Channel signalIn)
         {
-            FilterLowButterworth filter = new FilterLowButterworth((int)(_deltF), _fd, signalIn.ChData.Count, 9);
+            FilterLowButterworth filter = new FilterLowButterworth((int)_deltF, _fd, signalIn.ChData.Count, 9);
             Channel signal = signalIn.Filtration(filter);
             Vector data = signal.ChData;
 
@@ -84,7 +84,7 @@ namespace AI.DSP.Modulation
 
             for (int i = 0; i < outp.Count; i++)
             {
-                outp[i] = Math.Sin(_2pi * (i * _dt * _f0 + _deltF * data[i]));
+                outp[i] = Math.Sin(_2pi * ((i * _dt * _f0) + (_deltF * data[i])));
             }
 
             Channel retCh = new Channel(outp, _fd, signal.Name, signal.Description)

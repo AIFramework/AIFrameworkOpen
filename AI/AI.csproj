@@ -28,6 +28,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ComputerVision\ImgML\**" />
+    <EmbeddedResource Remove="ComputerVision\ImgML\**" />
+    <None Remove="ComputerVision\ImgML\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -40,10 +46,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ComputerVision\ImgML\" />
   </ItemGroup>
 
 </Project>

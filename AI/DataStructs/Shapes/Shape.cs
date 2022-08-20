@@ -6,7 +6,7 @@ using System.Text;
 namespace AI.DataStructs.Shapes
 {
     /// <summary>
-    /// Represents numerous dimentional shape
+    /// Представляет собой многомерную форму
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Rank = {Rank}")]
@@ -17,23 +17,23 @@ namespace AI.DataStructs.Shapes
         private readonly int _count = 1;
 
         /// <summary>
-        /// Get length in the specific dimension
+        /// Получить длину в определенном измерении
         /// </summary>
         /// <param name="dimension"></param>
         /// <returns></returns>
         public int this[int dimension] => _values[dimension];
         /// <summary>
-        /// Rank of the shape (count of it dimensions)
+        /// Ранг тензора (количество его измерений)
         /// </summary>
         public int Rank => _values.Length;
         /// <summary>
-        /// Count of elements in the shape (product of all dimension's lengths)
+        /// Количество элементов в форме (произведение длин всех измерений)
         /// </summary>
         public int Count => _count;
         #endregion
 
         /// <summary>
-        /// Creates numerous dimentional shape
+        ///Создает многомерную форму
         /// </summary>
         /// <param name="values"></param>
         public Shape(params int[] values)

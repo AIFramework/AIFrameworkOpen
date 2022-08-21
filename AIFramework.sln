@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataPrep", "DataPrep", "{1D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Normalizers", "Tests\DataPrepaire\Normalizers\Normalizers.csproj", "{8489781C-E6D5-497B-85E4-2300740D6178}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSFeatureExtractorTest", "Tests\DataPrepaire\TSFeatureExtractorTest\TSFeatureExtractorTest.csproj", "{C2312946-598B-4055-A75A-0F2E5D74EC9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{8489781C-E6D5-497B-85E4-2300740D6178}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8489781C-E6D5-497B-85E4-2300740D6178}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8489781C-E6D5-497B-85E4-2300740D6178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2312946-598B-4055-A75A-0F2E5D74EC9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2312946-598B-4055-A75A-0F2E5D74EC9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2312946-598B-4055-A75A-0F2E5D74EC9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2312946-598B-4055-A75A-0F2E5D74EC9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +115,7 @@ Global
 		{B54086B3-232E-4A48-8E51-FB416518AC9C} = {4FB793E6-5E89-46E1-A966-DA32DFDFBF11}
 		{1D8E7971-CD1C-421C-9571-5816F6D7EECC} = {4FB793E6-5E89-46E1-A966-DA32DFDFBF11}
 		{8489781C-E6D5-497B-85E4-2300740D6178} = {1D8E7971-CD1C-421C-9571-5816F6D7EECC}
+		{C2312946-598B-4055-A75A-0F2E5D74EC9A} = {1D8E7971-CD1C-421C-9571-5816F6D7EECC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {195084AE-6B2F-490D-AB30-834665F7A953}

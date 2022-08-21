@@ -1543,7 +1543,7 @@ namespace AI.DataStructs.Algebraic
         {
             Vector[] vects = GetWindows(inp, w, step);
 
-            for (int i = 0; i < vects.Length; i += step)
+            for (int i = 0; i < vects.Length; i ++)
             {
                 vects[i] = transformer(vects[i]);
             }

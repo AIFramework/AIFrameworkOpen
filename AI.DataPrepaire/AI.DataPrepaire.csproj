@@ -44,8 +44,11 @@
     <Compile Include="DataNormalizers\INormalizer.cs" />
     <Compile Include="DataNormalizers\MinimaxNomalizer.cs" />
     <Compile Include="DataNormalizers\ZNormalizer.cs" />
+    <Compile Include="FeatureExtractors\IFeaturesExtractor.cs" />
     <Compile Include="FeatureExtractors\TimeSeq\FilterExtractor.cs" />
     <Compile Include="FeatureExtractors\TimeSeq\TSExtractor.cs" />
+    <Compile Include="Pipelines\Object2VectorPipeline.cs" />
+    <Compile Include="Pipelines\ObjectClassifierPipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tokenizers\ITokenizer.cs" />
     <Compile Include="Tokenizers\MatrixTokenizer\SimpleMatrixTokenizer.cs" />

@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.FeatureExtractors.TimeSeq
 {
+    /// <summary>
+    /// Экстрактор признаков на базе фильтрации
+    /// </summary>
+    [Serializable]
     public class FilterExtractor : TSExtractor
     {
         /// <summary>

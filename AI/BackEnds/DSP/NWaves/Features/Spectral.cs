@@ -6,6 +6,7 @@ namespace AI.BackEnds.DSP.NWaves.Features
     /// <summary>
     /// Spectral features
     /// </summary>
+    [Serializable]
     public static class Spectral
     {
         /// <summary>

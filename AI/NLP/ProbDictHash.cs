@@ -6,6 +6,7 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+using System;
 using System.Collections.Generic;
 
 namespace AI.NLP
@@ -15,6 +16,7 @@ namespace AI.NLP
     /// <summary>
     /// Вероятностный словарь
     /// </summary>
+    [Serializable]
     public class ProbabilityDictionaryHash
     {
         /// <summary>

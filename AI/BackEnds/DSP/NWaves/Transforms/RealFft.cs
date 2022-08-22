@@ -4,6 +4,7 @@ using System;
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
+    [Serializable]
     /// <summary>
     /// FFT transformer for real inputs
     /// </summary>

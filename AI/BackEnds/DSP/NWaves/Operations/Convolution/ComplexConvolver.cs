@@ -16,6 +16,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
     /// Memory is allocated for each operation ad-hoc.
     /// 
     /// </summary>
+    [Serializable]
+    /// 
     public class ComplexConvolver
     {
         /// <summary>

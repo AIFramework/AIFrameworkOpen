@@ -5,6 +5,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     /// <summary>
     /// TSM processor based on Paul stretch algorithm
     /// </summary>
+    [Serializable]
+    /// 
     internal class PaulStretch : PhaseVocoder
     {
         /// <summary>

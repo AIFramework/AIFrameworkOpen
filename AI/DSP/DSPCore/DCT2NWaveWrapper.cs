@@ -4,6 +4,7 @@ using System;
 
 namespace AI.DSP.DSPCore
 {
+    [Serializable]
     public class DCT2NWaveWrapper
     {
         private readonly Dct2 dct2;

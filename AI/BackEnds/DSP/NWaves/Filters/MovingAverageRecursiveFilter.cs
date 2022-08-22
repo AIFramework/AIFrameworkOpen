@@ -1,5 +1,6 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
@@ -13,6 +14,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     ///     A = [1, -1]
     /// 
     /// </summary>
+    /// 
+    [Serializable]
+
     public class MovingAverageRecursiveFilter : IirFilter
     {
         /// <summary>

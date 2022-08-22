@@ -10,6 +10,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
     /// <summary>
     /// Class representing Finite Impulse Response filters
     /// </summary>
+    [Serializable]
     public class FirFilter64 : IFilter64, IOnlineFilter64
     {
         /// <summary>

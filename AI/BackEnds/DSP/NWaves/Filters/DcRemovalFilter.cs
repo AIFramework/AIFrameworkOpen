@@ -1,10 +1,13 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
     /// <summary>
     /// DC removal IIR filter
     /// </summary>
+    [Serializable]
+
     public class DcRemovalFilter : IirFilter
     {
         /// <summary>

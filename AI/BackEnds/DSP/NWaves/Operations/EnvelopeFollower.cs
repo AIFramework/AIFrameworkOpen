@@ -6,6 +6,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     /// <summary>
     /// Envelope follower (detector)
     /// </summary>
+    [Serializable]
+    /// 
     public class EnvelopeFollower : IOnlineFilter
     {
         /// <summary>

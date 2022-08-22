@@ -26,6 +26,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
     /// var pitches = extractor.ComputeFrom(signal);
     /// 
     /// </summary>
+    [Serializable]
     public class PitchExtractor : FeatureExtractor
     {
         /// <summary>

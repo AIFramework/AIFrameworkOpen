@@ -12,6 +12,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
     /// Class responsible for OLS block convolution (double precision).
     /// It can be used as a filter (online filter as well).
     /// </summary>
+    [Serializable]
+    /// 
     public class OlsBlockConvolver64 : IFilter64, IOnlineFilter64
     {
         /// <summary>

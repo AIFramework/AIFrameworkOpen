@@ -22,6 +22,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
     /// Also, optionally it allows computing harmonic features along with spectral features.
     /// 
     /// </summary>
+    [Serializable]
     public class Mpeg7SpectralFeaturesExtractor : FeatureExtractor
     {
         /// <summary>

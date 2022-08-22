@@ -1,12 +1,15 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Filters.Base64;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
 {
     /// <summary>
     /// Low-pass Chebyshev-II filter
     /// </summary>
+    [Serializable]
+
     public class LowPassFilter : IirFilter64
     {
         /// <summary>

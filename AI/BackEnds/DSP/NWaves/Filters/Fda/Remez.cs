@@ -26,6 +26,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
     ///     remez.Error
     /// 
     /// </summary>
+    [Serializable]
+
     public class Remez
     {
         /// <summary>

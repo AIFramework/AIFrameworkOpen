@@ -1,4 +1,5 @@
 ﻿using AI.BackEnds.DSP.NWaves.Audio.Interfaces;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Audio.Mci
 {
@@ -7,6 +8,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
     /// 
     /// MciAudioRecorder works only with Windows, since it uses winmm.dll and MCI commands.
     /// </summary>
+    [Serializable]
     public class MciAudioRecorder : IAudioRecorder
     {
         /// <summary>

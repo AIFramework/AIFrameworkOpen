@@ -1,4 +1,5 @@
 ﻿using AI.DataStructs.Algebraic;
+using System;
 using System.Drawing;
 
 namespace AI.ComputerVision.SpatialFilters
@@ -6,6 +7,7 @@ namespace AI.ComputerVision.SpatialFilters
     /// <summary>
     /// 
     /// </summary>
+    [Serializable]
     public class CustomFilter : ISpatialFilterGray
     {
         protected Matrix f;

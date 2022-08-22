@@ -6,6 +6,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Class providing implementation of Karplus-Strong algorithm
     /// </summary>
+    [Serializable]
+    /// 
     public class KarplusStrongBuilder : WaveTableBuilder
     {
         /// <summary>

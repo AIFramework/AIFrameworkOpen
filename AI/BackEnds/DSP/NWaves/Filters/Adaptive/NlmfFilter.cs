@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
 {
     /// <summary>
     /// Adaptive filter (Normalized Least-Mean-Fourth algorithm + Epsilon)
     /// </summary>
+    [Serializable]
     public class NlmfFilter : AdaptiveFilter
     {
         /// <summary>

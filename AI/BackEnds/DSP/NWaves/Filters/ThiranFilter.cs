@@ -13,6 +13,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     /// 
     /// https://ccrma.stanford.edu/~jos/pasp/Thiran_Allpass_Interpolators.html
     /// </summary>
+    [Serializable]
+
     public class ThiranFilter : IirFilter
     {
         /// <summary>

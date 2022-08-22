@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Class for a red (Brownian) noise generator
     /// </summary>
+    [Serializable]
+    /// 
     public class RedNoiseBuilder : SignalBuilder
     {
         /// <summary>

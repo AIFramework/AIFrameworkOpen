@@ -5,6 +5,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
     /// <summary>
     /// Class for one-pole low-pass filter
     /// </summary>
+    [Serializable]
+
     public class LowPassFilter : OnePoleFilter
     {
         /// <summary>

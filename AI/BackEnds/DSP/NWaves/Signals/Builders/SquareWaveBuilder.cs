@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Class for the generator of triangle waves
     /// </summary>
+    [Serializable]
+    /// 
     public class SquareWaveBuilder : SignalBuilder
     {
         /// <summary>

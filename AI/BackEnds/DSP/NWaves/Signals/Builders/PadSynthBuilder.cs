@@ -2,12 +2,15 @@
 using System;
 using System.Linq;
 
+
 namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 {
     /// <summary>
     /// Class providing implementation of the PADSynth algorithm by Nasca Octavian Paul
     /// (https://zynaddsubfx.sourceforge.io/doc/PADsynth/PADsynth.htm)
     /// </summary>
+    [Serializable]
+    /// 
     public class PadSynthBuilder : WaveTableBuilder
     {
         private readonly Random _rand = new Random();

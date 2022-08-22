@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
@@ -7,6 +8,7 @@ namespace AI.ComputerVision.UInt8
     /// <summary>
     /// Изображение серое UInt16
     /// </summary>
+    [Serializable]
     public class ImgUInt16Gray
     {
         /// <summary>

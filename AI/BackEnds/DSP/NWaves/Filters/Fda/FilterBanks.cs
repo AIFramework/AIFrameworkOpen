@@ -28,6 +28,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
     ///     - Octaves (from MPEG-7)
     /// 
     /// </summary>
+    [Serializable]
+
     public static class FilterBanks
     {
         /// <summary>

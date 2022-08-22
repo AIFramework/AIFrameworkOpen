@@ -6,6 +6,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Average White Gaussian Noise
     /// </summary>
+    [Serializable]
+    /// 
     public class AwgnBuilder : SignalBuilder
     {
         /// <summary>

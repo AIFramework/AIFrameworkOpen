@@ -1,8 +1,11 @@
-﻿namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
+﻿using System;
+
+namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
 {
     /// <summary>
     /// Adaptive filter (Recursive-Least-Squares algorithm)
     /// </summary>
+    [Serializable]
     public class RlsFilter : AdaptiveFilter
     {
         /// <summary>

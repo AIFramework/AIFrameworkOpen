@@ -12,6 +12,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     /// "Enhancement of Speech Corrupted by Acoustic Noise".
     /// 
     /// </summary>
+    [Serializable]
+    /// 
     public class SpectralSubtractor : OverlapAddFilter
     {
         // Algorithm parameters

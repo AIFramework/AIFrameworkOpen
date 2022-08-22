@@ -6,6 +6,8 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     /// Class providing methods for Discrete Cosine Transform of type-III.
     /// See https://en.wikipedia.org/wiki/Discrete_cosine_transform
     /// </summary>
+    [Serializable]
+    /// 
     public class Dct3 : IDct
     {
         /// <summary>

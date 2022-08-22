@@ -13,6 +13,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
     /// <summary>
     /// Amplitude modulation spectra (AMS) extractor
     /// </summary>
+    [Serializable]
     public class AmsExtractor : FeatureExtractor
     {
         /// <summary>

@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     /// <summary>
     /// Class for Goertzel algorithm
     /// </summary>
+    [Serializable]
+    /// 
     public class Goertzel
     {
         /// <summary>

@@ -17,6 +17,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals
     /// Note.
     /// Method implementations are LINQ-less and do Buffer.BlockCopy() for better performance.
     /// </summary>
+    [Serializable]
+    /// 
     public static class DiscreteSignalExtensions
     {
         /// <summary>

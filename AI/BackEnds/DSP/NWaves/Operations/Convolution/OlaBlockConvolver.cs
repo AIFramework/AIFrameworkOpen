@@ -12,6 +12,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
     /// Class responsible for OLA block convolution.
     /// It can be used as a filter (online filter as well).
     /// </summary>
+    [Serializable]
+    /// 
     public class OlaBlockConvolver : IFilter, IOnlineFilter
     {
         /// <summary>

@@ -3,6 +3,7 @@ using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Operations.Convolution;
 using AI.BackEnds.DSP.NWaves.Utils;
 using AI.BackEnds.DSP.NWaves.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,6 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
     /// <summary>
     /// Linear Prediction Cepstral Coefficients extractor
     /// </summary>
+    [Serializable]
     public class LpccExtractor : FeatureExtractor
     {
         /// <summary>

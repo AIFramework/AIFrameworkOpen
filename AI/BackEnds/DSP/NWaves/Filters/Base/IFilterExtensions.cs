@@ -1,7 +1,9 @@
 ﻿using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
+    [Serializable]
     public static class IFilterExtensions
     {
         /// <summary>

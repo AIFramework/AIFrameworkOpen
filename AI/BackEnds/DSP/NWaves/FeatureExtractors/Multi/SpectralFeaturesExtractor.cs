@@ -14,6 +14,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
     /// It's a flexible extractor that allows setting frequencies of interest.
     /// At least one spectral feature MUST be specified.
     /// </summary>
+    [Serializable]
     public class SpectralFeaturesExtractor : FeatureExtractor
     {
         /// <summary>

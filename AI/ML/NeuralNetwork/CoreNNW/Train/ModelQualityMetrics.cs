@@ -1,5 +1,8 @@
-﻿namespace AI.ML.NeuralNetwork.CoreNNW.Train
+﻿using System;
+
+namespace AI.ML.NeuralNetwork.CoreNNW.Train
 {
+    [Serializable]
     internal class ModelQualityMetrics
     {
         public float TrainLoss { get; set; }

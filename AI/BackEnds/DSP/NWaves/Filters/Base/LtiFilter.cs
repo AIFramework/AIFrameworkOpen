@@ -1,4 +1,5 @@
 ﻿using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
@@ -8,6 +9,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     /// Provides abstract TransferFunction property
     /// and leaves methods ApplyTo() and Process() abstract.
     /// </summary>
+    [Serializable]
     public abstract class LtiFilter : IFilter, IOnlineFilter
     {
         /// <summary>

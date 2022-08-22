@@ -6,6 +6,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     /// <summary>
     /// Phase vocoder with identity phase locking [Puckette].
     /// </summary>
+    [Serializable]
+    /// 
     public class PhaseLockingVocoder : PhaseVocoder
     {
         /// <summary>

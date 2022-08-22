@@ -1,8 +1,11 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 {
+    [Serializable]
+
     public class BandPassFilter : IirFilter
     {
         /// <summary>

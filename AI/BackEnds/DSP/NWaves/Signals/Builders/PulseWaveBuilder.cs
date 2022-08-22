@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Class for the generator of periodic pulse waves
     /// </summary>
+    [Serializable]
+    /// 
     public class PulseWaveBuilder : SignalBuilder
     {
         /// <summary>

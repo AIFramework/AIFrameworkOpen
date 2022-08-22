@@ -1,11 +1,13 @@
 ﻿using AI.ComputerVision.SpatialFilters;
 using AI.DataStructs.Algebraic;
+using System;
 
 namespace AI.ComputerVision.ImgTransforms
 {
     /// <summary>
     /// Преобразование Собеля
     /// </summary>
+    [Serializable]
     public class SobelTransform
     {
         private readonly CustomFilter _filterX, _filterY;

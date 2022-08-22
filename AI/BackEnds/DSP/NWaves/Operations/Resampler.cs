@@ -9,6 +9,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     /// <summary>
     /// Class responsible for sampling rate conversion
     /// </summary>
+    [Serializable]
+    /// 
     public class Resampler
     {
         /// <summary>

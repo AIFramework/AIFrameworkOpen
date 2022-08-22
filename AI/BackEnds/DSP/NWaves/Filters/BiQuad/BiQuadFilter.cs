@@ -1,10 +1,12 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base64;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
 {
     /// <summary>
     /// BiQuad filter base class
     /// </summary>
+    [Serializable]
     public class BiQuadFilter : IirFilter64
     {
         /// <summary>

@@ -1,7 +1,9 @@
 ﻿using AI.ML.NeuralNetwork.CoreNNW.Utilities;
+using System;
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Events
 {
+    [Serializable]
     public class EpochPassedEventArgs
     {
         public TrainingEventArgs TrainingArgs { get; set; }

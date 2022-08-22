@@ -6,6 +6,8 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
     /// <summary>
     /// Wavelet
     /// </summary>
+    [Serializable]
+    /// 
     public class Wavelet
     {
         /// <summary>

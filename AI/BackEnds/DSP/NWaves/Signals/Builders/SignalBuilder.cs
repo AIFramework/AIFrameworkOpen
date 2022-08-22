@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Abstract class for representing any signal builder (generator)
     /// </summary>
+    [Serializable]
+    /// 
     public abstract class SignalBuilder
     {
         /// <summary>

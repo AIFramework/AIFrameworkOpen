@@ -1,7 +1,9 @@
 ﻿using AI.DataStructs;
+using System;
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Train.CheckPoints
 {
+    [Serializable]
     public class FileCheckPointSaver : ICheckPointSaver
     {
         public string FilePath { get; set; } = "";

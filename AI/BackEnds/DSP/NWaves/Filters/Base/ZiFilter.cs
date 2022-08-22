@@ -9,6 +9,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     /// <summary>
     /// LTI filter based on state space representation
     /// </summary>
+    [Serializable]
     public class ZiFilter : LtiFilter
     {
         /// <summary>

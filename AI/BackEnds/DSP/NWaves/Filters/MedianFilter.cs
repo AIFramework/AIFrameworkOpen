@@ -1,12 +1,15 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
     /// <summary>
     /// Nonlinear median filter
     /// </summary>
+    [Serializable]
+
     public class MedianFilter : IFilter, IOnlineFilter
     {
         /// <summary>

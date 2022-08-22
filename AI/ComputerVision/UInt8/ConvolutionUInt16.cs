@@ -1,8 +1,11 @@
-﻿namespace AI.ComputerVision.UInt8
+﻿using System;
+
+namespace AI.ComputerVision.UInt8
 {
     /// <summary>
     /// Свертка изображений UInt8
     /// </summary>
+    [Serializable]
     public static class ConvolutionUInt16
     {
         /// <summary>

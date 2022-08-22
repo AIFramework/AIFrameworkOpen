@@ -19,6 +19,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
     /// more efficiently by reusing memory already allocated in base classes.
     /// 
     /// </summary>
+    [Serializable]
     public abstract class FeatureExtractor
     {
         /// <summary>

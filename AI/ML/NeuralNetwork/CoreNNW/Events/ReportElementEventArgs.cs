@@ -2,6 +2,7 @@
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Events
 {
+    [Serializable]
     public class ReportElementEventArgs : EventArgs
     {
         public ReportElementType ReportElementType { get; }

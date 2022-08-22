@@ -7,6 +7,8 @@ using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
+    [Serializable]
+
     /// <summary>
     /// Class providing methods for direct and inverse Short-Time Fourier Transforms.
     /// </summary>

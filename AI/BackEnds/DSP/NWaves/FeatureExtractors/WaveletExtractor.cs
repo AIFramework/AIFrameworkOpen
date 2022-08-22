@@ -2,6 +2,7 @@
 using AI.BackEnds.DSP.NWaves.FeatureExtractors.Options;
 using AI.BackEnds.DSP.NWaves.Transforms.Wavelets;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +11,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
     /// <summary>
     /// Wavelet extractor
     /// </summary>
+    [Serializable]
     public class WaveletExtractor : FeatureExtractor
     {
         /// <summary>

@@ -10,6 +10,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     /// <summary>
     /// Class representing Infinite Impulse Response filters
     /// </summary>
+    [Serializable]
     public class IirFilter : LtiFilter
     {
         /// <summary>

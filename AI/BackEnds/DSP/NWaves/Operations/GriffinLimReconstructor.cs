@@ -9,6 +9,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     /// Class for reconstructing signal from a given power / magnitude spectrogram
     /// based on Griffin-Lim iterative algorithm.
     /// </summary>
+    [Serializable]
+    /// 
     public class GriffinLimReconstructor
     {
         /// <summary>

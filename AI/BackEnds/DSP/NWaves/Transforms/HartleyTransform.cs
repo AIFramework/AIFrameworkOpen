@@ -1,10 +1,15 @@
-﻿namespace AI.BackEnds.DSP.NWaves.Transforms
+﻿using System;
+
+namespace AI.BackEnds.DSP.NWaves.Transforms
 {
+    [Serializable]
+
     public class HartleyTransform
     {
         /// <summary>
         /// Size of transform
         /// </summary>
+        /// 
         public int Size { get; private set; }
 
         /// <summary>

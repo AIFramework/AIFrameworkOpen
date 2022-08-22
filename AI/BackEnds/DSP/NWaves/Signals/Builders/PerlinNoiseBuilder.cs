@@ -12,6 +12,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     ///    https://github.com/stegu/perlin-noise/blob/master/src/noise1234.c
     ///
     /// </summary>
+    [Serializable]
+    /// 
     public class PerlinNoiseBuilder : SignalBuilder
     {
         /// <summary>

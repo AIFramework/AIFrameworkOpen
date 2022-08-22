@@ -1,7 +1,9 @@
 ﻿using AI.DataStructs.Algebraic;
+using System;
 
 namespace AI.ComputerVision.SpatialFilters
 {
+    [Serializable]
     public class Sharpness : CustomFilter
     {
         public Sharpness()

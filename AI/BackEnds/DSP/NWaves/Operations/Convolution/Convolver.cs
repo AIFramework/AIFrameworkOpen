@@ -9,6 +9,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
     /// <summary>
     /// Class responsible for real-valued convolution
     /// </summary>
+    [Serializable]
+    /// 
     public class Convolver
     {
         /// <summary>

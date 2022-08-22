@@ -10,6 +10,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     /// <summary>
     /// Class representing Finite Impulse Response filters
     /// </summary>
+    [Serializable]
     public class FirFilter : LtiFilter
     {
         /// <summary>

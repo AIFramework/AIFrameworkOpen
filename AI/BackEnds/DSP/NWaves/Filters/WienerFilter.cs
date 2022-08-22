@@ -1,6 +1,7 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
@@ -8,6 +9,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     /// Wiener filter.
     /// Implementation is identical to scipy.signal.wiener().
     /// </summary>
+    [Serializable]
+
     public class WienerFilter : IFilter, IOnlineFilter
     {
         /// <summary>

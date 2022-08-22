@@ -6,6 +6,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// ASDR envelope builder
     /// </summary>
+    [Serializable]
+    /// 
     public class AdsrBuilder : SignalBuilder
     {
         public enum AdsrState

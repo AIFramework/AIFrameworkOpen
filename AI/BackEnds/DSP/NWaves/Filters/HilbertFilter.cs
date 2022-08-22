@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     /// <summary>
     /// Hilbert filter
     /// </summary>
+    [Serializable]
+
     public class HilbertFilter : FirFilter
     {
         /// <summary>

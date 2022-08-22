@@ -7,6 +7,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
     /// The coefficients are calculated automatically according to 
     /// audio-eq-cookbook by R.Bristow-Johnson and WebAudio API.
     /// </summary>
+    [Serializable]
     public class AllPassFilter : BiQuadFilter
     {
         /// <summary>

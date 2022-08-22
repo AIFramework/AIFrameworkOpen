@@ -5,6 +5,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
     /// <summary>
     /// Vocal Tract Length Normalization (VTLN) similar to Kaldi implementation
     /// </summary>
+    [Serializable]
+
     public class VtlnWarper
     {
         /// <summary>

@@ -12,6 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
     /// <summary>
     /// Simplified Power-Normalized Cepstral Coefficients extractor
     /// </summary>
+    [Serializable]
     public class SpnccExtractor : FeatureExtractor
     {
         /// <summary>

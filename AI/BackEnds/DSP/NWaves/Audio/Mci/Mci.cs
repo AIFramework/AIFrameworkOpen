@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace AI.BackEnds.DSP.NWaves.Audio.Mci
@@ -6,6 +7,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
     /// <summary>
     /// Static class containing MCI functions imported from winmm.dll
     /// </summary>
+    [Serializable]
     public static class Mci
     {
         [DllImport("winmm.dll", EntryPoint = "mciSendString")]

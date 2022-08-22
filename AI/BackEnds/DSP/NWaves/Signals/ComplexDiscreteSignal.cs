@@ -24,6 +24,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals
     /// 2) Method implementations are LINQ-less for better performance.
     /// 
     /// </summary>
+    [Serializable]
+    /// 
     public class ComplexDiscreteSignal
     {
         /// <summary>

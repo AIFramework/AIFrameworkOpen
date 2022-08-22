@@ -8,6 +8,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
     /// Orfanidis, S. J. (2007). Lecture notes on elliptic filter design.
     /// URL: http://www.ece.rutgers.edu/~orfanidi/ece521/notes.pdf
     /// </summary>
+    [Serializable]
+
     public static class PrototypeElliptic
     {
         /// <summary>

@@ -3,6 +3,7 @@ using System;
 
 namespace AI.ML.MatrixUtils
 {
+    [Serializable]
     public class FeaturesExtractorMaper
     {
         private readonly Func<Matrix, Vector> _transformer;

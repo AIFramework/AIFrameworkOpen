@@ -1,11 +1,14 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
     /// <summary>
     /// Standard pre-emphasis FIR filter
     /// </summary>
+    [Serializable]
+
     public class PreEmphasisFilter : FirFilter
     {
         /// <summary>

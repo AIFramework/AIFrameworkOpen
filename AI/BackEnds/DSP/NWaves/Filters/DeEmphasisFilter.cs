@@ -1,10 +1,13 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.OnePole;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
     /// <summary>
     /// Standard de-emphasis IIR filter
     /// </summary>
+    [Serializable]
+
     public class DeEmphasisFilter : OnePoleFilter
     {
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,6 +8,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     /// <summary>
     /// Chain of filters
     /// </summary>
+    [Serializable]
     public class FilterChain : IFilter, IOnlineFilter
     {
         /// <summary>

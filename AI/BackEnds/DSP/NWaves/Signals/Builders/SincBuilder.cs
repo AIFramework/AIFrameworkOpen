@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Class for a simple generator of a sinc-signal
     /// </summary>
+    [Serializable]
+    /// 
     public class SincBuilder : SignalBuilder
     {
         /// <summary>

@@ -5,6 +5,7 @@ namespace AI.BackEnds.DSP.NWaves.Features
     /// <summary>
     /// Harmonic features
     /// </summary>
+    [Serializable]
     public static class Harmonic
     {
         /// <summary>

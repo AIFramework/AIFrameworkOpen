@@ -1,5 +1,8 @@
-﻿namespace AI.ComputerVision.FiltersEachElements
+﻿using System;
+
+namespace AI.ComputerVision.FiltersEachElements
 {
+    [Serializable]
     public class SigmoidalFilter : FilterEE
     {
         private readonly double _off, _betta;

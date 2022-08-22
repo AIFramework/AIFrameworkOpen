@@ -5,6 +5,7 @@ namespace AI.BackEnds.DSP.NWaves.Features
     /// <summary>
     /// Perceptual features
     /// </summary>
+    [Serializable]
     public static class Perceptual
     {
         /// <summary>

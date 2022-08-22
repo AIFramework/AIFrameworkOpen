@@ -15,6 +15,8 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     /// 1) and 2) are analogous to MATLAB cceps/icceps and rceps, respectively.
     /// 
     /// </summary>
+    [Serializable]
+    /// 
     public class CepstralTransform
     {
         /// <summary>

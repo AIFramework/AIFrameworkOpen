@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 namespace AI.BackEnds.DSP.NWaves.Utils
 {
+
     [DebuggerStepThrough]
     public static class Guard
     {

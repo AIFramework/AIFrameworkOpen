@@ -4,6 +4,8 @@ using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
+    [Serializable]
+
     public class MellinTransform
     {
         public int InputSize { get; private set; }

@@ -7,6 +7,7 @@ namespace AI.ComputerVision.FiltersEachElements
     /// <summary>
     /// Базовый класс гамма фильтра
     /// </summary>
+    [Serializable]
     public class FilterEE : IFilterEE
     {
         private Func<double, double> _elFunc;

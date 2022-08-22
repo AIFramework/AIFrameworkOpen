@@ -1,8 +1,13 @@
-﻿namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
+﻿using System;
+
+
+namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
 {
     /// <summary>
     /// Wavelet family type
     /// </summary>
+    [Serializable]
+    /// 
     public enum WaveletFamily
     {
         /// <summary>

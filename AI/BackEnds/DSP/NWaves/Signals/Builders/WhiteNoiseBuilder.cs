@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Class for a white noise generator
     /// </summary>
+    [Serializable]
+    /// 
     public class WhiteNoiseBuilder : SignalBuilder
     {
         /// <summary>

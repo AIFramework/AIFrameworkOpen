@@ -10,6 +10,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Multi
     /// <summary>
     /// Extractor of time-domain features
     /// </summary>
+    [Serializable]
     public class TimeDomainFeaturesExtractor : FeatureExtractor
     {
         public const string FeatureSet = "energy, rms, zcr, entropy";

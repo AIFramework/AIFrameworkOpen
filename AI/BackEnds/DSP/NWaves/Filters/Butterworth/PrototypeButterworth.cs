@@ -3,6 +3,7 @@ using System.Numerics;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Butterworth
 {
+
     public static class PrototypeButterworth
     {
         public static Complex[] Poles(int order)

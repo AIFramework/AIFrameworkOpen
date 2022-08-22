@@ -1,4 +1,5 @@
 ﻿using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
@@ -6,6 +7,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     /// <summary>
     /// Filter for filtering data in interleaved stereo buffers
     /// </summary>
+    [Serializable]
     public class StereoFilter : IFilter, IOnlineFilter
     {
         /// <summary>

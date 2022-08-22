@@ -14,6 +14,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
     /// <summary>
     /// Perceptual Linear Predictive Coefficients extractor (PLP-RASTA)
     /// </summary>
+    [Serializable]
     public class PlpExtractor : FeatureExtractor
     {
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {

@@ -7,6 +7,7 @@ namespace AI.SpecialFunction
     /// <summary>
     /// Эллиптические интегралы
     /// </summary>
+    [Serializable]
     public class EllipticIntegral
     {
         /// <summary>

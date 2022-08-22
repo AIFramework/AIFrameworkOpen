@@ -1,12 +1,14 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Filters.Base64;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Butterworth
 {
     /// <summary>
     /// Class for Butterworth IIR BP filter.
     /// </summary>
+    [Serializable]
     public class BandPassFilter : IirFilter64
     {
         /// <summary>

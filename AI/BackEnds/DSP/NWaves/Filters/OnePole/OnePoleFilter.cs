@@ -1,10 +1,13 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
 {
     /// <summary>
     /// One-Pole filter base class
     /// </summary>
+    [Serializable]
+
     public class OnePoleFilter : IirFilter
     {
         /// <summary>

@@ -1,8 +1,12 @@
+using System;
+
 namespace AI.BackEnds.DSP.NWaves.Windows
 {
     /// <summary>
     /// Most commonly used window functions
     /// </summary>
+    [Serializable]
+    /// 
     public enum WindowTypes
     {
         /// <summary>

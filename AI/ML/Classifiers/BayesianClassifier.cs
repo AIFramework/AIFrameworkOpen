@@ -10,6 +10,7 @@ namespace AI.ML.Classifiers
     /// <summary>
     /// Классификатор основанный на теореме Байеса
     /// </summary>
+    [Serializable]
     public class BayesianClassifier : IClassifier
     {
         private readonly NonCorrelatedGaussian nonCorrelatedGaussian = new NonCorrelatedGaussian();

@@ -16,6 +16,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
     /// So it's like MFCC but without DCT-compressing of the filterbank-mapped spectrum.
     /// 
     /// </summary>
+    [Serializable]
     public class FilterbankExtractor : FeatureExtractor
     {
         /// <summary>

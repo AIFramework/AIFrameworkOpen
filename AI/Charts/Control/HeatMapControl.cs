@@ -10,6 +10,7 @@ namespace AI.Charts.Control
     /// <summary>
     /// Тепловая карта
     /// </summary>
+    [Serializable]
     public partial class HeatMapControl : UserControl
     {
         /// <summary>

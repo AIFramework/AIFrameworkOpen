@@ -1,5 +1,8 @@
-﻿namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
+﻿using System;
+
+namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
 {
+    [Serializable]
     public enum Metrics : byte
     {
         Precision,

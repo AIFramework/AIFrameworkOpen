@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     /// <summary>
     /// Savitzky-Golay filter
     /// </summary>
+    [Serializable]
+
     public class SavitzkyGolayFilter : FirFilter
     {
         /// <summary>

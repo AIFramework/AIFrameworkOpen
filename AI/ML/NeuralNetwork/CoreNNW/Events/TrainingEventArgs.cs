@@ -3,6 +3,7 @@ using System;
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Events
 {
+    [Serializable]
     public class TrainingEventArgs : EventArgs
     {
         /// <summary>

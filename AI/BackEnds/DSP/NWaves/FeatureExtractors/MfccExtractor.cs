@@ -27,6 +27,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
     ///  - floor value for LOG-calculations (usually it's float.Epsilon; HTK default seems to be 1.0 and in librosa 1e-10 is used)
     /// 
     /// </summary>
+    [Serializable]
     public class MfccExtractor : FeatureExtractor
     {
         /// <summary>

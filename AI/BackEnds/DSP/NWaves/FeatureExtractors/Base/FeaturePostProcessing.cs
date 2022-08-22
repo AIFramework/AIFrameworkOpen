@@ -8,6 +8,7 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
     /// <summary>
     /// Class providing methods for additional processing of feature vector sequences.
     /// </summary>
+    [Serializable]
     public static class FeaturePostProcessing
     {
         /// <summary>

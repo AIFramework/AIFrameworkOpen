@@ -5,6 +5,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
     /// <summary>
     /// Adaptive filter (Sign Least-Mean-Squares algorithm)
     /// </summary>
+    [Serializable]
     public class SignLmsFilter : AdaptiveFilter
     {
         /// <summary>

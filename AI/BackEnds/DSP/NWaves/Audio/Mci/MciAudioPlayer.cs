@@ -19,6 +19,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
     /// it was "idle" and then adds this time to the total awaiting time.
     /// 
     /// </summary>
+    [Serializable]
     public class MciAudioPlayer : IAudioPlayer
     {
         /// <summary>

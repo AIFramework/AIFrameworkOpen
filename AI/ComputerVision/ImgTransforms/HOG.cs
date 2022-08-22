@@ -6,6 +6,7 @@ namespace AI.ComputerVision.ImgTransforms
     /// <summary>
     /// Создает гистограмму направленных градиентов
     /// </summary>
+    [Serializable]
     public class HOG
     {
         private readonly SobelTransform _sobelTransformer;

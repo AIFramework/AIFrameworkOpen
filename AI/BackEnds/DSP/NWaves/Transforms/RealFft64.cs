@@ -3,6 +3,8 @@ using System;
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
+    [Serializable]
+
     public class RealFft64
     {
         /// <summary>

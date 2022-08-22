@@ -1,9 +1,12 @@
-﻿namespace AI.BackEnds.DSP.NWaves.Audio
+﻿using System;
+
+namespace AI.BackEnds.DSP.NWaves.Audio
 {
     /// <summary>
     /// Most used channels are: left and right.
     /// Also we add the special case: interleaved channels
     /// </summary>
+    [Serializable]
     public enum Channels
     {
         /// <summary>

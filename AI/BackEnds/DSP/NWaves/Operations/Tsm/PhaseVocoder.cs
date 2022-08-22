@@ -11,6 +11,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     /// <summary>
     /// Conventional Phase Vocoder
     /// </summary>
+    [Serializable]
+    /// 
     public class PhaseVocoder : IFilter
     {
         /// <summary>

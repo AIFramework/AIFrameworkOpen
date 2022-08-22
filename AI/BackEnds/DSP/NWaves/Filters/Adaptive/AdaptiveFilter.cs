@@ -7,6 +7,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
     /// <summary>
     /// Base abstract class for adaptive filters
     /// </summary>
+    [Serializable]
     public abstract class AdaptiveFilter : FirFilter
     {
         /// <summary>

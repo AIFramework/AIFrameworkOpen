@@ -6,6 +6,7 @@ namespace AI.ML.MatrixUtils
     /// <summary>
     /// Формирователь карт
     /// </summary>
+    [Serializable]
     public class Maper
     {
         private readonly Func<Matrix, double> _transformer;

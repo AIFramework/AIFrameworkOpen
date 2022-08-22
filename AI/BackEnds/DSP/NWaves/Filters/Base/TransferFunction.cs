@@ -14,6 +14,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     /// <summary>
     /// Class providing methods related to the transfer function of an LTI filter
     /// </summary>
+    [Serializable]
     public class TransferFunction
     {
         /// <summary>

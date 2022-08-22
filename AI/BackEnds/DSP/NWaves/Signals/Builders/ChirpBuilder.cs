@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Class for generating chirp signals
     /// </summary>
+    [Serializable]
+    /// 
     public class ChirpBuilder : SignalBuilder
     {
         /// <summary>

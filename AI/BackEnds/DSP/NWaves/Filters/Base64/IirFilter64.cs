@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 {
+    [Serializable]
     public class IirFilter64 : IFilter64, IOnlineFilter64
     {
         /// <summary>

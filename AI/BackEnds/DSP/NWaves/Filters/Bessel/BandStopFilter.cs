@@ -1,12 +1,14 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Filters.Base64;
 using AI.BackEnds.DSP.NWaves.Filters.Fda;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
 {
     /// <summary>
     /// Band-stop Bessel filter
     /// </summary>
+    [Serializable]
     public class BandStopFilter : IirFilter64
     {
         /// <summary>

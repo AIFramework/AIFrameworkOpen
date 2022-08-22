@@ -5,6 +5,8 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     /// <summary>
     /// Fast implementation of DCT-II via FFT
     /// </summary>
+    [Serializable]
+    /// 
     public class FastDct2 : IDct
     {
         /// <summary>

@@ -1,5 +1,9 @@
-﻿namespace AI.BackEnds.DSP.NWaves.Signals.Builders
+﻿using System;
+
+
+namespace AI.BackEnds.DSP.NWaves.Signals.Builders
 {
+    [Serializable]
     public class KarplusStrongDrumBuilder : KarplusStrongBuilder
     {
         private double _probability = 0.5;

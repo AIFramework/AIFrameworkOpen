@@ -1,6 +1,7 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
@@ -10,6 +11,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     /// Actually MA filter belongs to FIR filters (so it's inherited from FirFilter);
     /// however it can be realized also (and more efficiently) as a recursive filter (see below).
     /// </summary>
+    [Serializable]
+
     public class MovingAverageFilter : FirFilter
     {
         /// <summary>

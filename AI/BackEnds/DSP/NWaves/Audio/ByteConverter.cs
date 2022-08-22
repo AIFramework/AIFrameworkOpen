@@ -1,8 +1,11 @@
-﻿namespace AI.BackEnds.DSP.NWaves.Audio
+﻿using System;
+
+namespace AI.BackEnds.DSP.NWaves.Audio
 {
     /// <summary>
     /// Static class providing methods for conversion between PCM bytes and float[] data.
     /// </summary>
+    [Serializable]
     public static class ByteConverter
     {
         /// <summary>

@@ -2,6 +2,7 @@
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Events
 {
+    [Serializable]
     public class ReportElementType : IEquatable<ReportElementType>
     {
         public static readonly ReportElementType TrainingStarted = new ReportElementType("TrainingStarted");

@@ -14,6 +14,7 @@ namespace AI.Charts.Control
     /// <summary>
     /// Визуально представление данных (Графики)
     /// </summary>
+    [Serializable]
     public partial class ChartVisual : UserControl
     {
         #region Свойства

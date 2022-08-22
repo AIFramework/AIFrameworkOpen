@@ -6,6 +6,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Wave table builder
     /// </summary>
+    [Serializable]
+    /// 
     public class WaveTableBuilder : SignalBuilder
     {
         protected float[] _samples;

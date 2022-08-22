@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Class for a simple generator of one sinusoid
     /// </summary>
+    [Serializable]
+    /// 
     public class SineBuilder : SignalBuilder
     {
         /// <summary>

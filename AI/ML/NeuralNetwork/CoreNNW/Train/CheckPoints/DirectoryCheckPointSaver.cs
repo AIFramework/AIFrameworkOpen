@@ -3,6 +3,7 @@ using System.IO;
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Train.CheckPoints
 {
+    [Serializable]
     public class DirectoryCheckPointSaver : ICheckPointSaver
     {
         public string DirectoryPath { get; set; } = "";

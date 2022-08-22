@@ -1,8 +1,11 @@
-﻿namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
+﻿using System;
+
+namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
 {
     /// <summary>
     /// Adaptive filter (Least-Mean-Fourth algorithm)
     /// </summary>
+    [Serializable]
     public class LmfFilter : AdaptiveFilter
     {
         /// <summary>

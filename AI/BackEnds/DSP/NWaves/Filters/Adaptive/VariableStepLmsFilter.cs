@@ -1,4 +1,5 @@
 ﻿using AI.BackEnds.DSP.NWaves.Utils;
+using System;
 using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
@@ -6,6 +7,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
     /// <summary>
     /// Adaptive filter (Least-Mean-Squares with variable steps)
     /// </summary>
+    [Serializable]
     public class VariableStepLmsFilter : AdaptiveFilter
     {
         /// <summary>

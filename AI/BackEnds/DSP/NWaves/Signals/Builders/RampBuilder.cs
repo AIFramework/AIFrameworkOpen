@@ -6,6 +6,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Class for a simple generator of a straight line signal
     /// </summary>
+    [Serializable]
+    /// 
     public class RampBuilder : SignalBuilder
     {
         /// <summary>

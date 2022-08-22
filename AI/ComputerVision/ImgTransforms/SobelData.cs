@@ -6,6 +6,7 @@ namespace AI.ComputerVision.ImgTransforms
     /// <summary>
     /// Данные преобразования Собеля
     /// </summary>
+    [Serializable]
     public class SobelData
     {
         /// <summary>

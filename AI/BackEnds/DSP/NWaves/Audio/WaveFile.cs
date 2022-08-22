@@ -10,6 +10,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
     /// <summary>
     /// WAV file container
     /// </summary>
+    [Serializable]
     public class WaveFile : IAudioContainer
     {
         /// <summary>

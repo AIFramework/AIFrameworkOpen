@@ -7,6 +7,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// <summary>
     /// Class for a pink noise generator
     /// </summary>
+    [Serializable]
+    /// 
     public class PinkNoiseBuilder : SignalBuilder
     {
         /// <summary>

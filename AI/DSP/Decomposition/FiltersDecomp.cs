@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace AI.DSP.Decomposition
 {
+    [Serializable]
     public class FiltersDecomp
     {
         private readonly Vector[] _responses;

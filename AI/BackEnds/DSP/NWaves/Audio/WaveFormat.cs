@@ -1,8 +1,11 @@
-﻿namespace AI.BackEnds.DSP.NWaves.Audio
+﻿using System;
+
+namespace AI.BackEnds.DSP.NWaves.Audio
 {
     /// <summary>
     /// Standard WAVE header
     /// </summary>
+    [Serializable]
     public struct WaveFormat
     {
         /// <summary>

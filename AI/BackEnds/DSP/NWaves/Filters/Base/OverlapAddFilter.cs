@@ -21,6 +21,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     /// since audio effects can be built based on this class.
     /// 
     /// </summary>
+    [Serializable]
     public abstract class OverlapAddFilter : IFilter, IOnlineFilter, IMixable
     {
         /// <summary>

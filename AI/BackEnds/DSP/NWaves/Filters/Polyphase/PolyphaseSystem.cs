@@ -1,5 +1,6 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
@@ -7,6 +8,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
     /// <summary>
     /// System of polyphase filters
     /// </summary>
+    [Serializable]
+
     public class PolyphaseSystem : IFilter, IOnlineFilter
     {
         /// <summary>

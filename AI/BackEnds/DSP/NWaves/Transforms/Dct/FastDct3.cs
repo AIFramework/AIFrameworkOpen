@@ -1,8 +1,12 @@
-﻿namespace AI.BackEnds.DSP.NWaves.Transforms
+﻿using System;
+
+namespace AI.BackEnds.DSP.NWaves.Transforms
 {
     /// <summary>
     /// Fast implementation of DCT-III via FFT
     /// </summary>
+    [Serializable]
+    /// 
     public class FastDct3 : IDct
     {
         /// <summary>

@@ -10,6 +10,7 @@ namespace AI.BackEnds.DSP.NWaves.Features
     /// <summary>
     /// Class for pitch estimation and tracking
     /// </summary>
+    [Serializable]
     public static class Pitch
     {
         #region time-domain methods

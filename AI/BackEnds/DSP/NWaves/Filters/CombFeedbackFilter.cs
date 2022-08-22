@@ -1,5 +1,6 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
 using AI.BackEnds.DSP.NWaves.Signals;
+using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
@@ -9,6 +10,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     ///     y[n] = b0 * x[n] - am * y[n - m]
     /// 
     /// </summary>
+    [Serializable]
+
     public class CombFeedbackFilter : IirFilter
     {
         /// <summary>

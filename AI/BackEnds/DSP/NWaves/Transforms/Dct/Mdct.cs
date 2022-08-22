@@ -5,6 +5,8 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     /// <summary>
     /// Class providing methods for Modified Discrete Cosine Transform (MDCT).
     /// </summary>
+    [Serializable]
+    /// 
     public class Mdct : IDct
     {
         /// <summary>

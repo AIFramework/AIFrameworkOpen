@@ -11,17 +11,37 @@ namespace AI.DataPrepaire.DataNormalizers
     /// Минимаксная нормализация
     /// </summary>
     [Serializable]
-    public class MinimaxNomalizer : INormalizer
+    public class MinimaxNomalizer : Normalizer
     {
         public double[] Min { get; set; }
         public double[] Max { get; set; }
         public double[] MaxMinusMin { get; set; }
 
+   
+        /// <summary>
+        /// Восстановление нормализованных данных (Перезапись значений алгебраической структуры)
+        /// </summary>
+        /// <param name="normalizeData">Нормализованные данные</param>
+        public override IAlgebraicStructure Denormalize(IAlgebraicStructure normalizeData)
+        {
+            if (normalizeData is Vector)
+            {
+                return (normalizeData as Vector)* MaxMinusMin + Min;
+            }
+
+            IAlgebraicStructure dat = normalizeData;
+
+            for (int i = 0; i < normalizeData.Data.Length; i++)
+                dat.Data[i] = normalizeData.Data[i]*MaxMinusMin[i] + Min[i];
+
+            return dat;
+        }
+
         /// <summary>
         /// Обучение преобразователя
         /// </summary>
         /// <param name="data">Набор данных</param>
-        public void Train(IEnumerable<IAlgebraicStructure> data)
+        public override void Train(IEnumerable<IAlgebraicStructure> data)
         {
             IAlgebraicStructure[] algebraicStructures = (data is IAlgebraicStructure[]) ? data as IAlgebraicStructure[] : data.ToArray();
             Min = new double[algebraicStructures[0].Shape.Count];
@@ -59,7 +79,7 @@ namespace AI.DataPrepaire.DataNormalizers
         /// <summary>
         /// Использование преобразователя (Перезапись значений алгебраической структуры)
         /// </summary>
-        public IAlgebraicStructure Transform(IAlgebraicStructure data)
+        public override IAlgebraicStructure Transform(IAlgebraicStructure data)
         {
             if (data is Vector)
             {
@@ -74,17 +94,5 @@ namespace AI.DataPrepaire.DataNormalizers
             return dat;
         }
 
-        /// <summary>
-        /// Использование преобразователя (Перезапись значений алгебраической структуры)
-        /// </summary>
-        public IAlgebraicStructure[] Transform(IEnumerable<IAlgebraicStructure> data)
-        {
-            IAlgebraicStructure[] algebraicStructures = (data is IAlgebraicStructure[]) ? data as IAlgebraicStructure[] : data.ToArray();
-
-            for (int i = 0; i < algebraicStructures.Length; i++)
-                algebraicStructures[i] = Transform(algebraicStructures[i]);
-
-            return algebraicStructures;
-        }
     }
 }

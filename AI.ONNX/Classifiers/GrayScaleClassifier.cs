@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AI.ONNX.Classifiers
 {
-    
+    [Serializable]
     public class GrayScaleClassifier
     {
         Tensor2Tensor t2t;

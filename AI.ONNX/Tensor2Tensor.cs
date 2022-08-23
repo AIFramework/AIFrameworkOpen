@@ -1,6 +1,7 @@
 ﻿using AI.DataStructs.Shapes;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tensor = AI.DataStructs.Algebraic.Tensor;
@@ -10,6 +11,7 @@ namespace AI.ONNX
     /// <summary>
     /// Нейронная сеть преобразующая тензор входа в тензор выхода
     /// </summary>
+    [Serializable]
     public class Tensor2Tensor
     {
         /// <summary>

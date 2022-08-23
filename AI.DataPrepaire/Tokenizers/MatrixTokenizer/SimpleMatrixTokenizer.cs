@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.Tokenizers.MatrixTokenizer
 {
+    [Serializable]
     public class SimpleMatrixTokenizer : ITokenizer<Matrix>
     {
         public int UnknowToken { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.Tokenizers.VectorTokenizer
 {
+    [Serializable]
     public class SimpleVectorTokenizer : ITokenizer<Vector>
     {
         public int UnknowToken { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

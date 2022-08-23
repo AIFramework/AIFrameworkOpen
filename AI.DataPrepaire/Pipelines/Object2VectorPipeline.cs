@@ -23,7 +23,7 @@ namespace AI.DataPrepaire.Pipelines
         /// <summary>
         /// Нормализация данных
         /// </summary>
-        public INormalizer Normalizer { get; set; }
+        public Normalizer Normalizer { get; set; }
 
 
         /// <summary>

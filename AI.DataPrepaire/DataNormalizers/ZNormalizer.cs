@@ -11,7 +11,7 @@ namespace AI.DataPrepaire.DataNormalizers
     /// Z - нормализация (Мат. ожидание = 0, СКО = 1)
     /// </summary>
     [Serializable]
-    public class ZNormalizer : INormalizer
+    public class ZNormalizer : Normalizer
     {
         public double[] Mean { get; set; }
         public double[] Std { get; set; }
@@ -23,7 +23,7 @@ namespace AI.DataPrepaire.DataNormalizers
         /// Обучение преобразователя
         /// </summary>
         /// <param name="data">Набор данных</param>
-        public void Train(IEnumerable<IAlgebraicStructure> data)
+        public override void Train(IEnumerable<IAlgebraicStructure> data)
         {
             IAlgebraicStructure[] algebraicStructures = (data is IAlgebraicStructure[]) ? data as IAlgebraicStructure[] : data.ToArray();
             Mean = new double[algebraicStructures[0].Shape.Count];
@@ -51,7 +51,7 @@ namespace AI.DataPrepaire.DataNormalizers
         /// <summary>
         /// Использование преобразователя (Перезапись значений алгебраической структуры)
         /// </summary>
-        public IAlgebraicStructure Transform(IAlgebraicStructure data)
+        public override IAlgebraicStructure Transform(IAlgebraicStructure data)
         {
             if (data is Vector)
             {
@@ -67,18 +67,23 @@ namespace AI.DataPrepaire.DataNormalizers
              
         }
 
-
         /// <summary>
-        /// Использование преобразователя (Перезапись значений алгебраической структуры)
+        /// Восстановление нормализованных данных (Перезапись значений алгебраической структуры)
         /// </summary>
-        public IAlgebraicStructure[] Transform(IEnumerable<IAlgebraicStructure> data)
+        /// <param name="normalizeData">Нормализованные данные</param>
+        public override IAlgebraicStructure Denormalize(IAlgebraicStructure normalizeData)
         {
-            IAlgebraicStructure[] algebraicStructures = (data is IAlgebraicStructure[]) ? data as IAlgebraicStructure[] : data.ToArray();
+            if (normalizeData is Vector)
+            {
+                return (normalizeData as Vector)*Std + Mean;
+            }
 
-            for (int i = 0; i < algebraicStructures.Length; i++)
-               algebraicStructures[i] = Transform(algebraicStructures[i]);
+            IAlgebraicStructure dat = normalizeData;
 
-            return algebraicStructures;
+            for (int i = 0; i < normalizeData.Data.Length; i++)
+                dat.Data[i] = normalizeData.Data[i] * Std[i] + Mean[i];
+
+            return dat;
         }
     }
 }

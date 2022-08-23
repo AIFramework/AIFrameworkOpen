@@ -44,7 +44,7 @@
     <Compile Include="DataNormalizers\Normalizer.cs" />
     <Compile Include="DataNormalizers\MinimaxNomalizer.cs" />
     <Compile Include="DataNormalizers\ZNormalizer.cs" />
-    <Compile Include="FeatureExtractors\IFeaturesExtractor.cs" />
+    <Compile Include="FeatureExtractors\FeaturesExtractor.cs" />
     <Compile Include="FeatureExtractors\TimeSeq\FilterExtractor.cs" />
     <Compile Include="FeatureExtractors\TimeSeq\TSExtractor.cs" />
     <Compile Include="Pipelines\Object2VectorPipeline.cs" />

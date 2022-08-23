@@ -11,14 +11,9 @@ namespace AI.DataPrepaire.FeatureExtractors.TimeSeq
     /// Извлечение признаков из временных рядов
     /// </summary>
     [Serializable]
-    public abstract class TSExtractor : IFeaturesExtractor<Vector>
+    public abstract class TSExtractor : FeaturesExtractor<Vector>
     {
-        /// <summary>
-        /// Получение признаков из участка данных
-        /// </summary>
-        /// <param name="crop">Участок данных</param>
-        public abstract Vector GetFeatures(Vector crop);
-
+       
         /// <summary>
         /// Получение признаков из временной последовательности
         /// </summary>
@@ -30,20 +25,5 @@ namespace AI.DataPrepaire.FeatureExtractors.TimeSeq
             return features;
         }
 
-
-        /// <summary>
-        /// Получение признаков из временной последовательности
-        /// </summary>
-        public virtual Vector[] GetFeatures(Vector[] data)
-        {
-            Vector[] ret = new Vector[data.Length];
-
-            for (int i = 0; i < data.Length; i++)
-            {
-                ret[i] = GetFeatures(data[i]);
-            }
-
-            return ret;
-        }
     }
 }

@@ -22,7 +22,7 @@ namespace AI.DataPrepaire.Pipelines
         /// <summary>
         /// Извлечение признаков из данных
         /// </summary>
-        public IFeaturesExtractor<T> Extractor { get; set; }
+        public FeaturesExtractor<T> Extractor { get; set; }
 
         /// <summary>
         /// Нормализация данных

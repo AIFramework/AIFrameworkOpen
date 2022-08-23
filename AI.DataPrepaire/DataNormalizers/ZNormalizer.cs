@@ -53,6 +53,8 @@ namespace AI.DataPrepaire.DataNormalizers
         /// </summary>
         public override IAlgebraicStructure Transform(IAlgebraicStructure data)
         {
+            if (Mean == null) return data;
+
             if (data is Vector)
             {
                 return ((data as Vector) - Mean) / Std;
@@ -73,6 +75,8 @@ namespace AI.DataPrepaire.DataNormalizers
         /// <param name="normalizeData">Нормализованные данные</param>
         public override IAlgebraicStructure Denormalize(IAlgebraicStructure normalizeData)
         {
+            if (Mean == null) return normalizeData;
+
             if (normalizeData is Vector)
             {
                 return (normalizeData as Vector)*Std + Mean;

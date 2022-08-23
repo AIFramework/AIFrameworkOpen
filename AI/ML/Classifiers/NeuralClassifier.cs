@@ -33,7 +33,7 @@ namespace AI.ML.Classifiers
         /// Classify
         /// </summary>
         /// <param name="inp">Input vector</param>
-        public int Classify(Vector inp)
+        public override int Classify(Vector inp)
         {
             return ClassifyProbVector(inp).MaxElementIndex();
         }
@@ -43,7 +43,7 @@ namespace AI.ML.Classifiers
         /// Classify
         /// </summary>
         /// <param name="inp">Input vector</param>
-        public Vector ClassifyProbVector(Vector inp)
+        public override Vector ClassifyProbVector(Vector inp)
         {
             NNValue input = new NNValue(inp);
             return _net.Forward(input, Graph).ToVector();

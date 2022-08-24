@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -50,6 +51,7 @@
     <Compile Include="Pipelines\Object2VectorPipeline.cs" />
     <Compile Include="Pipelines\ObjectClassifierPipeline.cs" />
     <Compile Include="Pipelines\ObjectRegressionPipeline.cs" />
+    <Compile Include="Pipelines\Utils\IDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tokenizers\ITokenizer.cs" />
     <Compile Include="Tokenizers\MatrixTokenizer\SimpleMatrixTokenizer.cs" />

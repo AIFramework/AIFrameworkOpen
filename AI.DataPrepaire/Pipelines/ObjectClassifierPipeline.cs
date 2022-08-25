@@ -146,7 +146,7 @@ namespace AI.DataPrepaire.Pipelines
             DatasetForClassifier dataSamples = ClearData(data.ToArray(), labels.ToArray());
             dataSamples.ShuffleData(); // Премешивание
 
-            T[] datas = dataSamples.ReturnDataset();
+            T[] datas = dataSamples.ReturnData();
             int[] marks = dataSamples.ReturnClasses();
 
             Vector[] features = new Vector[datas.Length];
@@ -250,7 +250,7 @@ namespace AI.DataPrepaire.Pipelines
             /// <summary>
             /// Вернуть данные
             /// </summary>
-            public T[] ReturnDataset() 
+            public T[] ReturnData() 
             {
                 var ret = new T[Count];
 

@@ -92,15 +92,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\AIParts\AIChartGraphics\AIChartGraphics.csproj">
-      <Project>{2e0701c8-534c-4161-ada1-ae36fcea73f3}</Project>
-      <Name>AIChartGraphics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\AIParts\AIStandard\AIStandard.csproj">
-      <Project>{66d175a8-3fb1-4891-917c-b9fa7abff80f}</Project>
-      <Name>AIStandard</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

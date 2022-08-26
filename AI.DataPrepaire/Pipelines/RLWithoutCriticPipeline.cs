@@ -1,9 +1,6 @@
 ﻿using AI.DataPrepaire.Pipelines.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.Pipelines
 {
@@ -11,7 +8,7 @@ namespace AI.DataPrepaire.Pipelines
     /// Конвейер обучения с подкреплением  (без критика)
     /// </summary>
     [Serializable]
-    public class RLWithoutCriticPipline<T>
+    public class RLWithoutCriticPipeline<T>
     {
         /// <summary>
         /// Актор, алгоритм принятия решений
@@ -37,7 +34,7 @@ namespace AI.DataPrepaire.Pipelines
         /// Модель обучения с подкреплением  (без критика)
         /// </summary>
         /// <param name="actor"></param>
-        public RLWithoutCriticPipline(ObjectClassifierPipeline<T> actor) 
+        public RLWithoutCriticPipeline(ObjectClassifierPipeline<T> actor) 
         {
             Actor = actor;
         }

@@ -51,7 +51,7 @@
     <Compile Include="Pipelines\Object2VectorPipeline.cs" />
     <Compile Include="Pipelines\ObjectClassifierPipeline.cs" />
     <Compile Include="Pipelines\ObjectRegressionPipeline.cs" />
-    <Compile Include="Pipelines\RLWithoutCriticPipline.cs" />
+    <Compile Include="Pipelines\RLWithoutCriticPipeline.cs" />
     <Compile Include="Pipelines\Utils\IDetector.cs" />
     <Compile Include="Pipelines\Utils\NoDetector.cs" />
     <Compile Include="Pipelines\Utils\ScoreTable.cs" />

@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5A1B2855-7959-4E42-BE77-09A0100CD20A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AI.DataPrepaire</RootNamespace>
-    <AssemblyName>AI.DataPrepaire</AssemblyName>
+    <ProjectGuid>{39D0A027-B8B3-4865-8848-66D231051E98}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ClPPLDemo</RootNamespace>
+    <AssemblyName>ClPPLDemo</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,9 +22,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,29 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataNormalizers\Normalizer.cs" />
-    <Compile Include="DataNormalizers\MinimaxNomalizer.cs" />
-    <Compile Include="DataNormalizers\ZNormalizer.cs" />
-    <Compile Include="FeatureExtractors\FeaturesExtractor.cs" />
-    <Compile Include="FeatureExtractors\NoExtractor.cs" />
-    <Compile Include="FeatureExtractors\TimeSeq\FilterExtractor.cs" />
-    <Compile Include="FeatureExtractors\TimeSeq\TSExtractor.cs" />
-    <Compile Include="Pipelines\Object2VectorPipeline.cs" />
-    <Compile Include="Pipelines\ObjectClassifierPipeline.cs" />
-    <Compile Include="Pipelines\ObjectRegressionPipeline.cs" />
-    <Compile Include="Pipelines\RLWithoutCriticPipeline.cs" />
-    <Compile Include="Pipelines\Utils\IDetector.cs" />
-    <Compile Include="Pipelines\Utils\NoDetector.cs" />
-    <Compile Include="Pipelines\Utils\ScoreTable.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tokenizers\ITokenizer.cs" />
-    <Compile Include="Tokenizers\MatrixTokenizer\SimpleMatrixTokenizer.cs" />
-    <Compile Include="Tokenizers\TextTokenizers\CharTokenizer.cs" />
-    <Compile Include="Tokenizers\TextTokenizers\WordTokenizer.cs" />
-    <Compile Include="Tokenizers\TokenizerBase.cs" />
-    <Compile Include="Tokenizers\VectorTokenizer\SimpleVectorTokenizer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AI.DataPrepaire\AI.DataPrepaire.csproj">
+      <Project>{5a1b2855-7959-4e42-be77-09a0100cd20a}</Project>
+      <Name>AI.DataPrepaire</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AI\AI.csproj">
       <Project>{a18e36a4-6d0a-44c9-84ab-4a26b4940e7b}</Project>
       <Name>AI</Name>

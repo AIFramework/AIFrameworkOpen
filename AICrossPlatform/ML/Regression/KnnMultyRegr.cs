@@ -17,7 +17,7 @@ namespace AI.ML.Regression
     /// Regression (k-nearest neighbors method)
     /// </summary>
     [Serializable]
-    public class KnnMultyRegr
+    public class KnnMultyRegr : IMultyRegression
     {
 
         /// <summary>

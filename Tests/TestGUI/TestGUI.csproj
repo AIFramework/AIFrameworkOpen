@@ -92,5 +92,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AIChartCV\AIChartCV.csproj">
+      <Project>{2ed3435f-f827-41e2-82b4-ed781a16b156}</Project>
+      <Name>AIChartCV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AICrossPlatform\AICrossPlatform.csproj">
+      <Project>{a4203f59-0bbe-4b1a-a3f7-86704d1ecf10}</Project>
+      <Name>AICrossPlatform</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

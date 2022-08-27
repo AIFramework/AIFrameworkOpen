@@ -51,12 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\AI.DataPrepaire\AI.DataPrepaire.csproj">
-      <Project>{5a1b2855-7959-4e42-be77-09a0100cd20a}</Project>
+      <Project>{d5d79045-8651-46fc-8994-30f7873ff1e8}</Project>
       <Name>AI.DataPrepaire</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\AI\AI.csproj">
-      <Project>{a18e36a4-6d0a-44c9-84ab-4a26b4940e7b}</Project>
-      <Name>AI</Name>
+    <ProjectReference Include="..\..\..\AICrossPlatform\AICrossPlatform.csproj">
+      <Project>{a4203f59-0bbe-4b1a-a3f7-86704d1ecf10}</Project>
+      <Name>AICrossPlatform</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

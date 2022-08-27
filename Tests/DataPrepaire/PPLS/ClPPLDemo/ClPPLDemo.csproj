@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C2312946-598B-4055-A75A-0F2E5D74EC9A}</ProjectGuid>
+    <ProjectGuid>{39D0A027-B8B3-4865-8848-66D231051E98}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TSFeatureExtractorTest</RootNamespace>
-    <AssemblyName>TSFeatureExtractorTest</AssemblyName>
+    <RootNamespace>ClPPLDemo</RootNamespace>
+    <AssemblyName>ClPPLDemo</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -50,11 +50,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\AI.DataPrepaire\AI.DataPrepaire.csproj">
+    <ProjectReference Include="..\..\..\..\AI.DataPrepaire\AI.DataPrepaire.csproj">
       <Project>{d5d79045-8651-46fc-8994-30f7873ff1e8}</Project>
       <Name>AI.DataPrepaire</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\AICrossPlatform\AICrossPlatform.csproj">
+    <ProjectReference Include="..\..\..\..\AICrossPlatform\AICrossPlatform.csproj">
       <Project>{a4203f59-0bbe-4b1a-a3f7-86704d1ecf10}</Project>
       <Name>AICrossPlatform</Name>
     </ProjectReference>

@@ -55,5 +55,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AICrossPlatform\AICrossPlatform.csproj">
+      <Project>{a4203f59-0bbe-4b1a-a3f7-86704d1ecf10}</Project>
+      <Name>AICrossPlatform</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

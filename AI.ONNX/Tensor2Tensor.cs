@@ -60,14 +60,14 @@ namespace AI.ONNX
         /// </summary>
         public int DimOut { get; private set; }
 
-        private int _iH, _iW, _iD;
+        private int _iH, _iW, _iD, _iHO, _iWO, _iDO;
         int[] _inputShape;
         int[] _outpShape;
 
         /// <summary>
         /// Нейронная сеть преобразующая тензор входа в тензор выхода
         /// </summary>
-        public Tensor2Tensor(string path, LibType libType = LibType.Keras)
+        public Tensor2Tensor(string path, LibType libType = LibType.Keras, LibType libTypeOut = LibType.Keras)
         {
             Session = new InferenceSession(path);
             InputName = Session.InputMetadata.Keys.ToArray()[0];
@@ -76,12 +76,31 @@ namespace AI.ONNX
             _outpShape = Session.OutputMetadata[OutputName].Dimensions;
             LibType = libType;
 
-            switch (LibType) 
+            switch (LibType)
             {
                 case LibType.Keras:
                     _iD = 3;
                     _iH = 1;
                     _iW = 2;
+                    break;
+                case LibType.PyTorch:
+                    _iD = 0;
+                    _iH = 2;
+                    _iW = 3;
+                    break;
+                case LibType.InverseCh:
+                    _iD = 1;
+                    _iH = 2;
+                    _iW = 3;
+                    break;
+            }
+
+            switch (libTypeOut)
+            {
+                case LibType.Keras:
+                    _iDO = 3;
+                    _iHO = 1;
+                    _iWO = 2;
                     break;
                 case LibType.PyTorch:
                     _iD = 0;
@@ -99,19 +118,19 @@ namespace AI.ONNX
             // Выходная размерность
             try
             {
-                OutpH = _outpShape[_iH];
+                OutpH = _outpShape[_iHO];
             }
             catch { OutpH = 1; }
 
             try
             {
-                OutpW = _outpShape[_iW];
+                OutpW = _outpShape[_iWO];
             }
             catch { OutpW = 1; }
 
             try
             {
-                OutpD = _outpShape[_iD]; 
+                OutpD = _outpShape[_iDO]; 
             }
             catch { OutpD = 1; }
 
@@ -249,6 +268,10 @@ namespace AI.ONNX
         /// <summary>
         /// PyTorch
         /// </summary>
-        PyTorch
+        PyTorch,
+        /// <summary>
+        /// Вначале глубина
+        /// </summary>
+        InverseCh
     }
 }

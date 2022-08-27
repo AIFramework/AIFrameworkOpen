@@ -17,6 +17,9 @@ namespace AI.ML.Classifiers
         private readonly List<Dictionary<string, Vector>> classifiersParams = new List<Dictionary<string, Vector>>();
         private Vector w = new Vector(0);
 
+        /// <summary>
+        /// Классификация
+        /// </summary>
         public int Classify(Vector inp)
         {
             return ClassifyProbVector(inp).MaxElementIndex();
@@ -47,11 +50,26 @@ namespace AI.ML.Classifiers
             throw new NotImplementedException();
         }
 
+
+        /// <summary>
+        /// Обучение байесовского классификатора
+        /// </summary>
         public void Train(Vector[] features, int[] classes)
         {
-            throw new NotImplementedException();
+            VectorIntDataset vectorClasses = new VectorIntDataset();
+
+            for (int i = 0; i < features.Length; i++)
+            {
+                vectorClasses.Add(new VectorClass(features[i], classes[i]));
+            }
+
+            Train(vectorClasses);
         }
 
+        /// <summary>
+        /// Обучение байесовского классификатора
+        /// </summary>
+        /// <param name="dataset"></param>
         public void Train(VectorIntDataset dataset)
         {
             var gr = dataset.GetGroupes();

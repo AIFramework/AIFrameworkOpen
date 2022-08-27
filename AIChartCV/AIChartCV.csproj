@@ -10,7 +10,7 @@
     <RootNamespace>AI</RootNamespace>
     <AssemblyName>AIChartCV</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-	<LangVersion>10.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -92,6 +92,7 @@
     <Compile Include="ComputerVision\FiltersEachElements\IFilterEE.cs" />
     <Compile Include="ComputerVision\FiltersEachElements\SigmoidalFilter.cs" />
     <Compile Include="ComputerVision\ImageMatrixConverter.cs" />
+    <Compile Include="ComputerVision\ImgFeatureExtractions\Class1.cs" />
     <Compile Include="ComputerVision\ImgTransforms\HOG.cs" />
     <Compile Include="ComputerVision\ImgTransforms\SobelData.cs" />
     <Compile Include="ComputerVision\ImgTransforms\SobelTransform.cs" />
@@ -108,6 +109,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AI.DataPrepaire\AI.DataPrepaire.csproj">
+      <Project>{d5d79045-8651-46fc-8994-30f7873ff1e8}</Project>
+      <Name>AI.DataPrepaire</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AI.ONNX\AI.ONNX.csproj">
+      <Project>{bca316a2-e3e7-4b56-bc51-4b7565199c0a}</Project>
+      <Name>AI.ONNX</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AICrossPlatform\AICrossPlatform.csproj">
       <Project>{a4203f59-0bbe-4b1a-a3f7-86704d1ecf10}</Project>
       <Name>AICrossPlatform</Name>

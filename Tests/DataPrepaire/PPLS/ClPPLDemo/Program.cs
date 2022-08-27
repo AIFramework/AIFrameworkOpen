@@ -22,13 +22,13 @@ namespace ClPPLDemo
             //Класс 1
             Vector cl1 = new Vector(1, 2, 9, 11, -2);
             //Класс 2
-            Vector cl2 = new Vector(2, 0, 1, 13, -2);
+            Vector cl2 = new Vector(3, 6, 1, 13, -2);
 
             List<Vector> xList = new List<Vector>();
             List<int> yList = new List<int>();
 
             //Выборка
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 300; i++)
             {
                 xList.Add(cl1 + 4*AI.Statistics.Statistic.RandNorm(5, random));
                 xList.Add(cl2 + 4*AI.Statistics.Statistic.RandNorm(5, random));
@@ -54,7 +54,7 @@ namespace ClPPLDemo
         {
             Normalizer = new ZNormalizer();
             Detector = new NoDetector<Vector>();
-            Classifier = new KNNCl() { IsParsenMethod = true, K = 3 };
+            Classifier = new BayesianClassifier();//new KNNCl() { IsParsenMethod = true, K = 3 };
             Extractor = new NoExtractor();
         }
     }

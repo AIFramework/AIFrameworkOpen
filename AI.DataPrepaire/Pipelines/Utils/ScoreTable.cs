@@ -14,6 +14,8 @@ namespace AI.DataPrepaire.Pipelines.Utils
     [Serializable]
     public class ScoreTableClassifier<T> : List<ScoreElCl<T>>
     {
+
+
         /// <summary>
         /// Таблица результатов
         /// </summary>

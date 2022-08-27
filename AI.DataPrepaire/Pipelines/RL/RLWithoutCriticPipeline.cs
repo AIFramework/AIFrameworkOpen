@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AI.DataPrepaire.Pipelines
+namespace AI.DataPrepaire.Pipelines.RL
 {
     /// <summary>
     /// Конвейер обучения с подкреплением  (без критика)
@@ -39,11 +39,13 @@ namespace AI.DataPrepaire.Pipelines
             Actor = actor;
         }
 
+        public RLWithoutCriticPipeline() { }
+
         /// <summary>
         /// Выполнить действие
         /// </summary>
         /// <param name="state">Состояние</param>
-        public int GetAction(T state) 
+        public virtual int GetAction(T state) 
         {
             int action = Actor.StoсhasticClassify(state);
 
@@ -56,7 +58,7 @@ namespace AI.DataPrepaire.Pipelines
         /// <summary>
         /// Установка реварда / скора (Конец партии)
         /// </summary>
-        public void SetReward(double score) 
+        public virtual void SetReward(double score) 
         {
             ScoreElCl<T> scoreEl = new ScoreElCl<T>();
             scoreEl.Score = score;
@@ -73,7 +75,7 @@ namespace AI.DataPrepaire.Pipelines
         /// Обучение
         /// </summary>
         /// <param name="topK">Топ К лучших партий</param>
-        public void Train(int topK = 3) 
+        public virtual void Train(int topK = 3) 
         {
             var dataset = RewardData.TopKToTbl(topK).GetDataset();
             Actor.Train(dataset.ReturnData(), dataset.ReturnClasses());

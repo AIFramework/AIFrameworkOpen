@@ -1,10 +1,10 @@
 <img src="https://github.com/AIFramework/AIFrameworkOpen/blob/main/Docs/img/logo.png?raw=true" width=300 />
 
 ## AIFramework версия 2.2 Open
-Открытая версия ИИ фреймворка
+Открытая версия кроссплатформенного ИИ фреймворка для языка C#
 
 
-* .Net Framework 4.7.2
+* .Net Standard 2.0 (Графики и CV .Net Framework 4.7.2)
 
 
 * ### Особенности

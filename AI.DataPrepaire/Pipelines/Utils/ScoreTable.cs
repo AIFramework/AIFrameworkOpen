@@ -44,10 +44,10 @@ namespace AI.DataPrepaire.Pipelines.Utils
         public ScoreElCl<T>[] TopK(int k = 3)
         {
             ScoreElCl<T>[] scores = new ScoreElCl<T>[k];
-            var datOrder = this.OrderByDescending(x => x.Score); // Сортировка по уменьшению скора
+            var datOrder = this.OrderByDescending(x => x.Score).ToArray(); // Сортировка по уменьшению скора
 
             for (int i = 0; i < k; i++)
-                scores[i] = this[i];
+                scores[i] = datOrder[i];
 
             return scores;
         }

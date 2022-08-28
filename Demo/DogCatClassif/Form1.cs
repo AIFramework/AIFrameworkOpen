@@ -5,7 +5,13 @@ using AI.DataPrepaire.FeatureExtractors;
 using AI.DataPrepaire.Pipelines;
 using AI.DataPrepaire.Pipelines.Utils;
 using AI.DataStructs.Algebraic;
+using AI.DataStructs.Shapes;
 using AI.ML.Classifiers;
+using AI.ML.NeuralNetwork.CoreNNW.Activations;
+using AI.ML.NeuralNetwork.CoreNNW.Layers;
+using AI.ML.NeuralNetwork.CoreNNW.Loss;
+using AI.ML.NeuralNetwork.CoreNNW.Optimizers;
+using AI.ML.NeuralNetwork.CoreNNW;
 using AI.ONNX;
 using System;
 using System.Collections.Generic;
@@ -113,6 +119,24 @@ namespace DogCatClassif
             Classifier = new KNNCl() { IsParsenMethod = true, K = 2 };
             Vector mean = new Vector(0.485, 0.456, 0.406), std = new Vector(0.229, 0.224, 0.225);
             Extractor = new ImgOnnxExtractor("resnet18-v2-7.onnx", mean, std, 224, 224, LibType.InverseCh);
+
+            //Classifier = new NeuralClassifier(GetNNW())
+            //{
+            //    EpochesToPass = 100,
+            //    LearningRate = 0.001f,
+            //    Loss = new CrossEntropyWithSoftmax(),
+            //    Optimizer = new Adam(),
+            //    ValSplit = 0
+            //};
+        }
+
+
+        NNW GetNNW()
+        {
+            NNW net = new NNW();
+            net.AddNewLayer(new Shape3D(1000), new FeedForwardLayer(4, new ReLU(0.1)));
+            net.AddNewLayer(new FeedForwardLayer(2, new SoftmaxUnit()));
+            return net;
         }
 
     }

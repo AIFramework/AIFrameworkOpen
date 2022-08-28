@@ -23,12 +23,12 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// <summary>
         /// Состояния внутри партии
         /// </summary>
-        public List<T> States { get; set; }
+        public List<T> States { get; set; } = new List<T>();
 
         /// <summary>
         /// Принятые решения внутри партии
         /// </summary>
-        public List<int> Actions { get; set; }
+        public List<int> Actions { get; set; } = new List<int> { 0 };
 
         /// <summary>
         /// Модель обучения с подкреплением  (без критика)
@@ -45,9 +45,11 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// Выполнить действие
         /// </summary>
         /// <param name="state">Состояние</param>
-        public virtual int GetAction(T state) 
+        public virtual int GetAction(T state, double conf = 0.3) 
         {
-            int action = Actor.StoсhasticClassify(state);
+            double sep = Actor.random.NextDouble();
+
+            int action = (sep > conf)? Actor.StoсhasticClassify(state) : Actor.Classify(state);
 
             States.Add(state);
             Actions.Add(action);

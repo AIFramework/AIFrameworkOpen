@@ -23,7 +23,7 @@ namespace AI.DataPrepaire.Pipelines
     public abstract class ObjectClassifierPipeline<T>
     {
 
-        Random random1 = new Random(1);
+        internal Random random = new Random(1);
 
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace AI.DataPrepaire.Pipelines
         /// <param name="input">Входной объект</param>
         public virtual int StoсhasticClassify(T input)
         {
-            return RandomItemSelection<T>.GetIndex(ClassifyProb(input), random1);
+            return RandomItemSelection<T>.GetIndex(ClassifyProb(input), random);
         }
 
         /// <summary>

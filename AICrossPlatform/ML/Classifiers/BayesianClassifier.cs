@@ -14,8 +14,32 @@ namespace AI.ML.Classifiers
     public class BayesianClassifier : IClassifier
     {
         private readonly NonCorrelatedGaussian nonCorrelatedGaussian = new NonCorrelatedGaussian();
-        private readonly List<Dictionary<string, Vector>> classifiersParams = new List<Dictionary<string, Vector>>();
+        private List<Dictionary<string, Vector>> classifiersParams = new List<Dictionary<string, Vector>>();
         private Vector w = new Vector(0);
+
+        /// <summary>
+        /// Классификатор основанный на теореме Байеса
+        /// </summary>
+        public BayesianClassifier(int nInp, int nOutp)
+        {
+            w = new Vector(nOutp)+0.5;
+
+            for (int i = 0; i < nOutp; i++)
+            {
+                var dat = new Dictionary<string, Vector>();
+                dat.Add("std", new Vector(nInp)+1);
+                dat.Add("mean", new Vector(nInp));
+                classifiersParams.Add(dat);
+            }
+        }
+
+        /// <summary>
+        /// Классификатор основанный на теореме Байеса
+        /// </summary>
+        public BayesianClassifier()
+        {
+
+        }
 
         /// <summary>
         /// Классификация
@@ -74,6 +98,7 @@ namespace AI.ML.Classifiers
         {
             var gr = dataset.GetGroupes();
             w = new Vector(gr.Length);
+            classifiersParams = new List<Dictionary<string, Vector>>();
 
             for (int i = 0; i < gr.Length; i++)
             {

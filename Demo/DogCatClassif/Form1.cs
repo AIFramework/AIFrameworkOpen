@@ -117,6 +117,7 @@ namespace DogCatClassif
             Normalizer = new ZNormalizer();
             Detector = new NoDetector<Bitmap>();
             Classifier = new KNNCl() { IsParsenMethod = true, K = 2 };
+            DataAugmetation = new NoAugmentation<Vector>();
             Vector mean = new Vector(0.485, 0.456, 0.406), std = new Vector(0.229, 0.224, 0.225);
             Extractor = new ImgOnnxExtractor("resnet18-v2-7.onnx", mean, std, 224, 224, LibType.InverseCh);
 

@@ -5,15 +5,15 @@ using System.Runtime.CompilerServices;
 namespace AI.Extensions
 {
     /// <summary>
-    /// Extensions for collections shuffling
+    /// Расширение для алгоритма перемешивания данных
     /// </summary>
     public static class ShuffleExtensions
     {
         /// <summary>
-        /// Shuffle an array using the Knuth method
+        /// Перемешивание данных в массиве методом Кнута
         /// </summary>
-        /// <param name="data">Array</param>
-        /// <param name="seed">Random number generator seed</param>
+        /// <param name="data">Массив</param>
+        /// <param name="seed">Seed для ГПСЧ</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Shuffle<T>(this T[] data, int? seed = null)
         {

@@ -52,6 +52,7 @@ namespace ClPPLDemo
         /// </summary>
         public Classifier() 
         {
+            DataAugmetation = new NoAugmentation<Vector>();
             Normalizer = new ZNormalizer();
             Detector = new NoDetector<Vector>();
             Classifier = new BayesianClassifier();//new KNNCl() { IsParsenMethod = true, K = 3 };

@@ -25,6 +25,16 @@ namespace AI.DataPrepaire.Pipelines
 
         internal Random random = new Random(1);
 
+        /// <summary>
+        /// Метод аугметации данных
+        /// </summary>
+        public DataAugmetation<Vector> DataAugmetation { get; set; }
+
+        /// <summary>
+        /// Метод реставрации данных
+        /// </summary>
+        public Func<T, T> DataRestavration { get; set; } = x => x;
+
 
         /// <summary>
         /// Индекс неизвестного класса
@@ -66,8 +76,7 @@ namespace AI.DataPrepaire.Pipelines
         public virtual int Classify(T input)
         {
             return Classifier.Classify(
-                (Vector)Normalizer.Transform(
-                    Extractor.GetFeatures(input)));
+                GetFeatures(input));
         }
 
         /// <summary>
@@ -92,8 +101,7 @@ namespace AI.DataPrepaire.Pipelines
         public virtual Vector ClassifyProb(T input)
         {
             return Classifier.ClassifyProbVector(
-                (Vector)Normalizer.Transform(
-                    Extractor.GetFeatures(input)));
+                GetFeatures(input));
         }
 
         /// <summary>
@@ -143,18 +151,33 @@ namespace AI.DataPrepaire.Pipelines
         public virtual void Train(IEnumerable<T> data, IEnumerable<int> labels)
         {
             //Очистка данных
-            DatasetForClassifier dataSamples = ClearData(data.ToArray(), labels.ToArray());
+            DatasetForClassifier dataSamples = ClearData(
+                DataArrayResvration(data), labels.ToArray());
             dataSamples.ShuffleData(); // Премешивание
 
             T[] datas = dataSamples.ReturnData();
             int[] marks = dataSamples.ReturnClasses();
 
             Vector[] features = new Vector[datas.Length];
-
             // Извлечение признаков
             for (int i = 0; i < datas.Length; i++)
                 features[i] = Extractor.GetFeatures(datas[i]);
-            
+
+
+            //Аугментация данных
+            var dataNew = DataAugmetation.Augmetation(features, marks);
+            dataNew.Shuffle();
+
+            features = new Vector[dataNew.Length];
+            marks = new int[dataNew.Length];
+
+            for (int i = 0; i < features.Length; i++)
+            {
+                features[i] = dataNew[i].Item1;
+                marks[i] = dataNew[i].Item2;
+            }
+
+
             // Обучение нормализатора
             Normalizer.Train(features);
             features = (Vector[])Normalizer.Transform(features); // Нормализация
@@ -217,8 +240,32 @@ namespace AI.DataPrepaire.Pipelines
             return dataSamples;
         }
 
+        /// <summary>
+        /// Восстановление массива данных
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public T[] DataArrayResvration(IEnumerable<T> data)
+        {
+            T[] dataArray = new T[data.Count()];
+            int i = 0;
+            foreach (var item in data)
+                dataArray[i++] = DataRestavration(item);
 
+            return dataArray;
+        }
 
+        /// <summary>
+        /// Получение признаков из данных
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public Vector GetFeatures(T data)
+        {
+            var input = DataRestavration(data);
+            var features = Extractor.GetFeatures(input);
+            return  (Vector)Normalizer.Transform(features);
+        }
 
 
         /// <summary>

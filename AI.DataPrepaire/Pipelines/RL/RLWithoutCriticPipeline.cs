@@ -45,7 +45,7 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// Выполнить действие
         /// </summary>
         /// <param name="state">Состояние</param>
-        public virtual int GetAction(T state, double conf = 0.3) 
+        public virtual int GetAction(T state, double conf = 0.0) 
         {
             double sep = Actor.random.NextDouble();
 

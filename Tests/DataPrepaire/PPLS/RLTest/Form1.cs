@@ -97,7 +97,7 @@ namespace RLTest
 
             for (int i = 0; i < xList.Count; i++)
             {
-                pred[i] = rL.GetAction(xList[i], 0.4);
+                pred[i] = rL.GetAction(xList[i], 0);
             }
 
             double score = GetScore(pred, yList.ToArray());
@@ -132,10 +132,11 @@ namespace RLTest
             Normalizer = new ZNormalizer();
             Detector = new NoDetector<Vector>();
             Extractor = new NoExtractor();
+            DataAugmetation = new NoAugmentation<Vector>();
 
             Classifier = new NeuralClassifier(GetNNW())
             {
-                EpochesToPass = 20,
+                EpochesToPass = 2,
                 LearningRate = 0.001f,
                 Loss = new CrossEntropyWithSoftmax(),
                 Optimizer = new Adam(),

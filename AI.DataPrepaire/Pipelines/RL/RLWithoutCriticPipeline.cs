@@ -45,11 +45,11 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// Выполнить действие
         /// </summary>
         /// <param name="state">Состояние</param>
-        public virtual int GetAction(T state, double conf = 0.0) 
+        public virtual int GetAction(T state, double conf = 0.0, double t = 1) 
         {
             double sep = Actor.random.NextDouble();
 
-            int action = (sep > conf)? Actor.StoсhasticClassify(state) : Actor.Classify(state);
+            int action = (sep > conf)? Actor.StoсhasticClassify(state, t) : Actor.Classify(state);
 
             States.Add(state);
             Actions.Add(action);

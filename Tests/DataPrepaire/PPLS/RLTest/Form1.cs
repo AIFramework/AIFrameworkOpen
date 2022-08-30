@@ -31,6 +31,7 @@ namespace RLTest
         Vector scores = new Vector(0);
         Vector x = new Vector(0);
         int allCount = 0;
+        int lenM = 10; // Длинна матча
 
         public Form1()
         {
@@ -45,7 +46,7 @@ namespace RLTest
             Vector cl2 = new Vector(3, 6, 1, 13, -2);
 
             //Выборка
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < lenM; i++)
             {
                 xList.Add(cl1 + 2 * AI.Statistics.Statistic.RandNorm(5, random));
                 xList.Add(cl2 + 2 * AI.Statistics.Statistic.RandNorm(5, random));
@@ -61,17 +62,17 @@ namespace RLTest
         private void button1_Click(object sender, EventArgs e)
         {
             double mScore = 0;
-            int count = 40;
+            int count = 10;
 
             for (int i = 0; i < count; i++)
             {
                 mScore += RunMatch();
             }
-            rL.Train(2);
+            rL.Train(1);
 
             mScore /= count;
             x.Add(allCount);
-            scores.Add((mScore - 40) / 40);
+            scores.Add((mScore - lenM) / lenM);
 
             chartVisual1.PlotBlack(x, scores);
             allCount += count;
@@ -97,7 +98,7 @@ namespace RLTest
 
             for (int i = 0; i < xList.Count; i++)
             {
-                pred[i] = rL.GetAction(xList[i], 0);
+                pred[i] = rL.GetAction(xList[i], 0, 1.8);
             }
 
             double score = GetScore(pred, yList.ToArray());
@@ -136,7 +137,7 @@ namespace RLTest
 
             Classifier = new NeuralClassifier(GetNNW())
             {
-                EpochesToPass = 2,
+                EpochesToPass = 1,
                 LearningRate = 0.001f,
                 Loss = new CrossEntropyWithSoftmax(),
                 Optimizer = new Adam(),

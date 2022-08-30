@@ -124,21 +124,21 @@ namespace AI.DataPrepaire.Pipelines
         /// Классификация объекта на базе распределения
         /// </summary>
         /// <param name="input">Входной объект</param>
-        public virtual int StoсhasticClassify(T input)
+        public virtual int StoсhasticClassify(T input, double temp = 1)
         {
-            return RandomItemSelection<T>.GetIndex(ClassifyProb(input), random);
+            return RandomItemSelection<T>.GetIndex(ClassifyProb(input), random, temp);
         }
 
         /// <summary>
         /// Классификация объекта на базе распределения
         /// </summary>
         /// <param name="input">Входной объект</param>
-        public virtual int[] StoсhasticClassify(T[] input)
+        public virtual int[] StoсhasticClassify(T[] input, double temp = 1)
         {
             int[] clsIds = new int[input.Length];
 
             for (int i = 0; i < clsIds.Length; i++)
-                 clsIds[i] = StoсhasticClassify(input[i]);
+                 clsIds[i] = StoсhasticClassify(input[i], temp);
             
             return clsIds;
         }

@@ -117,13 +117,13 @@ namespace DogCatClassif
             Normalizer = new ZNormalizer();
             Detector = new NoDetector<Bitmap>();
             Classifier = new KNNCl() { IsParsenMethod = true, K = 2 };
-            DataAugmetation = new NoAugmentation<Vector>();
+            DataAugmetation = new NoAugmentation<Vector>();// new NormalAugmentation(130, std:0.05);
             Vector mean = new Vector(0.485, 0.456, 0.406), std = new Vector(0.229, 0.224, 0.225);
             Extractor = new ImgOnnxExtractor("resnet18-v2-7.onnx", mean, std, 224, 224, LibType.InverseCh);
 
             //Classifier = new NeuralClassifier(GetNNW())
             //{
-            //    EpochesToPass = 100,
+            //    EpochesToPass = 6,
             //    LearningRate = 0.001f,
             //    Loss = new CrossEntropyWithSoftmax(),
             //    Optimizer = new Adam(),
@@ -135,7 +135,7 @@ namespace DogCatClassif
         NNW GetNNW()
         {
             NNW net = new NNW();
-            net.AddNewLayer(new Shape3D(1000), new FeedForwardLayer(4, new ReLU(0.1)));
+            net.AddNewLayer(new Shape3D(1000), new FeedForwardLayer(100, new ReLU(0.1)));
             net.AddNewLayer(new FeedForwardLayer(2, new SoftmaxUnit()));
             return net;
         }

@@ -35,6 +35,7 @@
             this.TrainBtn = new System.Windows.Forms.Button();
             this.predictBtn = new System.Windows.Forms.Button();
             this.resultTxt = new System.Windows.Forms.Label();
+            this.chartVisual1 = new AI.Charts.Control.ChartVisual();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -108,11 +109,30 @@
             this.resultTxt.TabIndex = 4;
             this.resultTxt.Text = "Кот или пес? ";
             // 
+            // chartVisual1
+            // 
+            this.chartVisual1.AutoScroll = true;
+            this.chartVisual1.BackColor = System.Drawing.Color.White;
+            this.chartVisual1.ChartName = "Вероятности классов";
+            this.chartVisual1.ForeColor = System.Drawing.Color.Black;
+            this.chartVisual1.IsContextMenu = true;
+            this.chartVisual1.IsLogScale = false;
+            this.chartVisual1.IsMoove = true;
+            this.chartVisual1.IsScale = true;
+            this.chartVisual1.IsShowXY = true;
+            this.chartVisual1.LabelX = "Ось Х";
+            this.chartVisual1.LabelY = "Ось Y";
+            this.chartVisual1.Location = new System.Drawing.Point(455, 13);
+            this.chartVisual1.Name = "chartVisual1";
+            this.chartVisual1.Size = new System.Drawing.Size(520, 488);
+            this.chartVisual1.TabIndex = 5;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(457, 510);
+            this.ClientSize = new System.Drawing.Size(979, 510);
+            this.Controls.Add(this.chartVisual1);
             this.Controls.Add(this.resultTxt);
             this.Controls.Add(this.predictBtn);
             this.Controls.Add(this.TrainBtn);
@@ -138,6 +158,7 @@
         private System.Windows.Forms.Button TrainBtn;
         private System.Windows.Forms.Button predictBtn;
         private System.Windows.Forms.Label resultTxt;
+        private AI.Charts.Control.ChartVisual chartVisual1;
     }
 }
 

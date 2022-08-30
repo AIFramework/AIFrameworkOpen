@@ -30,15 +30,16 @@ namespace ClPPLDemo
             //Выборка
             for (int i = 0; i < 300; i++)
             {
-                xList.Add(cl1 + 4*AI.Statistics.Statistic.RandNorm(5, random));
-                xList.Add(cl2 + 4*AI.Statistics.Statistic.RandNorm(5, random));
+                xList.Add(cl1 + 3*AI.Statistics.Statistic.RandNorm(5, random));
+                xList.Add(cl2 + 3*AI.Statistics.Statistic.RandNorm(5, random));
                 yList.Add(0);
                 yList.Add(1);
             }
 
             // Классификатор
             Classifier classifier = new Classifier();
-            Console.WriteLine(classifier.TrainTest(xList.ToArray(), yList.ToArray()));
+
+            Console.WriteLine(classifier.TrainTest(xList.ToArray(), yList.ToArray(), trainPart:0.8));
         }
     }
 
@@ -55,7 +56,7 @@ namespace ClPPLDemo
             DataAugmetation = new NoAugmentation<Vector>();
             Normalizer = new ZNormalizer();
             Detector = new NoDetector<Vector>();
-            Classifier = new BayesianClassifier();//new KNNCl() { IsParsenMethod = true, K = 3 };
+            Classifier = new KNNCl() { IsParsenMethod = false, K = 26 };
             Extractor = new NoExtractor();
         }
     }

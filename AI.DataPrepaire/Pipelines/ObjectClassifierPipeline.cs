@@ -164,6 +164,10 @@ namespace AI.DataPrepaire.Pipelines
                 features[i] = Extractor.GetFeatures(datas[i]);
 
 
+            // Обучение нормализатора
+            Normalizer.Train(features);
+            features = (Vector[])Normalizer.Transform(features); // Нормализация
+
             //Аугментация данных
             var dataNew = DataAugmetation.Augmetation(features, marks);
             dataNew.Shuffle();
@@ -176,11 +180,6 @@ namespace AI.DataPrepaire.Pipelines
                 features[i] = dataNew[i].Item1;
                 marks[i] = dataNew[i].Item2;
             }
-
-
-            // Обучение нормализатора
-            Normalizer.Train(features);
-            features = (Vector[])Normalizer.Transform(features); // Нормализация
 
             // Обучение классификатора
             Classifier.Train(features, marks);

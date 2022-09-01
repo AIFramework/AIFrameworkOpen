@@ -194,27 +194,30 @@ namespace AI.DataPrepaire.Pipelines
         /// <returns></returns>
         public virtual string TrainTest(T[] data, int[] marks, double trainPart = 0.9, int seed = 0, bool reportForEachClass = true)
         {
-            List<T> trainX = new List<T>((int)(trainPart * data.Length));
-            List<int> trainY = new List<int>((int)(trainPart * data.Length));
+
+            var dataset = ClearData(data, marks);
+
+            List<T> trainX = new List<T>((int)(trainPart * dataset.Count));
+            List<int> trainY = new List<int>((int)(trainPart * dataset.Count));
 
 
-            List<T> testX = new List<T>((int)((1-trainPart) * data.Length));
-            List<int> testY = new List<int>((int)((1-trainPart) * data.Length));
+            List<T> testX = new List<T>((int)((1-trainPart) * dataset.Count));
+            List<int> testY = new List<int>((int)((1-trainPart) * dataset.Count));
 
             Random random = new Random(seed);
 
             // Разделение на обучающую и тестовую выборку
-            for (int i = 0; i < data.Length; i++)
+            for (int i = 0; i < dataset.Count; i++)
             {
                 if (random.NextDouble() <= trainPart) 
                 {
-                    trainX.Add(data[i]);
-                    trainY.Add(marks[i]);
+                    trainX.Add(dataset[i].Obj);
+                    trainY.Add(dataset[i].ClassN);
                 }
                 else 
                 {
-                    testX.Add(data[i]);
-                    testY.Add(marks[i]);
+                    testX.Add(dataset[i].Obj);
+                    testY.Add(dataset[i].ClassN);
                 }
             }
 

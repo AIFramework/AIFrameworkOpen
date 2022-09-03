@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -95,13 +96,14 @@ namespace AI.DataPrepaire.Tokenizers
         /// <param name="data">Данные</param>
         public virtual int[] Encode(IEnumerable<T> data)
         {
-            int[] outps = new int[data.Count()];
-            int i = 0;
+            T[] dataArr = data.ToArray();
+            int[] tokens = new int[dataArr.Length];
+            int len = dataArr.Length <= MaxSize ? dataArr.Length : MaxSize;
 
-            foreach (var item in data)
-                outps[i++] = encoder.Keys.Contains(item) ? encoder[item] : UnknowToken;
+            for (int i = 0; i < len; i++)
+                tokens[i++] = encoder.Keys.Contains(dataArr[i]) ? encoder[dataArr[i]] : UnknowToken;
 
-            return outps;
+            return tokens;
         }
 
 
@@ -124,9 +126,33 @@ namespace AI.DataPrepaire.Tokenizers
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Токенизация батча
+        /// </summary>
         public virtual int[,] EncodeBatch(IEnumerable<IEnumerable<T>> data)
         {
-            throw new NotImplementedException();
+            var dArr = data.ToArray();
+            int batch_size = dArr.Length;
+            int len = dArr[0].Count();
+
+            for (int i = 1; i < dArr.Length; i++)
+                if (len < dArr[i].Count()) len = dArr[i].Count();
+
+            len = len <= MaxSize ? len : MaxSize;
+
+            int[,] batch_tokens = new int[batch_size, len];
+
+            for (int batch_count = 0; batch_count < batch_size; batch_count++)
+            {
+                int[] tokens = Encode(dArr[batch_count]);
+
+                for (int token_ids = 0; token_ids < tokens.Length; token_ids++)
+                {
+                    batch_tokens[batch_count, token_ids] = tokens[token_ids];
+                }
+            }
+
+            return batch_tokens;
         }
 
         public virtual int[,] EncodeBatch(IEnumerable<T> data)

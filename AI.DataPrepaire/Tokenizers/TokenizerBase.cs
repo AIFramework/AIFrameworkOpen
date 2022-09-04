@@ -22,11 +22,18 @@ namespace AI.DataPrepaire.Tokenizers
         /// </summary>
         /// <param name="decoder">Массив токенов для декодирования</param>
         /// <param name="encoder">Словарь для кодирования</param>
-        public TokenizerBase(T[] decoder, Dictionary<T, int> encoder) 
+        public TokenizerBase(T[] decoder, Dictionary<T, int> encoder)
         {
             this.decoder = decoder;
             this.encoder = encoder;
         }
+
+
+        /// <summary>
+        /// Токенизатор
+        /// </summary>
+        public TokenizerBase()
+        {        }
 
         /// <summary>
         /// Неизвестный токен
@@ -101,7 +108,7 @@ namespace AI.DataPrepaire.Tokenizers
             int len = dataArr.Length <= MaxSize ? dataArr.Length : MaxSize;
 
             for (int i = 0; i < len; i++)
-                tokens[i++] = encoder.Keys.Contains(dataArr[i]) ? encoder[dataArr[i]] : UnknowToken;
+                tokens[i] = encoder.Keys.Contains(dataArr[i]) ? encoder[dataArr[i]] : UnknowToken;
 
             return tokens;
         }
@@ -132,29 +139,30 @@ namespace AI.DataPrepaire.Tokenizers
         public virtual int[,] EncodeBatch(IEnumerable<IEnumerable<T>> data)
         {
             var dArr = data.ToArray();
-            int batch_size = dArr.Length;
-            int len = dArr[0].Count();
+            int batch_size = dArr.Length; // Вычисление размера батча
+            int len = dArr[0].Count(); 
 
             for (int i = 1; i < dArr.Length; i++)
                 if (len < dArr[i].Count()) len = dArr[i].Count();
 
-            len = len <= MaxSize ? len : MaxSize;
+            len = len <= MaxSize ? len : MaxSize; // Вычисление максимальной длинны
 
-            int[,] batch_tokens = new int[batch_size, len];
+            int[,] batch_tokens = new int[batch_size, len]; // Создание батча
 
             for (int batch_count = 0; batch_count < batch_size; batch_count++)
             {
-                int[] tokens = Encode(dArr[batch_count]);
+                int[] tokens = Encode(dArr[batch_count]); // Кодирование каждой последовательности
 
                 for (int token_ids = 0; token_ids < tokens.Length; token_ids++)
                 {
-                    batch_tokens[batch_count, token_ids] = tokens[token_ids];
+                    batch_tokens[batch_count, token_ids] = tokens[token_ids]; // Заполнение батча
                 }
             }
 
             return batch_tokens;
         }
 
+        // ToDo: Дописать логику
         public virtual int[,] EncodeBatch(IEnumerable<T> data)
         {
             throw new NotImplementedException();

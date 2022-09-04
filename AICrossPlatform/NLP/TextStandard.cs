@@ -47,11 +47,13 @@ namespace AI.NLP
         /// В запросе остаются только буквы, цифры и знаки пробела
         /// </summary>
         /// <param name="input">Входной текст</param>
-        public static string OnlyCharsAndDigit(string input)
+        /// <param name="isLower">Переводить ли в нижний регистр</param>
+        public static string OnlyCharsAndDigit(string input, bool isLower = true)
         {
             List<char> charsADigit = new List<char>();
 
             string outp = input.ToLower().Replace("\n", " ").Replace("\t", " ").Replace("ё", "е");
+            outp = isLower? outp.ToLower() : outp;
 
             for (int i = 0; i < outp.Length; i++)
             {

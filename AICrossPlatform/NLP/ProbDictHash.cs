@@ -48,7 +48,7 @@ namespace AI.NLP
         /// <summary>
         /// Данные вероятностного словаря
         /// </summary>
-        /// <param name="text">Тукст</param>
+        /// <param name="text">Текст</param>
         /// <returns></returns>
         public Dictionary<string, double> Run(string text)
         {

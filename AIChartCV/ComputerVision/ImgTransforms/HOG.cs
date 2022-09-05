@@ -13,6 +13,9 @@ namespace AI.ComputerVision.ImgTransforms
         private readonly int _bins;
         private readonly double _k = 0;
 
+        /// <summary>
+        /// Гистограмма направленных градиентов
+        /// </summary>
         public HOG(int bins = 8)
         {
             _sobelTransformer = new SobelTransform();
@@ -20,6 +23,9 @@ namespace AI.ComputerVision.ImgTransforms
             _k = _bins / Math.PI;
         }
 
+        /// <summary>
+        /// Гистограмма направленных градиентов
+        /// </summary>
         public HOG(Matrix maskY, int bins = 8)
         {
             _sobelTransformer = new SobelTransform(maskY);
@@ -32,6 +38,7 @@ namespace AI.ComputerVision.ImgTransforms
         /// </summary>
         /// <param name="img"></param>
         /// <param name="normalyze"></param>
+        /// <param name="centrNorm">Нормализация центрального пика, замена значения на среднее</param>
         /// <returns></returns>
         public Vector CalcHist(Matrix img, bool normalyze = false, bool centrNorm = true)
         {

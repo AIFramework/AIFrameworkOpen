@@ -72,7 +72,7 @@ namespace AI.ComputerVision.FiltersEachElements
         /// <summary>
         /// Фильтрация
         /// </summary>
-        /// <param name="input">Вход</param>
+        /// <param name="path">Путь до изображения</param>
         public Bitmap Filtration(string path)
         {
             Matrix matrix = ImageMatrixConverter.LoadAsMatrix(path);
@@ -80,6 +80,12 @@ namespace AI.ComputerVision.FiltersEachElements
             return new Bitmap(ImageMatrixConverter.ToBitmap(filtred), matrix.Width, matrix.Height);
         }
 
+        /// <summary>
+        /// Инициализация гамма-фильтра
+        /// </summary>
+        /// <param name="elem">Нелинейная ф-я</param>
+        /// <param name="prepNorm">Нормализовать входное изображение?</param>
+        /// <param name="postNorm">Нормализовать выходное изображение?</param>
         public void Init(Func<double, double> elem, bool prepNorm = false, bool postNorm = false)
         {
             _elFunc = elem;

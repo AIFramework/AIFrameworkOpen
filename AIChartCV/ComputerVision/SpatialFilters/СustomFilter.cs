@@ -5,29 +5,44 @@ using System.Drawing;
 namespace AI.ComputerVision.SpatialFilters
 {
     /// <summary>
-    /// 
+    /// Класс для реализации кастомных фильтров через наследование и изменения ф-ии ядра
     /// </summary>
     [Serializable]
     public class CustomFilter : ISpatialFilterGray
     {
-        protected Matrix f;
+        /// <summary>
+        /// Ядро фильтра
+        /// </summary>
+        protected Matrix filter_kernel;
 
+        /// <summary>
+        /// Класс для реализации кастомных фильтров через наследование и изменения ф-ии ядра
+        /// </summary>
         public CustomFilter(Matrix fMatrix)
         {
-            f = fMatrix;
+            filter_kernel = fMatrix;
         }
 
+        /// <summary>
+        /// Класс для реализации кастомных фильтров через наследование и изменения ф-ии ядра
+        /// </summary>
         public CustomFilter()
         {
-            f = new Matrix(3, 3);
-            f[1, 1] = 1;
+            filter_kernel = new Matrix(3, 3);
+            filter_kernel[1, 1] = 1;
         }
 
+        /// <summary>
+        /// Фильтрация
+        /// </summary>
         public Matrix Filtration(Matrix input)
         {
-            return ImgFilters.SpatialFilter(input, f);
+            return ImgFilters.SpatialFilter(input, filter_kernel);
         }
 
+        /// <summary>
+        /// Фильтрация
+        /// </summary>
         public Bitmap Filtration(Bitmap input)
         {
             Matrix matrix = ImageMatrixConverter.BmpToMatr(input);
@@ -35,6 +50,9 @@ namespace AI.ComputerVision.SpatialFilters
             return new Bitmap(ImageMatrixConverter.ToBitmap(filtred), input.Width, input.Height);
         }
 
+        /// <summary>
+        /// Фильтрация
+        /// </summary>
         public Bitmap Filtration(string path)
         {
             Matrix matrix = ImageMatrixConverter.LoadAsMatrix(path);

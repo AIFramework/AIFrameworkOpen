@@ -277,7 +277,12 @@ namespace AI.Charts.Control
 
         #endregion
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="name"></param>
         public void AddCircul(Vector x, Vector y, string name)
         {
             Circul circul = new Circul(chart1, name);
@@ -287,7 +292,13 @@ namespace AI.Charts.Control
 
         }
 
-
+        /// <summary>
+        /// Добавить закрашенную область
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="name"></param>
+        /// <param name="color"></param>
         public void AddArea(Vector x, Vector y, string name, Color color)
         {
             Area area = new Area(chart1, name);
@@ -413,8 +424,6 @@ namespace AI.Charts.Control
         /// <summary>
         /// Создание скаттерограммы с данными
         /// </summary>
-        /// <param name="y"></param>
-        /// <param name="name"></param>
         public void AddScatterBlack(Vector x, Vector y, string name = "")
         {
             AddScatter(x, y, name, Color.Black);
@@ -435,8 +444,6 @@ namespace AI.Charts.Control
         /// <summary>
         /// Создание скаттерограммы с данными
         /// </summary>
-        /// <param name="y"></param>
-        /// <param name="name"></param>
         public void ScatterBlack(Vector x, Vector y, string name = "")
         {
             Clear();

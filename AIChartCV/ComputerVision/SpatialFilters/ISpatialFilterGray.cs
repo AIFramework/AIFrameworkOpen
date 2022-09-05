@@ -4,12 +4,21 @@ using System.Drawing;
 namespace AI.ComputerVision.SpatialFilters
 {
     /// <summary>
-    /// Grayscale spatial filter interface
+    /// Интерфейс пространственного фильтра оттенков серого
     /// </summary>
     public interface ISpatialFilterGray
     {
+        /// <summary>
+        /// Фильтрация
+        /// </summary>
         Matrix Filtration(Matrix input);
+        /// <summary>
+        /// Фильтрация
+        /// </summary>
         Bitmap Filtration(Bitmap input);
+        /// <summary>
+        /// Фильтрация
+        /// </summary>
         Bitmap Filtration(string path);
     }
 }

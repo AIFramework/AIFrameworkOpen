@@ -6,6 +6,9 @@ using System.IO;
 
 namespace AI.DataStructs.Algebraic
 {
+    /// <summary>
+    /// Многомерный тензор
+    /// </summary>
     [Serializable]
     [DebuggerDisplay("Shape = {Shape.ToString(),nq}")]
     public class NDTensor : IAlgebraicStructure, IEquatable<NDTensor>, ISavable, IByteConvertable
@@ -34,6 +37,9 @@ namespace AI.DataStructs.Algebraic
         #endregion
 
         #region Конструкторы
+        /// <summary>
+        /// Многомерный тензор
+        /// </summary>
         public NDTensor(Shape shape)
         {
             Shape = shape;
@@ -54,16 +60,30 @@ namespace AI.DataStructs.Algebraic
 
             Data = new double[len];
         }
-
+        /// <summary>
+        /// Многомерный тензор
+        /// </summary>
         public NDTensor(int[] shape) : this(new Shape(shape)) { }
         #endregion
 
         #region Операторы
+        /// <summary>
+        /// Оператор "равно"
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
         public static bool operator ==(NDTensor left, NDTensor right)
         {
             return left.Shape == right.Shape && left.Data.ElementWiseEqual(right.Data);
         }
 
+        /// <summary>
+        /// Оператор "неравно"
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
         public static bool operator !=(NDTensor left, NDTensor right)
         {
             return left.Shape != right.Shape || !left.Data.ElementWiseEqual(right.Data);
@@ -191,5 +211,14 @@ namespace AI.DataStructs.Algebraic
             return ind;
         }
         #endregion
+
+        /// <summary>
+        /// Получение хэшкода тензора
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

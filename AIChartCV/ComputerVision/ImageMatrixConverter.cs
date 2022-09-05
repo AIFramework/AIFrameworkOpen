@@ -32,18 +32,34 @@ namespace AI.ComputerVision
             return LoadImage(fs);
         }
 
+        /// <summary>
+        /// Загрузить изображение как матрицу
+        /// </summary>
+        /// <param name="path">Путь до изображения</param>
         public static Matrix LoadAsMatrix(string path)
         {
             Bitmap bmp = GetBitmap(path);
             return BmpToMatr(bmp);
         }
 
+        /// <summary>
+        /// Загрузить изображение как матрицу
+        /// </summary>
+        /// <param name="path">Путь до изображения</param>
+        /// <param name="colorW">Вектор весов цветов, при расчете серого</param>
         public static Matrix LoadAsMatrix(string path, Vector colorW)
         {
             Bitmap bmp = GetBitmap(path);
             return BmpToMatr(bmp, colorW);
         }
 
+        /// <summary>
+        /// Загрузить изображение как матрицу (С изменением размера)
+        /// </summary>
+        /// <param name="path">Путь до изображения</param>
+        /// <param name="colorW">Вектор весов цветов, при расчете серого</param>
+        /// <param name="width">Новая ширина</param>
+        /// <param name="height">Новая высота</param>
         public static Matrix LoadAsMatrix(string path, Vector colorW, int width, int height)
         {
             Bitmap bmp = GetBitmap(path);
@@ -51,6 +67,10 @@ namespace AI.ComputerVision
             return BmpToMatr(bmp, colorW);
         }
 
+        /// <summary>
+        /// Загрузить изображение как тензор 3-го ранга
+        /// </summary>
+        /// <param name="path">Путь до изображения</param>
         public static Tensor LoadAsTensor(string path)
         {
             Bitmap bmp = GetBitmap(path);
@@ -291,6 +311,7 @@ namespace AI.ComputerVision
         /// Изображение в полутоновую матрицу
         /// </summary>
         /// <param name="Bmp">Изображение</param>
+        /// <param name="colorW">Вектор весов цветов, при расчете серого</param>
         public static Matrix BmpToMatr(Bitmap Bmp, Vector colorW)
         {
 

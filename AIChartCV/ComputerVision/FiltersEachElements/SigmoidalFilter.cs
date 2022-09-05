@@ -2,6 +2,9 @@
 
 namespace AI.ComputerVision.FiltersEachElements
 {
+    /// <summary>
+    /// Сигмоидальный фильтр
+    /// </summary>
     [Serializable]
     public class SigmoidalFilter : FilterEE
     {

@@ -254,6 +254,13 @@ namespace AI.Charts.Forms
             chartVisual1.AddBar(x, y, name, color);
         }
 
+        /// <summary>
+        /// Добавляет область
+        /// </summary>
+        /// <param name="x">Ось X</param>
+        /// <param name="y">Ось Y</param>
+        /// <param name="name">Имя</param>
+        /// <param name="color">Цвет</param>
         public void AddArea(Vector x, Vector y, string name, Color color)
         {
             chartVisual1.AddArea(x, y, name, color);
@@ -322,8 +329,6 @@ namespace AI.Charts.Forms
         /// <summary>
         /// Создание скаттерограммы с данными
         /// </summary>
-        /// <param name="y"></param>
-        /// <param name="name"></param>
         public void AddScatterBlack(Vector x, Vector y, string name = "")
         {
             AddScatter(x, y, name, Color.Black);
@@ -422,6 +427,7 @@ namespace AI.Charts.Forms
         /// <param name="y">Вектор амплитуд</param>
         /// <param name="color">Цвет</param>
         /// <param name="name">Имя графика</param>
+        /// <param name="w">Толщина линии</param>
         public void AddDiff(Vector x, Vector y, Color color, string name, int w)
         {
             double dt = Statistic.MeanStep2(x);
@@ -436,6 +442,7 @@ namespace AI.Charts.Forms
         /// <param name="y">Вектор амплитуд</param>
         /// <param name="color">Цвет</param>
         /// <param name="name">Имя графика</param>
+        /// /// <param name="w">Толщина линии</param>
         public void AddIntegr(Vector x, Vector y, Color color, string name, int w)
         {
             double dt = Statistic.MeanStep(x);

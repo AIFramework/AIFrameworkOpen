@@ -58,6 +58,12 @@ namespace AI.DataStructs.Shapes
         }
 
         #region Операторы
+        /// <summary>
+        /// Сравнение форм
+        /// </summary>
+        /// <param name="shape1"></param>
+        /// <param name="shape2"></param>
+        /// <returns></returns>
         public static bool operator ==(Shape shape1, Shape shape2)
         {
             bool sh1N = Equals(shape1, null);
@@ -88,6 +94,9 @@ namespace AI.DataStructs.Shapes
             return true;
         }
 
+        /// <summary>
+        /// Сравнение форм
+        /// </summary>
         public static bool operator !=(Shape shape1, Shape shape2)
         {
             if (shape1.Rank != shape2.Rank || shape1.Count != shape2.Count)

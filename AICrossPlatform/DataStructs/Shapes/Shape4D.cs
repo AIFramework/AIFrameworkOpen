@@ -46,27 +46,47 @@ namespace AI.DataStructs.Shapes
         /// <param name="x">Fourth dimension</param>
         public Shape4D(int height = 1, int width = 1, int depth = 1, int x = 1) : base(width, height, depth, x) { }
 
+        /// <summary>
+        /// Сжатие формы
+        /// </summary>
+        /// <returns></returns>
         public override Shape Shrink()
         {
             return new Shape3D(Height, Width, Depth);
         }
 
         #region Технические методы
+
+        /// <summary>
+        /// Перевод в строку
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return $"[H:{Height}, W: {Width}, D: {Depth}, X: {X}]";
         }
 
+        /// <summary>
+        /// Сравнение
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
         }
 
+        /// <summary>
+        /// Сравнение
+        /// </summary>
         public bool Equals(Shape4D other)
         {
             return Width == other.Width && Height == other.Height && Depth == other.Depth && X == other.X;
         }
 
+        /// <summary>
+        /// Хэш-код
+        /// </summary>
         public override int GetHashCode()
         {
             return base.GetHashCode();

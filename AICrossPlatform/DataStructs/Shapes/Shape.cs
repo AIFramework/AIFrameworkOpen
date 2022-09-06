@@ -178,6 +178,10 @@ namespace AI.DataStructs.Shapes
         #endregion
 
         #region Технические методы
+        /// <summary>
+        /// Перевод формы в строку
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -194,6 +198,11 @@ namespace AI.DataStructs.Shapes
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Сравнение
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             if (obj is Shape shape)
@@ -206,11 +215,17 @@ namespace AI.DataStructs.Shapes
             }
         }
 
+        /// <summary>
+        /// Сравнение
+        /// </summary>
         public bool Equals(Shape other)
         {
             return this == other;
         }
 
+        /// <summary>
+        /// Хэш-код
+        /// </summary>
         public override int GetHashCode()
         {
             unchecked

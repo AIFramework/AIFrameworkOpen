@@ -48,11 +48,19 @@ namespace AI.DataStructs.Shapes
         }
         #endregion
 
+        /// <summary>
+        /// Сжатие формы
+        /// </summary>
         public override Shape Shrink()
         {
             return new Shape2D(Height, Width);
         }
 
+        /// <summary>
+        /// Расширение формы
+        /// </summary>
+        /// <param name="newDimensionLength"></param>
+        /// <returns></returns>
         public override Shape Expand(int newDimensionLength)
         {
             return new Shape4D(Height, Width, Depth, newDimensionLength);

@@ -72,6 +72,12 @@ namespace AI.ML.AlgorithmAnalysis
             return ret / output.Shape.Count;
         }
 
+        /// <summary>
+        /// Средний квадрат ошибки
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
         public static double MSE(IAlgebraicStructure target, IAlgebraicStructure output)
         {
             double ret = 0, q;
@@ -85,6 +91,12 @@ namespace AI.ML.AlgorithmAnalysis
             return ret / output.Shape.Count;
         }
 
+        /// <summary>
+        /// Корень из среднего квадрата ошибки
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
         public static double RMSE(IAlgebraicStructure target, IAlgebraicStructure output)
         {
             return Math.Sqrt(MSE(target, output));
@@ -110,12 +122,24 @@ namespace AI.ML.AlgorithmAnalysis
             return target.Shape.Count * Math.Sqrt(MSE(target, output)) / (TSum(target) + _eps);
         }
 
+        /// <summary>
+        /// Корреляция Пирсона в квадрате
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
         public static double R2(IAlgebraicStructure target, IAlgebraicStructure output)
         {
             double cor = Statistics.Statistic.CorrelationCoefficient(target, output);
             return cor * cor;
         }
 
+        /// <summary>
+        /// Среднее смещение относительно 0
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
         public static double Bias(IAlgebraicStructure target, IAlgebraicStructure output)
         {
             double ret = 0;

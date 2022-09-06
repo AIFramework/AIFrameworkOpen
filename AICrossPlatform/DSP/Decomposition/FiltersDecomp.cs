@@ -7,12 +7,17 @@ using System.Threading.Tasks;
 
 namespace AI.DSP.Decomposition
 {
+    /// <summary>
+    /// Декомпозиция сигнала при помощи КИХ фильтров
+    /// </summary>
     [Serializable]
     public class FiltersDecomp
     {
         private readonly Vector[] _responses;
-        private readonly double[] _fs, _fe;
 
+        /// <summary>
+        /// Декомпозиция сигнала при помощи КИХ фильтров
+        /// </summary>
         public FiltersDecomp(double[] fStart, double[] fEnd, int fd, int order = 157)
         {
             if (fStart.Length != fEnd.Length)
@@ -21,8 +26,7 @@ namespace AI.DSP.Decomposition
             }
 
             _responses = new Vector[fStart.Length];
-            _fs = fStart;
-            _fe = fEnd;
+            
 
             for (int i = 0; i < fStart.Length; i++)
             {
@@ -30,7 +34,10 @@ namespace AI.DSP.Decomposition
             }
         }
 
-
+        /// <summary>
+        /// Декомпозиция сигнала по полосам
+        /// </summary>
+        /// <param name="signal">Сигнал</param>
         public Vector[] Decomosition(Vector signal)
         {
             Vector[] signals = new Vector[_responses.Length];
@@ -43,6 +50,10 @@ namespace AI.DSP.Decomposition
             return signals;
         }
 
+        /// <summary>
+        /// Декомпозиция и нормировка сигнала по полосам
+        /// </summary>
+        /// <param name="signal">Сигнал</param>
         public Tuple<Vector[], Vector> DecomositionBalanceSTD(Vector signal)
         {
             Vector[] signals = new Vector[_responses.Length];
@@ -58,7 +69,9 @@ namespace AI.DSP.Decomposition
             return new Tuple<Vector[], Vector>(signals, std);
         }
 
-
+        /// <summary>
+        /// Сумма декопозированного сигнала
+        /// </summary>
         public Vector SumDecomosition(Vector signal)
         {
             Vector[] s = Decomosition(signal);
@@ -73,6 +86,11 @@ namespace AI.DSP.Decomposition
             return signal_;
         }
 
+        /// <summary>
+        /// Разложение сигнала с помощью фильтров
+        /// </summary>
+        /// <param name="signal">Сигнал</param>
+        /// <returns></returns>
         public Tuple<Vector, Vector> SumDecomositionBalanceSTD(Vector signal)
         {
             Tuple<Vector[], Vector> d = DecomositionBalanceSTD(signal);
@@ -88,6 +106,14 @@ namespace AI.DSP.Decomposition
             return new Tuple<Vector, Vector>(signal_, d.Item2);
         }
 
+        /// <summary>
+        /// КИХ фильтр типа sin(x)/x (Синтезирует импульсную характеристику)
+        /// </summary>
+        /// <param name="fd">Частота дискретизации</param>
+        /// <param name="f1">Нижняя частота среза</param>
+        /// <param name="f2">Верхняя частота среза</param>
+        /// <param name="order">Порядок</param>
+        /// <param name="windowType">Тип весового окна</param>
         public static Vector FIRSincImpulseResponse(int fd, double f1 = 2, double f2 = 4, int order = 37, WindowTypes windowType = WindowTypes.Blackman)
         {
             if (order % 2 == 0)
@@ -98,7 +124,18 @@ namespace AI.DSP.Decomposition
             return DesignFilter.FirWinBp(order, f1 / fd, f2 / fd, windowType);
         }
 
-
+        /// <summary>
+        /// Синтезирует импульсную характеристику методом Ремеза
+        /// </summary>
+        /// <param name="fd">Частота дискретизации</param>
+        /// <param name="f1_stop">Нижняя частота подавление</param>
+        /// <param name="f1_pass">Нижняя частота пропускания</param>
+        /// <param name="f2_stop">Верхняя частота подавление</param>
+        /// <param name="f2_pass">Верхняя частота пропускания</param>
+        /// <param name="w_stop">Коэф. в полосе подавления</param>
+        /// <param name="w_pass">Коэф. в полосе пропускания</param>
+        /// <param name="order">Порядок</param>
+        /// <param name="windowType">Тип весового окна</param>
         public static Vector FIRRemezImpulseResponse(int fd, double f1_stop = 2, double f1_pass = 2.1, double f2_stop = 4.2, double f2_pass = 4, double w_stop = 0.05, double w_pass = 0.95, int order = 37, WindowTypes windowType = WindowTypes.Kaiser)
         {
             if (order % 2 == 0)
@@ -109,6 +146,11 @@ namespace AI.DSP.Decomposition
             return DesignFilter.FirEquirippleBp(order, f1_stop / fd, f1_pass / fd, f2_stop / fd, f2_pass / fd, w_stop, w_pass, w_stop);
         }
 
+        /// <summary>
+        /// Прямой проход КИХ фильтра
+        /// </summary>
+        /// <param name="signal">Сигнал</param>
+        /// <param name="impulseResponse">Импульсная характеристика</param>
         public static Vector RunFirFilter(Vector signal, Vector impulseResponse)
         {
             int orderHalf = impulseResponse.Count / 2;

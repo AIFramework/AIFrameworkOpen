@@ -2206,8 +2206,6 @@ namespace AI.DataStructs
         /// <summary>
         /// Returns data as a byte array
         /// </summary>
-        /// <param name="copy"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public byte[] AsByteArray()
         {

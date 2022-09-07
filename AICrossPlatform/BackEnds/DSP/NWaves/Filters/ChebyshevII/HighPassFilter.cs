@@ -25,9 +25,6 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
         /// <summary>
         /// TF generator
         /// </summary>
-        /// <param name="freq"></param>
-        /// <param name="order"></param>
-        /// <returns></returns>
         private static TransferFunction MakeTf(double freq, int order, double ripple = 0.1)
         {
             return DesignFilter.IirHpTf(freq,

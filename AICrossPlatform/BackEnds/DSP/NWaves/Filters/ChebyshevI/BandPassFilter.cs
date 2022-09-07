@@ -14,9 +14,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevI
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="f1"></param>
-        /// <param name="f2"></param>
-        /// <param name="order"></param>
+        /// <param name="f1">Нижняя частота среза</param>
+        /// <param name="f2">Верхняя частота среза</param>
+        /// <param name="order">Порядок фильтра</param>
         public BandPassFilter(double f1, double f2, int order, double ripple = 0.1) : base(MakeTf(f1, f2, order, ripple))
         {
         }

@@ -36,15 +36,21 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
         protected readonly float[][] _featuregram;
 
         /// <summary>
-        /// Filterbank matrix of dimension [filterCount * (fftSize/2 + 1)]
+        /// Матрица банка фильтров размерности [filterCount * (fftSize/2 + 1)]
         /// </summary>
         protected readonly float[][] _filterbank;
+        /// <summary>
+        /// Банк фильтров
+        /// </summary>
         public float[][] Filterbank => _filterbank;
 
         /// <summary>
         /// Signal envelopes in different frequency bands
         /// </summary>
         protected float[][] _envelopes;
+        /// <summary>
+        /// Огибающие сигнала в разных частотных диапазонах
+        /// </summary>
         public float[][] Envelopes => _envelopes;
 
         /// <summary>
@@ -151,7 +157,8 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             }
             else
             {
-                length = _filterbank.Length;
+                
+                length = _filterbank != null? _filterbank.Length:0;
             }
 
             FeatureDescriptions = new List<string>();
@@ -380,6 +387,14 @@ namespace AI.BackEnds.DSP.NWaves.FeatureExtractors
             throw new NotImplementedException("AmsExtractor does not provide this function. Please call ComputeFrom() method");
         }
 
+        /// <summary>
+        /// Метод не реализован
+        /// </summary>
+        /// <param name="samples"></param>
+        /// <param name="startSample"></param>
+        /// <param name="endSample"></param>
+        /// <param name="vectors"></param>
+        /// <exception cref="NotImplementedException"></exception>
         public override void ComputeFrom(float[] samples, int startSample, int endSample, IList<float[]> vectors)
         {
             throw new NotImplementedException("AmsExtractor does not provide this function. Please call overloaded ComputeFrom() method");

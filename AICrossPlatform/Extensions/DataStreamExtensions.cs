@@ -6,14 +6,29 @@ using System.Runtime.CompilerServices;
 
 namespace AI.Extensions
 {
+    /// <summary>
+    /// Работа с массивами байт
+    /// </summary>
     public static class DataStreamExtensions
     {
         #region ToDataStream
+        /// <summary>
+        /// Получение объекта памяти
+        /// </summary>
+        /// <param name="array">Массив байт</param>
+        /// <param name="isEncrypted">Зашифрован ли объект</param>
+        /// <param name="isZipped">Сжат ли объект</param>
+        /// <returns></returns>
         public static InMemoryDataStream ToDataStream(this byte[] array, bool isEncrypted = false, bool isZipped = false)
         {
             return new InMemoryDataStream(array, isEncrypted, isZipped);
         }
 
+        /// <summary>
+        /// Получение объекта памяти
+        /// </summary>
+        /// <param name="convertable">AI объект конвертируемый в байты</param>
+        /// <returns></returns>
         public static InMemoryDataStream ToDataStream(this IByteConvertable convertable)
         {
             return new InMemoryDataStream(convertable.GetBytes());

@@ -4,11 +4,14 @@ using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.FeatureExtractors.Base
 {
+    /// <summary>
+    /// Извлечение статистических признаков
+    /// </summary>
     [Serializable]
     public static class FeatureVectorExtensions
     {
         /// <summary>
-        /// Dictionary with statistics
+        /// Словарь со статистиками
         /// </summary>
         public static Dictionary<string, float> Statistics(this float[] vector)
         {

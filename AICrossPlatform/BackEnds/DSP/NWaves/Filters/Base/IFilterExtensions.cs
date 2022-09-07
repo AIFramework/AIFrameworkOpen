@@ -57,7 +57,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="frameSize"></param>
-        /// <param name="method"></param>
+        /// <param name="filter"></param>
         /// <returns></returns>        
         public static DiscreteSignal ProcessChunks(this IOnlineFilter filter,
                                                         DiscreteSignal signal,

@@ -7,9 +7,20 @@ using System.Collections.Generic;
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
 {
+    /// <summary>
+    /// Тестирование нейронной сети
+    /// </summary>
     [Serializable]
     public class Tester
     {
+        /// <summary>
+        /// Тестирование
+        /// </summary>
+        /// <param name="g">Граф вычислений</param>
+        /// <param name="net">Нейронная сеть</param>
+        /// <param name="dataset">Набор данных для теста</param>
+        /// <param name="tests">Тест, который следует выполнить</param>
+        /// <returns></returns>
         public static double Test(IGraph g, INetwork net, IEnumerable<DataSequence> dataset, Metrics tests)
         {
             if ((int)tests > 3)
@@ -23,6 +34,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
         }
     }
 
+    [Serializable]
     internal class ClassifierTester
     {
         public static double Test(IGraph g, INetwork net, IEnumerable<DataSequence> dataset, Metrics classifTests)
@@ -56,6 +68,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
         }
     }
 
+    [Serializable]
     internal class RegressionTester
     {
         public static double Test(IGraph g, INetwork net, IEnumerable<DataSequence> dataset, Metrics regressionTests)

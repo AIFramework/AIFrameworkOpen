@@ -399,10 +399,11 @@ namespace AI.ML.NeuralNetwork
             return trainer.Info;
         }
         /// <summary>
-        /// Neural network training
+        /// Обучение нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <param name="outputs"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public async Task<TrainInfo> TrainNetAsync(NNValue[] inputs, NNValue[] outputs, CancellationToken cancellationToken = default)
         {

@@ -3,12 +3,17 @@ using System;
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
 {
+    /// <summary>
+    /// Детектор определяющий переобучение нейронной сети
+    /// </summary>
     [Serializable]
     public static class OverfitDetector
     {
         /// <summary>
-        /// Overfit test
+        /// Проверка на переобучение
         /// </summary>
+        /// <param name="valLoss">История изменения валидационного лосса</param>
+        /// <param name="trainLoss">История изменения тренировочного лосса</param>
         public static bool IsOverfit(Vector valLoss, Vector trainLoss)
         {
             int k = 3, start = 5;

@@ -18,7 +18,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// (non-recursive part in difference equations)
         /// 
         /// These coefficients have single precision since they are used for filtering!
-        /// For filter design & analysis specify transfer function (Tf property).
+        /// For filter design analysis specify transfer function (Tf property).
         /// 
         /// Note.
         /// This array is created from duplicated coefficients:

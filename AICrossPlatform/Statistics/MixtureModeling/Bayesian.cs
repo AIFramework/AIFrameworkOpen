@@ -6,18 +6,28 @@ using System.Linq;
 
 namespace AI.Statistics.MixtureModeling
 {
+    /// <summary>
+    /// Элементы (инструменты) для байесовского вывода
+    /// </summary>
     [Serializable]
     public class Bayesian
     {
         private readonly IDistributionWithoutParams[] _distributions;
         private readonly Vector _apriori;
 
+        /// <summary>
+        /// Элементы (инструменты) для байесовского вывода
+        /// </summary>
         public Bayesian(IEnumerable<IDistributionWithoutParams> distributions, Vector apriori)
         {
             _distributions = distributions.ToArray();
             _apriori = apriori;
         }
 
+        /// <summary>
+        /// Получение индикаторов
+        /// </summary>
+        /// <param name="inps">Входы (одномерное распределение)</param>
         public int[] GetIndicators(Vector inps)
         {
             int[] indicators = new int[inps.Count];
@@ -31,7 +41,7 @@ namespace AI.Statistics.MixtureModeling
         /// <summary>
         /// Возвращает индикаторы
         /// </summary>
-        /// <param name="inps">Входы</param>
+        /// <param name="inps">Входы (многомерное распределение)</param>
         public int[] GetIndicators(Vector[] inps)
         {
             int[] indicators = new int[inps.Length];
@@ -62,6 +72,11 @@ namespace AI.Statistics.MixtureModeling
             return logs.MaxElementIndex();
         }
 
+        /// <summary>
+        /// Рассчет апостериорной вероятности
+        /// </summary>
+        /// <param name="conditionalProbabilities">Вектор условных вероятностей</param>
+        /// <param name="apriori">Вектор априорных вероятностей</param>
         public static Vector CalcAposteori(Vector conditionalProbabilities, Vector apriori)
         {
             Vector vector_prob = conditionalProbabilities * apriori;
@@ -85,6 +100,9 @@ namespace AI.Statistics.MixtureModeling
         /// Многомерная плотность вероятности 
         /// </summary>
         /// <param name="inp">Вход</param>
+        /// <param name="distribution">Распределения</param>
+        /// <param name="param_dist">Параметры распределений</param>
+        /// <param name="apriori">Вектор априорных вероятностей</param>
         public static int LogArgmaxND(Vector inp, IDistribution distribution, Dictionary<string, Vector>[] param_dist, Vector apriori)
         {
             Vector logs = new Vector(apriori.Count).TransformByIndex(i => distribution.CulcLogProb(inp, param_dist[i]) * apriori[i]);
@@ -113,6 +131,9 @@ namespace AI.Statistics.MixtureModeling
         /// Возвращает индикаторы
         /// </summary>
         /// <param name="inps">Входы</param>
+        /// <param name="distribution">Распределения</param>
+        /// <param name="param_dist">Параметры распределений</param>
+        /// <param name="apriori">Вектор априорных вероятностей</param>
         public static int[] GetIndicators(Vector[] inps, IDistribution distribution, Dictionary<string, Vector>[] param_dist, Vector apriori)
         {
             int[] indicators = new int[inps.Length];

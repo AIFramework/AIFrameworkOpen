@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Layer for training and creating embedding vectors
+    /// Слой для создания и обучения векторов встранивания
     /// </summary>
     [Serializable]
     public class EmbedingLayer : ILearningLayer, IRecurrentLayer,IActivatableLayer

@@ -20,9 +20,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 
         private float Backward(float x)
         {
-            float coshx = (float)Math.Cosh(x);
-            float denom = (float)(Math.Cosh(2 * x) + 1);
-            return 4 * coshx * coshx / (denom * denom);
+            //float coshx = (float)Math.Cosh(x);
+            //float denom = (float)(Math.Cosh(2 * x) + 1);
+            //return 4 * coshx * coshx / (denom * denom);
+            return 1 - x * x;
         }
 
         /// <summary>

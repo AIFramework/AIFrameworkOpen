@@ -12,6 +12,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         /// Random number generator setting numerator
         /// </summary>
         public float Numerator => 2;
+        /// <summary>
+        /// Максимальное значение производной
+        /// </summary>
+        public float MaxDiff = 0.01f;
 
         /// <summary>
         /// Сигмоидальная Activation function
@@ -27,8 +31,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 
         private float Backward(float x)
         {
-            float act = Forward(x);
-            return act * (1 - act);
+            //float act = Forward(x);
+            float dif = x * (1 - x);
+            return Math.Abs(dif)> MaxDiff ? MaxDiff*Math.Sign(dif):dif;
         }
         /// <summary>
         /// Forward pass

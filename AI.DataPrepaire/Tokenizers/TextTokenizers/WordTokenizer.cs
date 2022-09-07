@@ -20,6 +20,11 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         public bool IsLower { get; set; } = true;
 
         /// <summary>
+        /// Длинна словаря
+        /// </summary>
+        public int DictLen { get { return decoder.Length; } }
+
+        /// <summary>
         /// Токенизатор на уровне слов 
         /// </summary>
         public WordTokenizer(string[] decoder, Dictionary<string, int> encoder) : base(decoder, encoder)

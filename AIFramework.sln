@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tokens", "Tokens", "{F4D49D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordTokenizerTest", "Tests\DataPrepaire\Tokens\WordTokenizerTest\WordTokenizerTest.csproj", "{06BD8A7E-E55A-4E89-9B80-1793D949C252}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllerTest", "Tests\DataPrepaire\Tokens\ControllerTest\ControllerTest.csproj", "{6179DAFF-5560-43C1-9D1C-C8F175DEE1D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{06BD8A7E-E55A-4E89-9B80-1793D949C252}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06BD8A7E-E55A-4E89-9B80-1793D949C252}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06BD8A7E-E55A-4E89-9B80-1793D949C252}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6179DAFF-5560-43C1-9D1C-C8F175DEE1D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6179DAFF-5560-43C1-9D1C-C8F175DEE1D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6179DAFF-5560-43C1-9D1C-C8F175DEE1D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6179DAFF-5560-43C1-9D1C-C8F175DEE1D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,6 +148,7 @@ Global
 		{0518319D-0508-4B40-88EC-589411F4CEF1} = {518DD6AB-6F5E-4D74-8CFD-A4826C759F55}
 		{F4D49D24-084F-4865-B8FC-4F7756DCE067} = {1D8E7971-CD1C-421C-9571-5816F6D7EECC}
 		{06BD8A7E-E55A-4E89-9B80-1793D949C252} = {F4D49D24-084F-4865-B8FC-4F7756DCE067}
+		{6179DAFF-5560-43C1-9D1C-C8F175DEE1D9} = {1D8E7971-CD1C-421C-9571-5816F6D7EECC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {195084AE-6B2F-490D-AB30-834665F7A953}

@@ -1,5 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.DataStructs.Shapes;
+using AI.ML.NeuralNetwork.CoreNNW.Activations;
 using AI.ML.NeuralNetwork.CoreNNW.Layers.Base;
 using AI.ML.NeuralNetwork.CoreNNW.Models;
 using System;
@@ -11,7 +12,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
     /// Layer for training and creating embedding vectors
     /// </summary>
     [Serializable]
-    public class EmbedingLayer : ILearningLayer, IRecurrentLayer
+    public class EmbedingLayer : ILearningLayer, IRecurrentLayer,IActivatableLayer
     {
         private NNValue[] _vectors; // Вектора встраивания (эмбединги)
         private readonly HashSet<int> _usedKeys = new HashSet<int>();
@@ -36,6 +37,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public double AddDenInSqrt => 0;
 
+        /// <summary>
+        /// Активационная ф-я
+        /// </summary>
+        public IActivation ActivationFunction { get; set; } = new TanhUnit();
+        
         /// <summary>
         /// Layer for training and creating embedding vectors
         /// </summary>
@@ -101,7 +107,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
                 _usedKeys.Add(index);
             }
 
-            return _vectors[index];
+            return g.Activate(ActivationFunction, _vectors[index]);
         }
         /// <summary>
         /// Initialize layer weights

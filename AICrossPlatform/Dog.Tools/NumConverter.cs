@@ -91,6 +91,7 @@ namespace AI.Dog.Tools
         /// Перевод из десятичной системы в код Грея
         /// </summary>
         /// <param name="decim">Число в десятичной системе</param>
+        /// <param name="count">Количество цифр в представлении числа</param>
         public static string DecimalToGrayStr(this int decim, int count)
         {
             var str = Convert.ToString(decim ^ (decim >> 1), 2);
@@ -110,6 +111,7 @@ namespace AI.Dog.Tools
         /// Перевод из десятичной системы в код Грея
         /// </summary>
         /// <param name="decim">Число в десятичной системе</param>
+        /// <param name="count">Количество цифр в представлении числа</param>
         public static bool[] DecimalToGrayBits(this int decim, int count)
         {
             return decim.DecimalToGrayStr(count).StringToBitArray();

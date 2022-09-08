@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace AI.DataStructs.Shapes
 {
     /// <summary>
-    /// Represents 4D shape
+    /// Четырехмерная форма
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Height = {Height}, Width = {Width}, Depth = {Depth}, X = {X}")]
@@ -38,12 +38,12 @@ namespace AI.DataStructs.Shapes
         #endregion
 
         /// <summary>
-        /// Creates 4D shape
+        /// Четырехмерная форма
         /// </summary>
-        /// <param name="height">Height</param>
-        /// <param name="width">Width</param>
-        /// <param name="depth">Depth</param>
-        /// <param name="x">Fourth dimension</param>
+        /// <param name="height">Высота</param>
+        /// <param name="width">Ширина</param>
+        /// <param name="depth">Глубина</param>
+        /// <param name="x">четвертая размерность</param>
         public Shape4D(int height = 1, int width = 1, int depth = 1, int x = 1) : base(width, height, depth, x) { }
 
         /// <summary>

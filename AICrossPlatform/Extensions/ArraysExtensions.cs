@@ -2,9 +2,15 @@
 
 namespace AI.Extensions
 {
+    /// <summary>
+    /// Расширения для конвертации массивов
+    /// </summary>
     public static class ArraysExtensions
     {
         #region ToDoubleArray
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[] ToDoubleArray(this float[] array)
         {
             double[] dArr = new double[array.Length];
@@ -16,7 +22,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[] ToDoubleArray(this int[] array)
         {
             double[] dArr = new double[array.Length];
@@ -28,7 +36,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[] ToDoubleArray(this long[] array)
         {
             double[] dArr = new double[array.Length];
@@ -40,7 +50,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[] ToDoubleArray(this decimal[] array)
         {
             double[] dArr = new double[array.Length];
@@ -52,7 +64,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[] ToDoubleArray(this short[] array)
         {
             double[] dArr = new double[array.Length];
@@ -64,7 +78,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[] ToDoubleArray(this byte[] array)
         {
             double[] dArr = new double[array.Length];
@@ -79,6 +95,9 @@ namespace AI.Extensions
         #endregion
 
         #region ToDoubleArray2D
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[,] ToDoubleArray2D(this float[,] array)
         {
             double[,] dArr = new double[array.GetLength(0), array.GetLength(1)];
@@ -93,7 +112,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[,] ToDoubleArray2D(this int[,] array)
         {
             double[,] dArr = new double[array.GetLength(0), array.GetLength(1)];
@@ -108,7 +129,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[,] ToDoubleArray2D(this long[,] array)
         {
             double[,] dArr = new double[array.GetLength(0), array.GetLength(1)];
@@ -123,7 +146,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[,] ToDoubleArray2D(this decimal[,] array)
         {
             double[,] dArr = new double[array.GetLength(0), array.GetLength(1)];
@@ -138,7 +163,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[,] ToDoubleArray2D(this short[,] array)
         {
             double[,] dArr = new double[array.GetLength(0), array.GetLength(1)];
@@ -153,7 +180,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа double
+        /// </summary>
         public static double[,] ToDoubArray2D(this byte[,] array)
         {
             double[,] dArr = new double[array.GetLength(0), array.GetLength(1)];
@@ -171,6 +200,9 @@ namespace AI.Extensions
         #endregion
 
         #region ToFloatArray
+        /// <summary>
+        /// Конвертация в массив элементов типа float
+        /// </summary>
         public static float[] ToFloatArray(this double[] array)
         {
             float[] dArr = new float[array.Length];
@@ -182,7 +214,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа float
+        /// </summary>
         public static float[] ToFloatArray(this int[] array)
         {
             float[] dArr = new float[array.Length];
@@ -194,7 +228,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа float
+        /// </summary>
         public static float[] ToFloatArray(this decimal[] array)
         {
             float[] dArr = new float[array.Length];
@@ -206,7 +242,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа float
+        /// </summary>
         public static float[] ToFloatArray(this long[] array)
         {
             float[] dArr = new float[array.Length];
@@ -218,7 +256,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа float
+        /// </summary>
         public static float[] ToFloatArray(this short[] array)
         {
             float[] dArr = new float[array.Length];
@@ -230,7 +270,9 @@ namespace AI.Extensions
 
             return dArr;
         }
-
+        /// <summary>
+        /// Конвертация в массив элементов типа float
+        /// </summary>
         public static float[] ToFloatArray(this byte[] array)
         {
             float[] dArr = new float[array.Length];
@@ -245,6 +287,14 @@ namespace AI.Extensions
         #endregion
 
         #region Transform
+        /// <summary>
+        /// Поэлементное преобразование над элементами исходного массива с созданием выходного массифа нужного типа
+        /// </summary>
+        /// <typeparam name="TI">Тип фходного массива</typeparam>
+        /// <typeparam name="TO">Тип выходного массива</typeparam>
+        /// <param name="array">Входной массив</param>
+        /// <param name="function">Функция преобразования</param>
+        /// <returns></returns>
         public static TO[] Transform<TI, TO>(this TI[] array, Func<TI, TO> function)
         {
             TO[] output = new TO[array.Length];
@@ -259,6 +309,13 @@ namespace AI.Extensions
         #endregion
 
         #region ElementWiseEqual
+        /// <summary>
+        /// Поэлементное сравнение 2х массивов
+        /// </summary>
+        /// <typeparam name="T">Тип массивов</typeparam>
+        /// <param name="arr1"></param>
+        /// <param name="arr2"></param>
+        /// <returns></returns>
         public static bool ElementWiseEqual<T>(this T[] arr1, T[] arr2)
         {
             bool a1n = arr1 == null;
@@ -274,17 +331,20 @@ namespace AI.Extensions
             }
             else
             {
-                if (arr1.Length != arr2.Length)
+                if (arr1!.Length != arr2!.Length)
                 {
                     return false;
                 }
 
                 for (int i = 0; i < arr1.Length; i++)
                 {
-                    if (!arr1[i].Equals(arr2[i]))
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
+                    if (arr1[i].Equals(arr2[i]))
                     {
-                        return false;
+                        continue;
                     }
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
+                    return false;
                 }
 
                 return true;

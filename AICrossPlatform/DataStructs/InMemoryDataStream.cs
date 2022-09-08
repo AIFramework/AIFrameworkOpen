@@ -2453,7 +2453,9 @@ namespace AI.DataStructs
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static byte[] DecryptAes(byte[] cipherText, byte[] key)
         {
+#pragma warning disable CS8600 // Преобразование литерала, допускающего значение NULL или возможного значения NULL в тип, не допускающий значение NULL.
             string base64 = null;
+#pragma warning restore CS8600 // Преобразование литерала, допускающего значение NULL или возможного значения NULL в тип, не допускающий значение NULL.
 
             using (Aes aesAlg = Aes.Create())
             {

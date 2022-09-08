@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace AI.DataStructs.Shapes
 {
     /// <summary>
-    /// Represents 3D shape
+    /// Трехмерная форма
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Height = {Height}, Width = {Width}, Depth = {Depth}")]
@@ -34,14 +34,18 @@ namespace AI.DataStructs.Shapes
         #endregion
 
         /// <summary>
-        /// Creates 3D shape
+        /// Трехмерная форма
         /// </summary>
-        /// <param name="height">Height</param>
-        /// <param name="width">Width</param>
-        /// <param name="depth">Depth</param>
+        /// <param name="height">Высота</param>
+        /// <param name="width">Ширина</param>
+        /// <param name="depth">Глубина</param>
         public Shape3D(int height = 1, int width = 1, int depth = 1) : base(width, height, depth) { }
 
         #region Операторы
+        /// <summary>
+        /// Преобразование трех-мерной формы в четырех мерную
+        /// </summary>
+        /// <param name="shape"></param>
         public static implicit operator Shape4D(Shape3D shape)
         {
             return new Shape4D(shape.Height, shape.Width, shape.Depth);
@@ -67,21 +71,36 @@ namespace AI.DataStructs.Shapes
         }
 
         #region Технические методы
+        /// <summary>
+        /// Преобразование формы в строку
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return $"[H:{Height}, W: {Width}, D: {Depth}]";
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public bool Equals(Shape3D other)
         {
             return Width == other.Width && Height == other.Height && Depth == other.Depth;
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public override int GetHashCode()
         {
             return base.GetHashCode();

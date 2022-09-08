@@ -382,6 +382,11 @@ namespace AI.NLP
         /// </summary>
         public double Probability { get; set; }
 
+        /// <summary>
+        /// Создание параметров для хранения марковской цепи
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="probability"></param>
         public HMMFastModel(string[] model, double probability)
         {
             Model = model;

@@ -2,6 +2,9 @@
 
 namespace AI.Extensions
 {
+   /// <summary>
+   /// Расширения для алгебраических методов
+   /// </summary>
     public static class AlgebraicStructsExtensions
     {
         #region ToTensor

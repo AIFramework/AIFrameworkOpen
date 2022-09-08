@@ -3,16 +3,16 @@
 namespace AI.DataStructs.Algebraic
 {
     /// <summary>
-    /// Algebraic structure interface
+    /// Интерфейс алгебраической структуры
     /// </summary>
     public interface IAlgebraicStructure
     {
         /// <summary>
-        /// Structure data as 1D array
+        /// Представление данных структуры как одномерного массива
         /// </summary>
         double[] Data { get; }
         /// <summary>
-        /// Structure shape
+        /// Форма структуры
         /// </summary>
         Shape Shape { get; }
     }

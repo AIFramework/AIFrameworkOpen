@@ -1,14 +1,14 @@
 ﻿namespace AI.DataStructs
 {
     /// <summary>
-    /// Object that can be saved in text format
+    /// Объект который может быть сохранен в текстовом виде
     /// </summary>
     public interface ITextSavable
     {
         /// <summary>
-        /// Save to file
+        /// Сохранение в файл
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь</param>
         void SaveAsText(string path);
     }
 }

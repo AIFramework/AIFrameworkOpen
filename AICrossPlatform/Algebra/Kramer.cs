@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace AI.Algebra
 {
     /// <summary>
-    /// Cramer method
+    /// Метод Крамера
     /// </summary>
     [Serializable]
     public class Kramer
@@ -30,10 +30,10 @@ namespace AI.Algebra
 
 
         /// <summary>
-        /// Solve the SLAE
+        /// Решение СЛАУ методом Крамера
         /// </summary>
-        /// <param name="A">Coefficient matrix</param>
-        /// <param name="B">Free members vector</param>
+        /// <param name="A">Матрица коэффициентов</param>
+        /// <param name="B">Вектор свободных членов</param>
         public Vector SolvingEquations(Matrix A, Vector B)
         {
             _a = A;

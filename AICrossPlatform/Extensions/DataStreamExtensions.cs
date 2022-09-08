@@ -50,7 +50,7 @@ namespace AI.Extensions
                 stream.Write("0");
             }
 
-            stream.Write(convertable.GetBytes());
+            stream.Write(convertable!.GetBytes());
             return stream;
         }
         /// <summary>

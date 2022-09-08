@@ -43,7 +43,9 @@ namespace AI.DataStructs.Data
             Length = length;
             for (int i = 0; i < length; i++)
             {
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
                 Data[i] = defoultElement;
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
             }
         }
 

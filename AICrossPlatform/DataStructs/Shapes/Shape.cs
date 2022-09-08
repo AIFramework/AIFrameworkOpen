@@ -78,7 +78,7 @@ namespace AI.DataStructs.Shapes
                 return false;
             }
 
-            if (shape1.Rank != shape2.Rank || shape1.Count != shape2.Count)
+            if (shape1!.Rank != shape2!.Rank || shape1.Count != shape2.Count)
             {
                 return false;
             }

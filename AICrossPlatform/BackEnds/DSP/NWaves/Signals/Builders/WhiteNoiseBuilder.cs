@@ -8,7 +8,6 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
     /// Class for a white noise generator
     /// </summary>
     [Serializable]
-    /// 
     public class WhiteNoiseBuilder : SignalBuilder
     {
         /// <summary>
@@ -36,6 +35,9 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
             _high = 1.0;
         }
 
+        /// <summary>
+        /// Генерация белого шума с равномерным распределением
+        /// </summary>
         protected override DiscreteSignal Generate()
         {
             Guard.AgainstInvalidRange(_low, _high, "Upper amplitude", "Lower amplitude");
@@ -43,10 +45,8 @@ namespace AI.BackEnds.DSP.NWaves.Signals.Builders
         }
 
         /// <summary>
-        /// Method generates white noise by simply generating 
-        /// consecutive decorrelated random samples.
+        ///  Генерация белого шума с равномерным распределением (следующий элемент последовательности)
         /// </summary>
-        /// <returns></returns>
         public override float NextSample()
         {
             return (float)((_rand.NextDouble() * (_high - _low)) + _low);

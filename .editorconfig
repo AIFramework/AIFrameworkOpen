@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS8603: Возможно, возврат ссылки, допускающей значение NULL.
+dotnet_diagnostic.CS8603.severity = suggestion

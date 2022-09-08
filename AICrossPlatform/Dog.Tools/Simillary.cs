@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace AI.Dog.Tools
 {
+    /// <summary>
+    /// Проверка схожести чисел
+    /// </summary>
     [Serializable]
     public static class Simillary
     {

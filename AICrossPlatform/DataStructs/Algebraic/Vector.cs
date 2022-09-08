@@ -390,6 +390,9 @@ namespace AI.DataStructs.Algebraic
             return C;
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public static bool operator ==(Vector A, Vector B)
         {
             if (Equals(A, null) && Equals(B, null))
@@ -402,7 +405,7 @@ namespace AI.DataStructs.Algebraic
                 return false;
             }
 
-            if (A.Count != B.Count)
+            if (A!.Count != B!.Count)
             {
                 return false;
             }
@@ -421,41 +424,65 @@ namespace AI.DataStructs.Algebraic
             return flag;
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public static bool operator !=(Vector A, Vector B)
         {
             return !(A == B);
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public static bool operator ==(Vector left, IList<double> right)
         {
             return left == FromList(right);
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public static bool operator !=(Vector left, IList<double> right)
         {
             return left != FromList(right);
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public static bool operator ==(List<double> left, Vector right)
         {
             return FromList(left) == right;
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public static bool operator !=(List<double> left, Vector right)
         {
             return FromList(left) != right;
         }
 
+        /// <summary>
+        /// Преобразование типа
+        /// </summary>
         public static implicit operator double[](Vector vector)
         {
             return vector.ToArray();
         }
 
+        /// <summary>
+        /// Преобразование типа
+        /// </summary>
         public static implicit operator Vector(double[] data)
         {
             return new Vector(data);
         }
 
+        /// <summary>
+        /// Преобразование типа
+        /// </summary>
         public static implicit operator Vector(int[] data)
         {
             Vector outp = new Vector(data.Length);
@@ -468,16 +495,25 @@ namespace AI.DataStructs.Algebraic
             return outp;
         }
 
+        /// <summary>
+        /// Преобразование типа
+        /// </summary>
         public static implicit operator Vector(float[] data)
         {
             return SingleArray2Vector(data);
         }
 
+        /// <summary>
+        /// Преобразование типа
+        /// </summary>
         public static explicit operator float[](Vector data)
         {
             return Vector2SingleArray(data);
         }
 
+        /// <summary>
+        /// Преобразование типа
+        /// </summary>
         public static explicit operator int[](Vector vector)
         {
             int[] outp = new int[vector.Count];
@@ -1811,11 +1847,19 @@ namespace AI.DataStructs.Algebraic
         #endregion
 
         #region Технические методы
+
+        /// <summary>
+        /// Перевод вектора в строку
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return ToString(AISettings.GetProvider());
         }
 
+        /// <summary>
+        /// Перевод вектора в строку
+        /// </summary>
         public string ToString(NumberFormatInfo numberFormatInfo)
         {
             if (Count == 0)
@@ -1837,6 +1881,9 @@ namespace AI.DataStructs.Algebraic
             return str.ToString();
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public override bool Equals(object obj)
         {
             if (obj is Vector vector)
@@ -1853,16 +1900,33 @@ namespace AI.DataStructs.Algebraic
             }
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public bool Equals(Vector other)
         {
             return this == other;
         }
 
-        public bool Equals(List<double> other)
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
+        public bool Equals(IEnumerable<double> other)
         {
-            return this == other;
+            return this == other.ToList();
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
+        public bool Equals(List<double> other)
+        {
+            return this == other.ToList();
+        }
+
+        /// <summary>
+        /// Получение хэш кода
+        /// </summary>
         public override int GetHashCode()
         {
             unchecked

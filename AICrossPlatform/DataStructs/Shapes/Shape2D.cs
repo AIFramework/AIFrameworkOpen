@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace AI.DataStructs.Shapes
 {
     /// <summary>
-    /// Represents 2D shape
+    /// Двумерная форма
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Height = {Height}, Width = {Width}")]

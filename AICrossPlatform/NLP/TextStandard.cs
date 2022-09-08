@@ -11,10 +11,10 @@ namespace AI.NLP
     public static class TextStandard
     {
         /// <summary>
-        ///  Standardization of the input text
+        ///  Стандартизация входного текста
         /// </summary>
-        /// <param name="input">Input text</param>
-        /// <param name="isLower">Casting to lowercase</param>
+        /// <param name="input">Входной текст</param>
+        /// <param name="isLower">Переводить ли текст в нижний регистр</param>
         public static string Normalize(string input, bool isLower = true)
         {
             if (input.Contains("base64"))

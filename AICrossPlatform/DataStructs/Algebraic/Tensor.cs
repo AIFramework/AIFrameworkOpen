@@ -10,7 +10,7 @@ using System.Text;
 namespace AI.DataStructs.Algebraic
 {
     /// <summary>
-    /// Represents a tensor of rank 3
+    /// Тензор 3-го ранга
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Height = {Height}, Width = {Width}, Depth = {Depth}")]
@@ -52,11 +52,11 @@ namespace AI.DataStructs.Algebraic
 
         #region Конструкторы
         /// <summary>
-        /// Initialization with an array
+        /// Инициализация 3х-мерным массивом
         /// </summary>
         public Tensor(double[,,] data)
         {
-            Shape = new Shape3D(data.GetLength(0), Data.GetLength(1), data.GetLength(2));
+            Shape = new Shape3D(data.GetLength(0), Data!.GetLength(1), data.GetLength(2));
 
             Data = new double[Height * Width * Depth];
 
@@ -74,13 +74,13 @@ namespace AI.DataStructs.Algebraic
             }
         }
         /// <summary>
-        /// Creating a tensor with zeros
+        /// Создает тензор заполненный нулями
         /// </summary>
         public Tensor(Shape3D shape)
         {
             if (shape.Rank > 3)
             {
-                throw new ArgumentException("Rank of the given shape if greater than 3", nameof(shape));
+                throw new ArgumentException("Максимальный ранг(размерность) формы = 3", nameof(shape));
             }
 
             switch (shape.Rank)
@@ -96,7 +96,7 @@ namespace AI.DataStructs.Algebraic
                     break;
             }
 
-            Data = new double[Shape.Count];
+            Data = new double[Shape!.Count];
         }
         /// <summary>
         /// Creating a tensor with zeros
@@ -316,12 +316,17 @@ namespace AI.DataStructs.Algebraic
 
             return newTensor;
         }
-
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public static bool operator ==(Tensor left, Tensor right)
         {
             return left.Shape == right.Shape && left.Data.ElementWiseEqual(right.Data);
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public static bool operator !=(Tensor left, Tensor right)
         {
             return left.Shape != right.Shape || !left.Data.ElementWiseEqual(right.Data);
@@ -338,9 +343,9 @@ namespace AI.DataStructs.Algebraic
             return tensor3;
         }
         /// <summary>
-        /// Element-wise transformation of tensor
+        /// Поэлементное преобразование тензора
         /// </summary>
-        /// <param name="transform">Transform function</param>
+        /// <param name="transform">Функция преобразования</param>
         public Tensor Transform(Func<double, double> transform)
         {
             Tensor newTensor = new Tensor(Height, Width, Depth);
@@ -354,7 +359,7 @@ namespace AI.DataStructs.Algebraic
         }
 
         /// <summary>
-        /// Convert tensor to array of matrices
+        /// Конвертация тензор в массив матриц
         /// </summary>
         public Matrix[] ToMatrices()
         {

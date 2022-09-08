@@ -4,16 +4,16 @@ using System;
 namespace AI.Algebra
 {
     /// <summary>
-    /// Gauss method has computational complexity O(n^3)
+    /// Метод Гаусса с выч. сложностью O(n^3)
     /// </summary>
     [Serializable]
     public static class Gauss
     {
         /// <summary>
-        /// Solve the SLAE
+        /// Решение СЛАУ методом Гаусса
         /// </summary>
-        /// <param name="A">Coefficient matrix</param>
-        /// <param name="B">Free members vector</param>
+        /// <param name="A">Матрица коэффициентов</param>
+        /// <param name="B">Вектор свободных членов</param>
         public static Vector SolvingEquations(Matrix A, Vector B)
         {
 

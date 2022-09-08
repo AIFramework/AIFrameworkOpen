@@ -4,16 +4,16 @@ using System.Numerics;
 namespace AI.DataStructs.WithComplexElements
 {
     /// <summary>
-    /// Complex structure interface
+    /// Интефейс комплексной структуры
     /// </summary>
     public interface IComplexStructure
     {
         /// <summary>
-        /// Structure data as 1D array
+        /// Одномерный массив комплексных компонент
         /// </summary>
         Complex[] Data { get; }
         /// <summary>
-        /// Structure shape
+        /// Форма структуры
         /// </summary>
         Shape Shape { get; }
     }

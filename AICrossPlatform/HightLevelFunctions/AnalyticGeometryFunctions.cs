@@ -12,26 +12,26 @@ using System;
 namespace AI.HightLevelFunctions
 {
     /// <summary>
-    /// Analytic geometry
+    /// Аналитическая геометрия
     /// </summary>
     public static class AnalyticGeometryFunctions
     {
         /// <summary>
-        /// Cosine of the angle between two vectors
+        /// Косинус между векторами
         /// </summary>
         public static double Cos(Vector vector1, Vector vector2)
         {
             return Dot(vector1, vector2) / Math.Sqrt(Dot(vector2, vector2) * Dot(vector1, vector1));
         }
         /// <summary>
-        /// Calculates the Euclidean norm of a vector
+        /// Расчет Евклидовой нормы
         /// </summary>
         public static double NormVect(Vector vector)
         {
             return Math.Sqrt(Functions.Summ(vector * vector));
         }
         /// <summary>
-        /// Dot product of 2 vectors
+        /// Скалярное произведение векторов
         /// </summary>
         public static double Dot(Vector vector, Vector vector2)
         {

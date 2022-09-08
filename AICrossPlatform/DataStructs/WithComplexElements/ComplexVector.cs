@@ -10,22 +10,22 @@ using Vector = AI.DataStructs.Algebraic.Vector;
 namespace AI.DataStructs.WithComplexElements
 {
     /// <summary>
-    /// Class that implements vector of complex numbers
+    /// Представляет вектор комплексных чисел
     /// </summary>
     [Serializable]
     public class ComplexVector : List<Complex>, IComplexStructure, ISavable, IByteConvertable
     {
         #region Поля и свойства
         /// <summary>
-        /// Complex array containing vector samples
+        /// Массив комплексных чисел
         /// </summary>
         Complex[] IComplexStructure.Data => ToArray();
         /// <summary>
-        /// Vector shape
+        /// Форма вектора
         /// </summary>
         public Shape Shape => new Shape1D(Count);
         /// <summary>
-        /// Real parts of all vector components represented as algebraic vector
+        /// Реальная (действительная) часть комплексного вектора 
         /// </summary>
         public Vector RealVector
         {
@@ -42,7 +42,7 @@ namespace AI.DataStructs.WithComplexElements
             }
         }
         /// <summary>
-        /// Imaginary parts of all vector components represented as algebraic vector
+        /// Мнимая часть комплексного вектора
         /// </summary>
         public Vector ImaginaryVector
         {
@@ -59,7 +59,7 @@ namespace AI.DataStructs.WithComplexElements
             }
         }
         /// <summary>
-        /// Magnitude parts of all vector components represented as algebraic vector
+        /// Модуль комплексного вектора
         /// </summary>
         public Vector MagnitudeVector
         {
@@ -76,7 +76,7 @@ namespace AI.DataStructs.WithComplexElements
             }
         }
         /// <summary>
-        /// Phase parts of all vector components represented as algebraic vector
+        /// Фаза комплексного вектора
         /// </summary>
         public Vector PhaseVector
         {

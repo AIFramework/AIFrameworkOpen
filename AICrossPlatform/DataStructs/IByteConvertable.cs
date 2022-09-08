@@ -1,12 +1,12 @@
 ﻿namespace AI.DataStructs
 {
     /// <summary>
-    /// Object with binary serialization support
+    /// Объект с поддержкой бинарной сериализации
     /// </summary>
     public interface IByteConvertable
     {
         /// <summary>
-        /// Writing an object to a byte array
+        /// Преобразование объекта в массив байт
         /// </summary>
         byte[] GetBytes();
     }

@@ -13,7 +13,7 @@ using System.Text;
 namespace AI.DataStructs.Algebraic
 {
     /// <summary>
-    /// Class of matrix and operations on it
+    /// Класс представляющий матрицы и операции с ними
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Height = {Height}, Width = {Width}")]
@@ -21,40 +21,39 @@ namespace AI.DataStructs.Algebraic
     {
         #region Поля и свойства
         /// <summary>
-        /// Matrix elements
+        /// Данные(компоненты) матрицы
         /// </summary>
         public double[] Data { get; private set; }
         /// <summary>
-        /// Matrix type
+        /// Тип матрицы
         /// </summary>
         public MatrixType DataType { get; set; }
         /// <summary>
-        /// Matrix height
+        /// Высота
         /// </summary>
         public int Height => Shape[1];
         /// <summary>
-        /// matrix width
+        /// Ширина
         /// </summary>
         public int Width => Shape[0];
         /// <summary>
-        /// Matrix shape
+        /// Форма матрицы
         /// </summary>
         public Shape Shape { get; } = new Shape2D(3, 3);
         /// <summary>
-        /// Get element by indexes
+        /// Выдает элемент по индексу
         /// </summary>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
+        /// <param name="i">Индекс высоты</param>
+        /// <param name="j">Индекс ширины</param>
         public double this[int i, int j]
         {
             get => Get(i, j);
             set => Set(i, j, value);
         }
         /// <summary>
-        /// Get element by indexes
+        /// Выдает элемент по индексу
         /// </summary>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
+        /// <param name="i">Индекс</param>
         public double this[int i]
         {
             get => Data[i];
@@ -249,7 +248,7 @@ namespace AI.DataStructs.Algebraic
 
         #region Операторы 
         /// <summary>
-        /// Addition of matrices 
+        /// Поэлементная сумма
         /// </summary>
         /// <param name="A"></param>
         /// <param name="B"></param>
@@ -272,7 +271,7 @@ namespace AI.DataStructs.Algebraic
             return C;
         }
         /// <summary>
-        /// Difference of matrices
+        /// Поэлементная разность
         /// </summary>
         /// <param name="A"></param>
         /// <param name="B"></param>
@@ -349,7 +348,7 @@ namespace AI.DataStructs.Algebraic
             return C;
         }
         /// <summary>
-        /// вычитание
+        /// Вычитание
         /// </summary>
         /// <param name="k"></param>
         /// <param name="A"></param>
@@ -367,6 +366,12 @@ namespace AI.DataStructs.Algebraic
             return C;
         }
 
+        /// <summary>
+        /// Умножение
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
         public static Matrix operator *(Matrix A, double k)
         {
             Matrix C = new Matrix(A.Height, A.Width);
@@ -379,7 +384,9 @@ namespace AI.DataStructs.Algebraic
 
             return C;
         }
-
+        /// <summary>
+        /// Деление
+        /// </summary>
         public static Matrix operator /(Matrix A, double k)
         {
             Matrix C = new Matrix(A.Height, A.Width);
@@ -393,6 +400,9 @@ namespace AI.DataStructs.Algebraic
             return C;
         }
 
+        /// <summary>
+        /// Деление
+        /// </summary>
         public static Matrix operator /(double k, Matrix A)
         {
             Matrix C = new Matrix(A.Height, A.Width);
@@ -405,7 +415,9 @@ namespace AI.DataStructs.Algebraic
 
             return C;
         }
-
+        /// <summary>
+        /// Умножение
+        /// </summary>
         public static Matrix operator *(double k, Matrix A)
         {
             Matrix C = new Matrix(A.Height, A.Width);
@@ -438,12 +450,10 @@ namespace AI.DataStructs.Algebraic
         {
             return (B.ToMatrix() * A).LikeVector();
         }
+
         /// <summary>
-        /// Matrix multiplication
+        /// Матричное умножение
         /// </summary>
-        /// <param name="A"></param>
-        /// <param name="B"></param>
-        /// <returns></returns>
         public static Matrix operator *(Matrix A, Matrix B)
         {
             Matrix C = new Matrix(A.Height, B.Width);
@@ -469,6 +479,12 @@ namespace AI.DataStructs.Algebraic
             return C;
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
         public static bool operator ==(Matrix left, Matrix right)
         {
             bool lNull = Equals(left, null);
@@ -483,9 +499,12 @@ namespace AI.DataStructs.Algebraic
                 return false;
             }
 
-            return left.Shape == right.Shape && left.Data.ElementWiseEqual(right.Data);
+            return left!.Shape == right!.Shape && left.Data.ElementWiseEqual(right.Data);
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public static bool operator !=(Matrix left, Matrix right)
         {
             bool lNull = Equals(left, null);
@@ -500,7 +519,7 @@ namespace AI.DataStructs.Algebraic
                 return true;
             }
 
-            return left.Shape != right.Shape || !left.Data.ElementWiseEqual(right.Data);
+            return left!.Shape != right!.Shape || !left.Data.ElementWiseEqual(right.Data);
         }
         #endregion
 
@@ -962,6 +981,7 @@ namespace AI.DataStructs.Algebraic
         public Vector GetVector(int index, int dimension)
         {
             Vector result;
+
             switch (dimension)
             {
                 case 0:
@@ -981,7 +1001,8 @@ namespace AI.DataStructs.Algebraic
 
                     return result;
             }
-            return null;
+
+            throw new Exception("Индекс может быть только 1 или 0");
         }
         /// <summary>
         /// Перегруппировка матрицы (Замена индексов)
@@ -1541,11 +1562,18 @@ namespace AI.DataStructs.Algebraic
         #endregion
 
         #region Технические методы
+        /// <summary>
+        /// Преобразование матрицы в строку
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return ToString(AISettings.GetProvider());
         }
 
+        /// <summary>
+        /// Преобразование матрицы в строку
+        /// </summary>
         public string ToString(NumberFormatInfo provider)
         {
             StringBuilder sb = new StringBuilder();
@@ -1568,6 +1596,9 @@ namespace AI.DataStructs.Algebraic
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public override bool Equals(object obj)
         {
             if (obj is Matrix matrix)
@@ -1579,12 +1610,16 @@ namespace AI.DataStructs.Algebraic
                 return false;
             }
         }
-
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public bool Equals(Matrix other)
         {
             return this == other;
         }
-
+        /// <summary>
+        /// Получение хэша
+        /// </summary>
         public override int GetHashCode()
         {
             unchecked

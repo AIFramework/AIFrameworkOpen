@@ -24,6 +24,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         /// </summary>
         public float Alpha { get; set; } = 1.715f;
 
+        /// <summary>
+        /// Активационная ф-я гиперболический тангенс
+        /// y(x) = a*th(b*x)
+        /// </summary>
+        public TanhUnit() { }
+
         private float Forward(float x)
         {
             return Alpha * (float)Math.Tanh(Beta*x);

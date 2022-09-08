@@ -3,17 +3,17 @@
 namespace AI.DataStructs
 {
     /// <summary>
-    /// Object that can be saved
+    /// Объект, который может быть сохранен
     /// </summary>
     public interface ISavable
     {
         /// <summary>
-        /// Save to file
+        /// Сохранение в файл
         /// </summary>
         /// <param name="path"></param>
         void Save(string path);
         /// <summary>
-        /// Save to stream
+        /// Сохранение в поток
         /// </summary>
         /// <param name="stream"></param>
         void Save(Stream stream);

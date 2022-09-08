@@ -5,7 +5,7 @@ using System.Linq;
 namespace AI.NLP
 {
     /// <summary>
-    /// Class for tokenizing text
+    /// Токенизатор (ТoDo: удалить и перенести функционал в токенизатор AI.DataPrepaire)
     /// </summary>
     [Serializable]
     public class TextTokenizer
@@ -37,6 +37,9 @@ namespace AI.NLP
         public int WordCount { get; set; } = -1;
 
         private readonly Dictionary<string, int> dictionary = new Dictionary<string, int>();
+        /// <summary>
+        /// Слова
+        /// </summary>
         public string[] Words;
 
 
@@ -55,7 +58,10 @@ namespace AI.NLP
             IsStem = isStem;
         }
 
-
+        /// <summary>
+        /// Обучение модели
+        /// </summary>
+        /// <param name="text"></param>
         public void Train(string text)
         {
             string inp = Preproc(text);
@@ -88,7 +94,11 @@ namespace AI.NLP
 
         }
 
-
+        /// <summary>
+        /// Токенизация последовательности
+        /// </summary>
+        /// <param name="seq"></param>
+        /// <returns></returns>
         public Vector GetSeq2Tokens(string seq)
         {
             Vector vec = new Vector(Count) - 1;
@@ -111,7 +121,9 @@ namespace AI.NLP
 
             return vec;
         }
-
+        /// <summary>
+        /// Токенизация слова
+        /// </summary>
         public int GetWord2Token(string word)
         {
             string outp = Preproc(word);
@@ -125,6 +137,9 @@ namespace AI.NLP
             return dictionary.Count;
         }
 
+        /// <summary>
+        /// Токенизация слова с помощью one-hot
+        /// </summary>
         public Vector GetWord2OneHot(string word)
         {
             Vector ret = new Vector(dictionary.Count + 1);
@@ -135,6 +150,10 @@ namespace AI.NLP
             return ret;
         }
 
+        /// <summary>
+        /// Получить размерность с неизвестными словами
+        /// </summary>
+        /// <returns></returns>
         public int GetDimWithUnKnowWord()
         {
             return dictionary.Count + 1;

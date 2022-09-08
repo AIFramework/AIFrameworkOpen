@@ -40,7 +40,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Активационная ф-я
         /// </summary>
-        public IActivation ActivationFunction { get; set; } = new TanhUnit();
+        public IActivation ActivationFunction { get; set; } = new LinearUnit();
         
         /// <summary>
         /// Layer for training and creating embedding vectors

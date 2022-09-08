@@ -363,6 +363,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                     {
                         NNValue data = function.Backward(t);
 
+                        //for (int i = 0; i < data.Data.Length; i++)
+                        //    t.DifData[i] += data[i]*returnObj.DifData[i];
+
+
                         fixed (float* inpDiff = t.DifData)
                         {
                             fixed (float* dat = data.Data)

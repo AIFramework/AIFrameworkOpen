@@ -8,13 +8,13 @@ namespace AI.ML.DataSets.Base
 {
 
     /// <summary>
-    /// Dataset containing an array of sequences for training recurrent neural networks
+    /// Набор данных, содержащий массив последовательностей для обучения рекуррентных нейронных сетей.
     /// </summary>
     [Serializable]
     public class Many2ManyVectorClassifierDataset : List<Many2ManyVectorClassifier>
     {
         /// <summary>
-        /// The method returns an array of lists(an array of sequences) of class labels
+        /// Метод возвращает массив списков (массив последовательностей) меток классов
         /// </summary>
         public List<int>[] GetLabels()
         {
@@ -22,7 +22,7 @@ namespace AI.ML.DataSets.Base
         }
 
         /// <summary>
-        /// The method returns an array of lists(an array of sequences) of feature vectors
+        /// Метод возвращает массив списков (массив последовательностей) векторов признаков.
         /// </summary>
         public List<Vector>[] GetFeatures()
         {
@@ -30,7 +30,7 @@ namespace AI.ML.DataSets.Base
         }
 
         /// <summary>
-        /// The method returns an array of lists(an array of sequences) of class labels in vector representation
+        /// Метод возвращает массив списков (массив последовательностей) меток классов в векторном представлении.
         /// </summary>
         public List<Vector>[] GetVectorLabels(int countClasses)
         {
@@ -38,7 +38,7 @@ namespace AI.ML.DataSets.Base
         }
 
         /// <summary>
-        /// Uniform shuffling
+        /// Перемешивание с равномерным распределением
         /// </summary>
         public void ShufflingDataset()
         {

@@ -7,32 +7,32 @@ using System.Linq;
 namespace AI.ML.DataSets.Base
 {
     /// <summary>
-    /// Sequence for training a recurrent network on a many-to-many basis
+    /// Последовательность данных для обучения рекуррентной сети по принципу «многие ко многим»
     /// </summary>
     [Serializable]
     public class Many2ManyVectorClassifier
     {
         /// <summary>
-        /// Class labels
+        /// Метки классов
         /// </summary>
         public List<int> Labels { get; set; }
         /// <summary>
-        /// Features
+        /// Признаки
         /// </summary>
         public List<Vector> Features { get; set; }
 
         /// <summary>
-        /// Sequence for training a recurrent network on a many-to-many basis
+        /// Последовательность данных для обучения рекуррентной сети по принципу «многие ко многим»
         /// </summary>
         public Many2ManyVectorClassifier()
         {
         }
 
         /// <summary>
-        /// Sequence for training a recurrent network on a many-to-many basis
+        /// Последовательность данных для обучения рекуррентной сети по принципу «многие ко многим»
         /// </summary>
-        /// <param name="labels">Class labels</param>
-        /// <param name="features"></param>
+        /// <param name="labels">Метки классов</param>
+        /// <param name="features">Признаки</param>
         public Many2ManyVectorClassifier(IEnumerable<int> labels, IEnumerable<IAlgebraicStructure> features)
         {
             Labels = labels.ToList();

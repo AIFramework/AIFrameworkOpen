@@ -23,7 +23,7 @@ namespace ControllerTest
         static void Main(string[] args)
         {
 
-            int n_tr = 6;
+            int n_tr = 1;
 
             WordTokenizer wordTokenizer = new WordTokenizer("cat.txt");
 
@@ -33,7 +33,7 @@ namespace ControllerTest
 
             for (int i = 0; i < texts.Length&&i< n_tr; i++)
                 data.Add(wordTokenizer.Encode(
-                    "<s> "+ texts[i]+" </s>" ));
+                    "<s> "+ texts[i]+" <e>" ));
             
 
             Ex2(data.ToArray(), wordTokenizer);
@@ -42,13 +42,12 @@ namespace ControllerTest
       
         static void Train(NeuralNetworkManager nnw, Many2Many dataset, int count)
         {
-            nnw.EpochesToPass = 35;
+            nnw.EpochesToPass = 235;
             nnw.LearningRate = 0.001f;
-            nnw.GradientClipValue = 0.2f;
+            nnw.GradientClipValue = 0.21f;
             nnw.ValSplit = 0;
             nnw.Loss = new CrossEntropyWithSoftmax();
             nnw.Optimizer = new RMSProp();
-            nnw.BatchSize = 6;
            
             nnw.TrainNet(dataset.GetFeatures(), dataset.GetVectorLabels(count));
         }
@@ -106,8 +105,8 @@ namespace ControllerTest
         static NNW GetNNWEmb(int inps)
         {
             NNW lstm = new NNW();
-            lstm.AddNewLayer(new Shape3D(1), new EmbedingLayer(inps, 50));
-            lstm.AddNewLayer(new ControllerL(35));
+            lstm.AddNewLayer(new Shape3D(1), new EmbedingLayer(inps, 105));
+            lstm.AddNewLayer(new ControllerL(23));
             lstm.AddNewLayer(new FeedForwardLayer(inps, new SoftmaxUnit()));
             return lstm;
         }

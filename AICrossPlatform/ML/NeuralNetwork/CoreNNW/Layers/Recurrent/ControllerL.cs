@@ -49,9 +49,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         private NNValue _hiddenContext;
         private NNValue _cellContext;
 
-        private readonly IActivation forgetGateActivation = new SigmoidUnit();
-        private readonly IActivation outputGateActivation = new SigmoidUnit();
-        private readonly IActivation inpGateActivation = new SigmoidUnit();
+        private readonly IActivation forgetGateActivation = new SigmoidUnit() { Epsilon = 0, Beta = 1, Alpha = 1.1f };
+        private readonly IActivation outputGateActivation = new SigmoidUnit() { Epsilon = 0, Beta = 1, Alpha = 1.1f };
+        private readonly IActivation inpGateActivation = new SigmoidUnit() { Epsilon = 0, Beta = 1, Alpha = 1.1f };
         private readonly IActivation cellInputActivation = new TanhUnit();
         private readonly IActivation cellOutputActivation = new TanhUnit();
         #endregion

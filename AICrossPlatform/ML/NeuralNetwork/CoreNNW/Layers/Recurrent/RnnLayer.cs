@@ -87,6 +87,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             //rollover activations for next iteration
             _context = output;
 
+            if (float.IsNaN(_context[0])) ResetState();
+
             return output;
         }
         /// <summary>

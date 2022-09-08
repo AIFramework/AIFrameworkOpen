@@ -3,7 +3,8 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 {
     /// <summary>
-    /// Activation function hyperbolic tangent
+    /// Активационная ф-я гиперболический тангенс
+    /// y(x) = a*th(b*x)
     /// </summary>
     [Serializable]
     public class TanhUnit : IActivation
@@ -13,9 +14,19 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         /// </summary>
         public float Numerator => 1;
 
+        /// <summary>
+        /// Параметр наклона y(x) = a*th(b*x), по-умолчанию равен b = 2/3 [С. Хайкин. "Нейронные сети 2е изд. исп." стр. 247-248]
+        /// </summary>
+        public float Beta { get; set; } = (float)(2.0 / 3.0);
+
+        /// <summary>
+        /// Параметр масштаба y(x) = a*th(b*x), по-умолчанию равен a = 1.7159 [С. Хайкин. "Нейронные сети 2е изд. исп." стр. 247-248]
+        /// </summary>
+        public float Alpha { get; set; } = 1.715f;
+
         private float Forward(float x)
         {
-            return (float)Math.Tanh(x);
+            return Alpha * (float)Math.Tanh(Beta*x);
         }
 
         private float Backward(float x)
@@ -23,7 +34,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             //float coshx = (float)Math.Cosh(x);
             //float denom = (float)(Math.Cosh(2 * x) + 1);
             //return 4 * coshx * coshx / (denom * denom);
-            return 1 - x * x;
+            float th = Alpha * (float)Math.Tanh(Beta * x);
+            return 1 - th * th;
         }
 
         /// <summary>

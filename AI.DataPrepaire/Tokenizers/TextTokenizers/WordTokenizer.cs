@@ -98,7 +98,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
             words.Add("<UNK>", UnknowToken);
             words.Add("<pad>", PadToken);
             words.Add("<s>", StartToken);
-            words.Add("</s>", EndToken);
+            words.Add("<e>", EndToken);
 
             int token_index = 0;
             // заполнение токенизатора из вероятностного словаря

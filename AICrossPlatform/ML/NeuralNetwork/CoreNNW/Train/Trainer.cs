@@ -20,7 +20,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
     public class Trainer : ITrainer, IReporter
     {
         #region Поля и свойства
-        private IGraph _graph;
+        private INNWGraph _graph;
 
         /// <summary>
         /// Regularization coefficient L1, if it is equal to 0 L1 no regularization
@@ -93,7 +93,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// Creating a trainer for a neural network
         /// </summary> 
         /// <param name="graph">Graph of automatic differentiation</param>
-        public Trainer(IGraph graph)
+        public Trainer(INNWGraph graph)
         {
             Init(graph);
         }
@@ -103,14 +103,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <param name="graph">Graph of automatic differentiation</param>
         /// <param name="trainType">Train type</param>
         /// <param name="optimizer">Optimizer training method</param>
-        public Trainer(IGraph graph, IOptimizer optimizer)
+        public Trainer(INNWGraph graph, IOptimizer optimizer)
         {
             Init(graph, optimizer);
         }
         /// <summary>
         /// Creating a trainer for a neural network
         /// </summary> 
-        public Trainer(IGraph graph = null, IOptimizer optimizer = null, int randSeed = 12)
+        public Trainer(INNWGraph graph = null, IOptimizer optimizer = null, int randSeed = 12)
         {
             Init(graph, optimizer);
         }
@@ -360,9 +360,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
             }
         }
         //Инициализация
-        private void Init(IGraph graph = null, IOptimizer optimizer = null)
+        private void Init(INNWGraph graph = null, IOptimizer optimizer = null)
         {
-            _graph = graph ?? new GraphCPU(false);
+            _graph = graph ?? new NNWGraphCPU(false);
             Optimizer = optimizer ?? new Adam();
             L1Regularization = 0;
             L2Regularization = 0;

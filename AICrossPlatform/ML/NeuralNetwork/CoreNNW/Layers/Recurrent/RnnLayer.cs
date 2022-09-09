@@ -78,7 +78,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="g">Graph of automatic differentiation</param>
-        public NNValue Forward(NNValue input, IGraph g)
+        public NNValue Forward(NNValue input, INNWGraph g)
         {
             NNValue concat = g.ConcatinateVectors(input, _context);
             NNValue sum = g.Mul(_w, concat); sum = g.Add(sum, _b);

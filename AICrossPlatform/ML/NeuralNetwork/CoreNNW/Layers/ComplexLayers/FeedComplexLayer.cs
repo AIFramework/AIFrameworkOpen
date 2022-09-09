@@ -82,7 +82,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="g">Graph of automatic differentiation</param>
-        public NNValue Forward(NNValue input, IGraph g)
+        public NNValue Forward(NNValue input, INNWGraph g)
         {
             NNValue[] imReal = g.DeepSplit(input, _slices);
             NNValue valueReal = g.FeedForwardLayer(imReal[0], WRe, BiasRe, ActivationFunction);

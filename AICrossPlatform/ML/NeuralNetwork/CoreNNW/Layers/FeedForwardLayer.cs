@@ -91,7 +91,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="g">Graph of automatic differentiation</param>
-        public NNValue Forward(NNValue input, IGraph g)
+        public NNValue Forward(NNValue input, INNWGraph g)
         {
             NNValue sum = g.Add(g.Mul(W, input), Bias);
             NNValue returnObj = g.Activate(ActivationFunction, sum);

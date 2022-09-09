@@ -53,7 +53,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="g">Automatic differentiation graph</param>
-        public NNValue Forward(NNValue input, IGraph g)
+        public NNValue Forward(NNValue input, INNWGraph g)
         {
             return _maxPool.Forward(input, g);
         }

@@ -10,57 +10,57 @@ using System.Text;
 namespace AI.ML.NeuralNetwork.CoreNNW
 {
     /// <summary>
-    /// The main class for storing data about a neural network, can be a vector, matrix or tensor of the 3rd rank
+    /// Основной класс для хранения данных о нейронной сети может быть векторои, матрицей или же тензором 3-го ранга.
     /// </summary>
     [Serializable]
     public class NNValue : IByteConvertable
     {
         #region Поля и свойства
         /// <summary>
-        /// Data
+        /// Массив элементов, данные нейросети
         /// </summary>
         public float[] Data { get; private set; }
         /// <summary>
-        /// Gradients
+        /// Массив частных производных
         /// </summary>
         public float[] DifData { get; private set; }
         /// <summary>
-        /// Cache for the first time the optimizer
+        /// Массив кэша оптимизаторов использующих один момент
         /// </summary>
         public float[] StepCache { get; private set; }
         /// <summary>
-        /// Cache optimizers for more complex, with two moments, such as Adam
+        /// Массив кэша оптимизаторов использующих два момента, например Адам
         /// </summary>
         public float[] StepCache2 { get; private set; }
         /// <summary>
-        /// Shape of the tensor
+        /// Форма тензора
         /// </summary>
         public Shape3D Shape { get; set; }
         /// <summary>
-        /// Getting an element by its index in an array
+        /// Получить элемент по индексу
         /// </summary>
-        /// <param name="i">index</param>
+        /// <param name="i">Индекс</param>
         public float this[int i]
         {
             get => Data[i];
             set => Data[i] = value;
         }
         /// <summary>
-        /// Retrieving an element by index of height and width
+        /// Получение элемента по индексу высоты и ширины
         /// </summary>
-        /// <param name="h">Height index</param>
-        /// <param name="w">Width index</param>
+        /// <param name="h">Индекс высоты</param>
+        /// <param name="w">Индекс ширины</param>
         public float this[int h, int w]
         {
             get => GetW(h, w);
             set => SetW(h, w, value);
         }
         /// <summary>
-        /// Retrieving an element by index of height, width and depth
+        /// Получение элемента по индексу высоты, ширины и глубины
         /// </summary>
-        /// <param name="h">Height</param>
-        /// <param name="w">Width</param>
-        /// <param name="d">Deep</param>
+        /// <param name="h">Индекс высоты</param>
+        /// <param name="w">Индекс ширины</param>
+        /// <param name="d">Индекс глубины</param>
         public float this[int h, int w, int d]
         {
             get => GetW(h, w, d);
@@ -70,11 +70,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
         #region Конструкторы
         /// <summary>
-        /// Create tensor
+        /// Создание основного класса как тензора 3-го ранга
         /// </summary>
-        /// <param name="height">Height</param>
-        /// <param name="width">Width</param>
-        /// <param name="depth">Deep</param>
+        /// <param name="height">Ширина</param>
+        /// <param name="width">Ширина</param>
+        /// <param name="depth">Глубина</param>
         public NNValue(int height, int width = 1, int depth = 1)
         {
             Shape = new Shape3D(height, width, depth);
@@ -84,9 +84,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             StepCache2 = new float[Shape.Volume];
         }
         /// <summary>
-        /// Create tensor
+        /// Создание основного класса как тензора 3-го ранга
         /// </summary>
-        /// <param name="shape">Shape of the tensor</param>
+        /// <param name="shape">Форма тензора</param>
         public NNValue(Shape3D shape)
         {
             Shape = shape;
@@ -124,7 +124,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                     break;
             }
 
-            Data = new float[Shape.Volume];
+            Data = new float[Shape!.Volume];
 
             for (int i = 0; i < Shape.Volume; i++)
             {
@@ -404,6 +404,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             return result;
         }
 
+        /// <summary>
+        /// Создание тензора заполненного одним значением
+        /// </summary>
+        /// <param name="shape">Форма тензора</param>
+        /// <param name="s">Значение</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe NNValue Uniform(Shape3D shape, double s)
         {
@@ -457,16 +463,19 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         {
             return Uniform(h, w, -1.0);
         }
-        /// Изменение 
+
+        /// <summary>
+        /// Изменение формы тензора
         /// </summary>
         /// <param name="value"></param>
         /// <param name="newShape"></param>
         /// <returns></returns>
+        /// <exception cref="InvalidOperationException">Содержит исключение "Изменение формы невозможно, т.к. объемы не совпадают"</exception>
         public static NNValue ReShape(NNValue value, Shape3D newShape)
         {
             if (value.Shape.Count != newShape.Volume)
             {
-                throw new InvalidOperationException("Volumes are not equal");
+                throw new InvalidOperationException("Изменение формы невозможно, т.к. объемы не совпадают");
             }
 
             NNValue valRes = value.Clone();
@@ -475,12 +484,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             return valRes;
         }
+
         /// <summary>
         /// Сохранение тензора в текстовом формате
         /// </summary>
         /// <param name="path">File path</param>
-        /// <summary>
-        public void SaveAsText(string path)
+       public void SaveAsText(string path)
         {
             string[] conent = ToTxts();
             File.WriteAllLines(path, conent);
@@ -582,9 +591,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         public static NNValue FromDataStream(InMemoryDataStream stream)
         {
             stream.SkipIfEqual(KeyWords.NNValue).ReadInts(out int[] shape).ReadFloats(out float[] valData);
-            float[] difData = stream.NullIfEqual('\0')?.ReadFloats();
-            float[] stepCache = stream.NullIfEqual('\0')?.ReadFloats();
-            float[] stepCache2 = stream.NullIfEqual('\0')?.ReadFloats();
+            float[] difData = stream.NullIfEqual('\0').ReadFloats();
+            float[] stepCache = stream.NullIfEqual('\0').ReadFloats();
+            float[] stepCache2 = stream.NullIfEqual('\0').ReadFloats();
             NNValue result = new NNValue(shape[1], shape[0], shape[2])
             {
                 Data = valData,
@@ -594,7 +603,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             };
             return result;
         }
-
+        
+        /// <summary>
+        /// Модификация (только использование), убирает массивы кэшей и данные производных
+        /// что облегчает модель в 4 раза
+        /// </summary>
         public void OnlyUse()
         {
             DifData = null;
@@ -602,6 +615,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             StepCache2 = null;
         }
 
+        /// <summary>
+        /// Добавляет массивы кэшей и данные производных, если те были удалены(например вследствии вызова метода OnlyUse() ), что позволяет снова учить сеть
+        /// </summary>
         public void InitTrainData()
         {
             if (DifData == null)
@@ -621,11 +637,18 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         }
 
         #region Технические методы
+        /// <summary>
+        /// Вывод тензора в строку
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return ToString(AISettings.GetProvider());
         }
 
+        /// <summary>
+        /// Вывод тензора в строку
+        /// </summary>
         public string ToString(NumberFormatInfo provider)
         {
             StringBuilder sb = new StringBuilder();

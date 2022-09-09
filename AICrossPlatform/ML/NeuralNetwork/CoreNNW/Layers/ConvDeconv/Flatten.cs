@@ -73,7 +73,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="g">Automatic differentiation graph</param>
-        public NNValue Forward(NNValue input, IGraph g)
+        public NNValue Forward(NNValue input, INNWGraph g)
         {
             Shape3D shape = new Shape3D(input.Shape.Count);
             return g.ReShape(input, shape, _gain);

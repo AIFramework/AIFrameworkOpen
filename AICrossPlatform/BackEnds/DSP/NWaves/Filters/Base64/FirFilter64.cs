@@ -91,7 +91,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// but filter will store the reference to TransferFunction object for FDA.
         /// 
         /// </summary>
-        /// <param name="kernel"></param>
+        /// <param name="tf">Передаточная функция</param>
         public FirFilter64(TransferFunction tf) : this(tf.Numerator)
         {
             Tf = tf;

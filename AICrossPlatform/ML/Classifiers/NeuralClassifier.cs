@@ -12,7 +12,7 @@ namespace AI.ML.Classifiers
     public class NeuralClassifier : BaseClassifier<NeuralClassifier>
     {
         private readonly NNW _net;
-        public IGraph Graph { get; set; } = new GraphCPU(false);
+        public INNWGraph Graph { get; set; } = new NNWGraphCPU(false);
         public float LearningRate { get; set; } = 0.001f;
         public int EpochesToPass { get; set; } = 100;
         public IOptimizer Optimizer { get; set; } = new Adam();

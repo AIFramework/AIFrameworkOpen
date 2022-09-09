@@ -97,7 +97,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="g">Граф</param>
-        public NNValue Forward(NNValue input, IGraph g)
+        public NNValue Forward(NNValue input, INNWGraph g)
         {
             _values = g.DeConcatinateOne(input);
             _valueOutps = new NNValue[_count];

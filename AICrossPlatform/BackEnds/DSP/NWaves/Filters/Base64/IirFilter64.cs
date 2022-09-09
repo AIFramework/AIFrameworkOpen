@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 {
+    /// <summary>
+    /// 64-х битный БИХ фильтр
+    /// </summary>
     [Serializable]
     public class IirFilter64 : IFilter64, IOnlineFilter64
     {
@@ -52,6 +55,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// Transfer function (created lazily or set specifically if needed)
         /// </summary>
         protected TransferFunction _tf;
+        /// <summary>
+        /// Передаточная функция
+        /// </summary>
         public TransferFunction Tf
         {
             get => _tf ?? new TransferFunction(_b.Take(_numeratorSize).ToArray(), _a.Take(_denominatorSize).ToArray());
@@ -64,22 +70,28 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         public int DefaultImpulseResponseLength { get; set; } = 512;
 
         /// <summary>
-        /// Internal buffers for delay lines
+        /// Буффер линии задержки коэф. А
         /// </summary>
         protected double[] _delayLineA;
+        /// <summary>
+        /// Буффер линии задержки коэф. B
+        /// </summary>
         protected double[] _delayLineB;
 
         /// <summary>
-        /// Current offsets in delay lines
+        /// Смещение в линии задержки (А)
         /// </summary>
         protected int _delayLineOffsetA;
+        /// <summary>
+        /// Смещение в линии задержки (B)
+        /// </summary>
         protected int _delayLineOffsetB;
 
         /// <summary>
-        /// Parameterized constructor (from arrays of 64-bit coefficients)
+        /// 64-х битный БИХ фильтр
         /// </summary>
-        /// <param name="b">TF numerator coefficients</param>
-        /// <param name="a">TF denominator coefficients</param>
+        /// <param name="b">Коэф. числителя перед. функции</param>
+        /// <param name="a">Коэф. знаменателя перед. функции</param>
         public IirFilter64(IEnumerable<double> b, IEnumerable<double> a)
         {
             _numeratorSize = b.Count();

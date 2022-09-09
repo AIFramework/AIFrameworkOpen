@@ -12,45 +12,51 @@ using System.Numerics;
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
     /// <summary>
-    /// Class providing methods related to the transfer function of an LTI filter
+    /// Класс, предоставляющий методы, связанные с передаточной функцией фильтра LTI
     /// </summary>
     [Serializable]
     public class TransferFunction
     {
         /// <summary>
-        /// Numerator of transfer function
+        /// Числитель передаточной функции
         /// </summary>
         public double[] Numerator { get; protected set; }
 
         /// <summary>
-        /// Denominator of transfer function
+        /// Знаменатель передаточной функции
         /// </summary>
         public double[] Denominator { get; protected set; }
 
         /// <summary>
-        /// Max iterations for calculating zeros/poles (roots of polynomials): 25000 by default
+        /// Максимальное количество итераций для вычисления нулей/полюсов (корней многочленов): 25000 по умолчанию
         /// </summary>
         public int CalculateZpIterations { get; set; } = MathUtils.PolyRootsIterations;
 
         /// <summary>
-        /// Zeros of TF
+        /// Нули передаточной функции
         /// </summary>
         protected ComplexDiscreteSignal _zeros;
+        /// <summary>
+        /// Нули передаточной функции
+        /// </summary>
         public ComplexDiscreteSignal Zeros => _zeros ?? TfToZp(Numerator, CalculateZpIterations);
 
         /// <summary>
-        /// Poles of TF
+        /// Полюса передаточной функции
         /// </summary>
         protected ComplexDiscreteSignal _poles;
+        /// <summary>
+        /// Полюса передаточной функции
+        /// </summary>
         public ComplexDiscreteSignal Poles => _poles ?? TfToZp(Denominator, CalculateZpIterations);
 
         /// <summary>
-        /// Gain ('k' in 'zpk' notation)
+        /// Коэффициент усиления ('k' в 'zpk' нотации)
         /// </summary>
         public double Gain => Numerator[0];
 
         /// <summary>
-        /// TF constructor from numerator/denominator
+        /// Передаточная функция вида numerator/denominator
         /// </summary>
         /// <param name="numerator"></param>
         /// <param name="denominator"></param>
@@ -61,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// TF constructor from zeros/poles
+        /// Передаточная функция вида zeros/poles
         /// </summary>
         /// <param name="zeros">Zeros</param>
         /// <param name="poles">Poles</param>

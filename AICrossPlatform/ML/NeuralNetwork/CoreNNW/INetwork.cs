@@ -35,14 +35,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <param name="input">Input data</param>
         /// <param name="g">Graph of automatic differentiation</param>
         /// <returns></returns>
-        NNValue Forward(NNValue input, IGraph g);
+        NNValue Forward(NNValue input, INNWGraph g);
         /// <summary>
         /// Forward pass
         /// </summary>
         /// <param name="input">Input data</param>
         /// <param name="g">Graph of automatic differentiation</param>
         /// <returns></returns>
-        NNValue Forward(IAlgebraicStructure input, IGraph g);
+        NNValue Forward(IAlgebraicStructure input, INNWGraph g);
         /// <summary>
         /// Reset state, must be in a recurrent neural network
         /// </summary>

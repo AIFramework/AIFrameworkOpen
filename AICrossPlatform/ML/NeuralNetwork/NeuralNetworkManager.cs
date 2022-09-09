@@ -26,7 +26,7 @@ namespace AI.ML.NeuralNetwork
         /// <summary>
         /// Graph of automatic differentiation
         /// </summary>
-        public IGraph Graph { get; set; } = new GraphCPU(false);
+        public INNWGraph Graph { get; set; } = new NNWGraphCPU(false);
         /// <summary>
         /// Optimizer
         /// </summary>

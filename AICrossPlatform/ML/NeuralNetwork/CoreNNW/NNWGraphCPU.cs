@@ -8,35 +8,35 @@ using System.Threading.Tasks;
 namespace AI.ML.NeuralNetwork.CoreNNW
 {
     /// <summary>
-    /// Graph of automatic differentiation for CPU
+    /// Граф автоматического дифференцирования реализация для ЦП
     /// </summary>
     [Serializable]
-    public class GraphCPU : IGraph
+    public class NNWGraphCPU : INNWGraph
     {
         /// <summary>
-        /// Whether to calculate derivatives
+        /// Просчитывать ли обратный проход со взятием производных
         /// </summary>
         public bool IsBackward { get; set; }
         /// <summary>
-        /// Functions for which derivatives are calculated
+        /// Элементы (собранные делегаты) для обратного прохода (функции расчета градиента)
         /// </summary>
         public List<IBackwardRun> Backprop { get; set; }
         /// <summary>
-        /// Graph of automatic differentiation for CPU
+        /// Граф автоматического дифференцирования реализация для ЦП
         /// </summary>
-        public GraphCPU() : this(false)
+        public NNWGraphCPU() : this(false)
         {
         }
         /// <summary>
-        /// Graph of automatic differentiation for CPU
+        /// Граф автоматического дифференцирования реализация для ЦП
         /// </summary>
-        public GraphCPU(bool isBakward)
+        public NNWGraphCPU(bool isBakward)
         {
             IsBackward = isBakward;
             Backprop = new List<IBackwardRun>();
         }
         /// <summary>
-        /// Backward pass (differentiation)
+        /// Обратный проход (дифференцирование)
         /// </summary>
         public virtual void Backward()
         {
@@ -46,9 +46,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             }
         }
         /// <summary>
-        /// Restart
+        /// Перезапуск графа
         /// </summary>
-        /// <param name="isBacward">Is there a backward pass</param>
+        /// <param name="isBacward">Просчитывать ли обратный проход со взятием производных</param>
         public virtual void Restart(bool isBacward)
         {
             IsBackward = isBacward;
@@ -324,7 +324,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                         for (int i = 0; i < v1.Shape.Count; i++)
                         {
                             v1.Data[i] = returnObj[index0];
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
                             v1.DifData[i] = returnObj.DifData[index0];
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
                             v1.StepCache[i] = returnObj.StepCache[index0];
                             v1.StepCache2[i] = returnObj.StepCache2[index0];
                             index0++;

@@ -68,7 +68,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <param name="input">Входной тензор</param>
         /// <param name="g">Graph of automatic differentiation</param>
         /// <returns></returns>
-        public NNValue Forward(NNValue input, IGraph g)
+        public NNValue Forward(NNValue input, INNWGraph g)
         {
             return g.Activate(ActivationFunction, input);
         }

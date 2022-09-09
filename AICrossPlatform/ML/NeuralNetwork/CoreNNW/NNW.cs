@@ -152,7 +152,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="graph">Graph of automatic differentiation</param>
-        public NNValue Forward(NNValue input, IGraph graph)
+        public NNValue Forward(NNValue input, INNWGraph graph)
         {
             if (input == null)
             {
@@ -184,7 +184,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <param name="input">Input</param>
         /// <param name="graph"></param>
         /// <returns>Graph of automatic differentiation</returns>
-        public NNValue Forward(IAlgebraicStructure input, IGraph graph)
+        public NNValue Forward(IAlgebraicStructure input, INNWGraph graph)
         {
             return Forward(new NNValue(input), graph);
         }

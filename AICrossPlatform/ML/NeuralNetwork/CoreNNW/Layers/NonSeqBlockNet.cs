@@ -45,13 +45,13 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public IActivation ActivationFunction { get; set; }
 
-        private readonly Func<NNValue, IGraph, NNValue> _forward;
+        private readonly Func<NNValue, INNWGraph, NNValue> _forward;
         private readonly List<ILayer> _layers;
 
         /// <summary>
         /// Непоследовательный блок
         /// </summary>
-        public NonSeqBlockNet(Shape3D inputDimension, Shape3D outputDimension, List<ILayer> layers, Func<NNValue, IGraph, NNValue> forward)
+        public NonSeqBlockNet(Shape3D inputDimension, Shape3D outputDimension, List<ILayer> layers, Func<NNValue, INNWGraph, NNValue> forward)
         {
             InputShape = inputDimension;
             OutputShape = outputDimension;
@@ -65,7 +65,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="g">Graph of automatic differentiation</param>
-        public NNValue Forward(NNValue input, IGraph g)
+        public NNValue Forward(NNValue input, INNWGraph g)
         {
             return _forward(input, g);
         }

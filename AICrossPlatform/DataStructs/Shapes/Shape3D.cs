@@ -12,23 +12,23 @@ namespace AI.DataStructs.Shapes
     {
         #region Поля и свойства
         /// <summary>
-        /// Height in 3D
+        /// Высота тензора
         /// </summary>
         public int Height => this[1];
         /// <summary>
-        /// Width in 3D
+        /// Ширина тензора
         /// </summary>
         public int Width => this[0];
         /// <summary>
-        /// Depth in 3D
+        /// Глубина тензора
         /// </summary>
         public int Depth => this[2];
         /// <summary>
-        /// Product of Height and Width
+        /// Площадь (Произведение ширины на глубину)
         /// </summary>
         public int Area => Height * Width;
         /// <summary>
-        /// Product of Height, Width and Depth
+        /// Объем (произведение ширины, высоты и глубины) 
         /// </summary>
         public int Volume => Count;
         #endregion
@@ -43,7 +43,7 @@ namespace AI.DataStructs.Shapes
 
         #region Операторы
         /// <summary>
-        /// Преобразование трех-мерной формы в четырех мерную
+        /// Преобразование трехмерной формы в четырех мерную
         /// </summary>
         /// <param name="shape"></param>
         public static implicit operator Shape4D(Shape3D shape)

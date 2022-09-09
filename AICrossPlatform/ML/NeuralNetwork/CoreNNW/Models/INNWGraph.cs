@@ -6,16 +6,16 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Models
 {
     /// <summary>
-    /// Self-differentiation graph interface
+    /// Граф автоматического дифференцирования
     /// </summary>
-    public interface IGraph
+    public interface INNWGraph
     {
         /// <summary>
-        /// Is there a backward pass
+        /// Просчитывать ли обратный проход со взятием производных
         /// </summary>
         bool IsBackward { get; set; }
         /// <summary>
-        /// Back pass elements
+        /// Элементы (собранные делегаты) для обратного прохода
         /// </summary>
         List<IBackwardRun> Backprop { get; set; }
 

@@ -31,7 +31,7 @@ namespace RLTest
         Vector scores = new Vector(0);
         Vector x = new Vector(0);
         int allCount = 0;
-        int lenM = 128; // Длинна матча
+        int lenM = 40; // Длинна матча
 
         public Form1()
         {
@@ -62,7 +62,7 @@ namespace RLTest
         private void button1_Click(object sender, EventArgs e)
         {
             double mScore = 0;
-            int count = 6;
+            int count = 16;
 
             for (int i = 0; i < count; i++)
             {
@@ -151,7 +151,7 @@ namespace RLTest
         NNW GetNNW()
         {
             NNW net = new NNW();
-            net.AddNewLayer(new Shape3D(5), new FeedForwardLayer(20, new ReLU(0.1)));
+            net.AddNewLayer(new Shape3D(5), new FeedForwardLayer(39, new ReLU(0.1)));
             net.AddNewLayer(new FeedForwardLayer(2, new SoftmaxUnit()));
             return net;
         }

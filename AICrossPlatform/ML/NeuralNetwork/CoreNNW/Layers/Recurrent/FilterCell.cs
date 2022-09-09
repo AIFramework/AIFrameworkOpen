@@ -126,7 +126,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <param name="input"></param>
         /// <param name="g"></param>
         /// <returns></returns>
-        public NNValue Forward(NNValue input, IGraph g)
+        public NNValue Forward(NNValue input, INNWGraph g)
         {
             inputs = g.AddCicleBuff(inputs, input, _bLen);
 

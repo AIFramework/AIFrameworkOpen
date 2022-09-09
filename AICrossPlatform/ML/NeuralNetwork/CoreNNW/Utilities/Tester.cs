@@ -21,7 +21,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
         /// <param name="dataset">Набор данных для теста</param>
         /// <param name="tests">Тест, который следует выполнить</param>
         /// <returns></returns>
-        public static double Test(IGraph g, INetwork net, IEnumerable<DataSequence> dataset, Metrics tests)
+        public static double Test(INNWGraph g, INetwork net, IEnumerable<DataSequence> dataset, Metrics tests)
         {
             if ((int)tests > 3)
             {
@@ -37,7 +37,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
     [Serializable]
     internal class ClassifierTester
     {
-        public static double Test(IGraph g, INetwork net, IEnumerable<DataSequence> dataset, Metrics classifTests)
+        public static double Test(INNWGraph g, INetwork net, IEnumerable<DataSequence> dataset, Metrics classifTests)
         {
             List<int> y = new List<int>();
             List<int> t = new List<int>();
@@ -71,7 +71,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
     [Serializable]
     internal class RegressionTester
     {
-        public static double Test(IGraph g, INetwork net, IEnumerable<DataSequence> dataset, Metrics regressionTests)
+        public static double Test(INNWGraph g, INetwork net, IEnumerable<DataSequence> dataset, Metrics regressionTests)
         {
 
             Vector y = new Vector(0);

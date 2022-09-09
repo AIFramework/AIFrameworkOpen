@@ -63,7 +63,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="g">Automatic differentiation graph</param>
-        public NNValue Forward(NNValue input, IGraph g)
+        public NNValue Forward(NNValue input, INNWGraph g)
         {
             NNValue res = g.Upsampling2DBicubic(input, _h, _w);
             return res;

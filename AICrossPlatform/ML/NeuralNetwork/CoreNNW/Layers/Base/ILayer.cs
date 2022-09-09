@@ -30,7 +30,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
         /// </summary>
         /// <param name="input">Input</param>
         /// <param name="g">Graph of automatic differentiation</param>
-        NNValue Forward(NNValue input, IGraph g);
+        NNValue Forward(NNValue input, INNWGraph g);
         /// <summary>
         /// Only use mode
         /// </summary>

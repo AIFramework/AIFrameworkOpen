@@ -81,8 +81,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AICrossPlatform\AICrossPlatform.csproj">
-      <Project>{a4203f59-0bbe-4b1a-a3f7-86704d1ecf10}</Project>
+    <ProjectReference Include="..\..\src\AICrossPlatform\AICrossPlatform.csproj">
+      <Project>{467aef8d-96aa-48ad-b06c-988a980bfb41}</Project>
       <Name>AICrossPlatform</Name>
     </ProjectReference>
   </ItemGroup>

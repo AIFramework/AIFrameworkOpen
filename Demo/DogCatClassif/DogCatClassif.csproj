@@ -99,24 +99,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\AI.DataPrepaire\AI.DataPrepaire.csproj">
-      <Project>{d5d79045-8651-46fc-8994-30f7873ff1e8}</Project>
-      <Name>AI.DataPrepaire</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\AI.ONNX\AI.ONNX.csproj">
-      <Project>{bca316a2-e3e7-4b56-bc51-4b7565199c0a}</Project>
-      <Name>AI.ONNX</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\AIChartCV\AIChartCV.csproj">
-      <Project>{2ed3435f-f827-41e2-82b4-ed781a16b156}</Project>
-      <Name>AIChartCV</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\AICrossPlatform\AICrossPlatform.csproj">
-      <Project>{a4203f59-0bbe-4b1a-a3f7-86704d1ecf10}</Project>
-      <Name>AICrossPlatform</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\Microsoft.ML.OnnxRuntime.Managed.1.12.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets" Condition="Exists('..\..\packages\Microsoft.ML.OnnxRuntime.Managed.1.12.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -117,7 +117,7 @@ namespace ControllerTest
             List<int> listChar = new List<int>();
             nNW.ResetState();
             Vector st;
-            GraphCPU graph = new GraphCPU();
+            NNWGraphCPU graph = new NNWGraphCPU();
 
             for (int i = 0; i < start.Length - 1; i++)
             {

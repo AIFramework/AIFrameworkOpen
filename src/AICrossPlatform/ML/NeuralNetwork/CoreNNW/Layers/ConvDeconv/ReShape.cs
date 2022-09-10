@@ -14,11 +14,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         private readonly float _gain = 1.0f;
 
         /// <summary>
-        /// Dimension and shape of the input tensor
+        /// Размерность и форма входного тензора
         /// </summary>
         public Shape3D InputShape { get; set; }
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         public Shape3D OutputShape { get; private set; }
         /// <summary>
@@ -64,8 +64,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Direct network pass
         /// </summary>
-        /// <param name="input">Input</param>
-        /// <param name="g">Automatic differentiation graph</param>
+        /// <param name="input">Вход</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             return g.ReShape(input, OutputShape, _gain);

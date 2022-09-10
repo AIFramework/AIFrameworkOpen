@@ -262,7 +262,7 @@ namespace AI
         /// <summary>
         /// Inverse FFT
         /// </summary>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         public ComplexVector IFFT(ComplexVector inp)
         {
             return BaseFFT(inp, false) / SemplesCount;

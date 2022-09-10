@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW
 {
     /// <summary>
-    /// Interface of neural network
+    /// Интерфейс нейронной сети
     /// </summary>
     public interface INetwork : ISavable
     {
@@ -30,14 +30,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         List<ILayer> Layers { get; set; }
 
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="input">Input data</param>
         /// <param name="g">Graph of automatic differentiation</param>
         /// <returns></returns>
         NNValue Forward(NNValue input, INNWGraph g);
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="input">Input data</param>
         /// <param name="g">Graph of automatic differentiation</param>

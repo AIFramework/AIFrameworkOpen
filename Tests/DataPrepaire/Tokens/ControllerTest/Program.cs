@@ -23,7 +23,7 @@ namespace ControllerTest
         static void Main(string[] args)
         {
 
-            int n_tr = 1;
+            int n_tr = 16;
 
             WordTokenizer wordTokenizer = new WordTokenizer("cat.txt");
 
@@ -42,12 +42,12 @@ namespace ControllerTest
       
         static void Train(NeuralNetworkManager nnw, Many2Many dataset, int count)
         {
-            nnw.EpochesToPass = 235;
-            nnw.LearningRate = 0.001f;
-            nnw.GradientClipValue = 0.21f;
+            nnw.EpochesToPass = 155;
+            nnw.LearningRate = 0.002f;
+            nnw.GradientClipValue = 0.1f;
             nnw.ValSplit = 0;
             nnw.Loss = new CrossEntropyWithSoftmax();
-            nnw.Optimizer = new RMSProp();
+            nnw.Optimizer = new Adam();
            
             nnw.TrainNet(dataset.GetFeatures(), dataset.GetVectorLabels(count));
         }
@@ -105,8 +105,8 @@ namespace ControllerTest
         static NNW GetNNWEmb(int inps)
         {
             NNW lstm = new NNW();
-            lstm.AddNewLayer(new Shape3D(1), new EmbedingLayer(inps, 105));
-            lstm.AddNewLayer(new ControllerL(23));
+            lstm.AddNewLayer(new Shape3D(1), new EmbedingLayer(inps, 24));
+            lstm.AddNewLayer(new FilterLayer(5,5));
             lstm.AddNewLayer(new FeedForwardLayer(inps, new SoftmaxUnit()));
             return lstm;
         }
@@ -117,7 +117,7 @@ namespace ControllerTest
             List<int> listChar = new List<int>();
             nNW.ResetState();
             Vector st;
-            NNWGraphCPU graph = new NNWGraphCPU();
+            NNWGraphCPU graph = new NNWGraphCPU(false);
 
             for (int i = 0; i < start.Length - 1; i++)
             {
@@ -128,15 +128,20 @@ namespace ControllerTest
             st = new Vector((double)start[start.Length - 1]);
             Vector outp = nNW.Forward(new NNValue(st), graph).ToVector();
 
+            outp[0] = 0;
+            outp[1] = 0;
+            outp[2] = 0;
+            outp[3] = 0;
+
             double prob;// вероятности на каждом шаге
 
-            int ind = AI.Statistics.RandomItemSelection<int>.GetIndex(outp * outp, rnd);
+            int ind = AI.Statistics.RandomItemSelection<int>.GetIndex(outp, rnd);
             listChar.Add(ind);
             int count = 0;
 
             prob = outp[ind];
 
-            while (ind != end_token && count < 15)
+            while (ind != end_token && count < 60)
             {
                 outp = nNW.Forward(new NNValue(new Vector((double)ind)), graph).ToVector();
                 ind = AI.Statistics.RandomItemSelection<int>.GetIndex(outp * outp, rnd);

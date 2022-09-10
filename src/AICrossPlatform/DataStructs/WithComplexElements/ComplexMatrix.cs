@@ -268,7 +268,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Двумерное преобразование Фурье
         /// </summary>
-        /// <param name="input">Input</param>
+        /// <param name="input">Вход</param>
         public static ComplexMatrix MatrixFFT(Matrix input)
         {
             ComplexMatrix matrix;
@@ -374,7 +374,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Двумерное преобразование Фурье
         /// </summary>
-        /// <param name="input">Input</param>
+        /// <param name="input">Вход</param>
         public static ComplexMatrix MatrixFFT(ComplexMatrix input)
         {
             ComplexMatrix matrix;

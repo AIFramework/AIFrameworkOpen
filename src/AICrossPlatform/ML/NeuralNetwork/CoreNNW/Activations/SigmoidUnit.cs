@@ -9,7 +9,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
     public class SigmoidUnit : IActivation
     {
         /// <summary>
-        /// Random number generator setting numerator
+        /// Числитель генератора случайных чисел
         /// </summary>
         public float Numerator => 2;
 
@@ -48,7 +48,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             return dif;
         }
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="x">Тензор аргумента</param>
         public NNValue Forward(NNValue x)
@@ -64,7 +64,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             return valueMatrix;
         }
         /// <summary>
-        /// Bakward pass(производная)
+        /// Обратный проход(производная)
         /// </summary>
         /// <param name="x">Тензор аргумента</param>
         public NNValue Backward(NNValue x)

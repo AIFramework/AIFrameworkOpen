@@ -6,7 +6,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
     public class SigmoidWithBCE : IActivation
     {
         /// <summary>
-        /// Random number generator setting numerator
+        /// Числитель генератора случайных чисел
         /// </summary>
         public float Numerator => 1;
 
@@ -27,7 +27,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             return 1;
         }
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="x">Тензор аргумента</param>
         public NNValue Forward(NNValue x)

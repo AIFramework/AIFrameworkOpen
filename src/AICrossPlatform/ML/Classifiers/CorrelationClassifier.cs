@@ -65,7 +65,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Recognizing a vector
         /// </summary>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         public int Classify(Vector inp)
         {
             for (int i = 0; i < Classes.Count; i++)

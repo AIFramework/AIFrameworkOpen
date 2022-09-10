@@ -16,11 +16,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         private NNValue _w;
 
         /// <summary>
-        /// Input dimension
+        /// Размерность входа
         /// </summary>
         public Shape3D InputShape { get; set; }
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         public Shape3D OutputShape { get; private set; }
         /// <summary>
@@ -32,7 +32,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public IActivation ActivationFunction { get; set; }
         /// <summary>
-        /// Number of learning parameters
+        /// Число обучаемых параметров
         /// </summary>
         public int TrainableParameters => _w.Shape.Count;
 
@@ -63,9 +63,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         }
 
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
-        /// <param name="input">Input</param>
+        /// <param name="input">Вход</param>
         /// <param name="g">Graph of automatic differentiation</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
@@ -95,7 +95,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "None", TrainableParameters);
         }
         /// <summary>
-        /// Use only mode, all additional parameters are deleted
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
         /// </summary>
         public void OnlyUse()
         {

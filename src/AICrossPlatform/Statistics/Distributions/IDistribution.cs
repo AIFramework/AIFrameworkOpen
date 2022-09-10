@@ -9,30 +9,30 @@ namespace AI.Statistics.Distributions
     public interface IDistribution
     {
         /// <summary>
-        /// Probability calculation
+        /// Рассчет функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="param_dist">Distribution parameters</param>
         double CulcProb(Vector x, Dictionary<string, Vector> param_dist);
 
         /// <summary>
-        /// Probability calculation
+        /// Рассчет функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="param_dist">Distribution parameters</param>
         double CulcProb(double x, Dictionary<string, double> param_dist);
 
         /// <summary>
-        /// Log probability calculation
+        /// Рассчет логарифма функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="param_dist">Distribution parameters</param>
         double CulcLogProb(double x, Dictionary<string, double> param_dist);
 
         /// <summary>
-        /// Log probability calculation
+        /// Рассчет логарифма функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="param_dist">Distribution parameters</param>
         double CulcLogProb(Vector x, Dictionary<string, Vector> param_dist);
     }

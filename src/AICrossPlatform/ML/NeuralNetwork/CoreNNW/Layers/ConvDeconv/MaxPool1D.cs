@@ -14,15 +14,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         private readonly MaxPooling _maxPool;
 
         /// <summary>
-        /// Dimension and shape of the input tensor
+        /// Размерность и форма входного тензора
         /// </summary>
         public Shape3D InputShape { get => _maxPool.InputShape; set => _maxPool.InputShape = value; }
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         public Shape3D OutputShape => _maxPool.OutputShape;
         /// <summary>
-        /// Number of learning parameters
+        /// Число обучаемых параметров
         /// </summary>
         public int TrainableParameters => _maxPool.TrainableParameters;
         /// <summary>
@@ -33,7 +33,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Subsampling (Maxpooling 1D)
         /// </summary>
-        /// <param name="inputShape">Dimension and shape of the input tensor</param>
+        /// <param name="inputShape"> Размерность и форма входного тензора </param>
         /// <param name="k">How many times to compress out</param>
         public MaxPool1D(Shape3D inputShape, int k = 2)
         {
@@ -51,8 +51,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Direct network pass
         /// </summary>
-        /// <param name="input">Input</param>
-        /// <param name="g">Automatic differentiation graph</param>
+        /// <param name="input">Вход</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             return _maxPool.Forward(input, g);

@@ -39,7 +39,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// </summary>
         public float GradientClipValue { get; set; } = 3;
         /// <summary>
-        /// Neural network training information
+        /// Обучение нейронной сети information
         /// </summary>
         public TrainInfo Info { get; set; }
         /// <summary>
@@ -117,7 +117,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         #endregion
 
         /// <summary>
-        /// Network training
+        /// Обучение нейронной сети
         /// </summary>
         /// <param name="epochesToPass">Number of epochs</param>
         /// <param name="batchSize">Batch size</param>
@@ -167,7 +167,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
 
             for (int epoch = 0; epoch < epochesToPass; epoch++)
             {
-                PassEpoch(epochesToPass, batchSize, network, data, minLoss, learningRate, out contTr, hasValidation, out modelInfo, epoch);
+                PassEpoch(epochesToPass, batchSize, network, data, minLoss, learningRate, out contTr, hasValidation, out modelInfo, epoch); // Запуск одной эпохи обучения
                 EpochPassedEventArgs epochPassedEventArgs = new EpochPassedEventArgs
                 {
                     TrainingArgs = trainingEventArgs,
@@ -202,7 +202,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
             TrainingFinished?.Invoke(this, trainingEventArgs);
         }
         /// <summary>
-        /// Network training
+        /// Обучение нейронной сети
         /// </summary>
         /// <param name="epochesToPass">Number of epochs</param>
         /// <param name="batchSize">Batch size</param>
@@ -308,7 +308,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
 
             for (int j = 0; j < passes; j++)
             {
-                _graph.Restart(true);
+                _graph.Restart(true); // Перезапуск графа
                 Random r = new Random(j);
                 for (int i = 0; i < batchSize; i++)
                 {
@@ -350,7 +350,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
             {
                 if (layer is ILearningLayer)
                 {
-                    List<NNValue> param = (layer as ILearningLayer).GetParameters();
+                    List<NNValue> param = (layer as ILearningLayer)!.GetParameters();
 
                     for (int j = 0; j < param.Count; j++)
                     {
@@ -370,6 +370,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         //Проход по всем шагам
         private void StepsPass(DataSequence seq, INetwork network, ILoss lossTraining, CancellationToken cancellationToken)
         {
+            network.ResetState(); //Сброс состояния рекуррентных сетей
+            float loss = 0;
+
             foreach (DataStep step in seq.Steps)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -380,7 +383,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
                 NNValue output = network.Forward(step.Input, _graph);
                 if (step.TargetOutput != null)
                 {
-                    float loss = lossTraining.Measure(output, step.TargetOutput);
+                    loss += lossTraining.Measure(output, step.TargetOutput);
                     if (float.IsNaN(loss) || float.IsInfinity(loss))
                     {
                         return;
@@ -389,6 +392,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
                     lossTraining.Backward(output, step.TargetOutput);
                 }
             }
+
+          //  Console.WriteLine($"Реальный лосс {loss/ seq.Steps.Count}");
 
         }
         // Обратный проход по графу и обновление коэффииентов модели
@@ -420,6 +425,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
             foreach (DataSequence seq in dataSequences)
             {
                 ind++;
+                network.ResetState(); // Сброс состояния при измерении ошибки
 
                 foreach (DataStep step in seq.Steps)
                 {

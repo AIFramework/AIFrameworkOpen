@@ -8,47 +8,47 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Fully connected forward propagation layer
+    /// Полносвязный слой
     /// </summary>
     [Serializable]
     public class FeedForwardLayer : IActivatableLayer, ILearningLayer
     {
         /// <summary>
-        /// Weighting matrix
+        /// Матрица весов
         /// </summary>
         public NNValue W { get; set; }
         /// <summary>
-        /// Hyperplane displacement vector (neuron polarization)
+        /// Вектор смещения гиперплоскости (поляризация нейронов)
         /// </summary>
         public NNValue Bias { get; set; }
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
         public IActivation ActivationFunction { get; set; }
         /// <summary>
-        /// Adding to the denominator
+        /// Добавление к знаменателю
         /// </summary>
         public double AddDenInSqrt { get; set; }
         /// <summary>
-        /// Number of learning parameters
+        /// Количество параметров обучения
         /// </summary>
         public int TrainableParameters => W.Shape.Count + Bias.Shape.Height;
         /// <summary>
-        /// Input dimension
+        /// Размерность входа
         /// </summary>
         public Shape3D InputShape { get; set; }
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         public Shape3D OutputShape { get; private set; }
 
         /// <summary>
-        /// Fully connected layer
+        /// Полносвязный слой
         /// </summary>
-        /// <param name="inputDimension">Input dimension</param>
-        /// <param name="outputDimension">Output dimension</param>
-        /// <param name="f">Activation function</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="inputDimension">Размерность входа</param>
+        /// <param name="outputDimension">Размерность выхода</param>
+        /// <param name="f">Активационная функция</param>
+        /// <param name="rnd">Генератор псевдослучайных чисел</param>
         public FeedForwardLayer(int inputDimension, int outputDimension, IActivation f, Random rnd)
         {
             double initParamsStdDev = 1.0 / Math.Sqrt(outputDimension);
@@ -59,12 +59,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             ActivationFunction = f;
         }
         /// <summary>
-        /// Fully connected layer
+        /// Полносвязный слой
         /// </summary>
-        /// <param name="inputShape">Input dimension</param>
-        /// <param name="outputDimension">Output dimension</param>
-        /// <param name="f">Activation function</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="inputShape">Размерность входа</param>
+        /// <param name="outputDimension">Размерность выхода</param>
+        /// <param name="f">Активационная функция</param>
+        /// <param name="rnd">Генератор псевдослучайных чисел</param>
         public FeedForwardLayer(Shape3D inputShape, int outputDimension, IActivation f, Random rnd)
         {
             double initParamsStdDev = 1.0 / Math.Sqrt(outputDimension);
@@ -75,10 +75,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             ActivationFunction = f;
         }
         /// <summary>
-        /// Fully connected layer
+        /// Полносвязный слой
         /// </summary>
         /// <param name="outputDimension">Output dimension</param>
-        /// <param name="f">Activation function</param>
+        /// <param name="f">Активационная функция</param>
         public FeedForwardLayer(int outputDimension, IActivation f = null)
         {
             OutputShape = new Shape3D(outputDimension);
@@ -87,10 +87,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         }
 
         /// <summary>
-        /// Forward pass
+        /// Прямой проход слоя
         /// </summary>
-        /// <param name="input">Input</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="input">Вход</param>
+        /// <param name="g">Граф автодифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             NNValue sum = g.Add(g.Mul(W, input), Bias);
@@ -98,16 +98,16 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return returnObj;
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Получение обучаемых параметров
         /// </summary>
         public List<NNValue> GetParameters()
         {
             return new List<NNValue> { W, Bias };
         }
         /// <summary>
-        /// Generating weights
+        /// Генерация новых коэффициентов
         /// </summary>
-        /// <param name="random">Pseudo-random number generator</param>
+        /// <param name="random">Генератор псевдослучайных чисел</param>
         public void InitWeights(Random random)
         {
             double std = 1.0 / Math.Sqrt(OutputShape.Height);
@@ -115,7 +115,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             Bias = new NNValue(OutputShape.Height);
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()
@@ -123,7 +123,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, ActivationFunction, TrainableParameters);
         }
         /// <summary>
-        /// Use only mode, all additional parameters are deleted
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
         /// </summary>
         public void OnlyUse()
         {

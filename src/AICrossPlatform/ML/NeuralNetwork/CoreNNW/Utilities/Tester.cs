@@ -44,6 +44,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
 
             foreach (DataSequence item in dataset)
             {
+                net.ResetState(); // Перезапуск сети
+
                 foreach (DataStep step in item.Steps)
                 {
                     NNValue predict = net.Forward(step.Input, g);
@@ -79,6 +81,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
 
             foreach (DataSequence item in dataset)
             {
+
+                net.ResetState(); // Перезапуск сети
                 foreach (DataStep step in item.Steps)
                 {
                     NNValue predict = net.Forward(step.Input, g);

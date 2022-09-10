@@ -4,6 +4,7 @@ using AI.DataStructs.Shapes;
 using AI.HightLevelFunctions;
 using AI.Statistics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -13,7 +14,7 @@ using System.Text;
 namespace AI.DataStructs.Algebraic
 {
     /// <summary>
-    /// Class that implements vector and operations on it
+    /// Класс, реализующий вектор и операции над ним
     /// </summary>
     [Serializable]
     public class Vector : List<double>, IAlgebraicStructure, IEquatable<Vector>, IEquatable<List<double>>, ISavable, ITextSavable, IByteConvertable
@@ -31,16 +32,16 @@ namespace AI.DataStructs.Algebraic
 
         #region Конструкторы
         /// <summary>
-        /// Creates a vector of capacity 3
+        /// Создает вектор емкости 3
         /// </summary>
         public Vector() : base(3) { AddRange(new double[3]); }
         /// <summary>
-        /// Creates a vector of custom capacity
+        /// Создает вектор емкости n
         /// </summary>
         /// <param name="n"></param>
         public Vector(int n) : base(n) { AddRange(new double[n]); }
         /// <summary>
-        /// Creates a vector of dimension 1 with the given value
+        /// Создает вектор размерности 1 с заданным значением
         /// </summary>
         /// <param name="value"></param>
         public Vector(double value)
@@ -48,7 +49,7 @@ namespace AI.DataStructs.Algebraic
             Add(value);
         }
         /// <summary>
-        /// Creates a vector from a double array
+        /// Создает вектор из массива чисел типа double
         /// </summary>
         /// <param name="vector"></param>
         public Vector(params double[] vector)
@@ -56,7 +57,7 @@ namespace AI.DataStructs.Algebraic
             AddRange(vector);
         }
         /// <summary>
-        /// Creates a vector from the IEnumerable interface of double
+        /// Создает вектор из интерфейса IEnumerable double
         /// </summary>
         /// <param name="data"></param>
         public Vector(IEnumerable<double> data)
@@ -64,7 +65,7 @@ namespace AI.DataStructs.Algebraic
             AddRange(data);
         }
         /// <summary>
-        /// Creates a vector from the IEnumerable interface of float
+        /// Создает вектор из интерфейса IEnumerable float
         /// </summary>
         /// <param name="data"></param>
         public Vector(IEnumerable<float> data)
@@ -975,7 +976,7 @@ namespace AI.DataStructs.Algebraic
             return count > n;
         }
         /// <summary>
-        /// Vector transformation
+        /// Поэлементное изменение вектора с помощью функции transformFunc
         /// </summary>
         /// <param name="transformFunc"></param>
         /// <returns></returns>
@@ -1532,21 +1533,21 @@ namespace AI.DataStructs.Algebraic
             return resultVector;
         }
         /// <summary>
-        /// Sequence that begins with zero
+        /// Последовательность, начинающаяся с нуля
         /// </summary>
-        /// <param name="step">Step</param>
-        /// <param name="end">Last value</param>
+        /// <param name="step">Шаг</param>
+        /// <param name="end">Последнее значение</param>
         /// <returns></returns>
         public static Vector SeqBeginsWithZero(double step, double end)
         {
             return FunctionsForEachElements.GenerateTheSequence(0, step, end);
         }
         /// <summary>
-        /// Sequence
+        /// Последовательность
         /// </summary>
-        /// <param name="step">Step</param>
-        /// <param name="end">Last value</param>
-        /// <param name="start">First value</param>
+        /// <param name="step">Шаг</param>
+        /// <param name="end">Последнее значение</param>
+        /// <param name="start">Первое значение</param>
         /// <returns></returns>
         public static Vector Seq(double start, double step, double end)
         {
@@ -1567,7 +1568,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Split to windows
         /// </summary>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         /// <param name="w">Window size</param>
         /// <param name="step">Step</param>
         /// <returns></returns>
@@ -1587,7 +1588,7 @@ namespace AI.DataStructs.Algebraic
         /// Split to windows
         /// </summary>
         /// <param name="transformer">Transformation function</param>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         /// <param name="w">Window size</param>
         /// <param name="step">Step</param>
         /// <returns></returns>
@@ -1606,7 +1607,7 @@ namespace AI.DataStructs.Algebraic
         /// Split to windows
         /// </summary>
         /// <param name="transformer">Transformation function</param>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         /// <param name="w">Window size</param>
         /// <param name="step">Step</param>
         /// <returns></returns>

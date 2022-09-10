@@ -59,7 +59,7 @@ namespace AI.DSP.IIR
         /// <summary>
         /// Filter output
         /// </summary>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         public double FilterOutp(double inp)
         {
 

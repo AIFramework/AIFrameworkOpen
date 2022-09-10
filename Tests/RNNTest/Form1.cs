@@ -29,7 +29,8 @@ namespace RNNTest
             nnw = new NeuralNetworkManager(net);
             steps = Vector.SeqBeginsWithZero(1, 50);
 
-            x = steps;// new Vector(50) { [0]=1, [37] = 0};
+
+            x =  new Vector(50) { [0]=1, [37] = 0};
             
             t = steps.Transform(r => Math.Pow(Math.Sin(r / 6), 3));
 
@@ -67,8 +68,8 @@ namespace RNNTest
         static NNW GetNN()
         {
             NNW lstm = new NNW();
-            lstm.AddNewLayer(new Shape3D(1), new FeedForwardLayer(10, new ReLU()));
-            lstm.AddNewLayer(new NeuralСontroller(15));
+            lstm.AddNewLayer(new Shape3D(1), new FeedForwardLayer(3, new ReLU(0.1)));
+            lstm.AddNewLayer(new GRURegression(10));
             lstm.AddNewLayer(new FeedForwardLayer(1, new LinearUnit()));
             return lstm;
         }
@@ -94,11 +95,11 @@ namespace RNNTest
         {
             
 
-            nnw.EpochesToPass = 135;
+            nnw.EpochesToPass = 300;
             nnw.LearningRate = 0.001f;
             nnw.GradientClipValue = 0.1f;
             nnw.ValSplit = 0;
-            nnw.Loss = new LossMeanSqrSqrt();
+            nnw.Loss = new LossMSE();
             nnw.Optimizer = new RMSProp();
 
             List<Vector> inp = x.Decomposition().ToList();

@@ -89,7 +89,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Number of learning parameters
+        /// Число обучаемых параметров
         /// </summary>
         public int TrainableParameters => FilterStrucuture.FilterCount * FilterStrucuture.FilterH * FilterStrucuture.FilterW * InputShape.Depth;
         /// <summary>
@@ -113,11 +113,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public NNValue[] Filters { get; /*private TODO*/set; }
         /// <summary>
-        /// Dimension and shape of the input tensor
+        /// Размерность и форма входного тензора
         /// </summary>
         public Shape3D InputShape { get; set; }
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         public Shape3D OutputShape { get; private set; }
         #endregion
@@ -125,7 +125,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Convolutional layer
         /// </summary>
-        /// <param name="inputShape">Dimension and shape of the input tensor</param>
+        /// <param name="inputShape"> Размерность и форма входного тензора </param>
         /// <param name="filterStruct">Структура фильтров</param>
         /// <param name="func">Activation function</param>
         /// <param name="rnd">Pseudo-random number generator</param>
@@ -212,8 +212,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Direct network pass
         /// </summary>
-        /// <param name="input">Input</param>
-        /// <param name="g">Automatic differentiation graph</param>
+        /// <param name="input">Вход</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             NNValue output = g.Convolution(input, Filters, Bias, _padX, _padY, _strideX, _strideY);

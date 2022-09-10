@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
 {
     /// <summary>
-    /// Neural network training dataset
+    /// Обучение нейронной сети dataset
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Tr. count = {TrainingInternal.Count}, Val. count = {ValidationInternal.Count}, Test. count = {TestingInternal.Count}")]

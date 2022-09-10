@@ -9,15 +9,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
     public interface ILayer
     {
         /// <summary>
-        /// Input dimension
+        /// Размерность входа
         /// </summary>
         Shape3D InputShape { get; set; }
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         Shape3D OutputShape { get; }
         /// <summary>
-        /// Number of learning parameters
+        /// Число обучаемых параметров
         /// </summary>
         int TrainableParameters { get; }
         /// <summary>
@@ -26,9 +26,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
         double AddDenInSqrt { get; }
 
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
-        /// <param name="input">Input</param>
+        /// <param name="input">Вход</param>
         /// <param name="g">Graph of automatic differentiation</param>
         NNValue Forward(NNValue input, INNWGraph g);
         /// <summary>

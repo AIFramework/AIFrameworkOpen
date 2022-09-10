@@ -10,12 +10,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
     {
 
         /// <summary>
-        /// Random number generator setting numerator
+        /// Числитель генератора случайных чисел
         /// </summary>
         public float Numerator => 1;
 
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="x">Input data tensor</param>
         /// <returns></returns>

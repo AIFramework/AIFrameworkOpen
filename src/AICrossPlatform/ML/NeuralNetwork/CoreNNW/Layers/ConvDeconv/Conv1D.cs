@@ -21,15 +21,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
         /// </summary>
         public bool IsSame { get => _convolution.IsSame; set => _convolution.IsSame = value; }
         /// <summary>
-        /// Dimension and shape of the input tensor
+        /// Размерность и форма входного тензора
         /// </summary>
         public Shape3D InputShape { get => _convolution.InputShape; set => _convolution.InputShape = value; }
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         public Shape3D OutputShape => _convolution.OutputShape;
         /// <summary>
-        /// Number of learning parameters
+        /// Число обучаемых параметров
         /// </summary>
         public int TrainableParameters => _convolution.TrainableParameters;
         /// <summary>
@@ -65,8 +65,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
         /// <summary>
         /// Direct network pass
         /// </summary>
-        /// <param name="input">Input</param>
-        /// <param name="g">Automatic differentiation graph</param>
+        /// <param name="input">Вход</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             return _convolution.Forward(input, g);

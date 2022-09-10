@@ -13,7 +13,7 @@ using System.Text;
 namespace AI.ML.NeuralNetwork.CoreNNW
 {
     /// <summary>
-    /// Neural network
+    /// Нейронная сеть
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Input shape = {InputShape?.ToString(),nq}, Output shape = {OutputShape?.ToString(),nq}")]
@@ -27,15 +27,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// </summary>
         public List<ILayer> Layers { get; set; }
         /// <summary>
-        /// Input dimension
+        /// Размерность входа
         /// </summary>
         public Shape3D InputShape { get; set; }
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         public Shape3D OutputShape { get; private set; }
         /// <summary>
-        /// Number of learning parameters
+        /// Число обучаемых параметров
         /// </summary>
         public int TrainableParameters
         {
@@ -55,18 +55,18 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
         #region Конструкторы
         /// <summary>
-        /// Neural network
+        /// Нейронная сеть
         /// </summary>
-        /// <param name="seed">Random number generator seed</param>
+        /// <param name="seed">seed для генератора псевдо-случайных чисел</param>
         public NNW(int seed = 10)
         {
             _rnd = new Random(seed);
             Layers = new List<ILayer>();
         }
         /// <summary>
-        /// Neural network
+        /// Нейронная сеть
         /// </summary>
-        /// <param name="layers">List of layers</param>
+        /// <param name="layers">Список слоев</param>
         public NNW(List<ILayer> layers)
         {
             Layers = layers ?? throw new ArgumentNullException(nameof(layers));
@@ -76,9 +76,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         #endregion
 
         /// <summary>
-        /// Adding a NEW layer to the neural network
+        /// Добавление НОВОГО слоя в нейронную сеть (веса перезаписываются)
         /// </summary>
-        /// <param name="layer">Layer</param>
+        /// <param name="layer">Слой</param>
         public void AddNewLayer(ILayer layer)
         {
             if (layer == null)
@@ -120,10 +120,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             }
         }
         /// <summary>
-        /// Adding a NEW layer to the neural network
+        /// Добавление НОВОГО слоя в нейронную сеть (веса перезаписываются)
         /// </summary>
-        /// <param name="inpShape">Input tensor shape</param>
-        /// <param name="layer">Layer</param>
+        /// <param name="inpShape">Форма тензора входа</param>
+        /// <param name="layer">Слой</param>
         public void AddNewLayer(Shape3D inpShape, ILayer layer)
         {
             layer.InputShape = inpShape ?? throw new ArgumentNullException(nameof(inpShape));
@@ -148,10 +148,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             }
         }
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
-        /// <param name="input">Input</param>
-        /// <param name="graph">Graph of automatic differentiation</param>
+        /// <param name="input">Вход</param>
+        /// <param name="graph">Граф атодифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph graph)
         {
             if (input == null)
@@ -179,17 +179,16 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             return prev;
         }
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
-        /// <param name="input">Input</param>
-        /// <param name="graph"></param>
-        /// <returns>Graph of automatic differentiation</returns>
+        /// <param name="input">Вход</param>
+        /// <param name="graph">Граф атодифференцирования</param>
         public NNValue Forward(IAlgebraicStructure input, INNWGraph graph)
         {
             return Forward(new NNValue(input), graph);
         }
         /// <summary>
-        /// Resetting the state (necessary for recurrent neural networks)
+        /// Сброс состояния (необходим для рекуррентных нейронных сетей)
         /// </summary>
         public void ResetState()
         {
@@ -202,7 +201,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             }
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Получение тренируемых параметров сети
         /// </summary>
         public List<NNValue> GetParameters()
         {
@@ -211,13 +210,13 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             {
                 if (layer is ILearningLayer)
                 {
-                    result.AddRange((layer as ILearningLayer).GetParameters());
+                    result.AddRange((layer as ILearningLayer)!.GetParameters());
                 }
             }
             return result;
         }
         /// <summary>
-        /// Use only mode, all additional parameters are deleted
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
         /// </summary>
         public void OnlyUse()
         {
@@ -253,15 +252,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
         #region Сохранение
         /// <summary>
-        /// Save network to file
+        /// Сохранение сети в файл
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Save network to stream
+        /// Сохранение сети в поток
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -272,17 +271,17 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
         #region Загрузка
         /// <summary>
-        /// Load network from file
+        /// Загрузка сети из файла
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public static NNW Load(string path)
         {
             return BinarySerializer.Load<NNW>(path);
         }
         /// <summary>
-        /// Load network from stream
+        /// Загрузка сети из потока
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         public static NNW Load(Stream stream)
         {

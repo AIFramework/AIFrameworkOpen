@@ -10,7 +10,7 @@
         /// </summary>
         float Numerator { get; }
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="x">Тензор аргумента</param>
         NNValue Forward(NNValue x);

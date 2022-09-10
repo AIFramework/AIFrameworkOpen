@@ -10,7 +10,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
     public class TanhUnit : IActivation
     {
         /// <summary>
-        /// Random number generator setting numerator
+        /// Числитель генератора случайных чисел
         /// </summary>
         public float Numerator => 1;
 
@@ -45,7 +45,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         }
 
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="x">Input data tensor</param>
         public NNValue Forward(NNValue x)

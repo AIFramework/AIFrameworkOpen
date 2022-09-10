@@ -13,7 +13,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// Раширение пространства признаков полиномиальной ф-ей
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="n">степень полинома</param>
         /// <returns>Новый вектор</returns>
         public static Vector Polinomial(double x, int n = 2)
@@ -36,7 +36,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// Раширение пространства признаков полиномиальной ф-ей
         /// </summary>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         /// <param name="n">степень полинома</param>
         /// <returns>Новый вектор</returns>
         public static Vector Polinomial(Vector inp, int n = 2)
@@ -56,7 +56,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// Раширение пространства признаков косинусами
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="n">Число гармоник</param>
         /// <returns>Новый вектор</returns>
         public static Vector Cos(double x, int n = 2)
@@ -74,7 +74,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// Раширение пространства признаков синусами 
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="n">Число гармоник</param>
         /// <returns>Новый вектор</returns>
         public static Vector Sin(double x, int n = 2)
@@ -92,7 +92,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// Раширение пространства признаков синусами и косинусами
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="n">Число гармоник</param>
         /// <returns>Новый вектор</returns>
         public static Vector SinCos(double x, int n = 2)
@@ -103,7 +103,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// Раширение пространства признаков косинусами
         /// </summary>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         /// <param name="n">Число гармоник</param>
         /// <returns>Новый вектор</returns>
         public static Vector Cos(Vector inp, int n = 2)
@@ -127,7 +127,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// Расширение пространства с помощью полиномиальных ф-й и потом косинусов
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="nPolinom">Степень полинома</param>
         /// <param name="nCos">Кол-во косинусов</param>
         public static Vector PoliCos(Vector x, int nPolinom = 3, int nCos = 3)
@@ -142,7 +142,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// Расширение пространства с помощью полиномиальных ф-й и потом косинусов
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="nPolinom">Степень полинома</param>
         /// <param name="nCos">Кол-во косинусов</param>
         public static Vector PoliCos(double x, int nPolinom = 3, int nCos = 3)
@@ -157,7 +157,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// Радиально-базисная ф-я Гаусса
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         /// <param name="centers">Массив центров</param>
         /// <param name="std">СКО</param>
         /// <returns>Вектор значений от 0 до 1</returns>

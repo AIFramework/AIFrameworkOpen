@@ -6,12 +6,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace AI.DataStructs
 {
     /// <summary>
-    /// Helper class for binary serialization
+    /// Вспомогательный класс для бинарной сериализации
     /// </summary>
     public static class BinarySerializer
     {
         /// <summary>
-        /// Loading from file
+        /// Загрузка из потока
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
@@ -52,7 +52,7 @@ namespace AI.DataStructs
             }
         }
         /// <summary>
-        /// Loading from stream
+        /// Загрузка из потока
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="stream"></param>
@@ -86,7 +86,7 @@ namespace AI.DataStructs
             }
         }
         /// <summary>
-        /// Saving to a binary file
+        /// Сохранение в бинарный файл
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="data"></param>
@@ -115,7 +115,7 @@ namespace AI.DataStructs
             Save(stream, data);
         }
         /// <summary>
-        /// Saving to a stream
+        /// Сохранение в поток
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="data"></param>

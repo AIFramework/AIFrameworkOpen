@@ -26,7 +26,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public Shape3D OutputShape { get; private set; }
         /// <summary>
-        /// Number of learning parameters
+        /// Число обучаемых параметров
         /// </summary>
         public int TrainableParameters => _aLen + _bLen + 1;
         /// <summary>
@@ -121,7 +121,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         }
 
         /// <summary>
-        /// Forward pass (фильтрация)
+        /// Прямой проход (фильтрация)
         /// </summary>
         /// <param name="input"></param>
         /// <param name="g"></param>

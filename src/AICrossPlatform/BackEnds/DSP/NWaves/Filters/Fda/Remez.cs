@@ -466,7 +466,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
         /// <summary>
         /// Estimate LP filter order according to [Herrman et al., 1973].
-        /// Section 8.2.7 in Proakis & Manolakis book.
+        /// Section 8.2.7 in Proakis Manolakis book.
         /// </summary>
         /// <param name="fp"></param>
         /// <param name="fa"></param>

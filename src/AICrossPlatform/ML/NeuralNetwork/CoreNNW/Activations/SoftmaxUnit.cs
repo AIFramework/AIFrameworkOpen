@@ -9,7 +9,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
     public class SoftmaxUnit : IActivation
     {
         /// <summary>
-        /// Random number generator setting numerator
+        /// Числитель генератора случайных чисел
         /// </summary>
         public float Numerator => 1; // Todo
 
@@ -18,7 +18,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         private static readonly float eps = 1e-15f;
 
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="x">Input data tensor</param>
         /// <returns></returns>

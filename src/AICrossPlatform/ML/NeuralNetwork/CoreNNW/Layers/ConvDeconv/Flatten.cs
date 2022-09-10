@@ -16,7 +16,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         private Shape3D _inputShape;
 
         /// <summary>
-        /// Dimension and shape of the input tensor
+        /// Размерность и форма входного тензора
         /// </summary>
         public Shape3D InputShape
         {
@@ -29,11 +29,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         }
 
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         public Shape3D OutputShape { get; private set; }
         /// <summary>
-        /// Number of learning parameters
+        /// Число обучаемых параметров
         /// </summary>
         public int TrainableParameters => 0;
         /// <summary>
@@ -48,7 +48,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Слой который преобразует тензор в вектор
         /// </summary>
-        /// <param name="inputShape">Dimension and shape of the input tensor</param>
+        /// <param name="inputShape"> Размерность и форма входного тензора </param>
         public Flatten(Shape3D inputShape)
         {
             InputShape = inputShape;
@@ -56,7 +56,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Слой который преобразует тензор в вектор
         /// </summary>
-        /// <param name="inputShape">Dimension and shape of the input tensor</param>
+        /// <param name="inputShape"> Размерность и форма входного тензора </param>
         /// <param name="gain">Усиление градиента</param>
         public Flatten(Shape3D inputShape, float gain)
         {
@@ -71,8 +71,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Direct network pass
         /// </summary>
-        /// <param name="input">Input</param>
-        /// <param name="g">Automatic differentiation graph</param>
+        /// <param name="input">Вход</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             Shape3D shape = new Shape3D(input.Shape.Count);

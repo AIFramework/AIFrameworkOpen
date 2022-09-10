@@ -31,11 +31,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         /// </summary>
         public double AddDenInSqrt { get; set; }
         /// <summary>
-        /// Number of learning parameters
+        /// Число обучаемых параметров
         /// </summary>
         public int TrainableParameters => (2 * (WRe.Shape.Count + BiasRe.Shape.Height)) + 6;
         /// <summary>
-        /// Input dimension
+        /// Размерность входа
         /// </summary>
         public Shape3D InputShape
         {
@@ -47,7 +47,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
             }
         }
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         public Shape3D OutputShape { get; private set; }
 
@@ -78,9 +78,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         }
 
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
-        /// <param name="input">Input</param>
+        /// <param name="input">Вход</param>
         /// <param name="g">Graph of automatic differentiation</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {

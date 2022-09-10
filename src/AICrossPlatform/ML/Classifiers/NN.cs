@@ -77,7 +77,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Recognizing a vector
         /// </summary>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         public int Classify(Vector inp)
         {
 

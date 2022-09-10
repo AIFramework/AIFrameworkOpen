@@ -10,7 +10,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
     public interface ITrainer
     {
         /// <summary>
-        /// Network training
+        /// Обучение нейронной сети
         /// </summary>
         /// <param name="epochesToPass">Number of epochs</param>
         /// /// <param name="batchSize">Batch size</param>
@@ -21,7 +21,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <returns>Loss</returns>
         void Train(int epochesToPass, int batchSize, float learningRate, INetwork network, IDataSet data, float minLoss);
         /// <summary>
-        /// Network async training
+        /// Асинхронное обучение нейронной сети
         /// </summary>
         /// <param name="epochesToPass">Number of epochs</param>
         /// <param name="batchSize">Batch size</param>

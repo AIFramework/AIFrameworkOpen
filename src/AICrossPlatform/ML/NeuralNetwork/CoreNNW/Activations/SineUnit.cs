@@ -9,7 +9,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
     public class SineUnit : IActivation
     {
         /// <summary>
-        /// Random number generator setting numerator
+        /// Числитель генератора случайных чисел
         /// </summary>
         public float Numerator => 1;
 
@@ -33,7 +33,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             return (float)Math.Cos(x);
         }
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="x">Input data tensor</param>
         public NNValue Forward(NNValue x)

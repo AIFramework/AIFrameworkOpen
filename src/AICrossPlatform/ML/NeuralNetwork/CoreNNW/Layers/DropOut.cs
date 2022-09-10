@@ -15,7 +15,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         private Shape3D _inputShape;
 
         /// <summary>
-        /// Input dimension
+        /// Размерность входа
         /// </summary>
         public Shape3D InputShape
         {
@@ -27,11 +27,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Output dimension
+        /// Размерность выхода
         /// </summary>
         public Shape3D OutputShape { get; private set; }
         /// <summary>
-        /// Number of learning parameters
+        /// Число обучаемых параметров
         /// </summary>
         public int TrainableParameters => 0;
         /// <summary>
@@ -54,16 +54,16 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         }
 
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
-        /// <param name="input">Input</param>
+        /// <param name="input">Вход</param>
         /// <param name="g">Graph of automatic differentiation</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             return g.DropOut(input, _q, _nomalizer, Random);
         }
         /// <summary>
-        /// Use only mode, all additional parameters are deleted
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
         /// </summary>
         public void OnlyUse()
         {

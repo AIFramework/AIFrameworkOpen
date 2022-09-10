@@ -43,7 +43,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
         /// <summary>
         /// Data step
         /// </summary>
-        /// <param name="input">Input</param>
+        /// <param name="input">Вход</param>
         /// <param name="targetOutput">Output</param>
         public DataStep(double[] input, double[] targetOutput)
         {
@@ -75,7 +75,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
         /// <summary>
         /// Data step
         /// </summary>
-        /// <param name="input">Input</param>
+        /// <param name="input">Вход</param>
         public DataStep(double[] input)
         {
             if (input == null)

@@ -297,7 +297,7 @@ namespace AI.DSP.DSPCore
         /// <summary>
         /// Эспоненциональное скользящее среднее
         /// </summary>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         /// <param name="oldPart">Коэффициент сглаживания</param>
         /// <returns></returns>
         public static Vector ExpAv(Vector inp, double oldPart = 0.99)
@@ -318,7 +318,7 @@ namespace AI.DSP.DSPCore
         /// <summary>
         /// Cкользящее среднее
         /// </summary>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         /// <param name="l">Размер окна</param>
 		public static Vector MAv(Vector inp, int l = 10)
         {

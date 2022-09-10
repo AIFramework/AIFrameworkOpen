@@ -10,7 +10,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
     {
 
         /// <summary>
-        /// Random number generator setting numerator
+        /// Числитель генератора случайных чисел
         /// </summary>
         public float Numerator => 1;
 
@@ -23,7 +23,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 
         }
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="x">Аргумента</param>
         public float Forward(float x)
@@ -32,7 +32,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         }
 
         /// <summary>
-        /// Forward pass
+        /// Прямой проход
         /// </summary>
         /// <param name="x">Тензор аргумента</param>
         public NNValue Forward(NNValue x)

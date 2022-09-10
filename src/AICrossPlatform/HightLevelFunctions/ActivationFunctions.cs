@@ -134,7 +134,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Активация Релу
         /// </summary>
-        /// <param name="Inp">Input</param>
+        /// <param name="Inp">Вход</param>
         /// <param name="thresholdUp">Верхний порог</param>
         /// <param name="thresholdDoun">Нижний порог</param>
         public static Vector Relu(Vector Inp, double thresholdUp, double thresholdDoun = 0)
@@ -157,7 +157,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Активация Релу
         /// </summary>
-        /// <param name="inp">Input</param>
+        /// <param name="inp">Вход</param>
         /// <param name="thresholdUp">Верхний порог</param>
         /// <param name="thresholdDoun">Нижний порог</param>
         public static Matrix Relu(Matrix inp, double thresholdUp, double thresholdDoun = 0)
@@ -258,7 +258,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Активация Релу
         /// </summary>
-        /// <param name="Inp">Input</param>
+        /// <param name="Inp">Вход</param>
         /// <param name="threshold">Нижний порог</param>
         public static Matrix Relu(Matrix Inp, double threshold = 0)
         {
@@ -283,7 +283,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Активация Релу
         /// </summary>
-        /// <param name="Inp">Input</param>
+        /// <param name="Inp">Вход</param>
         /// <param name="threshold">Нижний порог</param>
         public static Vector[] Relu(Vector[] Inp, double threshold = 0)
         {

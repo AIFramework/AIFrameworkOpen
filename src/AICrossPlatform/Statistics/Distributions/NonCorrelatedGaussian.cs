@@ -4,14 +4,17 @@ using System.Collections.Generic;
 
 namespace AI.Statistics.Distributions
 {
+    /// <summary>
+    /// Некоррелированный гауссов процесс
+    /// </summary>
     [Serializable]
     public class NonCorrelatedGaussian : IDistribution
     {
         /// <summary>
-        /// Log probability calculation
+        /// Рассчет логарифма функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
-        /// <param name="param_dist">Distribution parameters, key params: "std", "mean"</param>
+        /// <param name="x">Вход</param>
+        /// <param name="param_dist">Параметры распределения, ключевые параметры: "std", "mean"</param>
         public double CulcLogProb(double x, Dictionary<string, double> param_dist)
         {
             double std = param_dist["std"] == 0 ? AISettings.GlobalEps : param_dist["std"];
@@ -21,10 +24,10 @@ namespace AI.Statistics.Distributions
 
 
         /// <summary>
-        /// Log probability calculation
+        /// Рассчет логарифма функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
-        /// <param name="param_dist">Distribution parameters, key params: "std", "mean"</param>
+        /// <param name="x">Вход</param>
+        /// <param name="param_dist">Параметры распределения, ключевые параметры: "std", "mean"</param>
         public double CulcLogProb(Vector x, Dictionary<string, Vector> param_dist)
         {
             Vector std = param_dist["std"].Transform(r => r == 0 ? AISettings.GlobalEps : r);
@@ -41,10 +44,10 @@ namespace AI.Statistics.Distributions
         }
 
         /// <summary>
-        /// Probability calculation
+        /// Рассчет функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
-        /// <param name="param_dist">Distribution parameters, key params: "std", "mean"</param>
+        /// <param name="x">Вход</param>
+        /// <param name="param_dist">Параметры распределения, ключевые параметры: "std", "mean"</param>
         public double CulcProb(Vector x, Dictionary<string, Vector> param_dist)
         {
             double log = CulcLogProb(x, param_dist);
@@ -52,10 +55,10 @@ namespace AI.Statistics.Distributions
         }
 
         /// <summary>
-        /// Probability calculation
+        /// Рассчет функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
-        /// <param name="param_dist">Distribution parameters, key params: "std", "mean"</param>
+        /// <param name="x">Вход</param>
+        /// <param name="param_dist">Параметры распределения, ключевые параметры: "std", "mean"</param>
         public double CulcProb(double x, Dictionary<string, double> param_dist)
         {
             double std = param_dist["std"] == 0 ? AISettings.GlobalEps : param_dist["std"];

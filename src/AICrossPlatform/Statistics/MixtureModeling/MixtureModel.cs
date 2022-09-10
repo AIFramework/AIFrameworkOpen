@@ -39,27 +39,27 @@ namespace AI.Statistics.MixtureModeling
         }
 
         /// <summary>
-        /// Log probability calculation
+        /// Рассчет логарифма функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         public double CulcLogProb(double x)
         {
             return Math.Log(CulcProb(x));
         }
 
         /// <summary>
-        /// Log probability calculation
+        /// Рассчет логарифма функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         public double CulcLogProb(Vector x)
         {
             return Math.Log(CulcProb(x));
         }
 
         /// <summary>
-        /// Probability calculation
+        /// Рассчет функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         public double CulcProb(Vector x)
         {
             if (IsOneD)
@@ -77,9 +77,9 @@ namespace AI.Statistics.MixtureModeling
         }
 
         /// <summary>
-        /// Probability calculation
+        /// Рассчет функции распределения
         /// </summary>
-        /// <param name="x">Input</param>
+        /// <param name="x">Вход</param>
         public double CulcProb(double x)
         {
             if (!IsOneD)

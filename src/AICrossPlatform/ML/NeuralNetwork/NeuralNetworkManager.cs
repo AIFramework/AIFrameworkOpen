@@ -13,30 +13,30 @@ using System.Threading.Tasks;
 namespace AI.ML.NeuralNetwork
 {
     /// <summary>
-    /// Neural network manager (helper)
+    /// Менеджер нейронных сетей, класс для облегчения работы с нейросетями 
     /// </summary>
     [Serializable]
     public class NeuralNetworkManager
     {
         #region Cвойства
         /// <summary>
-        /// Neural Network
+        /// Нейросеть
         /// </summary>
         public INetwork Model { get; set; }
         /// <summary>
-        /// Graph of automatic differentiation
+        /// Граф атоматического дифференцирования
         /// </summary>
         public INNWGraph Graph { get; set; } = new NNWGraphCPU(false);
         /// <summary>
-        /// Optimizer
+        /// Метод оптимизации
         /// </summary>
         public IOptimizer Optimizer { get; set; } = new Adam();
         /// <summary>
-        /// Loss function
+        /// Функция ошибки
         /// </summary>
         public ILoss Loss { get; set; } = new LossMSE();
         /// <summary>
-        /// Learning rate
+        /// Скорость обучения
         /// </summary>
         public float LearningRate { get; set; } = 0.001f;
         /// <summary>
@@ -60,7 +60,7 @@ namespace AI.ML.NeuralNetwork
         /// </summary>
         public int BatchSize { get; set; } = 1;
         /// <summary>
-        /// Number of epochs
+        /// Число эпох
         /// </summary>
         public int EpochesToPass { get; set; } = 10;
         /// <summary>
@@ -71,22 +71,22 @@ namespace AI.ML.NeuralNetwork
 
         #region Конструкторы
         /// <summary>
-        /// Neural network
+        /// Менеджер нейронных сетей, класс для облегчения работы с нейросетями 
         /// </summary>
         public NeuralNetworkManager()
         {
             Model = new NNW();
         }
         /// <summary>
-        /// Neural network
+        /// Менеджер нейронных сетей, класс для облегчения работы с нейросетями 
         /// </summary>
-        /// <param name="path">Path to the saved network</param>
+        /// <param name="path">Путь до сохраненной нейронной сети</param>
         public NeuralNetworkManager(string path)
         {
             Model = NNW.Load(path);
         }
         /// <summary>
-        /// Neural network
+        /// Менеджер нейронных сетей, класс для облегчения работы с нейросетями 
         /// </summary>
         public NeuralNetworkManager(NNW nnw)
         {
@@ -378,7 +378,7 @@ namespace AI.ML.NeuralNetwork
 
         #region Обучение
         /// <summary>
-        /// Neural network training
+        /// Обучение нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <param name="outputs"></param>
@@ -421,7 +421,7 @@ namespace AI.ML.NeuralNetwork
             return trainer.Info;
         }
         /// <summary>
-        /// Neural network training
+        /// Обучение нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <param name="outputs"></param>
@@ -442,10 +442,11 @@ namespace AI.ML.NeuralNetwork
             return trainer.Info;
         }
         /// <summary>
-        /// Neural network training
+        /// Обучение нерекуррентной сети в асинхронном режиме
         /// </summary>
-        /// <param name="inputs"></param>
-        /// <param name="outputs"></param>
+        /// <param name="inputs">Данные входа</param>
+        /// <param name="outputs">Целевые переменные</param>
+        /// <param name="cancellationToken">Окончание обучения </param>
         /// <returns></returns>
         public async Task<TrainInfo> TrainNetAsync(IAlgebraicStructure[] inputs, IAlgebraicStructure[] outputs, CancellationToken cancellationToken = default)
         {
@@ -463,10 +464,10 @@ namespace AI.ML.NeuralNetwork
             return trainer.Info;
         }
         /// <summary>
-        /// Neural network training
+        /// Обучение нейронной сети для работы с сигналами
         /// </summary>
-        /// <param name="inputs">Inputs</param>
-        /// <param name="outputs">Outputs(target values)</param>
+        /// <param name="inputs">Массив входных одномерных сигналов</param>
+        /// <param name="outputs">Массив входных одномерных сигналов(Целевые значения)</param>
         public TrainInfo TrainNetSignal(Vector[] inputs, Vector[] outputs)
         {
             bool graphPrevState = Graph.IsBackward;
@@ -483,10 +484,11 @@ namespace AI.ML.NeuralNetwork
             return trainer.Info;
         }
         /// <summary>
-        /// Neural network async training
+        /// Асинхронное обучение нейронной сети для работы с сигналами
         /// </summary>
-        /// <param name="inputs">Inputs</param>
-        /// <param name="outputs">Outputs(target values)</param>
+        /// <param name="inputs">Массив входных одномерных сигналов</param>
+        /// <param name="outputs">Массив входных одномерных сигналов(Целевые значения)</param>
+        /// <param name="cancellationToken">Окончание обучения</param>
         public async Task<TrainInfo> TrainNetSignalAsync(Vector[] inputs, Vector[] outputs, CancellationToken cancellationToken = default)
         {
             bool graphPrevState = Graph.IsBackward;
@@ -503,10 +505,8 @@ namespace AI.ML.NeuralNetwork
             return trainer.Info;
         }
         /// <summary>
-        /// Neural network training
+        /// Обучение рекуррентной нейронной сети для работы с сигналами
         /// </summary>
-        /// <param name="inputs">Inputs</param>
-        /// <param name="outputs">Outputs(target values)</param>
         public TrainInfo TrainNet(IReadOnlyList<NNValue>[] inputs, IReadOnlyList<NNValue>[] outputs)
         {
             bool graphPrevState = Graph.IsBackward;
@@ -523,10 +523,8 @@ namespace AI.ML.NeuralNetwork
             return trainer.Info;
         }
         /// <summary>
-        /// Neural network async training
+        /// Асинхронное обучение рекуррентной нейронной сети для работы с сигналами
         /// </summary>
-        /// <param name="inputs">Inputs</param>
-        /// <param name="outputs">Outputs(target values)</param>
         public async Task<TrainInfo> TrainNetAsync(IReadOnlyList<NNValue>[] inputs, IReadOnlyList<NNValue>[] outputs, CancellationToken cancellationToken = default)
         {
             bool graphPrevState = Graph.IsBackward;
@@ -543,7 +541,7 @@ namespace AI.ML.NeuralNetwork
             return trainer.Info;
         }
         /// <summary>
-        /// Neural network training
+        /// Обучение нейронной сети
         /// </summary>
         /// <param name="inputs">Inputs</param>
         /// <param name="outputs">Outputs(target values)</param>
@@ -563,10 +561,8 @@ namespace AI.ML.NeuralNetwork
             return trainer.Info;
         }
         /// <summary>
-        /// Neural network async training
+        /// Асинхронное обучение рекуррентной нейронной сети для работы с сигналами
         /// </summary>
-        /// <param name="inputs">Inputs</param>
-        /// <param name="outputs">Outputs(target values)</param>
         public async Task<TrainInfo> TrainNetAsync(IReadOnlyList<IAlgebraicStructure>[] inputs, IReadOnlyList<IAlgebraicStructure>[] outputs, CancellationToken cancellationToken = default)
         {
             bool graphPrevState = Graph.IsBackward;

@@ -28,6 +28,108 @@ namespace AI.DataStructs.Algebraic
         /// Vector shape
         /// </summary>
         public Shape Shape => new Shape1D(Count);
+
+        /// <summary>
+        /// Получение значения по индексу, аналогично как Python(поддержка отрицательных индексов)
+        /// </summary>
+        /// <param name="i">Индекс</param>
+        public new double this[int i]
+        {
+            get 
+            {
+                if(i>=0) return base[i];
+                else return base[Count + i];
+            }
+            set 
+            {
+                if (i >= 0) base[i] = value;
+                else base[Count + i] = value;
+            }
+        }
+        /// <summary>
+        /// Получение или установка значений по маске, аналогично как Python
+        /// </summary>
+        /// <param name="mask">Маска (true - позиции для вставки или извлечения)</param>
+        /// <exception cref="Exception">Возникает исключение при несоответствии числа позиций для вставки и размерности вектора для вставки</exception>
+        public Vector this[bool[] mask] 
+        {
+            get 
+            {
+                int count = 0;
+                for (int i = 0; i < mask.Length; i++) if (mask[i]) count++;
+                
+                Vector result = new Vector(count);
+                
+                for (int i = 0, j = 0; i < mask.Length; i++)
+                    if (mask[i]) result[j++] = this[i];
+
+                return result; 
+            }
+            set 
+            {
+                int count = 0;
+                for (int i = 0; i < mask.Length; i++) if (mask[i]) count++;
+
+                if (value.Count != count) 
+                    throw new Exception("Число позиций для вставки в маске должно совпадать с размерностью вектора");
+
+
+                
+                for (int i = 0, j = 0; i < mask.Length; i++)
+                {
+                    if (mask[i]) this[i] = value[j++];
+                }
+            }
+        }
+        /// <summary>
+        /// Получение среза, аналогично как Python(поддержка отрицательных индексов и шагов)
+        /// </summary>
+        /// <param name="start">Начало</param>
+        /// <param name="end">Конец</param>
+        /// <param name="step">Шаг (если отрицательный, то последовательность переворачивается)</param>
+        public Vector this[int? start, int? end, int step = 1]
+        {
+            get
+            {
+                int a = 0;
+                int b = Count;
+
+                if(start != null)
+                    a = start.Value >= 0 ? start.Value : Count + start.Value;
+
+                if (end != null)
+                    b = end.Value >= 0 ? end.Value : Count + end.Value;
+
+                int s = Math.Abs(step);
+                
+                Vector ret = new Vector((b-a) / s);
+
+                for (int i = a, j = 0; i < b; i+=s) 
+                    if(j < ret.Count)  ret[j++] = base[i];
+
+                return step < 0? ret.Revers() : ret;
+            }
+
+            set 
+            {
+                int a = 0;
+                int b = Count;
+
+                if (start != null)
+                    a = start.Value >= 0 ? start.Value : Count + start.Value;
+
+                if (end != null)
+                    b = end.Value >= 0 ? end.Value : Count + end.Value;
+
+                int s = Math.Abs(step);
+                Vector inp = step >= 0 ? value: value.Revers();
+
+                for (int i = a, j = 0; i < b; i += s)
+                    if (j < inp.Count)
+                        base[i] = inp[j++];
+            }
+        }
+
         #endregion
 
         #region Конструкторы

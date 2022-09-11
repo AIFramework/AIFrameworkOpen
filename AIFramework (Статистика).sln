@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AICrossPlatform", "src\AICr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StatisticsTests", "StatisticsTests", "{87B2FBCB-90A7-4337-A0FF-CABA411E2E70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCMCTest", "MCMCTest\MCMCTest.csproj", "{E43514D2-9748-4D00-8C93-7A948258715E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCMCTest", "Tests\Statistics\MCMCTest\MCMCTest.csproj", "{E43514D2-9748-4D00-8C93-7A948258715E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

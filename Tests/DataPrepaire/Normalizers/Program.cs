@@ -22,8 +22,8 @@ namespace Normalizers
             Vector test = new Vector(100, 1000, 200, 2);
 
 
-            bool Z = false; // Z - нормализация
-            bool MM = true;// минимакс - нормализация
+            bool Z = true; // Z - нормализация
+            bool MM = false;// минимакс - нормализация
 
             if (Z)
             {

@@ -43,6 +43,7 @@ namespace MCMCTest
 
             // Выход MCMC
             Vector doubles = montecarlo.Generate(15000, min, max);
+            doubles = doubles[null, null, -1]; // Переворачиваем последовательность (тест срезов)
             // Гистограмма на выходе MCMC
             Statistic stat = new Statistic(doubles);
             var hist = stat.Histogramm(70);

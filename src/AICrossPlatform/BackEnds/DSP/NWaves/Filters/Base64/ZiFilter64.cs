@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 {
+    /// <summary>
+    /// 64-х битны фильтр на б
+    /// </summary>
     [Serializable]
     public class ZiFilter64 : IFilter64, IOnlineFilter64
     {
@@ -25,6 +28,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// State vector
         /// </summary>
         protected readonly double[] _zi;
+
+        /// <summary>
+        /// Вектор состояний линии задержки
+        /// </summary>
         public double[] Zi => _zi;
 
         /// <summary>

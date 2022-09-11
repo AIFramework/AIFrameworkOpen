@@ -684,7 +684,7 @@ namespace AI.Statistics
         /// <returns>возращает вектор длинной nRazr, содержащий отсчеты для построения гистограммы</returns>
         public Histogramm Histogramm(int n)
         {
-            double step = (MaxValue - MinValue) / n, step2 = (MaxValue - MinValue) / _vector.Count;
+            double step = (MaxValue - MinValue) / n;
             Histogramm A = new Histogramm(n);
 
             for (int i = 0; i < n; i++)
@@ -700,20 +700,19 @@ namespace AI.Statistics
             }
 
 
-            A.Y /= _vector.Count;
-            A.Y = A.Y.InterpolayrZero(_vector.Count / n);
+            A.Y /= _vector.Count* step;
             A.X = new Vector(A.Y.Count);
 
             for (int i = 0; i < A.X.Count; i++)
             {
-                A.X[i] = MinValue + (i * step2);
+                A.X[i] = MinValue + (i * step);
             }
 
             return A;
         }
 
         /// <summary>
-        /// Initial moment
+        /// Начальный момент
         /// </summary>
         /// <param name="n">Initial moment number 1,2,3 ...</param>
         public double InitialMoment(int n)

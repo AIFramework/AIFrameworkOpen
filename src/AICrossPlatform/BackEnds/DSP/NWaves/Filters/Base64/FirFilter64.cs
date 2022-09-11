@@ -43,6 +43,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// Transfer function (created lazily or set specifically if needed)
         /// </summary>
         protected TransferFunction _tf;
+        /// <summary>
+        /// Передаточная функция
+        /// </summary>
         public TransferFunction Tf
         {
             get => _tf ?? new TransferFunction(_b.Take(_kernelSize).ToArray());

@@ -22,7 +22,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
         /// </summary>
         ILoss LossFunction { get; set; }
         /// <summary>
-        /// Training subset
+        /// Обучающая выборка
         /// </summary>
         IReadOnlyList<DataSequence> Training { get; }
         /// <summary>

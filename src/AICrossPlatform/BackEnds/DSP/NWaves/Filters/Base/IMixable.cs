@@ -1,5 +1,8 @@
 ﻿namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IMixable
     {
         /// <summary>

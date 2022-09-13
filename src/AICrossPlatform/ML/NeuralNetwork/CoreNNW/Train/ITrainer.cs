@@ -12,10 +12,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <summary>
         /// Обучение нейронной сети
         /// </summary>
-        /// <param name="epochesToPass">Number of epochs</param>
-        /// /// <param name="batchSize">Batch size</param>
-        /// <param name="learningRate">Learning rate</param>
-        /// <param name="network">Neural network</param>
+        /// <param name="epochesToPass">Число эпох</param>
+        /// /// <param name="batchSize">Размер подвыборки</param>
+        /// <param name="learningRate">Скорость обучения</param>
+        /// <param name="network">Нейронная сеть</param>
         /// <param name="data">Data set</param>
         /// <param name="minLoss">Minimal loss value</param>
         /// <returns>Loss</returns>
@@ -23,10 +23,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <summary>
         /// Асинхронное обучение нейронной сети
         /// </summary>
-        /// <param name="epochesToPass">Number of epochs</param>
-        /// <param name="batchSize">Batch size</param>
-        /// <param name="learningRate">Learning rate</param>
-        /// <param name="network">Neural network</param>
+        /// <param name="epochesToPass">Число эпох</param>
+        /// <param name="batchSize">Размер подвыборки</param>
+        /// <param name="learningRate">Скорость обучения</param>
+        /// <param name="network">Нейронная сеть</param>
         /// <param name="data">Data set</param>
         /// <param name="minLoss">Minimal loss value</param>
         /// <returns>Loss</returns>

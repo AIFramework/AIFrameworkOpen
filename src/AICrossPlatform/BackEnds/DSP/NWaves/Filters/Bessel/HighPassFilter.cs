@@ -16,7 +16,6 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
         /// </summary>
         /// <param name="freq"></param>
         /// <param name="order"></param>
-        /// <param name="ripple"></param>
         public HighPassFilter(double freq, int order) : base(MakeTf(freq, order))
         {
         }

@@ -110,7 +110,7 @@ namespace AI.ML.Clustering
         }
 
         /// <summary>
-        /// Train kohonen network
+        /// Обучение сети кохонена
         /// </summary>
         /// <param name="datasetInp"></param>
         /// <param name="param"></param>

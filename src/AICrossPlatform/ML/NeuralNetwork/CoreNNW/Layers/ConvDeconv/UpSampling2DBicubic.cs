@@ -6,7 +6,7 @@ using System;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Upsampling with bicubic interpolation
+    /// Апсемплинг с бикубической интерполяцией
     /// </summary>
     [Serializable]
     public class UpSampling2DBicubic : ILayer
@@ -35,14 +35,16 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public int TrainableParameters => 0;
         /// <summary>
-        /// Adding a value to the denominator under the root when initializing the weights
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt { get; private set; }
 
         /// <summary>
-        /// Upsampling with bicubic interpolation
+        /// Апсемплинг с бикубической интерполяцией
         /// </summary>
         /// <param name="inputShape"> Размерность и форма входного тензора </param>
+        /// <param name="h">Увеличение разрешения по высоте</param>
+        /// <param name="w">Увеличение разрешения по ширине</param>
         public UpSampling2DBicubic(Shape3D inputShape, int h = 2, int w = 2)
         {
             _h = h;
@@ -50,7 +52,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             InputShape = inputShape;
         }
         /// <summary>
-        /// Upsampling with bicubic interpolation
+        /// Апсемплинг с бикубической интерполяцией
         /// </summary>
         public UpSampling2DBicubic(int h = 2, int w = 2)
         {
@@ -59,7 +61,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         }
 
         /// <summary>
-        /// Direct network pass
+        /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
         /// <param name="g">Граф автоматического дифференцирования</param>
@@ -69,13 +71,16 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return res;
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         public override string ToString()
         {
             return LayerHelper.GetLayerDescription("UpSampling2DBC", InputShape, OutputShape, "None", TrainableParameters);
         }
 
+        /// <summary>
+        /// Модификация "только для использования" ( в 4 раза легче )
+        /// </summary>
         public void OnlyUse()
         {
         }

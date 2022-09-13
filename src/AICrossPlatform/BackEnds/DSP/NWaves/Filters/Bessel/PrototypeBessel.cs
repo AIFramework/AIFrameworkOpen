@@ -5,6 +5,9 @@ using System.Numerics;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
 {
+    /// <summary>
+    /// Прототип фильтра Бесселя
+    /// </summary>
     [Serializable]
     public static class PrototypeBessel
     {

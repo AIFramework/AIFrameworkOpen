@@ -3,7 +3,7 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 {
     /// <summary>
-    /// Activation function
+    /// Активационная функция
     /// </summary>
     [Serializable]
     public class ArcTanUnit : IActivation
@@ -16,7 +16,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         /// <summary>
         /// Прямой проход
         /// </summary>
-        /// <param name="x">Input data tensor</param>
+        /// <param name="x">Тензор входных данных</param>
         /// <returns></returns>
         public NNValue Forward(NNValue x)
         {
@@ -32,7 +32,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         }
 
         /// <summary>
-        /// Bakward pass
+        /// Обратный проход
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
@@ -53,7 +53,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             return valueMatrix;
         }
         /// <summary>
-        /// Activation function name
+        /// Активационная функция name
         /// </summary>
         public override string ToString()
         {

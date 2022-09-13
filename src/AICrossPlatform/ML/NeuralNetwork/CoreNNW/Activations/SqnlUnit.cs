@@ -46,7 +46,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             return valueMatrix;
         }
         /// <summary>
-        /// Bakward pass(производная)
+        /// Обратный проход(производная)
         /// </summary>
         /// <param name="x">Тензор аргумента</param>
         public NNValue Backward(NNValue x)
@@ -63,7 +63,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         }
 
         /// <summary>
-        /// Activation function name
+        /// Активационная функция name
         /// </summary>
         public override string ToString()
         {

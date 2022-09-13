@@ -92,7 +92,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Регрессия (Метод ближайшего соседа)
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public KnnMultyRegr(string path)
         {
             reges = new StructRegresMulty();
@@ -113,7 +113,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Save
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             try
@@ -140,7 +140,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Loading
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public void Open(string path)
         {
 

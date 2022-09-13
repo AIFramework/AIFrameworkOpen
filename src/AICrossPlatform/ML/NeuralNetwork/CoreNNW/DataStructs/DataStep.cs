@@ -12,7 +12,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
     public class DataStep
     {
         /// <summary>
-        /// Input data tensor
+        /// Тензор входных данных
         /// </summary>
         public NNValue Input { get; }
         /// <summary>
@@ -23,8 +23,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
         /// <summary>
         /// Data step
         /// </summary>
-        /// <param name="input">Input data tensor</param>
-        /// <param name="targetOutput">Output data tensor</param>
+        /// <param name="input">Тензор входных данных</param>
+        /// <param name="targetOutput">Тензор выходных данных</param>
         public DataStep(NNValue input, NNValue targetOutput)
         {
             if (input == null)
@@ -62,7 +62,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
         /// <summary>
         /// Data step
         /// </summary>
-        /// <param name="input">Input data tensor</param>
+        /// <param name="input">Тензор входных данных</param>
         public DataStep(NNValue input)
         {
             if (input == null)

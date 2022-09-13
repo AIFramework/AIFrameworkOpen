@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 namespace AI.Statistics
 {
     /// <summary>
-    /// The class contains methods for statistical analysis.As well as pseudo random number generators
+    /// Класс содержит методы для статистического анализа.А также генераторы псевдослучайных чисел.
     /// </summary>
     [Serializable]
     public class Statistic
@@ -41,7 +41,7 @@ namespace AI.Statistics
         #endregion
 
         /// <summary>
-        /// Creates an object of class Statistic, takes a vector of input values ​​of a random variable
+        /// Создает объект класса Statistic, принимает вектор входных значений случайной величины
         /// </summary>
         public Statistic(IAlgebraicStructure data)
         {
@@ -54,7 +54,7 @@ namespace AI.Statistics
         }
 
         /// <summary>
-        /// Pseudo-random number generator с равномерным распределением
+        /// Генератор псевдо-случайных чисел с равномерным распределением
         /// </summary>
         /// <param name="n">Длинна вектора</param>
         /// <returns>Возвращает вектор случайных чисел</returns>
@@ -71,10 +71,10 @@ namespace AI.Statistics
         }
 
         /// <summary>
-		/// Pseudo-random number generator с равномерным распределением
+		/// Генератор псевдо-случайных чисел с равномерным распределением
 		/// </summary>
 		/// <param name="n">Длинна вектора</param>
-        /// <param name="random">Pseudo-random number generator</param>
+        /// <param name="random">Генератор псевдо-случайных чисел</param>
 		/// <returns>Возвращает вектор случайных чисел</returns>
 		public static Vector Rand(int n, Random random)
         {
@@ -130,7 +130,7 @@ namespace AI.Statistics
 
 
         /// <summary>
-        /// Pseudo-random number generator с нормальным распределением
+        /// Генератор псевдо-случайных чисел с нормальным распределением
         /// </summary>
         /// <param name="n">Длинна вектора</param>
         /// <param name="iter">Число итераций</param>
@@ -149,10 +149,10 @@ namespace AI.Statistics
 
 
         /// <summary>
-        /// Pseudo-random number generator с нормальным распределением
+        /// Генератор псевдо-случайных чисел с нормальным распределением
         /// </summary>
         /// <param name="n">Длинна вектора</param>
-        /// <param name="random">Pseudo-random number generator</param>
+        /// <param name="random">Генератор псевдо-случайных чисел</param>
         /// <param name="iter">Число итераций</param>
         /// <returns>Возвращает вектор случайных чисел</returns>
         public static Vector RandNormP(int n, Random random, int iter = 10)
@@ -180,7 +180,7 @@ namespace AI.Statistics
         }
 
         /// <summary>
-        /// Pseudo-random number generator с нормальным распределением
+        /// Генератор псевдо-случайных чисел с нормальным распределением
         /// </summary>
         /// <param name="n">Длинна вектора</param>
         /// <returns>Возвращает вектор случайных чисел</returns>
@@ -199,10 +199,10 @@ namespace AI.Statistics
 
 
         /// <summary>
-        /// Pseudo-random number generator с нормальным распределением
+        /// Генератор псевдо-случайных чисел с нормальным распределением
         /// </summary>
         /// <param name="n">Длинна вектора</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         /// <returns>Возвращает вектор случайных чисел</returns>
         public static Vector RandNorm(int n, Random rnd)
         {
@@ -249,7 +249,7 @@ namespace AI.Statistics
         /// </summary>
         /// <param name="m">Количество строк</param>
         /// <param name="n">Количество столбцов</param>
-        /// <param name="random">Pseudo-random number generator</param>
+        /// <param name="random">Генератор псевдо-случайных чисел</param>
         public static Matrix Rand(int m, int n, Random random)
         {
             Matrix C = new Matrix(m, n);
@@ -346,7 +346,7 @@ namespace AI.Statistics
         /// </summary>
         /// <param name="m">Количество строк</param>
         /// <param name="n">Количество столбцов</param>
-        /// <param name="rn">Pseudo-random number generator</param>
+        /// <param name="rn">Генератор псевдо-случайных чисел</param>
         public static Matrix RandNorm(int m, int n, Random rn)
         {
             Matrix C = new Matrix(m, n);
@@ -365,7 +365,7 @@ namespace AI.Statistics
         /// <param name="h"> Height </param>
         /// <param name="w">Ширина</param>
         /// <param name="d">Глубина</param>
-        /// <param name="random">Pseudo-random number generator</param>
+        /// <param name="random">Генератор псевдо-случайных чисел</param>
         public static Tensor RandNorm(int h, int w, int d, Random random)
         {
             Tensor tensor = new Tensor(h, w, d);
@@ -608,7 +608,7 @@ namespace AI.Statistics
 
 
         /// <summary>
-        /// Pseudo-random number generator с нормальным распределением
+        /// Генератор псевдо-случайных чисел с нормальным распределением
         /// </summary>
         /// <returns>Возвращает случайные числа</returns>
         public double RandNorm()
@@ -935,6 +935,7 @@ namespace AI.Statistics
         /// СКО по ансамлю
         /// </summary>
         /// <param name="ensemble">Ансамбль векторов</param>
+        /// <param name="mean">Предю рассчитанный вектор средних</param>
         public static Vector EnsembleStd(Vector[] ensemble, Vector mean)
         {
             Vector res = EnsembleDispersion(ensemble, mean);
@@ -1031,9 +1032,10 @@ namespace AI.Statistics
             return SimpleMeanFreq(dif) / SimpleMeanFreq(signal);
         }
         /// <summary>
-        /// Average step, how much x[i] differs from x[i + 1] on average
+        /// Средний шаг, насколько x[i] отличается от x[i + 1] в среднем
         /// </summary>
-        /// <param name="vector">Sequence</param>
+        /// <param name="vector">Последовательность</param>
+        /// <param name="eps">Минимально-возможный шаг</param>
         public static double MeanStep(Vector vector, double eps = double.Epsilon)
         {
             Vector difVec = Functions.Diff(vector);
@@ -1043,9 +1045,10 @@ namespace AI.Statistics
         }
 
         /// <summary>
-        /// (Max(vector) - Min(vector))/N + eps
+        /// Средний шаг в последовательности (Max(vector) - Min(vector))/N + eps
         /// </summary>
-        /// <param name="vector">Sequence</param>
+        /// <param name="vector">Последовательность</param>
+        /// <param name="eps">Минимально-возможный шаг</param>
         public static double MeanStep2(Vector vector, double eps = double.Epsilon)
         {
             double max = vector.Max();

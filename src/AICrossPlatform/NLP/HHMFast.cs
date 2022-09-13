@@ -165,7 +165,7 @@ namespace AI.NLP
         /// </summary>
         /// <param name="num">число слов</param>
         /// <param name="strs">начальное состояние</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         /// <returns>сгенерированная строка</returns>
         public string Generate(int num, string[] strs, Random rnd)
         {

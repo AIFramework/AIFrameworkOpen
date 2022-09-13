@@ -20,7 +20,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         /// <summary>
         /// Прямой проход
         /// </summary>
-        /// <param name="x">Input data tensor</param>
+        /// <param name="x">Тензор входных данных</param>
         /// <returns></returns>
         public NNValue Forward(NNValue x)
         {
@@ -45,9 +45,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             return valueMatrix;
         }
         /// <summary>
-        /// Bakward pass
+        /// Обратный проход
         /// </summary>
-        /// <param name="x">Input data tensor</param>
+        /// <param name="x">Тензор входных данных</param>
         public NNValue Backward(NNValue x)
         {
             NNValue valueMatrix = new NNValue(x.Shape);

@@ -10,11 +10,11 @@ namespace AI.ML.HMM
     public class HMM
     {
         /// <summary>
-        /// State Matrix
+        /// Матрица состояний
         /// </summary>
         public Matrix stateMatrix;
         /// <summary>
-        /// Inverted state matrix
+        /// Обратная матрица состояний (1-matr_state)
         /// </summary>
         public Matrix stateAlter;
         private int[] states;
@@ -22,7 +22,7 @@ namespace AI.ML.HMM
 
 
         /// <summary>
-        /// Markov chain
+        /// Марковская цепь
         /// </summary>
         public HMM()
         {
@@ -30,7 +30,7 @@ namespace AI.ML.HMM
         }
 
         /// <summary>
-        /// Train
+        /// Обучение
         /// </summary>
         /// <param name="trainSeq">Training sequence</param>
         public void Train(int[] trainSeq)

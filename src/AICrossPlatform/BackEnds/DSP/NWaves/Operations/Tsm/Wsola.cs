@@ -62,6 +62,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         /// </summary>
         /// <param name="stretch">Stretch ratio</param>
         /// <param name="windowSize"></param>
+        /// <param name="hopAnalysis"></param>
+        /// <param name="maxDelta"></param>
         public Wsola(double stretch, int windowSize, int hopAnalysis, int maxDelta = 0)
         {
             _stretch = stretch;

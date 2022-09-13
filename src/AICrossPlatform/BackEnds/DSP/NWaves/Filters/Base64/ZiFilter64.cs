@@ -38,6 +38,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// Transfer function
         /// </summary>
         protected TransferFunction _tf;
+
+        /// <summary>
+        /// Передаточная функция
+        /// </summary>
         public TransferFunction Tf
         {
             get => _tf ?? new TransferFunction(_b, _a);

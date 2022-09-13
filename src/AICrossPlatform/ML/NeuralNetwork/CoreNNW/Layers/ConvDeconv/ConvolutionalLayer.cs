@@ -97,11 +97,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public double Numerator { get; set; }
         /// <summary>
-        /// Adding a value to the denominator under the root when initializing the weights
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt { get; set; }
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
         public IActivation ActivationFunction { get; set; }
         /// <summary>
@@ -127,8 +127,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="inputShape"> Размерность и форма входного тензора </param>
         /// <param name="filterStruct">Структура фильтров</param>
-        /// <param name="func">Activation function</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="func">Активационная функция</param>
+        /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public ConvolutionalLayer(Shape3D inputShape, FilterStruct filterStruct, IActivation func, Random rnd)
         {
             InputShape = inputShape;
@@ -138,7 +138,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Convolutional layer
         /// </summary>
         /// <param name="filterStruct">Структура фильтров</param>
-        /// <param name="func">Activation function</param>
+        /// <param name="func">Активационная функция</param>
         public ConvolutionalLayer(FilterStruct filterStruct, IActivation func)
         {
             ActivationFunction = func;
@@ -153,7 +153,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Convolutional layer
         /// </summary>
-        /// <param name="func">Activation function</param>
+        /// <param name="func">Активационная функция</param>
         /// <param name="filterCount">Число фильтров</param>
         /// <param name="height">Высота фильтра</param>
         /// <param name="width">Ширина фильтра</param>
@@ -198,7 +198,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Setting up the random number generator initializer
         /// </summary>
-        /// <param name="random">Pseudo-random number generator</param>
+        /// <param name="random">Генератор псевдо-случайных чисел</param>
         /// <param name="addDenumInSqrt">Adding a value to a radical expression in the denominator</param>
         public void GeneratorW(Random random, double addDenumInSqrt = 0)
         {
@@ -210,7 +210,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Direct network pass
+        /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
         /// <param name="g">Граф автоматического дифференцирования</param>
@@ -238,7 +238,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             OutputShape = new Shape3D(outpH, outpW, OutputShape.Depth);
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

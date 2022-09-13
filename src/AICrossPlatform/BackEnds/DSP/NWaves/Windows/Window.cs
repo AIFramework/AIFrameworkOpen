@@ -14,6 +14,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// </summary>
         /// <param name="type">Window type</param>
         /// <param name="length">Window length</param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
         public static float[] OfType(WindowTypes type, int length, params object[] parameters)
         {
@@ -152,6 +153,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// Kaiser-Bessel Derived window
         /// </summary>
         /// <param name="length">Length of the window</param>
+        /// <param name="alpha"></param>
         /// <returns>KBD window</returns>
         public static float[] Kbd(int length, double alpha = 4.0)
         {

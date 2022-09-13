@@ -78,7 +78,7 @@ namespace AI
         /// <summary>
         /// Загрузка звука
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         /// <returns></returns>
         public Vector SoundLoad(string path)
         {

@@ -55,6 +55,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
             return poles;
         }
 
+        /// <summary>
+        /// Нули передаточной функции
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="ripplePass"></param>
+        /// <param name="rippleStop"></param>
+        /// <returns></returns>
         public static Complex[] Zeros(int order, double ripplePass = 1, double rippleStop = 20)
         {
             Guard.AgainstInvalidRange(ripplePass, rippleStop, "ripple in passband", "ripple in stopband");

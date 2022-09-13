@@ -26,7 +26,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// Since the number of coefficients can be really big,
         /// we store ONLY float versions and they are used for filtering.
         /// 
-        /// For design & analysis use the transfer function (Tf property, set via constructor).
+        /// For design  analysis use the transfer function (Tf property, set via constructor).
         /// By default Tf is null, so if you need your FIR filter to do just filtering, you won't waste RAM.
         /// 
         /// Note.
@@ -49,6 +49,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// Transfer function (created lazily or set specifically if needed)
         /// </summary>
         protected TransferFunction _tf;
+
+        /// <summary>
+        /// Передаточная функция КИХ-фильтра
+        /// </summary>
         public override TransferFunction Tf
         {
             get => _tf ?? new TransferFunction(_b.Take(_kernelSize).ToDoubles());
@@ -95,7 +99,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// 
         /// NOTE.
         /// This will simply cast values to floats!
-        /// If you need to preserve precision for filter design & analysis, use constructor with TransferFunction!
+        /// If you need to preserve precision for filter design  analysis, use constructor with TransferFunction!
         /// 
         /// </summary>
         /// <param name="kernel"></param>
@@ -110,7 +114,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// but filter will store the reference to TransferFunction object for FDA.
         /// 
         /// </summary>
-        /// <param name="kernel"></param>
+        /// <param name="tf">Передаточная функция</param>
         public FirFilter(TransferFunction tf) : this(tf.Numerator.ToFloats())
         {
             Tf = tf;

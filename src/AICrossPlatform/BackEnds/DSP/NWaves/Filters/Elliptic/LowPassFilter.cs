@@ -5,8 +5,10 @@ using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 {
+    /// <summary>
+    /// Фильтр нижних частот
+    /// </summary>
     [Serializable]
-
     public class LowPassFilter : IirFilter64
     {
         /// <summary>

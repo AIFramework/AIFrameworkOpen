@@ -13,27 +13,47 @@ namespace AI.ML.DataSets
     /// </summary>
     public class GroupeVidData
     {
+        /// <summary>
+        /// Индекс класса(группы)
+        /// </summary>
         public int GroupeMark;
+        /// <summary>
+        /// Мукторы признаков группы
+        /// </summary>
         public List<Vector> GroupeFeatures = new List<Vector>();
 
+        /// <summary>
+        /// Группа объектов одного класса
+        /// </summary>
         public GroupeVidData()
         {
 
         }
 
+        /// <summary>
+        /// Группа объектов одного класса
+        /// </summary>
         public GroupeVidData(int gMark, Vector features)
         {
             GroupeMark = gMark;
             GroupeFeatures.Add(features);
         }
 
+        /// <summary>
+        /// Вектор средних
+        /// </summary>
         public Vector Mean => Statistic.MeanVector(GroupeFeatures);
+
+        /// <summary>
+        /// Вектор СКО
+        /// </summary>
         public Vector Std => Statistic.EnsembleStd(GroupeFeatures);
 
         /// <summary>
         /// Возвращет индекс первого вхождения заданной метки класса
         /// </summary>
         /// <param name="lbl">Метка класса</param>
+        /// <param name="data">Списо групп</param>
         public static int IndexLbl(IEnumerable<GroupeVidData> data, int lbl)
         {
             int i = 0;
@@ -65,7 +85,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// Загрузка датасета из файла
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public VectorIntDataset(string path)
         {
             string[] content = File.ReadAllLines(path);

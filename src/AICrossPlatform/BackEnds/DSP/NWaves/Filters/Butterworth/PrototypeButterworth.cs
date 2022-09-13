@@ -3,9 +3,16 @@ using System.Numerics;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Butterworth
 {
-
+    /// <summary>
+    /// Прототип фильтра Баттервордта
+    /// </summary>
     public static class PrototypeButterworth
     {
+        /// <summary>
+        /// Полюса передаточной функции
+        /// </summary>
+        /// <param name="order">Порядок фильтра</param>
+        /// <returns></returns>
         public static Complex[] Poles(int order)
         {
             Complex[] poles = new Complex[order];

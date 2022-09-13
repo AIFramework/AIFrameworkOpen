@@ -55,9 +55,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         /// </summary>
         NNValue[] DeConcatinateOne(NNValue vector);
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
-        /// <param name="function">Function activation</param>
+        /// <param name="function">Активационная, нелинейная функция</param>
         /// <param name="t">The tensor to which it is applied</param>
         NNValue Activate(IActivation function, NNValue t);
         /// <summary>

@@ -2,11 +2,14 @@
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
+    /// <summary>
+    /// Пространство состояний
+    /// </summary>
     [Serializable]
     public class StateSpace
     {
         /// <summary>
-        /// State matrix
+        /// Матрица состояний
         /// </summary>
         public double[][] A { get; set; }
 

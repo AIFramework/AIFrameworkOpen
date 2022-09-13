@@ -10,7 +10,7 @@ namespace AI.ML.Classifiers
 {
 
     /// <summary>
-    /// Classifier (method of standards)
+    /// Классификатор, работающий по принципу метода эталонов
     /// </summary>
     [Serializable]
     public class NN : IClassifier
@@ -27,23 +27,23 @@ namespace AI.ML.Classifiers
 
 
         /// <summary>
-        ///  Classifier (method of standards)
+        ///  Классификатор, работающий по принципу метода эталонов
         /// </summary>
         public NN()
         {
             _classes = new StructClasses();
         }
         /// <summary>
-        ///  Classifier (method of standards)
+        ///  Классификатор, работающий по принципу метода эталонов
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public NN(string path)
         {
             _classes = new StructClasses();
             Load(path);
         }
         /// <summary>
-        ///  Classifier (method of standards)
+        ///  Классификатор, работающий по принципу метода эталонов
         /// </summary>
         /// <param name="classifikator"> Classes</param>
         public NN(StructClasses classifikator)
@@ -146,10 +146,10 @@ namespace AI.ML.Classifiers
             return classes;
         }
         /// <summary>
-        /// Training a classifier
+        /// Обучение классификатора
         /// </summary>
-        /// <param name="features">Features</param>
-        /// <param name="classes">Labels</param>
+        /// <param name="features">Признаки</param>
+        /// <param name="classes">Метки классов</param>
         public void Train(Vector[] features, int[] classes)
         {
             if (features.Length != classes.Length)
@@ -163,9 +163,9 @@ namespace AI.ML.Classifiers
             }
         }
         /// <summary>
-        /// Training a classifier based on the vector-label dataset
+        /// Обучение классификатора
         /// </summary>
-        /// <param name="dataset">Vector-label dataset</param>
+        /// <param name="dataset">Набор данных признаки-метка</param>
         public void Train(VectorIntDataset dataset)
         {
             for (int i = 0; i < dataset.Count; i++)
@@ -175,9 +175,9 @@ namespace AI.ML.Classifiers
         }
 
         /// <summary>
-        /// Training a classifier based on the vector-label dataset(Группировка)
+        /// Обучение классификатора (группировка данных)
         /// </summary>
-        /// <param name="dataset">Vector-label dataset</param>
+        /// <param name="dataset">Набор данных признаки-метка</param>
         public void TrainGroup(VectorIntDataset dataset)
         {
             VectorIntDataset data = dataset.GroupMean();

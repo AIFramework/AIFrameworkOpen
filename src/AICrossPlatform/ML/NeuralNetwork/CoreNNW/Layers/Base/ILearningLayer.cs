@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
 {
     /// <summary>
-    /// Trainable layer
+    /// Обучаемый слой
     /// </summary>
     public interface ILearningLayer : ILayer
     {
         /// <summary>
         /// Initialize layer weights
         /// </summary>
-        /// <param name="random">Pseudo-random number generator</param>
+        /// <param name="random">Генератор псевдо-случайных чисел</param>
         void InitWeights(Random random);
         /// <summary>
         /// Getting trained parameters

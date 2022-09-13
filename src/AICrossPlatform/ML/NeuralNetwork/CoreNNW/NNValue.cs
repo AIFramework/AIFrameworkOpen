@@ -488,8 +488,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Сохранение тензора в текстовом формате
         /// </summary>
-        /// <param name="path">File path</param>
-       public void SaveAsText(string path)
+        /// <param name="path">Путь до файла</param>
+        public void SaveAsText(string path)
         {
             string[] conent = ToTxts();
             File.WriteAllLines(path, conent);

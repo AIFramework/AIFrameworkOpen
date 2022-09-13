@@ -15,7 +15,7 @@
         /// <param name="x">Тензор аргумента</param>
         NNValue Forward(NNValue x);
         /// <summary>
-        /// Bakward pass
+        /// Обратный проход
         /// </summary>
         /// <param name="x">Тензор аргумента</param>
         NNValue Backward(NNValue x);

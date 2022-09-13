@@ -11,7 +11,7 @@ using System.Numerics;
 namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 {
     /// <summary>
-    /// Static class providing basic methods for filter design & analysis
+    /// Static class providing basic methods for filter design  analysis
     /// </summary>
     [Serializable]
 

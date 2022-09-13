@@ -17,6 +17,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <param name="input">Auto-correlation vector</param>
         /// <param name="a">LP coefficients</param>
         /// <param name="order">Order of LPC</param>
+        /// <param name="offset">Смещение</param>
         /// <returns>Prediction error</returns>
         public static float LevinsonDurbin(float[] input, float[] a, int order, int offset = 0)
         {

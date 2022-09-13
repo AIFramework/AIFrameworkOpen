@@ -33,11 +33,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
         /// </summary>
         public int TrainableParameters => _convolution.TrainableParameters;
         /// <summary>
-        /// Adding a value to the denominator under the root when initializing the weights
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt => _convolution.AddDenInSqrt;
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
         public IActivation ActivationFunction { get => _convolution.ActivationFunction; set => _convolution.ActivationFunction = value; }
 
@@ -63,7 +63,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
         }
 
         /// <summary>
-        /// Direct network pass
+        /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
         /// <param name="g">Граф автоматического дифференцирования</param>
@@ -88,7 +88,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
             return _convolution.GetParameters();
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

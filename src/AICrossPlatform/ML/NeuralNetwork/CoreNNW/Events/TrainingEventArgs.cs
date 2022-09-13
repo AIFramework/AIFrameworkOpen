@@ -23,7 +23,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Events
         /// </summary>
         public INetwork Model { get; }
         /// <summary>
-        /// Training dataset
+        /// Обучениеing dataset
         /// </summary>
         public IDataSet Data { get; }
         /// <summary>

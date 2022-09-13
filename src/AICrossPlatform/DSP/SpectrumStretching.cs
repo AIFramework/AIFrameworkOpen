@@ -15,6 +15,7 @@ namespace AI.DSP
         /// </summary>
         /// <param name="signal">Input signal</param>
         /// <param name="k">Stretch ratio</param>
+        /// <param name="lFilt"></param>
         public static Vector SpectrumStretch(Vector signal, double k, int lFilt = 15)
         {
             Vector s2 = Filters.MAv(signal, lFilt);

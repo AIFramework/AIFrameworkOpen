@@ -21,7 +21,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
         /// </summary>
         int TrainableParameters { get; }
         /// <summary>
-        /// Adding to the denominator
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         double AddDenInSqrt { get; }
 
@@ -29,7 +29,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
         /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         NNValue Forward(NNValue input, INNWGraph g);
         /// <summary>
         /// Only use mode

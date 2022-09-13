@@ -97,7 +97,7 @@ namespace AI.Statistics
         /// <summary>
         /// Сохранение гистограммы
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             try
@@ -245,7 +245,7 @@ namespace AI.Statistics
         /// <summary>
         /// Загрузка гистограммы
         /// </summary>
-        /// <param name="path">File path</param>		
+        /// <param name="path">Путь до файла</param>	
         public void Open(string path)
         {
 

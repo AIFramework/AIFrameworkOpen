@@ -35,7 +35,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public int TrainableParameters => 0;
         /// <summary>
-        /// Adding to the denominator
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt => 0;
         /// <summary>
@@ -57,7 +57,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             return g.DropOut(input, _q, _nomalizer, Random);
@@ -69,7 +69,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         {
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         public override string ToString()
         {

@@ -34,7 +34,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public double AddDenInSqrt { get; set; }
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
         public IActivation ActivationFunction { get; set; } = new TanhUnit();
         /// <summary>
@@ -167,7 +167,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             outputs = new NNValue(_aLen);
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

@@ -4,8 +4,16 @@ using System.Numerics;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevI
 {
+    /// <summary>
+    /// Прототип фильтра Чебшёва первого рода
+    /// </summary>
     public static class PrototypeChebyshevI
     {
+        /// <summary>
+        /// Полюса передаточной функции
+        /// </summary>
+        /// <param name="order">Порядок</param>
+        /// <param name="ripple">Коэф. пульсаций</param>
         public static Complex[] Poles(int order, double ripple = 0.1)
         {
             double eps = Math.Sqrt(Math.Pow(10, ripple / 10) - 1);

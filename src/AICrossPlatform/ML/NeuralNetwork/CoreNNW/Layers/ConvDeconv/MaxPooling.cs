@@ -35,7 +35,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public int TrainableParameters => 0;
         /// <summary>
-        /// Adding to the denominator
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt { get; set; }
 
@@ -63,7 +63,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         }
 
         /// <summary>
-        /// Direct network pass
+        /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
         /// <param name="g">Граф автоматического дифференцирования</param>
@@ -73,7 +73,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return res;
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         public override string ToString()
         {

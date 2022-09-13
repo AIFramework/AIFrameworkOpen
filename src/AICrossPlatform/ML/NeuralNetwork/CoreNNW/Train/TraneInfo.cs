@@ -10,20 +10,20 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
     public class TrainInfo
     {
         /// <summary>
-        /// Validation error
+        /// Ошибка валидации
         /// </summary>
         public Vector ValidationLoss { get; set; }
         /// <summary>
-        /// Train error
+        /// Ошибка обучения
         /// </summary>
         public Vector TrainLoss { get; set; }
         /// <summary>
-        /// Test error
+        /// Ошибка на тестовой выборке
         /// </summary>
         public float TestLoss { get; set; }
 
         /// <summary>
-        /// Information about training a neural network
+        /// Данные обучения нейронной сети
         /// </summary>
         public TrainInfo()
         {

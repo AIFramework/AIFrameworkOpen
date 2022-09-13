@@ -35,12 +35,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         /// <summary>
         /// Updating model parameters 
         /// </summary>
-        /// <param name="network"> Neural network </param>
-        /// <param name="learningRate">Learning rate</param>
-        /// <param name="gradClip"> Maximum gradient value </param>
-        /// <param name="kG"> Gain of gradients </param>
-        /// <param name="L1"> Regularization coefficient L1 </param>
-        /// <param name="L2"> Regularization coefficient L1 </param>
+        /// <param name="network">Нейронная сеть</param>
+        /// <param name="learningRate">Скорость обучения</param>
+        /// <param name="gradClip">Максимальное значение градиента по модулю</param>
+        /// <param name="kG">Усиление градиента</param>
+        /// <param name="L1">Коэф. L1 регуляризации</param>
+        /// <param name="L2">Коэф. L2 регуляризации</param>
         public void UpdateModelParams(INetwork network, float learningRate, float gradClip, float L1, float L2, float kG)
         {
             System.Collections.Generic.List<NNValue> paramss = network.GetParameters();

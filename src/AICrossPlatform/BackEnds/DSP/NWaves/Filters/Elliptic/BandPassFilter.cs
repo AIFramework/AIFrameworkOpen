@@ -4,6 +4,10 @@ using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 {
+
+    /// <summary>
+    /// Полосно пропускающий фильтр (полосовой)
+    /// </summary>
     [Serializable]
 
     public class BandPassFilter : IirFilter

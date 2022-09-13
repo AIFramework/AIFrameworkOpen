@@ -28,12 +28,19 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// State vector
         /// </summary>
         protected readonly float[] _zi;
+        /// <summary>
+        /// Данные линии задержки
+        /// </summary>
         public float[] Zi => _zi;
 
         /// <summary>
         /// Transfer function
         /// </summary>
         protected TransferFunction _tf;
+
+        /// <summary>
+        /// Передаточная функция
+        /// </summary>
         public override TransferFunction Tf
         {
             get => _tf ?? new TransferFunction(_b.ToDoubles(), _a.ToDoubles());
@@ -72,7 +79,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// 
         /// NOTE.
         /// It will simply cast values to floats!
-        /// If you need to preserve precision for filter design & analysis, use constructor with TransferFunction!
+        /// If you need to preserve precision for filter design  analysis, use constructor with TransferFunction!
         /// 
         /// </summary>
         /// <param name="b">TF numerator coefficients</param>

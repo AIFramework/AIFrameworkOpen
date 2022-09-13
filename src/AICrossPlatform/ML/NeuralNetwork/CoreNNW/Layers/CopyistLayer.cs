@@ -32,11 +32,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public Shape3D OutputShape { get; private set; }
         /// <summary>
-        /// Adding to the denominator
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt { get; set; }
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
         public IActivation ActivationFunction { get; set; }
         /// <summary>
@@ -69,13 +69,13 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             return g.Activate(ActivationFunction, g.Copyist(input, _count));
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

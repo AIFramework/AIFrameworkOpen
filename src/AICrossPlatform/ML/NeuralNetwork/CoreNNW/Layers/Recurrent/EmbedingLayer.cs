@@ -33,7 +33,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public int TrainableParameters => _vectors.Length * _vectors[0].Shape.Volume;
         /// <summary>
-        /// Adding to the denominator
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt => 0;
 
@@ -87,7 +87,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             int index = (int)input[0];
@@ -150,7 +150,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

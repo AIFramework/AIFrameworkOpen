@@ -6,9 +6,15 @@ using System.Linq;
 
 namespace AI.Statistics.MixtureModeling
 {
+    /// <summary>
+    /// Модель смеси распределений
+    /// </summary>
     [Serializable]
     public class MixtureModel : IDistributionWithoutParams
     {
+        /// <summary>
+        /// Одномерная ли смесь
+        /// </summary>
         public bool IsOneD { get; private set; }
 
         private readonly Dictionary<string, double>[] _paramDists1D;
@@ -17,7 +23,7 @@ namespace AI.Statistics.MixtureModeling
         private readonly IDistribution _perentDistribution;
 
         /// <summary>
-        /// Mixture modeling
+        /// Модель смеси распределений
         /// </summary>
         public MixtureModel(IDistribution perentDistribution, IEnumerable<Dictionary<string, double>> paramDists, Vector w)
         {
@@ -28,7 +34,7 @@ namespace AI.Statistics.MixtureModeling
         }
 
         /// <summary>
-        /// Mixture modeling
+        /// Модель смеси распределений
         /// </summary>
         public MixtureModel(IDistribution perentDistribution, IEnumerable<Dictionary<string, Vector>> paramDists, Vector w)
         {

@@ -3,15 +3,17 @@ using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
+    /// <summary>
+    /// Методы расширения для фильтров
+    /// </summary>
     [Serializable]
-    public static class IFilterExtensions
+    public static class FilterExtensions
     {
         /// <summary>
         /// Method implements online filtering for discrete signals
         /// </summary>
         /// <param name="filter">Some filter</param>
         /// <param name="input">Input signal</param>
-        /// <param name="method">General filtering strategy</param>
         /// <returns>Filtered signal</returns>
         public static DiscreteSignal Process(this IOnlineFilter filter,
                                                   DiscreteSignal input)
@@ -24,6 +26,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <summary>
         /// Method implements online filtering (frame-by-frame)
         /// </summary>
+        /// <param name="filter">Фильтр</param>
         /// <param name="input">Input block of samples</param>
         /// <param name="output">Block of filtered samples</param>
         /// <param name="count">Number of samples to filter</param>

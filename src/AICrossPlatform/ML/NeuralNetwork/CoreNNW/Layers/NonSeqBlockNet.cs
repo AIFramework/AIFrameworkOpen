@@ -37,11 +37,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Adding to the denominator
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt { get; set; }
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
         public IActivation ActivationFunction { get; set; }
 
@@ -64,7 +64,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             return _forward(input, g);
@@ -101,7 +101,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Generating weights
         /// </summary>
-        /// <param name="random">Pseudo-random number generator</param>
+        /// <param name="random">Генератор псевдо-случайных чисел</param>
         public void InitWeights(Random random)
         {
             foreach (var layer in _layers)
@@ -109,7 +109,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
                     (layer as ILearningLayer).InitWeights(random);
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         public override string ToString()
         {

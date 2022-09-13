@@ -289,6 +289,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
 
         #region polynomials
 
+        /// <summary>
+        /// Максимальное число итераций для расчета полюсно-нулевой ф-ии используемое по-умолчанию
+        /// </summary>
         public const int PolyRootsIterations = 25000;
 
         /// <summary>
@@ -296,6 +299,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// Works for polynomials of order up to approx. 50. 
         /// </summary>
         /// <param name="a">Polynomial coefficients</param>
+        /// <param name="maxIterations">Максимальное число итераций</param>
         /// <returns></returns>
         public static Complex[] PolynomialRoots(double[] a, int maxIterations = PolyRootsIterations)
         {

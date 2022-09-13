@@ -292,7 +292,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <param name="overlap">Flag indicating that bands should overlap</param>
         /// <returns>Array of frequency tuples for each Herz filter</returns>
-        public static new Tuple<double, double, double>[] HerzBands(
+        public static Tuple<double, double, double>[] HerzBands(
             int combFilterCount, int samplingRate, double lowFreq = 0, double highFreq = 0, bool overlap = false)
         {
             // "x => x" means map frequency 1-to-1 (in Hz as it is)

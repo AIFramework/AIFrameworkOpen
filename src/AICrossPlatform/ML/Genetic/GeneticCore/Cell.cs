@@ -27,9 +27,9 @@ namespace AI.ML.Genetic.GeneticCore
         /// <summary>
         /// Клетка
         /// </summary>
-        /// <param name="parametrsCount">Number of parameters</param>
+        /// <param name="parametrsCount">Число параметров</param>
         /// <param name="function">Функция</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         /// <param name="valDown">Нижняя граница распределения</param>
         /// <param name="valUp">Верхняя граница распределения</param>
         public Cell(int parametrsCount, Func<Vector, Vector, Vector> function, Random rnd, double valDown, double valUp)

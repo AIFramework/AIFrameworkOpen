@@ -5,8 +5,10 @@ using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 {
+    /// <summary>
+    /// Полосно заграждающий фильтр (режекторный)
+    /// </summary>
     [Serializable]
-
     public class BandStopFilter : IirFilter64
     {
         /// <summary>

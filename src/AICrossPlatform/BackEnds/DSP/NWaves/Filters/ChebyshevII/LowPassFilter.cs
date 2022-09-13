@@ -15,9 +15,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="freq"></param>
-        /// <param name="order"></param>
-        /// <param name="ripple"></param>
+        /// <param name="freq">Частота среза</param>
+        /// <param name="order">Порядок</param>
+        /// <param name="ripple">Коэф. пульсаций</param>
         public LowPassFilter(double freq, int order, double ripple = 0.1) : base(MakeTf(freq, order, ripple))
         {
         }
@@ -25,8 +25,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
         /// <summary>
         /// TF generator
         /// </summary>
-        /// <param name="freq"></param>
-        /// <param name="order"></param>
+        /// <param name="freq">Частота среза</param>
+        /// <param name="order">Порядок</param>
+        /// <param name="ripple">Коэф. пульсаций</param>
         /// <returns></returns>
         private static TransferFunction MakeTf(double freq, int order, double ripple = 0.1)
         {

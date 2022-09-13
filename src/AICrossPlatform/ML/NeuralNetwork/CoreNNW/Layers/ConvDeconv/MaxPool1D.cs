@@ -6,7 +6,7 @@ using System;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// One-dimensional subsampling layer
+    /// Одномерный слой подвыборки
     /// </summary>
     [Serializable]
     public class MaxPool1D : ILayer
@@ -26,30 +26,30 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public int TrainableParameters => _maxPool.TrainableParameters;
         /// <summary>
-        /// Adding a value to the denominator under the root when initializing the weights
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt => _maxPool.AddDenInSqrt;
 
         /// <summary>
-        /// Subsampling (Maxpooling 1D)
+        /// Одномерный слой подвыборки
         /// </summary>
         /// <param name="inputShape"> Размерность и форма входного тензора </param>
-        /// <param name="k">How many times to compress out</param>
+        /// <param name="k">Восколько раз сжать карту признаков</param>
         public MaxPool1D(Shape3D inputShape, int k = 2)
         {
             _maxPool = new MaxPooling(inputShape, k, 1);
         }
         /// <summary>
-        /// Subsampling (Maxpooling 1D)
+        /// Одномерный слой подвыборки
         /// </summary>
-        /// <param name="k">How many times to compress out</param>
+        /// <param name="k">Восколько раз сжать карту признаков</param>
         public MaxPool1D(int k = 2)
         {
             _maxPool = new MaxPooling(k, 1);
         }
 
         /// <summary>
-        /// Direct network pass
+        /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
         /// <param name="g">Граф автоматического дифференцирования</param>
@@ -58,7 +58,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return _maxPool.Forward(input, g);
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

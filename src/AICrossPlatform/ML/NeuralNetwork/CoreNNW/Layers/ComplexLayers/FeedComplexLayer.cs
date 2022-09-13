@@ -23,11 +23,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         /// </summary>
         public NNValue BiasRe, BiasIm;
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
         public IActivation ActivationFunction { get; set; }
         /// <summary>
-        /// Adding to the denominator
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt { get; set; }
         /// <summary>
@@ -56,8 +56,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         /// </summary>
         /// <param name="inputShape">Input dimension</param>
         /// <param name="outputDimension">Число выходов</param>
-        /// <param name="f">Activation function</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="f">Активационная функция</param>
+        /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public FeedComplexLayer(Shape3D inputShape, int outputDimension, IActivation f, Random rnd)
         {
             InputShape = inputShape;
@@ -69,7 +69,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         /// Полносвязный слой
         /// </summary>
         /// <param name="outputDimension">Число выходов</param>
-        /// <param name="f">Activation function</param>
+        /// <param name="f">Активационная функция</param>
         public FeedComplexLayer(int outputDimension, IActivation f = null)
         {
             OutputShape = new Shape3D(outputDimension, 1, 2);
@@ -81,7 +81,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             NNValue[] imReal = g.DeepSplit(input, _slices);
@@ -115,14 +115,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         /// <summary>
         /// Generating weights
         /// </summary>
-        /// <param name="random">Pseudo-random number generator</param>
+        /// <param name="random">Генератор псевдо-случайных чисел</param>
         public void InitWeights(Random random)
         {
             double std = 1.0 / Math.Sqrt(OutputShape.Height);
             Init(OutputShape.Height, random, std);
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

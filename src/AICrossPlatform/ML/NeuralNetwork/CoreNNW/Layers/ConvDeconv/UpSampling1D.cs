@@ -26,7 +26,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
         /// </summary>
         public int TrainableParameters => _upsampling2DBicubic.TrainableParameters;
         /// <summary>
-        /// Adding a value to the denominator under the root when initializing the weights
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt => _upsampling2DBicubic.AddDenInSqrt;
 
@@ -46,7 +46,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
         }
 
         /// <summary>
-        /// Direct network pass
+        /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
         /// <param name="g">Граф автоматического дифференцирования</param>
@@ -55,7 +55,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
             return _upsampling2DBicubic.Forward(input, g);
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         public override string ToString()
         {

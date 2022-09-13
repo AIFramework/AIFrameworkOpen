@@ -4,8 +4,17 @@ using System.Numerics;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
 {
+    /// <summary>
+    /// Прототип фильтра Чебышёва 2го рода
+    /// </summary>
     public static class PrototypeChebyshevII
     {
+        /// <summary>
+        /// Полюсы передаточной функции
+        /// </summary>
+        /// <param name="order">Порядок</param>
+        /// <param name="ripple">Коэф. пульсаций</param>
+        /// <returns></returns>
         public static Complex[] Poles(int order, double ripple = 0.1)
         {
             double eps = Math.Sqrt(Math.Pow(10, ripple / 10) - 1);
@@ -26,6 +35,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
             return poles;
         }
 
+        /// <summary>
+        /// Нули передаточной функции
+        /// </summary>
+        /// <param name="order">Порядок фильтра</param>
+        /// <returns></returns>
         public static Complex[] Zeros(int order)
         {
             Complex[] zeros = new Complex[order];

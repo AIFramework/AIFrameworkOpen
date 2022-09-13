@@ -26,8 +26,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevI
         /// TF generator
         /// </summary>
         /// <param name="freq"></param>
-        /// <param name="order"></param>
-        /// <returns></returns>
+        /// <param name="order">Порядок</param>
+        /// <param name="ripple">Коэф. пульсаций</param>
         private static TransferFunction MakeTf(double freq, int order, double ripple = 0.1)
         {
             return DesignFilter.IirLpTf(freq, PrototypeChebyshevI.Poles(order, ripple));

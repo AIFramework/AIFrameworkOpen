@@ -29,7 +29,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         private NNValue _context;
 
         /// <summary>
-        /// Adding to the denominator
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt { get; set; }
         /// <summary>
@@ -50,7 +50,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="inputDimension">Input dimension</param>
         /// <param name="outputDimension">Output dimension</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public GRULayer(int inputDimension, int outputDimension, Random rnd)
         {
             InputShape = new Shape3D(inputDimension);
@@ -61,7 +61,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="inputShape">Input dimension</param>
         /// <param name="outputDimension">Output dimension</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public GRULayer(Shape3D inputShape, int outputDimension, Random rnd)
         {
             InputShape = inputShape;
@@ -80,7 +80,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             NNValue output = g.GRULayer(input,
@@ -127,7 +127,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             Init(OutputShape.Height, random);
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

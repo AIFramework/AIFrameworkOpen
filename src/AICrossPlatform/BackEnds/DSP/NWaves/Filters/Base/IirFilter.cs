@@ -35,7 +35,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// (recursive part in difference equations).
         /// 
         /// These coefficients have single precision since they are used for filtering!
-        /// For filter design & analysis specify transfer function (Tf property).
+        /// For filter design  analysis specify transfer function (Tf property).
         /// 
         /// Note.
         /// This array is created from duplicated coefficients:
@@ -61,6 +61,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// Transfer function (created lazily or set specifically if needed)
         /// </summary>
         protected TransferFunction _tf;
+
+        /// <summary>
+        /// Передаточная функция БИХ фильтра
+        /// </summary>
         public override TransferFunction Tf
         {
             get => _tf ?? new TransferFunction(_b.Take(_numeratorSize).ToDoubles(), _a.Take(_denominatorSize).ToDoubles());
@@ -76,6 +80,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// Internal buffers for delay lines
         /// </summary>
         protected float[] _delayLineA;
+        /// <summary>
+        /// Линия задержки для коэфициентов B
+        /// </summary>
         protected float[] _delayLineB;
 
         /// <summary>
@@ -119,7 +126,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// 
         /// NOTE.
         /// It will simply cast values to floats!
-        /// If you need to preserve precision for filter design & analysis, use constructor with TransferFunction!
+        /// If you need to preserve precision for filter design  analysis, use constructor with TransferFunction!
         /// 
         /// </summary>
         /// <param name="b">TF numerator coefficients</param>

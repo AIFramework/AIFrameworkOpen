@@ -447,9 +447,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Method for converting TF numerator(denominator) to zeros(poles)
+        /// Конвертирование передаточной функции в полюсно-нулевую
         /// </summary>
-        /// <param name="tf"></param>
+        /// <param name="tf">Передаточная ф-я</param>
+        /// <param name="maxIterations">Максимальное число итераций</param>
         /// <returns></returns>
         public static ComplexDiscreteSignal TfToZp(double[] tf, int maxIterations = MathUtils.PolyRootsIterations)
         {

@@ -33,14 +33,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// Прямой проход
         /// </summary>
         /// <param name="input">Input data</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         /// <returns></returns>
         NNValue Forward(NNValue input, INNWGraph g);
         /// <summary>
         /// Прямой проход
         /// </summary>
         /// <param name="input">Input data</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         /// <returns></returns>
         NNValue Forward(IAlgebraicStructure input, INNWGraph g);
         /// <summary>
@@ -48,7 +48,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// </summary>
         void ResetState();
         /// <summary>
-        /// Trainable parameters
+        /// Обучаемые параметры
         /// </summary>
         /// <returns></returns>
         List<NNValue> GetParameters();
@@ -64,6 +64,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <param name="layer">new layer</param>
         void AddNewLayer(Shape3D inputShape, ILayer layer);
 
+        /// <summary>
+        /// Только для использования (удаляет кэши важные для обучения, делает сеть в 4раза меньше)
+        /// </summary>
         void OnlyUse();
     }
 }

@@ -65,7 +65,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Regression (Nearest Neighbor Method)
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path"Путь до файла/param>
         public KNNCorR(string path)
         {
             reges = new StructRegres();
@@ -82,7 +82,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Saving the regression model
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path"Путь до файла/param>
         public void Save(string path)
         {
             try
@@ -107,7 +107,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Loading a regression model
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path"Путь до файла/param>
         public void Open(string path)
         {
 

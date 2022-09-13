@@ -14,13 +14,13 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
     public class NeuralСontroller : ILearningLayer, IRecurrentLayer
     {
         /// <summary>
-        /// Adding to the denominator
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt { get; set; }
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
-        public IActivation Function { get; set; }
+        public IActivation function { get; set; }
         /// <summary>
         /// Размерность входа
         /// </summary>
@@ -63,7 +63,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <param name="inputDimension">Input dimension</param>
         /// <param name="outputDimension">Output dimension</param>
         /// <param name="initParamsStdDev">Standard deviation</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public NeuralСontroller(int inputDimension, int outputDimension, double initParamsStdDev, Random rnd)
         {
             InputShape = new Shape3D(inputDimension);
@@ -77,7 +77,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <param name="inputShape">Input dimension</param>
         /// <param name="outputDimension">Output dimension</param>
         /// <param name="initParamsStdDev">Standard deviation</param>
-        /// <param name="rnd">Pseudo-random number generator</param>
+        /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public NeuralСontroller(Shape3D inputShape, int outputDimension, double initParamsStdDev, Random rnd)
         {
             Init(inputShape, outputDimension, initParamsStdDev, rnd);
@@ -96,7 +96,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Прямой проход
         /// </summary>
         /// <param name="input">Вход</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             NNValue conc = g.ConcatinateVectors(input, _hiddenContext);
@@ -214,7 +214,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         }
 
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

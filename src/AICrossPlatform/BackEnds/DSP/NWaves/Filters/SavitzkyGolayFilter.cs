@@ -31,6 +31,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// It simply gives coefficient from precomputed arrays
         /// </summary>
         /// <param name="size"></param>
+        /// <param name="deriv"></param>
         /// <returns></returns>
         private static double[] MakeKernel(int size, int deriv = 0)
         {

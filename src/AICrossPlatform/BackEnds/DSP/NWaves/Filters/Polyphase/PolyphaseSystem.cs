@@ -190,6 +190,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
         /// Offline processing
         /// </summary>
         /// <param name="signal"></param>
+        /// <param name="method">Метод фильтрации</param>
         /// <returns></returns>
         public DiscreteSignal ApplyTo(DiscreteSignal signal, FilteringMethod method = FilteringMethod.Auto)
         {

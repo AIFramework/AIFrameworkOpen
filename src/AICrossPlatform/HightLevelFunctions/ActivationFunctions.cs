@@ -225,7 +225,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Сигмоида
         /// </summary>
-        /// <param name="tensor">Input data tensor</param>
+        /// <param name="tensor">Тензор входных данных</param>
         /// <param name="betta">Коэфициент наклона</param>
         public static Tensor Sigmoid(Tensor tensor, double betta = 1)
         {
@@ -242,7 +242,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Логарифм по основанию 10
         /// </summary>
-        /// <param name="tensor">Input data tensor</param>
+        /// <param name="tensor">Тензор входных данных</param>
         public static Tensor Log10(Tensor tensor)
         {
             Tensor tensorOut = new Tensor(tensor.Height, tensor.Width, tensor.Depth);

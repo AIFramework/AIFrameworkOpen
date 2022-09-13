@@ -13,17 +13,17 @@ using System.Collections.Generic;
 namespace AI.ML.HMM
 {
     /// <summary>
-    /// Markov chain
+    /// Марковская цепь
     /// </summary>
     [Serializable]
     public class MChWords
     {
         /// <summary>
-        /// State Matrix
+        /// Матрица состояний
         /// </summary>
         public Matrix stateMatrix;
         /// <summary>
-        /// Inverted state matrix
+        /// Обратная матрица состояний (1-matr_state)
         /// </summary>
         public Matrix stateAlter;
         private string[] stateNames;
@@ -32,7 +32,7 @@ namespace AI.ML.HMM
 
 
         /// <summary>
-        /// Markov chain
+        /// Марковская цепь
         /// </summary>
         public MChWords()
         {
@@ -40,7 +40,7 @@ namespace AI.ML.HMM
         }
 
         /// <summary>
-        /// Train
+        /// Обучение
         /// </summary>
         /// <param name="TrainText">Training text</param>
         public void Train(string TrainText)

@@ -73,7 +73,7 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Radial-basis kernel for the Nadaraya-Watson method
+        /// Радиально-базисное ядро
         /// </summary>
         public double RbfK(double r)
         {
@@ -84,7 +84,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Regression (k-nearest neighbors method)
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public KNNReg(string path)
         {
             Reg = new StructRegres();
@@ -105,7 +105,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Save
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             try
@@ -132,7 +132,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Loading
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public void Open(string path)
         {
 

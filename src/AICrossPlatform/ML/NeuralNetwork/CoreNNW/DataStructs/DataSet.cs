@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
 {
     /// <summary>
-    /// Обучение нейронной сети dataset
+    /// Набор данных для обучения нейронки
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Tr. count = {TrainingInternal.Count}, Val. count = {ValidationInternal.Count}, Test. count = {TestingInternal.Count}")]
@@ -26,11 +26,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
         /// </summary>
         public ILoss LossFunction { get; set; }
         /// <summary>
-        /// Training subset internal storage
+        /// Обучающая выборка
         /// </summary>
         protected List<DataSequence> TrainingInternal { get; }
         /// <summary>
-        /// Training subset
+        /// Обучающая выборка
         /// </summary>
         public IReadOnlyList<DataSequence> Training => TrainingInternal.AsReadOnly();
         /// <summary>

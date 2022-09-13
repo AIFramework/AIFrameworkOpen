@@ -151,7 +151,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Сохранение модели
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path"Путь до файла/param>
         public void SaveModel(string path)
         {
             try

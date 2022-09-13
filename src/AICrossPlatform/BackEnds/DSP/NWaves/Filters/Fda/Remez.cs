@@ -127,7 +127,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             MakeGrid(desired, weights, gridDensity);
 
-            InterpolatedResponse = new double[_grid.Length];
+            InterpolatedResponse = new double[_grid!.Length];
             Error = new double[_grid.Length];
 
             _extrs = new int[K];
@@ -140,6 +140,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Make grid (uniform in each band)
         /// </summary>
         /// <param name="gridDensity"></param>
+        /// <param name="desired"></param>
+        /// <param name="weights"></param>
         private void MakeGrid(double[] desired, double[] weights, int gridDensity = 16)
         {
             int gridSize = 0;

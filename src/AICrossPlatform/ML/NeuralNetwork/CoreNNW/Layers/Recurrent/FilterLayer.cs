@@ -37,11 +37,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public Shape3D OutputShape { get; private set; }
         /// <summary>
-        /// Adding under the root
+        /// Добавление значения в знаменатель под корень при инициализации весов
         /// </summary>
         public double AddDenInSqrt { get; set; }
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
         public IActivation ActivationFunction { get; set; }
         /// <summary>
@@ -56,7 +56,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Обучаемый банк фильтров
         /// </summary>
-        /// <param name="activation">Activation function</param>
+        /// <param name="activation">Активационная функция</param>
         /// <param name="aL">Коэф. а</param>
         /// <param name="bL">Коэф. б</param>
         public FilterLayer(IActivation activation, int aL = 12, int bL = 13)
@@ -146,7 +146,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

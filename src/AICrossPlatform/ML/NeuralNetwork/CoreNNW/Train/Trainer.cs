@@ -92,7 +92,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <summary>
         /// Creating a trainer for a neural network
         /// </summary> 
-        /// <param name="graph">Graph of automatic differentiation</param>
+        /// <param name="graph">Граф автоматического дифференцирования</param>
         public Trainer(INNWGraph graph)
         {
             Init(graph);
@@ -100,7 +100,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <summary>
         /// Creating a trainer for a neural network
         /// </summary> 
-        /// <param name="graph">Graph of automatic differentiation</param>
+        /// <param name="graph">Граф автоматического дифференцирования</param>
         /// <param name="trainType">Train type</param>
         /// <param name="optimizer">Optimizer training method</param>
         public Trainer(INNWGraph graph, IOptimizer optimizer)
@@ -119,10 +119,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <summary>
         /// Обучение нейронной сети
         /// </summary>
-        /// <param name="epochesToPass">Number of epochs</param>
-        /// <param name="batchSize">Batch size</param>
-        /// <param name="learningRate">Learning rate</param>
-        /// <param name="network">Neural network</param>
+        /// <param name="epochesToPass">Число эпох</param>
+        /// <param name="batchSize">Размер подвыборки</param>
+        /// <param name="learningRate">Скорость обучения</param>
+        /// <param name="network">Нейронная сеть</param>
         /// <param name="data">Data set</param>
         /// <param name="minLoss">Minimal loss value</param>
         public void Train(int epochesToPass, int batchSize, float learningRate, INetwork network, IDataSet data, float minLoss = 0.0f)
@@ -204,10 +204,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <summary>
         /// Обучение нейронной сети
         /// </summary>
-        /// <param name="epochesToPass">Number of epochs</param>
-        /// <param name="batchSize">Batch size</param>
-        /// <param name="learningRate">Learning rate</param>
-        /// <param name="network">Neural network</param>
+        /// <param name="epochesToPass">Число эпох</param>
+        /// <param name="batchSize">Размер подвыборки</param>
+        /// <param name="learningRate">Скорость обучения</param>
+        /// <param name="network">Нейронная сеть</param>
         /// <param name="data">Data set</param>
         /// <param name="minLoss">Minimal loss value</param>
         /// <param name="cancellationToken">Token for cancelling asynchronous operation</param>

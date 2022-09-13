@@ -22,11 +22,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         /// <summary>
         /// Updating model parameters 
         /// </summary>
-        /// <param name="network"> Neural network </param>
-        /// <param name="learningRate">Learning rate</param>
-        /// <param name="gradClip"> Maximum gradient value </param>
-        /// <param name=" gradG"> Gain of gradients </param>
-        /// <param name="L1"> Regularization coefficient L1 </param>
+        /// <param name="network">Нейронная сеть</param>
+        /// <param name="learningRate">Скорость обучения</param>
+        /// <param name="gradClip">Максимальное значение градиента по модулю</param>
+        /// <param name=" gradG">Усиление градиента</param>
+        /// <param name="L1">Коэф. L1 регуляризации</param>
         /// <param name="L2"> Regularization coefficient L2 </param>
         public void UpdateModelParams(INetwork network, float learningRate, float gradClip, float L1, float L2, float gradG)
         {

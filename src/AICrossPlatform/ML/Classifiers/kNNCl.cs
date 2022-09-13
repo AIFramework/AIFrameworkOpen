@@ -196,10 +196,10 @@ namespace AI.ML.Classifiers
 
         }
         /// <summary>
-        /// Training a classifier
+        /// Обучение классификатора
         /// </summary>
-        /// <param name="features">Features</param>
-        /// <param name="classes">Labels</param>
+        /// <param name="features">Признаки</param>
+        /// <param name="classes">Метки классов</param>
         public void Train(Vector[] features, int[] classes)
         {
             if (features.Length != classes.Length)
@@ -213,7 +213,7 @@ namespace AI.ML.Classifiers
             }
         }
         /// <summary>
-        /// Training a classifier based on the vector-label dataset
+        /// Обучениеing a classifier based on the vector-label dataset
         /// </summary>
         /// <param name="dataset">Vector-label dataset</param>
         public void Train(VectorIntDataset dataset)
@@ -260,7 +260,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Loading from csv file (features; class label)
         /// </summary>
-        /// <param name="pathToEtallonClassCsv">File path</param>
+        /// <param name="pathToEtallonClassCsv">Путь до файла</param>
         public static KNNCl GetKNN(string pathToEtallonClassCsv)
         {
             VectorIntDataset vectorClasses = new VectorIntDataset(pathToEtallonClassCsv);

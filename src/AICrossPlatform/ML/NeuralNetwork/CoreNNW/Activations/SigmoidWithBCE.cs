@@ -11,7 +11,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         public float Numerator => 1;
 
         /// <summary>
-        /// Сигмоидальная Activation function
+        /// Сигмоидальная Активационная функция
         /// </summary>
         public SigmoidWithBCE()
         {
@@ -43,7 +43,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             return valueMatrix;
         }
         /// <summary>
-        /// Bakward pass(производная)
+        /// Обратный проход(производная)
         /// </summary>
         /// <param name="x">Тензор аргумента</param>
         public NNValue Backward(NNValue x)

@@ -18,6 +18,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
         /// <param name="f1"></param>
         /// <param name="f2"></param>
         /// <param name="order"></param>
+        /// <param name="ripple">Коэф. пульсаций</param>
         public BandStopFilter(double f1, double f2, int order, double ripple = 0.1) : base(MakeTf(f1, f2, order, ripple))
         {
         }
@@ -25,9 +26,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
         /// <summary>
         /// TF generator
         /// </summary>
-        /// <param name="f1"></param>
-        /// <param name="f2"></param>
+        /// <param name="freq1"></param>
+        /// <param name="freq2"></param>
         /// <param name="order"></param>
+        /// <param name="ripple">Коэф. пульсаций</param>
         /// <returns></returns>
         private static TransferFunction MakeTf(double freq1, double freq2, int order, double ripple = 0.1)
         {

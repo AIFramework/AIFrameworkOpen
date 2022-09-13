@@ -347,7 +347,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             return returnObj;
         }
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
         /// <param name="function">Function activation</param>
         /// <param name="t">The tensor to which it is applied</param>
@@ -621,7 +621,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// 1-m
         /// </summary>
-        /// <param name="m">Input data tensor</param>
+        /// <param name="m">Тензор входных данных</param>
         public virtual NNValue OneMinus(NNValue m)
         {
             NNValue returnObj = new NNValue(m.Shape);
@@ -1094,7 +1094,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             NNValue outp = input.Clone();
 
             outp.Shape = newShape;
-            // Bakward pass
+            // Обратный проход
             if (IsBackward)
             {
                 Runnable bp = new Runnable

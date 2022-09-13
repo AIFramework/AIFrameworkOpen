@@ -3,7 +3,7 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 {
     /// <summary>
-    /// Activation function в виде модуля
+    /// Активационная функция в виде модуля
     /// </summary>
     [Serializable]
     public class AbsUnit : IActivation
@@ -33,7 +33,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         /// <summary>
         /// Прямой проход
         /// </summary>
-        /// <param name="x">Input data tensor</param>
+        /// <param name="x">Тензор входных данных</param>
         public NNValue Forward(NNValue x)
         {
             NNValue valueMatrix = new NNValue(x.Shape);
@@ -48,9 +48,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         }
 
         /// <summary>
-        /// Bakward pass
+        /// Обратный проход
         /// </summary>
-        /// <param name="x">Input data tensor</param>
+        /// <param name="x">Тензор входных данных</param>
         public NNValue Backward(NNValue x)
         {
             NNValue valueMatrix = new NNValue(x.Shape);
@@ -65,7 +65,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         }
 
         /// <summary>
-        /// Activation function name
+        /// Активационная функция name
         /// </summary>
         public override string ToString()
         {

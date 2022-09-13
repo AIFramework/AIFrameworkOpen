@@ -30,7 +30,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Correlation classifier
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path"Путь до файла/param>
         public CorrelationClassifier(string path)
         {
             Classes = new StructClasses();
@@ -100,10 +100,10 @@ namespace AI.ML.Classifiers
         }
 
         /// <summary>
-        /// Training a classifier
+        /// Обучение классификатора
         /// </summary>
-        /// <param name="features">Features</param>
-        /// <param name="classes">Labels</param>
+        /// <param name="features">Признаки</param>
+        /// <param name="classes">Метки классов</param>
         public void Train(Vector[] features, int[] classes)
         {
             if (features.Length != classes.Length)
@@ -117,9 +117,9 @@ namespace AI.ML.Classifiers
             }
         }
         /// <summary>
-        /// Training a classifier based on the vector-label dataset
+        /// Обучение классификатора
         /// </summary>
-        /// <param name="dataset">Vector-label dataset</param>
+        /// <param name="dataset">Набор данных признаки-метка</param>
         public void Train(VectorIntDataset dataset)
         {
             for (int i = 0; i < dataset.Count; i++)
@@ -131,7 +131,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Save to file
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path"Путь до файла/param>
         public void Save(string path)
         {
             BinarySerializer.Save(path, Classes);
@@ -145,9 +145,9 @@ namespace AI.ML.Classifiers
             BinarySerializer.Save(stream, this);
         }
         /// <summary>
-        /// Load from file
+        /// Загрузить из файла
         /// </summary>
-        /// <param name="path">File path</param>
+        /// <param name="path">Путь до файла</param>
         public static CorrelationClassifier Load(string path)
         {
             return BinarySerializer.Load<CorrelationClassifier>(path);

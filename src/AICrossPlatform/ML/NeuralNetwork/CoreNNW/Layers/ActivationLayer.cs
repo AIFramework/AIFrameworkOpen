@@ -31,15 +31,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public Shape3D OutputShape { get; private set; }
         /// <summary>
-        /// Number of training parameters (0)
+        /// Число обучаемых параметров (0)
         /// </summary>
         public int TrainableParameters { get; private set; } = 0;
         /// <summary>
-        /// Adding under the root (0)
+        /// Добавление значения в знаменатель под корень при инициализации весов (0)
         /// </summary>
         public double AddDenInSqrt { get; private set; } = 0;
         /// <summary>
-        /// Activation function
+        /// Активационная функция
         /// </summary>
         public IActivation ActivationFunction { get; set; }
 
@@ -47,7 +47,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Activation layer
         /// </summary>
         /// <param name="shapeInp">Input dimension</param>
-        /// <param name="activation">Activation function</param>
+        /// <param name="activation">Активационная функция</param>
         public ActivationLayer(Shape3D shapeInp, IActivation activation)
         {
             ActivationFunction = activation;
@@ -56,7 +56,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Activation layer
         /// </summary>
-        /// <param name="activation">Activation function</param>
+        /// <param name="activation">Активационная функция</param>
         public ActivationLayer(IActivation activation)
         {
             ActivationFunction = activation;
@@ -66,14 +66,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Прямой проход слоя
         /// </summary>
         /// <param name="input">Входной тензор</param>
-        /// <param name="g">Graph of automatic differentiation</param>
+        /// <param name="g">Граф автоматического дифференцирования</param>
         /// <returns></returns>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
             return g.Activate(ActivationFunction, input);
         }
         /// <summary>
-        /// Layer description
+        /// Описание слоя
         /// </summary>
         /// <returns></returns>
         public override string ToString()

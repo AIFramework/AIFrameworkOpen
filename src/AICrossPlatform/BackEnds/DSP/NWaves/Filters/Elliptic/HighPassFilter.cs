@@ -5,6 +5,10 @@ using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
 {
+
+    /// <summary>
+    /// Фильтр верхних частот
+    /// </summary>
     [Serializable]
 
     public class HighPassFilter : IirFilter64

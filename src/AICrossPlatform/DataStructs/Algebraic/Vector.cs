@@ -1229,7 +1229,7 @@ namespace AI.DataStructs.Algebraic
             return data.Min(x => double.IsNaN(x) ? double.MaxValue : x);
         }
         /// <summary>
-        /// Arithmetic mean of a vector
+        /// Среднее арифметическое
         /// </summary>
         /// <returns></returns>
         public double Mean()

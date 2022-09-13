@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AI.Statistics.RandomGenerator
+namespace AI.Statistics.MonteCarlo
 {
 
     /// <summary>

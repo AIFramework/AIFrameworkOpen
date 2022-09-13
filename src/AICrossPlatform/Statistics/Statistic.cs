@@ -464,12 +464,14 @@ namespace AI.Statistics
         {
             double summ = 0;
             double n = 0;
+            int len = vector.Shape.Count;
+            double[] data = vector.Data;
 
-            for (int i = 0; i < vector.Shape.Count; i++)
+            for (int i = 0; i < len; i++)
             {
-                if (!double.IsNaN(vector.Data[i]))
+                if (!double.IsNaN(data[i]))
                 {
-                    summ += vector.Data[i];
+                    summ += data[i];
                     n++;
                 }
             }

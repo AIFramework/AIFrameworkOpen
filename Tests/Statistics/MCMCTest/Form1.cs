@@ -1,6 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.Statistics;
-using AI.Statistics.RandomGenerator;
+using AI.Statistics.MonteCarlo;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -57,6 +57,44 @@ namespace MCMCTest
             chartVisual1.Clear();
             chartVisual1.AddArea(hist.X, hist.Y, "Гистограмма MCMC", Color.Black);
             chartVisual1.AddPlot(x_v, prob, "Реальная плотность", Color.Red);
+        }
+
+        // Интегрирование
+        private void button2_Click(object sender, EventArgs e)
+        {
+            double min = -5;
+            double max = 20;
+            double step = 0.1;
+
+            Vector x_v = Vector.Seq(min, step, max);
+            Vector f = x_v.Transform(fx);
+
+            chartVisual1.Clear();
+            chartVisual1.AddPlot(x_v, x_v.Transform(fx), "Подынтегральная функция", Color.Blue);
+            chartVisual1.AddPlot(x_v, x_v.Transform(x => Fx(x) - Fx(min)), "Интеграл", Color.Green);
+
+            MessageBox.Show($"Реальное значение {Fx(max) - Fx(min)}\n" +
+                $"Метод Монте-Карло {Integration.CalcIntegral1D(fx, min, max)}");
+        }
+
+        /// <summary>
+        /// Подынтегральная функция
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        double fx(double x)
+        {
+            return 4*Math.Sin(x)+5;
+        }
+
+        /// <summary>
+        /// Интеграл
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        double Fx(double x)
+        {
+            return -4* Math.Cos(x)+5*x;
         }
     }
 }

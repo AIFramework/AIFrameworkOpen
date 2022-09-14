@@ -58,7 +58,7 @@ namespace AI.ML.Clustering
 
             for (int i = 0; i < w.Length; i++)
             {
-                w[i] = Statistics.Statistic.Rand(inpDim, rnd);
+                w[i] = Statistics.Statistic.UniformDistribution(inpDim, rnd);
             }
 
             _clusters = clusters;

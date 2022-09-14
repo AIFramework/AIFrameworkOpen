@@ -18,7 +18,7 @@ namespace AI.DSP.Modulation
         /// <summary>
         /// Инициализация модулятора однополосной ампл. модуляции
         /// </summary>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="f0">Carrier frequency</param>
         /// <param name="ssbType">Какая полоса будет подавлена</param>
         public SSB(int fd, double f0, SSBType ssbType = SSBType.Down)

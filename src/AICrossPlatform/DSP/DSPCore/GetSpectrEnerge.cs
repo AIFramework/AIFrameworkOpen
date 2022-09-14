@@ -26,7 +26,7 @@ namespace AI.DSP.DSPCore
         /// <summary>
         /// Анализ формант
         /// </summary>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         public GetSpectrEnerge(double fd)
         {
             _fd = fd;

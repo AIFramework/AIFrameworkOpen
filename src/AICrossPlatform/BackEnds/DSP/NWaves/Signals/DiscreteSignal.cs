@@ -313,6 +313,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// </summary>
         /// <param name="startPos">Starting sample</param>
         /// <param name="endPos">Ending sample (exclusive)</param>
+        /// <param name="binCount"></param>
         /// <returns>Shannon entropy</returns>
         public float Entropy(int startPos, int endPos, int binCount = 32)
         {

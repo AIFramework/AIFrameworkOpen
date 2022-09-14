@@ -35,7 +35,7 @@ namespace AI.ML.Genetic.GeneticCore
         public Cell(int parametrsCount, Func<Vector, Vector, Vector> function, Random rnd, double valDown, double valUp)
         {
             double picToPic = valUp - valDown;
-            Parametrs = (picToPic * Statistics.Statistic.Rand(parametrsCount, rnd)) + valDown;
+            Parametrs = (picToPic * Statistics.Statistic.UniformDistribution(parametrsCount, rnd)) + valDown;
             Function = function;
         }
 

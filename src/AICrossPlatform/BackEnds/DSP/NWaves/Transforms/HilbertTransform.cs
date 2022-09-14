@@ -29,7 +29,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="length">Size of Hilbert Transform</param>
+        /// <param name="size">Size of Hilbert Transform</param>
         /// <param name="doublePrecision"></param>
         public HilbertTransform(int size = 1024, bool doublePrecision = true)
         {

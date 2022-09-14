@@ -647,7 +647,7 @@ namespace AI.DataStructs.Algebraic
             return Data.Min();
         }
         /// <summary>
-        /// Maximum value(Matrix)
+        ///  Максимальное значение(Matrix)
         /// </summary>
         /// <returns></returns>
         public double Max()

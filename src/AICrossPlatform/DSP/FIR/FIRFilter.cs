@@ -23,7 +23,7 @@ namespace AI.DSP.FIR
         /// Инициализация фильтра
         /// </summary>
         /// <param name="ht">Impulse response фильтра</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="calcConvType">Метод расчета свертки</param>
         public FIRFilter(Vector ht, int fd, FIRCalcConvType calcConvType = FIRCalcConvType.WithFFT)
         {

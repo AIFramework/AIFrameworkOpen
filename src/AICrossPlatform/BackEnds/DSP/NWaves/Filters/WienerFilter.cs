@@ -42,6 +42,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters
             _n = _size / 2;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="signal"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
         public DiscreteSignal ApplyTo(DiscreteSignal signal, FilteringMethod method = FilteringMethod.Auto)
         {
             float[] output = new float[signal.Length];
@@ -66,6 +72,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters
             return new DiscreteSignal(signal.SamplingRate, output);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sample"></param>
+        /// <returns></returns>
         public float Process(float sample)
         {
             if (_n == _buf.Length)      // some kind of a circular buffer
@@ -96,6 +107,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters
             return sigma < _noise ? mu : (float)(mu + ((prevSample - mu) * (1 - (_noise / sigma))));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Reset()
         {
             _n = _size / 2;

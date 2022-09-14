@@ -314,7 +314,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// Заполнение тензора случайными числами
         /// </summary>
         /// <param name="h">Ширина</param>
-        /// <param name="w"> Height </param>
+        /// <param name="w"> Высота</param>
         /// <param name="initParamsStdDev">ско</param>
         /// <param name="rnd">Генератор псевдослуч. чисел</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -331,7 +331,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// Заполнение тензора случайными числами
         /// </summary>
         /// <param name="h">Ширина</param>
-        /// <param name="w"> Height </param>
+        /// <param name="w"> Высота</param>
         /// <param name="d">Глубина</param>
         /// <param name="initParamsStdDev">ско</param>
         /// <param name="rnd">Генератор псевдослуч. чисел</param>
@@ -349,7 +349,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// Заполнение тензора случайными числами
         /// </summary>
         /// <param name="h">Ширина</param>
-        /// <param name="w"> Height </param>
+        /// <param name="w"> Высота</param>
         /// <param name="d">Глубина</param>
         /// <param name="initParamsStdDev">ско</param>
         /// <param name="rnd">Генератор псевдослуч. чисел</param>
@@ -381,7 +381,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Создание матрицы заполненной одним числом
         /// </summary>
-        /// <param name="h"> Height </param>
+        /// <param name="h"> Высота</param>
         /// <param name="w">Ширина</param>
         /// <param name="s">Число</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -432,7 +432,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Заполнение тензора единицами
         /// </summary>
-        /// <param name="h"> Height </param>
+        /// <param name="h"> Высота</param>
         /// <param name="w">Ширина</param>
         public static NNValue Ones(int h, int w)
         {
@@ -449,7 +449,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Заполнение тензора единицами
         /// </summary>
-        /// <param name="h"> Height </param>
+        /// <param name="h"> Высота</param>
         public static NNValue Ones(int h)
         {
             return Uniform(h, 1, 1.0);
@@ -457,7 +457,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Заполнение тензора -1
         /// </summary>
-        /// <param name="h"> Height </param>
+        /// <param name="h"> Высота</param>
         /// <param name="w">Ширина</param>
         public static NNValue NegativeOnes(int h, int w)
         {

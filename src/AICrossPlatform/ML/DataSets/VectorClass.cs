@@ -18,6 +18,9 @@ namespace AI.ML.DataSets
         /// </summary>
         public int ClassMark;
 
+        /// <summary>
+        /// Радиус(схожесть)
+        /// </summary>
         public double R { get; set; }
 
         /// <summary>
@@ -31,6 +34,9 @@ namespace AI.ML.DataSets
             ClassMark = mark;
         }
 
+        /// <summary>
+        /// Представляет структуру вектор-класс
+        /// </summary>
         public VectorClass() { }
     }
 }

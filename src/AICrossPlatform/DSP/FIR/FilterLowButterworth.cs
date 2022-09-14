@@ -21,7 +21,7 @@ namespace AI.DSP.FIR
         /// Фильтр Баттерворта
         /// </summary>
         /// <param name="f0">Частота среза</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="signalLen">Длинна реализации</param>
         /// <param name="order">Порядок фильтра</param>
         public FilterLowButterworth(int f0, int fd, int signalLen, int order = 5)

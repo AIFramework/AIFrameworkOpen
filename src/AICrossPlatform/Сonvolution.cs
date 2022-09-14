@@ -68,7 +68,7 @@ namespace AI
         /// </summary>
         /// <param name="signal">Signal</param>
         /// <param name="ht">Impulse response</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
     	public static Vector DirectConvolution(Vector signal, Vector ht, double fd)
         {
             return DirectConvolution(signal, ht) / fd;

@@ -24,7 +24,7 @@ namespace AI.DSP
         /// </summary>
         public string Description { get; set; }
         /// <summary>
-        /// Sampling frequency
+        /// Частота дискретизации
         /// </summary>
         public int Fd { get; set; }
         private FFT fur;
@@ -56,7 +56,7 @@ namespace AI.DSP
         /// Инициализация многоканальным сигналом
         /// </summary>
         /// <param name="channels">Сигнал</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         public Signal1D(Vector[] channels, int fd)
         {
             AddRange(Channel.GetChannels(channels, fd));
@@ -74,7 +74,7 @@ namespace AI.DSP
         /// Инициализация многоканальным сигналом
         /// </summary>
         /// <param name="signal">Сигнал</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         public Signal1D(Vector signal, int fd)
         {
             Add(new Channel(signal, fd));

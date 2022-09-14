@@ -62,6 +62,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "None", TrainableParameters);
         }
 
+        /// <summary>
+        /// Только использование
+        /// </summary>
         public void OnlyUse()
         {
         }

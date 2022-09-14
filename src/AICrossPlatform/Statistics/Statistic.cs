@@ -8,34 +8,34 @@ using System.Runtime.CompilerServices;
 namespace AI.Statistics
 {
     /// <summary>
-    /// Класс содержит методы для статистического анализа.А также генераторы псевдослучайных чисел.
+    /// Класс содержит методы для статистического анализа. А также генераторы псевдослучайных чисел.
     /// </summary>
     [Serializable]
     public class Statistic
     {
-        #region Fields and properties
+        #region Поля и свойства
         private readonly Vector _vector;
         private readonly int _n;
         private static readonly Random _rand = new Random();
 
         /// <summary>
-        /// Root mean square deviation
+        /// Оценка средне-квадратичного отклонение (СКО)
         /// </summary>
         public double STD { get; private set; }
         /// <summary>
-        /// Minimum value
+        ///  Минимальное значение
         /// </summary>
         public double MinValue { get; private set; }
         /// <summary>
-        /// Maximum value
+        ///  Максимальное значение
         /// </summary>
         public double MaxValue { get; private set; }
         /// <summary>
-        /// Dispersion
+        /// Оценка дисперсии
         /// </summary>
         public double Variance { get; private set; }
         /// <summary>
-        /// Expected value
+        /// Оценка мат. ожидания
         /// </summary>
         public double Expected { get; private set; }
         #endregion
@@ -58,7 +58,7 @@ namespace AI.Statistics
         /// </summary>
         /// <param name="n">Длинна вектора</param>
         /// <returns>Возвращает вектор случайных чисел</returns>
-        public static Vector Rand(int n)
+        public static Vector UniformDistribution(int n)
         {
             Random A = new Random();
             Vector vect = new Vector(n);
@@ -76,7 +76,7 @@ namespace AI.Statistics
 		/// <param name="n">Длинна вектора</param>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
 		/// <returns>Возвращает вектор случайных чисел</returns>
-		public static Vector Rand(int n, Random random)
+		public static Vector UniformDistribution(int n, Random random)
         {
             Vector vect = new Vector(n);
 
@@ -229,7 +229,7 @@ namespace AI.Statistics
         /// </summary>
         /// <param name="m">Количество строк</param>
         /// <param name="n">Количество столбцов</param>
-        public static Matrix Rand(int m, int n)
+        public static Matrix UniformDistribution(int m, int n)
         {
             Random rn = new Random();
             Matrix C = new Matrix(m, n);
@@ -250,7 +250,7 @@ namespace AI.Statistics
         /// <param name="m">Количество строк</param>
         /// <param name="n">Количество столбцов</param>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
-        public static Matrix Rand(int m, int n, Random random)
+        public static Matrix UniformDistribution(int m, int n, Random random)
         {
             Matrix C = new Matrix(m, n);
             int count = C.Shape.Count;
@@ -266,10 +266,10 @@ namespace AI.Statistics
         /// <summary>
         /// Тензор
         /// </summary>
-        /// <param name="h"> Height </param>
+        /// <param name="h"> Высота</param>
         /// <param name="w">Ширина</param>
         /// <param name="d">Глубина</param>
-        public static Tensor Rand(int h, int w, int d)
+        public static Tensor UniformDistribution(int h, int w, int d)
         {
             Random rn = new Random();
             Tensor tensor = new Tensor(h, w, d);
@@ -291,25 +291,19 @@ namespace AI.Statistics
         /// <summary>
         /// Тензор
         /// </summary>
-        /// <param name="h"> Height </param>
+        /// <param name="h"> Высота</param>
         /// <param name="w">Ширина</param>
         /// <param name="d">Глубина</param>
         /// <param name="random"></param>
         /// <returns></returns>
-        public static Tensor Rand(int h, int w, int d, Random random)
+        public static Tensor UniformDistribution(int h, int w, int d, Random random)
         {
             Tensor tensor = new Tensor(h, w, d);
 
             for (int k = 0; k < d; k++)
-            {
                 for (int i = 0; i < h; i++)
-                {
                     for (int j = 0; j < w; j++)
-                    {
                         tensor[i, j, k] = random.NextDouble();
-                    }
-                }
-            }
 
             return tensor;
         }
@@ -317,7 +311,7 @@ namespace AI.Statistics
         /// <summary>
         /// Тензор
         /// </summary>
-        /// <param name="h"> Height </param>
+        /// <param name="h"> Высота</param>
         /// <param name="w">Ширина</param>
         /// <param name="d">Глубина</param>
         /// <returns></returns>
@@ -327,15 +321,9 @@ namespace AI.Statistics
             Tensor tensor = new Tensor(h, w, d);
 
             for (int k = 0; k < d; k++)
-            {
                 for (int i = 0; i < h; i++)
-                {
                     for (int j = 0; j < w; j++)
-                    {
                         tensor[i, j, k] = Gauss(rn);
-                    }
-                }
-            }
 
             return tensor;
         }
@@ -362,7 +350,7 @@ namespace AI.Statistics
         /// <summary>
         /// Тензор
         /// </summary>
-        /// <param name="h"> Height </param>
+        /// <param name="h"> Высота</param>
         /// <param name="w">Ширина</param>
         /// <param name="d">Глубина</param>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
@@ -371,35 +359,31 @@ namespace AI.Statistics
             Tensor tensor = new Tensor(h, w, d);
 
             for (int k = 0; k < d; k++)
-            {
                 for (int i = 0; i < h; i++)
-                {
                     for (int j = 0; j < w; j++)
-                    {
                         tensor[i, j, k] = Gauss(random);
-                    }
-                }
-            }
-
+                
             return tensor;
         }
 
 
         /// <summary>
-        /// Maximum value
+        ///  Максимальное значение
         /// </summary>
-        /// <param name="data">Values</param>
-        public static double MaximalValue(IAlgebraicStructure data)
+        /// <param name="array">Значения</param>
+        public static double MaximalValue(IAlgebraicStructure array)
         {
             double max = double.MinValue;
+            int len = array.Shape.Count;
+            double[] data = array.Data;
 
-            for (int i = 0; i < data.Shape.Count; i++)
+            for (int i = 0; i < len; i++)
             {
-                if (!double.IsNaN(data.Data[i]))
+                if (!double.IsNaN(data[i]))
                 {
-                    if (max < data.Data[i])
+                    if (max < data[i])
                     {
-                        max = data.Data[i];
+                        max = data[i];
                     }
                 }
             }
@@ -407,20 +391,22 @@ namespace AI.Statistics
         }
 
         /// <summary>
-        /// Minimum value
+        ///  Минимальное значение
         /// </summary>
-        /// <param name="data">Values</param>
-        public static double MinimalValue(IAlgebraicStructure data)
+        /// <param name="array">Значения</param>
+        public static double MinimalValue(IAlgebraicStructure array)
         {
             double min = double.MaxValue;
+            int len = array.Shape.Count;
+            double[] data = array.Data;
 
-            for (int i = 0; i < data.Shape.Count; i++)
+            for (int i = 0; i < len; i++)
             {
-                if (!double.IsNaN(data.Data[i]))
+                if (!double.IsNaN(data[i]))
                 {
-                    if (min > data.Data[i])
+                    if (min > data[i])
                     {
-                        min = data.Data[i];
+                        min = data[i];
                     }
                 }
             }
@@ -431,9 +417,9 @@ namespace AI.Statistics
 
 
 
-        #region ExpectedValue
+        #region Оценка математического ожидания
         /// <summary>
-        /// Expected value
+        /// Оценка математического ожидания
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void ExpectedValue()
@@ -456,16 +442,16 @@ namespace AI.Statistics
         }
 
         /// <summary>
-        /// Estimation of mathematical expectation
+        /// Оценка математического ожидания
         /// </summary>
-        /// <param name="vector">Vector containing samples of a random variable</param>
+        /// <param name="array"> Значения </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ExpectedValue(IAlgebraicStructure vector)
+        public static double ExpectedValue(IAlgebraicStructure array)
         {
             double summ = 0;
             double n = 0;
-            int len = vector.Shape.Count;
-            double[] data = vector.Data;
+            int len = array.Shape.Count;
+            double[] data = array.Data;
 
             for (int i = 0; i < len; i++)
             {
@@ -482,20 +468,22 @@ namespace AI.Statistics
         }
 
         /// <summary>
-        /// Estimation of the mathematical expectation from the modulus of a random variable
+        ///  Оценка математического ожидания от модуля случайной величины
         /// </summary>
-        /// <param name="vector">Vector containing samples of a random variable</param>
+        /// <param name="array"> Значения </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ExpectedValueAbs(IAlgebraicStructure vector)
+        public static double ExpectedValueAbs(IAlgebraicStructure array)
         {
             double summ = 0;
             double n = 0;
+            int count = array.Shape.Count;
+            double[] data = array.Data;
 
-            for (int i = 0; i < vector.Shape.Count; i++)
+            for (int i = 0; i < count; i++)
             {
-                if (!double.IsNaN(vector.Data[i]))
+                if (!double.IsNaN(data[i]))
                 {
-                    summ += Math.Abs(vector.Data[i]);
+                    summ += Math.Abs(data[i]);
                     n++;
                 }
             }
@@ -508,34 +496,35 @@ namespace AI.Statistics
         /// <summary>
         /// Estimation of mathematical expectation
         /// </summary>
-        /// <param name="vector">Vector containing samples of a random variable</param>
+        /// <param name="array"> Значения </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ExpectedValueNotCheckNaN(IAlgebraicStructure vector)
+        public static double ExpectedValueNotCheckNaN(IAlgebraicStructure array)
         {
             double summ = 0;
+            int count = array.Shape.Count;
+            double[] data = array.Data;
 
-            for (int i = 0; i < vector.Shape.Count; i++)
-            {
-                summ += vector.Data[i];
-            }
-            return summ / vector.Shape.Count;
+            for (int i = 0; i < count; i++)  summ += data[i];
+
+            return summ / count;
 
         }
 
         /// <summary>
-        /// Estimation of the mathematical expectation from the modulus of a random variable
+        /// Оценка математического ожидания от модуля случайной величины
         /// </summary>
-        /// <param name="vector">Vector containing samples of a random variable</param>
+        /// <param name="array"> Вектор значений </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ExpectedValueAbsNotCheckNaN(IAlgebraicStructure vector)
+        public static double ExpectedValueAbsNotCheckNaN(IAlgebraicStructure array)
         {
             double summ = 0;
+            int count = array.Shape.Count;
+            double[] data = array.Data;
 
-            for (int i = 0; i < vector.Shape.Count; i++)
-            {
-                summ += Math.Abs(vector.Data[i]);
-            }
-            return summ / vector.Shape.Count;
+            for (int i = 0; i < count; i++)
+                summ += Math.Abs(data[i]);
+
+            return summ / count;
 
         }
 
@@ -543,10 +532,10 @@ namespace AI.Statistics
 
         #endregion
 
-        #region Variance calculation and Std
+        #region Оценка СКО и дисперсии
 
         /// <summary>
-        /// Variance calculation
+        /// Оценка дисперсии
         /// </summary>
         private void СalcVariance()
         {
@@ -576,19 +565,22 @@ namespace AI.Statistics
         }
 
         /// <summary>
-        /// Variance calculation
+        /// Оценка дисперсии
         /// </summary>
-        public static double СalcVariance(IAlgebraicStructure vector)
+        public static double СalcVariance(IAlgebraicStructure array)
         {
-            double dispers, eV = ExpectedValue(vector);
+            double dispers, eV = ExpectedValue(array);
             double summ = 0;
             double n = 0;
 
-            for (int i = 0; i < vector.Shape.Count; i++)
+            double[] data = array.Data;
+            int count = data.Length;
+
+            for (int i = 0; i < count; i++)
             {
-                if (!double.IsNaN(vector.Data[i]))
+                if (!double.IsNaN(data[i]))
                 {
-                    double q = vector.Data[i] - eV;
+                    double q = data[i] - eV;
                     summ += q * q;
                     n++;
                 }
@@ -600,11 +592,11 @@ namespace AI.Statistics
         }
 
         /// <summary>
-        /// Calculating standard deviation
+        /// Расчет оценки СКО
         /// </summary>
-        public static double CalcStd(Vector vector)
+        public static double CalcStd(IAlgebraicStructure array)
         {
-            return Math.Sqrt(СalcVariance(vector));
+            return Math.Sqrt(СalcVariance(array));
         }
         #endregion
 
@@ -645,7 +637,7 @@ namespace AI.Statistics
         /// Cоздает матрицу с равномерно распределенными значениями
         /// размерности n на n
         /// </summary>
-        public static Matrix Rand(short n)
+        public static Matrix UniformDistribution(short n)
         {
             Random rn = new Random();
             Matrix C = new Matrix(n, n);
@@ -716,30 +708,29 @@ namespace AI.Statistics
         /// <summary>
         /// Начальный момент
         /// </summary>
-        /// <param name="n">Initial moment number 1,2,3 ...</param>
+        /// <param name="n">Номер начального момента</param>
         public double InitialMoment(int n)
         {
             return ExpectedValue(_vector.Transform(x => Math.Pow(x, n)));
         }
         /// <summary>
-        /// Central moment
+        /// Центральный момент
         /// </summary>
-        /// <param name="n">Central moment number 1,2,3 ...</param>
+        /// <param name="n">Номер центрального момента</param>
         public double CentralMoment(int n)
         {
             return ExpectedValue((_vector - Expected).Transform(x => Math.Pow(x, n)));
         }
         /// <summary>
-        /// Distribution asymmetry
+        /// Ассиметрия распределения
         /// </summary>
         public double Asymmetry()
         {
             return CentralMoment(3) / (STD * STD * STD);
         }
         /// <summary>
-        /// Kurtosis, "steepness" of the distribution
+        /// Крутизна распределения (CM(4)/D^2 - 3)
         /// </summary>
-        /// <returns>Returns the kurtosis coefficient</returns>
         public double Excess()
         {
             return (CentralMoment(4) / (STD * STD * STD * STD)) - 3;
@@ -747,12 +738,12 @@ namespace AI.Statistics
 
 
         /// <summary>
-        /// Covariance (correlation moment, linear dependence) of two vectors
+        /// Ковариация (корреляционный момент, линейная зависимость) двух векторов
         /// </summary>
-        public static double Cov(Vector X, Vector Y)
+        public static double Cov(Vector x, Vector y)
         {
-            int n1 = X.Count;
-            int n2 = Y.Count;
+            int n1 = x.Count;
+            int n2 = y.Count;
             string exceptionStr = string.Format("Невозможно выполнить ковариацию, длинна одного вектора {0}, а второго {1}", n1, n2);
             if (n1 != n2)
             {
@@ -761,18 +752,18 @@ namespace AI.Statistics
 
             double Mx = 0, My = 0, cov = 0;
 
-            for (int i = 0; i < X.Count; i++)
+            for (int i = 0; i < x.Count; i++)
             {
-                Mx += X[i];
-                My += Y[i];
+                Mx += x[i];
+                My += y[i];
             }
 
             Mx /= n1;
             My /= n1;
 
-            for (int i = 0; i < X.Count; i++)
+            for (int i = 0; i < x.Count; i++)
             {
-                cov += (X[i] - Mx) * (Y[i] - My);
+                cov += (x[i] - Mx) * (y[i] - My);
             }
 
             cov /= n1 - 1;
@@ -781,29 +772,35 @@ namespace AI.Statistics
         }
 
         /// <summary>
-        /// Pearson's correlation coefficient
+        /// Коэффициент корреляции Пирсона
         /// </summary>
-        public static double CorrelationCoefficient(Vector X, Vector Y)
+        public static double CorrelationCoefficient(Vector x, Vector y)
         {
-            int n = X.Count;
+            string exceptionStr = string.Format("Невозможно рассчитать корреляцию, длинна одного вектора {0}, а второго {1}", x.Count, y.Count);
+            if (x.Count != y.Count)
+            {
+                throw new ArgumentException(exceptionStr, "Корреляция");
+            }
+
+            int n = x.Count;
 
             double Mx = 0, My = 0, cor = 0, Dx = 0, Dy = 0, dx, dy;
 
-            for (int i = 0; i < X.Count; i++)
+            for (int i = 0; i < x.Count; i++)
             {
-                Mx += X[i];
-                My += Y[i];
+                Mx += x[i];
+                My += y[i];
             }
 
             Mx /= n;
             My /= n;
 
 
-            for (int i = 0; i < X.Count; i++)
+            for (int i = 0; i < x.Count; i++)
             {
-                cor += (X[i] - Mx) * (Y[i] - My);
-                dx = X[i] - Mx;
-                dy = Y[i] - My;
+                cor += (x[i] - Mx) * (y[i] - My);
+                dx = x[i] - Mx;
+                dy = y[i] - My;
                 Dx += dx * dx;
                 Dy += dy * dy;
             }
@@ -814,7 +811,7 @@ namespace AI.Statistics
         }
 
         /// <summary>
-        /// Pearson's correlation coefficient
+        /// Коэффициент корреляции Пирсона
         /// </summary>
         public static double CorrelationCoefficient(IAlgebraicStructure X, IAlgebraicStructure Y)
         {
@@ -825,7 +822,7 @@ namespace AI.Statistics
         /// <summary>
         /// Усреднение по выборке(ансамблю)
         /// </summary>
-        /// <param name="vectors">Dataset</param>
+        /// <param name="vectors">Выборка</param>
         /// <returns>Средний вектор</returns>
         public static Vector MeanVector(IEnumerable<Vector> vectors)
         {
@@ -1013,7 +1010,7 @@ namespace AI.Statistics
         /// Средняя частота сигнала
         /// </summary>
         /// <param name="signal">Сигнал</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <returns>Средняя частота [Гц]</returns>
         public static double MeanFreq(Vector signal, double fd)
         {

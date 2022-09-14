@@ -1181,7 +1181,7 @@ namespace AI.DataStructs.Algebraic
             return val;
         }
         /// <summary>
-        /// Maximum value
+        ///  Максимальное значение
         /// </summary>
         /// <returns></returns>
         public double Max()
@@ -1658,7 +1658,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Array os times
         /// </summary>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="t">Time (sec)</param>
         /// <returns></returns>
         public static Vector Time0(double fd, double t)

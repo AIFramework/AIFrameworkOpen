@@ -16,9 +16,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// /// <param name="batchSize">Размер подвыборки</param>
         /// <param name="learningRate">Скорость обучения</param>
         /// <param name="network">Нейронная сеть</param>
-        /// <param name="data">Data set</param>
-        /// <param name="minLoss">Minimal loss value</param>
-        /// <returns>Loss</returns>
+        /// <param name="data">Выборка</param>
+        /// <param name="minLoss">Минимальное значение ошибки</param>
+        /// <returns>Ошибка</returns>
         void Train(int epochesToPass, int batchSize, float learningRate, INetwork network, IDataSet data, float minLoss);
         /// <summary>
         /// Асинхронное обучение нейронной сети
@@ -27,9 +27,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <param name="batchSize">Размер подвыборки</param>
         /// <param name="learningRate">Скорость обучения</param>
         /// <param name="network">Нейронная сеть</param>
-        /// <param name="data">Data set</param>
-        /// <param name="minLoss">Minimal loss value</param>
-        /// <returns>Loss</returns>
+        /// <param name="data">Выборка</param>
+        /// <param name="minLoss">Минимальное значение ошибки</param>
+        /// <param name="cancellationToken">Токен завершения</param>
+        /// <returns>Ошибка</returns>
         Task TrainAsync(int epochesToPass, int batchSize, float learningRate, INetwork network, IDataSet data, float minLoss, CancellationToken cancellationToken = default);
     }
 }

@@ -123,8 +123,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <param name="batchSize">Размер подвыборки</param>
         /// <param name="learningRate">Скорость обучения</param>
         /// <param name="network">Нейронная сеть</param>
-        /// <param name="data">Data set</param>
-        /// <param name="minLoss">Minimal loss value</param>
+        /// <param name="data">Выборка</param>
+        /// <param name="minLoss">Минимальное значение ошибки</param>
         public void Train(int epochesToPass, int batchSize, float learningRate, INetwork network, IDataSet data, float minLoss = 0.0f)
         {
             if (network == null)
@@ -208,8 +208,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <param name="batchSize">Размер подвыборки</param>
         /// <param name="learningRate">Скорость обучения</param>
         /// <param name="network">Нейронная сеть</param>
-        /// <param name="data">Data set</param>
-        /// <param name="minLoss">Minimal loss value</param>
+        /// <param name="data">Выборка</param>
+        /// <param name="minLoss">Минимальное значение ошибки</param>
         /// <param name="cancellationToken">Token for cancelling asynchronous operation</param>
         public async Task TrainAsync(int epochesToPass, int batchSize, float learningRate, INetwork network, IDataSet data, float minLoss = 0.0f, CancellationToken cancellationToken = default)
         {

@@ -47,8 +47,6 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="samples"></param>
-        /// <param name="window"></param>
         public static void ApplyWindow(this float[] samples, WindowTypes window, params object[] parameters)
         {
             float[] windowSamples = Window.OfType(window, samples.Length, parameters);
@@ -58,8 +56,6 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="samples"></param>
-        /// <param name="window"></param>
         public static void ApplyWindow(this double[] samples, WindowTypes window, params object[] parameters)
         {
             double[] windowSamples = Window.OfType(window, samples.Length, parameters).ToDoubles();
@@ -69,8 +65,6 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="signal"></param>
-        /// <param name="window"></param>
         public static void ApplyWindow(this DiscreteSignal signal, WindowTypes window, params object[] parameters)
         {
             float[] windowSamples = Window.OfType(window, signal.Length, parameters);

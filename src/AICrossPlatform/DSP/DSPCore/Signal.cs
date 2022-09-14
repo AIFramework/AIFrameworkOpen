@@ -83,7 +83,7 @@ namespace AI.DSP.DSPCore
         /// Массив частот
         /// </summary>
         /// <param name="Count">Кол-во значений</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <returns>Вектор частот</returns>
         public static Vector Frequency(int Count, double fd)
         {
@@ -96,7 +96,7 @@ namespace AI.DSP.DSPCore
         /// Центрированный массив частот 
         /// </summary>
         /// <param name="Count">Кол-во значений</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <returns>Вектор частот</returns>
         public static Vector FrequencyCentr(int Count, double fd)
         {

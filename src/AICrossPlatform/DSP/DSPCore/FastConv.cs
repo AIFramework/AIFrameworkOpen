@@ -41,7 +41,7 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="signal">Сигнал</param>
         /// <param name="ht">Impulse response</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <returns></returns>
         public static Vector FastConvolution(Vector signal, Vector ht, double fd)
         {

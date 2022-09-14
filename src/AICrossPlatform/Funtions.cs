@@ -259,7 +259,7 @@ namespace AI
         /// Вычисляет интегральную функцию действительный вектор
         /// </summary>
         /// <param name="A">Входной вектор</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         public static Vector Integral(Vector A, double fd)
         {
             Vector B = new Vector(A.Count);
@@ -302,7 +302,7 @@ namespace AI
         /// Вычисляет диференциальную функцию действительный вектор
         /// </summary>
         /// <param name="A"> Входной вектор</param>   
-        /// <param name="fd"> Sampling frequency</param>
+        /// <param name="fd"> Частота дискретизации</param>
         public static Vector Diff(Vector A, double fd)
         {
             Vector B = new Vector(A.Count)
@@ -322,7 +322,7 @@ namespace AI
         /// Вычисляет диференциальную функцию действительный вектор (без первого отсчета)
         /// </summary>
         /// <param name="A"> Входной вектор</param>
-        /// <param name="fd"> Sampling frequency</param>
+        /// <param name="fd"> Частота дискретизации</param>
         public static Vector DiffWithOutF(Vector A, double fd)
         {
             Vector B = new Vector(A.Count - 1);

@@ -19,7 +19,7 @@ namespace AI.DSP
         /// </summary>
         public Vector ChData { get; set; }
         /// <summary>
-        /// Sampling frequency
+        /// Частота дискретизации
         /// </summary>
         public int Fd { get; set; }
         /// <summary>
@@ -114,7 +114,7 @@ namespace AI.DSP
         /// Преобразует масив векторов в массив каналов
         /// </summary>
         /// <param name="vects">Массив векторов</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <returns></returns>
         public static Channel[] GetChannels(Vector[] vects, int fd)
         {

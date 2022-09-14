@@ -3,34 +3,41 @@ using System;
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Events
 {
+
+    /// <summary>
+    /// Аргументы обучения
+    /// </summary>
     [Serializable]
     public class TrainingEventArgs : EventArgs
     {
         /// <summary>
-        /// Total epoches that need to be passed
+        /// Число эпох
         /// </summary>
         public int TrainingEpoches { get; }
         /// <summary>
-        /// Batch size
+        /// Размер подвыборки
         /// </summary>
         public int BatchSize { get; }
         /// <summary>
-        /// Learning rate
+        /// Скорость обучения
         /// </summary>
         public float LearningRate { get; }
         /// <summary>
-        /// Neural network
+        /// Нейронная сеть
         /// </summary>
         public INetwork Model { get; }
         /// <summary>
-        /// Обучениеing dataset
+        /// Обучающая выборка
         /// </summary>
         public IDataSet Data { get; }
         /// <summary>
-        /// Minimal loss
+        /// Минимальная ошибка
         /// </summary>
         public float MinLoss { get; }
 
+        /// <summary>
+        /// Аргументы обучения
+        /// </summary>
         public TrainingEventArgs(int trainingEpoches, int batchSize, float learningRate, INetwork model, IDataSet data, float minLoss)
         {
             TrainingEpoches = trainingEpoches;

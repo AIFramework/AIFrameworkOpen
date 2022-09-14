@@ -16,7 +16,7 @@ namespace AI.DSP.Modulation
         /// <summary>
         /// Инициализация модулятора ампл. модуляции
         /// </summary>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="f0">Carrier frequency</param>
         /// <param name="m">Modulation rate</param>
         public AM(int fd, double f0, double m = 1)

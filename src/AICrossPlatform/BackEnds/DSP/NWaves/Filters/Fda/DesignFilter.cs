@@ -866,7 +866,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <summary>
         /// Leave only one of two conjugated numbers in the list of complex numbers
         /// </summary>
-        /// <param name="arr"></param>
+        /// <param name="c"></param>
         private static void RemoveConjugated(List<Complex> c)
         {
             for (int i = 0; i < c.Count; i++)

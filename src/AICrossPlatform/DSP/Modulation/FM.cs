@@ -18,7 +18,7 @@ namespace AI.DSP.Modulation
         /// <summary>
         /// Инициализация модулятора частотной модуляции
         /// </summary>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="f0">Carrier frequency</param>
         /// <param name="deltF">Дифиация частоты</param>
         public FM(int fd, double f0, double deltF)

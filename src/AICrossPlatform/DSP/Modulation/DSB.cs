@@ -16,7 +16,7 @@ namespace AI.DSP.Modulation
         /// <summary>
         /// Инициализация модулятора ампл. модуляции с подавленной несущей
         /// </summary>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="f0">Carrier frequency</param>
         public DSB(int fd, double f0)
         {

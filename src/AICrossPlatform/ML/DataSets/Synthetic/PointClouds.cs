@@ -53,7 +53,7 @@ namespace AI.ML.DataSets.Synthetic
                 case CloudType.Hypercube:
                     for (int i = 0; i < count; i++)
                     {
-                        cloud[i] = (std * 2 * Statistics.Statistic.Rand(Dimention, random)) - 1.0 + centr;
+                        cloud[i] = (std * 2 * Statistics.Statistic.UniformDistribution(Dimention, random)) - 1.0 + centr;
                     }
 
                     break;

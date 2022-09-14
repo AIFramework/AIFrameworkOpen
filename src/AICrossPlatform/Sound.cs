@@ -43,7 +43,7 @@ namespace AI
         /// </summary>
         public int channels;
         /// <summary>
-        /// Sampling frequency
+        /// Частота дискретизации
         /// </summary>
         public int sampleRate;
         /// <summary>

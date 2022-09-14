@@ -7,11 +7,12 @@ using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
-    [Serializable]
+
 
     /// <summary>
     /// Class providing methods for direct and inverse Short-Time Fourier Transforms.
     /// </summary>
+    [Serializable]
     public class Stft
     {
         /// <summary>
@@ -319,9 +320,18 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         }
     }
 
+    /// <summary>
+    /// Список модулей и фаз
+    /// </summary>
     public struct MagnitudePhaseList
     {
+        /// <summary>
+        /// Модули
+        /// </summary>
         public List<float[]> Magnitudes { get; set; }
+        /// <summary>
+        /// Фазы
+        /// </summary>
         public List<float[]> Phases { get; set; }
     }
 }

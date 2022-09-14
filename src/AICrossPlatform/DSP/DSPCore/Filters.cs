@@ -80,7 +80,7 @@ namespace AI.DSP.DSPCore
         /// <param name="st">Вектор сигнала</param>
         /// <param name="Q">Добротность</param>
         /// <param name="f0">Резонансная частота</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <returns>Фильтрованный сигнал</returns>
         public static Vector FilterKontur(Vector st, double Q, double f0, int fd)
         {
@@ -109,7 +109,7 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="signal">Отсчеты сигнала</param>
         /// <param name="sr">Частота среза</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <returns>Фильтрованный сигнал</returns>
         public static Vector FilterLow(Vector signal, double sr, int fd)
         {
@@ -123,7 +123,7 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="signal">Отсчеты сигнала</param>
         /// <param name="sr">Частота среза</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="order">Порядок фильтра</param>
         /// <returns>Фильтрованный сигнал</returns>
         public static Vector FilterLowButterworthCFH(Vector signal, double sr, int fd, int order = 3)
@@ -136,7 +136,7 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="signal">Отсчеты сигнала</param>
         /// <param name="sr">Частота среза</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="order">Порядок фильтра</param>
         /// <returns>Фильтрованный сигнал</returns>
         public static Vector FilterLowButterworthAFH(Vector signal, double sr, int fd, int order = 3)
@@ -150,7 +150,7 @@ namespace AI.DSP.DSPCore
         /// <param name="signal">Отсчеты сигнала</param>
         /// <param name="sr1">Нижняя частота полосы</param>
         /// <param name="sr2">Верхняя частота полосы</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <returns>Фильтрованный сигнал</returns>
         public static Vector FilterBand(Vector signal, double sr1, double sr2, int fd)
         {
@@ -163,7 +163,7 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="signal">Отсчеты сигнала</param>
         /// <param name="sr">Частота среза</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <returns>Фильтрованный сигнал</returns>
         public static Vector FilterHigh(Vector signal, double sr, int fd)
         {
@@ -177,7 +177,7 @@ namespace AI.DSP.DSPCore
         /// <param name="signal">Отсчеты сигнала</param>
         /// <param name="sr1">Нижняя частота полосы</param>
         /// <param name="sr2">Верхняя частота полосы</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <returns>Фильтрованный сигнал</returns>
         public static Vector FilterRezector(Vector signal, double sr1, double sr2, int fd)
         {
@@ -349,7 +349,7 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="Count">Число отсчетов сигнала</param>
         /// <param name="sr">Частота среза</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="order">Порядок фильтра</param>
         public static Vector ButterworthLowAFH(int Count, double sr, int fd, int order)
         {
@@ -362,7 +362,7 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="Count">Число отсчетов сигнала</param>
         /// <param name="sr">Частота среза</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="order">Порядок фильтра</param>
         public static ComplexVector ButterworthLowCFH(int Count, double sr, int fd, int order)
         {

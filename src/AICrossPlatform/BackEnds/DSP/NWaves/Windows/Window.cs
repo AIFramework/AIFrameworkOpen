@@ -140,6 +140,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         /// Kaiser window
         /// </summary>
         /// <param name="length">Length of the window</param>
+        /// <param name="alpha"></param>
         /// <returns>Kaiser window</returns>
         public static float[] Kaiser(int length, double alpha = 12.0)
         {

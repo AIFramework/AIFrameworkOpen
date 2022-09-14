@@ -136,7 +136,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// </summary>
         /// <param name="signal"></param>
         /// <returns>Harmonic signal and percussive signal</returns>
-        public new Tuple<DiscreteSignal, DiscreteSignal> EvaluateSignals(DiscreteSignal signal)
+        public Tuple<DiscreteSignal, DiscreteSignal> EvaluateSignals(DiscreteSignal signal)
         {
             Tuple<MagnitudePhaseList, MagnitudePhaseList> tuple = EvaluateSpectrograms(signal);
 

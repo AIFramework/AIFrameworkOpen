@@ -485,7 +485,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <summary>
         /// Method creates overlapping triangular mel filters (as suggested by Malcolm Slaney).
         /// </summary>
-        /// <param name="erbFilterCount">Number of mel filters</param>
+        /// <param name="filterCount">Number of mel filters</param>
         /// <param name="fftSize">Assumed size of FFT</param>
         /// <param name="samplingRate">Assumed sampling rate</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>

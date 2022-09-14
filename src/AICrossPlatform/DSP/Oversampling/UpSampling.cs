@@ -12,7 +12,7 @@ namespace AI.DSP.Oversampling
         /// Увеличение частоты дискретизации(Фильтр с прямоугольной АЧХ)
         /// </summary>
         /// <param name="signal">Сигнал</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="kUpSemp">Во сколько раз увеличить</param>
         public static Vector UpSamplingRectFilter(Vector signal, int fd, int kUpSemp)
         {
@@ -27,7 +27,7 @@ namespace AI.DSP.Oversampling
         /// Увеличение частоты дискретизации(Фильтр Баттерворта)
         /// </summary>
         /// <param name="signal">Сигнал</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="kUpSemp">Во сколько раз увеличить</param>
         /// <param name="order">Порядок фильтра</param>
         public static Vector UpSamplingButterworthFilter(Vector signal, int fd, int kUpSemp, int order = 7)
@@ -44,7 +44,7 @@ namespace AI.DSP.Oversampling
         /// Увеличение частоты дискретизации(Фильтр Баттерворта)
         /// </summary>
         /// <param name="signal">Сигнал</param>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         /// <param name="kUpSemp">Во сколько раз увеличить</param>
         /// <param name="order">Порядок фильтра</param>
         public static Vector UpSamplingButterworthFilterW(Vector signal, int fd, int kUpSemp, int order = 7)

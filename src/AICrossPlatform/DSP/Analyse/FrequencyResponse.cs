@@ -39,7 +39,7 @@ namespace AI.DSP.Analyse
         /// <summary>
         /// АЧХ
         /// </summary>
-        /// <param name="fd">Sampling frequency</param>
+        /// <param name="fd">Частота дискретизации</param>
         public FrequencyResponse(int fd)
         {
             _fd = fd;

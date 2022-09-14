@@ -91,9 +91,6 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// If sizes are different then the smaller signal is broadcasted 
         /// to fit the size of the larger signal.
         /// </summary>
-        /// <param name="signal1"></param>
-        /// <param name="signal2"></param>
-        /// <returns></returns>
         public static DiscreteSignal SuperimposeMany(this DiscreteSignal signal1, DiscreteSignal signal2, int[] positions)
         {
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,

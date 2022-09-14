@@ -110,7 +110,7 @@ namespace AI.DataPrepaire.Pipelines
         public virtual Vector GetStoсhasticHash(T input)
         {
             Vector prob = GetProb(input);
-            Vector lsh = prob - Statistic.Rand(prob.Count, random);
+            Vector lsh = prob - Statistic.UniformDistribution(prob.Count, random);
             return lsh.Transform(x => x >= 0 ? 1 : 0);          
         }
 

@@ -35,7 +35,7 @@ namespace AI.Statistics.MonteCarlo
 
         private static double Cl1D(Func<double, double> func, double a, double b, int n, Random random) 
         {
-            Vector samles = (b - a) * Statistic.Rand(n, random) + a;
+            Vector samles = (b - a) * Statistic.UniformDistribution(n, random) + a;
             samles = samles.Transform(func);
             return (b - a) * samles.Mean();
         }

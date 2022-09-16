@@ -17,11 +17,25 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     public class SpectralSubtractor : OverlapAddFilter
     {
         // Algorithm parameters
-
+        /// <summary>
+        /// 
+        /// </summary>
         public float Beta { get; set; } = 0.009f;
+        /// <summary>
+        /// 
+        /// </summary>
         public float AlphaMin { get; set; } = 2f;
+        /// <summary>
+        /// 
+        /// </summary>
         public float AlphaMax { get; set; } = 5f;
+        /// <summary>
+        /// 
+        /// </summary>
         public float SnrMin { get; set; } = -5f;
+        /// <summary>
+        /// 
+        /// </summary>
         public float SnrMax { get; set; } = 20f;
 
         /// <summary>

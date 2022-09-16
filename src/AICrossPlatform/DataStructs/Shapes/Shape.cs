@@ -118,7 +118,7 @@ namespace AI.DataStructs.Shapes
 
         #region Методы
         /// <summary>
-        /// Returns shape with 1 less dimension
+        /// Уменьшение размерности на 1
         /// </summary>
         /// <returns></returns>
         public virtual Shape Shrink()
@@ -131,7 +131,7 @@ namespace AI.DataStructs.Shapes
             return new Shape(_values.Take(_values.Length - 1).ToArray());
         }
         /// <summary>
-        /// Expands shape with 1 more dimension
+        /// Увеличение размерности на 1
         /// </summary>
         /// <param name="newDimensionLength"></param>
         /// <returns></returns>

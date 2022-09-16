@@ -222,6 +222,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return string.Format("LstmLayerL1     \t|inp: {0} |outp: {1} |Non lin. activate: {3} |TrainParams: {2}", InputShape, OutputShape, TrainableParameters, "sigm/tanh");
         }
 
+        /// <summary>
+        /// Инициализация весовых коэффициентов случайными числами
+        /// </summary>
         public void InitWeights(Random random)
         {
             double std = 1.0 / Math.Sqrt(OutputShape.Volume * InputShape.Volume);

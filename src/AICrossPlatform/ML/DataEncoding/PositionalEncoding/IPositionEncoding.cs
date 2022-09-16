@@ -3,20 +3,20 @@
 namespace AI.ML.DataEncoding.PositionalEncoding
 {
     /// <summary>
-    /// Position encoder
+    /// Кодер позиций
     /// </summary>
     public interface IPositionEncoding
     {
         /// <summary>
-        /// Output vector dimension
+        /// Размерность выходного вектора
         /// </summary>
         int Dim { get; set; }
         /// <summary>
-        /// Getting the vector position code
+        /// Код(вектор) позиции 
         /// </summary>
         Vector GetCode(int position);
         /// <summary>
-        /// Getting the vector position code
+        /// Код(вектор) позиции 
         /// </summary>
         Vector GetCode(double position);
 

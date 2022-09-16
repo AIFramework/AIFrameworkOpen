@@ -7,34 +7,60 @@ using System.Threading.Tasks;
 
 namespace AI.ML.LinearModelTools
 {
+
+    /// <summary>
+    /// Работа с отступами
+    /// </summary>
     [Serializable]
     public class Margin
     {
+        /// <summary>
+        /// Вычислить отступ
+        /// </summary>
+        /// <param name="ideal"></param>
+        /// <param name="outp"></param>
+        /// <returns></returns>
         public static double GetMargin(float ideal, float outp)
         {
             double t = Normal(ideal);
             return t * outp;
         }
 
+        /// <summary>
+        /// Вычислить отступ
+        /// </summary>
         public static double GetMargin(double ideal, double outp)
         {
             double t = Normal(ideal);
             return t * outp;
         }
 
-
+        /// <summary>
+        /// Вычислить отступ
+        /// </summary>
         public static double GetMargin(double ideal, Vector inp, Vector w, double b)
         {
             double outp = OutputLinModel(inp, w, b);
             return GetMargin(ideal, outp);
         }
 
+        /// <summary>
+        /// Выход линейной модели
+        /// </summary>
         public static double OutputLinModel(Vector inp, Vector w, double b)
         {
             return AnalyticGeometryFunctions.Dot(inp, w) + b;
         }
 
-
+        /// <summary>
+        /// Получить опорные векторы
+        /// </summary>
+        /// <param name="ideal"></param>
+        /// <param name="inp"></param>
+        /// <param name="w"></param>
+        /// <param name="b"></param>
+        /// <param name="supportVectorsCount"></param>
+        /// <returns></returns>
         public static VectorClass[] GetSupportVector(Vector ideal, Vector[] inp, Vector w, double b, int supportVectorsCount = 1)
         {
             int count = Math.Min(supportVectorsCount, inp.Length);
@@ -88,7 +114,17 @@ namespace AI.ML.LinearModelTools
         //    return new GradientMargin<Vector, double>()
         //    { GradientW = w.DifData, Margin = M };
         //}
-
+        
+        /// <summary>
+        /// Отступ с градиентами
+        /// </summary>
+        /// <param name="ideal"></param>
+        /// <param name="inp"></param>
+        /// <param name="param"></param>
+        /// <param name="bias"></param>
+        /// <param name="C"></param>
+        /// <param name="minMargin"></param>
+        /// <returns></returns>
         public static GradientMargin<Vector, double> GetMarginWithGradient(double ideal, Vector inp, Vector param, double bias, double C = 1, double minMargin = 0)
         {
             double tNorm = Normal(ideal);
@@ -101,6 +137,9 @@ namespace AI.ML.LinearModelTools
             { GradientW = gradW, Margin = margin, GradientBias = gradB };
         }
 
+        /// <summary>
+        /// Средний отступ с градиентами (по всей выборке)
+        /// </summary>
         public static GradientMargin<Vector, double> GetAverageMarginWithGradient(Vector ideal, Vector[] inp, Vector param, double bias, double C = 1, double l1 = 0.0, double l2 = 0.0, double minMargin = 0)
         {
             double margin = 0, gradB = 0;
@@ -130,16 +169,39 @@ namespace AI.ML.LinearModelTools
         }
     }
 
+    /// <summary>
+    /// Отступ с графдиентами
+    /// </summary>
+    /// <typeparam name="T1">Тип градиента</typeparam>
+    /// <typeparam name="T2">Тип отступа</typeparam>
     public class GradientMargin<T1, T2>
     {
+        /// <summary>
+        /// Градиенты вектора признаков
+        /// </summary>
         public T1 GradientW { get; set; }
+        /// <summary>
+        /// Градиенты веса смещения
+        /// </summary>
         public T2 GradientBias { get; set; }
+        /// <summary>
+        /// Отступ
+        /// </summary>
         public T2 Margin { get; set; }
     }
 
+    /// <summary>
+    /// Отступ и вектор признаков
+    /// </summary>
     public class MarginVector
     {
+        /// <summary>
+        /// Отступ
+        /// </summary>
         public double Margin { get; set; }
+        /// <summary>
+        /// Вектор признаков
+        /// </summary>
         public Vector Features { get; set; }
     }
 }

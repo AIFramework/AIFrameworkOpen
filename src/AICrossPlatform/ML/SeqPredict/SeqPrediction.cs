@@ -61,6 +61,12 @@ namespace AI.ML.SeqPredict
             return outp;
         }
 
+        /// <summary>
+        /// Метод не реализован
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public double PredictTrain(Vector data)
         {
             throw new System.NotImplementedException();

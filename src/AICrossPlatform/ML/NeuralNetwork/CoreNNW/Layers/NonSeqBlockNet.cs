@@ -11,7 +11,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
     /// Непоследовательный блок
     /// </summary>
     [Serializable]
-    public class NonSeqBlockNet : IActivatableLayer, ILearningLayer, IRecurrentLayer
+    public abstract class NonSeqBlockNet : IActivatableLayer, ILearningLayer, IRecurrentLayer
     {
         /// <summary>
         /// Размерность входа
@@ -31,7 +31,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
                 int sum = 0;
                 foreach (var layer in _layers)
                     if (layer is ILearningLayer)
-                        sum += (layer as ILearningLayer).TrainableParameters;
+                        sum += (layer as ILearningLayer)!.TrainableParameters;
 
                 return sum;
             }
@@ -45,17 +45,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public IActivation ActivationFunction { get; set; }
 
-        private readonly Func<NNValue, INNWGraph, NNValue> _forward;
         private readonly List<ILayer> _layers;
 
         /// <summary>
         /// Непоследовательный блок
         /// </summary>
-        public NonSeqBlockNet(Shape3D inputDimension, Shape3D outputDimension, List<ILayer> layers, Func<NNValue, INNWGraph, NNValue> forward)
+        public NonSeqBlockNet(Shape3D inputDimension, Shape3D outputDimension, List<ILayer> layers)
         {
             InputShape = inputDimension;
             OutputShape = outputDimension;
-            _forward = forward;
             _layers = layers;
             ResetState();
         }
@@ -65,48 +63,42 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         /// <param name="input">Вход</param>
         /// <param name="g">Граф автоматического дифференцирования</param>
-        public NNValue Forward(NNValue input, INNWGraph g)
-        {
-            return _forward(input, g);
-        }
+        public abstract NNValue Forward(NNValue input, INNWGraph g);
+
         /// <summary>
-        /// Resetting the state of the neural network layer
+        /// Сброс состояния слоя нейронной сети
         /// </summary>
         public void ResetState()
         {
             foreach (var layer in _layers)
             {
                 if (layer is IRecurrentLayer)
-                    (layer as IRecurrentLayer).ResetState();
+                    (layer as IRecurrentLayer)!.ResetState();
             }
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Получение обучаемых параметров
         /// </summary>
         public List<NNValue> GetParameters()
         {
             List<NNValue> block_params = new List<NNValue>();
 
             foreach (var layer in _layers)
-            {
                 if (layer is ILearningLayer)
-                {
                     block_params.AddRange(
-                        (layer as ILearningLayer).GetParameters());
-                }
-            }
+                        (layer as ILearningLayer)!.GetParameters());
 
             return block_params;
         }
         /// <summary>
-        /// Generating weights
+        /// Генерация весовых коэфициентов
         /// </summary>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
         public void InitWeights(Random random)
         {
             foreach (var layer in _layers)
                 if (layer is ILearningLayer)
-                    (layer as ILearningLayer).InitWeights(random);
+                    (layer as ILearningLayer)!.InitWeights(random);
         }
         /// <summary>
         /// Описание слоя
@@ -115,6 +107,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         {
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, ActivationFunction, TrainableParameters);
         }
+
         /// <summary>
         /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
         /// </summary>

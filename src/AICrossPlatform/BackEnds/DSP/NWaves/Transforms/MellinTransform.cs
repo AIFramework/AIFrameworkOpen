@@ -4,11 +4,21 @@ using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Serializable]
 
     public class MellinTransform
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public int InputSize { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public int OutputSize { get; private set; }
 
         private readonly float[] _linScale;
@@ -16,7 +26,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly float[] _expScale;
 
         private readonly Fft _fft;
-
+        /// <summary>
+        /// 
+        /// </summary>
         public MellinTransform(int inputSize, int outputSize)
         {
             Guard.AgainstNotPowerOfTwo(outputSize, "Output size");

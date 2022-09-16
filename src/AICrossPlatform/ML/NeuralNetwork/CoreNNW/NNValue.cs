@@ -96,7 +96,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             StepCache2 = new float[Shape.Volume];
         }
         /// <summary>
-        /// Create a tensor based on the algebraic strucuture
+        /// Создать переменную нейронной сети на базе алгебраической структуры
         /// </summary>
         /// <param name="algebraicStructure"></param>
         public NNValue(IAlgebraicStructure algebraicStructure)
@@ -108,7 +108,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             if (algebraicStructure.Shape.Rank > 3)
             {
-                throw new ArgumentException("Rank of the shape of the given strucuture is greater than 3", nameof(algebraicStructure));
+                throw new ArgumentException("Тензор не может быть преобразован в переменную нейросети, т.к. его ранг больше 3х", nameof(algebraicStructure));
             }
 
             switch (algebraicStructure.Shape.Rank)
@@ -136,9 +136,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             StepCache2 = new float[Shape.Volume];
         }
         /// <summary>
-        /// Create tensor with parameters 1, 1, 1
+        /// Создание одномерной переменной нейронной сети с заданным значением
         /// </summary>
-        /// <param name="value">Value</param>
+        /// <param name="value">Значение</param>
         public NNValue(double value)
         {
             Shape = new Shape3D();
@@ -169,7 +169,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         #endregion
 
         /// <summary>
-        /// Similar tensor (same shape, filled with zeros)
+        /// Аналогичный тензор (такая же форма, заполненная нулями)
         /// </summary>
         public NNValue Like0()
         {
@@ -504,7 +504,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             File.WriteAllLines(path, conent);
         }
         /// <summary>
-        /// Save NNValue to file
+        /// Сохранить NNValue в файл
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -512,7 +512,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Save NNValue to stream
+        /// Сохранить NNValue в поток
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -520,7 +520,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             BinarySerializer.Save(stream, this);
         }
         /// <summary>
-        /// Represents NNValue as an array of bytes
+        /// Представить массивом байт
         /// </summary>
         /// <returns></returns>
         public byte[] GetBytes()
@@ -557,7 +557,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             return stream.AsByteArray();
         }
         /// <summary>
-        /// Load NNValue from file
+        /// Загрузить из файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -566,7 +566,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             return BinarySerializer.Load<NNValue>(path);
         }
         /// <summary>
-        /// Load NNValue from stream
+        /// Загрузить из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
@@ -575,7 +575,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             return BinarySerializer.Load<NNValue>(stream);
         }
         /// <summary>
-        /// Initialize NNValue from an array of bytes
+        /// Инициализировать тензор массивом байт
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -584,7 +584,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             return FromDataStream(InMemoryDataStream.FromByteArray(data));
         }
         /// <summary>
-        /// Initialize NNValue from data stream
+        /// Прочитать тензор из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>

@@ -1,5 +1,6 @@
 ﻿using AI.DataStructs.Shapes;
 using AI.Extensions;
+using AI.ML.NeuralNetwork.CoreNNW;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -17,15 +18,15 @@ namespace AI.DataStructs.Algebraic
         private readonly int[] _volumes;
 
         /// <summary>
-        /// Tensor data as a flat array
+        /// Данные тензора
         /// </summary>
         public double[] Data { get; private set; }
         /// <summary>
-        /// Tensor shape
+        /// Размерность тензора
         /// </summary>
         public Shape Shape { get; }
         /// <summary>
-        /// Returns value by indexes in all dimensions
+        /// Обращение к элементам через индексы
         /// </summary>
         /// <param name="indexes"></param>
         /// <returns></returns>
@@ -75,24 +76,334 @@ namespace AI.DataStructs.Algebraic
         /// <returns></returns>
         public static bool operator ==(NDTensor left, NDTensor right)
         {
-            return left.Shape == right.Shape && left.Data.ElementWiseEqual(right.Data);
-        }
+            if (left == null && right == null)
+                return true;
 
+            return left!.Shape == right.Shape && left.Data.ElementWiseEqual(right.Data);
+        }
         /// <summary>
         /// Оператор "неравно"
+        /// </summary>
+        public static bool operator !=(NDTensor left, NDTensor right)
+        {
+            return !(left==right);
+        }
+        /// <summary>
+        /// Сложение
         /// </summary>
         /// <param name="left"></param>
         /// <param name="right"></param>
         /// <returns></returns>
-        public static bool operator !=(NDTensor left, NDTensor right)
+        public static NDTensor operator +(NDTensor left, NDTensor right)
         {
-            return left.Shape != right.Shape || !left.Data.ElementWiseEqual(right.Data);
+            var ret = new NDTensor(left.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left.Data[i] + right.Data[i];
+
+            return ret;
+        }
+        /// <summary>
+        /// Сложение
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator +(double left, NDTensor right)
+        {
+            var ret = new NDTensor(right.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left + right.Data[i];
+
+            return ret;
+        }
+        /// <summary>
+        /// Сложение
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator +(NDTensor left, double right)
+        {
+            var ret = new NDTensor(left.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left.Data[i] + right;
+
+            return ret;
+        }
+        /// <summary>
+        /// Умножение
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator *(NDTensor left, NDTensor right)
+        {
+            var ret = new NDTensor(left.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left.Data[i] * right.Data[i];
+
+            return ret;
+        }
+        /// <summary>
+        /// Умножение
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator *(double left, NDTensor right)
+        {
+            var ret = new NDTensor(right.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left * right.Data[i];
+
+            return ret;
+        }
+        /// <summary>
+        /// Умножение
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator *(NDTensor left, double right)
+        {
+            var ret = new NDTensor(left.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left.Data[i] * right;
+
+            return ret;
+        }
+        /// <summary>
+        /// Разность
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator -(NDTensor left, NDTensor right)
+        {
+            var ret = new NDTensor(left.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left.Data[i] - right.Data[i];
+
+            return ret;
+        }
+        /// <summary>
+        /// Разность
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator -(double left, NDTensor right)
+        {
+            var ret = new NDTensor(right.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left - right.Data[i];
+
+            return ret;
+        }
+        /// <summary>
+        /// Разность
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator -(NDTensor left, double right)
+        {
+            var ret = new NDTensor(left.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left.Data[i] - right;
+
+            return ret;
+        }
+        /// <summary>
+        /// Отношение
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator /(NDTensor left, NDTensor right)
+        {
+            var ret = new NDTensor(left.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left.Data[i] / right.Data[i];
+
+            return ret;
+        }
+        /// <summary>
+        /// Отношение
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator /(double left, NDTensor right)
+        {
+            var ret = new NDTensor(right.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left / right.Data[i];
+
+            return ret;
+        }
+        /// <summary>
+        /// Отношение
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator /(NDTensor left, double right)
+        {
+            var ret = new NDTensor(left.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left.Data[i] / right;
+
+            return ret;
+        }
+        /// <summary>
+        /// Остаток от деления
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator %(NDTensor left, NDTensor right)
+        {
+            var ret = new NDTensor(left.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left.Data[i] / right.Data[i];
+
+            return ret;
+        }
+        /// <summary>
+        /// Остаток от деления
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator %(double left, NDTensor right)
+        {
+            var ret = new NDTensor(right.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left % right.Data[i];
+
+            return ret;
+        }
+        /// <summary>
+        /// Остаток от деления
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static NDTensor operator %(NDTensor left, double right)
+        {
+            var ret = new NDTensor(left.Shape);
+
+            for (int i = 0; i < ret.Data[i]; i++)
+                ret.Data[i] = left.Data[i]  % right;
+
+            return ret;
         }
         #endregion
 
-        #region Технические методы
-#pragma warning disable CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
+        #region Методы
+        /// <summary>
+        /// Преобразование в вектор
+        /// </summary>
+        public Vector ToVector() 
+        {
+            return new Vector(Data);
+        }
+        /// <summary>
+        /// Перевод в переменную нейросети
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public NNValue ToNNTensor() 
+        {
+            if (Shape.Rank > 3)
+                throw new Exception("Тензор не может быть преобразован в переменную нейросети, т.к. его ранг больше 3х");
 
+            return new NNValue(this);
+        }
+        /// <summary>
+        /// Перевод в тензор
+        /// </summary>
+        public Tensor ToTensor() 
+        {
+            if (Shape.Rank > 3)
+                throw new Exception("Тензор не может быть преобразован в переменную нейросети, т.к. его ранг больше 3х");
+
+            Shape3D shape = Shape3D.FromeShape(Shape);
+            Tensor tensor = new Tensor(shape);
+            tensor.Data = Data;
+            return tensor;
+        }
+        /// <summary>
+        /// Переводит в матрицу
+        /// </summary>
+        public Matrix ToMatrix()
+        {
+            if (Shape.Rank > 2)
+                throw new Exception("Невозможно представить матрицей, ранг > 2");
+
+            Matrix matrix = Shape.Rank == 2? new Matrix(Shape[0], Shape[1]) : new Matrix(Shape[0], 1);
+            matrix.Data = Data;
+            return matrix;
+        }
+        /// <summary>
+        /// Изменение формы
+        /// </summary>
+        /// <param name="new_shape">Новая форма</param>
+        public NDTensor Reshape(Shape new_shape) 
+        {
+            if (new_shape.Count != Shape.Count)
+                throw new Exception("Невозможно выполнить изменение формы, число элементов старой формы не равно числу элементов новой");
+
+            NDTensor nDTensor = new NDTensor(new_shape);
+            nDTensor.Data = Data;
+            return nDTensor;
+        }
+        #endregion
+
+        #region Статические методы
+
+        /// <summary>
+        /// Создание тензора из алгебраической структуры
+        /// </summary>
+        public static NDTensor FromIAlgStruct(IAlgebraicStructure alg_structure)
+        {
+            var ret = new NDTensor(alg_structure.Shape);
+            ret.Data = alg_structure.Data;
+            return ret;
+        }
+
+        /// <summary>
+        /// Создание тензора из данных нейросети
+        /// </summary>
+        public static NDTensor FromNNValue(NNValue nn_value)
+        {
+            var ret = new NDTensor(nn_value.Shape);
+            ret.Data = nn_value.Data.ToDoubleArray();
+            return ret;
+        }
+
+        #endregion
+
+        #region Технические методы
+
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public override bool Equals(object obj)
         {
             if (obj is NDTensor nD)
@@ -104,13 +415,22 @@ namespace AI.DataStructs.Algebraic
                 return false;
             }
         }
-
+        /// <summary>
+        /// Проверка равенства
+        /// </summary>
         public bool Equals(NDTensor other)
         {
             return this == other;
         }
 
-#pragma warning restore CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
+        /// <summary>
+        /// Получение хэшкода тензора
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
         #endregion
 
         #region Сериализация
@@ -204,21 +524,12 @@ namespace AI.DataStructs.Algebraic
             int ind = indexes[0];
 
             for (int i = 0; i < indexes.Length; i++)
-            {
                 ind += indexes[i + 1] * _volumes[i];
-            }
 
             return ind;
         }
         #endregion
 
-        /// <summary>
-        /// Получение хэшкода тензора
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        
     }
 }

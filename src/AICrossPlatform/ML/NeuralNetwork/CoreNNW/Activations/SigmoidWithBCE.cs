@@ -2,6 +2,9 @@
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 {
+    /// <summary>
+    /// Сигмоидальная активационная функция, предполагается, что это выходной слой и функция потерь - бинарная перексрестная энтропия
+    /// </summary>
     [Serializable]
     public class SigmoidWithBCE : IActivation
     {
@@ -11,7 +14,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         public float Numerator => 1;
 
         /// <summary>
-        /// Сигмоидальная Активационная функция
+        /// Сигмоидальная активационная функция, предполагается, что это выходной слой и функция потерь - бинарная перексрестная энтропия
         /// </summary>
         public SigmoidWithBCE()
         {

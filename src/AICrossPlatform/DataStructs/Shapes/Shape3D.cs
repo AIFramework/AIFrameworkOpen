@@ -106,5 +106,25 @@ namespace AI.DataStructs.Shapes
             return base.GetHashCode();
         }
         #endregion
+
+        /// <summary>
+        /// Создание 3х мерной из многомерной
+        /// </summary>
+        public static Shape3D FromeShape(Shape shape) 
+        {
+            if (shape.Rank > 3) throw new Exception("Невозможно создать трехмерную форму, размерность входа больше 3");
+
+            switch (shape.Rank) 
+            {
+                case 1:
+                    return new Shape3D(shape[0]);
+                case 2:
+                    return new Shape3D(shape[0], shape[1]);
+                case 3:
+                    return new Shape3D(shape[0], shape[1], shape[2]);
+            }
+
+            throw new Exception("Неожиданная размерность");
+        }
     }
 }

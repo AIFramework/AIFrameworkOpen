@@ -23,7 +23,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Данные(компоненты) матрицы
         /// </summary>
-        public double[] Data { get; private set; }
+        public double[] Data { get; set; }
         /// <summary>
         /// Тип матрицы
         /// </summary>

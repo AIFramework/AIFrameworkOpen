@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace AI.BackEnds.DSP.NWaves.Utils
 {
+    /// <summary>
+    /// Расширение для работы с памятью
+    /// </summary>
+    [Serializable]
     public static class MemoryOperationExtensions
     {
         /// <summary>

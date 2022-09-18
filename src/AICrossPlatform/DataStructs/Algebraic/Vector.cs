@@ -17,17 +17,18 @@ namespace AI.DataStructs.Algebraic
     /// Класс, реализующий вектор и операции над ним
     /// </summary>
     [Serializable]
-    public class Vector : List<double>, IAlgebraicStructure, IEquatable<Vector>, IEquatable<List<double>>, ISavable, ITextSavable, IByteConvertable
+    public class Vector : List<double>, IAlgebraicStructure<double> , IEquatable<Vector>, IEquatable<List<double>>, ISavable, ITextSavable, IByteConvertable
     {
         #region Поля и свойства
         /// <summary>
-        /// Vector data as an array
+        /// Данные вектора
         /// </summary>
-        double[] IAlgebraicStructure.Data => ToArray();
+        double[] IAlgebraicStructure<double> .Data => ToArray();
         /// <summary>
-        /// Vector shape
+        /// Форма (размерность вектора)
         /// </summary>
         public Shape Shape => new Shape1D(Count);
+
 
         /// <summary>
         /// Получение значения по индексу, аналогично как Python(поддержка отрицательных индексов)
@@ -1668,11 +1669,11 @@ namespace AI.DataStructs.Algebraic
             return SeqBeginsWithZero(step, end);
         }
         /// <summary>
-        /// Split to windows
+        /// Разделить на окна (участки)
         /// </summary>
         /// <param name="inp">Вход</param>
-        /// <param name="w">Window size</param>
-        /// <param name="step">Step</param>
+        /// <param name="w">Размер окна</param>
+        /// <param name="step">Шаг</param>
         /// <returns></returns>
         public static Vector[] GetWindows(Vector inp, int w, int step = 2)
         {
@@ -1687,12 +1688,12 @@ namespace AI.DataStructs.Algebraic
             return list.ToArray();
         }
         /// <summary>
-        /// Split to windows
+        /// Разделить на окна (участки)
         /// </summary>
-        /// <param name="transformer">Transformation function</param>
+        /// <param name="transformer">Функция преобразования</param>
         /// <param name="inp">Вход</param>
-        /// <param name="w">Window size</param>
-        /// <param name="step">Step</param>
+        /// <param name="w">Размер окна</param>
+        /// <param name="step">Шаг</param>
         /// <returns></returns>
         public static Vector[] GetWindowsWithFunc(Func<Vector, Vector> transformer, Vector inp, int w, int step = 2)
         {
@@ -1706,12 +1707,12 @@ namespace AI.DataStructs.Algebraic
             return vects;
         }
         /// <summary>
-        /// Split to windows
+        /// Разделить на окна (участки)
         /// </summary>
-        /// <param name="transformer">Transformation function</param>
+        /// <param name="transformer">Функция преобразования</param>
         /// <param name="inp">Вход</param>
-        /// <param name="w">Window size</param>
-        /// <param name="step">Step</param>
+        /// <param name="w">Размер окна</param>
+        /// <param name="step">Шаг</param>
         /// <returns></returns>
         public static Vector GetWindowsWithFuncVect(Func<Vector, double> transformer, Vector inp, int w, int step = 2)
         {

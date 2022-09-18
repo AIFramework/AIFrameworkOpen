@@ -3,11 +3,16 @@
 namespace AI.DSP
 {
     /// <summary>
-    /// Windows for correcting phase discontinuities
+    /// Равнобедренная трапеция (окно убирающее разрыв фазы)
     /// </summary>
     public static class PhaseCorrectingWindow
     {
-
+        /// <summary>
+        /// Равнобедренная трапеция
+        /// </summary>
+        /// <param name="len">Длинна основания</param>
+        /// <param name="slope">Угол наклона</param>
+        /// <returns></returns>
         public static Vector Trapezoid(int len, double slope = 0.03)
         {
             int up = (int)(slope * len);

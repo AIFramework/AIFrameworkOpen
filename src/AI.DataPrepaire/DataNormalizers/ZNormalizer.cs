@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.DataNormalizers
 {
@@ -23,9 +21,9 @@ namespace AI.DataPrepaire.DataNormalizers
         /// Обучение преобразователя
         /// </summary>
         /// <param name="data">Набор данных</param>
-        public override void Train(IEnumerable<IAlgebraicStructure> data)
+        public override void Train(IEnumerable<IAlgebraicStructure<double>> data)
         {
-            IAlgebraicStructure[] algebraicStructures = (data is IAlgebraicStructure[]) ? data as IAlgebraicStructure[] : data.ToArray();
+            IAlgebraicStructure<double>[] algebraicStructures = (data is IAlgebraicStructure<double>[]) ? data as IAlgebraicStructure<double>[] : data.ToArray();
             Mean = new double[algebraicStructures[0].Shape.Count];
             Std = new double[algebraicStructures[0].Shape.Count];
 
@@ -43,7 +41,7 @@ namespace AI.DataPrepaire.DataNormalizers
             for (int i = 0; i < Std.Length; i++)
             {
                 Mean[i] /= algebraicStructures.Length;
-                Std[i] = Std[i] == 0? Eps: Std[i]/algebraicStructures.Length - Mean[i] * Mean[i];
+                Std[i] = Std[i] == 0 ? Eps : (Std[i] / algebraicStructures.Length) - (Mean[i] * Mean[i]);
                 Std[i] = Math.Sqrt(Std[i]);
             }
         }
@@ -51,7 +49,7 @@ namespace AI.DataPrepaire.DataNormalizers
         /// <summary>
         /// Использование преобразователя (Перезапись значений алгебраической структуры)
         /// </summary>
-        public override IAlgebraicStructure Transform(IAlgebraicStructure data)
+        public override IAlgebraicStructure<double> Transform(IAlgebraicStructure<double> data)
         {
             if (Mean == null) return data;
 
@@ -60,32 +58,32 @@ namespace AI.DataPrepaire.DataNormalizers
                 return ((data as Vector) - Mean) / Std;
             }
 
-            IAlgebraicStructure dat = data;
+            IAlgebraicStructure<double> dat = data;
 
-            for (int i = 0; i < data.Data.Length; i++)    
+            for (int i = 0; i < data.Data.Length; i++)
                 dat.Data[i] = (data.Data[i] - Mean[i]) / Std[i];
 
             return dat;
-             
+
         }
 
         /// <summary>
         /// Восстановление нормализованных данных (Перезапись значений алгебраической структуры)
         /// </summary>
         /// <param name="normalizeData">Нормализованные данные</param>
-        public override IAlgebraicStructure Denormalize(IAlgebraicStructure normalizeData)
+        public override IAlgebraicStructure<double> Denormalize(IAlgebraicStructure<double> normalizeData)
         {
             if (Mean == null) return normalizeData;
 
             if (normalizeData is Vector)
             {
-                return (normalizeData as Vector)*Std + Mean;
+                return ((normalizeData as Vector) * Std) + Mean;
             }
 
-            IAlgebraicStructure dat = normalizeData;
+            IAlgebraicStructure<double> dat = normalizeData;
 
             for (int i = 0; i < normalizeData.Data.Length; i++)
-                dat.Data[i] = normalizeData.Data[i] * Std[i] + Mean[i];
+                dat.Data[i] = (normalizeData.Data[i] * Std[i]) + Mean[i];
 
             return dat;
         }

@@ -11,8 +11,14 @@ namespace AI.ML.MatrixUtils
     {
         private readonly Func<Matrix, double> _transformer;
 
-
+        /// <summary>
+        /// Формирователь карт
+        /// </summary>
         public Maper() { }
+        /// <summary>
+        /// Формирователь карт
+        /// </summary>
+        /// <param name="transformFunction">Функция преобразования региона(кропа), в число</param>
         public Maper(Func<Matrix, double> transformFunction)
         {
             _transformer = transformFunction;

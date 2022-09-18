@@ -89,6 +89,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// Current offsets in delay lines
         /// </summary>
         protected int _delayLineOffsetA;
+        /// <summary>
+        /// 
+        /// </summary>
         protected int _delayLineOffsetB;
 
         /// <summary>

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.Pipelines.Utils
 {
@@ -34,7 +32,7 @@ namespace AI.DataPrepaire.Pipelines.Utils
         /// <summary>
         /// Таблица результатов
         /// </summary>
-        public ScoreTableClassifier(int cap):base(cap) { }
+        public ScoreTableClassifier(int cap) : base(cap) { }
 
         /// <summary>
         /// Возвращает Top-k
@@ -92,7 +90,7 @@ namespace AI.DataPrepaire.Pipelines.Utils
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public class ScoreElCl<T> 
+    public class ScoreElCl<T>
     {
         /// <summary>
         /// Состояния
@@ -102,7 +100,7 @@ namespace AI.DataPrepaire.Pipelines.Utils
         /// <summary>
         /// Классы
         /// </summary>
-        public int[] Actions { get; set; } 
+        public int[] Actions { get; set; }
 
         /// <summary>
         /// Оценка качества партии (Reward)

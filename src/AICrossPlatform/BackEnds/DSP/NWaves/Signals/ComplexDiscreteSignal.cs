@@ -25,7 +25,6 @@ namespace AI.BackEnds.DSP.NWaves.Signals
     /// 
     /// </summary>
     [Serializable]
-    /// 
     public class ComplexDiscreteSignal
     {
         /// <summary>

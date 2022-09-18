@@ -14,7 +14,7 @@ namespace AI.DataStructs.Algebraic
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Height = {Height}, Width = {Width}, Depth = {Depth}")]
-    public class Tensor : IAlgebraicStructure, IEquatable<Tensor>, ISavable, IByteConvertable
+    public class Tensor : IAlgebraicStructure<double> , IEquatable<Tensor>, ISavable, IByteConvertable
     {
         #region Поля и свойства
         /// <summary>

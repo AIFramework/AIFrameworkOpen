@@ -9,9 +9,16 @@ namespace AI.ML.Classifiers
     /// </summary>
     public interface IClassifier : ISavable
     {
-
+        /// <summary>
+        /// Обучение классификатора
+        /// </summary>
+        /// <param name="features">Признаки</param>
+        /// <param name="classes">Классы</param>
         void Train(Vector[] features, int[] classes);
-
+        /// <summary>
+        /// Обучение классификатора
+        /// </summary>
+        /// <param name="dataset">Набор данных</param>
         void Train(VectorIntDataset dataset);
 
         /// <summary>

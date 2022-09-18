@@ -7,7 +7,7 @@ using System;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Nonlinear layer
+    /// Нелинейный активационный слой
     /// </summary>
     [Serializable]
     public class ActivationLayer : IActivatableLayer
@@ -44,9 +44,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public IActivation ActivationFunction { get; set; }
 
         /// <summary>
-        /// Activation layer
+        /// Слой активации
         /// </summary>
-        /// <param name="shapeInp">Input dimension</param>
+        /// <param name="shapeInp">Размерность входа</param>
         /// <param name="activation">Активационная функция</param>
         public ActivationLayer(Shape3D shapeInp, IActivation activation)
         {
@@ -54,7 +54,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             InputShape = shapeInp;
         }
         /// <summary>
-        /// Activation layer
+        /// Слой активации
         /// </summary>
         /// <param name="activation">Активационная функция</param>
         public ActivationLayer(IActivation activation)

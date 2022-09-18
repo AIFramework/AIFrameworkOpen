@@ -30,7 +30,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Correlation classifier
         /// </summary>
-        /// <param name="path"Путь до файла/param>
+        /// <param name="path">Путь до файла</param>
         public CorrelationClassifier(string path)
         {
             Classes = new StructClasses();
@@ -131,7 +131,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Save to file
         /// </summary>
-        /// <param name="path"Путь до файла/param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             BinarySerializer.Save(path, Classes);

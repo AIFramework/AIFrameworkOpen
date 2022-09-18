@@ -225,7 +225,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// </summary>
         /// <param name="scaleMapper">The function that converts Hz to other frequency scale</param>
         /// <param name="inverseMapper">The function that converts frequency from alternative scale back to Hz</param>
-        /// <param name="filterCount">Number of filters</param>
+        /// <param name="filterCount">Число фильтров</param>
         /// <param name="samplingRate">Assumed sampling rate of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
@@ -286,7 +286,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <summary>
         /// Method returns frequency tuples for uniformly spaced frequency bands on Herz scale.
         /// </summary>
-        /// <param name="combFilterCount">Number of filters</param>
+        /// <param name="combFilterCount">Число фильтров</param>
         /// <param name="samplingRate">Assumed sampling rate of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
@@ -363,7 +363,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <summary>
         /// Method returns frequency tuples for critical bands.
         /// </summary>
-        /// <param name="filterCount">Number of filters to create</param>
+        /// <param name="filterCount">Число фильтров</param>
         /// <param name="samplingRate">Assumed sampling rate of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>

@@ -220,7 +220,12 @@ namespace AI.DSP.DSPCore
 
         }
 
-
+        /// <summary>
+        /// Быстрый алгоритм расчета нормированной ВКФ
+        /// </summary>
+        /// <param name="signal"></param>
+        /// <param name="ht"></param>
+        /// <returns></returns>
         public static Vector FastNormCrossCorrelation(Vector signal, Vector ht)
         {
             int nMax = signal.Count + ht.Count - 1;

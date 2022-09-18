@@ -12,7 +12,7 @@ namespace AI.DataStructs.Algebraic
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Shape = {Shape.ToString(),nq}")]
-    public class NDTensor : IAlgebraicStructure, IEquatable<NDTensor>, ISavable, IByteConvertable
+    public class NDTensor : IAlgebraicStructure<double> , IEquatable<NDTensor>, ISavable, IByteConvertable
     {
         #region Поля и свойства
         private readonly int[] _volumes;
@@ -380,7 +380,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Создание тензора из алгебраической структуры
         /// </summary>
-        public static NDTensor FromIAlgStruct(IAlgebraicStructure alg_structure)
+        public static NDTensor FromIAlgStruct(IAlgebraicStructure<double> alg_structure)
         {
             var ret = new NDTensor(alg_structure.Shape);
             ret.Data = alg_structure.Data;

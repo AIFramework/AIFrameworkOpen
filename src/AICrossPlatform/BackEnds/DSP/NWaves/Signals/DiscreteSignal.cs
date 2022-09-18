@@ -18,7 +18,6 @@ namespace AI.BackEnds.DSP.NWaves.Signals
     /// In the earliest versions of NWaves there was also an ISignal interface, however it was refactored out.
     /// </summary>
     [Serializable]
-    /// 
     public class DiscreteSignal
     {
         /// <summary>

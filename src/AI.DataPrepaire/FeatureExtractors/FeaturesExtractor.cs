@@ -1,9 +1,4 @@
 ﻿using AI.DataStructs.Algebraic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.FeatureExtractors
 {
@@ -20,7 +15,7 @@ namespace AI.DataPrepaire.FeatureExtractors
         /// <summary>
         /// Получение признаков из данных
         /// </summary>
-        public virtual Vector[] GetFeatures(T[] data) 
+        public virtual Vector[] GetFeatures(T[] data)
         {
             Vector[] features = new Vector[data.Length];
 

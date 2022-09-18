@@ -113,7 +113,7 @@ namespace AI.ML.NeuralNetwork
         /// </summary>
         /// <param name="algebraicStructure"></param>
         /// <returns></returns>
-        public NNValue Forward(IAlgebraicStructure algebraicStructure)
+        public NNValue Forward(IAlgebraicStructure<double> algebraicStructure)
         {
             Model.ResetState();
             bool graphPrevState = Graph.IsBackward;
@@ -141,7 +141,7 @@ namespace AI.ML.NeuralNetwork
         /// </summary>
         /// <param name="algebraicStructure"></param>
         /// <returns></returns>
-        public Vector ForwardVector(IAlgebraicStructure algebraicStructure)
+        public Vector ForwardVector(IAlgebraicStructure<double> algebraicStructure)
         {
             Model.ResetState();
             bool graphPrevState = Graph.IsBackward;
@@ -169,7 +169,7 @@ namespace AI.ML.NeuralNetwork
         /// </summary>
         /// <param name="algebraicStructure"></param>
         /// <returns></returns>
-        public Matrix ForwardMatrix(IAlgebraicStructure algebraicStructure)
+        public Matrix ForwardMatrix(IAlgebraicStructure<double> algebraicStructure)
         {
             Model.ResetState();
             bool graphPrevState = Graph.IsBackward;
@@ -197,7 +197,7 @@ namespace AI.ML.NeuralNetwork
         /// </summary>
         /// <param name="algebraicStructure"></param>
         /// <returns></returns>
-        public Tensor ForwardTensor(IAlgebraicStructure algebraicStructure)
+        public Tensor ForwardTensor(IAlgebraicStructure<double> algebraicStructure)
         {
             Model.ResetState();
             bool graphPrevState = Graph.IsBackward;
@@ -232,7 +232,7 @@ namespace AI.ML.NeuralNetwork
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public NNValue[] ForwardRecurrent(IAlgebraicStructure[] inputs)
+        public NNValue[] ForwardRecurrent(IAlgebraicStructure<double>[] inputs)
         {
             Model.ResetState();
             bool graphPrevState = Graph.IsBackward;
@@ -274,7 +274,7 @@ namespace AI.ML.NeuralNetwork
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public Vector[] ForwardRecurrentVector(IAlgebraicStructure[] inputs)
+        public Vector[] ForwardRecurrentVector(IAlgebraicStructure<double>[] inputs)
         {
             Model.ResetState();
             bool graphPrevState = Graph.IsBackward;
@@ -316,7 +316,7 @@ namespace AI.ML.NeuralNetwork
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public Matrix[] ForwardRecurrentMatrix(IAlgebraicStructure[] inputs)
+        public Matrix[] ForwardRecurrentMatrix(IAlgebraicStructure<double>[] inputs)
         {
             Model.ResetState();
             bool graphPrevState = Graph.IsBackward;
@@ -358,7 +358,7 @@ namespace AI.ML.NeuralNetwork
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public Tensor[] ForwardRecurrentTensor(IAlgebraicStructure[] inputs)
+        public Tensor[] ForwardRecurrentTensor(IAlgebraicStructure<double>[] inputs)
         {
             Model.ResetState();
             bool graphPrevState = Graph.IsBackward;
@@ -426,7 +426,7 @@ namespace AI.ML.NeuralNetwork
         /// <param name="inputs"></param>
         /// <param name="outputs"></param>
         /// <returns></returns>
-        public TrainInfo TrainNet(IAlgebraicStructure[] inputs, IAlgebraicStructure[] outputs)
+        public TrainInfo TrainNet(IAlgebraicStructure<double>[] inputs, IAlgebraicStructure<double>[] outputs)
         {
             bool graphPrevState = Graph.IsBackward;
             Graph.IsBackward = false;
@@ -448,7 +448,7 @@ namespace AI.ML.NeuralNetwork
         /// <param name="outputs">Целевые переменные</param>
         /// <param name="cancellationToken">Окончание обучения </param>
         /// <returns></returns>
-        public async Task<TrainInfo> TrainNetAsync(IAlgebraicStructure[] inputs, IAlgebraicStructure[] outputs, CancellationToken cancellationToken = default)
+        public async Task<TrainInfo> TrainNetAsync(IAlgebraicStructure<double>[] inputs, IAlgebraicStructure<double>[] outputs, CancellationToken cancellationToken = default)
         {
             bool graphPrevState = Graph.IsBackward;
             Graph.IsBackward = false;
@@ -545,7 +545,7 @@ namespace AI.ML.NeuralNetwork
         /// </summary>
         /// <param name="inputs">Inputs</param>
         /// <param name="outputs">Outputs(target values)</param>
-        public TrainInfo TrainNet(IReadOnlyList<IAlgebraicStructure>[] inputs, IReadOnlyList<IAlgebraicStructure>[] outputs)
+        public TrainInfo TrainNet(IReadOnlyList<IAlgebraicStructure<double>>[] inputs, IReadOnlyList<IAlgebraicStructure<double>>[] outputs)
         {
             bool graphPrevState = Graph.IsBackward;
             Graph.IsBackward = false;
@@ -563,7 +563,7 @@ namespace AI.ML.NeuralNetwork
         /// <summary>
         /// Асинхронное обучение рекуррентной нейронной сети для работы с сигналами
         /// </summary>
-        public async Task<TrainInfo> TrainNetAsync(IReadOnlyList<IAlgebraicStructure>[] inputs, IReadOnlyList<IAlgebraicStructure>[] outputs, CancellationToken cancellationToken = default)
+        public async Task<TrainInfo> TrainNetAsync(IReadOnlyList<IAlgebraicStructure<double>>[] inputs, IReadOnlyList<IAlgebraicStructure<double>>[] outputs, CancellationToken cancellationToken = default)
         {
             bool graphPrevState = Graph.IsBackward;
             Graph.IsBackward = false;

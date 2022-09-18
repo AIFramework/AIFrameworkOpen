@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.DataNormalizers
 {
@@ -17,20 +15,20 @@ namespace AI.DataPrepaire.DataNormalizers
         /// Обучение преобразователя
         /// </summary>
         /// <param name="data">Набор данных</param>
-        public abstract void Train(IEnumerable<IAlgebraicStructure> data);
+        public abstract void Train(IEnumerable<IAlgebraicStructure<double>> data);
 
         /// <summary>
         /// Использование преобразователя (Перезапись значений алгебраической структуры)
         /// </summary>
-        public abstract IAlgebraicStructure Transform(IAlgebraicStructure data);
+        public abstract IAlgebraicStructure<double> Transform(IAlgebraicStructure<double> data);
 
 
         /// <summary>
         /// Использование преобразователя (Перезапись значений алгебраической структуры)
         /// </summary>
-        public virtual IAlgebraicStructure[] Transform(IEnumerable<IAlgebraicStructure> data) 
+        public virtual IAlgebraicStructure<double>[] Transform(IEnumerable<IAlgebraicStructure<double>> data)
         {
-            IAlgebraicStructure[] algebraicStructures = (data is IAlgebraicStructure[]) ? data as IAlgebraicStructure[] : data.ToArray();
+            IAlgebraicStructure<double>[] algebraicStructures = (data is IAlgebraicStructure<double>[]) ? data as IAlgebraicStructure<double>[] : data.ToArray();
 
             for (int i = 0; i < algebraicStructures.Length; i++)
                 algebraicStructures[i] = Transform(algebraicStructures[i]);
@@ -42,15 +40,15 @@ namespace AI.DataPrepaire.DataNormalizers
         /// Восстановление нормализованных данных (Перезапись значений алгебраической структуры)
         /// </summary>
         /// <param name="normalizeData">Нормализованные данные</param>
-        public abstract IAlgebraicStructure Denormalize(IAlgebraicStructure normalizeData);
+        public abstract IAlgebraicStructure<double> Denormalize(IAlgebraicStructure<double> normalizeData);
 
         /// <summary>
         /// Восстановление нормализованных данных (Перезапись значений алгебраической структуры)
         /// </summary>
         /// <param name="normalizeData">Нормализованные данные</param>
-        public virtual IAlgebraicStructure[] Denormalize(IEnumerable<IAlgebraicStructure> normalizeData) 
+        public virtual IAlgebraicStructure<double>[] Denormalize(IEnumerable<IAlgebraicStructure<double>> normalizeData)
         {
-            IAlgebraicStructure[] algebraicStructures = (normalizeData is IAlgebraicStructure[]) ? normalizeData as IAlgebraicStructure[] : normalizeData.ToArray();
+            IAlgebraicStructure<double>[] algebraicStructures = (normalizeData is IAlgebraicStructure<double>[]) ? normalizeData as IAlgebraicStructure<double>[] : normalizeData.ToArray();
 
             for (int i = 0; i < algebraicStructures.Length; i++)
                 algebraicStructures[i] = Denormalize(algebraicStructures[i]);

@@ -183,7 +183,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// </summary>
         /// <param name="input">Вход</param>
         /// <param name="graph">Граф атодифференцирования</param>
-        public NNValue Forward(IAlgebraicStructure input, INNWGraph graph)
+        public NNValue Forward(IAlgebraicStructure<double> input, INNWGraph graph)
         {
             return Forward(new NNValue(input), graph);
         }

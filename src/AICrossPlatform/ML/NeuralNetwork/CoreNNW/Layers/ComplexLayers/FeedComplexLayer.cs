@@ -7,6 +7,9 @@ using System.Collections.Generic;
 
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
 {
+    /// <summary>
+    /// Полносвязный комплексный слой
+    /// </summary>
     [Serializable]
     public class FeedComplexLayer : IActivatableLayer, ILearningLayer
     {
@@ -15,11 +18,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         private Shape3D _inputShape;
 
         /// <summary>
-        /// Weighting matrix
+        /// Весовые коэффициенты
         /// </summary>
         public NNValue WRe, WIm;
         /// <summary>
-        /// Hyperplane displacement vector (neuron polarization)
+        /// Вес смещения реальной и мнимой части
         /// </summary>
         public NNValue BiasRe, BiasIm;
         /// <summary>
@@ -52,9 +55,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         public Shape3D OutputShape { get; private set; }
 
         /// <summary>
-        /// Полносвязный слой
+        /// Полносвязный комплексный слой
         /// </summary>
-        /// <param name="inputShape">Input dimension</param>
+        /// <param name="inputShape">Размерность входа</param>
         /// <param name="outputDimension">Число выходов</param>
         /// <param name="f">Активационная функция</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
@@ -93,7 +96,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
             return returnObj;
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         public List<NNValue> GetParameters()
         {
@@ -113,7 +116,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
             return result;
         }
         /// <summary>
-        /// Generating weights
+        /// Генерация весовых коэффициентов
         /// </summary>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
         public void InitWeights(Random random)
@@ -129,7 +132,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ComplexLayers
         {
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, ActivationFunction, TrainableParameters);
         }
-
+        /// <summary>
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
+        /// </summary>
         public void OnlyUse()
         {
             WRe.OnlyUse();

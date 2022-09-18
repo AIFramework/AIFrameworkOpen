@@ -3,10 +3,9 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Windows
 {
     /// <summary>
-    /// Most commonly used window functions
+    /// Most commonly used Оконная функцияs
     /// </summary>
     [Serializable]
-    /// 
     public enum WindowTypes
     {
         /// <summary>

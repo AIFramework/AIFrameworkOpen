@@ -7,13 +7,16 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     /// Envelope follower (detector)
     /// </summary>
     [Serializable]
-    /// 
     public class EnvelopeFollower : IOnlineFilter
     {
         /// <summary>
         /// Attack time
         /// </summary>
         private float _attackTime;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public float AttackTime
         {
             get => _attackTime;
@@ -28,6 +31,9 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// Release time
         /// </summary>
         private float _releaseTime;
+        /// <summary>
+        /// 
+        /// </summary>
         public float ReleaseTime
         {
             get => _releaseTime;
@@ -84,7 +90,9 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
             return _env;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void Reset()
         {
             _env = 0;

@@ -7,7 +7,6 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     /// See https://en.wikipedia.org/wiki/Discrete_cosine_transform
     /// </summary>
     [Serializable]
-    /// 
     public class Dct4 : IDct
     {
         /// <summary>

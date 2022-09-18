@@ -57,7 +57,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Слой копирования
         /// </summary>
-        /// <param name="inpShape">Input dimension</param>
+        /// <param name="inpShape">Размерность входа</param>
         /// <param name="count">Число копмрований</param>
         public CopyistLayer(Shape3D inpShape, int count)
         {

@@ -548,7 +548,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Implicit cast ComplexVector -> Complex[]
         /// </summary>
-        /// <param name="vect">Vector</param>
+        /// <param name="vect">Вектор</param>
         public static implicit operator Complex[](ComplexVector vect)
         {
             return vect.ToArray();

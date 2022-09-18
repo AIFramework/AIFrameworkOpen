@@ -55,7 +55,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         protected readonly int _overlapSize;
 
         /// <summary>
-        /// Internal FFT transformer
+        /// Внутренний алгоритм для выполнения БПФ
         /// </summary>
         protected readonly RealFft _fft;
 

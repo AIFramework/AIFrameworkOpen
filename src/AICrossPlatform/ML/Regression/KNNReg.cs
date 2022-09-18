@@ -248,7 +248,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Возращает вектор, его длинна - Number of classes, на номере нужного класса стоит 1
         /// </summary>
-        /// <param name="inp">Input data vector</param>
+        /// <param name="inp">Вектор входных данных</param>
         /// <returns></returns>
         public double Predict(Vector inp)
         {
@@ -295,7 +295,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Прогноз вектора значений
         /// </summary>
-        /// <param name="inp">Input data vector</param>
+        /// <param name="inp">Вектор входных данных</param>
         public Vector PredictV(Vector inp)
         {
             Vector vect = new Vector(inp.Count);

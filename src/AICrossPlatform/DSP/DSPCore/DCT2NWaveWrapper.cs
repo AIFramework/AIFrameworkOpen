@@ -4,15 +4,27 @@ using System;
 
 namespace AI.DSP.DSPCore
 {
+    /// <summary>
+    /// Обертка для ДКП-2
+    /// </summary>
     [Serializable]
     public class DCT2NWaveWrapper
     {
         private readonly Dct2 dct2;
         private readonly FastDct2 fastDct;
 
+        /// <summary>
+        /// Число отсчетов ДКП
+        /// </summary>
         public int Count { get; private set; }
+        /// <summary>
+        /// Испольльзовать ли быструю реализацию
+        /// </summary>
         public bool IsFast { get; private set; }
 
+        /// <summary>
+        /// Обертка для ДКП-2
+        /// </summary>
         public DCT2NWaveWrapper(int countElements)
         {
             Count = countElements;
@@ -35,6 +47,11 @@ namespace AI.DSP.DSPCore
             return n == 1 << pow;
         }
 
+        /// <summary>
+        /// Прямое преобразование
+        /// </summary>
+        /// <param name="st"></param>
+        /// <returns></returns>
         public Vector DirectDCT(Vector st)
         {
             float[] input = (float[])st;
@@ -51,6 +68,9 @@ namespace AI.DSP.DSPCore
             return dctArr;
         }
 
+        /// <summary>
+        /// Прямое нормированное преобразование
+        /// </summary>
         public Vector DirectDCTNorm(Vector st)
         {
             float[] input = (float[])st;
@@ -66,6 +86,9 @@ namespace AI.DSP.DSPCore
             return dctArr;
         }
 
+        /// <summary>
+        /// Обратное преобразование
+        /// </summary>
         public Vector InversDCT(Vector dct)
         {
             float[] input = (float[])dct;

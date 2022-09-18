@@ -42,7 +42,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <param name="input">Input data</param>
         /// <param name="g">Граф автоматического дифференцирования</param>
         /// <returns></returns>
-        NNValue Forward(IAlgebraicStructure input, INNWGraph g);
+        NNValue Forward(IAlgebraicStructure<double> input, INNWGraph g);
         /// <summary>
         /// Reset state, must be in a recurrent neural network
         /// </summary>

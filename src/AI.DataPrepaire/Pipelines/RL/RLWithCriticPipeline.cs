@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.Pipelines.RL
 {
@@ -26,8 +23,8 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// <summary>
         /// Классификатор с обучением с подкреплением и с использованием критика
         /// </summary>
-        public RLWithCriticPipeline(ObjectClassifierPipeline<T> actor, CriticPipeline<T> critic) 
-        { 
+        public RLWithCriticPipeline(ObjectClassifierPipeline<T> actor, CriticPipeline<T> critic)
+        {
             Actor = actor;
             Critic = critic;
         }
@@ -36,7 +33,7 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// Оценка выигрыша в данной партии при помощи критика
         /// </summary>
         /// <param name="states">Состояния</param>
-        public virtual double ExpendedReward(T[] states) 
+        public virtual double ExpendedReward(T[] states)
         {
             double reward = 0;
             for (int i = 0; i < states.Length; i++)
@@ -57,7 +54,7 @@ namespace AI.DataPrepaire.Pipelines.RL
             {
                 double expendReward = ExpendedReward(RewardData[i].States);
                 // Перерасчет реварда с учетом критика
-                RewardData[i].Score = (RewardData[i].Score - expendReward)/RewardData[i].States.Length;
+                RewardData[i].Score = (RewardData[i].Score - expendReward) / RewardData[i].States.Length;
             }
 
             base.Train(topK); // Обучение агента
@@ -66,7 +63,7 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// <summary>
         /// Обучение критика
         /// </summary>
-        public virtual void CriticTrain() 
+        public virtual void CriticTrain()
         {
             List<T> states = new List<T>();
             List<double> rewards = new List<double>();

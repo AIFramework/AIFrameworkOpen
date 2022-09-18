@@ -8,7 +8,6 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
     /// Fast Wavelet Transform
     /// </summary>
     [Serializable]
-    /// 
     public class Fwt
     {
         /// <summary>

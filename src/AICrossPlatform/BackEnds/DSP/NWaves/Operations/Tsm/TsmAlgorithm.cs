@@ -6,7 +6,6 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     /// Algorithm for time scale modification
     /// </summary>
     [Serializable]
-    /// 
     public enum TsmAlgorithm
     {
         /// <summary>

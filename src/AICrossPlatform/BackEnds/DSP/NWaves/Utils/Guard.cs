@@ -3,10 +3,15 @@ using System.Diagnostics;
 
 namespace AI.BackEnds.DSP.NWaves.Utils
 {
-
+    /// <summary>
+    /// 
+    /// </summary>
     [DebuggerStepThrough]
     public static class Guard
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static void AgainstNonPositive(double arg, string argName = "argument")
         {
             if (arg < 1e-30)
@@ -14,7 +19,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                 throw new ArgumentException($"{argName} must be positive!");
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static void AgainstInequality(double arg1, double arg2, string arg1Name = "argument1", string arg2Name = "argument2")
         {
             if (Math.Abs(arg2 - arg1) > 1e-30)
@@ -22,7 +29,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                 throw new ArgumentException($"{arg1Name} must be equal to {arg2Name}!");
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static void AgainstInvalidRange(double low, double high, string lowName = "low", string highName = "high")
         {
             if (high - low < 1e-30)
@@ -30,7 +39,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                 throw new ArgumentException($"{highName} must be greater than {lowName}!");
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static void AgainstExceedance(double low, double high, string lowName = "low", string highName = "high")
         {
             if (low > high)
@@ -38,7 +49,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                 throw new ArgumentException($"{lowName} must not exceed {highName}!");
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static void AgainstNotPowerOfTwo(int n, string argName = "Parameter")
         {
             int pow = (int)Math.Log(n, 2);
@@ -48,7 +61,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                 throw new ArgumentException($"{argName} must be a power of 2!");
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static void AgainstEvenNumber(int n, string argName = "Parameter")
         {
             if (n % 2 == 0)
@@ -56,7 +71,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
                 throw new ArgumentException($"{argName} must be an odd number!");
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static void AgainstIncorrectFilterParams(double[] freqs, double[] desired, double[] weights)
         {
             int n = freqs.Length;

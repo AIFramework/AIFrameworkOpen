@@ -101,7 +101,6 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// Creating a trainer for a neural network
         /// </summary> 
         /// <param name="graph">Граф автоматического дифференцирования</param>
-        /// <param name="trainType">Train type</param>
         /// <param name="optimizer">Optimizer training method</param>
         public Trainer(INNWGraph graph, IOptimizer optimizer)
         {

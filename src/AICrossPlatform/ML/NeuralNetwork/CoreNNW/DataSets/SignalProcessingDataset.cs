@@ -28,7 +28,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         /// </summary>
         /// <param name="inputs">Inputs</param>
         /// <param name="outputs">Outputs(target values)</param>
-        /// <param name="loss">Loss function</param>
+        /// <param name="loss">Функция ошибки</param>
         /// <param name="valSplit">Fraction of the sample to be used for validation</param>
         public SignalProcessingDataSet(Vector[] inputs, Vector[] outputs, ILoss loss, double valSplit = 0.0) : base(new Shape(1, 1, 1), new Shape(1, 1, 1), loss)
         {
@@ -82,7 +82,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
         #region Методы
         /// <summary>
-        /// Adds one sample to the training subset
+        /// Добавить один пример в обучающую выборку
         /// </summary>
         /// <param name="input"></param>
         /// <param name="output"></param>
@@ -115,7 +115,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TrainingInternal.Add(GetSequence(valueInp, valueOutp));
         }
         /// <summary>
-        /// Adds one sample to the validation subset
+        /// Добавить один пример в валидационную выборку
         /// </summary>
         /// <param name="input"></param>
         /// <param name="output"></param>
@@ -148,7 +148,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             ValidationInternal.Add(GetSequence(valueInp, valueOutp));
         }
         /// <summary>
-        /// Adds one sample to the testing subset
+        /// Добавить один пример в тестовую выборку
         /// </summary>
         /// <param name="input"></param>
         /// <param name="output"></param>
@@ -181,7 +181,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TestingInternal.Add(GetSequence(valueInp, valueOutp));
         }
         /// <summary>
-        /// Adds sample range to the training subset
+        /// Добавить массив примеров в обучающую выборку
         /// </summary>
         /// <param name="inputs"></param>
         /// <param name="outputs"></param>
@@ -235,7 +235,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TrainingInternal.AddRange(GetSequences(valueInp, valueOutp));
         }
         /// <summary>
-        /// Adds sample range to the validation subset
+        /// Добавить массив примеров в валидационную выборку
         /// </summary>
         /// <param name="inputs"></param>
         /// <param name="outputs"></param>
@@ -289,7 +289,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             ValidationInternal.AddRange(GetSequences(valueInp, valueOutp));
         }
         /// <summary>
-        /// Adds sample range to the testing subset
+        /// Добавить массив примеров в тестовую выборку
         /// </summary>
         /// <param name="inputs"></param>
         /// <param name="outputs"></param>
@@ -343,7 +343,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TestingInternal.AddRange(GetSequences(valueInp, valueOutp));
         }
         /// <summary>
-        /// Add all samples from the "anotherSet" to current
+        /// Добавить все образцы из датасета "anotherSet" в текущий
         /// </summary>
         /// <param name="anotherSet"></param>
         public void Merge(SignalProcessingDataSet anotherSet)
@@ -373,7 +373,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
         #region Сохранение
         /// <summary>
-        /// Save dataset to file
+        /// Сохранить датасет в файл
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -381,7 +381,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Save dataset to stream
+        /// Сохранить датасет в поток
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -392,7 +392,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
         #region Загрузка
         /// <summary>
-        /// Load dataset from file
+        /// Загрузить датасет из файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -401,7 +401,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             return BinarySerializer.Load<SignalProcessingDataSet>(path);
         }
         /// <summary>
-        /// Load dataset from stream
+        /// Загрузить датасет из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>

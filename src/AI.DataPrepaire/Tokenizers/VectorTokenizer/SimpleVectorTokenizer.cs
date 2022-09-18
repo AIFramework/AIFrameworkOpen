@@ -3,9 +3,6 @@ using AI.Dog.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.Tokenizers.VectorTokenizer
 {
@@ -89,7 +86,7 @@ namespace AI.DataPrepaire.Tokenizers.VectorTokenizer
             int len = dArr[0].Count();
 
             for (int i = 1; i < dArr.Length; i++)
-                if(len < dArr[i].Count())  len = dArr[i].Count();
+                if (len < dArr[i].Count()) len = dArr[i].Count();
 
             len = len <= MaxSize ? len : MaxSize;
 
@@ -114,15 +111,15 @@ namespace AI.DataPrepaire.Tokenizers.VectorTokenizer
         /// <param name="data"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public virtual int[,] EncodeBatch(IEnumerable<Vector> data){throw new NotImplementedException();}
+        public virtual int[,] EncodeBatch(IEnumerable<Vector> data) { throw new NotImplementedException(); }
 
         /// <summary>
         /// Токенизация вектора
         /// </summary>
         /// <param name="data">Вектор</param>
-        public virtual int EncodeObj(Vector data) 
+        public virtual int EncodeObj(Vector data)
         {
-            var binary =  ActivationFunction(VectorTransformer(data));
+            var binary = ActivationFunction(VectorTransformer(data));
             bool[] bin = new bool[binary.Count];
 
             for (int i = 0; i < binary.Count; i++)

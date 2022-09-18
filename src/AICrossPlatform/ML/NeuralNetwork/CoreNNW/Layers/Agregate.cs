@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Data aggregation layer (Calculates average)
+    /// Агрегирующий слой, считает взвешенное среднее всех выходов
     /// </summary>
     [Serializable]
     public class Agregate : ILearningLayer
@@ -41,14 +41,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public double AddDenInSqrt => 0;
 
         /// <summary>
-        /// Data aggregation layer (Calculates average)
+        /// Агрегирующий слой, считает среднее всех выходов
         /// </summary>
         public Agregate()
         {
             OutputShape = new Shape3D(1);
         }
         /// <summary>
-        /// Data aggregation layer (Calculates average)
+        /// Агрегирующий слой, считает среднее всех выходов
         /// </summary>
         public Agregate(Shape3D inputShape)
         {
@@ -67,20 +67,24 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return g.ScalarProduct(_parametrs, input);
         }
         /// <summary>
-        /// Generating weights
+        /// Генерация весовых коэффициентов
         /// </summary>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
         public void InitWeights(Random random)
         {
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         public List<NNValue> GetParameters()
         {
             return new List<NNValue>() { _parametrs };
         }
 
+        /// <summary>
+        /// Перевод в строку
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "None", TrainableParameters);

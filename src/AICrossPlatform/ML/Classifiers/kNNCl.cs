@@ -158,7 +158,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Returns a vector, its length is the number of classes, the number of the required class is 1
         /// </summary>
-        /// <param name="inp">Input data vector</param>
+        /// <param name="inp">Вектор входных данных</param>
         public Vector RecognizeVectorMax(Vector inp)
         {
             if (IsFixed && IsParsenMethod)

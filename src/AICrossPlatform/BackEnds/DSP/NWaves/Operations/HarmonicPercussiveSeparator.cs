@@ -11,8 +11,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     /// 
     /// D.Fitzgerald. Harmonic/percussive separation using median filtering.
     /// 13th International Conference on Digital Audio Effects (DAFX10), Graz, Austria, 2010.
-    [Serializable]
     /// </summary>
+    [Serializable]
     public class HarmonicPercussiveSeparator
     {
         /// <summary>
@@ -175,8 +175,17 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     /// </summary>
     public enum HpsMasking
     {
+        /// <summary>
+        /// 
+        /// </summary>
         Binary,
+        /// <summary>
+        /// 
+        /// </summary>
         WienerOrder1,
+        /// <summary>
+        /// 
+        /// </summary>
         WienerOrder2
     }
 }

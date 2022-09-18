@@ -94,7 +94,7 @@ namespace AI.ML.Genetic.GeneticCore
         /// <param name="countCell">Number of cells</param>
         /// <param name="countParam">Number of parameters</param>
         /// <param name="function">Utility function</param>
-        /// <param name="inp">Input data vector</param>
+        /// <param name="inp">Вектор входных данных</param>
         /// <param name="outp">Output vector</param>
         /// <param name="valDown">Search lower bound</param>
         /// <param name="valUp">Search upper bound</param>

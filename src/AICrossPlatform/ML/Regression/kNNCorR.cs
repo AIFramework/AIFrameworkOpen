@@ -16,7 +16,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace AI.ML.Regression
 {
     /// <summary>
-    /// Regression(k-nearest neighbors method) (correlation metric)
+    /// Регрессионный метод к ближайших соседей (Корреляционная метрика)
     /// </summary>
     [Serializable]
     public class KNNCorR : IRegression
@@ -45,7 +45,7 @@ namespace AI.ML.Regression
         private StructRegres reges;// Данные регрессии
 
         /// <summary>
-        /// Regression data
+        /// Данные регрессии
         /// </summary>
         public StructRegres Reg
         {
@@ -53,7 +53,7 @@ namespace AI.ML.Regression
             set => reges = value;
         }
         /// <summary>
-        /// Regression (Nearest Neighbor Method)
+        /// Регрессионный метод к ближайших соседей
         /// </summary>
         public KNNCorR()
         {
@@ -63,9 +63,9 @@ namespace AI.ML.Regression
             K = 4;
         }
         /// <summary>
-        /// Regression (Nearest Neighbor Method)
+        /// Регрессионный метод к ближайших соседей
         /// </summary>
-        /// <param name="path"Путь до файла/param>
+        /// <param name="path">Путь до файла</param>
         public KNNCorR(string path)
         {
             reges = new StructRegres();
@@ -74,7 +74,6 @@ namespace AI.ML.Regression
         /// <summary>
         /// Regression (Nearest Neighbor Method)
         /// </summary>
-        /// <param name="reg"> Данные для регрессии</param>
         public KNNCorR(StructRegres reg)
         {
             reges = reg;
@@ -82,7 +81,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Saving the regression model
         /// </summary>
-        /// <param name="path"Путь до файла/param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             try
@@ -107,7 +106,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Loading a regression model
         /// </summary>
-        /// <param name="path"Путь до файла/param>
+        /// <param name="path">Путь до файла</param>
         public void Open(string path)
         {
 
@@ -172,7 +171,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Добавление данных для обучения
         /// </summary>
-        /// <param name="tData">Input data vector</param>
+        /// <param name="tData">Вектор входных данных</param>
         /// <param name="targ">Выход</param>
         private void AddData(Vector tData, double targ)
         {
@@ -240,7 +239,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Model prediction
         /// </summary>
-        /// <param name="inp">Input data vector</param>
+        /// <param name="inp">Вектор входных данных</param>
         public double Predict(Vector inp)
         {
             double pred = 0;
@@ -304,7 +303,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Vector prediction
         /// </summary>
-        /// <param name="inp">Input data vector</param>
+        /// <param name="inp">Вектор входных данных</param>
         public Vector PredictV(Vector inp)
         {
             Vector vect = new Vector(inp.Count);

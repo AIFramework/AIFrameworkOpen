@@ -12,7 +12,6 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     /// Waveform-Synchronized Overlap-Add
     /// </summary>
     [Serializable]
-    /// 
     public class Wsola : IFilter
     {
         /// <summary>

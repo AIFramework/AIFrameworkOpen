@@ -5,7 +5,7 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Windows
 {
     /// <summary>
-    /// Factory class generating various types of window functions
+    /// Factory class generating various types of Оконная функцияs
     /// </summary>
     public static class Window
     {

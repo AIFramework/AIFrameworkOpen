@@ -77,7 +77,7 @@ namespace AI
         /// <param name="vect">входной вектор</param>
         /// <param name="Function">функция</param>
         /// <param name="window">окно</param>
-        /// <param name="stride">step</param>
+        /// <param name="stride">Шаг</param>
         /// <returns>Результат применения ф-и</returns>
         public static Vector WindowFuncDouble(Vector vect, Func<Vector, double> Function, int window, int stride)
         {

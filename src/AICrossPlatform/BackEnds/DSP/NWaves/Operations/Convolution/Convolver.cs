@@ -10,7 +10,6 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
     /// Class responsible for real-valued convolution
     /// </summary>
     [Serializable]
-    /// 
     public class Convolver
     {
         /// <summary>
@@ -138,8 +137,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         /// <param name="input1">Real parts of the 1st signal (zero-padded)</param>
         /// <param name="input2">Real parts of the 2nd signal (zero-padded)</param>
         /// <param name="output">Real parts of resulting cross-correlation (zero-padded if center == 0)</param>
-        /// <param name="center">Position of central sample for the case of 2*CENTER-1 cross-correlation 
-        /// (if it is set then resulting array has length of CENTER)</param>
+        /// (if it is set then resulting array has length of CENTER
         public void CrossCorrelate(float[] input1, float[] input2, float[] output)
         {
             // reverse second signal

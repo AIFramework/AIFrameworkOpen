@@ -6,7 +6,7 @@
     public interface IRecurrentLayer : ILayer
     {
         /// <summary>
-        /// Resetting the state of the neural network layer
+        /// Сброс состояния нейронной сети
         /// </summary>
         void ResetState();
     }

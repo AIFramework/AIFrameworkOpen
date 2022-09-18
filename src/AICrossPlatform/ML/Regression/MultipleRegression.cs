@@ -119,7 +119,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Прогноз
         /// </summary>
-        /// <param name="vect">Input data vector</param>
+        /// <param name="vect">Вектор входных данных</param>
         /// <returns>Выход</returns>
         public double Predict(Vector vect)
         {
@@ -151,7 +151,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Сохранение модели
         /// </summary>
-        /// <param name="path"Путь до файла/param>
+        /// <param name="path">Путь до файла</param>
         public void SaveModel(string path)
         {
             try

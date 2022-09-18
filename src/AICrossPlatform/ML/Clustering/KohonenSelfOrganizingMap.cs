@@ -8,15 +8,23 @@ using System.Threading.Tasks;
 namespace AI.ML.Clustering
 {
     /// <summary>
-    /// Kohonen self-organizing map
+    /// Самоорганизующиеся карты Кохонена
     /// </summary>
     [Serializable]
     public class KohonenNet : IClustering
     {
-        public Func<Vector, Vector, double> DistanceFunction { get; set; } = AI.ML.Distances.BaseDist.EuclideanDistance;
+        /// <summary>
+        /// Функция расстояния
+        /// </summary>
+        public Func<Vector, Vector, double> DistanceFunction { get; set; } = Distances.BaseDist.EuclideanDistance;
 
-
+        /// <summary>
+        /// Веса сети
+        /// </summary>
         public Vector[] w;
+        /// <summary>
+        /// Веса смещения
+        /// </summary>
         public Vector bias;
         /// <summary>
         /// Neural network setup steps
@@ -27,7 +35,7 @@ namespace AI.ML.Clustering
         private readonly Random rnd;
 
         /// <summary>
-        /// Clusters array
+        /// Массив кластеров
         /// </summary>
         public Cluster[] Clusters
         {
@@ -49,7 +57,7 @@ namespace AI.ML.Clustering
         }
 
         /// <summary>
-        /// Kohonen self-organizing map
+        /// Самоорганизующиеся карты Кохонена
         /// </summary>
         public KohonenNet(int clusters, int inpDim, int seed = 1)
         {
@@ -66,8 +74,11 @@ namespace AI.ML.Clustering
         }
 
 
-        /// <summary>Classify vector</summary>
-        /// <param name="vector">Vector</param>
+        /// <summary>
+        /// Классификация
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <returns></returns>
         public int Classify(Vector vector)
         {
             Vector outp = new Vector(w.Length);
@@ -80,8 +91,9 @@ namespace AI.ML.Clustering
             return outp.MaxElementIndex();
         }
 
-        /// <summary>Classify vectors</summary>
-        /// <param name="vectors">Vectors</param>
+        /// <summary>
+        /// Массива векторов
+        /// </summary>
         public int[] Classify(IEnumerable<Vector> vectors)
         {
             return vectors.Select((vector) => Classify(vector)).ToArray();

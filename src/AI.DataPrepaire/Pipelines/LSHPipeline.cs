@@ -3,14 +3,11 @@ using AI.DataPrepaire.FeatureExtractors;
 using AI.DataPrepaire.Pipelines.Utils;
 using AI.DataStructs.Algebraic;
 using AI.Extensions;
-using AI.ML.AlgorithmAnalysis;
-using AI.ML.Classifiers;
 using AI.ML.Regression;
 using AI.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AI.DataPrepaire.Pipelines
 {
@@ -20,7 +17,7 @@ namespace AI.DataPrepaire.Pipelines
     [Serializable]
     public class LSHPipeline<T>
     {
-        Random random = new Random(1);
+        private readonly Random random = new Random(1);
 
         /// <summary>
         /// Извлечение признаков из данных
@@ -111,7 +108,7 @@ namespace AI.DataPrepaire.Pipelines
         {
             Vector prob = GetProb(input);
             Vector lsh = prob - Statistic.UniformDistribution(prob.Count, random);
-            return lsh.Transform(x => x >= 0 ? 1 : 0);          
+            return lsh.Transform(x => x >= 0 ? 1 : 0);
         }
 
         /// <summary>

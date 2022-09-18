@@ -3,30 +3,31 @@
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
     /// <summary>
-    /// Fast implementation of DCT-IV via FFT
+    /// Быстрое дискретно-косинусное преобразование 4, через преобразование Фурье
     /// </summary>
     [Serializable]
-    /// 
     public class FastDct4 : IDct
     {
         /// <summary>
-        /// Internal FFT transformer
+        /// Внутренний алгоритм для выполнения БПФ
         /// </summary>
         private readonly Fft _fft;
 
         /// <summary>
-        /// Internal temporary buffer
+        /// Внутренний буффер памяти
         /// </summary>
         private readonly float[] _temp;
         private readonly float[] _tempRe;
         private readonly float[] _tempIm;
 
         /// <summary>
-        /// DCT size
+        /// Число отсчетов ДКП
         /// </summary>
         public int Size => 2 * _fft.Size;
 
-
+        /// <summary>
+        /// Быстрое дискретно-косинусное преобразование 4, через преобразование Фурье
+        /// </summary>
         public FastDct4(int dctSize)
         {
             int halfSize = dctSize / 2;
@@ -36,6 +37,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             _tempIm = new float[halfSize];
         }
 
+        /// <summary>
+        /// Прямое преобразование
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="output"></param>
         public void Direct(float[] input, float[] output)
         {
             Array.Clear(output, 0, output.Length);
@@ -80,6 +86,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             }
         }
 
+        /// <summary>
+        /// Прямое нормированное преобразование
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="output"></param>
         public void DirectNorm(float[] input, float[] output)
         {
             Direct(input, output);
@@ -92,11 +103,21 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             }
         }
 
+        /// <summary>
+        /// Обратное преобразование
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="output"></param>
         public void Inverse(float[] input, float[] output)
         {
             Direct(input, output);
         }
 
+        /// <summary>
+        /// Обратное нормированное преобразование
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="output"></param>
         public void InverseNorm(float[] input, float[] output)
         {
             DirectNorm(input, output);

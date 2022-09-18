@@ -6,7 +6,6 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     /// Class providing methods for Modified Discrete Cosine Transform (MDCT).
     /// </summary>
     [Serializable]
-    /// 
     public class Mdct : IDct
     {
         /// <summary>
@@ -15,16 +14,18 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly IDct _dct;
 
         /// <summary>
-        /// Internal temporary buffer
+        /// Внутренний буффер памяти
         /// </summary>
         private readonly float[] _temp;
 
         /// <summary>
-        /// MDCT size
+        /// Число отсчетов ДКП
         /// </summary>
         public int Size => _dct.Size;
 
-
+        /// <summary>
+        /// Class providing methods for Modified Discrete Cosine Transform (MDCT).
+        /// </summary>
         public Mdct(int dctSize, IDct dct = null)
         {
             _dct = dct ?? new Dct4(dctSize);

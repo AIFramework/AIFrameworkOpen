@@ -33,7 +33,7 @@ namespace AI.ML.DataSets.Base
         /// </summary>
         /// <param name="labels">Метки классов</param>
         /// <param name="features">Признаки</param>
-        public Many2ManyVectorClassifier(IEnumerable<int> labels, IEnumerable<IAlgebraicStructure> features)
+        public Many2ManyVectorClassifier(IEnumerable<int> labels, IEnumerable<IAlgebraicStructure<double>> features)
         {
             Labels = labels.ToList();
             Features = features.Select(x => (Vector)x.Data).ToList();

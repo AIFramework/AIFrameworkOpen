@@ -22,7 +22,7 @@ namespace AI.Statistics
         /// Квантили
         /// </summary>
         /// <param name="structureDouble">Алгебраическая структура</param>
-        public Quantile(IAlgebraicStructure structureDouble)
+        public Quantile(IAlgebraicStructure<double> structureDouble)
         {
             SortVec = structureDouble.Data;
             SortVec.Sort();
@@ -51,7 +51,7 @@ namespace AI.Statistics
         /// <param name="structure">Входные данные</param>
         /// <param name="q">Квантиль</param>
         /// <returns></returns>
-        public static double FastQuantile(IAlgebraicStructure structure, double q)
+        public static double FastQuantile(IAlgebraicStructure<double> structure, double q)
         {
             double[] data = new double[structure.Shape.Count];
             Array.Copy(structure.Data, data, data.Length);

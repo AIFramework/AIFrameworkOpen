@@ -10,7 +10,7 @@ namespace AI.ML.SeqPredict
 {
 
     /// <summary>
-    /// Prediction with GRU network
+    /// Предсказание на базе GRU сети
     /// </summary>
     [Serializable]
     public class GRUPredict : ISeqPredict
@@ -21,7 +21,7 @@ namespace AI.ML.SeqPredict
 
 
         /// <summary>
-        /// Prediction with GRU network
+        /// Предсказание на базе GRU сети
         /// </summary>
         public GRUPredict(int w)
         {
@@ -35,10 +35,10 @@ namespace AI.ML.SeqPredict
         }
 
         /// <summary>
-        /// Prediction n next values
+        /// Предсказать следующие n значений
         /// </summary>
-        /// <param name="data">Start data</param>
-        /// <param name="n">Number of next sempls</param>
+        /// <param name="data">Начальные данные</param>
+        /// <param name="n">Насколько шагов предсказать</param>
         public Vector Predict(Vector data, int n)
         {
             network.Model.ResetState();
@@ -55,11 +55,17 @@ namespace AI.ML.SeqPredict
             return outp;
         }
 
+        /// <summary>
+        /// Метод не реализован
+        /// </summary>
         public double PredictTrain(Vector data)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Обучение
+        /// </summary>
         public void Train(Vector data)
         {
 

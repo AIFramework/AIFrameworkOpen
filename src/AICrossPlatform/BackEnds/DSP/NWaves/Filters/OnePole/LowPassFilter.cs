@@ -41,7 +41,6 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
         /// Change filter parameters (preserving its state)
         /// </summary>
         /// <param name="freq"></param>
-        /// <param name="q"></param>
         public void Change(double freq)
         {
             SetCoefficients(freq);

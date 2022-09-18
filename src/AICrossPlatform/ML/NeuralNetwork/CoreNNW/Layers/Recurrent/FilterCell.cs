@@ -14,6 +14,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
     [Serializable]
     public class FilterCell : IActivatableLayer, ILearningLayer, IRecurrentLayer, IRandomizableLayer
     {
+        /// <summary>
+        /// Основные параметры слоя
+        /// </summary>
         public NNValue para, inputs, outputs, bias, outp;
         private readonly int _aLen, _bLen;
 
@@ -38,7 +41,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public IActivation ActivationFunction { get; set; } = new TanhUnit();
         /// <summary>
-        /// Random initialization for the layer
+        /// ГПСЧ для инициализации слоя
         /// </summary>
         public Random Random
         {
@@ -174,7 +177,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         {
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, ActivationFunction, TrainableParameters);
         }
-
+        /// <summary>
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
+        /// </summary>
         public void OnlyUse()
         {
             para.OnlyUse();

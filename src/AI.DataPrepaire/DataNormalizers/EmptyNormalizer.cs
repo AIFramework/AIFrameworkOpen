@@ -1,7 +1,5 @@
 ﻿using AI.DataStructs.Algebraic;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AI.DataPrepaire.DataNormalizers
 {
@@ -10,16 +8,16 @@ namespace AI.DataPrepaire.DataNormalizers
     /// </summary>
     public class EmptyNormalizer : Normalizer
     {
-        public override IAlgebraicStructure Denormalize(IAlgebraicStructure normalizeData)
+        public override IAlgebraicStructure<double> Denormalize(IAlgebraicStructure<double> normalizeData)
         {
             return normalizeData;
         }
 
-        public override void Train(IEnumerable<IAlgebraicStructure> data)
+        public override void Train(IEnumerable<IAlgebraicStructure<double>> data)
         {
         }
 
-        public override IAlgebraicStructure Transform(IAlgebraicStructure data)
+        public override IAlgebraicStructure<double> Transform(IAlgebraicStructure<double> data)
         {
             return data;
         }

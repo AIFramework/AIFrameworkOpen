@@ -1,9 +1,12 @@
 ﻿namespace AI.BackEnds.DSP.NWaves.Transforms
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IDct
     {
         /// <summary>
-        /// DCT size
+        /// Число отсчетов ДКП
         /// </summary>
         int Size { get; }
 

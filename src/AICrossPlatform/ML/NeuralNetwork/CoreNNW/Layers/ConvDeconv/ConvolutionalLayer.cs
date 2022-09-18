@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Convolutional layer of neural network
+    /// Сверточный слой
     /// </summary>
     [Serializable]
     public class ConvolutionalLayer : IActivatableLayer, ILearningLayer
@@ -123,7 +123,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         #endregion
 
         /// <summary>
-        /// Convolutional layer
+        /// Сверточный слой
         /// </summary>
         /// <param name="inputShape"> Размерность и форма входного тензора </param>
         /// <param name="filterStruct">Структура фильтров</param>
@@ -135,7 +135,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             Init(filterStruct, func, rnd);
         }
         /// <summary>
-        /// Convolutional layer
+        /// Сверточный слой
         /// </summary>
         /// <param name="filterStruct">Структура фильтров</param>
         /// <param name="func">Активационная функция</param>
@@ -151,7 +151,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Convolutional layer
+        /// Сверточный слой
         /// </summary>
         /// <param name="func">Активационная функция</param>
         /// <param name="filterCount">Число фильтров</param>
@@ -196,10 +196,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             AddDenInSqrt = Filters[0].Shape.Count;
         }
         /// <summary>
-        /// Setting up the random number generator initializer
+        /// Генерация весовых коэффициентов
         /// </summary>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
-        /// <param name="addDenumInSqrt">Adding a value to a radical expression in the denominator</param>
+        /// <param name="addDenumInSqrt">Добавление значения под корень знаменателя</param>
         public void GeneratorW(Random random, double addDenumInSqrt = 0)
         {
             double initParamsStdDev = Numerator / Math.Sqrt((FilterStrucuture.FilterH * FilterStrucuture.FilterW * InputShape.Depth) + addDenumInSqrt);
@@ -221,7 +221,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return output;
         }
         /// <summary>
-        /// Initialize layer weights
+        /// Инициализация слоя
         /// </summary>
         /// <param name="random"></param>
         public void InitWeights(Random random)
@@ -246,7 +246,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, ActivationFunction, TrainableParameters);
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         /// <returns></returns>
         public List<NNValue> GetParameters()
@@ -257,6 +257,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return values;
         }
 
+        /// <summary>
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
+        /// </summary>
         public void OnlyUse()
         {
             foreach (NNValue item in Filters)

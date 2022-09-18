@@ -51,7 +51,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Long short-term memory(LSTM) layer
         /// </summary>
-        /// <param name="inputDimension">Input dimension</param>
+        /// <param name="inputDimension">Размерность входа</param>
         /// <param name="outputDimension">Output dimension</param>
         /// <param name="initParamsStdDev">Standard deviation</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
@@ -65,7 +65,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Long short-term memory(LSTM) layer
         /// </summary>
-        /// <param name="inputShape">Input dimension</param>
+        /// <param name="inputShape">Размерность входа</param>
         /// <param name="outputDimension">Output dimension</param>
         /// <param name="initParamsStdDev">Standard deviation</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
@@ -124,7 +124,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return output;
         }
         /// <summary>
-        /// Resetting the state of the neural network layer
+        /// Сброс состояния нейронной сети
         /// </summary>
         public void ResetState()
         {
@@ -132,7 +132,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             _cellContext = new NNValue(OutputShape.Height);
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         public List<NNValue> GetParameters()
         {
@@ -150,7 +150,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return result;
         }
         /// <summary>
-        /// Generating weight coefficients of a neural network layer
+        /// Генерация случ. весов для сети
         /// </summary>
         /// <param name="random"></param>
         /// <returns></returns>

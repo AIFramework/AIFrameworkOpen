@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    ///  BatchReNormalization (Normalization of inputs during online learning)
+    ///  BatchReNormalization (Нормализация входов при онлайн-обучении)
     /// </summary>
     [Serializable]
     public class BatchReNormalization : ILearningLayer
@@ -43,7 +43,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public double AddDenInSqrt => 0;
 
         /// <summary>
-        ///  BatchReNormalization (Normalization of inputs during online learning)
+        ///  BatchReNormalization (Нормализация входов при онлайн-обучении)
         /// </summary>
         public BatchReNormalization()
         {
@@ -59,14 +59,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return g.Add(g.AdamarMul(_gamma, input), _beta);
         }
         /// <summary>
-        /// Generating weights
+        /// Генерация весовых коэффициентов
         /// </summary>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
         public void InitWeights(Random random)
         {
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         public List<NNValue> GetParameters()
         {

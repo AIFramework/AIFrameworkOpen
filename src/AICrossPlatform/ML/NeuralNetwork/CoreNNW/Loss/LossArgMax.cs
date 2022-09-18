@@ -9,20 +9,20 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Loss
     public class LossArgMax : ILoss
     {
         /// <summary>
-        /// Backward pass (taking derivative)
+        /// Обратный проход
         /// </summary>
-        /// <param name="actualOutput">Output value (actual)</param>
-        /// <param name="targetOutput">Target value (ideal)</param>
+        /// <param name="actualOutput">Реальный вызод</param>
+        /// <param name="targetOutput">Целевой(идеальный) выход</param>
         public void Backward(NNValue actualOutput, NNValue targetOutput)
         {
             throw new NotImplementedException();
 
         }
         /// <summary>
-        /// Error value
+        /// Значение ошибки
         /// </summary>
-        /// <param name="actualOutput">Output value (actual)</param>
-        /// <param name="targetOutput">Target value (ideal)</param>
+        /// <param name="actualOutput">Реальный вызод</param>
+        /// <param name="targetOutput">Целевой(идеальный) выход</param>
         public float Measure(NNValue actualOutput, NNValue targetOutput)
         {
             if (actualOutput.Data.Length != targetOutput.Data.Length)

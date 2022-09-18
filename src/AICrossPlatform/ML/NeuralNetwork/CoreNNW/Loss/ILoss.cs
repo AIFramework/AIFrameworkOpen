@@ -1,21 +1,19 @@
 ﻿namespace AI.ML.NeuralNetwork.CoreNNW.Loss
 {
     /// <summary>
-    /// Loss function interface
+    /// Интерфейс функции ошибки
     /// </summary>
     public interface ILoss
     {
         /// <summary>
-        /// Backward pass (taking derivative)
+        /// Обратный проход
         /// </summary>
-        /// <param name="actualOutput">Output value (actual)</param>
-        /// <param name="targetOutput">Target value (ideal)</param>
+        /// <param name="actualOutput"></param>
+        /// <param name="targetOutput"></param>
         void Backward(NNValue actualOutput, NNValue targetOutput);
         /// <summary>
-        /// Error value
+        /// Значение ошибки
         /// </summary>
-        /// <param name="actualOutput">Output value (actual)</param>
-        /// <param name="targetOutput">Target value (ideal)</param>
         float Measure(NNValue actualOutput, NNValue targetOutput);
     }
 }

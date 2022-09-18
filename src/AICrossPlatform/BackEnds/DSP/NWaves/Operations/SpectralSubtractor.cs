@@ -13,7 +13,6 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     /// 
     /// </summary>
     [Serializable]
-    /// 
     public class SpectralSubtractor : OverlapAddFilter
     {
         // Algorithm parameters

@@ -59,7 +59,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Long short-term memory(LSTM) layer with command line
         /// </summary>
-        /// <param name="inputDimension">Input dimension</param>
+        /// <param name="inputDimension">Размерность входа</param>
         /// <param name="initParamsStdDev">Standard deviation</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public ControllerLResNet(int inputDimension, double initParamsStdDev, Random rnd)
@@ -72,7 +72,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Long short-term memory(LSTM) layer with command line
         /// </summary>
-        /// <param name="inputShape">Input dimension</param>
+        /// <param name="inputShape">Размерность входа</param>
         /// <param name="outputDimension">Output dimension</param>
         /// <param name="initParamsStdDev">Standard deviation</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
@@ -134,7 +134,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return output;
         }
         /// <summary>
-        /// Resetting the state of the neural network layer
+        /// Сброс состояния нейронной сети
         /// </summary>
         public void ResetState()
         {
@@ -142,7 +142,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             _cellContext = new NNValue(OutputShape.Height);
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         public List<NNValue> GetParameters()
         {
@@ -161,7 +161,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return result;
         }
         /// <summary>
-        /// Generating weight coefficients of a neural network layer
+        /// Генерация случ. весов для сети
         /// </summary>
         /// <param name="inpShape"></param>
         /// <param name="random"></param>
@@ -219,6 +219,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return string.Format("LstmLayerL1     \t|inp: {0} |outp: {1} |Non lin. activate: {3} |TrainParams: {2}", InputShape, OutputShape, TrainableParameters, "sigm/tanh");
         }
 
+        /// <summary>
+        /// Генерация весовых коэффициентов
+        /// </summary>
+        /// <param name="random">ГПСЧ</param>
         public void InitWeights(Random random)
         {
             double std = 1.0 / Math.Sqrt(OutputShape.Volume * InputShape.Volume);

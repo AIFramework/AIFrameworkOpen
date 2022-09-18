@@ -3,19 +3,18 @@
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
     /// <summary>
-    /// Fast implementation of DCT-II via FFT
+    /// Быстрое дискретно-косинусное преобразование 2, через преобразование Фурье
     /// </summary>
     [Serializable]
-    /// 
     public class FastDct2 : IDct
     {
         /// <summary>
-        /// Internal FFT transformer
+        /// Внутренний алгоритм для выполнения БПФ
         /// </summary>
         private readonly Fft _fft;
 
         /// <summary>
-        /// Internal temporary buffer
+        /// Внутренний буффер памяти
         /// </summary>
         private readonly float[] _temp;
 
@@ -24,7 +23,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// </summary>
         public int Size => _fft.Size;
 
-
+        /// <summary>
+        /// Быстрое дискретно-косинусное преобразование 3, через преобразование Фурье
+        /// </summary>
         public FastDct2(int dctSize)
         {
             _fft = new Fft(dctSize);
@@ -32,7 +33,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         }
 
         /// <summary>
-        /// Direct DCT-II via FFT
+        /// Прямое преобразование
         /// </summary>
         /// <param name="input"></param>
         /// <param name="output"></param>
@@ -58,7 +59,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         }
 
         /// <summary>
-        /// Direct DCT-II via FFT (with normalization)
+        /// Прямое нормированное преобразование
         /// </summary>
         /// <param name="input"></param>
         /// <param name="output"></param>
@@ -88,7 +89,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         }
 
         /// <summary>
-        /// Inverse DCT-II via FFT
+        /// Обратное преобразование
         /// </summary>
         /// <param name="input"></param>
         /// <param name="output"></param>
@@ -114,6 +115,11 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
             }
         }
 
+        /// <summary>
+        /// Обратное нормированное преобразование (нереализовано)
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="output"></param>
         public void InverseNorm(float[] input, float[] output)
         {
             throw new NotImplementedException();

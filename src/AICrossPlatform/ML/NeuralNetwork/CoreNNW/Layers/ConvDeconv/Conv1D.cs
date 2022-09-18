@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
 {
     /// <summary>
-    /// One-dimensional convolutional layer
+    /// Одномерный сверточный слой
     /// </summary>
     [Serializable]
     public class Conv1D : IActivatableLayer, ILearningLayer
@@ -42,7 +42,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
         public IActivation ActivationFunction { get => _convolution.ActivationFunction; set => _convolution.ActivationFunction = value; }
 
         /// <summary>
-        /// One-dimensional convolutional layer
+        /// Одномерный сверточный слой
         /// </summary>
         public Conv1D(Shape3D inputShape, int core, int filters, Random rnd, IActivation activation = null)
         {
@@ -52,7 +52,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
             ActivationFunction = activation ?? new LinearUnit();
         }
         /// <summary>
-        /// One-dimensional convolutional layer
+        /// Одномерный сверточный слой
         /// </summary>
         public Conv1D(int core, int filters, IActivation activation = null)
         {
@@ -72,7 +72,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
             return _convolution.Forward(input, g);
         }
         /// <summary>
-        /// Initialize layer weights
+        /// Инициализация слоя
         /// </summary>
         /// <param name="random"></param>
         public void InitWeights(Random random)
@@ -81,7 +81,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
             _convolution.Init(fs, ActivationFunction, random);
         }
         /// <summary>
-        /// Generating a neural network layer
+        /// Обучаемые параметры
         /// </summary>
         public List<NNValue> GetParameters()
         {
@@ -96,6 +96,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, ActivationFunction, TrainableParameters);
         }
 
+        /// <summary>
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
+        /// </summary>
         public void OnlyUse()
         {
             _convolution.OnlyUse();

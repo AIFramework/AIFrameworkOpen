@@ -148,7 +148,7 @@ namespace AI.DSP.IIR
         }
 
         /// <summary>
-        /// Resetting the state of the neural network layer
+        /// Сброс состояния нейронной сети
         /// </summary>
         public void Reset()
         {

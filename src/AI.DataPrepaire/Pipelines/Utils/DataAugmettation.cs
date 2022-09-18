@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AI.DataPrepaire.Pipelines.Utils
 {
@@ -21,7 +20,7 @@ namespace AI.DataPrepaire.Pipelines.Utils
         /// <summary>
         /// Аугментация данных
         /// </summary>
-        public DataAugmetation(int kAug) 
+        public DataAugmetation(int kAug)
         {
             KAug = kAug;
         }

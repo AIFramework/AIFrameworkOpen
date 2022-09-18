@@ -92,21 +92,21 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return output;
         }
         /// <summary>
-        /// Resetting the state of the neural network layer
+        /// Сброс состояния нейронной сети
         /// </summary>
         public void ResetState()
         {
             _context = new NNValue(OutputShape.Height);
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         public List<NNValue> GetParameters()
         {
             return new List<NNValue> { _w, _b };
         }
         /// <summary>
-        /// Generating weights
+        /// Генерация весовых коэффициентов
         /// </summary>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
         public void InitWeights(Random random)

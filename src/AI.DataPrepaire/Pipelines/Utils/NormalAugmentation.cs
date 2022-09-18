@@ -1,8 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.Statistics;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AI.DataPrepaire.Pipelines.Utils
 {
@@ -13,10 +11,9 @@ namespace AI.DataPrepaire.Pipelines.Utils
     [Serializable]
     public class NormalAugmentation : DataAugmetation<Vector>
     {
-
-        double _mean = 0;
-        double _std = 1;
-        Random random = new Random();
+        private readonly double _mean = 0;
+        private readonly double _std = 1;
+        private readonly Random random = new Random();
 
 
         /// <summary>
@@ -39,7 +36,7 @@ namespace AI.DataPrepaire.Pipelines.Utils
 
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = sample + (Statistic.RandNorm(sample.Count, random) + _mean)*_std;
+                data[i] = sample + ((Statistic.RandNorm(sample.Count, random) + _mean) * _std);
             }
 
             return data;

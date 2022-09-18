@@ -73,14 +73,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return returnObj;
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         public List<NNValue> GetParameters()
         {
             return new List<NNValue> { _w };
         }
         /// <summary>
-        /// Generating weights
+        /// Генерация весовых коэффициентов
         /// </summary>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
         public void InitWeights(Random random)

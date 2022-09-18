@@ -10,7 +10,6 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     /// based on Griffin-Lim iterative algorithm.
     /// </summary>
     [Serializable]
-    /// 
     public class GriffinLimReconstructor
     {
         /// <summary>

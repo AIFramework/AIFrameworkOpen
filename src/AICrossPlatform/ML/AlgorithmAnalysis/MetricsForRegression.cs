@@ -15,7 +15,7 @@ namespace AI.ML.AlgorithmAnalysis
         private static readonly double _eps = 1e-100;
 
         // Сумма целевых значений
-        private static double TSum(IAlgebraicStructure targ)
+        private static double TSum(IAlgebraicStructure<double> targ)
         {
             double ts = 0;
             double[] data = targ.Data;
@@ -29,12 +29,12 @@ namespace AI.ML.AlgorithmAnalysis
         /// <summary>
         /// Усредненная метрика
         /// </summary>
-        private static double AvMetric(IEnumerable<IAlgebraicStructure> target, IEnumerable<IAlgebraicStructure> output, Func<IAlgebraicStructure, IAlgebraicStructure, double> metric)
+        private static double AvMetric(IEnumerable<IAlgebraicStructure<double> > target, IEnumerable<IAlgebraicStructure<double> > output, Func<IAlgebraicStructure<double> , IAlgebraicStructure<double> , double> metric)
         {
             int len = target.Count();
             double ret = 0;
-            IAlgebraicStructure[] t = target.ToArray();
-            IAlgebraicStructure[] o = output.ToArray();
+            IAlgebraicStructure<double>[] t = target.ToArray();
+            IAlgebraicStructure<double>[] o = output.ToArray();
             for (int i = 0; i < len; i++)
             {
                 ret += metric(t[i], o[i]);
@@ -46,7 +46,7 @@ namespace AI.ML.AlgorithmAnalysis
         /// <summary>
         /// Cредняя абсолютная ошибка
         /// </summary>
-        public static double MAE(IAlgebraicStructure target, IAlgebraicStructure output)
+        public static double MAE(IAlgebraicStructure<double> target, IAlgebraicStructure<double> output)
         {
             double ret = 0;
             double[] dataO = output.Data;
@@ -63,7 +63,7 @@ namespace AI.ML.AlgorithmAnalysis
         /// <summary>
         /// Cредняя абсолютная ошибка (В процентах)
         /// </summary>
-        public static double MAEPercent(IAlgebraicStructure target, IAlgebraicStructure output)
+        public static double MAEPercent(IAlgebraicStructure<double> target, IAlgebraicStructure<double> output)
         {
             double ret = 0;
             double[] dataO = output.Data;
@@ -80,7 +80,7 @@ namespace AI.ML.AlgorithmAnalysis
         /// <summary>
         /// Средняя абсолютная процентная ошибка
         /// </summary>
-        public static double MAPE(IAlgebraicStructure target, IAlgebraicStructure output)
+        public static double MAPE(IAlgebraicStructure<double> target, IAlgebraicStructure<double> output)
         {
             double ret = 0;
             double[] dataO = output.Data;
@@ -99,7 +99,7 @@ namespace AI.ML.AlgorithmAnalysis
         /// <param name="target"></param>
         /// <param name="output"></param>
         /// <returns></returns>
-        public static double MSE(IAlgebraicStructure target, IAlgebraicStructure output)
+        public static double MSE(IAlgebraicStructure<double> target, IAlgebraicStructure<double> output)
         {
             double ret = 0, q;
             double[] dataO = output.Data;
@@ -120,14 +120,14 @@ namespace AI.ML.AlgorithmAnalysis
         /// <param name="target"></param>
         /// <param name="output"></param>
         /// <returns></returns>
-        public static double RMSE(IAlgebraicStructure target, IAlgebraicStructure output)
+        public static double RMSE(IAlgebraicStructure<double> target, IAlgebraicStructure<double> output)
         {
             return Math.Sqrt(MSE(target, output));
         }
         /// <summary>
         /// RMLE (target[i]>-1, output[i]>-1 for all i \in [0; N-1])
         /// </summary>
-        public static double RMSLE(IAlgebraicStructure target, IAlgebraicStructure output)
+        public static double RMSLE(IAlgebraicStructure<double> target, IAlgebraicStructure<double> output)
         {
             Vector newTarg = new Vector(target.Shape.Count), newOut = new Vector(target.Shape.Count);
             double[] dataO = output.Data;
@@ -145,7 +145,7 @@ namespace AI.ML.AlgorithmAnalysis
         /// <summary>
         /// Корень из среднего квадрата ошибки в процентах
         /// </summary>
-        public static double RMSEPercent(IAlgebraicStructure target, IAlgebraicStructure output)
+        public static double RMSEPercent(IAlgebraicStructure<double> target, IAlgebraicStructure<double> output)
         {
             return target.Shape.Count * Math.Sqrt(MSE(target, output)) / (TSum(target) + _eps);
         }
@@ -156,7 +156,7 @@ namespace AI.ML.AlgorithmAnalysis
         /// <param name="target"></param>
         /// <param name="output"></param>
         /// <returns></returns>
-        public static double R2(IAlgebraicStructure target, IAlgebraicStructure output)
+        public static double R2(IAlgebraicStructure<double> target, IAlgebraicStructure<double> output)
         {
             double cor = Statistics.Statistic.CorrelationCoefficient(target, output);
             return cor * cor;
@@ -168,7 +168,7 @@ namespace AI.ML.AlgorithmAnalysis
         /// <param name="target"></param>
         /// <param name="output"></param>
         /// <returns></returns>
-        public static double Bias(IAlgebraicStructure target, IAlgebraicStructure output)
+        public static double Bias(IAlgebraicStructure<double> target, IAlgebraicStructure<double> output)
         {
             double ret = 0;
             double[] dataO = output.Data;
@@ -184,56 +184,56 @@ namespace AI.ML.AlgorithmAnalysis
         /// <summary>
         /// Cредняя абсолютная ошибка
         /// </summary>
-        public static double MAE(IEnumerable<IAlgebraicStructure> target, IEnumerable<IAlgebraicStructure> output)
+        public static double MAE(IEnumerable<IAlgebraicStructure<double>> target, IEnumerable<IAlgebraicStructure<double>> output)
         {
             return AvMetric(target, output, MAE);
         }
         /// <summary>
         /// Cредняя абсолютная ошибка (В процентах)
         /// </summary>
-        public static double MAEPercent(IEnumerable<IAlgebraicStructure> target, IEnumerable<IAlgebraicStructure> output)
+        public static double MAEPercent(IEnumerable<IAlgebraicStructure<double>> target, IEnumerable<IAlgebraicStructure<double>> output)
         {
             return AvMetric(target, output, MAEPercent);
         }
         /// <summary>
         /// Средняя абсолютная процентная ошибка
         /// </summary>
-        public static double MAPE(IEnumerable<IAlgebraicStructure> target, IEnumerable<IAlgebraicStructure> output)
+        public static double MAPE(IEnumerable<IAlgebraicStructure<double>> target, IEnumerable<IAlgebraicStructure<double>> output)
         {
             return AvMetric(target, output, MAPE);
         }
         /// <summary>
         /// Средний квадрат ошибки
         /// </summary>
-        public static double MSE(IEnumerable<IAlgebraicStructure> target, IEnumerable<IAlgebraicStructure> output)
+        public static double MSE(IEnumerable<IAlgebraicStructure<double>> target, IEnumerable<IAlgebraicStructure<double>> output)
         {
             return AvMetric(target, output, MSE);
         }
         /// <summary>
         /// Корень из среднего квадрата ошибки
         /// </summary>
-        public static double RMSE(IEnumerable<IAlgebraicStructure> target, IEnumerable<IAlgebraicStructure> output)
+        public static double RMSE(IEnumerable<IAlgebraicStructure<double>> target, IEnumerable<IAlgebraicStructure<double>> output)
         {
             return AvMetric(target, output, RMSE);
         }
         /// <summary>
         /// Корень из среднего квадрата ошибки в процентах
         /// </summary>
-        public static double RMSEPercent(IEnumerable<IAlgebraicStructure> target, IEnumerable<IAlgebraicStructure> output)
+        public static double RMSEPercent(IEnumerable<IAlgebraicStructure<double>> target, IEnumerable<IAlgebraicStructure<double>> output)
         {
             return AvMetric(target, output, RMSEPercent);
         }
         /// <summary>
         /// Корреляция Пирсона в квадрате
         /// </summary>
-        public static double R2(IEnumerable<IAlgebraicStructure> target, IEnumerable<IAlgebraicStructure> output)
+        public static double R2(IEnumerable<IAlgebraicStructure<double>> target, IEnumerable<IAlgebraicStructure<double>> output)
         {
             return AvMetric(target, output, R2);
         }
         /// <summary>
         /// Среднее смещение относительно 0
         /// </summary>
-        public static double Bias(IEnumerable<IAlgebraicStructure> target, IEnumerable<IAlgebraicStructure> output)
+        public static double Bias(IEnumerable<IAlgebraicStructure<double>> target, IEnumerable<IAlgebraicStructure<double>> output)
         {
             return AvMetric(target, output, Bias);
         }

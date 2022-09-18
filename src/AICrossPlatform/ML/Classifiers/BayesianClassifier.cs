@@ -64,11 +64,19 @@ namespace AI.ML.Classifiers
             return classes / classes.Sum();
         }
 
+        /// <summary>
+        /// Не реализовано
+        /// </summary>
+        /// <param name="path"></param>
+        /// <exception cref="NotImplementedException"></exception>
         public void Save(string path)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Не реализовано
+        /// </summary>
         public void Save(Stream stream)
         {
             throw new NotImplementedException();

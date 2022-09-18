@@ -8,8 +8,14 @@ namespace AI.BackEnds.DSP.NWaves.Utils
     public class MatrixNWaves
     {
         private readonly double[][] _matrix;
-
+        /// <summary>
+        /// Число строк
+        /// </summary>
         public int Rows { get; set; }
+
+        /// <summary>
+        /// Число столбцов
+        /// </summary>
         public int Columns { get; set; }
 
         /// <summary>
@@ -118,7 +124,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
 
             return eye;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static MatrixNWaves operator +(MatrixNWaves m1, MatrixNWaves m2)
         {
             Guard.AgainstInequality(m1.Rows, m2.Rows, "Number of rows in first matrix", "number of rows in second matrix");
@@ -137,6 +145,9 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             return result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static MatrixNWaves operator -(MatrixNWaves m1, MatrixNWaves m2)
         {
             Guard.AgainstInequality(m1.Rows, m2.Rows, "Number of rows in first matrix", "number of rows in second matrix");
@@ -155,6 +166,11 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             return result;
         }
 
+        /// <summary>
+        /// Значение по индексу
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public double[] this[int i] => _matrix[i];
     }
 }

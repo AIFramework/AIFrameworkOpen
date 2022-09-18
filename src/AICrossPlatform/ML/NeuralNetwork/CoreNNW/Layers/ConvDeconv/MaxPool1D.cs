@@ -66,6 +66,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "None", TrainableParameters);
         }
 
+        /// <summary>
+        /// Только использование (облегчает сеть) 
+        /// </summary>
         public void OnlyUse()
         {
         }

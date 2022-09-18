@@ -34,7 +34,7 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// Модель обучения с подкреплением  (без критика)
         /// </summary>
         /// <param name="actor"></param>
-        public RLWithoutCriticPipeline(ObjectClassifierPipeline<T> actor) 
+        public RLWithoutCriticPipeline(ObjectClassifierPipeline<T> actor)
         {
             Actor = actor;
         }
@@ -45,22 +45,22 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// Выполнить действие
         /// </summary>
         /// <param name="state">Состояние</param>
-        public virtual int GetAction(T state, double conf = 0.0, double t = 1) 
+        public virtual int GetAction(T state, double conf = 0.0, double t = 1)
         {
             double sep = Actor.random.NextDouble();
 
-            int action = (sep > conf)? Actor.StoсhasticClassify(state, t) : Actor.Classify(state);
+            int action = (sep > conf) ? Actor.StoсhasticClassify(state, t) : Actor.Classify(state);
 
             States.Add(state);
             Actions.Add(action);
-        
+
             return action;
         }
 
         /// <summary>
         /// Установка реварда / скора (Конец партии)
         /// </summary>
-        public virtual void SetReward(double score) 
+        public virtual void SetReward(double score)
         {
             ScoreElCl<T> scoreEl = new ScoreElCl<T>();
             scoreEl.Score = score;
@@ -77,7 +77,7 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// Обучение
         /// </summary>
         /// <param name="topK">Топ К лучших партий</param>
-        public virtual void Train(int topK = 3) 
+        public virtual void Train(int topK = 3)
         {
             var dataset = RewardData.TopKToTbl(topK).GetDataset();
             Actor.Train(dataset.ReturnData(), dataset.ReturnClasses());

@@ -5,14 +5,10 @@ using AI.DataStructs.Algebraic;
 using AI.Extensions;
 using AI.ML.AlgorithmAnalysis;
 using AI.ML.Classifiers;
-using AI.ML.DataSets;
 using AI.Statistics;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.Pipelines
 {
@@ -66,7 +62,7 @@ namespace AI.DataPrepaire.Pipelines
         /// </summary>
         public ObjectClassifierPipeline()
         {
-            
+
         }
 
         /// <summary>
@@ -90,7 +86,7 @@ namespace AI.DataPrepaire.Pipelines
             int i = 0;
             foreach (T inputItem in input)
                 ints[i++] = Classify(inputItem);
-            
+
             return ints;
         }
 
@@ -138,8 +134,8 @@ namespace AI.DataPrepaire.Pipelines
             int[] clsIds = new int[input.Length];
 
             for (int i = 0; i < clsIds.Length; i++)
-                 clsIds[i] = StoсhasticClassify(input[i], temp);
-            
+                clsIds[i] = StoсhasticClassify(input[i], temp);
+
             return clsIds;
         }
 
@@ -200,20 +196,20 @@ namespace AI.DataPrepaire.Pipelines
             List<int> trainY = new List<int>((int)(trainPart * dataset.Count));
 
 
-            List<T> testX = new List<T>((int)((1-trainPart) * dataset.Count));
-            List<int> testY = new List<int>((int)((1-trainPart) * dataset.Count));
+            List<T> testX = new List<T>((int)((1 - trainPart) * dataset.Count));
+            List<int> testY = new List<int>((int)((1 - trainPart) * dataset.Count));
 
             Random random = new Random(seed);
 
             // Разделение на обучающую и тестовую выборку
             for (int i = 0; i < dataset.Count; i++)
             {
-                if (random.NextDouble() <= trainPart) 
+                if (random.NextDouble() <= trainPart)
                 {
                     trainX.Add(dataset[i].Obj);
                     trainY.Add(dataset[i].ClassN);
                 }
-                else 
+                else
                 {
                     testX.Add(dataset[i].Obj);
                     testY.Add(dataset[i].ClassN);
@@ -222,21 +218,21 @@ namespace AI.DataPrepaire.Pipelines
 
             Train(trainX, trainY);
 
-            return MetricsForClassification.FullReport(Classify(testX), testY.ToArray(), isForEachClass:reportForEachClass);
+            return MetricsForClassification.FullReport(Classify(testX), testY.ToArray(), isForEachClass: reportForEachClass);
         }
 
         /// <summary>
         /// Очистка данных
         /// </summary>
-        public DatasetForClassifier ClearData(T[] dataIn, int[] classes) 
+        public DatasetForClassifier ClearData(T[] dataIn, int[] classes)
         {
-            DatasetForClassifier dataSamples = new DatasetForClassifier(classes.Length/2);
+            DatasetForClassifier dataSamples = new DatasetForClassifier(classes.Length / 2);
 
             for (int i = 0; i < classes.Length; i++)
             {
                 // Добавляем элементы, если мы знаем их класс и они не являются аномальными и/или неподходящими
                 if (classes[i] != UnknowClass && !Detector.IsDetected(dataIn[i]))
-                    dataSamples.Add(dataIn[i], classes[i]);  
+                    dataSamples.Add(dataIn[i], classes[i]);
             }
 
             return dataSamples;
@@ -266,7 +262,7 @@ namespace AI.DataPrepaire.Pipelines
         {
             var input = DataRestavration(data);
             var features = Extractor.GetFeatures(input);
-            return  (Vector)Normalizer.Transform(features);
+            return (Vector)Normalizer.Transform(features);
         }
 
 
@@ -291,7 +287,7 @@ namespace AI.DataPrepaire.Pipelines
             /// <summary>
             /// Перемешать датасет
             /// </summary>
-            public void ShuffleData() 
+            public void ShuffleData()
             {
                 this.Shuffle();
             }
@@ -299,7 +295,7 @@ namespace AI.DataPrepaire.Pipelines
             /// <summary>
             /// Вернуть данные
             /// </summary>
-            public T[] ReturnData() 
+            public T[] ReturnData()
             {
                 var ret = new T[Count];
 
@@ -313,7 +309,7 @@ namespace AI.DataPrepaire.Pipelines
             /// Вернуть метки классов
             /// </summary>
             /// <returns></returns>
-            public int[] ReturnClasses() 
+            public int[] ReturnClasses()
             {
                 var ret = new int[Count];
 
@@ -364,9 +360,9 @@ namespace AI.DataPrepaire.Pipelines
             {
                 ClassN = classN;
                 Obj = obj;
-            }   
+            }
         }
     }
 
-    
+
 }

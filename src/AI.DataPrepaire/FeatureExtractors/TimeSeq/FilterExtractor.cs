@@ -3,10 +3,6 @@ using AI.DataStructs.Algebraic;
 using AI.DSP.IIR;
 using AI.Statistics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.FeatureExtractors.TimeSeq
 {
@@ -33,7 +29,7 @@ namespace AI.DataPrepaire.FeatureExtractors.TimeSeq
         /// <param name="fCutUp">Верхние частоты среза</param>
         /// <param name="sr">Частота дискретизации</param>
         /// <param name="order">Порядок фильтров</param>
-        public FilterExtractor(double[] fCutDown, double[] fCutUp, double sr, int order = 5) 
+        public FilterExtractor(double[] fCutDown, double[] fCutUp, double sr, int order = 5)
         {
 
             Transformer = Statistic.СalcVariance;
@@ -62,10 +58,10 @@ namespace AI.DataPrepaire.FeatureExtractors.TimeSeq
         public override Vector GetFeatures(Vector crop)
         {
             Vector features = new Vector(IIRs.Length);
-            
+
             for (int i = 0; i < features.Count; i++)
                 features[i] = Transformer(IIRs[i].FilterOutp(crop));
-            
+
             return features;
         }
     }

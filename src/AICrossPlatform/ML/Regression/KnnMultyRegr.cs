@@ -252,7 +252,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Forecasted vector
         /// </summary>
-        /// <param name="inp">Input data vector</param>
+        /// <param name="inp">Вектор входных данных</param>
         public Vector Predict(Vector inp)
         {
             if (FixedH && IsNadrMethod)

@@ -5,12 +5,14 @@ using System;
 namespace AI.ML
 {
     /// <summary>
-    /// Cross-correlation matrix
+    /// Корреляционная матрица
     /// </summary>
     [Serializable]
     public class CrossCorrMatrix
     {
-
+        /// <summary>
+        /// Рассчет корреляционной матрицы
+        /// </summary>
         public static Matrix CalcMatrix(Vector[] x, Vector[] y)
         {
             Matrix matrix = new Matrix(x.Length, y.Length);

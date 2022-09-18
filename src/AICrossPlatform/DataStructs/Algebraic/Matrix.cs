@@ -17,7 +17,7 @@ namespace AI.DataStructs.Algebraic
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Height = {Height}, Width = {Width}")]
-    public class Matrix : IAlgebraicStructure, IEquatable<Matrix>, ISavable, ITextSavable, IByteConvertable
+    public class Matrix : IAlgebraicStructure<double> , IEquatable<Matrix>, ISavable, ITextSavable, IByteConvertable
     {
         #region Поля и свойства
         /// <summary>

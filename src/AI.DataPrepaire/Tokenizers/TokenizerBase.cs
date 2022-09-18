@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.Tokenizers
 {
@@ -33,7 +30,7 @@ namespace AI.DataPrepaire.Tokenizers
         /// Токенизатор
         /// </summary>
         public TokenizerBase()
-        {        }
+        { }
 
         /// <summary>
         /// Неизвестный токен
@@ -86,8 +83,8 @@ namespace AI.DataPrepaire.Tokenizers
             IEnumerable<int>[] ints = ids.ToArray();
             int[][] intsIds = new int[ints.Length][];
 
-            for (int i = 0; i < ints.Length; i++) 
-                intsIds[i] = ints[i].ToArray(); 
+            for (int i = 0; i < ints.Length; i++)
+                intsIds[i] = ints[i].ToArray();
 
             T[][] decoderArray = new T[ints.Length][];
 
@@ -140,7 +137,7 @@ namespace AI.DataPrepaire.Tokenizers
         {
             var dArr = data.ToArray();
             int batch_size = dArr.Length; // Вычисление размера батча
-            int len = dArr[0].Count(); 
+            int len = dArr[0].Count();
 
             for (int i = 1; i < dArr.Length; i++)
                 if (len < dArr[i].Count()) len = dArr[i].Count();

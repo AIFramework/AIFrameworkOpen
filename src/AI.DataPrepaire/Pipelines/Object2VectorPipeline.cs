@@ -2,10 +2,6 @@
 using AI.DataPrepaire.FeatureExtractors;
 using AI.DataStructs.Algebraic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.Pipelines
 {
@@ -32,13 +28,13 @@ namespace AI.DataPrepaire.Pipelines
         public Func<Vector, Vector> Transformer;
 
         // Простое преобразование
-        Vector SimpleTransform(Vector inp) { return inp; }
+        private Vector SimpleTransform(Vector inp) { return inp; }
 
 
         /// <summary>
         /// Конвейер обработки данных, преобразование объекта в вектор
         /// </summary>
-        public Object2VectorPipeline() 
+        public Object2VectorPipeline()
         {
             Transformer = SimpleTransform;
         }

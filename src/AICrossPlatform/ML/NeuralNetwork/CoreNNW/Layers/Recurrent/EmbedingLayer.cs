@@ -41,9 +41,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Активационная ф-я
         /// </summary>
         public IActivation ActivationFunction { get; set; } = new LinearUnit();
-        
+
         /// <summary>
-        /// Layer for training and creating embedding vectors
+        /// Слой для создания и обучения векторов встранивания
         /// </summary>
         public EmbedingLayer(int countVectors, int dim)
         {
@@ -52,7 +52,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             _isPreTrained = false;
         }
         /// <summary>
-        /// Layer for training and creating embedding vectors (initialization with pre-trained vectors)
+        /// Слой для создания и обучения векторов встранивания
         /// </summary>
         public EmbedingLayer(Vector[] vectors)
         {
@@ -110,7 +110,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return g.Activate(ActivationFunction, _vectors[index]);
         }
         /// <summary>
-        /// Initialize layer weights
+        /// Инициализация слоя
         /// </summary>
         /// <param name="random"></param>
         public void InitWeights(Random random)
@@ -121,7 +121,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         public List<NNValue> GetParameters()
         {
@@ -133,7 +133,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return data;
         }
         /// <summary>
-        /// Resetting the state of the neural network layer
+        /// Сброс состояния нейронной сети
         /// </summary>
         public void ResetState()
         {

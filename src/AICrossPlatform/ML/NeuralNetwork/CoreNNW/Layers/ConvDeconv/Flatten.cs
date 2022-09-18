@@ -87,7 +87,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         {
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "None", TrainableParameters);
         }
-
+        /// <summary>
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
+        /// </summary>
         public void OnlyUse()
         {
         }

@@ -22,7 +22,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly int _fftSize;
 
         /// <summary>
-        /// Internal FFT transformer
+        /// Внутренний алгоритм для выполнения БПФ
         /// </summary>
         private readonly RealFft _fft;
 
@@ -42,7 +42,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly WindowTypes _window;
 
         /// <summary>
-        /// Pre-computed samples of the window function
+        /// Pre-computed samples of the Оконная функция
         /// </summary>
         private readonly float[] _windowSamples;
 
@@ -56,7 +56,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// </summary>
         /// <param name="windowSize">Size of window</param>
         /// <param name="hopSize">Hop (overlap) size</param>
-        /// <param name="window">Type of the window function to apply</param>
+        /// <param name="window">Type of the Оконная функция to apply</param>
         /// <param name="fftSize">Size of FFT</param>
         public Stft(int windowSize = 1024, int hopSize = 256, WindowTypes window = WindowTypes.Hann, int fftSize = 0)
         {

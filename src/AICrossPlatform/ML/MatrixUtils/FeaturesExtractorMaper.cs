@@ -3,12 +3,22 @@ using System;
 
 namespace AI.ML.MatrixUtils
 {
+    /// <summary>
+    /// Экстрактор признаков (создает карту признаков)
+    /// </summary>
     [Serializable]
     public class FeaturesExtractorMaper
     {
         private readonly Func<Matrix, Vector> _transformer;
 
+        /// <summary>
+        /// Экстрактор признаков (создает карту признаков)
+        /// </summary>
         public FeaturesExtractorMaper() { }
+
+        /// <summary>
+        /// Экстрактор признаков (создает карту признаков)
+        /// </summary>
         public FeaturesExtractorMaper(Func<Matrix, Vector> transformFunction)
         {
             _transformer = transformFunction;

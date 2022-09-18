@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AI.DataPrepaire.Tokenizers
 {
@@ -17,7 +16,7 @@ namespace AI.DataPrepaire.Tokenizers
         /// Токен заполнения
         /// </summary>
         int PadToken { get; set; }
-        
+
         /// <summary>
         /// Токен начала
         /// </summary>
@@ -91,7 +90,7 @@ namespace AI.DataPrepaire.Tokenizers
     /// <summary>
     /// Стратегия заполнения батча
     /// </summary>
-    public enum TokenizerPadStratege 
+    public enum TokenizerPadStratege
     {
         /// <summary>
         /// Максимальная длинна в батче

@@ -154,6 +154,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, ActivationFunction, TrainableParameters);
         }
 
+        /// <summary>
+        /// Только для использования
+        /// </summary>
         public void OnlyUse()
         {
             for (int i = 0; i < FilterCells.Length; i++)

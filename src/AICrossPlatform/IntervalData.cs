@@ -42,7 +42,7 @@ namespace AI
         /// <summary>
         /// Нарезка вектора по интервалам
         /// </summary>
-        /// <param name="inputVector">Input data vector</param>
+        /// <param name="inputVector">Вектор входных данных</param>
         public Vector[] GetVects(Vector inputVector)
         {
             Vector[] outps = new Vector[bIntervals.Count];
@@ -59,7 +59,7 @@ namespace AI
         /// Нарезка вектора по интервалам + преобразование
         /// </summary>
         /// <param name="vect2doub">Функция для преобразования вектора в число</param>
-        /// <param name="input">Input data vector</param>
+        /// <param name="input">Вектор входных данных</param>
         public Vector GetVect(Func<Vector, double> vect2doub, Vector input)
         {
             Vector outps = new Vector(bIntervals.Count);

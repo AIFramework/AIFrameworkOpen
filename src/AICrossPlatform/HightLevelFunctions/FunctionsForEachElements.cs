@@ -128,7 +128,7 @@ namespace AI.HightLevelFunctions
             return x.Transform(r => Walsh(r, num));
         }
         /// <summary>
-        /// Loss function
+        /// Функция ошибки
         /// </summary>
         /// <param name="x">Аргумент</param>
         public static double Erf(double x)
@@ -297,7 +297,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Rounding
         /// </summary>
-        /// <param name="Inp">Input data vector</param>
+        /// <param name="Inp">Вектор входных данных</param>
         /// <param name="digits">до какого знака</param>
         /// <returns>Output vector</returns>
         public static Vector Round(Vector Inp, int digits)

@@ -2,6 +2,9 @@
 
 namespace AI.Statistics.Distributions
 {
+    /// <summary>
+    /// Интерфейс функции распределения без параметров
+    /// </summary>
     public interface IDistributionWithoutParams
     {
         /// <summary>

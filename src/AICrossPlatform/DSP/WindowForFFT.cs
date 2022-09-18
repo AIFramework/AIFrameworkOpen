@@ -7,7 +7,7 @@ namespace AI
 {
 
     /// <summary>
-    /// FFT window functions
+    /// FFT Оконная функцияs
     /// </summary>
     public static class WindowForFFT
     {
@@ -15,7 +15,7 @@ namespace AI
         /// <summary>
         /// Hann (Henning) window provides -31.5 dB sidelobe level
         /// </summary>
-        /// <param name="windowSize">Window size</param>
+        /// <param name="windowSize">Размер окна</param>
         public static Vector HannWindow(int windowSize)
         {
             Vector n = Vector.SeqBeginsWithZero(1, windowSize);
@@ -26,7 +26,7 @@ namespace AI
         /// <summary>
         /// Hamming window provides -42 dB sidelobe level
         /// </summary>
-        /// <param name="windowSize">Window size</param>
+        /// <param name="windowSize">Размер окна</param>
         public static Vector HammingWindow(int windowSize)
         {
             Vector n = Vector.SeqBeginsWithZero(1, windowSize);
@@ -37,7 +37,7 @@ namespace AI
         /// <summary>
         /// Rectangular window provides -13 dB sidelobe level
         /// </summary>
-        /// <param name="windowSize">Window size</param>
+        /// <param name="windowSize">Размер окна</param>
         public static Vector RectWindow(int windowSize)
         {
             return new Vector(windowSize) + 1;
@@ -46,7 +46,7 @@ namespace AI
         /// <summary>
         /// Blackman window provides sidelobe level -58 db
         /// </summary>
-        /// <param name="windowSize">Window size</param>
+        /// <param name="windowSize">Размер окна</param>
         public static Vector BlackmanWindow(int windowSize)
         {
             Vector n = Vector.SeqBeginsWithZero(1, windowSize);

@@ -5,12 +5,12 @@ namespace AI.DataStructs.Algebraic
     /// <summary>
     /// Интерфейс алгебраической структуры
     /// </summary>
-    public interface IAlgebraicStructure
+    public interface IAlgebraicStructure<T>
     {
         /// <summary>
         /// Представление данных структуры как одномерного массива
         /// </summary>
-        double[] Data { get; }
+        T[] Data { get; }
         /// <summary>
         /// Форма структуры
         /// </summary>

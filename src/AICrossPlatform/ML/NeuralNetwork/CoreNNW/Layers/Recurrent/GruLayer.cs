@@ -48,7 +48,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Слой GRU
         /// </summary>
-        /// <param name="inputDimension">Input dimension</param>
+        /// <param name="inputDimension">Размерность входа</param>
         /// <param name="outputDimension">Output dimension</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public GRULayer(int inputDimension, int outputDimension, Random rnd)
@@ -59,7 +59,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Слой GRU
         /// </summary>
-        /// <param name="inputShape">Input dimension</param>
+        /// <param name="inputShape">Размерность входа</param>
         /// <param name="outputDimension">Output dimension</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public GRULayer(Shape3D inputShape, int outputDimension, Random rnd)
@@ -92,14 +92,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return output;
         }
         /// <summary>
-        /// Resetting the state of the neural network layer
+        /// Сброс состояния нейронной сети
         /// </summary>
         public void ResetState()
         {
             _context = new NNValue(OutputShape.Height);
         }
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         public List<NNValue> GetParameters()
         {
@@ -118,7 +118,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return result;
         }
         /// <summary>
-        /// Generating weight coefficients of a neural network layer
+        /// Генерация случ. весов для сети
         /// </summary>
         /// <param name="random"></param>
         /// <returns></returns>
@@ -135,6 +135,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "sigm/tanh", TrainableParameters);
         }
 
+        /// <summary>
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
+        /// </summary>
         public void OnlyUse()
         {
             _hmix.OnlyUse();

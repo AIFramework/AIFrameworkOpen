@@ -126,7 +126,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Returns a vector, the length of which is equal to the number of classes, the value at the index of the required class is set to one, and at other indices to zero.
         /// </summary>
-        /// <param name="inp">Input data vector</param>
+        /// <param name="inp">Вектор входных данных</param>
         public Vector ClassifyProbVector(Vector inp)
         {
             List<int> indexis = new List<int>();

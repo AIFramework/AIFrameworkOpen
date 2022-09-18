@@ -7,14 +7,14 @@ using System.Numerics;
 namespace AI
 {
     /// <summary>
-    /// Fourier transform
+    /// Быстрое преобразование Фурье (БПФ)
     /// </summary>
     [Serializable]
     public class FFT
     {
 
         /// <summary>
-        /// FFT Samples
+        /// Число отсчетов БПФ
         /// </summary>
         public readonly int SemplesCount;
         private readonly int HalfSemplesCount;
@@ -66,7 +66,7 @@ namespace AI
                 {
                     for (int i = 0; i < halfSemplesCount; i++)
                     {
-                        *pointerToRotateCoef++ = Complex.Exp(-1 * 2 * Complex.ImaginaryOne * Math.PI * i / semplesCount); // exp(-jwt)
+                        *pointerToRotateCoef++ = Complex.Exp(-2 * Complex.ImaginaryOne * Math.PI * i / semplesCount); // exp(-jwt)
                     }
                 }
                 else
@@ -147,7 +147,12 @@ namespace AI
             return AISettings.FFTCore(input, canonic);
         }
 
-
+        /// <summary>
+        /// Базовый статичный метод, для БПФ
+        /// </summary>
+        /// <param name="input">Данные входа</param>
+        /// <param name="canonic">Если true, то ядро jwt, если false, то -jwt</param>
+        /// <returns></returns>
         public static ComplexVector BaseStaticFFT(ComplexVector input, bool canonic)
         {
             int lenght = Functions.NextPow2(input.Count);
@@ -160,7 +165,7 @@ namespace AI
         #endregion
 
         /// <summary>
-        /// FFT
+        /// Расчет БПФ
         /// </summary>
         public ComplexVector CalcFFT(Vector inp, bool canonic = true)
         {
@@ -179,7 +184,7 @@ namespace AI
 
 
         /// <summary>
-        /// FFT
+        /// Расчет БПФ
         /// </summary>
         public static unsafe Complex[] CalcFFT(double[] inp, int minCount = -1, bool canonic = true)
         {
@@ -199,7 +204,7 @@ namespace AI
 
 
         /// <summary>
-        /// FFT
+        /// Расчет БПФ
         /// </summary>
         public static double[] CalcIFFTReal(Complex[] inp, int size = -1)
         {
@@ -228,7 +233,7 @@ namespace AI
         }
 
         /// <summary>
-        /// The real part of the Inverse FFT
+        /// Действительная часть обратного БПФ
         /// </summary>
         public Vector RealIFFT(ComplexVector cInp)
         {
@@ -236,7 +241,7 @@ namespace AI
         }
 
         /// <summary>
-        /// The real part of the FFT(not normalized to the number of samples)
+        /// Действительная часть обратного БПФ(Без нормализации)
         /// </summary>
         public Vector RealIFFT2(ComplexVector inp)
         {
@@ -244,10 +249,10 @@ namespace AI
         }
 
         /// <summary>
-        /// Gives a signal spectrum from 0 to fd / 2
+        /// Получение спектра в диапазоне (0, fd/2)
         /// </summary>
-        /// <param name="input">Input data vector</param>
-        /// <param name="window">Window function</param>
+        /// <param name="input">Вектор входных данных</param>
+        /// <param name="window">Оконная функция</param>
         public Vector GetSpectrum(Vector input, Func<int, Vector> window)
         {
             Vector vect = input * window(input.Count); // Применение оконной функции
@@ -330,9 +335,9 @@ namespace AI
         #endregion
 
         /// <summary>
-        /// Time-frequency conversion
+        /// Частотно-временное преобразование
         /// </summary>
-        /// <param name="vect">Vector</param>
+        /// <param name="vect">Вектор</param>
         /// <param name="lenFr">Frame size</param>
         public static Matrix TimeFrTransform(Vector vect, int lenFr = 1000)
         {
@@ -361,9 +366,9 @@ namespace AI
 
 
         /// <summary>
-        /// Time-frequency conversion
+        /// Частотно-временное преобразование
         /// </summary>
-        /// <param name="vect">Vector</param>
+        /// <param name="vect">Вектор</param>
         /// <param name="lenFr">Frame size</param>
         public static Matrix TimeFrTransformHalf(Vector vect, int lenFr = 1024)
         {

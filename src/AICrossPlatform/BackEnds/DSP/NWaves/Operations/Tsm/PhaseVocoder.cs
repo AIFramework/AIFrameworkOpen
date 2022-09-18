@@ -12,7 +12,6 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     /// Conventional Phase Vocoder
     /// </summary>
     [Serializable]
-    /// 
     public class PhaseVocoder : IFilter
     {
         /// <summary>
@@ -36,7 +35,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         protected readonly double _stretch;
 
         /// <summary>
-        /// Internal FFT transformer
+        /// Внутренний алгоритм для выполнения БПФ
         /// </summary>
         protected readonly RealFft _fft;
 

@@ -9,6 +9,9 @@ using System.IO;
 
 namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 {
+    /// <summary>
+    /// Датасет для нерекуррентной сети-автокодировщика
+    /// </summary>
     [Serializable]
     public class DataSetSingle : DataSet, ISavable
     {
@@ -17,13 +20,13 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
         #region Конструкторы
         /// <summary>
-        /// Dataset for non-recurrent neural networks
+        /// Набор данных для нерекуррентной нейронной сети
         /// </summary>
         /// <param name="inputShape"></param>
         /// <param name="loss"></param>
         public DataSetSingle(Shape inputShape, ILoss loss = null) : base(inputShape, null, loss) { }
         /// <summary>
-        /// Dataset for non-recurrent neural networks
+        /// Набор данных для нерекуррентной нейронной сети
         /// </summary>
         /// <param name="data"></param>
         /// <param name="loss"></param>
@@ -51,12 +54,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             Init(data, valSplit);
         }
         /// <summary>
-        /// Dataset for non-recurrent neural networks
+        /// Набор данных для нерекуррентной нейронной сети
         /// </summary>
         /// <param name="data"></param>
         /// <param name="loss"></param>
         /// <param name="valSplit"></param>
-        public DataSetSingle(IAlgebraicStructure[] data, ILoss loss, double valSplit = 0.0) : base(data[0].Shape, null, loss)
+        public DataSetSingle(IAlgebraicStructure<double>[] data, ILoss loss, double valSplit = 0.0) : base(data[0].Shape, null, loss)
         {
             if (data == null)
             {
@@ -86,7 +89,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
         #region Методы
         /// <summary>
-        /// Adds one sample to the training subset
+        /// Добавить один пример в обучающую выборку
         /// </summary>
         /// <param name="data"></param>
         public void AddTrainingSample(NNValue data)
@@ -104,10 +107,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TrainingInternal.Add(GetSequence(data));
         }
         /// <summary>
-        /// Adds one sample to the training subset
+        /// Добавить один пример в обучающую выборку
         /// </summary>
         /// <param name="data"></param>
-        public void AddTrainingSample(IAlgebraicStructure data)
+        public void AddTrainingSample(IAlgebraicStructure<double> data)
         {
             if (data == null)
             {
@@ -122,7 +125,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TrainingInternal.Add(GetSequence(new NNValue(data)));
         }
         /// <summary>
-        /// Adds one sample to the validation subset
+        /// Добавить один пример в валидационную выборку
         /// </summary>
         /// <param name="data"></param>
         public void AddValidationSample(NNValue data)
@@ -140,10 +143,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             ValidationInternal.Add(GetSequence(data));
         }
         /// <summary>
-        /// Adds one sample to the validation subset
+        /// Добавить один пример в валидационную выборку
         /// </summary>
         /// <param name="data"></param>
-        public void AddValidationSample(IAlgebraicStructure data)
+        public void AddValidationSample(IAlgebraicStructure<double> data)
         {
             if (data == null)
             {
@@ -158,7 +161,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             ValidationInternal.Add(GetSequence(new NNValue(data)));
         }
         /// <summary>
-        /// Adds one sample to the testing subset
+        /// Добавить один пример в тестовую выборку
         /// </summary>
         /// <param name="data"></param>
         public void AddTestingSample(NNValue data)
@@ -176,10 +179,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TestingInternal.Add(GetSequence(data));
         }
         /// <summary>
-        /// Adds one sample to the testing subset
+        /// Добавить один пример в тестовую выборку
         /// </summary>
         /// <param name="data"></param>
-        public void AddTestingSample(IAlgebraicStructure data)
+        public void AddTestingSample(IAlgebraicStructure<double> data)
         {
             if (data == null)
             {
@@ -194,7 +197,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TestingInternal.Add(GetSequence(new NNValue(data)));
         }
         /// <summary>
-        /// Adds sample range to the training subset
+        /// Добавить массив примеров в обучающую выборку
         /// </summary>
         /// <param name="data"></param>
         public void AddTrainingRange(NNValue[] data)
@@ -220,10 +223,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TrainingInternal.AddRange(GetSequences(data));
         }
         /// <summary>
-        /// Adds sample range to the training subset
+        /// Добавить массив примеров в обучающую выборку
         /// </summary>
         /// <param name="data"></param>
-        public void AddTrainingRange(IAlgebraicStructure[] data)
+        public void AddTrainingRange(IAlgebraicStructure<double>[] data)
         {
             if (data == null)
             {
@@ -250,7 +253,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TrainingInternal.AddRange(GetSequences(nnvals));
         }
         /// <summary>
-        /// Adds sample range to the validation subset
+        /// Добавить массив примеров в валидационную выборку
         /// </summary>
         /// <param name="data"></param>
         public void AddvalidationRange(NNValue[] data)
@@ -276,10 +279,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             ValidationInternal.AddRange(GetSequences(data));
         }
         /// <summary>
-        /// Adds sample range to the validation subset
+        /// Добавить массив примеров в валидационную выборку
         /// </summary>
         /// <param name="data"></param>
-        public void AddValidationRange(IAlgebraicStructure[] data)
+        public void AddValidationRange(IAlgebraicStructure<double>[] data)
         {
             if (data == null)
             {
@@ -306,7 +309,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             ValidationInternal.AddRange(GetSequences(nnvals));
         }
         /// <summary>
-        /// Adds sample range to the testing subset
+        /// Добавить массив примеров в тестовую выборку
         /// </summary>
         /// <param name="data"></param>
         public void AddTestingRange(NNValue[] data)
@@ -332,10 +335,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TestingInternal.AddRange(GetSequences(data));
         }
         /// <summary>
-        /// Adds sample range to the testing subset
+        /// Добавить массив примеров в тестовую выборку
         /// </summary>
         /// <param name="data"></param>
-        public void AddTestingRange(IAlgebraicStructure[] data)
+        public void AddTestingRange(IAlgebraicStructure<double>[] data)
         {
             if (data == null)
             {
@@ -362,7 +365,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             TestingInternal.AddRange(GetSequences(nnvals));
         }
         /// <summary>
-        /// Add all samples from the "anotherSet" to current
+        /// Добавить все образцы из датасета "anotherSet" в текущий
         /// </summary>
         /// <param name="anotherSet"></param>
         public void Merge(DataSetSingle anotherSet)
@@ -392,7 +395,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
         #region Сохранение
         /// <summary>
-        /// Save dataset to file
+        /// Сохранить датасет в файл
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -400,7 +403,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Save dataset to stream
+        /// Сохранить датасет в поток
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -411,7 +414,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
         #region Загрузка
         /// <summary>
-        /// Load dataset from file
+        /// Загрузить датасет из файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -420,7 +423,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             return BinarySerializer.Load<DataSetSingle>(path);
         }
         /// <summary>
-        /// Load dataset from stream
+        /// Загрузить датасет из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>

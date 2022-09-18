@@ -98,7 +98,7 @@ namespace AI.ML.Clustering
         }
 
         /// <summary>Classify vector</summary>
-        /// <param name="vector">Vector</param>
+        /// <param name="vector">Вектор</param>
         public int Classify(Vector vector)
         {
             return NearestVector(vector);

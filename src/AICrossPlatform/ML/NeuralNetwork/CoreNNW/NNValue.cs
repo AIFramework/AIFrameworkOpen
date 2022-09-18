@@ -99,7 +99,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// Создать переменную нейронной сети на базе алгебраической структуры
         /// </summary>
         /// <param name="algebraicStructure"></param>
-        public NNValue(IAlgebraicStructure algebraicStructure)
+        public NNValue(IAlgebraicStructure<double> algebraicStructure)
         {
             if (algebraicStructure == null)
             {

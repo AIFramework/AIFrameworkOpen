@@ -7,7 +7,6 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
     /// Wavelet family type
     /// </summary>
     [Serializable]
-    /// 
     public enum WaveletFamily
     {
         /// <summary>

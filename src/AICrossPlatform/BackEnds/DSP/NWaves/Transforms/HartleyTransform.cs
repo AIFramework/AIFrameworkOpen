@@ -2,6 +2,10 @@
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
+
+    /// <summary>
+    /// Преобразование Гильберта
+    /// </summary>
     [Serializable]
 
     public class HartleyTransform
@@ -13,7 +17,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         public int Size { get; private set; }
 
         /// <summary>
-        /// Internal FFT transformer
+        /// Внутренний алгоритм для выполнения БПФ
         /// </summary>
         private readonly Fft _fft;
 

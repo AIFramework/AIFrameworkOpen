@@ -7,7 +7,6 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     /// Phase vocoder with identity phase locking [Puckette].
     /// </summary>
     [Serializable]
-    /// 
     public class PhaseLockingVocoder : PhaseVocoder
     {
         /// <summary>
@@ -35,8 +34,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         /// </summary>
         /// <param name="stretch"></param>
         /// <param name="hopAnalysis"></param>
-        /// <param name="fftSize"></param>
-        /// <param name="phaseLocking"></param>
+        /// <param name="fftSize"></param>\
         public PhaseLockingVocoder(double stretch, int hopAnalysis, int fftSize = 0)
             : base(stretch, hopAnalysis, fftSize)
         {

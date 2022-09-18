@@ -10,15 +10,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
     public interface IDataSet
     {
         /// <summary>
-        /// Input data dimension
+        /// Размерность входных данных
         /// </summary>
         Shape3D InputShape { get; }
         /// <summary>
-        /// Output data dimension
+        /// Размерность выходных данных
         /// </summary>
         Shape3D OutputShape { get; }
         /// <summary>
-        /// Loss function
+        /// Функция ошибки
         /// </summary>
         ILoss LossFunction { get; set; }
         /// <summary>

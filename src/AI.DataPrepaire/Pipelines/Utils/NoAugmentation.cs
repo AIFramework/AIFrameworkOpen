@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AI.DataPrepaire.Pipelines.Utils
 {
@@ -13,7 +11,7 @@ namespace AI.DataPrepaire.Pipelines.Utils
         /// <summary>
         /// Заглушка для аугментации
         /// </summary>
-        public NoAugmentation() : base(1) 
+        public NoAugmentation() : base(1)
         {
 
         }

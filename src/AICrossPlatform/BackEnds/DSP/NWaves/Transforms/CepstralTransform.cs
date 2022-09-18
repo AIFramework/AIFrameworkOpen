@@ -16,7 +16,6 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     /// 
     /// </summary>
     [Serializable]
-    /// 
     public class CepstralTransform
     {
         /// <summary>

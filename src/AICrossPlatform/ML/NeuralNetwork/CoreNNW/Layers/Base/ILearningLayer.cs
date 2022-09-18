@@ -9,12 +9,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
     public interface ILearningLayer : ILayer
     {
         /// <summary>
-        /// Initialize layer weights
+        /// Инициализация слоя
         /// </summary>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
         void InitWeights(Random random);
         /// <summary>
-        /// Getting trained parameters
+        /// Возвращает обучаемые параметры
         /// </summary>
         List<NNValue> GetParameters();
     }

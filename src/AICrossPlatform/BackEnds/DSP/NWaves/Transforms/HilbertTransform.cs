@@ -4,11 +4,10 @@ using System;
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
-    [Serializable]
-
     /// <summary>
     /// Hilbert Transform
     /// </summary>
+    [Serializable]
     public class HilbertTransform
     {
         /// <summary>

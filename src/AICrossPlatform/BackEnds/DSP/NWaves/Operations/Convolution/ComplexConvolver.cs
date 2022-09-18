@@ -17,7 +17,6 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
     /// 
     /// </summary>
     [Serializable]
-    /// 
     public class ComplexConvolver
     {
         /// <summary>

@@ -8,7 +8,6 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     /// and postprocessing: magnitude spectrum, power spectrum, logpower spectrum.
     /// </summary>
     [Serializable]
-    /// 
     public class Fft64
     {
         /// <summary>

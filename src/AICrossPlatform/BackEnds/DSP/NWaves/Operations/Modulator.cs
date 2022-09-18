@@ -16,7 +16,6 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     /// 
     /// </summary>
     [Serializable]
-    /// 
     public class Modulator
     {
         /// <summary>

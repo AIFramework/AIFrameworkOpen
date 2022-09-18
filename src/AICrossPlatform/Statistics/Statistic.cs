@@ -43,7 +43,7 @@ namespace AI.Statistics
         /// <summary>
         /// Создает объект класса Statistic, принимает вектор входных значений случайной величины
         /// </summary>
-        public Statistic(IAlgebraicStructure data)
+        public Statistic(IAlgebraicStructure<double> data)
         {
             _vector = data.Data;
             _n = _vector.Count;
@@ -371,7 +371,7 @@ namespace AI.Statistics
         ///  Максимальное значение
         /// </summary>
         /// <param name="array">Значения</param>
-        public static double MaximalValue(IAlgebraicStructure array)
+        public static double MaximalValue(IAlgebraicStructure<double> array)
         {
             double max = double.MinValue;
             int len = array.Shape.Count;
@@ -394,7 +394,7 @@ namespace AI.Statistics
         ///  Минимальное значение
         /// </summary>
         /// <param name="array">Значения</param>
-        public static double MinimalValue(IAlgebraicStructure array)
+        public static double MinimalValue(IAlgebraicStructure<double> array)
         {
             double min = double.MaxValue;
             int len = array.Shape.Count;
@@ -446,7 +446,7 @@ namespace AI.Statistics
         /// </summary>
         /// <param name="array"> Значения </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ExpectedValue(IAlgebraicStructure array)
+        public static double ExpectedValue(IAlgebraicStructure<double> array)
         {
             double summ = 0;
             double n = 0;
@@ -472,7 +472,7 @@ namespace AI.Statistics
         /// </summary>
         /// <param name="array"> Значения </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ExpectedValueAbs(IAlgebraicStructure array)
+        public static double ExpectedValueAbs(IAlgebraicStructure<double> array)
         {
             double summ = 0;
             double n = 0;
@@ -498,7 +498,7 @@ namespace AI.Statistics
         /// </summary>
         /// <param name="array"> Значения </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ExpectedValueNotCheckNaN(IAlgebraicStructure array)
+        public static double ExpectedValueNotCheckNaN(IAlgebraicStructure<double> array)
         {
             double summ = 0;
             int count = array.Shape.Count;
@@ -515,7 +515,7 @@ namespace AI.Statistics
         /// </summary>
         /// <param name="array"> Вектор значений </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ExpectedValueAbsNotCheckNaN(IAlgebraicStructure array)
+        public static double ExpectedValueAbsNotCheckNaN(IAlgebraicStructure<double> array)
         {
             double summ = 0;
             int count = array.Shape.Count;
@@ -567,7 +567,7 @@ namespace AI.Statistics
         /// <summary>
         /// Оценка дисперсии
         /// </summary>
-        public static double СalcVariance(IAlgebraicStructure array)
+        public static double СalcVariance(IAlgebraicStructure<double> array)
         {
             double dispers, eV = ExpectedValue(array);
             double summ = 0;
@@ -594,7 +594,7 @@ namespace AI.Statistics
         /// <summary>
         /// Расчет оценки СКО
         /// </summary>
-        public static double CalcStd(IAlgebraicStructure array)
+        public static double CalcStd(IAlgebraicStructure<double> array)
         {
             return Math.Sqrt(СalcVariance(array));
         }
@@ -813,7 +813,7 @@ namespace AI.Statistics
         /// <summary>
         /// Коэффициент корреляции Пирсона
         /// </summary>
-        public static double CorrelationCoefficient(IAlgebraicStructure X, IAlgebraicStructure Y)
+        public static double CorrelationCoefficient(IAlgebraicStructure<double> X, IAlgebraicStructure<double> Y)
         {
             return CorrelationCoefficient(X.Data, Y.Data);
         }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.Tokenizers.TextTokenizers
 {
@@ -70,7 +68,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
                 stringBuilder.Append(' ');
             }
 
-            return  stringBuilder.ToString();
+            return stringBuilder.ToString();
         }
 
         /// <summary>
@@ -86,7 +84,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
             var data = probability.Run(text);
 
             Dictionary<string, int> words = new Dictionary<string, int>();
-            string[] decoder = new string[data.Count+4];
+            string[] decoder = new string[data.Count + 4];
 
             // Добавляем служебные токены в декодер
             decoder[UnknowToken] = "<UNK>";
@@ -113,13 +111,13 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
                         token_index++;
                         break;
                     }
-                    token_index++; 
+                    token_index++;
                 }
             }
 
             // загружаем обученный токенизатор
             this.decoder = decoder;
-            this.encoder = words;
+            encoder = words;
 
         }
     }

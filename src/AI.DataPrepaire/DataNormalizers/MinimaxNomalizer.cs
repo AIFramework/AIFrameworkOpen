@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.DataPrepaire.DataNormalizers
 {
@@ -17,22 +15,22 @@ namespace AI.DataPrepaire.DataNormalizers
         public double[] Max { get; set; }
         public double[] MaxMinusMin { get; set; }
 
-   
+
         /// <summary>
         /// Восстановление нормализованных данных (Перезапись значений алгебраической структуры)
         /// </summary>
         /// <param name="normalizeData">Нормализованные данные</param>
-        public override IAlgebraicStructure Denormalize(IAlgebraicStructure normalizeData)
+        public override IAlgebraicStructure<double> Denormalize(IAlgebraicStructure<double> normalizeData)
         {
             if (normalizeData is Vector)
             {
-                return (normalizeData as Vector)* MaxMinusMin + Min;
+                return ((normalizeData as Vector) * MaxMinusMin) + Min;
             }
 
-            IAlgebraicStructure dat = normalizeData;
+            IAlgebraicStructure<double> dat = normalizeData;
 
             for (int i = 0; i < normalizeData.Data.Length; i++)
-                dat.Data[i] = normalizeData.Data[i]*MaxMinusMin[i] + Min[i];
+                dat.Data[i] = (normalizeData.Data[i] * MaxMinusMin[i]) + Min[i];
 
             return dat;
         }
@@ -41,9 +39,9 @@ namespace AI.DataPrepaire.DataNormalizers
         /// Обучение преобразователя
         /// </summary>
         /// <param name="data">Набор данных</param>
-        public override void Train(IEnumerable<IAlgebraicStructure> data)
+        public override void Train(IEnumerable<IAlgebraicStructure<double>> data)
         {
-            IAlgebraicStructure[] algebraicStructures = (data is IAlgebraicStructure[]) ? data as IAlgebraicStructure[] : data.ToArray();
+            IAlgebraicStructure<double>[] algebraicStructures = (data is IAlgebraicStructure<double>[]) ? data as IAlgebraicStructure<double>[] : data.ToArray();
             Min = new double[algebraicStructures[0].Shape.Count];
             Max = new double[algebraicStructures[0].Shape.Count];
             MaxMinusMin = new double[algebraicStructures[0].Shape.Count];
@@ -63,15 +61,15 @@ namespace AI.DataPrepaire.DataNormalizers
 
                 for (int j = 0; j < Min.Length; j++)
                 {
-                    if(Min[j] > dat[j]) Min[j] = dat[j];
-                    if(Max[j] < dat[j]) Max[j] = dat[j];
+                    if (Min[j] > dat[j]) Min[j] = dat[j];
+                    if (Max[j] < dat[j]) Max[j] = dat[j];
                 }
             }
 
             for (int i = 0; i < Min.Length; i++)
             {
                 MaxMinusMin[i] = Max[i] - Min[i];
-                MaxMinusMin[i] = MaxMinusMin[i] == 0? double.Epsilon : MaxMinusMin[i];
+                MaxMinusMin[i] = MaxMinusMin[i] == 0 ? double.Epsilon : MaxMinusMin[i];
             }
         }
 
@@ -79,14 +77,14 @@ namespace AI.DataPrepaire.DataNormalizers
         /// <summary>
         /// Использование преобразователя (Перезапись значений алгебраической структуры)
         /// </summary>
-        public override IAlgebraicStructure Transform(IAlgebraicStructure data)
+        public override IAlgebraicStructure<double> Transform(IAlgebraicStructure<double> data)
         {
             if (data is Vector)
             {
                 return ((data as Vector) - Min) / MaxMinusMin;
             }
 
-            IAlgebraicStructure dat = data;
+            IAlgebraicStructure<double> dat = data;
 
             for (int i = 0; i < data.Data.Length; i++)
                 dat.Data[i] = (data.Data[i] - Min[i]) / MaxMinusMin[i];

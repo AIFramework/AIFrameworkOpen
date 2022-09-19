@@ -11,7 +11,7 @@ namespace AI.ML.AlgorithmAnalysis
     [Serializable]
     public class ImageSimilarityMetrics
     {
-
+        // Fausto Milletari, Nassir Navab, Seyed-Ahmad Ahmadi.// V-Net: Fully Convolutional Neural Networks for Volumetric Medical Image Segmentation.// 2016 Fourth International Conference on 3D Vision
         /// <summary>
         /// Приблизительный алгоритм вычисления значения метрики Дайса (метрика симметричная) 
         /// </summary>
@@ -24,6 +24,7 @@ namespace AI.ML.AlgorithmAnalysis
             return 2 * (v1 * v2).Mean() / (v1.Mean() + v2.Mean());
         }
 
+        // https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient 
         /// <summary>
         /// Значение метрики Дайса (метрика симметричная) 
         /// </summary>

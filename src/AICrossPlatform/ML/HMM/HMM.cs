@@ -4,7 +4,7 @@ using System;
 namespace AI.ML.HMM
 {
     /// <summary>
-    /// Basic block for constructing hidden Markov models, Markov chain
+    /// Дискретная Марковская цепь
     /// </summary>
     [Serializable]
     public class HMM
@@ -32,7 +32,7 @@ namespace AI.ML.HMM
         /// <summary>
         /// Обучение
         /// </summary>
-        /// <param name="trainSeq">Training sequence</param>
+        /// <param name="trainSeq">Изучаемая последовательность</param>
         public void Train(int[] trainSeq)
         {
 
@@ -85,7 +85,7 @@ namespace AI.ML.HMM
         /// <summary>
         /// Maximum transition probability
         /// </summary>
-        /// <param name="matrix">State Matrix</param>
+        /// <param name="matrix">Матрица состояний</param>
         private double GetMax(double[,] matrix)
         {
             double max = matrix[0, 0];
@@ -108,7 +108,7 @@ namespace AI.ML.HMM
         /// <summary>
         /// Generating text
         /// </summary>
-        /// <param name="num">Steps count</param>
+        /// <param name="num">Шагs count</param>
         /// <param name="begin">The first word</param>
         public int[] Generate(int num, int begin)
         {

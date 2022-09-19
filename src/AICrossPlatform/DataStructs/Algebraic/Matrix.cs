@@ -60,7 +60,7 @@ namespace AI.DataStructs.Algebraic
             set => Data[i] = value;
         }
         /// <summary>
-        /// Matrix determinant
+        /// Определитель матрицы
         /// </summary>
         /// <returns></returns>
         public double Determinant
@@ -69,7 +69,7 @@ namespace AI.DataStructs.Algebraic
             {
                 if (!IsSquared)
                 {
-                    throw new InvalidOperationException("Matrix is not squared");
+                    throw new InvalidOperationException("Матрица не является квадратной");
                 }
 
                 double result = 1.0;
@@ -100,15 +100,15 @@ namespace AI.DataStructs.Algebraic
             }
         }
         /// <summary>
-        /// Tells if matrix is filled with zeros
+        /// Все ли элементы матрицы равны нулю
         /// </summary>
         public bool IsZero => Data.All(el => el == 0);
         /// <summary>
-        /// Tells if matrix is squared
+        /// Квадратная ли матрица
         /// </summary>
         public bool IsSquared => Height == Width;
         /// <summary>
-        /// Tells if matrix is diagonal
+        /// Является ли матрица диагональной
         /// </summary>
         public bool IsDiagonal
         {
@@ -148,7 +148,7 @@ namespace AI.DataStructs.Algebraic
             }
         }
         /// <summary>
-        /// Tells if matrix is triangle
+        /// Является ли матрица треугольной
         /// </summary>
         public bool IsTriangle
         {
@@ -216,7 +216,7 @@ namespace AI.DataStructs.Algebraic
             }
         }
         /// <summary>
-        /// Creating a matrix of 0s with the given shape
+        /// Создает матрицу заданной формы инициализированную нулями 
         /// </summary>
         /// <param name="shape"></param>
         public Matrix(Shape shape)
@@ -525,38 +525,28 @@ namespace AI.DataStructs.Algebraic
 
         #region Методы
         /// <summary>
-        /// Replacing uncertainty with mean
+        /// Замена неопределенности(nan) на среднее значение
         /// </summary>
         public Matrix NanToMean()
         {
             Matrix outp = new Matrix(Height, Width);
             double m = Mean();
 
-            for (int i = 0; i < Height; i++)
-            {
-                for (int j = 0; j < Width; j++)
-                {
-                    outp[i, j] = double.IsNaN(this[i, j]) ? m : this[i, j];
-                }
-            }
-
+            for (int i = 0; i < Data.Length; i++)
+                    outp.Data[i] = double.IsNaN(Data[i]) ? m : Data[i];
+              
             return outp;
         }
         /// <summary>
-        /// Replacing uncertainty with a number
+        ///  Замена неопределенности(nan) на заданное значение
         /// </summary>
         /// <param name="value">Число</param>
         public Matrix NanToValue(double value = 0)
         {
             Matrix outp = new Matrix(Height, Width);
 
-            for (int i = 0; i < Height; i++)
-            {
-                for (int j = 0; j < Width; j++)
-                {
-                    outp[i, j] = double.IsNaN(this[i, j]) ? value : this[i, j];
-                }
-            }
+            for (int i = 0; i < Data.Length; i++)
+                outp.Data[i] = double.IsNaN(Data[i]) ? value : Data[i];
 
             return outp;
         }
@@ -744,8 +734,8 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Макс пулинг
         /// </summary>
-        /// <param name="poolH">step по высоте</param>
-        /// <param name="poolW">step по ширине</param>
+        /// <param name="poolH">Шаг по высоте</param>
+        /// <param name="poolW">Шаг по ширине</param>
         /// <param name="indexPool">Максимальные индексы в исходной матрице</param>
         /// <returns></returns>
         public Matrix MaxPool(int poolH, int poolW, out int[,] indexPool)
@@ -934,7 +924,7 @@ namespace AI.DataStructs.Algebraic
             return B;
         }
         /// <summary>
-        /// Rounding значений
+        /// Окугление значений
         /// </summary>
         /// <param name="n">До какого знака</param>
         public Matrix Round(int n)
@@ -975,7 +965,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Возвращает вектор с нужного среза, нужный индекс
         /// </summary>
-        /// <param name="index">Index</param>
+        /// <param name="index">Индекс</param>
         /// <param name="dimension">Срез/размерность</param>
         /// <returns>Вектор</returns>
         public Vector GetVector(int index, int dimension)
@@ -1040,7 +1030,7 @@ namespace AI.DataStructs.Algebraic
 
         #region Статические методы
         /// <summary>
-        /// Replacing uncertainty with mean
+        /// Замена неопределенности средним значением
         /// </summary>
         /// <param name="matrices"></param>
         public static Matrix[] NanToMeanOfFeatures(Matrix[] matrices)
@@ -1352,7 +1342,7 @@ namespace AI.DataStructs.Algebraic
 
         #region Статические методы инициализации
         /// <summary>
-        /// Initialize matrix from string
+        /// Инициализация матрицы с помощью строки
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -1361,7 +1351,7 @@ namespace AI.DataStructs.Algebraic
             return Parse(str, AISettings.GetProvider());
         }
         /// <summary>
-        /// Initialize matrix from string
+        /// Инициализация матрицы с помощью строки
         /// </summary>
         /// <param name="str"></param>
         /// <param name="provider"></param>
@@ -1392,7 +1382,7 @@ namespace AI.DataStructs.Algebraic
             return FromVectorsAsRows(vects);
         }
         /// <summary>
-        /// Tries to initialize matrix from string
+        /// Инициализация матрицы с помощью строки
         /// </summary>
         /// <param name="str"></param>
         /// <param name="result"></param>
@@ -1402,7 +1392,7 @@ namespace AI.DataStructs.Algebraic
             return TryParse(str, out result, AISettings.GetProvider());
         }
         /// <summary>
-        /// Tries to initialize matrix from string
+        /// Инициализация матрицы с помощью строки
         /// </summary>
         /// <param name="str"></param>
         /// <param name="result"></param>
@@ -1455,7 +1445,7 @@ namespace AI.DataStructs.Algebraic
             return true;
         }
         /// <summary>
-        /// Initialize matrix from vector array where each vector is a matrix row
+        /// Инициализация матрицы с помощью векторов-строк
         /// </summary>
         /// <param name="vectors"></param>
         /// <returns></returns>
@@ -1488,7 +1478,7 @@ namespace AI.DataStructs.Algebraic
             return result;
         }
         /// <summary>
-        /// Initialize matrix from vector array where each vector is a matrix column
+        /// Инициализация матрицы с помощью векторов-столбцов
         /// </summary>
         /// <param name="vectors"></param>
         /// <returns></returns>
@@ -1521,7 +1511,7 @@ namespace AI.DataStructs.Algebraic
             return result;
         }
         /// <summary>
-        /// Initialize matrix from 2D array of strings
+        /// Инициализация матрицы с помощью двухмерного массива строк
         /// </summary>
         /// <param name="arr"></param>
         /// <returns></returns>
@@ -1530,7 +1520,7 @@ namespace AI.DataStructs.Algebraic
             return FromStrings(arr, AISettings.GetProvider());
         }
         /// <summary>
-        /// Initialize matrix from 2D array of strings
+        /// Инициализация матрицы с помощью двухмерного массива строк
         /// </summary>
         /// <param name="arr"></param>
         /// <param name="provider"></param>
@@ -1636,7 +1626,7 @@ namespace AI.DataStructs.Algebraic
 
         #region Сохранение
         /// <summary>
-        /// Saves matrix to the file
+        /// Сохранение матрицы в файл
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -1644,7 +1634,7 @@ namespace AI.DataStructs.Algebraic
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Saves matrix to the stream
+        /// Сохранение матрицы в поток
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -1652,7 +1642,7 @@ namespace AI.DataStructs.Algebraic
             BinarySerializer.Save(stream, this);
         }
         /// <summary>
-        /// Saves matrix to file in text format
+        /// Сохранение матрицы в файл в текстовом формате
         /// </summary>
         /// <param name="path"></param>
         public void SaveAsText(string path)
@@ -1660,7 +1650,7 @@ namespace AI.DataStructs.Algebraic
             File.WriteAllText(path, ToString());
         }
         /// <summary>
-        /// Represents matrix as an array of bytes
+        /// Представление массивом байт
         /// </summary>
         /// <returns></returns>
         public byte[] GetBytes()
@@ -1671,7 +1661,7 @@ namespace AI.DataStructs.Algebraic
 
         #region Загрузка
         /// <summary>
-        /// Loads matrix from file
+        /// Загрузка матрицы
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -1680,7 +1670,7 @@ namespace AI.DataStructs.Algebraic
             return BinarySerializer.Load<Matrix>(path);
         }
         /// <summary>
-        /// Loads matrix from the stream
+        /// Загрузка матрицы
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
@@ -1689,7 +1679,7 @@ namespace AI.DataStructs.Algebraic
             return BinarySerializer.Load<Matrix>(stream);
         }
         /// <summary>
-        /// Loads matrix from text file
+        /// Загрузка матрицы
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -1698,7 +1688,7 @@ namespace AI.DataStructs.Algebraic
             return Parse(File.ReadAllText(path));
         }
         /// <summary>
-        /// Initializes matrix from byte array
+        /// Загрузка матрицы
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -1712,7 +1702,7 @@ namespace AI.DataStructs.Algebraic
             return FromDataStream(InMemoryDataStream.FromByteArray(data));
         }
         /// <summary>
-        /// Initializes matrix from data stream
+        /// Загрузка матрицы
         /// </summary>
         /// <param name="dataStream"></param>
         /// <returns></returns>

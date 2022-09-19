@@ -9,7 +9,7 @@ using System;
 namespace AI.DSP
 {
     /// <summary>
-    /// Channel
+    /// Канал
     /// </summary>
     [Serializable]
     public class Channel
@@ -37,7 +37,7 @@ namespace AI.DSP
         /// <summary>
         /// Доступ по индексам к данным канала
         /// </summary>
-        /// <param name="i">Index</param>
+        /// <param name="i">Индекс</param>
         public double this[int i]
         {
             get => ChData[i];
@@ -52,7 +52,7 @@ namespace AI.DSP
         private readonly int _n;
 
         /// <summary>
-        /// Channel
+        /// Канал
         /// </summary>
         public Channel()
         {
@@ -63,7 +63,7 @@ namespace AI.DSP
             ScaleVolt = TypeScaleVolt.V;
         }
         /// <summary>
-        /// Channel, задается через вектор данных и частоту дискретизации
+        /// Канал, задается через вектор данных и частоту дискретизации
         /// </summary>
         /// <param name="vectorData">Вектор</param>
         /// <param name="fd">Частота</param>
@@ -78,7 +78,7 @@ namespace AI.DSP
             ScaleVolt = TypeScaleVolt.V;
         }
         /// <summary>
-        /// Channel, задается через вектор данных, частоту дискретизации и имя
+        /// Канал, задается через вектор данных, частоту дискретизации и имя
         /// </summary>
         /// <param name="vectorData">Вектор</param>
         /// <param name="fd">Частота</param>
@@ -94,7 +94,7 @@ namespace AI.DSP
             ScaleVolt = TypeScaleVolt.V;
         }
         /// <summary>
-        /// Channel, задается через вектор данных, частоту дискретизации, имя и  описание
+        /// Канал, задается через вектор данных, частоту дискретизации, имя и  описание
         /// </summary>
         /// <param name="vectorData">Вектор</param>
         /// <param name="fd">Частота</param>

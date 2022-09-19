@@ -165,7 +165,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Перевод в double
         /// </summary>
-        /// <param name="i">Index</param>
+        /// <param name="i">Индекс</param>
         /// <param name="R">Вес окна</param>
         private double ToData(int i, out double R)
         {

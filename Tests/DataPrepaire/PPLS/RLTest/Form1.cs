@@ -38,7 +38,7 @@ namespace RLTest
             InitializeComponent();
 
             // Создаем выборку
-            Random random = new Random(2);
+            Random random = new Random(1);
 
             //Класс 1
             Vector cl1 = new Vector(2, 2, 8, 11, -2);
@@ -62,13 +62,19 @@ namespace RLTest
         private void button1_Click(object sender, EventArgs e)
         {
             double mScore = 0;
-            int count = 16;
+            int count = 15;
 
             for (int i = 0; i < count; i++)
             {
                 mScore += RunMatch();
             }
-            rL.Train(1);
+
+            int[] cls = rL.RewardData[rL.RewardData.Count-1].Actions;
+
+            ShowScatter(cls); // Показываем классификацию на случайной партии
+            rL.Train(3);
+
+            if (rL.RewardData.Count > 1500) rL.ClearData();
 
             mScore /= count;
             x.Add(allCount);
@@ -107,6 +113,40 @@ namespace RLTest
 
             return score;
         }
+
+
+        /// <summary>
+        /// Показывает распределение классов
+        /// </summary>
+        /// <param name="marks"></param>
+        public void ShowScatter(int[] marks) 
+        {
+            Vector cl1X = new Vector(0);
+            Vector cl1Y = new Vector(0);
+
+            Vector cl2X = new Vector(0);
+            Vector cl2Y = new Vector(0);
+            
+
+            for (int i = 0; i < marks.Length-1; i++)
+            {
+                if (marks[i] == 0)
+                {
+                    cl1X.Add(xList[i][0]);
+                    cl1Y.Add(xList[i][1]);
+                }
+                else
+                {
+                    cl2X.Add(xList[i][0]);
+                    cl2Y.Add(xList[i][1]);
+                }
+            }
+
+            chartVisual2.Clear();
+            chartVisual2.AddScatter(cl1X, cl1Y, "Класс 1", Color.Blue);
+            chartVisual2.AddScatter(cl2X, cl2Y, "Класс 2", Color.Gray);
+        }
+
     }
 
 
@@ -151,7 +191,7 @@ namespace RLTest
         NNW GetNNW()
         {
             NNW net = new NNW();
-            net.AddNewLayer(new Shape3D(5), new FeedForwardLayer(39, new ReLU(0.1)));
+            net.AddNewLayer(new Shape3D(5), new FeedForwardLayer(15, new ReLU(0.1)));
             net.AddNewLayer(new FeedForwardLayer(2, new SoftmaxUnit()));
             return net;
         }

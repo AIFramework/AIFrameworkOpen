@@ -30,6 +30,7 @@
         {
             this.chartVisual1 = new AI.Charts.Control.ChartVisual();
             this.button1 = new System.Windows.Forms.Button();
+            this.chartVisual2 = new AI.Charts.Control.ChartVisual();
             this.SuspendLayout();
             // 
             // chartVisual1
@@ -48,14 +49,14 @@
             this.chartVisual1.IsShowXY = true;
             this.chartVisual1.LabelX = "Число партий";
             this.chartVisual1.LabelY = "Значение среднего реварда";
-            this.chartVisual1.Location = new System.Drawing.Point(-2, 0);
+            this.chartVisual1.Location = new System.Drawing.Point(397, -16);
             this.chartVisual1.Name = "chartVisual1";
-            this.chartVisual1.Size = new System.Drawing.Size(1049, 454);
+            this.chartVisual1.Size = new System.Drawing.Size(632, 454);
             this.chartVisual1.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(-2, 428);
+            this.button1.Location = new System.Drawing.Point(12, 299);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(172, 26);
             this.button1.TabIndex = 2;
@@ -63,11 +64,30 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // chartVisual2
+            // 
+            this.chartVisual2.AutoScroll = true;
+            this.chartVisual2.BackColor = System.Drawing.Color.White;
+            this.chartVisual2.ChartName = "График";
+            this.chartVisual2.ForeColor = System.Drawing.Color.Black;
+            this.chartVisual2.IsContextMenu = true;
+            this.chartVisual2.IsLogScale = false;
+            this.chartVisual2.IsMoove = true;
+            this.chartVisual2.IsScale = true;
+            this.chartVisual2.IsShowXY = true;
+            this.chartVisual2.LabelX = "Ось Х";
+            this.chartVisual2.LabelY = "Ось Y";
+            this.chartVisual2.Location = new System.Drawing.Point(-2, 0);
+            this.chartVisual2.Name = "chartVisual2";
+            this.chartVisual2.Size = new System.Drawing.Size(393, 282);
+            this.chartVisual2.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1041, 450);
+            this.Controls.Add(this.chartVisual2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.chartVisual1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -81,6 +101,7 @@
 
         private AI.Charts.Control.ChartVisual chartVisual1;
         private System.Windows.Forms.Button button1;
+        private AI.Charts.Control.ChartVisual chartVisual2;
     }
 }
 

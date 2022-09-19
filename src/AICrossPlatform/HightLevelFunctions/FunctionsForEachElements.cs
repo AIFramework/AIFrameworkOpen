@@ -295,7 +295,7 @@ namespace AI.HightLevelFunctions
             return A;
         }
         /// <summary>
-        /// Rounding
+        /// Окугление
         /// </summary>
         /// <param name="Inp">Вектор входных данных</param>
         /// <param name="digits">до какого знака</param>

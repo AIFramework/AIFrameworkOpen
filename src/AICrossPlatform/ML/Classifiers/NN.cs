@@ -68,7 +68,7 @@ namespace AI.ML.Classifiers
         /// Adding a standard to the classifier
         /// </summary>
         /// <param name="tDataset">Dataset</param>
-        /// <param name="numClass">Index класса</param>
+        /// <param name="numClass">Индекс класса</param>
 		public void AddClass(Vector[] tDataset, int numClass)
         {
             Vector a = GetCentr(tDataset);

@@ -14,7 +14,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         public double[][] A { get; set; }
 
         /// <summary>
-        /// Input-to-state matrix
+        /// Input-to-Матрица состояний
         /// </summary>
         public double[] B { get; set; }
 

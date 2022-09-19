@@ -772,7 +772,7 @@ namespace AI.DataStructs.Algebraic
             return this / Norm();
         }
         /// <summary>
-        /// Rounding
+        /// Окугление
         /// </summary>
         /// <param name="num">Count of digits in the fraction</param>
         /// <returns></returns>
@@ -1586,7 +1586,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Unipolar conversion of index (natural number) to one-hot vector, everywhere value is 0, but at the specified index is 1
         /// </summary>
-        /// <param name="index">Index</param>
+        /// <param name="index">Индекс</param>
         /// <param name="maxInd">Maximal possible index</param>
         /// <returns>Vector with all zeroes exept the position</returns>
         public static Vector OneHotPol(int index, int maxInd)
@@ -1600,7 +1600,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         ///  Unipolar conversion of index (natural number) to one-hot vector, everywhere value is -1, but at the specified index is 1
         /// </summary>
-        /// <param name="index">Index</param>
+        /// <param name="index">Индекс</param>
         /// <param name="maxInd">Maximal possible index</param>
         /// <returns>Vector with all -1s exept the position</returns>
         public static Vector OneHotBePol(int index, int maxInd)

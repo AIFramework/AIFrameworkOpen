@@ -29,7 +29,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         public int ByteRate;
 
         /// <summary>
-        /// ChannelCount * BitsPerSample / 8
+        /// КаналCount * BitsPerSample / 8
         /// </summary>
         public short Align;
 

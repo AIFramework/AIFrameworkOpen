@@ -169,7 +169,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Перевод в double
         /// </summary>
-        /// <param name="i">Index</param>
+        /// <param name="i">Индекс</param>
         /// <param name="R">Window weight (return parameter)</param>
         private Vector ToData(int i, out double R)
         {

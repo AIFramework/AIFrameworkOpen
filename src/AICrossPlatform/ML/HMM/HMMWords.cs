@@ -96,7 +96,7 @@ namespace AI.ML.HMM
         /// <summary>
         /// Maximum transition probability
         /// </summary>
-        /// <param name="matrix">State Matrix</param>
+        /// <param name="matrix">Матрица состояний</param>
         private double GetMax(double[,] matrix)
         {
             double max = matrix[0, 0];

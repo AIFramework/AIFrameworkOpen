@@ -119,7 +119,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Sample indexer
         /// </summary>
-        /// <param name="index">Index</param>
+        /// <param name="index">Индекс</param>
         /// <returns>Sample by index</returns>
         public float this[int index]
         {

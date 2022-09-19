@@ -82,5 +82,13 @@ namespace AI.DataPrepaire.Pipelines.RL
             var dataset = RewardData.TopKToTbl(topK).GetDataset();
             Actor.Train(dataset.ReturnData(), dataset.ReturnClasses());
         }
+
+        /// <summary>
+        /// Очистка таблицы наград
+        /// </summary>
+        public void ClearData() 
+        {
+            RewardData = new ScoreTableClassifier<T>();
+        }
     }
 }

@@ -740,11 +740,14 @@ namespace AI.Statistics
         /// <summary>
         /// Ковариация (корреляционный момент, линейная зависимость) двух векторов
         /// </summary>
-        public static double Cov(Vector x, Vector y)
+        public static double Cov(IAlgebraicStructure<double> xS, IAlgebraicStructure<double> yS)
         {
+            Vector x = xS.Data;
+            Vector y = yS.Data;
             int n1 = x.Count;
             int n2 = y.Count;
             string exceptionStr = string.Format("Невозможно выполнить ковариацию, длинна одного вектора {0}, а второго {1}", n1, n2);
+         
             if (n1 != n2)
             {
                 throw new ArgumentException(exceptionStr, "Ковариация");

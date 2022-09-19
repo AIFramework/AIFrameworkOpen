@@ -82,7 +82,7 @@ namespace AI.NLP
         /// Принадлежность строки к определенному документу
         /// </summary>
         /// <param name="str">Строка</param>
-        /// <param name="dIndex">Index документа</param>
+        /// <param name="dIndex">Индекс документа</param>
         public double TF_IDF_Str(string str, int dIndex)
         {
             string[] strs = ProbabilityDictionary.GetWords(str, true);

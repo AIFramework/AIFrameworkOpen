@@ -271,7 +271,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Transform to vector
         /// </summary>
-        /// <param name="i">Index</param>
+        /// <param name="i">Индекс</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Vector ToVector(int i)
         {

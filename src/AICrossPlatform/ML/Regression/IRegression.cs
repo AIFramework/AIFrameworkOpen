@@ -3,7 +3,7 @@
 namespace AI.ML.Regression
 {
     /// <summary>
-    /// Интерфейс регрессии с многими выходами
+    /// Интерфейс регрессии с одним выходом
     /// </summary>
     public interface IRegression
     {

@@ -83,7 +83,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static int FreqToPitch(double freq)
         {
-            return (int)Math.Round(69 + (12 * Math.Log(freq / 440, 2)), MidpointОкугление.AwayFromZero);
+            return (int)Math.Round(69 + (12 * Math.Log(freq / 440, 2)), MidpointRounding.AwayFromZero);
         }
 
         /// <summary>

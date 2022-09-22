@@ -206,8 +206,8 @@ namespace AI.Statistics
         {
             Vector v1 = IntegralValueHMean(1 - matrix);
             Vector v2 = IntegralValueWMean(1 - matrix);
-            v1 = v1.Scale();
-            v2 = v2.Scale();
+            v1 = v1.Minimax();
+            v2 = v2.Minimax();
             Matrix matrixOut = Matrix.Mul2Vec(v1, v2);
             return 1 - matrixOut; // max;
         }
@@ -220,8 +220,8 @@ namespace AI.Statistics
         {
             Vector v1 = IntegralValueHMean(matrix);
             Vector v2 = IntegralValueWMean(matrix);
-            v1 = v1.Scale();
-            v2 = v2.Scale();
+            v1 = v1.Minimax();
+            v2 = v2.Minimax();
             Matrix matrixOut = Matrix.Sum2Vec(v1, v2);
             return matrixOut / 2; // max;
         }
@@ -234,8 +234,8 @@ namespace AI.Statistics
         {
             Vector v1 = IntegralValueHMean(matrix);
             Vector v2 = IntegralValueWMean(matrix);
-            v1 = v1.Scale();
-            v2 = v2.Scale();
+            v1 = v1.Minimax();
+            v2 = v2.Minimax();
             Matrix matrixOut = Matrix.Norm2Vec(v1, v2);
             return matrixOut / 2; // max;
         }

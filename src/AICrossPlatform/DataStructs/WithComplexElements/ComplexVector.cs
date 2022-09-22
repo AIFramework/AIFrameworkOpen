@@ -848,7 +848,7 @@ namespace AI.DataStructs.WithComplexElements
 
         #region Сохранение
         /// <summary>
-        /// Saves vector to file
+        /// Сохранить в файл
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -864,7 +864,7 @@ namespace AI.DataStructs.WithComplexElements
             BinarySerializer.Save(stream, this);
         }
         /// <summary>
-        /// Represents vector as an array of bytes
+        /// Представить в виде массива байт
         /// </summary>
         /// <returns></returns>
         public byte[] GetBytes()
@@ -875,7 +875,7 @@ namespace AI.DataStructs.WithComplexElements
 
         #region Загрузка
         /// <summary>
-        /// Loads vector from file
+        /// Загрузить из файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -894,7 +894,7 @@ namespace AI.DataStructs.WithComplexElements
             return BinarySerializer.Load<ComplexVector>(path);
         }
         /// <summary>
-        /// Loads vector from stream
+        /// Загрузить из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
@@ -908,7 +908,7 @@ namespace AI.DataStructs.WithComplexElements
             return BinarySerializer.Load<ComplexVector>(stream);
         }
         /// <summary>
-        /// Initializes vector from byte array
+        /// Инициализировать массивом байт
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -922,7 +922,7 @@ namespace AI.DataStructs.WithComplexElements
             return FromDataStream(new InMemoryDataStream(data));
         }
         /// <summary>
-        /// Initilizes vector from data stream
+        /// Инициализировать потоком данных
         /// </summary>
         /// <param name="dataStream"></param>
         /// <returns></returns>

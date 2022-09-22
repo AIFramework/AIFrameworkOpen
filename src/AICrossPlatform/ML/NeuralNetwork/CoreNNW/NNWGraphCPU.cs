@@ -174,7 +174,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
         }
         /// <summary>
-        /// Vector concatenation
+        /// Конкатенация (последовательное соединение) векторов
         /// </summary>
         public virtual NNValue ConcatinateVectors(NNValue[] m)
         {

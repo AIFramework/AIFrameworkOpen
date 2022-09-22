@@ -519,7 +519,7 @@ namespace AI.DataStructs.WithComplexElements
             BinarySerializer.Save(stream, this);
         }
         /// <summary>
-        /// Represents vector as an array of bytes
+        /// Представить в виде массива байт
         /// </summary>
         /// <returns></returns>
         public byte[] GetBytes()

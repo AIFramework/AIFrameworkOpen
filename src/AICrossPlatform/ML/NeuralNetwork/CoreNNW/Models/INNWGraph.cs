@@ -47,7 +47,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         /// <param name="v2">Second vector</param>
         NNValue ConcatinateVectors(NNValue v1, NNValue v2);
         /// <summary>
-        /// Vector concatenation
+        /// Конкатенация (последовательное соединение) векторов
         /// </summary>
         NNValue ConcatinateVectors(NNValue[] m);
         /// <summary>

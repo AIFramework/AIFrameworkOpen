@@ -657,10 +657,7 @@ namespace AI.DataStructs.Algebraic
             Vector data = new Vector(len);
 
             for (int i = 1; i < len; i++)
-            {
                 data[i] = this[i - 1];
-
-            }
 
             data[0] = item;
             for (int i = 0; i < len; i++) this[i] = data[i];
@@ -668,22 +665,20 @@ namespace AI.DataStructs.Algebraic
         }
 
         /// <summary>
-        /// Adding an item (circular buffer to end)
+        /// Добавление в конец циклического буфера
         /// </summary>
         public void AddCBE(double item)
         {
             int len = Count; // Длинна вектора
 
             for (int i = 1; i < len; i++)
-            {
                 this[i - 1] = this[i];
-            }
 
             this[len - 1] = item;
         }
 
         /// <summary>
-        /// Replacing uncertainty with a number
+        /// Замена неопределенности на указанное число
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -692,14 +687,12 @@ namespace AI.DataStructs.Algebraic
             Vector outpVect = new Vector(Count);
 
             for (int i = 0; i < outpVect.Count; i++)
-            {
                 outpVect[i] = double.IsNaN(this[i]) ? value : this[i];
-            }
 
             return outpVect;
         }
         /// <summary>
-        /// Replacing uncertainty with a mean
+        /// Замена неопределенности на среднее
         /// </summary>
         /// <returns></returns>
         public Vector NanToMean()
@@ -708,33 +701,28 @@ namespace AI.DataStructs.Algebraic
             Vector outpVect = new Vector(Count);
 
             for (int i = 0; i < outpVect.Count; i++)
-            {
                 outpVect[i] = double.IsNaN(this[i]) ? mean : this[i];
-            }
+            
 
             return outpVect;
         }
         /// <summary>
-        /// Vector repeat
+        /// Повтор вектора
         /// </summary>
-        /// <param name="count">Number of repetitions</param>
+        /// <param name="count">Число повторов</param>
         public Vector Repeat(int count)
         {
             int k = 0, len = Count * count;
             Vector ret = new Vector(len);
 
             for (int i = 0; i < count; i++)
-            {
                 for (int j = 0; j < Count; j++)
-                {
                     ret[k++] = this[j];
-                }
-            }
 
             return ret;
         }
         /// <summary>
-        /// Cosine of angle between vectors
+        /// Косинусное расстояние между векторами
         /// </summary>
         /// <param name="vect"></param>
         /// <returns></returns>
@@ -742,19 +730,12 @@ namespace AI.DataStructs.Algebraic
         {
             return AnalyticGeometryFunctions.Cos(vect, this);
         }
+
         /// <summary>
-        /// Convert a vector to a one-hot representation
+        /// Получение вектора с единицей в позиции индекса с максимальным значением и -1 в остальных
         /// </summary>
-        /// <returns></returns>
-        public int MaxOut()
-        {
-            return MaxElementIndex();
-        }
-        /// <summary>
-        /// Getting a vector with one at the index position with the maximum value and -1 at the rest
-        /// </summary>
-        /// <param name="max"></param>
-        /// <param name="rest"></param>
+        /// <param name="max">Значение в максимуме</param>
+        /// <param name="rest">Значение в на остальных позициях</param>
         /// <returns></returns>
         public Vector MaxOutVector(double max = 1, double rest = -1)
         {
@@ -764,17 +745,17 @@ namespace AI.DataStructs.Algebraic
             return ret;
         }
         /// <summary>
-        /// Getting a unit vector (direction vector)
+        /// Вектор направления (с единичной длинной) 
         /// </summary>
         /// <returns></returns>
         public Vector GetUnitVector()
         {
-            return this / Norm();
+            return this / NormL2();
         }
         /// <summary>
         /// Окугление
         /// </summary>
-        /// <param name="num">Count of digits in the fraction</param>
+        /// <param name="num"></param>
         /// <returns></returns>
         public Vector Round(int num)
         {
@@ -788,7 +769,7 @@ namespace AI.DataStructs.Algebraic
             return outp;
         }
         /// <summary>
-        /// Deleting selected items
+        /// Удаление выбранных элементов
         /// </summary>
         /// <param name="elements"></param>
         /// <returns></returns>
@@ -804,7 +785,7 @@ namespace AI.DataStructs.Algebraic
             return FromList(lD);
         }
         /// <summary>
-        /// Deleting selected items
+        /// Удаление выбранных элементов
         /// </summary>
         /// <param name="elements"></param>
         /// <returns></returns>
@@ -820,7 +801,7 @@ namespace AI.DataStructs.Algebraic
             return FromList(lD);
         }
         /// <summary>
-        /// Deleting selected items
+        /// Удаление выбранных элементов
         /// </summary>
         /// <param name="elements"></param>
         /// <returns></returns>
@@ -837,7 +818,7 @@ namespace AI.DataStructs.Algebraic
             return FromList(lD);
         }
         /// <summary>
-        /// Returns a vector in the range [a; b)
+        /// Вернуть регион [a; b)
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -853,7 +834,7 @@ namespace AI.DataStructs.Algebraic
             return new Vector(interval);
         }
         /// <summary>
-        /// Returns a vector in the range [a; b)
+        /// Вернуть регион [a; b)
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -866,7 +847,7 @@ namespace AI.DataStructs.Algebraic
             return new Vector(interval);
         }
         /// <summary>
-        /// Vector cloning
+        /// Клонирование(копирование) вектора
         /// </summary>
         /// <returns></returns>
         public Vector Clone()
@@ -874,7 +855,7 @@ namespace AI.DataStructs.Algebraic
             return new Vector(ToArray());
         }
         /// <summary>
-        /// Adding a mirrored vector
+        /// Добавление зеркально отраженного вектора к текущему
         /// </summary>
         /// <returns></returns>
         public Vector AddSimmetr()
@@ -895,7 +876,7 @@ namespace AI.DataStructs.Algebraic
             return newVector;
         }
         /// <summary>
-        /// Writing the vector in reverse order, for example, the vector {1,2,3} turns into {3,2,1}
+        /// Изменение порядка следования компонент вектора {1,2,3} -> {3,2,1}
         /// </summary>
         /// <returns></returns>
         public Vector Revers()
@@ -909,7 +890,7 @@ namespace AI.DataStructs.Algebraic
             return new Vector(newVect);
         }
         /// <summary>
-        /// Zero padding or cropping to the desired vector size
+        /// Обрезка или заполнение нулями вектора до нужного размера 
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
@@ -940,7 +921,7 @@ namespace AI.DataStructs.Algebraic
             return new Vector(newVect);
         }
         /// <summary>
-        /// Shift
+        /// Сдвиг на несколько единиц {1,0, 2, 3} -3-> {0, 0, 0, 1, 0, 2, 3}
         /// </summary>
         /// <param name="valueShift"></param>
         /// <returns></returns>
@@ -962,7 +943,7 @@ namespace AI.DataStructs.Algebraic
             return new Vector(newVect);
         }
         /// <summary>
-        /// Vector to matrix
+        /// Перевод вектора в матрицу
         /// </summary>
         public Matrix ToMatrix()
         {
@@ -975,9 +956,9 @@ namespace AI.DataStructs.Algebraic
             return new Matrix(matrix);
         }
         /// <summary>
-        /// Decimation (without filter) vector
+        /// Прореживание (без фильтра)
         /// </summary>
-        /// <param name="n">Decimation factor</param>
+        /// <param name="n"></param>
         public Vector Downsampling(int n)
         {
             Vector C = (Count % n == 0) ? new Vector(Count / n) : new Vector((Count / n) + 1);
@@ -992,9 +973,8 @@ namespace AI.DataStructs.Algebraic
 
 
         /// <summary>
-        /// Decimation (with filter) vector, NWave backend
+        /// Децимация, с использование филтра, обертка под NWave
         /// </summary>
-        /// <param name="n">Decimation factor</param>
         public Vector Decimation(int n)
         {
             DiscreteSignal ds = new DiscreteSignal(Count, (float[])this);
@@ -1002,9 +982,9 @@ namespace AI.DataStructs.Algebraic
             return outSignal.Samples;
         }
         /// <summary>
-        /// Up sampling, inserting zeros in the middle
+        /// Увеличение размерности (аналог Up Sampling) 
         /// </summary>
-        /// <param name="kUnPool">The number of zeros between samples of the original vector</param>
+        /// <param name="kUnPool">Восколько раз увеличить размерность</param>
         /// <returns></returns>
         public Vector UnPooling(int kUnPool)
         {
@@ -1018,7 +998,7 @@ namespace AI.DataStructs.Algebraic
             return vector;
         }
         /// <summary>
-        /// Interpolation by a polynomial of order zero
+        /// Ступенчатая интерполяция
         /// </summary>
         /// <param name="kInterp"></param>
         /// <returns></returns>
@@ -1027,15 +1007,13 @@ namespace AI.DataStructs.Algebraic
             Vector C = new Vector(Count * kInterp);
 
             for (int i = 0; i < C.Count; i++)
-            {
                 C[i] = this[i / kInterp];
-            }
 
 
             return C;
         }
         /// <summary>
-        /// Adds one to the beginning
+        /// Добавить единицу в начало
         /// </summary>
         public Vector AddOne()
         {
@@ -1044,7 +1022,7 @@ namespace AI.DataStructs.Algebraic
             return C;
         }
         /// <summary>
-        /// Checks if all elements of the vector are equal to zero
+        /// Является ли вектор нулевым
         /// </summary>
         /// <returns></returns>
         public bool IsFilledWithZeros()
@@ -1060,7 +1038,7 @@ namespace AI.DataStructs.Algebraic
             return true;
         }
         /// <summary>
-        /// Checks if a vector contains more than n zero elements
+        /// Проверяет, содержит ли вектор более n нулевых элементов
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
@@ -1095,9 +1073,8 @@ namespace AI.DataStructs.Algebraic
             return output;
         }
         /// <summary>
-		/// Vector transformation
+		/// Преобразование вектора
 		/// </summary>
-		/// <param name="transformFunc">Transform function, function from index</param>
         /// <returns></returns>
 		public Vector TransformByIndex(Func<int, double> transformFunc)
         {
@@ -1111,11 +1088,9 @@ namespace AI.DataStructs.Algebraic
             return output;
         }
         /// <summary>
-		/// Transform vector
-		/// </summary>
-		/// <param name="transformFunc">Transform function, function from index and value F(int i, double vect_i)</param>
-        /// <returns></returns>
-		public Vector TransformFromIndexAndValue(Func<int, double, double> transformFunc)
+        /// Преобразование вектора
+        /// </summary>
+        public Vector TransformFromIndexAndValue(Func<int, double, double> transformFunc)
         {
             Vector output = new Vector(Count);
 
@@ -1127,11 +1102,9 @@ namespace AI.DataStructs.Algebraic
             return output;
         }
         /// <summary>
-        /// Vector transformation (Use vector of arguments)
+        /// Преобразование вектора с использование вектора параметра(аргумента)
+        /// output[i] = transformFunc(x[i], this[i]);
         /// </summary>
-        /// <param name="transformFunc">Transform function, a function of the value of the vector of arguments and the current vector</param>
-        /// <param name="x">Vector of arguments</param>
-        /// <returns></returns>
         public Vector TransformWithArguments(Vector x, Func<double, double, double> transformFunc)
         {
             if (x.Count != Count)
@@ -1152,10 +1125,10 @@ namespace AI.DataStructs.Algebraic
 
         #region Статистика
         /// <summary>
-        /// Scaling, brings the vector to a range of 0-1
+        /// Нормализация вектора от 0 до 1
         /// </summary>
         /// <returns></returns>
-        public Vector Scale()
+        public Vector Minimax()
         {
             double max = Max();
             double min = Min();
@@ -1164,7 +1137,7 @@ namespace AI.DataStructs.Algebraic
             return Transform(x => (x - min) / d);
         }
         /// <summary>
-        /// Minimal value
+        /// Минимальное значение
         /// </summary>
         /// <returns></returns>
         public double Min()
@@ -1200,7 +1173,7 @@ namespace AI.DataStructs.Algebraic
             return val;
         }
         /// <summary>
-        /// Maximum absolute value
+        /// Максимальное(по модулю) значение
         /// </summary>
         /// <returns></returns>
 		public double MaxAbs()
@@ -1215,7 +1188,7 @@ namespace AI.DataStructs.Algebraic
             return data.Max(x => double.IsNaN(x) ? double.MinValue : x);
         }
         /// <summary>
-        /// Minimal absolute value
+        /// Минимальное(по модулю) значение
         /// </summary>
         /// <returns></returns>
         public double MinAbs()
@@ -1238,7 +1211,7 @@ namespace AI.DataStructs.Algebraic
             return Statistic.ExpectedValue(this);
         }
         /// <summary>
-        /// Vector elements sum
+        /// Сумма компонент вектора
         /// </summary>
         /// <returns></returns>
         public double Sum()
@@ -1253,7 +1226,7 @@ namespace AI.DataStructs.Algebraic
             return sum;
         }
         /// <summary>
-        /// Does the uncertainty vector contain
+        /// Содержит ли вектор Nan
         /// </summary>
         /// <returns></returns>
         public bool ContainsNan()
@@ -1269,7 +1242,7 @@ namespace AI.DataStructs.Algebraic
             return false;
         }
         /// <summary>
-        /// Dispersion
+        /// Дисперсия
         /// </summary>
         /// <returns></returns>
         public double Dispersion()
@@ -1277,7 +1250,7 @@ namespace AI.DataStructs.Algebraic
             return Statistic.СalcVariance(this);
         }
         /// <summary>
-        /// STD
+        ///  Среднеквадратичное отклонение
         /// </summary>
         /// <returns></returns>
         public double Std()
@@ -1285,23 +1258,23 @@ namespace AI.DataStructs.Algebraic
             return Statistic.CalcStd(this);
         }
         /// <summary>
-        /// Vector norm
+        /// L2 норма вектора
         /// </summary>
         /// <returns></returns>
-        public double Norm()
+        public double NormL2()
         {
             return AnalyticGeometryFunctions.NormVect(this);
         }
         /// <summary>
-        /// Normalization
+        /// Нормализация (ско = 1, среднее = 0)
         /// </summary>
         /// <returns></returns>
-        public Vector Normalise()
+        public Vector ZNormalise()
         {
             return (Clone() - Mean()) / Std();
         }
         /// <summary>
-        /// Normalization
+        /// Нормализация (ско = 1, среднее = 0)
         /// </summary>
         /// <param name="mean"></param>
         /// <param name="std"></param>
@@ -1314,7 +1287,7 @@ namespace AI.DataStructs.Algebraic
 
         #region Поиск индексов
         /// <summary>
-        /// Index of max element
+        /// Индекс элемента с максимальным значением
         /// </summary>
         /// <returns></returns>
         public int MaxElementIndex()
@@ -1332,7 +1305,7 @@ namespace AI.DataStructs.Algebraic
             return indMax;
         }
         /// <summary>
-        /// Index of absolutely max element
+        /// Индекс элемента с максимальным по модулю значением
         /// </summary>
         /// <returns></returns>
         public int AbsoluteMaxElementIndex()
@@ -1352,7 +1325,7 @@ namespace AI.DataStructs.Algebraic
             return indMax;
         }
         /// <summary>
-        /// Index of min element
+        /// Индекс элемента с минимальным значением
         /// </summary>
         /// <returns></returns>
         public int MinElementIndex()
@@ -1370,7 +1343,7 @@ namespace AI.DataStructs.Algebraic
             return indMin;
         }
         /// <summary>
-        /// Index of absolutely min element
+        /// Индекс элемента с минимальным по модулю значением
         /// </summary>
         /// <returns></returns>
         public int AbsoluteMinElementIndex()
@@ -1389,7 +1362,7 @@ namespace AI.DataStructs.Algebraic
             return indMin;
         }
         /// <summary>
-        /// Index of max element
+        /// Индекс элемента с максимальным значением
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -1411,7 +1384,7 @@ namespace AI.DataStructs.Algebraic
             return indMax;
         }
         /// <summary>
-        /// Index of absolutely max element
+        /// Индекс элемента с максимальным по модулю значением
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -1434,7 +1407,7 @@ namespace AI.DataStructs.Algebraic
             return indMax;
         }
         /// <summary>
-        /// Index of min element
+        /// Индекс элемента с минимальным значением
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -1456,7 +1429,7 @@ namespace AI.DataStructs.Algebraic
             return indMin;
         }
         /// <summary>
-        /// Index of absolutely min element
+        /// Индекс элемента с минимальным по модулю значением
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -1480,7 +1453,7 @@ namespace AI.DataStructs.Algebraic
         }
         // TODO: Пофиксить
         /// <summary>
-        /// Closest minimal indexc
+        /// Индекс элемента с ближайшим минимальным значением
         /// </summary>
         /// <param name="value">Value</param>
         /// <returns></returns>
@@ -1527,28 +1500,26 @@ namespace AI.DataStructs.Algebraic
 
 
         /// <summary>
-        /// Creates one vector from two vectors by applying the cross function for each element.
+        /// Смешивает два вектора, используя функцию смешивания
         /// </summary>
-        /// <param name="x">First vector</param>
-        /// <param name="y">Second vector</param>
-        /// <param name="cross">Mixing function(crossing)</param>
+        /// <param name="x">Первый вектор</param>
+        /// <param name="y">Второй вектор</param>
+        /// <param name="cross">Функция смешивания</param>
         /// <returns></returns>
         public static Vector Crosser(Vector x, Vector y, Func<double, double, double> cross)
         {
             Vector outp = new Vector(x.Count);
 
             for (int i = 0; i < outp.Count; i++)
-            {
                 outp[i] = cross(x[i], y[i]);
-            }
-
+            
             return outp;
         }
         /// <summary>
-        /// Connection of vectors with overlapping, by summation in the region overlap
+        /// Соединение векторов с перекрытием, суммированием в области перекрытия
         /// </summary>
-        /// <param name="data">Vectots</param>
-        /// <param name="col">Overlapping areas (collisions)</param>
+        /// <param name="data">Векторы</param>
+        /// <param name="col">Область перекрытия (коллизии)</param>
         /// <returns/>
         public static Vector SummWithCollision(Vector[] data, int col = 0)
         {
@@ -1567,28 +1538,19 @@ namespace AI.DataStructs.Algebraic
             int ind = 0;
 
             for (int i = 0; i < data.Length; i++)
-            {
                 for (int j = (i != 0) ? col : 0, k = 0; j < data[i].Count; j++)
-                {
                     if ((j < data[i].Count - col) || i == data.Length - 1)
-                    {
                         outp[ind++] = data[i][j];
-                    }
                     else
-                    {
                         outp[ind + k] = data[i][j] + data[i + 1][k++]; // любая функция для вычисления отклика в обл. коллизии
-                    }
-                }
-            }
 
             return outp;
         }
         /// <summary>
-        /// Unipolar conversion of index (natural number) to one-hot vector, everywhere value is 0, but at the specified index is 1
+        /// Преобразование индекса в one-hot вектор, на позиции индекса 1, на остальных 0
         /// </summary>
         /// <param name="index">Индекс</param>
-        /// <param name="maxInd">Maximal possible index</param>
-        /// <returns>Vector with all zeroes exept the position</returns>
+        /// <param name="maxInd">Максимально возможный индекс</param>
         public static Vector OneHotPol(int index, int maxInd)
         {
             Vector outp = new Vector(maxInd + 1)
@@ -1598,11 +1560,10 @@ namespace AI.DataStructs.Algebraic
             return outp;
         }
         /// <summary>
-        ///  Unipolar conversion of index (natural number) to one-hot vector, everywhere value is -1, but at the specified index is 1
+        ///  Преобразование индекса в one-hot вектор, на позиции индекса 1, на остальных -1
         /// </summary>
         /// <param name="index">Индекс</param>
-        /// <param name="maxInd">Maximal possible index</param>
-        /// <returns>Vector with all -1s exept the position</returns>
+        /// <param name="maxInd">Максимально возможный индекс</param>
         public static Vector OneHotBePol(int index, int maxInd)
         {
             Vector outp = new Vector(maxInd + 1) - 1;
@@ -1610,9 +1571,9 @@ namespace AI.DataStructs.Algebraic
             return outp;
         }
         /// <summary>
-        /// Vector concatenation
+        /// Конкатенация (последовательное соединение) векторов
         /// </summary>
-        /// <param name="vectors">Vectors</param>
+        /// <param name="vectors">Векторы</param>
         /// <returns></returns>
         public static Vector Concat(Vector[] vectors)
         {
@@ -1657,10 +1618,10 @@ namespace AI.DataStructs.Algebraic
             return FunctionsForEachElements.GenerateTheSequence(start, step, end);
         }
         /// <summary>
-        /// Array os times
+        /// Вектор отсчетов времени
         /// </summary>
         /// <param name="fd">Частота дискретизации</param>
-        /// <param name="t">Time (sec)</param>
+        /// <param name="t">Время в секундах</param>
         /// <returns></returns>
         public static Vector Time0(double fd, double t)
         {
@@ -1727,10 +1688,8 @@ namespace AI.DataStructs.Algebraic
             return vect;
         }
         /// <summary>
-        /// Data scaling, ensemble synchronization is performed for each case
+        /// Масштабирование векторов (z-нормализация)
         /// </summary>
-        /// <param name="data">Data</param>
-        /// <returns></returns>
         public static Vector[] ScaleData(Vector[] data)
         {
             Vector mean = Statistic.MeanVector(data);
@@ -1751,9 +1710,9 @@ namespace AI.DataStructs.Algebraic
             return vects;
         }
         /// <summary>
-        /// Ensemble averaging
+        /// Усреднение по ансамблю
         /// </summary>
-        /// <param name="vectors">Vector ensemble</param>
+        /// <param name="vectors">Ансамбль векторов</param>
         /// <returns>Avarage vector</returns>
         public static Vector Mean(Vector[] vectors)
         {
@@ -1767,35 +1726,19 @@ namespace AI.DataStructs.Algebraic
             return result / vectors.Length;
         }
         /// <summary>
-		/// STD by ensemble
+		///  Среднеквадратичное отклонение в ансамбле
 		/// </summary>
-		/// <param name="vectors">Vector ensemble</param>
-		/// <returns>Avarage vector</returns>
+		/// <param name="vectors">Ансамбль векторов</param>
 		public static Vector Std(Vector[] vectors)
         {
             return Statistic.EnsembleDispersion(vectors).Transform(Math.Abs);
         }
-        /// <summary>
-        /// Cast string to vector of letters
-        /// </summary>
-        /// <param name="str">String</param>
-        /// <returns></returns>
-        public static Vector GetCharVector(string str)
-        {
-            Vector outp = new Vector(str.Length);
-
-            for (int i = 0; i < outp.Count; i++)
-            {
-                outp[i] = str[i];
-            }
-
-            return outp;
-        }
+    
         #endregion
 
         #region Статические методы инициализации
         /// <summary>
-        /// Initialize vector from string
+        /// Инициализация вектора с помощью строки
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -1804,7 +1747,7 @@ namespace AI.DataStructs.Algebraic
             return Parse(str, AISettings.GetProvider());
         }
         /// <summary>
-        /// Initialize vector from string
+        /// Инициализация вектора с помощью строки
         /// </summary>
         /// <param name="str"></param>
         /// <param name="provider"></param>
@@ -1842,7 +1785,7 @@ namespace AI.DataStructs.Algebraic
             return FromStrings(nums, provider);
         }
         /// <summary>
-        /// Tries to initialize vector from string
+        /// Инициализация вектора с помощью строки
         /// </summary>
         /// <param name="str"></param>
         /// <param name="result"></param>
@@ -1852,7 +1795,7 @@ namespace AI.DataStructs.Algebraic
             return TryParse(str, out result, AISettings.GetProvider());
         }
         /// <summary>
-        /// Tries to initialize vector from string
+        /// Инициализация вектора с помощью строки
         /// </summary>
         /// <param name="str"></param>
         /// <param name="result"></param>
@@ -1910,7 +1853,7 @@ namespace AI.DataStructs.Algebraic
             return true;
         }
         /// <summary>
-        /// Initialize vector from string array
+        /// Инициализация вектора с помощью массива строк
         /// </summary>
         /// <param name="arr"></param>
         /// <returns></returns>
@@ -1919,7 +1862,7 @@ namespace AI.DataStructs.Algebraic
             return FromStrings(arr, AISettings.GetProvider());
         }
         /// <summary>
-        /// Initialize vector from string array
+        /// Инициализация вектора с помощью массива строк
         /// </summary>
         /// <param name="arr"></param>
         /// <param name="provider"></param>
@@ -1947,23 +1890,15 @@ namespace AI.DataStructs.Algebraic
             return result;
         }
         /// <summary>
-        /// Cast list to vector
+        /// Создание вектора с помощью перечисления
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="dbs"></param>
         /// <returns></returns>
-        public static Vector FromList(IList<double> list)
+        public static Vector FromList(IEnumerable<double> dbs)
         {
-            return new Vector(list.ToArray());
+            return new Vector(dbs.ToArray());
         }
-        /// <summary>
-        /// Cast read-only list to vector
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public static Vector FromReadOnlyList(IReadOnlyList<double> list)
-        {
-            return new Vector(list.ToArray());
-        }
+        
         #endregion
 
         #region Технические методы
@@ -2065,7 +2000,7 @@ namespace AI.DataStructs.Algebraic
 
         #region Сохранение
         /// <summary>
-        /// Saves vector to file
+        /// Сохранить в файл
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -2081,7 +2016,7 @@ namespace AI.DataStructs.Algebraic
             BinarySerializer.Save(stream, this);
         }
         /// <summary>
-        /// Saves vector to file in text format
+        /// Сохранить в текстовый файл
         /// </summary>
         /// <param name="path"></param>
         public void SaveAsText(string path)
@@ -2089,7 +2024,7 @@ namespace AI.DataStructs.Algebraic
             File.WriteAllText(path, ToString());
         }
         /// <summary>
-        /// Represents vector as an array of bytes
+        /// Представить в виде массива байт
         /// </summary>
         /// <returns></returns>
         public byte[] GetBytes()
@@ -2100,7 +2035,7 @@ namespace AI.DataStructs.Algebraic
 
         #region Загрузка
         /// <summary>
-        /// Loads vector from file
+        /// Загрузить из файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -2160,7 +2095,7 @@ namespace AI.DataStructs.Algebraic
         }
 
         /// <summary>
-        /// Loads vector from stream
+        /// Загрузить из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
@@ -2174,7 +2109,7 @@ namespace AI.DataStructs.Algebraic
             return BinarySerializer.Load<Vector>(stream);
         }
         /// <summary>
-        /// Loads vector from text file
+        ///Загрузить из текстового файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -2183,7 +2118,7 @@ namespace AI.DataStructs.Algebraic
             return Parse(File.ReadAllText(path));
         }
         /// <summary>
-        /// Initializes vector from byte array
+        /// Инициализировать массивом байт
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -2197,7 +2132,7 @@ namespace AI.DataStructs.Algebraic
             return FromDataStream(new InMemoryDataStream(data));
         }
         /// <summary>
-        /// Initilizes vector from data stream
+        /// Инициализировать потоком данных
         /// </summary>
         /// <param name="dataStream"></param>
         /// <returns></returns>

@@ -496,7 +496,7 @@ namespace AI.DataStructs.Algebraic
         }
 
         /// <summary>
-        /// Dispersion
+        /// Дисперсия
         /// </summary>
         /// <param name="mean">Calculated mean</param>
         public double Dispersion(double mean)
@@ -513,7 +513,7 @@ namespace AI.DataStructs.Algebraic
         }
 
         /// <summary>
-        /// Dispersion
+        /// Дисперсия
         /// </summary>
         public double Dispersion()
         {

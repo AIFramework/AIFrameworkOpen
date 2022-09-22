@@ -15,7 +15,7 @@ namespace AI.Statistics
         /// <param name="vector">Вектор входных данных</param>
         public static double CrestFactor(Vector vector)
         {
-            Vector vectorNorm = vector.Normalise();
+            Vector vectorNorm = vector.ZNormalise();
             return vectorNorm.Max();
         }
 

@@ -7,17 +7,17 @@ namespace AI.ML.SeqPredict
     /// </summary>
     public interface ISeqPredict
     {
-
-
         /// <summary>
         /// Обучение
         /// </summary>
-        /// <param name="data">Данные</param>
+        /// <param name="data">Данные (обучающая последовательность)</param>
         void Train(Vector data);
 
         /// <summary>
         /// Прогноз
         /// </summary>
+        /// <param name="data">Начало последовательности</param>
+        /// <param name="n">На сколько шагов продолжить</param>
         Vector Predict(Vector data, int n);
 
         /// <summary>

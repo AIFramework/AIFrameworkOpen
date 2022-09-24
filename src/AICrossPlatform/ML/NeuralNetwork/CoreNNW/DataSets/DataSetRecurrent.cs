@@ -10,7 +10,7 @@ using System.IO;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 {
     /// <summary>
-    /// Dataset for training recurrent neural networks
+    /// Данныеset for training recurrent neural networks
     /// </summary>
     [Serializable]
     public class DataSetRecurrent : DataSet, ISavable
@@ -20,14 +20,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
         #region Конструкторы
         /// <summary>
-        /// Dataset for recurrent neural networks
+        /// Данныеset for recurrent neural networks
         /// </summary>
         /// <param name="inputShape"></param>
         /// <param name="outputShape"></param>
         /// <param name="loss"></param>
         public DataSetRecurrent(Shape inputShape, Shape outputShape, ILoss loss = null) : base(inputShape, outputShape, loss) { }
         /// <summary>
-        /// Dataset for recurrent neural networks
+        /// Данныеset for recurrent neural networks
         /// </summary>
         /// <param name="inputs">Inputs</param>
         /// <param name="outputs">Outputs(target values)</param>
@@ -94,7 +94,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             Init(inputs, outputs, valSplit);
         }
         /// <summary>
-        /// Dataset for recurrent neural networks
+        /// Данныеset for recurrent neural networks
         /// </summary>
         /// <param name="inputs">Inputs</param>
         /// <param name="outputs">Outputs(target values)</param>

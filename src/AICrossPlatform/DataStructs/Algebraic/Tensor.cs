@@ -18,31 +18,31 @@ namespace AI.DataStructs.Algebraic
     {
         #region Поля и свойства
         /// <summary>
-        /// Height
+        /// Высота
         /// </summary>
         public int Height => Shape[1];
         /// <summary>
-        /// Width
+        /// Ширина
         /// </summary>
         public int Width => Shape[0];
         /// <summary>
-        /// Depth
+        /// Глубина
         /// </summary>
         public int Depth => Shape[2];
         /// <summary>
-        /// Tensor shape
+        /// Форма тензора
         /// </summary>
         public Shape Shape { get; }
         /// <summary>
-        /// Data
+        /// Данные
         /// </summary>
         public double[] Data { get; set; }
         /// <summary>
-        /// Accessing an item by index
+        /// Доступ к элементу по индексу
         /// </summary>
-        /// <param name="i">Height</param>
-        /// <param name="j">Width</param>
-        /// <param name="k">Depth</param>
+        /// <param name="i">Высота</param>
+        /// <param name="j">Ширина</param>
+        /// <param name="k">Глубина</param>
         public double this[int i, int j, int k]
         {
             get => Data[GetByIndex(i, j, k)];
@@ -99,14 +99,14 @@ namespace AI.DataStructs.Algebraic
             Data = new double[Shape!.Count];
         }
         /// <summary>
-        /// Creating a tensor with zeros
+        /// Создать тензор инициализированный нулями
         /// </summary>
-        /// <param name="height">Height</param>
-        /// <param name="width">Width</param>
-        /// <param name="depth">Depth</param>
+        /// <param name="height">Высота</param>
+        /// <param name="width">Ширина</param>
+        /// <param name="depth">Глубина</param>
         public Tensor(int height, int width, int depth) : this(new Shape3D(height, width, depth)) { }
         /// <summary>
-        /// Initialization with an array
+        /// Инициализация массивом
         /// </summary>
         public Tensor(double[] data)
         {
@@ -334,7 +334,7 @@ namespace AI.DataStructs.Algebraic
         #endregion
 
         /// <summary>
-        /// Copy
+        /// Копирование
         /// </summary>
         public Tensor Copy()
         {
@@ -385,7 +385,7 @@ namespace AI.DataStructs.Algebraic
         }
 
         /// <summary>
-        /// Convert matrix array to tensor
+        /// Конвертация массива матриц в тензор
         /// </summary>
         public static Tensor FromMatrices(Matrix[] matrices)
         {
@@ -406,7 +406,7 @@ namespace AI.DataStructs.Algebraic
             return tensor;
         }
         /// <summary>
-        /// Converting a vector to a tensor
+        /// Конвертация вектора в тензор
         /// </summary>
         public static Tensor VectorToTensor(Vector data, int h, int w)
         {
@@ -428,7 +428,7 @@ namespace AI.DataStructs.Algebraic
             return tensor;
         }
         /// <summary>
-        /// Subtracting a vector element by element from depth
+        /// Поэлементное вычитание из тензора по глубине TNew[i,j,k] = T[i,j,k] - V[k]
         /// </summary>
         /// <returns></returns>
         public Tensor SubtractingDepth(Vector minus)
@@ -449,7 +449,7 @@ namespace AI.DataStructs.Algebraic
             return tensor;
         }
         /// <summary>
-        /// Add a vector element-wise to the depth
+        /// Поэлементное прибавление к тензору по глубине TNew[i,j,k] = T[i,j,k] + V[k]
         /// </summary>
         public Tensor PlusD(Vector ps)
         {
@@ -472,7 +472,7 @@ namespace AI.DataStructs.Algebraic
         #region Статистика
 
         /// <summary>
-        /// Sum of all tensor elements
+        /// Сумма всех элементов тензора
         /// </summary>
         public double Sum()
         {
@@ -488,7 +488,7 @@ namespace AI.DataStructs.Algebraic
         }
 
         /// <summary>
-        /// Average of all tensor elements
+        /// Среднее всех элементов тензора
         /// </summary>
         public double Mean()
         {
@@ -498,7 +498,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Дисперсия
         /// </summary>
-        /// <param name="mean">Calculated mean</param>
+        /// <param name="mean">Рассчитанное среднее</param>
         public double Dispersion(double mean)
         {
             double summ = 0;
@@ -530,16 +530,16 @@ namespace AI.DataStructs.Algebraic
         }
 
         /// <summary>
-        /// Standard deviation
+        /// Среднеквадратичное отклонение
         /// </summary>
-        /// <param name="mean">Calculated mean</param>
+        /// <param name="mean">Рассчитанное среднее</param>
         public double Std(double mean)
         {
             return Math.Sqrt(Dispersion(mean));
         }
 
         /// <summary>
-        /// Standard deviation
+        /// Среднеквадратичное отклонение
         /// </summary>
         public double Std()
         {
@@ -549,13 +549,19 @@ namespace AI.DataStructs.Algebraic
         #endregion
 
         #region Технические методы
-#pragma warning disable CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
 
+        /// <summary>
+        /// Перевод тензора в строку
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return ToString(AISettings.GetProvider());
         }
 
+        /// <summary>
+        /// Перевод тензора в строку
+        /// </summary>
         public string ToString(NumberFormatInfo provider)
         {
             StringBuilder sb = new StringBuilder();
@@ -583,6 +589,11 @@ namespace AI.DataStructs.Algebraic
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Сравнение с объектом
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             if (obj is Tensor tensor)
@@ -595,11 +606,17 @@ namespace AI.DataStructs.Algebraic
             }
         }
 
+        /// <summary>
+        /// Сравнение с другим тензором
+        /// </summary>
         public bool Equals(Tensor other)
         {
             return this == other;
         }
 
+        /// <summary>
+        /// Вернуть хэш-код
+        /// </summary>
         public override int GetHashCode()
         {
             unchecked
@@ -612,14 +629,14 @@ namespace AI.DataStructs.Algebraic
             }
         }
 
-#pragma warning restore CS1591 // Отсутствует комментарий XML для открытого видимого типа или члена
+
         #endregion
 
         #region Сериализация
 
         #region Сохранение
         /// <summary>
-        /// Save tensor to file
+        /// Сохранить в файл
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -627,7 +644,7 @@ namespace AI.DataStructs.Algebraic
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Save tensor to stream
+        /// Сохранить в  поток
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -635,7 +652,7 @@ namespace AI.DataStructs.Algebraic
             BinarySerializer.Save(stream, this);
         }
         /// <summary>
-        /// Represents tensor as an array of bytes
+        /// Представить в виде массива байт
         /// </summary>
         /// <returns></returns>
         public byte[] GetBytes()
@@ -646,7 +663,7 @@ namespace AI.DataStructs.Algebraic
 
         #region Загрузка
         /// <summary>
-        /// Loads tensor from the file
+        /// Загрузить из файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -655,7 +672,7 @@ namespace AI.DataStructs.Algebraic
             return BinarySerializer.Load<Tensor>(path);
         }
         /// <summary>
-        /// Loads tensor from the stream
+        /// Загрузить из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
@@ -664,7 +681,7 @@ namespace AI.DataStructs.Algebraic
             return BinarySerializer.Load<Tensor>(stream);
         }
         /// <summary>
-        /// Initialize tensor from byte array
+        /// Загрузить из массива байт
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -678,7 +695,7 @@ namespace AI.DataStructs.Algebraic
             return FromDataStream(InMemoryDataStream.FromByteArray(data));
         }
         /// <summary>
-        /// Initialize tensor from data stream
+        /// Загрузить из массива объекта  InMemoryDataStream
         /// </summary>
         /// <param name="dataStream"></param>
         /// <returns></returns>

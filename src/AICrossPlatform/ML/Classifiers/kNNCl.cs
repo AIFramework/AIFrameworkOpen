@@ -44,7 +44,7 @@ namespace AI.ML.Classifiers
         /// </summary>
         public Func<Vector, Vector, double> Dist { get; set; }
         /// <summary>
-        /// Dataset
+        /// Данныеset
         /// </summary>
         public StructClasses Classes { get; set; }
         #endregion

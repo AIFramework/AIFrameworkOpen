@@ -7,7 +7,7 @@ using System;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Copy layer
+    /// Слой копирования
     /// </summary>
     [Serializable]
     public class CopyistLayer : IActivatableLayer
@@ -45,9 +45,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public int TrainableParameters => 0;
 
         /// <summary>
-        /// Copy layer
+        /// Слой копирования
         /// </summary>
-        /// <param name="count">Number of copies</param>
+        /// <param name="count">Число копий</param>
         /// <param name="act">Non-linear function</param>
         public CopyistLayer(int count, IActivation act = null)
         {

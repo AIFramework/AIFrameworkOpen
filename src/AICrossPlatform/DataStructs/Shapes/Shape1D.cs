@@ -11,12 +11,12 @@ namespace AI.DataStructs.Shapes
     public sealed class Shape1D : Shape, IEquatable<Shape1D>
     {
         /// <summary>
-        /// Width in 1D
+        /// Ширина
         /// </summary>
         public int Width => this[0];
 
         /// <summary>
-        /// Creates 1D shape
+        /// Одномерная форма
         /// </summary>
         /// <param name="width"></param>
         public Shape1D(int width = 1) : base(width) { }

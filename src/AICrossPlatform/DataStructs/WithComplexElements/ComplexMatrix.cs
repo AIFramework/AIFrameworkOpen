@@ -136,8 +136,8 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Creates matrix of the given size
         /// </summary>
-        /// <param name="height">Matrix height</param>
-        /// <param name="width">Matrix width</param>
+        /// <param name="height">Matrix Высота</param>
+        /// <param name="width">Matrix Ширина</param>
         public ComplexMatrix(int height, int width)
         {
             Shape = new Shape2D(height, width);

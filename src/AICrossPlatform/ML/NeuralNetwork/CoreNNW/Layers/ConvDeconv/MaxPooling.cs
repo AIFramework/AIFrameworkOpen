@@ -40,11 +40,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public double AddDenInSqrt { get; set; }
 
         /// <summary>
-        /// Subsampling (Maxpooling 2D)
+        /// Слой подвыборки
         /// </summary>
         /// <param name="inputShape"> Размерность и форма входного тензора </param>
-        /// <param name="h">How many times to compress out in height</param>
-        /// <param name="w">How many times to compress in width</param>
+        /// <param name="h">Восколько раз сжать по высоте</param>
+        /// <param name="w">Восколько раз сжать по ширине</param>
         public MaxPooling(Shape3D inputShape, int h = 2, int w = 2)
         {
             _h = h;
@@ -52,10 +52,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             InputShape = inputShape;
         }
         /// <summary>
-        /// Subsampling (Maxpooling 2D) 
+        /// Слой подвыборки 
         /// </summary>
-        /// <param name="h">How many times to compress out in height</param>
-        /// <param name="w">How many times to compress in width</param>
+        /// <param name="h">Восколько раз сжать по Высота</param>
+        /// <param name="w">Восколько раз сжать по Ширина</param>
         public MaxPooling(int h = 2, int w = 2)
         {
             _h = h;

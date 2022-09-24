@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
 {
     /// <summary>
-    /// Data sequence used in network training
+    /// Данные sequence used in network training
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Step count = {Steps.Count}")]
@@ -17,7 +17,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
         public IReadOnlyList<DataStep> Steps { get; }
 
         /// <summary>
-        /// Data sequence
+        /// Данные sequence
         /// </summary>
         /// <param name="steps">Array of steps</param>
         public DataSequence(params DataStep[] steps)

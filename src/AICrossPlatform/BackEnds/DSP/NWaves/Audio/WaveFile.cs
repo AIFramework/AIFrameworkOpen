@@ -211,7 +211,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         /// This constructor loads signals into container.
         /// </summary>
         /// <param name="signals">Signals to be loaded into container</param>
-        /// <param name="bitsPerSample">Bit depth</param>
+        /// <param name="bitsPerSample">Bit Глубина</param>
         public WaveFile(IList<DiscreteSignal> signals, short bitsPerSample = 16)
         {
             if (signals == null || !signals.Any())
@@ -255,7 +255,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         /// This constructor loads one signal into container.
         /// </summary>
         /// <param name="signal">Signal to be loaded into container</param>
-        /// <param name="bitsPerSample">Bit depth</param>
+        /// <param name="bitsPerSample">Bit Глубина</param>
         public WaveFile(DiscreteSignal signal, short bitsPerSample = 16) : this(new[] { signal }, bitsPerSample)
         {
         }

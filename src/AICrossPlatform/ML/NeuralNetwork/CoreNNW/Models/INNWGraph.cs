@@ -29,22 +29,22 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         /// <param name="isBacward">  Is there a backward pass</param>
         void Restart(bool isBacward);
         /// <summary>
-        /// Copy tensor
+        /// Копирование тензора
         /// </summary>
-        /// <param name="value">Tensor</param>
-        /// <param name="count">Number of copies</param>
+        /// <param name="value">Тензор</param>
+        /// <param name="count">Число копий</param>
         NNValue Copyist(NNValue value, int count);
         /// <summary>
         /// Dot product of two vectors
         /// </summary>
-        /// <param name="v1">First vector</param>
-        /// <param name="v2">Second vector</param>
+        /// <param name="v1">Первый вектор</param>
+        /// <param name="v2">Второй вектор</param>
         NNValue ScalarProduct(NNValue v1, NNValue v2);
         /// <summary>
         /// Concatenate two vectors
         /// </summary>
-        /// <param name="v1">First vector</param>
-        /// <param name="v2">Second vector</param>
+        /// <param name="v1">Первый вектор</param>
+        /// <param name="v2">Второй вектор</param>
         NNValue ConcatinateVectors(NNValue v1, NNValue v2);
         /// <summary>
         /// Конкатенация (последовательное соединение) векторов
@@ -82,7 +82,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         /// <summary>
         /// Adding a tensor to a number
         /// </summary>
-        /// <param name="tensor">Tensor</param>
+        /// <param name="tensor">Тензор</param>
         /// <param name="number">Number</param>
         NNValue AddN(NNValue tensor, NNValue number);
         /// <summary>
@@ -129,7 +129,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         /// </summary>
         NNValue MaxPooling(NNValue inp, int kh, int kw);
         /// <summary>
-        /// Tensor shape transformation
+        /// Форма тензора transformation
         /// </summary>
         NNValue ReShape(NNValue input, Shape3D newShape, float gain);
         /// <summary>

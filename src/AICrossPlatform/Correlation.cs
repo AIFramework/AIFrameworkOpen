@@ -25,8 +25,8 @@ namespace AI
         /// <summary>
         /// Cross-correlation of two real vectors
         /// </summary>
-        /// <param name="A">First vector</param>
-        /// <param name="B">Second vector</param>
+        /// <param name="A">Первый вектор</param>
+        /// <param name="B">Второй вектор</param>
         public static Vector CrossCorrelation(Vector A, Vector B)
         {
 
@@ -65,8 +65,8 @@ namespace AI
         /// <summary>
         /// Cross-correlation of two complex vectors
         /// </summary>
-        /// <param name="A">First vector</param>
-        /// <param name="B">Second vector</param>
+        /// <param name="A">Первый вектор</param>
+        /// <param name="B">Второй вектор</param>
         public static ComplexVector CrossCorrelation(ComplexVector A, ComplexVector B)
         {
             ComplexVector ht = B - B.Mean();

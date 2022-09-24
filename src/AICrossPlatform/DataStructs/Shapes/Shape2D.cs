@@ -12,11 +12,11 @@ namespace AI.DataStructs.Shapes
     {
         #region Поля и свойства
         /// <summary>
-        /// Height in 2D
+        /// Высота in 2D
         /// </summary>
         public int Height => this[1];
         /// <summary>
-        /// Width in 2D
+        /// Ширина in 2D
         /// </summary>
         public int Width => this[0];
         /// <summary>
@@ -26,7 +26,7 @@ namespace AI.DataStructs.Shapes
         #endregion
 
         /// <summary>
-        /// Creates 2D shape
+        /// Создать двумерную форму
         /// </summary>
         /// <param name="height"></param>
         /// <param name="width"></param>

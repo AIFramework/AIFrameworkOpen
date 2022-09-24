@@ -51,7 +51,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Слой GRU
         /// </summary>
         /// <param name="inputDimension">Размерность входа</param>
-        /// <param name="outputDimension">Output dimension</param>
+        /// <param name="outputDimension">Размерность выхода</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public GRURegression(int inputDimension, int outputDimension, Random rnd)
         {
@@ -62,7 +62,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Слой GRU
         /// </summary>
         /// <param name="inputShape">Размерность входа</param>
-        /// <param name="outputDimension">Output dimension</param>
+        /// <param name="outputDimension">Размерность выхода</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public GRURegression(Shape3D inputShape, int outputDimension, Random rnd)
         {
@@ -72,7 +72,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Слой GRU
         /// </summary>
-        /// <param name="outputDimension">Output dimension</param>
+        /// <param name="outputDimension">Размерность выхода</param>
         public GRURegression(int outputDimension)
         {
             OutputShape = new Shape3D(outputDimension);

@@ -61,8 +61,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Нейросетевой контроллер
         /// </summary>
         /// <param name="inputDimension">Размерность входа</param>
-        /// <param name="outputDimension">Output dimension</param>
-        /// <param name="initParamsStdDev">Standard deviation</param>
+        /// <param name="outputDimension">Размерность выхода</param>
+        /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public NeuralСontroller(int inputDimension, int outputDimension, double initParamsStdDev, Random rnd)
         {
@@ -75,8 +75,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Neural network microcontroller
         /// </summary>
         /// <param name="inputShape">Размерность входа</param>
-        /// <param name="outputDimension">Output dimension</param>
-        /// <param name="initParamsStdDev">Standard deviation</param>
+        /// <param name="outputDimension">Размерность выхода</param>
+        /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public NeuralСontroller(Shape3D inputShape, int outputDimension, double initParamsStdDev, Random rnd)
         {
@@ -86,7 +86,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Neural network microcontroller
         /// </summary>
-        /// <param name="outputDimension">Output dimension</param>
+        /// <param name="outputDimension">Размерность выхода</param>
         public NeuralСontroller(int outputDimension)
         {
             OutputShape = new Shape3D(outputDimension);

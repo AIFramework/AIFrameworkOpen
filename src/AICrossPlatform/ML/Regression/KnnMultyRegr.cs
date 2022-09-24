@@ -54,7 +54,7 @@ namespace AI.ML.Regression
         private StructRegresMulty reges;// Данные регрессии
 
         /// <summary>
-        /// Dataset
+        /// Данныеset
         /// </summary>
         public StructRegresMulty Reg
         {

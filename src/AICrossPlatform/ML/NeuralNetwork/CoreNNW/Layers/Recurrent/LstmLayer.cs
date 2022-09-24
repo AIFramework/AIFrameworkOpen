@@ -52,8 +52,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Long short-term memory(LSTM) layer
         /// </summary>
         /// <param name="inputDimension">Размерность входа</param>
-        /// <param name="outputDimension">Output dimension</param>
-        /// <param name="initParamsStdDev">Standard deviation</param>
+        /// <param name="outputDimension">Размерность выхода</param>
+        /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public LSTMLayer(int inputDimension, int outputDimension, double initParamsStdDev, Random rnd)
         {
@@ -66,8 +66,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Long short-term memory(LSTM) layer
         /// </summary>
         /// <param name="inputShape">Размерность входа</param>
-        /// <param name="outputDimension">Output dimension</param>
-        /// <param name="initParamsStdDev">Standard deviation</param>
+        /// <param name="outputDimension">Размерность выхода</param>
+        /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         public LSTMLayer(Shape3D inputShape, int outputDimension, double initParamsStdDev, Random rnd)
         {
@@ -78,7 +78,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Long short-term memory(LSTM) layer
         /// </summary>
-        /// <param name="outputDimension">Output dimension</param>
+        /// <param name="outputDimension">Размерность выхода</param>
         public LSTMLayer(int outputDimension)
         {
             OutputShape = new Shape3D(outputDimension);

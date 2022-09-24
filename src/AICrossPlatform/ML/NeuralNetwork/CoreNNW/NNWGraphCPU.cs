@@ -55,10 +55,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             Backprop.Clear();
         }
         /// <summary>
-        /// Copy tensor
+        /// Копирование tensor
         /// </summary>
-        /// <param name="value">Tensor</param>
-        /// <param name="count">Number of copies</param>
+        /// <param name="value">Тензор</param>
+        /// <param name="count">Число копий</param>
         public virtual NNValue Copyist(NNValue value, int count)
         {
             int len = value.Shape.Count * count;
@@ -98,8 +98,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Dot product of two vectors
         /// </summary>
-        /// <param name="v1">First vector</param>
-        /// <param name="v2">Second vector</param>
+        /// <param name="v1">Первый вектор</param>
+        /// <param name="v2">Второй вектор</param>
         public virtual NNValue ScalarProduct(NNValue v1, NNValue v2)
         {
             if (v1.Shape.Count != v2.Shape.Count)
@@ -271,8 +271,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Concatenate two vectors
         /// </summary>
-        /// <param name="v1">First vector</param>
-        /// <param name="v2">Second vector</param>
+        /// <param name="v1">Первый вектор</param>
+        /// <param name="v2">Второй вектор</param>
         public virtual NNValue ConcatinateVectors(NNValue v1, NNValue v2)
         {
             if (v1.Shape.Width > 1 || v2.Shape.Width > 1)
@@ -830,7 +830,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             if ((outpW < 1) || (outpH < 1))
             {
-                throw new Exception("Insufficient output dimension");
+                throw new Exception("Недостаточная размерность выхода");
             }
 
             NNValue returnObj = new NNValue(outpH, outpW, outpD);
@@ -925,7 +925,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             if ((outpW < 1) || (outpH < 1))
             {
-                throw new Exception("Insufficient output dimension");
+                throw new Exception("Недостаточная размерность выхода");
             }
 
             NNValue returnObj = new NNValue(outpH, outpW, outpD);
@@ -1017,7 +1017,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             if ((outpW < 1) || (outpH < 1))
             {
-                throw new Exception("Insufficient output dimension");
+                throw new Exception("Недостаточная размерность выхода");
             }
 
             NNValue returnObj = new NNValue(outpH, outpW, outpD);
@@ -1087,7 +1087,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
         }
         /// <summary>
-        /// Tensor shape transformation
+        /// Форма тензора transformation
         /// </summary>
         public virtual NNValue ReShape(NNValue input, Shape3D newShape, float gain)
         {
@@ -1122,7 +1122,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             if ((outpW < 1) || (outpH < 1))
             {
-                throw new Exception("Insufficient output dimension");
+                throw new Exception("Недостаточная размерность выхода");
             }
 
             NNValue returnObj = new NNValue(outpH, outpW, outpD);
@@ -1170,7 +1170,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             if ((outpW < 1) || (outpH < 1))
             {
-                throw new Exception("Insufficient output dimension");
+                throw new Exception("Недостаточная размерность выхода");
             }
 
             NNValue returnObj = new NNValue(outpH, outpW, outpD);
@@ -1366,7 +1366,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Adding a tensor to a number
         /// </summary>
-        /// <param name="tensor">Tensor</param>
+        /// <param name="tensor">Тензор</param>
         /// <param name="number">Number</param>
         public virtual NNValue AddN(NNValue tensor, NNValue number)
         {

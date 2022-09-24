@@ -77,7 +77,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Полносвязный слой
         /// </summary>
-        /// <param name="outputDimension">Output dimension</param>
+        /// <param name="outputDimension">Размерность выхода</param>
         /// <param name="f">Активационная функция</param>
         public FeedForwardLayer(int outputDimension, IActivation f = null)
         {

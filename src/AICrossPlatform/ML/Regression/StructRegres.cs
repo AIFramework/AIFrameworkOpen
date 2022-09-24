@@ -21,7 +21,7 @@ namespace AI.ML.Regression
         private List<StructRegr> _classes = new List<StructRegr>();
 
         /// <summary>
-        /// Data
+        /// Данные
         /// </summary>
         public List<StructRegr> Classes
         {

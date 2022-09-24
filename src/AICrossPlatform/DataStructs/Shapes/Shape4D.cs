@@ -12,15 +12,15 @@ namespace AI.DataStructs.Shapes
     {
         #region Поля и свойства
         /// <summary>
-        /// Height in 4D
+        /// Высота in 4D
         /// </summary>
         public int Height => this[1];
         /// <summary>
-        /// Width in 4D
+        /// Ширина in 4D
         /// </summary>
         public int Width => this[0];
         /// <summary>
-        /// Depth in 4D
+        /// Глубина in 4D
         /// </summary>
         public int Depth => this[2];
         /// <summary>

@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace AI.ML.Regression
 {
     /// <summary>
-    /// Dataset for regression
+    /// Данныеset for regression
     /// </summary>
     [Serializable]
     public class StructRegresMulty
@@ -21,7 +21,7 @@ namespace AI.ML.Regression
         private List<StructRegrMulty> _classes = new List<StructRegrMulty>();
 
         /// <summary>
-        /// Data
+        /// Данные
         /// </summary>
         public List<StructRegrMulty> Classes
         {

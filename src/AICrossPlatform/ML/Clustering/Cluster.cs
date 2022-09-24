@@ -25,7 +25,7 @@ namespace AI.ML.Clustering
 
 
         /// <summary>
-        /// Dataset
+        /// Данныеset
         /// </summary>
         public Vector[] Dataset
         {

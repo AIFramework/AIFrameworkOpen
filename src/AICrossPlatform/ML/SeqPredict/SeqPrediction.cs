@@ -17,7 +17,7 @@ namespace AI.ML.SeqPredict
         /// Прогнозирование последовательности
         /// </summary>
         /// <param name="reg">Алгоритм прогнозирования</param>
-        /// <param name="w">Window width</param>
+        /// <param name="w">Размер окна</param>
         public SeqPrediction(IRegression reg, int w)
         {
             regressor = reg;

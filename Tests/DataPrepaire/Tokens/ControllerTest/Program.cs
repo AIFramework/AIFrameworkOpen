@@ -23,7 +23,7 @@ namespace ControllerTest
         static void Main(string[] args)
         {
 
-            int n_tr = 16;
+            int n_tr = 1;
 
             WordTokenizer wordTokenizer = new WordTokenizer("cat.txt");
 
@@ -42,7 +42,7 @@ namespace ControllerTest
       
         static void Train(NeuralNetworkManager nnw, Many2Many dataset, int count)
         {
-            nnw.EpochesToPass = 155;
+            nnw.EpochesToPass = 1255;
             nnw.LearningRate = 0.002f;
             nnw.GradientClipValue = 0.1f;
             nnw.ValSplit = 0;
@@ -106,7 +106,7 @@ namespace ControllerTest
         {
             NNW lstm = new NNW();
             lstm.AddNewLayer(new Shape3D(1), new EmbedingLayer(inps, 24));
-            lstm.AddNewLayer(new FilterLayer(5,5));
+            lstm.AddNewLayer(new ControllerLResNet(8));
             lstm.AddNewLayer(new FeedForwardLayer(inps, new SoftmaxUnit()));
             return lstm;
         }

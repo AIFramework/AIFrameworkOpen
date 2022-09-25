@@ -27,11 +27,16 @@ namespace RNNTest
 
             net = GetNN();
             nnw = new NeuralNetworkManager(net);
-            steps = Vector.SeqBeginsWithZero(1, 50);
+            int n = 166;
 
-            x =  new Vector(50) { [0]=1, [35] = 0};
+
+            steps = Vector.SeqBeginsWithZero(1, n);
+
             
-            t = steps.Transform(r => Math.Pow(Math.Sin(r / 6), 3));
+            
+            t = steps.Transform(r => Math.Pow(Math.Sin(20*r / n), 3));
+
+            x =  steps.Transform(r =>Math.Sin(20 * r / n));
 
             y = Forward(x);
         }
@@ -64,12 +69,24 @@ namespace RNNTest
         /// <summary>
         /// Создает нейросеть
         /// </summary>
+        //static NNW GetNN()
+        //{
+        //    NNW lstm = new NNW();
+        //    lstm.AddNewLayer(new Shape3D(1), new CopyistLayer(4));
+        //    lstm.AddNewLayer(new FilterLayer());
+        //    lstm.AddNewLayer(new Agregate());
+        //    return lstm;
+        //}
+
+        /// <summary>
+        /// Создает нейросеть
+        /// </summary>
         static NNW GetNN()
         {
             NNW lstm = new NNW();
-            lstm.AddNewLayer(new Shape3D(1), new CopyistLayer(4));
-            lstm.AddNewLayer(new FilterLayer());
-            lstm.AddNewLayer(new Agregate());
+            lstm.AddNewLayer(new Shape3D(1), new FeedForwardLayer(8, new ReLU()));
+            lstm.AddNewLayer(new ControllerLResNet(4));
+            lstm.AddNewLayer(new FeedForwardLayer(1));
             return lstm;
         }
 
@@ -96,7 +113,7 @@ namespace RNNTest
 
             nnw.EpochesToPass = 300;
             nnw.LearningRate = 0.001f;
-            nnw.GradientClipValue = 0.1f;
+            nnw.GradientClipValue = 900.1f;
             nnw.ValSplit = 0;
             nnw.Loss = new LossMSE();
             nnw.Optimizer = new Adam();
@@ -115,6 +132,15 @@ namespace RNNTest
             chartVisual2.AddPlot(steps, y, "Выход сети");
         }
 
-        
+        double ph = 0;
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ph += 0.1;
+            x = steps.Transform(r => Math.Sin(20 * r / x.Count + ph));
+            y = Forward(x);
+            chartVisual1.PlotBlack(x);
+            Visual();
+        }
     }
 }

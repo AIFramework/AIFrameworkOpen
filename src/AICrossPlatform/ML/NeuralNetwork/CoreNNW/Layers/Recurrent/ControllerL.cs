@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Long short-term memory(LSTM) layer with command line
+    /// Облегченный контроллер
     /// </summary>
     [Serializable]
     public class ControllerL : ILearningLayer, IRecurrentLayer
@@ -34,6 +34,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public int TrainableParameters => 3;
 
+
+
         #region поля
         private NNValue outpGate;
         private NNValue forgetG;
@@ -57,7 +59,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         #endregion
 
         /// <summary>
-        /// Long short-term memory(LSTM) layer with command line
+        /// Облегченный контроллер
         /// </summary>
         /// <param name="inputDimension">Размерность входа</param>
         /// <param name="outputDimension">Размерность выхода</param>
@@ -71,7 +73,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             ResetState();
         }
         /// <summary>
-        /// Long short-term memory(LSTM) layer with command line
+        /// Облегченный контроллер
         /// </summary>
         /// <param name="inputShape">Размерность входа</param>
         /// <param name="outputDimension">Размерность выхода</param>
@@ -83,7 +85,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             ResetState(); // Запуск НС
         }
         /// <summary>
-        /// Long short-term memory(LSTM) layer with command line
+        /// Облегченный контроллер
         /// </summary>
         /// <param name="outputDimension">Размерность выхода</param>
         public ControllerL(int outputDimension)

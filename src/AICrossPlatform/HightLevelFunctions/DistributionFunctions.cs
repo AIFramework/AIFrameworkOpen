@@ -21,7 +21,7 @@ namespace AI.HightLevelFunctions
         /// </summary>
         /// <param name="inp">Входной вектор</param>
         /// <param name="m">Мат. ожидание</param>
-        /// <param name="std">СКО</param>
+        /// <param name="std">Среднеквадратичное отклонение</param>
         public static Vector Gauss(Vector inp, double m, double std)
         {
             return 1.0 / (std * Math.Sqrt(2 * Math.PI)) * FunctionsForEachElements.Exp((inp - m).Transform(x => Math.Pow(x, 2)) / (-2 * std * std));
@@ -52,7 +52,7 @@ namespace AI.HightLevelFunctions
         /// </summary>
         /// <param name="h">Высота фильтра</param>
         /// <param name="w">Ширина</param>
-        /// <param name="std">СКО</param>
+        /// <param name="std">Среднеквадратичное отклонение</param>
         /// <returns>Фильтр Гаусса</returns>
         public static Matrix GaussRect(int h, int w, double std = 160)
         {
@@ -76,7 +76,7 @@ namespace AI.HightLevelFunctions
         /// </summary>
         /// <param name="Inp">Входное значение</param>
         /// <param name="m">Мат. ожидание</param>
-        /// <param name="sko">СКО</param>
+        /// <param name="sko">Среднеквадратичное отклонение</param>
         public static double Gauss(double Inp, double m, double sko)
         {
             return 1.0 / (sko * Math.Sqrt(2 * Math.PI)) * Math.Exp((Inp - m) * (Inp - m) / (-2 * sko * sko));
@@ -107,7 +107,7 @@ namespace AI.HightLevelFunctions
         /// </summary>
         /// <param name="Inp">Входное значение</param>
         /// <param name="m">Мат. ожидание</param>
-        /// <param name="std">СКО</param>
+        /// <param name="std">Среднеквадратичное отклонение</param>
         public static double GaussNorm1(double Inp, double m, double std)
         {
             return Math.Exp((Inp - m) * (Inp - m) / (-2 * std * std));
@@ -117,7 +117,7 @@ namespace AI.HightLevelFunctions
         /// </summary>
         /// <param name="Inp">Входной вектор</param>
         /// <param name="m">Мат. ожидание</param>
-        /// <param name="std">СКО</param>
+        /// <param name="std">Среднеквадратичное отклонение</param>
         public static Vector GaussNorm1(Vector Inp, double m, double std)
         {
             Vector vect = new Vector(Inp.Count);

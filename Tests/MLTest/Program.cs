@@ -1,5 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.ML.Classifiers;
+using AI.ML.MatrixUtils;
 using System;
 
 namespace MLTest
@@ -8,14 +9,45 @@ namespace MLTest
     {
         static void Main(string[] args)
         {
-            int[] t = new[] { 0, 1 }; 
+            QRTest();
+        }
+
+
+
+        static void QRTest() 
+        {
+            Matrix matrix = new Matrix(3, 3);
+
+            matrix[0, 0] = 5;
+            matrix[0, 1] = 1;
+            matrix[0, 2] = 1;
+
+            matrix[1, 0] = 1;
+            matrix[1, 1] = 5;
+            matrix[1, 2] = 2;
+
+            matrix[2, 0] = 4;
+            matrix[2, 1] = 7;
+            matrix[2, 2] = -4;
+
+
+            // Реальные значения 
+            // 7.49, 4.08, -5.58
+
+            var eigenvalues = QR.GetEigenvalues(matrix);
+        }
+
+
+        static void SVMTest() 
+        {
+            int[] t = new[] { 0, 1 };
             Vector x = new[] { 222.0, 993, 110 };
             Vector x2 = new[] { 222.0, 993, 109 };
             Vector[] X = new[] { x, x2 };
-            
+
             X = Vector.ScaleData(X);
 
-            SVMBinary svm = new SVMBinary(3) 
+            SVMBinary svm = new SVMBinary(3)
             {
                 MinimalMargin = 0.2,
                 L2 = 0.1,

@@ -159,7 +159,7 @@ namespace AI.ML.DataSets
         /// </summary>
         /// <param name="x">Вход</param>
         /// <param name="centers">Массив центров</param>
-        /// <param name="std">СКО</param>
+        /// <param name="std">Среднеквадратичное отклонение</param>
         /// <returns>Вектор значений от 0 до 1</returns>
         public static Vector GaussRBF(double x, Vector centers, double std = 1)
         {

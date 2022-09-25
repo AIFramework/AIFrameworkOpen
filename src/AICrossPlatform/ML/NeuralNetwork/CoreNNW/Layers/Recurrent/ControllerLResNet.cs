@@ -1,4 +1,5 @@
 ﻿using AI.DataStructs.Shapes;
+using AI.ML.DataEncoding.PositionalEncoding;
 using AI.ML.NeuralNetwork.CoreNNW.Activations;
 using AI.ML.NeuralNetwork.CoreNNW.Layers.Base;
 using AI.ML.NeuralNetwork.CoreNNW.Models;
@@ -8,7 +9,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Long short-term memory(LSTM) layer with command line
+    /// Облегченный контроллер
     /// </summary>
     [Serializable]
     public class ControllerLResNet : ILearningLayer, IRecurrentLayer
@@ -34,6 +35,28 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public int TrainableParameters => 3;
 
+        /// <summary>
+        /// Число признаков для кодирования кода позиции
+        /// </summary>
+        public int FeatureCodeLen 
+        {
+            get { return _featureCodeLen; }
+        }
+
+        /// <summary>
+        /// Метод кодирования позиции
+        /// </summary>
+        public IPositionEncoding PositionEncoder 
+        {
+            get { return _pEnc; }
+            set
+            {
+                _pEnc = value;
+                GenCodePositionMatrix();
+            }
+
+        }
+
         #region поля
         private NNValue outpGate;
         private NNValue forgetG;
@@ -54,40 +77,53 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         private readonly IActivation inpGateActivation = new SigmoidUnit();
         private readonly IActivation cellInputActivation = new TanhUnit();
         private readonly IActivation cellOutputActivation = new TanhUnit();
+
+        // Число признаков для кодирования кода позиции
+        private IPositionEncoding _pEnc = new MultiscaleEncoder(128);
+        // Метод кодирования позиции
+        private int _featureCodeLen = 16;
+        // Выделение признаков позиции
+        private NNValue _poseFeatures;
+        // Номер входа
+        private int _position = 0;
         #endregion
 
         /// <summary>
-        /// Long short-term memory(LSTM) layer with command line
+        /// Облегченный контроллер
         /// </summary>
         /// <param name="inputDimension">Размерность входа</param>
         /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
-        public ControllerLResNet(int inputDimension, double initParamsStdDev, Random rnd)
+        /// <param name="posSize">Длинна вектора, для кодирования позиции</param>
+        public ControllerLResNet(int inputDimension, double initParamsStdDev, Random rnd, int posSize = 16)
         {
+            _featureCodeLen = posSize;
             InputShape = new Shape3D(inputDimension);
-            OutputShape = new Shape3D(inputDimension);
-            Init(InputShape, inputDimension, initParamsStdDev, rnd);
+            OutputShape = InputShape;
+            Init(InputShape, initParamsStdDev, rnd);
             ResetState();
         }
         /// <summary>
-        /// Long short-term memory(LSTM) layer with command line
+        /// Облегченный контроллер
         /// </summary>
         /// <param name="inputShape">Размерность входа</param>
-        /// <param name="outputDimension">Размерность выхода</param>
         /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
-        public ControllerLResNet(Shape3D inputShape, int outputDimension, double initParamsStdDev, Random rnd)
+        /// <param name="posSize">Длинна вектора, для кодирования позиции</param>
+        public ControllerLResNet(Shape3D inputShape, double initParamsStdDev, Random rnd, int posSize = 16)
         {
-            Init(inputShape, outputDimension, initParamsStdDev, rnd);
+            _featureCodeLen = posSize;
+            Init(inputShape, initParamsStdDev, rnd);
             ResetState(); // Запуск НС
         }
+
         /// <summary>
-        /// Long short-term memory(LSTM) layer with command line
+        /// Облегченный контроллер
         /// </summary>
-        /// <param name="outputDimension">Размерность выхода</param>
-        public ControllerLResNet(int outputDimension)
+        /// <param name="posSize">Длинна вектора, для кодирования позиции</param>
+        public ControllerLResNet(int posSize = 16)
         {
-            OutputShape = new Shape3D(outputDimension);
+            _featureCodeLen = posSize;
         }
 
         /// <summary>
@@ -97,7 +133,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <param name="g">Граф автоматического дифференцирования</param>
         public NNValue Forward(NNValue input, INNWGraph g)
         {
-            NNValue conc = g.ConcatinateVectors(input, _hiddenContext);
+            NNValue positionCode = new NNValue(_pEnc.GetCode(_position++)); // Позиционный код
+            NNValue positionFeatures = g.MulMV(_poseFeatures, positionCode);
+
+
+            NNValue conc1 = g.ConcatinateVectors(input, positionFeatures);
+            NNValue conc = g.ConcatinateVectors(conc1, _hiddenContext);
             NNValue commandLine = g.MulMV(commandGet, conc);
 
 
@@ -138,6 +179,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public void ResetState()
         {
+            _position = 0;
             _hiddenContext = new NNValue(OutputShape.Height);
             _cellContext = new NNValue(OutputShape.Height);
         }
@@ -156,7 +198,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
                 cellWriteBias,
                 commandGet,
                 inputBias,
-                inpG
+                inpG,
+                _poseFeatures
             };
             return result;
         }
@@ -169,14 +212,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public void Generate(Shape3D inpShape, Random random)
         {
             InputShape = inpShape;
-            double std = 1.0 / Math.Sqrt(OutputShape.Count * InputShape.Count);
-            Init(inpShape, OutputShape.Height, std, random);
+            double std = 1.0 / InputShape.Count;
+            Init(inpShape, std, random);
         }
-        private void Init(Shape3D inputShape, int outputDimension, double initParamsStdDev, Random rnd)
+        private void Init(Shape3D inputShape, double initParamsStdDev, Random rnd)
         {
+            int outputDimension = inputShape!.Volume;
             //set forget bias to 1.0, as described here: http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf
             int inputDimension = inputShape.Height;
-            int con = inputDimension + outputDimension;
+            int con = inputDimension + outputDimension+_featureCodeLen;
             InputShape = new Shape3D(inputDimension);
             OutputShape = new Shape3D(outputDimension);
 
@@ -190,7 +234,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             outputBias = new NNValue(outputDimension);
             cellWriteBias = new NNValue(outputDimension);
             inputBias = new NNValue(outputDimension);
-
+            GenCodePositionMatrix();
             ResetState();
         }
         /// <summary>
@@ -225,8 +269,17 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <param name="random">ГПСЧ</param>
         public void InitWeights(Random random)
         {
-            double std = 1.0 / Math.Sqrt(OutputShape.Volume * InputShape.Volume);
-            Init(InputShape, OutputShape.Height, std, random);
+            double std = 1.0 / InputShape.Volume;
+            Init(InputShape, std, random);
+        }
+
+
+        // Создание матрицы кодирования позиции
+        private void GenCodePositionMatrix() 
+        {
+            Random random = new Random(1);
+            double std = 1.0 / Math.Sqrt(_featureCodeLen * _pEnc.Dim);
+            _poseFeatures = NNValue.Random(_featureCodeLen, _pEnc.Dim, std, random);
         }
     }
 }

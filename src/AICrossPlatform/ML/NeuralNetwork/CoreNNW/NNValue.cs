@@ -152,7 +152,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
         #region Операторы
         /// <summary>
-        /// Division of the tensor of DERIVATIVES by a number
+        /// Деление тензора ПРОИЗВОДНЫХ на число
         /// </summary>
         /// <returns></returns>
         public static NNValue operator /(NNValue nNValue, double d)
@@ -315,7 +315,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// </summary>
         /// <param name="h">Ширина</param>
         /// <param name="w"> Высота</param>
-        /// <param name="initParamsStdDev">ско</param>
+        /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдослуч. чисел</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static NNValue Random(int h, int w, double initParamsStdDev, Random rnd)
@@ -333,7 +333,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <param name="h">Ширина</param>
         /// <param name="w"> Высота</param>
         /// <param name="d">Глубина</param>
-        /// <param name="initParamsStdDev">ско</param>
+        /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдослуч. чисел</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static NNValue Random(int h, int w, int d, double initParamsStdDev, Random rnd)
@@ -351,7 +351,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <param name="h">Ширина</param>
         /// <param name="w"> Высота</param>
         /// <param name="d">Глубина</param>
-        /// <param name="initParamsStdDev">ско</param>
+        /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдослуч. чисел</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static NNValue RandomR(int h, int w, int d, double initParamsStdDev, Random rnd)

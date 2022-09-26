@@ -248,7 +248,7 @@ namespace AI.DataStructs.Algebraic
             return C;
         }
         /// <summary>
-        /// Subtraction
+        /// Вычитание
         /// </summary>
         /// <param name="A"></param>
         /// <param name="k"></param>
@@ -265,7 +265,7 @@ namespace AI.DataStructs.Algebraic
             return C;
         }
         /// <summary>
-        /// Subtraction
+        /// Вычитание
         /// </summary>
         /// <param name="A"></param>
         /// <param name="k"></param>
@@ -282,7 +282,7 @@ namespace AI.DataStructs.Algebraic
             return C;
         }
         /// <summary>
-        /// Subtraction
+        /// Вычитание
         /// </summary>
         /// <param name="A"></param>
         /// <param name="B"></param>

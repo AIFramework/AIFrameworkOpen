@@ -6,7 +6,7 @@ using System;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
 {
     /// <summary>
-    /// One-dimensional upsampling with bicubic interpolation
+    /// One-dimensional Апсемплинг с бикубической интерполяцией
     /// </summary>
     [Serializable]
     public class UpSampling1D : ILayer
@@ -31,14 +31,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
         public double AddDenInSqrt => _upsampling2DBicubic.AddDenInSqrt;
 
         /// <summary>
-        /// One-dimensional upsampling with bicubic interpolation
+        /// One-dimensional Апсемплинг с бикубической интерполяцией
         /// </summary>
         public UpSampling1D(int k = 2)
         {
             _upsampling2DBicubic = new UpSampling2DBicubic(k, 1);
         }
         /// <summary>
-        /// One-dimensional upsampling with bicubic interpolation
+        /// One-dimensional Апсемплинг с бикубической интерполяцией
         /// </summary>
         public UpSampling1D(Shape3D inputShape, int k = 2)
         {

@@ -15,7 +15,7 @@ namespace AI
     public static class Convolution
     {
         /// <summary>
-        /// Convolution
+        /// Свертка
         /// </summary>
         /// <param name="signal">Signal</param>
         /// <param name="Ht">Impulse response</param>
@@ -38,7 +38,7 @@ namespace AI
             return outp;
         }
         /// <summary>
-        /// Convolution
+        /// Свертка
         /// </summary>
         /// <param name="signal">Signal</param>
         /// <param name="Ht">Impulse response</param>
@@ -64,7 +64,7 @@ namespace AI
             return outp / (e1 * e2);
         }
         /// <summary>
-        /// Convolution
+        /// Свертка
         /// </summary>
         /// <param name="signal">Signal</param>
         /// <param name="ht">Impulse response</param>

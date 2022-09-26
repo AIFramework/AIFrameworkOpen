@@ -450,7 +450,7 @@ namespace AI.DataStructs.WithComplexElements
             return C;
         }
         /// <summary>
-        /// Multiplication by a number
+        /// Умножение на число
         /// </summary>
         /// <param name="k">комплексное число</param>
         /// <param name="vector">Комплексный вектор</param>

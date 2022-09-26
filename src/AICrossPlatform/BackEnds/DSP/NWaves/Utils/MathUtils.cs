@@ -21,7 +21,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <summary>
         /// Method for computing next power of 2 (closest to the given number)
         /// </summary>
-        /// <param name="n">Number</param>
+        /// <param name="n">Число</param>
         /// <returns>Next power of 2 closest to the number</returns>
         public static int NextPowerOfTwo(int n)
         {

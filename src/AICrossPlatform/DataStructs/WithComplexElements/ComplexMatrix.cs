@@ -202,7 +202,7 @@ namespace AI.DataStructs.WithComplexElements
 
         #region Операторы
         /// <summary>
-        /// Matrix multiplication
+        /// Перемножение матриц
         /// </summary>
         /// <param name="left"></param>
         /// <param name="right"></param>

@@ -6,7 +6,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Operations
 {
     /// <summary>
-    /// Class that implements Spectral subtraction algorithm according to
+    /// Class that implements Spectral Вычитание algorithm according to
     /// 
     /// [1979] M. Berouti, R. Schwartz, J. Makhoul
     /// "Enhancement of Speech Corrupted by Acoustic Noise".

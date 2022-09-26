@@ -67,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
             // - reserve memory for all modes of signal extension
             //   (so far only 'periodization' mode is coded)
 
-            //var halflen = (int)((size + _waveletLength - 1) * 0.5); // convolution length: N + M - 1
+            //var halflen = (int)((size + _waveletLength - 1) * 0.5); // Свертка length: N + M - 1
             //_temp = new float[halflen * 2];
         }
 
@@ -93,7 +93,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
             input.FastCopyTo(_temp, input.Length);
 
             bool pad = _waveletLength / 2 % 2 == 0;  // according to MATLAB and pyWavelets implementations,
-                                                     // convolution in case of db3, db5, db7, etc. runs through another samples;
+                                                     // Свертка in case of db3, db5, db7, etc. runs through another samples;
                                                      // essentially, we're convolving kernel with signal [x_n-1, x0, x1, ..., x_n-2]
 
             // NOTE. We are emulating the 'periodization' mode of MATLAB/pywt.

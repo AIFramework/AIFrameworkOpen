@@ -20,13 +20,13 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         List<IBackwardRun> Backprop { get; set; }
 
         /// <summary>
-        /// Backward pass (differentiation)
+        /// Обратный проход (дифференцирование)
         /// </summary>
         void Backward();
         /// <summary>
-        /// Restart
+        /// Перезапуск
         /// </summary>
-        /// <param name="isBacward">  Is there a backward pass</param>
+        /// <param name="isBacward">Выполнять ли обратны проход</param>
         void Restart(bool isBacward);
         /// <summary>
         /// Копирование тензора
@@ -35,13 +35,13 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         /// <param name="count">Число копий</param>
         NNValue Copyist(NNValue value, int count);
         /// <summary>
-        /// Dot product of two vectors
+        /// Скалярное произведение векторов
         /// </summary>
         /// <param name="v1">Первый вектор</param>
         /// <param name="v2">Второй вектор</param>
         NNValue ScalarProduct(NNValue v1, NNValue v2);
         /// <summary>
-        /// Concatenate two vectors
+        /// Конкатенация двух векторов
         /// </summary>
         /// <param name="v1">Первый вектор</param>
         /// <param name="v2">Второй вектор</param>
@@ -51,42 +51,42 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         /// </summary>
         NNValue ConcatinateVectors(NNValue[] m);
         /// <summary>
-        /// Cutting a vector into vectors by 1 element
+        /// Нарезка вектора по одному элементу
         /// </summary>
         NNValue[] DeConcatinateOne(NNValue vector);
         /// <summary>
         /// Активационная функция
         /// </summary>
         /// <param name="function">Активационная, нелинейная функция</param>
-        /// <param name="t">The tensor to which it is applied</param>
+        /// <param name="t">Тензор, на котором применить активацию</param>
         NNValue Activate(IActivation function, NNValue t);
         /// <summary>
-        /// Adding an item
+        /// Добавить элемент
         /// </summary>
-        /// <param name="old">Buffer old state</param>
-        /// <param name="inp">Added element</param>
-        /// <param name="len">Buffer capacity</param>
+        /// <param name="old">Буфер старых значений</param>
+        /// <param name="inp">Добавляемый элемент</param>
+        /// <param name="len">Емкость буфера</param>
         NNValue AddCicleBuff(NNValue old, NNValue inp, int len);
         /// <summary>
-        /// Matrix multiplication
+        /// Перемножение матриц
         /// </summary>
         NNValue Mul(NNValue m1, NNValue m2);
         /// <summary>
-        /// Matrix-vector multiplication
+        /// Умножение матрицы на вектор-столбец
         /// </summary>
         NNValue MulMV(NNValue matrix, NNValue vect);
         /// <summary>
-        /// Addition of two tensors
+        /// Сумма 2х тензоров
         /// </summary>
         NNValue Add(NNValue t1, NNValue t2);
         /// <summary>
-        /// Adding a tensor to a number
+        /// Сумма тензора и числа
         /// </summary>
         /// <param name="tensor">Тензор</param>
-        /// <param name="number">Number</param>
+        /// <param name="number">Число</param>
         NNValue AddN(NNValue tensor, NNValue number);
         /// <summary>
-        /// Addition of three tensors
+        /// Сумма 3х тензоров
         /// </summary>
         /// <param name="t1">Tensor #1</param>
         /// <param name="t2">Tensor #2</param>
@@ -97,39 +97,39 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         /// </summary>
         NNValue OneMinus(NNValue tensor);
         /// <summary>
-        /// Subtraction
+        /// Вычитание
         /// </summary>
         NNValue Subtract(NNValue tensor1, NNValue tensor2);
         /// <summary>
-        /// Multiplication by a number
+        /// Умножение на число
         /// </summary>
         NNValue MulMatrixByNumber(NNValue tensor, float s);
         /// <summary>
-        /// Multiplication by a number
+        /// Умножение на число
         /// </summary>
         NNValue MulMatrixByNumber(float s, NNValue m);
         /// <summary>
-        /// Tensor inversion -m
+        /// Инверсия -m
         /// </summary>
         NNValue Invers(NNValue tensor);
         /// <summary>
-        /// Adamar product of tensors
+        /// Поэлементное(адамарово) произведение тензоров
         /// </summary>
         NNValue AdamarMul(NNValue tensor1, NNValue tensor2);
         /// <summary>
-        /// Convolution without bias
+        /// Свертка без нейрона смещения
         /// </summary>
         NNValue Convolution(NNValue input, NNValue[] filters, int padX, int padY, int strideX, int strideY);
         /// <summary>
-        /// Convolution
+        /// Свертка
         /// </summary>
         NNValue Convolution(NNValue input, NNValue[] filters, NNValue bias, int padX, int padY, int strideX, int strideY);
         /// <summary>
-        /// Max pooling 2D
+        /// Подвыборка 2D
         /// </summary>
         NNValue MaxPooling(NNValue inp, int kh, int kw);
         /// <summary>
-        /// Форма тензора transformation
+        /// Изменение формы тензора
         /// </summary>
         NNValue ReShape(NNValue input, Shape3D newShape, float gain);
         /// <summary>
@@ -137,7 +137,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         /// </summary>
         NNValue UnPooling(NNValue inp, int h, int w);
         /// <summary>
-        /// Upsampling with bicubic interpolation
+        /// Апсемплинг с бикубической интерполяцией
         /// </summary>
         NNValue Upsampling2DBicubic(NNValue inp, int h, int w);
         /// <summary>
@@ -145,27 +145,27 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Models
         /// </summary>
         NNValue DropOut(NNValue input, float q, float n, Random random);
         /// <summary>
-        /// Mixing real and imaginary parts to create a new real and imaginary part
+        /// Смешивание реальной и мнимой частей для создания новой реальной и мнимой частей
         /// </summary>
         NNValue[] ImRealCross(NNValue real, NNValue im, NNValue alpha1, NNValue beta1, NNValue gama1, NNValue alpha2, NNValue beta2, NNValue gama2);
         /// <summary>
-        /// Tensor depth join
+        /// Соединение глубины тензора
         /// </summary>
         NNValue DeepJoin(NNValue[] values);
         /// <summary>
-        /// Splitting a tensor by depth
+        /// Разделение тензора по глубине
         /// </summary>
         NNValue[] DeepSplit(NNValue data, int countLayersInSlice);
         /// <summary>
-        /// Feedforward layer
+        /// Полносвязный слой
         /// </summary>
         NNValue FeedForwardLayer(NNValue input, NNValue W, NNValue bias, IActivation activation);
         /// <summary>
-        /// Feedforward linear layer
+        /// Линейный полносвязный слой
         /// </summary>
         NNValue FeedforwardLinLayer(NNValue input, NNValue W, NNValue bias);
         /// <summary>
-        /// GRU layer
+        /// Слой gru
         /// </summary>
         NNValue GRULayer(
             NNValue input,

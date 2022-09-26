@@ -19,7 +19,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
     ///     - time-stretching
     ///     - rectification
     ///     - envelope detection
-    ///     - spectral subtraction
+    ///     - spectral Вычитание
     /// 
     /// </summary>
     public static partial class Operation
@@ -289,7 +289,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         }
 
         /// <summary>
-        /// Spectral subtraction
+        /// Spectral Вычитание
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="noise"></param>

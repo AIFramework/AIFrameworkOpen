@@ -188,7 +188,7 @@ namespace AI.NLP
                 fD.Probability = count / n;
                 fD.Word = str;
 
-                list.Add(fD); // Adding an item
+                list.Add(fD); // Добавить элемент
 
 
                 // Удаление данных

@@ -23,7 +23,6 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         private RealFft _fft;
 
         // internal reusable buffers
-
         private float[] _real1;
         private float[] _imag1;
         private float[] _real2;
@@ -57,7 +56,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         }
 
         /// <summary>
-        /// Convolution
+        /// Свертка
         /// </summary>
         /// <param name="signal">Signal of length N</param>
         /// <param name="kernel">Kernel of length M</param>

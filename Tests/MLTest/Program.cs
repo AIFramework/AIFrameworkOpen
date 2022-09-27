@@ -1,6 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.ML.Classifiers;
 using AI.ML.MatrixUtils;
+using AI.Statistics;
 using System;
 
 namespace MLTest
@@ -41,8 +42,17 @@ namespace MLTest
             |-0.17826201| | -0.59690186| | -0.65635818|,
             | 0.98105379| | -0.12460262| | -0.57132423| */
 
-            var eigenvalues = QR.GetEigenvalues(matrix);
-            var vectors = QR.GetEigenvectors(matrix, eigenvalues);
+            int f = 10; // Число признаков
+            Random random = new Random(11);
+            Matrix c = Statistic.UniformDistribution(f, f, random); // Для создания значимой корреляции
+            matrix = 41*Statistic.UniformDistribution(69, f, random)*c;
+            PCA pca = new PCA(2) { Iterations = 200, Eps = 1};
+            pca.Train(matrix);
+
+            Console.WriteLine("Ковариационная матрица до МГК(PCA): \n" + Matrix.GetCovMatrixFromColumns(matrix).Round(3));
+            Console.WriteLine("\n\nКовариационная матрица после МГК(PCA): \n" + Matrix.GetCovMatrixFromColumns(pca.Transform(matrix, true)).Round(3));
+            Console.WriteLine($"\n\nПроцент сохраненной энергии: {pca.Info.InfoSaveEnergy*100}% \n");
+
         }
 
 

@@ -1185,6 +1185,27 @@ namespace AI.DataStructs.Algebraic
 
             return columns;
         }
+
+        /// <summary>
+        /// Разложение матрицы на строки
+        /// </summary>
+        /// <param name="matr">Матрица</param>
+        /// <returns>Массив векторов</returns>
+        public static Vector[] GetRows(Matrix matr)
+        {
+            Vector[] rows = new Vector[matr.Height];
+
+            for (int i = 0; i < rows.Length; i++)
+            {
+                rows[i] = new Vector(matr.Width);
+                for (int j = 0; j < matr.Width; j++)
+                {
+                    rows[i][j] = matr[i, j];
+                }
+            }
+
+            return rows;
+        }
         /// <summary>
         /// Альтернативная матрица
         /// </summary>
@@ -1234,21 +1255,14 @@ namespace AI.DataStructs.Algebraic
         public static Matrix GetCorrelationMatrixNorm(Vector[] vectors)
         {
             Matrix corelationMatrix = new Matrix(vectors.Length, vectors.Length);
-
             for (int i = 0; i < vectors.Length; i++)
-            {
-                for (int j = 0; j < vectors.Length; j++)
-                {
-                    if (i == j)
-                    {
-                        corelationMatrix[i, j] = 1;
-                    }
+                for (int j = i; j < vectors.Length; j++)
+                    if (i == j) corelationMatrix[i, j] = 1;
                     else
                     {
                         corelationMatrix[i, j] = Statistic.CorrelationCoefficient(vectors[i], vectors[j]);
+                        corelationMatrix[j, i] = corelationMatrix[i, j];
                     }
-                }
-            }
 
             return corelationMatrix;
         }
@@ -1259,18 +1273,17 @@ namespace AI.DataStructs.Algebraic
         /// <returns>Ковариационнай матрица</returns>
         public static Matrix GetCovMatrix(Vector[] vectors)
         {
-            Matrix corelationMatrix = new Matrix(vectors.Length, vectors.Length);
-
+            Matrix covMatrix = new Matrix(vectors.Length, vectors.Length);
             for (int i = 0; i < vectors.Length; i++)
-            {
-                for (int j = 0; j < vectors.Length; j++)
+                for (int j = i; j < vectors.Length; j++)
                 {
-                    corelationMatrix[i, j] = Statistic.Cov(vectors[i], vectors[j]);
+                    covMatrix[i, j] = Statistic.Cov(vectors[i], vectors[j]);
+                    covMatrix[j, i] = covMatrix[i, j];
                 }
-            }
 
-            return corelationMatrix;
+            return covMatrix;
         }
+
         /// <summary>
         /// Метод создает матрицу с коэффициентами попарной ковариции векторов
         /// </summary>

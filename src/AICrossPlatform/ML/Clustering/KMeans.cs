@@ -71,7 +71,7 @@ namespace AI.ML.Clustering
         public Vector[] Сentroids => Centroids;
 
         /// <summary>
-        /// Distance function
+        /// Функция измерения расстояния
         /// </summary>
         public Func<Vector, Vector, double> DistanceFunction { get; set; } = Distances.BaseDist.EuclideanDistance;
 

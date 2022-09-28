@@ -543,7 +543,7 @@ namespace AI.ML.NeuralNetwork
         /// <summary>
         /// Обучение нейронной сети
         /// </summary>
-        /// <param name="inputs">Inputs</param>
+        /// <param name="inputs">Входы</param>
         /// <param name="outputs">Outputs(target values)</param>
         public TrainInfo TrainNet(IReadOnlyList<IAlgebraicStructure<double>>[] inputs, IReadOnlyList<IAlgebraicStructure<double>>[] outputs)
         {

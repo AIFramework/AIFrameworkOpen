@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
 {
     /// <summary>
-    /// Данныеset interface
+    /// Набор данных interface
     /// </summary>
     public interface IDataSet
     {

@@ -33,7 +33,7 @@ namespace AI.ML.Clustering
         public Cluster[] Clusters => clusters.ToArray();
 
         /// <summary>
-        /// Distance function
+        /// Функция измерения расстояния
         /// </summary>
         public Func<Vector, Vector, double> DistanceFunction { get; set; } = Distances.BaseDist.EuclideanDistance;
 
@@ -91,7 +91,7 @@ namespace AI.ML.Clustering
 
 
         /// <summary>
-        /// Classify vector
+        /// Распознать вектор
         /// </summary>
         public int Classify(Vector vector)
         {

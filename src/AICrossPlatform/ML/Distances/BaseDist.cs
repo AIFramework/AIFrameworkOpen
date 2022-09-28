@@ -4,7 +4,7 @@ using System;
 namespace AI.ML.Distances
 {
     /// <summary>
-    /// Basic distance functions
+    /// Базовые функции измерения расстояний
     /// </summary>
     [Serializable]
     public static class BaseDist

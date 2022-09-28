@@ -3,6 +3,7 @@ using AI.Extensions;
 using AI.HightLevelFunctions;
 using AI.Statistics;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -1426,9 +1427,7 @@ namespace AI.DataStructs.Algebraic
             }
 
             string trimmed = str.Trim();
-
             string[] rows = trimmed.Split('\n');
-
             Vector[] vects = new Vector[rows.Length];
             int width = -1;
 
@@ -1441,10 +1440,8 @@ namespace AI.DataStructs.Algebraic
                 }
 
                 if (width == -1)
-                {
                     width = res.Count;
-                }
-
+                
                 if (res.Count != width)
                 {
                     result = null;
@@ -1460,32 +1457,24 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Инициализация матрицы с помощью векторов-строк
         /// </summary>
-        /// <param name="vectors"></param>
+        /// <param name="rows">Строки</param>
         /// <returns></returns>
-        public static Matrix FromVectorsAsRows(Vector[] vectors)
+        public static Matrix FromVectorsAsRows(IEnumerable<Vector> rows)
         {
-            if (vectors == null)
-            {
-                throw new ArgumentNullException(nameof(vectors));
-            }
+            if (rows == null)
+                throw new ArgumentNullException(nameof(rows));
 
+            Vector[] vectors = rows.ToArray();
             int width = vectors[0].Count;
-
             Matrix result = new Matrix(vectors.Length, width);
 
             for (int i = 0; i < vectors.Length; i++)
             {
-                Vector curVector = vectors[i];
-
-                if (curVector.Count != width)
-                {
-                    throw new ArgumentException($"Input vector({i}) doesn't match matrix width", nameof(vectors));
-                }
-
+                if (vectors[i].Count != width)
+                    throw new ArgumentException($"Число элементов входного вектора ({i}) не равно ширине матрицы", nameof(vectors));
+                
                 for (int j = 0; j < width; j++)
-                {
-                    result[i, j] = curVector[j];
-                }
+                    result[i, j] = vectors[i][j];
             }
 
             return result;
@@ -1493,32 +1482,24 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Инициализация матрицы с помощью векторов-столбцов
         /// </summary>
-        /// <param name="vectors"></param>
-        /// <returns></returns>
-        public static Matrix FromVectorsAsColumns(Vector[] vectors)
+        /// <param name="colums">Столбцы матрицы</param>
+        public static Matrix FromVectorsAsColumns(IEnumerable<Vector> colums)
         {
-            if (vectors == null)
-            {
-                throw new ArgumentNullException(nameof(vectors));
-            }
+            if (colums == null)
+                throw new ArgumentNullException(nameof(colums));
 
+            Vector[] vectors = colums.ToArray();
             int height = vectors[0].Count;
 
             Matrix result = new Matrix(height, vectors.Length);
 
             for (int i = 0; i < vectors.Length; i++)
             {
-                Vector curVector = vectors[i];
-
-                if (curVector.Count != height)
-                {
-                    throw new ArgumentException($"Input vector({i}) doesn't match matrix height", nameof(vectors));
-                }
-
+                if (vectors[i].Count != height)
+                    throw new ArgumentException($"Число элементов входного вектора ({i}) не равно высоте матрицы", nameof(vectors));
+              
                 for (int j = 0; j < height; j++)
-                {
-                    result[j, i] = curVector[j];
-                }
+                    result[j, i] = vectors[i][j];
             }
 
             return result;

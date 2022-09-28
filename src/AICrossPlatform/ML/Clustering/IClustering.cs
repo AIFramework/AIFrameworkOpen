@@ -10,12 +10,12 @@ namespace AI.ML.Clustering
     public interface IClustering
     {
         /// <summary>
-        /// Classify vector
+        /// Распознать вектор
         /// </summary>
         int Classify(Vector vector);
 
         /// <summary>
-        /// Classify vectors
+        /// Распознать векторs
         /// </summary>
         int[] Classify(IEnumerable<Vector> vectors);
 
@@ -27,7 +27,7 @@ namespace AI.ML.Clustering
         void Train(Vector[] dataset, int param);
 
         /// <summary>
-        /// Distance function
+        /// Функция измерения расстояния
         /// </summary>
         Func<Vector, Vector, double> DistanceFunction { get; set; }
 

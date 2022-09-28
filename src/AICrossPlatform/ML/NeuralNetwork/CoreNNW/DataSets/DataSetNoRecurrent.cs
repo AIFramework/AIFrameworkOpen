@@ -29,7 +29,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         /// <summary>
         /// Набор данных для нерекуррентной нейронной сети
         /// </summary>
-        /// <param name="inputs">Inputs</param>
+        /// <param name="inputs">Входы</param>
         /// <param name="outputs">Outputs(target values)</param>
         /// <param name="loss">Функция ошибки</param>
         /// <param name="valSplit">Fraction of the sample to be used for validation</param>
@@ -78,7 +78,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         /// <summary>
         /// Набор данных для нерекуррентной нейронной сети
         /// </summary>
-        /// <param name="inputs">Inputs</param>
+        /// <param name="inputs">Входы</param>
         /// <param name="outputs">Outputs(target values)</param>
         /// <param name="loss">Функция ошибки</param>
         /// <param name="valSplit">Fraction of the sample to be used for validation</param>

@@ -13,7 +13,7 @@ namespace AI.ML.Classifiers
     public class StructClasses : List<VectorClass>
     {
         /// <summary>
-        /// Save to file
+        /// Сохранить в файл
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -21,7 +21,7 @@ namespace AI.ML.Classifiers
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Save to stream
+        /// Сохранить в поток
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -29,7 +29,7 @@ namespace AI.ML.Classifiers
             BinarySerializer.Save(stream, this);
         }
         /// <summary>
-        /// Load from file
+        /// Загрузить из файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -38,7 +38,7 @@ namespace AI.ML.Classifiers
             return BinarySerializer.Load<StructClasses>(path);
         }
         /// <summary>
-        /// Load from stream
+        /// Загрузить из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>

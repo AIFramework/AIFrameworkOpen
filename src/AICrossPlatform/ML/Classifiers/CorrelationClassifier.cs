@@ -10,25 +10,25 @@ using System.Linq;
 namespace AI.ML.Classifiers
 {
     /// <summary>
-    /// Correlation classifier
+    /// Корреляционный классификатор
     /// </summary>
     [Serializable]
     public class CorrelationClassifier : IClassifier
     {
         /// <summary>
-        /// Classes
+        /// Классы
         /// </summary>
         public StructClasses Classes { get; set; }
 
         /// <summary>
-        /// Correlation classifier
+        /// Корреляционный классификатор
         /// </summary>
         public CorrelationClassifier()
         {
             Classes = new StructClasses();
         }
         /// <summary>
-        /// Correlation classifier
+        /// Корреляционный классификатор
         /// </summary>
         /// <param name="path">Путь до файла</param>
         public CorrelationClassifier(string path)
@@ -37,19 +37,19 @@ namespace AI.ML.Classifiers
             Load(path);
         }
         /// <summary>
-        /// Correlation classifier
+        /// Корреляционный классификатор
         /// </summary>
-        /// <param name="classifikator"> Classes</param>
+        /// <param name="classifikator">Классы</param>
         public CorrelationClassifier(StructClasses classifikator)
         {
             Classes = classifikator;
         }
 
         /// <summary>
-        /// Adding a class
+        /// Добавить класс
         /// </summary>
-        /// <param name="features">Feature vector</param>
-        /// <param name="num">Label </param>
+        /// <param name="features">Вектор признаков</param>
+        /// <param name="num">Метка</param>
         public void AddClass(Vector features, int num)
         {
             VectorClass structClass = new VectorClass
@@ -63,7 +63,7 @@ namespace AI.ML.Classifiers
 
         //TODO: Оптимизировать (убрать сортировку)
         /// <summary>
-        /// Recognizing a vector
+        /// Распознавание вектора
         /// </summary>
         /// <param name="inp">Вход</param>
         public int Classify(Vector inp)
@@ -76,9 +76,9 @@ namespace AI.ML.Classifiers
             return Classes[0].ClassMark;
         }
         /// <summary>
-        /// Recognizing a vector, the result is a vector of probabilities
+        /// Распознавание вектора, представить вектором распределения вероятностей
         /// </summary>
-        /// <param name="inp">Input vector</param>
+        /// <param name="inp">Вектор входа</param>
         public Vector ClassifyProbVector(Vector inp)
         {
             List<int> indexis = new List<int>();
@@ -129,7 +129,7 @@ namespace AI.ML.Classifiers
         }
 
         /// <summary>
-        /// Save to file
+        /// Сохранить в файл
         /// </summary>
         /// <param name="path">Путь до файла</param>
         public void Save(string path)
@@ -137,7 +137,7 @@ namespace AI.ML.Classifiers
             BinarySerializer.Save(path, Classes);
         }
         /// <summary>
-        /// Save to stream
+        /// Сохранить в поток
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -153,7 +153,7 @@ namespace AI.ML.Classifiers
             return BinarySerializer.Load<CorrelationClassifier>(path);
         }
         /// <summary>
-        /// Load from stream
+        /// Загрузить из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>

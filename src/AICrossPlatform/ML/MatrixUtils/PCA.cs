@@ -60,17 +60,20 @@ namespace AI.ML.MatrixUtils
         /// <param name="matrix">Матрица данных</param>
         public PCAInfo Train(Matrix matrix)
         {
-            Matrix var_matrix = Matrix.GetCovMatrixFromColumns(matrix);
+            
+            Matrix var_matrix = Matrix.GetCovMatrixFromColumns(matrix); // Получение кор. матрицы
+            EigenValuesVectors eigen = new EigenValuesVectors(var_matrix, Iterations, Eps); // Вычисление собственных значений и векторов
             Info = new PCAInfo();
 
             // Определение числа компонент
             int k = _k == null ? var_matrix.Height : _k.Value;
             k = k > var_matrix.Height ? var_matrix.Height : k;
 
-            var eigenvalues = QR.GetEigenvalues(var_matrix, Iterations, Eps);
+            var eigenvalues = eigen.Eigenvalues;
             
             eigenvalues.Sort((x,y)=>y.CompareTo(x)); // Поиск главных компонент
 
+            // Оценка качества
             if (k == var_matrix.Height)
             {
                 Info.SaveVar = eigenvalues.Sum();
@@ -81,44 +84,42 @@ namespace AI.ML.MatrixUtils
                 Info.SaveVar = 0;
                 Info.LastVar = 0;
                 int i = 0;
-                for (; i < k; i++) Info.SaveVar += eigenvalues[i];
-                for (; i < eigenvalues.Count; i++) Info.LastVar += eigenvalues[i];
-
+                for (; i < k; i++) Info.SaveVar += eigenvalues[i]; // Объясненная дисперсия
+                for (; i < eigenvalues.Count; i++) Info.LastVar += eigenvalues[i]; // Остаточная дисперсия
             }
 
-            Eigenvalues = eigenvalues.CutAndZero(k);
-            _sqrtEigenvalues = Eigenvalues.Transform(Math.Sqrt);
+            Info.EpsEigenvalues = eigen.Eps;
+            Info.IsConvergence = eigen.IsConvergence;
 
-            var vectors = QR.GetEigenvectors(var_matrix, Eigenvalues);
-            _pca = Matrix.FromVectorsAsColumns(vectors);
+            Eigenvalues = eigenvalues.CutAndZero(k); // Топ k собственных чисел
+            _sqrtEigenvalues = Eigenvalues.Transform(Math.Sqrt); // Корнм из собственных чисел (для нормализации)
+
+            var vectors = EigenValuesVectors.GetEigenvectorsStatic(var_matrix, Eigenvalues); // Получение первых k векторов
+            _pca = Matrix.FromVectorsAsColumns(vectors); // Создание матрицы преобразования
 
             return Info;
         }
 
-        ///// <summary>
-        ///// Прямое преобразование
-        ///// </summary>
-        ///// <param name="data">Данные</param>
-        ///// <param name="isNormal">Нормализовывать ли</param>
-        //public Vector[] Transform(IEnumerable<Vector> data, bool isNormal = false)
-        //{
-        //    if (_pca == null)
-        //        throw new Exception("Обучите алгоритм PCA!");
+        /// <summary>
+        /// Прямое преобразование
+        /// </summary>
+        /// <param name="data">Данные</param>
+        /// <param name="isNormal">Нормализовывать ли</param>
+        public Vector[] Transform(IEnumerable<Vector> data, bool isNormal = false)
+        {
+            Matrix dMatr = Matrix.FromVectorsAsRows(data);
+            return Matrix.GetRows(Transform(dMatr, isNormal));
+        }
 
-        //    Vector[] res = new Vector[data.Count()];
-        //    int i = 0;
-        //    foreach (var item in data) res[i++] = item * _pca;
-
-        //    // Нужна ли нормализация 
-        //    if (isNormal)
-        //    {
-        //        for (int j = 0; j < res.Length; j++)
-        //            res[i] /= Eigenvalues;
-        //    }
-
-        //    return res;
-
-        //}
+        /// <summary>
+        /// Прямое преобразование одного вектора
+        /// </summary>
+        /// <param name="vector">Данные</param>
+        /// <param name="isNormal">Нормализовывать ли</param>
+        public Vector Transform(Vector vector, bool isNormal = false) 
+        {
+            return Transform(new[] { vector }, isNormal)[0];
+        }
 
         /// <summary>
         /// Прямое преобразование
@@ -165,6 +166,16 @@ namespace AI.ML.MatrixUtils
         /// Сохраненная дисперсия
         /// </summary>
         public double SaveVar { get; set; }
+
+        /// <summary>
+        /// Ошибка при вычисление собственных чисел
+        /// </summary>
+        public double EpsEigenvalues { get; set; }
+
+        /// <summary>
+        /// Сошелся ли алгоритм
+        /// </summary>
+        public bool IsConvergence { get; set; }
 
     }
 }

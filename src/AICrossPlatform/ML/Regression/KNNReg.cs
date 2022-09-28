@@ -21,18 +21,18 @@ namespace AI.ML.Regression
     {
 
         /// <summary>
-        /// Number of neighbors
+        /// Число соседей
         /// </summary>
         public int K { get; set; }
 
 
         /// <summary>
-        /// Window width
+        /// Ширина окна
         /// </summary>
         public double H { get; set; }
 
         /// <summary>
-        /// Is the width fixed
+        /// Фиксирована ли ширина окна
         /// </summary>
         public bool FixedH { get; set; }
 
@@ -47,7 +47,7 @@ namespace AI.ML.Regression
         public Func<double, double> KernelWindow { get; set; }
 
         /// <summary>
-        /// Distance function
+        /// Функция измерения расстояния
         /// </summary>
         public Func<Vector, Vector, double> Dist { get; set; }
 
@@ -95,7 +95,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Regression (k-nearest neighbors method)
         /// </summary>
-        /// <param name="reg">Dataset</param>
+        /// <param name="reg">Набор данных</param>
         public KNNReg(StructRegres reg)
         {
             Reg = reg;

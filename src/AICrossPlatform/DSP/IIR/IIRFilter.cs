@@ -19,7 +19,7 @@ namespace AI.DSP.IIR
         public string Name { get; set; }
 
         /// <summary>
-        /// Coefficients a
+        /// Коэффициенты "A"
         /// </summary>
         public Vector A { get; set; }
         /// <summary>
@@ -35,7 +35,7 @@ namespace AI.DSP.IIR
         /// <summary>
         /// IIR filter
         /// </summary>
-        /// <param name="a">Coefficients a</param>
+        /// <param name="a">Коэффициенты "A"</param>
         /// <param name="b">Coefficients b</param>
         public IIRFilter(Vector a, Vector b)
         {
@@ -169,7 +169,7 @@ namespace AI.DSP.IIR
         /// <summary>
         /// Importing filter state
         /// </summary>
-        /// <param name="inputs">Inputs</param>
+        /// <param name="inputs">Входы</param>
         /// <param name="outputs">Outputs(target values)</param>
         /// <param name="offsetA">Offset outputs</param>
         /// <param name="offsetB">Offset inputs</param>
@@ -196,7 +196,7 @@ namespace AI.DSP.IIR
             * Структура:
             * Проверочное слово "iir"
             * Название Unicode
-            * Coefficients a
+            * Коэффициенты "A"
             * Coefficients b
             */
             InMemoryDataStream bs = new InMemoryDataStream();
@@ -213,7 +213,7 @@ namespace AI.DSP.IIR
              * Структура:
              * Проверочное слово "iir"
              * Название Unicode
-             * Coefficients a
+             * Коэффициенты "A"
              * Coefficients b
              */
             InMemoryDataStream bs = new InMemoryDataStream(path, isZipped: true);
@@ -241,7 +241,7 @@ namespace AI.DSP.IIR
              * Структура:
              * Проверочное слово "iir"
              * Название Unicode
-             * Coefficients a
+             * Коэффициенты "A"
              * Coefficients b
              */
             InMemoryDataStream bs = new InMemoryDataStream(data, isZipped: true);

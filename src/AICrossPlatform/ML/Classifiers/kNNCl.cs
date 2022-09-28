@@ -11,7 +11,7 @@ namespace AI.ML.Classifiers
 {
 
     /// <summary>
-    /// Classifier (k-nearest neighbors method)
+    /// Метод k-ближайших соседей
     /// </summary>
     [Serializable]
     public class KNNCl : IClassifier
@@ -20,38 +20,38 @@ namespace AI.ML.Classifiers
         private int _count;
 
         /// <summary>
-        /// Number of neighbors
+        /// Число соседей
         /// </summary>
         public int K { get; set; } = 4;
         /// <summary>
-        /// Window width
+        /// Ширина окна
         /// </summary>
         public double H { get; set; } = 1;
         /// <summary>
-        /// Is the width fixed
+        /// Фиксирована ли ширина окна
         /// </summary>
         public bool IsFixed { get; set; } = false;
         /// <summary>
-        /// Is the Parzen window in use
+        /// Использовать ли метод Парзена
         /// </summary>
         public bool IsParsenMethod { get; set; } = false;
         /// <summary>
-        /// Parzen window Kernel
+        /// Ядро окна Парзена
         /// </summary>
         public Func<double, double> KernelParsenWindow { get; set; }
         /// <summary>
-        /// Distance function
+        /// Функция измерения расстояния
         /// </summary>
         public Func<Vector, Vector, double> Dist { get; set; }
         /// <summary>
-        /// Данныеset
+        /// Набор данных
         /// </summary>
         public StructClasses Classes { get; set; }
         #endregion
 
         #region Конструкторы
         /// <summary>
-        /// Classifier (Method of k-nearest neighbors)
+        /// Метод k-ближайших соседей
         /// </summary>
         public KNNCl()
         {
@@ -61,7 +61,7 @@ namespace AI.ML.Classifiers
 
         }
         /// <summary>
-        /// Classifier (Method of k-nearest neighbors)
+        /// Метод k-ближайших соседей
         /// </summary>
         public KNNCl(VectorIntDataset vectorClasses)
         {
@@ -79,33 +79,33 @@ namespace AI.ML.Classifiers
         #endregion
 
         /// <summary>
-        /// Radial basis kernel for the Parzen window
+        /// Радиально-базисная функция окна
         /// </summary>
         public double RbfK(double r)
         {
             return Math.Exp(-2 * r * r);
         }
         /// <summary>
-        /// Classifier (Method of k-nearest neighbors)
+        /// Метод k-ближайших соседей
         /// </summary>
-        /// <param name="classifikator">Collection of classes</param>
+        /// <param name="classifikator">Коллекция классов</param>
         public KNNCl(StructClasses classifikator)
         {
             Classes = classifikator;
         }
         /// <summary>
-        /// Recognition
+        /// Распознавание
         /// </summary>
-        /// <param name="inp">Input vector</param>
+        /// <param name="inp">Вектор входа</param>
         public int Classify(Vector inp)
         {
             return ClassifyProbVector(inp).MaxElementIndex();
         }
         /// <summary>
-        /// Adding a class
+        /// Добавить класс
         /// </summary>
-        /// <param name="features">Feature vector</param>
-        /// <param name="num">Label </param>
+        /// <param name="features">Вектор признаков</param>
+        /// <param name="num">Метка </param>
         public void AddClass(Vector features, int num)
         {
             VectorClass structClass = new VectorClass
@@ -117,7 +117,7 @@ namespace AI.ML.Classifiers
             _count = GetN();
         }
         /// <summary>
-        /// Recognizing a vector, the result is a vector of probabilities
+        /// Распознавание вектора, представить вектором распределения вероятностей
         /// </summary>
         public Vector ClassifyProbVector(Vector inp)
         {
@@ -156,7 +156,7 @@ namespace AI.ML.Classifiers
 
         }
         /// <summary>
-        /// Returns a vector, its length is the number of classes, the number of the required class is 1
+        /// Возвращает вектор, его длина равна количеству классов, на позиции распознанного класса установлено значение 1
         /// </summary>
         /// <param name="inp">Вектор входных данных</param>
         public Vector RecognizeVectorMax(Vector inp)
@@ -213,9 +213,9 @@ namespace AI.ML.Classifiers
             }
         }
         /// <summary>
-        /// Обучениеing a classifier based on the vector-label dataset
+        /// Обучение на базе набора данных вектор-класс
         /// </summary>
-        /// <param name="dataset">Vector-label dataset</param>
+        /// <param name="dataset">Набор данных Vector-int32</param>
         public void Train(VectorIntDataset dataset)
         {
             for (int i = 0; i < dataset.Count; i++)
@@ -224,7 +224,7 @@ namespace AI.ML.Classifiers
             }
         }
         /// <summary>
-        /// Save to file
+        /// Сохранить в файл
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -232,7 +232,7 @@ namespace AI.ML.Classifiers
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Save to stream
+        /// Сохранить в поток
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -240,7 +240,7 @@ namespace AI.ML.Classifiers
             BinarySerializer.Save(stream, this);
         }
         /// <summary>
-        /// Load from file
+        /// Загрузить из файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -249,7 +249,7 @@ namespace AI.ML.Classifiers
             return BinarySerializer.Load<KNNCl>(path);
         }
         /// <summary>
-        /// Load from stream
+        /// Загрузить из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
@@ -258,7 +258,7 @@ namespace AI.ML.Classifiers
             return BinarySerializer.Load<KNNCl>(stream);
         }
         /// <summary>
-        /// Loading from csv file (features; class label)
+        /// Загрузить из csv (признаки; метка класса)
         /// </summary>
         /// <param name="pathToEtallonClassCsv">Путь до файла</param>
         public static KNNCl GetKNN(string pathToEtallonClassCsv)

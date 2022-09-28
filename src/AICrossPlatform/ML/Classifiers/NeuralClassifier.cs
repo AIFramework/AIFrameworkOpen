@@ -41,18 +41,18 @@ namespace AI.ML.Classifiers
         public ILoss Loss { get; set; } = new CrossEntropyWithSoftmax();
 
         /// <summary>
-        /// 
+        /// Классификатор на базе нейронной сети
         /// </summary>
-        /// <param name="net"></param>
+        /// <param name="net">Нейронная сеть</param>
         public NeuralClassifier(NNW net)
         {
             _net = net;
         }
 
         /// <summary>
-        /// Classify
+        /// Распознать
         /// </summary>
-        /// <param name="inp">Input vector</param>
+        /// <param name="inp">Вектор входа</param>
         public override int Classify(Vector inp)
         {
             return ClassifyProbVector(inp).MaxElementIndex();
@@ -60,9 +60,9 @@ namespace AI.ML.Classifiers
 
 
         /// <summary>
-        /// Classify
+        /// Распознать
         /// </summary>
-        /// <param name="inp">Input vector</param>
+        /// <param name="inp">Вектор входа</param>
         public override Vector ClassifyProbVector(Vector inp)
         {
             NNValue input = new NNValue(inp);

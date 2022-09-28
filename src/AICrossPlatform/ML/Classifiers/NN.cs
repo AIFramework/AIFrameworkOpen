@@ -17,14 +17,13 @@ namespace AI.ML.Classifiers
     {
         private StructClasses _classes;// Классификатор
         /// <summary>
-        /// Classes
+        /// Классы
         /// </summary>
         public StructClasses Classes
         {
             get => _classes;
             set => _classes = value;
         }
-
 
         /// <summary>
         ///  Классификатор, работающий по принципу метода эталонов
@@ -45,7 +44,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         ///  Классификатор, работающий по принципу метода эталонов
         /// </summary>
-        /// <param name="classifikator"> Classes</param>
+        /// <param name="classifikator">Классы</param>
         public NN(StructClasses classifikator)
         {
             _classes = classifikator;
@@ -65,9 +64,9 @@ namespace AI.ML.Classifiers
             return output / Count;
         }
         /// <summary>
-        /// Adding a standard to the classifier
+        /// Добавить эталон в классификатор
         /// </summary>
-        /// <param name="tDataset">Dataset</param>
+        /// <param name="tDataset">Набор данных</param>
         /// <param name="numClass">Индекс класса</param>
 		public void AddClass(Vector[] tDataset, int numClass)
         {
@@ -75,7 +74,7 @@ namespace AI.ML.Classifiers
             _classes.Add(new VectorClass(a, numClass));
         }
         /// <summary>
-        /// Recognizing a vector
+        /// Распознавание вектора
         /// </summary>
         /// <param name="inp">Вход</param>
         public int Classify(Vector inp)
@@ -110,10 +109,10 @@ namespace AI.ML.Classifiers
             return output;
         }
         /// <summary>
-        /// Adding a class
+        /// Добавить класс
         /// </summary>
-        /// <param name="features">Feature vector</param>
-        /// <param name="num">Label </param>
+        /// <param name="features">Вектор признаков</param>
+        /// <param name="num">Метка </param>
         public void AddClass(Vector features, int num)
         {
             VectorClass structClass = new VectorClass
@@ -124,7 +123,7 @@ namespace AI.ML.Classifiers
             _classes.Add(structClass);
         }
         /// <summary>
-        /// Returns a vector, the length of which is equal to the number of classes, the value at the index of the required class is set to one, and at other indices to zero.
+        /// Возвращает вектор, длина которого равна количеству классов, значение по индексу искомого класса устанавливается равным единице, а по остальным индексам равно нулю.
         /// </summary>
         /// <param name="inp">Вектор входных данных</param>
         public Vector ClassifyProbVector(Vector inp)
@@ -188,7 +187,7 @@ namespace AI.ML.Classifiers
             }
         }
         /// <summary>
-        /// Save to file
+        /// Сохранить в файл
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -196,7 +195,7 @@ namespace AI.ML.Classifiers
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Save to stream
+        /// Сохранить в поток
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)
@@ -204,7 +203,7 @@ namespace AI.ML.Classifiers
             BinarySerializer.Save(stream, this);
         }
         /// <summary>
-        /// Load from file
+        /// Загрузить из файла
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -213,7 +212,7 @@ namespace AI.ML.Classifiers
             return BinarySerializer.Load<NN>(path);
         }
         /// <summary>
-        /// Load from stream
+        /// Загрузить из потока
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>

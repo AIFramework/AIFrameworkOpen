@@ -21,18 +21,18 @@ namespace AI.ML.Regression
     {
 
         /// <summary>
-        /// Number of neighbors
+        /// Число соседей
         /// </summary>
         public int K { get; set; }
 
 
         /// <summary>
-        /// Window width
+        /// Ширина окна
         /// </summary>
         public double H { get; set; }
 
         /// <summary>
-        /// Is the width fixed
+        /// Фиксирована ли ширина окна
         /// </summary>
         public bool FixedH { get; set; }
 
@@ -47,14 +47,14 @@ namespace AI.ML.Regression
         public Func<double, double> KernelWindow { get; set; }
 
         /// <summary>
-        /// Distance function
+        /// Функция измерения расстояния
         /// </summary>
         public Func<Vector, Vector, double> Dist { get; set; }
 
         private StructRegresMulty reges;// Данные регрессии
 
         /// <summary>
-        /// Данныеset
+        /// Набор данных
         /// </summary>
         public StructRegresMulty Reg
         {
@@ -301,7 +301,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Predict
         /// </summary>
-        /// <param name="inp">Input vector</param>
+        /// <param name="inp">Вектор входа</param>
         public Vector[] PredictV(Vector[] inp)
         {
             Vector[] vect = new Vector[inp.Length];

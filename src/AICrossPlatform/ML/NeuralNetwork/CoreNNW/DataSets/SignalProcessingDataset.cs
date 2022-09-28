@@ -10,7 +10,7 @@ using System.IO;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 {
     /// <summary>
-    /// Данныеset for DSP tasks
+    /// Набор данных for DSP tasks
     /// </summary>
     [Serializable]
     public class SignalProcessingDataSet : DataSet, ISavable
@@ -19,14 +19,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         private readonly Random _rnd = new Random(5);
 
         /// <summary>
-        /// Данныеset for DSP tasks
+        /// Набор данных for DSP tasks
         /// </summary>
         /// <param name="loss"></param>
         public SignalProcessingDataSet(ILoss loss = null) : base(new Shape(1, 1, 1), new Shape(1, 1, 1), loss) { }
         /// <summary>
-        /// Данныеset for DSP tasks
+        /// Набор данных for DSP tasks
         /// </summary>
-        /// <param name="inputs">Inputs</param>
+        /// <param name="inputs">Входы</param>
         /// <param name="outputs">Outputs(target values)</param>
         /// <param name="loss">Функция ошибки</param>
         /// <param name="valSplit">Fraction of the sample to be used for validation</param>

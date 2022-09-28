@@ -22,11 +22,11 @@ namespace AI.ML.Regression
     public class KNNCorR : IRegression
     {
         /// <summary>
-        /// Number of neighbors
+        /// Число соседей
         /// </summary>
         public int K { get; set; }
         /// <summary>
-        /// Is the width fixed
+        /// Фиксирована ли ширина окна
         /// </summary>
         public bool FixedH { get; set; }
         /// <summary>
@@ -38,7 +38,7 @@ namespace AI.ML.Regression
         /// </summary>
         public int mutCount = 0;
         /// <summary>
-        /// Distance function
+        /// Функция измерения расстояния
         /// </summary>
         public Func<Vector, Vector, double> Dist { get; set; }
 

@@ -42,7 +42,7 @@ namespace AI.ML.DataSets.Base
         /// <summary>
         /// Getting a dataset, for use with a neural network manager
         /// </summary>
-        /// <param name="data">Dataset</param>
+        /// <param name="data">Набор данных</param>
         /// <param name="doShuffling">Whether it is necessary to shuffle the data in random order</param>
         public Many2ManyVectorClassifierDataset GetDataset(IEnumerable<Many2ManyVectorClassifier> data, bool doShuffling = true)
         {

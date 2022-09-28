@@ -200,7 +200,7 @@ namespace AI.DataStructs.Algebraic
 
             if (n1 != n2)
             {
-                throw new InvalidOperationException("Lengths of input vectors mismatche");
+                throw new InvalidOperationException("Размерности векторов не совпадают");
             }
 
             Vector C = new Vector(n1);
@@ -294,7 +294,7 @@ namespace AI.DataStructs.Algebraic
 
             if (n1 != n2)
             {
-                throw new InvalidOperationException("Lengths of input vectors mismatche");
+                throw new InvalidOperationException("Размерности векторов не совпадают");
             }
 
             Vector C = new Vector(n1);
@@ -327,7 +327,7 @@ namespace AI.DataStructs.Algebraic
 
             if (n1 != n2)
             {
-                throw new InvalidOperationException("Lengths of input vectors mismatche");
+                throw new InvalidOperationException("Размерности векторов не совпадают");
             }
 
             Vector C = new Vector(n1);
@@ -386,7 +386,7 @@ namespace AI.DataStructs.Algebraic
 
             if (n1 != n2)
             {
-                throw new InvalidOperationException("Lengths of input vectors mismatche");
+                throw new InvalidOperationException("Размерности векторов не совпадают");
             }
 
             Vector C = new Vector(n1);
@@ -482,7 +482,7 @@ namespace AI.DataStructs.Algebraic
 
             if (n1 != n2)
             {
-                throw new InvalidOperationException("Lengths of input vectors mismatche");
+                throw new InvalidOperationException("Размерности векторов не совпадают");
             }
 
             Vector C = new Vector(n1);
@@ -1109,7 +1109,7 @@ namespace AI.DataStructs.Algebraic
         {
             if (x.Count != Count)
             {
-                throw new InvalidOperationException("Length of input vector doesn't match the length of current");
+                throw new InvalidOperationException("Length of Вектор входа doesn't match the length of current");
             }
 
             Vector output = new Vector(Count);

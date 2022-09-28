@@ -10,7 +10,7 @@ using System.IO;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 {
     /// <summary>
-    /// Данныеset for training recurrent neural networks
+    /// Набор данных for training recurrent neural networks
     /// </summary>
     [Serializable]
     public class DataSetRecurrent : DataSet, ISavable
@@ -20,16 +20,16 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
         #region Конструкторы
         /// <summary>
-        /// Данныеset for recurrent neural networks
+        /// Набор данных for recurrent neural networks
         /// </summary>
         /// <param name="inputShape"></param>
         /// <param name="outputShape"></param>
         /// <param name="loss"></param>
         public DataSetRecurrent(Shape inputShape, Shape outputShape, ILoss loss = null) : base(inputShape, outputShape, loss) { }
         /// <summary>
-        /// Данныеset for recurrent neural networks
+        /// Набор данных for recurrent neural networks
         /// </summary>
-        /// <param name="inputs">Inputs</param>
+        /// <param name="inputs">Входы</param>
         /// <param name="outputs">Outputs(target values)</param>
         /// <param name="loss">Функция ошибки</param>
         /// <param name="valSplit">Fraction of the sample to be used for validation</param>
@@ -94,9 +94,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             Init(inputs, outputs, valSplit);
         }
         /// <summary>
-        /// Данныеset for recurrent neural networks
+        /// Набор данных for recurrent neural networks
         /// </summary>
-        /// <param name="inputs">Inputs</param>
+        /// <param name="inputs">Входы</param>
         /// <param name="outputs">Outputs(target values)</param>
         /// <param name="loss">Функция ошибки</param>
         /// <param name="valSplit">Fraction of the sample to be used for validation</param>

@@ -50,6 +50,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Непоследовательный блок
         /// </summary>
+        public NonSeqBlockNet() { }
+
+        /// <summary>
+        /// Непоследовательный блок
+        /// </summary>
         public NonSeqBlockNet(Shape3D inputDimension, Shape3D outputDimension, List<ILayer> layers)
         {
             InputShape = inputDimension;

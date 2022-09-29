@@ -14,7 +14,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace AI.ML.Regression
 {
     /// <summary>
-    /// Regression (k-nearest neighbors method)
+    /// Регрессия (Метод k-ближ. соседей)
     /// </summary>
     [Serializable]
     public class KNNReg : IRegression
@@ -58,7 +58,7 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Regression (k-nearest neighbors method)
+        /// Регрессия (Метод k-ближ. соседей)
         /// </summary>
         public KNNReg()
         {
@@ -82,7 +82,7 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Regression (k-nearest neighbors method)
+        /// Регрессия (Метод k-ближ. соседей)
         /// </summary>
         /// <param name="path">Путь до файла</param>
         public KNNReg(string path)
@@ -93,7 +93,7 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Regression (k-nearest neighbors method)
+        /// Регрессия (Метод k-ближ. соседей)
         /// </summary>
         /// <param name="reg">Набор данных</param>
         public KNNReg(StructRegres reg)
@@ -103,7 +103,7 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Save
+        /// Сохранение
         /// </summary>
         /// <param name="path">Путь до файла</param>
         public void Save(string path)
@@ -130,7 +130,7 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Loading
+        /// Загрузка
         /// </summary>
         /// <param name="path">Путь до файла</param>
         public void Open(string path)
@@ -219,9 +219,9 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Regression training
+        /// Обучение регрессии
         /// </summary>
-        /// <param name="tData">Input data</param>
+        /// <param name="tData">Входные данные</param>
         /// <param name="targs">Данные выходов</param>
         public void Train(Vector[] tData, Vector targs)
         {
@@ -232,9 +232,9 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Regression training
+        /// Обучение регрессии
         /// </summary>
-        /// <param name="tData">Input data</param>
+        /// <param name="tData">Входные данные</param>
         /// <param name="targs">Данные выходов</param>
         public void Train(Vector tData, Vector targs)
         {
@@ -309,4 +309,3 @@ namespace AI.ML.Regression
         }
     }
 }
-

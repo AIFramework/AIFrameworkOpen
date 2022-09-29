@@ -32,14 +32,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Прямой проход
         /// </summary>
-        /// <param name="input">Input data</param>
+        /// <param name="input">Входные данные</param>
         /// <param name="g">Граф автоматического дифференцирования</param>
         /// <returns></returns>
         NNValue Forward(NNValue input, INNWGraph g);
         /// <summary>
         /// Прямой проход
         /// </summary>
-        /// <param name="input">Input data</param>
+        /// <param name="input">Входные данные</param>
         /// <param name="g">Граф автоматического дифференцирования</param>
         /// <returns></returns>
         NNValue Forward(IAlgebraicStructure<double> input, INNWGraph g);

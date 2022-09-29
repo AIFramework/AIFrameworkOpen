@@ -503,7 +503,7 @@ namespace AI.DataStructs.WithComplexElements
 
         #region Сохранение
         /// <summary>
-        /// Saves matrix to file
+        /// Сохранениеs matrix to file
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -511,7 +511,7 @@ namespace AI.DataStructs.WithComplexElements
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Saves matrix to stream
+        /// Сохранениеs matrix to stream
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)

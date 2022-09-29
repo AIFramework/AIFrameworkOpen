@@ -12,7 +12,7 @@ using System;
 namespace AI.ML.Regression
 {
     /// <summary>
-    /// Regression dataset item
+    ///  Набор данных регрессии item
     /// </summary>
     [Serializable]
     public class StructRegr
@@ -22,7 +22,7 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Target variable value
+        /// Значение целевой переменной
         /// </summary>
         public double Target
         {
@@ -31,7 +31,7 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Feature vector
+        /// Вектор признаков
         /// </summary>
         public Vector Features
         {
@@ -40,7 +40,7 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Distance
+        /// Расстояние
         /// </summary>
         public double R
         {
@@ -49,7 +49,7 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Extra options
+        /// Дополнительные опции
         /// </summary>
         public double[] Params
         {

@@ -127,7 +127,7 @@ namespace AI
 
 
         /// <summary>
-        /// Save vector как звука
+        /// Сохранениеvector как звука
         /// </summary>
         /// <param name="path"></param>
         /// <param name="vector"></param>

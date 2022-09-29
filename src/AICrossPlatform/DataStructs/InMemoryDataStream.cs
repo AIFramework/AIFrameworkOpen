@@ -2221,7 +2221,7 @@ namespace AI.DataStructs
             return memoryStream;
         }
         /// <summary>
-        /// Saves data to the file
+        /// Сохранениеs data to the file
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -2235,7 +2235,7 @@ namespace AI.DataStructs
             Save(fs);
         }
         /// <summary>
-        /// Saves data to the System.IO.Stream
+        /// Сохранениеs data to the System.IO.Stream
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)

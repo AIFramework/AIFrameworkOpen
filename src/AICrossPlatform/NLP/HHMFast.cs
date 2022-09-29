@@ -297,7 +297,7 @@ namespace AI.NLP
 
         #region Сохранение
         /// <summary>
-        /// Saves HMMFast to file
+        /// Сохранениеs HMMFast to file
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -305,7 +305,7 @@ namespace AI.NLP
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Saves HMMFast to stream
+        /// Сохранениеs HMMFast to stream
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)

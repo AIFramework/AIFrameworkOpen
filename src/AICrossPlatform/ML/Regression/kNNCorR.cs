@@ -30,11 +30,11 @@ namespace AI.ML.Regression
         /// </summary>
         public bool FixedH { get; set; }
         /// <summary>
-        /// Whether to trigger mutation of neighbors
+        /// Инициировать ли мутацию соседей
         /// </summary>
         public bool isMutation = true;
         /// <summary>
-        /// Number of mutated neighbors
+        /// Число мутирующих соседей
         /// </summary>
         public int mutCount = 0;
         /// <summary>
@@ -72,14 +72,14 @@ namespace AI.ML.Regression
             Open(path);
         }
         /// <summary>
-        /// Regression (Nearest Neighbor Method)
+        /// Регрессия (Метод k-ближ. соседей)
         /// </summary>
         public KNNCorR(StructRegres reg)
         {
             reges = reg;
         }
         /// <summary>
-        /// Saving the regression model
+        /// Сохранение регрессионной модели
         /// </summary>
         /// <param name="path">Путь до файла</param>
         public void Save(string path)
@@ -104,7 +104,7 @@ namespace AI.ML.Regression
             }
         }
         /// <summary>
-        /// Loading a regression model
+        /// Загрузка регрессионной модели
         /// </summary>
         /// <param name="path">Путь до файла</param>
         public void Open(string path)
@@ -153,10 +153,10 @@ namespace AI.ML.Regression
             reges.Classes.Sort((a, b) => a.R.CompareTo(b.R));
         }
         /// <summary>
-        /// Adding data
+        /// Добавление данных
         /// </summary>
-        /// <param name="tData">Central vector</param>
-        /// <param name="targ">Dependent (target) variable</param>
+        /// <param name="tData">Вектор центроида</param>
+        /// <param name="targ">Зависимая (целевая) переменная</param>
         public void Train(Vector tData, double targ)
         {
             if (isMutation)
@@ -213,10 +213,10 @@ namespace AI.ML.Regression
             }
         }
         /// <summary>
-        /// Regression training
+        /// Обучение регрессии
         /// </summary>
-        /// <param name="tData">Training data inputs</param>
-        /// <param name="targs">Ideal outputs</param>
+        /// <param name="tData">Данные входа (x)</param>
+        /// <param name="targs">Целевые выходы</param>
         public void Train(Vector[] tData, Vector targs)
         {
             for (int i = 0; i < tData.Length; i++)
@@ -225,10 +225,10 @@ namespace AI.ML.Regression
             }
         }
         /// <summary>
-        /// Regression training
+        /// Обучение регрессии
         /// </summary>
-        /// <param name="tData">Training data inputs</param>
-        /// <param name="targs">Ideal outputs</param>
+        /// <param name="tData">Данные входа (x)</param>
+        /// <param name="targs">Целевые выходы</param>
         public void Train(Vector tData, Vector targs)
         {
             for (int i = 0; i < tData.Count; i++)
@@ -237,7 +237,7 @@ namespace AI.ML.Regression
             }
         }
         /// <summary>
-        /// Model prediction
+        /// Предсказания моделью
         /// </summary>
         /// <param name="inp">Вектор входных данных</param>
         public double Predict(Vector inp)
@@ -268,7 +268,7 @@ namespace AI.ML.Regression
 
         }
         /// <summary>
-        /// Calculation of the distribution of the importance of objects for the forecast
+        /// Расчет распределения важности объектов для прогноза
         /// </summary>
         /// <returns></returns>
         public Vector ImpObj()
@@ -283,9 +283,9 @@ namespace AI.ML.Regression
             return vs;
         }
         /// <summary>
-        /// Leaves only objects important for forecasting
+        /// Оставляет только важные для прогнозирования объекты
         /// </summary>
-        /// <param name="n">Number of objects to keep</param>
+        /// <param name="n">Количество объектов, которые необходимо сохранить</param>
         public void OnlyImp(int n = 60)
         {
             List<StructRegr> regs = new List<StructRegr>();
@@ -301,7 +301,7 @@ namespace AI.ML.Regression
             reges.Classes.AddRange(regs);
         }
         /// <summary>
-        /// Vector prediction
+        /// Предсказание вектора
         /// </summary>
         /// <param name="inp">Вектор входных данных</param>
         public Vector PredictV(Vector inp)

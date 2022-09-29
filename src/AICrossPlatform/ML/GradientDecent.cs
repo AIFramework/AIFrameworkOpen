@@ -206,7 +206,7 @@ namespace AI.ML
         /// <param name="param">Начальный вектор параметров(точка)</param>
         /// <param name="function">Целевая функция(принимает вектор параметров, выдает результирующее значение)</param>
         ///  <param name="inp"> Вектора входа</param>
-        ///   <param name="ideal"> Ideal outputs</param>
+        ///   <param name="ideal"> Целевые выходы</param>
         /// <returns>Возвращает вектор частных производных</returns>
         public Vector PartialDerivatives(Vector param, List<Vector> inp, List<Vector> ideal, Func<Vector, List<Vector>, List<Vector>, double> function)
         {

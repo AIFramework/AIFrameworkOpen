@@ -14,7 +14,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace AI.ML.Regression
 {
     /// <summary>
-    /// Regression (k-nearest neighbors method)
+    /// Регрессия (Метод k-ближ. соседей)
     /// </summary>
     [Serializable]
     public class KnnMultyRegr : IMultyRegression
@@ -111,7 +111,7 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Save
+        /// Сохранение
         /// </summary>
         /// <param name="path">Путь до файла</param>
         public void Save(string path)
@@ -138,7 +138,7 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Loading
+        /// Загрузка
         /// </summary>
         /// <param name="path">Путь до файла</param>
         public void Open(string path)
@@ -170,7 +170,7 @@ namespace AI.ML.Regression
         /// Перевод в double
         /// </summary>
         /// <param name="i">Индекс</param>
-        /// <param name="R">Window weight (return parameter)</param>
+        /// <param name="R">Вес окна (возвращаемый параметр)</param>
         private Vector ToData(int i, out double R)
         {
             Vector mark = reges.Classes[i].Targets;
@@ -223,9 +223,9 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Regression training
+        /// Обучение регрессии
         /// </summary>
-        /// <param name="tData">Input data</param>
+        /// <param name="tData">Входные данные</param>
         /// <param name="targs">Данные выходов</param>
         public void Train(Vector[] tData, Vector[] targs)
         {
@@ -236,9 +236,9 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Regression training
+        /// Обучение регрессии
         /// </summary>
-        /// <param name="tData">Input data</param>
+        /// <param name="tData">Входные данные</param>
         /// <param name="targs">Данные выходов</param>
         public void Train(Vector tData, Vector[] targs)
         {
@@ -250,7 +250,7 @@ namespace AI.ML.Regression
 
 
         /// <summary>
-        /// Forecasted vector
+        /// Прогнозируемый вектор
         /// </summary>
         /// <param name="inp">Вектор входных данных</param>
         public Vector Predict(Vector inp)
@@ -299,7 +299,7 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Predict
+        /// Предсказание
         /// </summary>
         /// <param name="inp">Вектор входа</param>
         public Vector[] PredictV(Vector[] inp)

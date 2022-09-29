@@ -5,7 +5,7 @@ using System;
 namespace AI.ML.Regression
 {
     /// <summary>
-    /// Description of PolynomialRegression.
+    /// Полиномиальная регрессия
     /// </summary>
     [Serializable]
     public class PolynomialRegression

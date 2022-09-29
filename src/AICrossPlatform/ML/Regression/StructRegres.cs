@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace AI.ML.Regression
 {
     /// <summary>
-    /// Regression dataset
+    /// Набор данных регрессии
     /// </summary>
     [Serializable]
     public class StructRegres

@@ -54,7 +54,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -64,7 +64,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided input data peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
@@ -106,7 +106,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -116,7 +116,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided input data peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
@@ -152,7 +152,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided input data doesn't match input shape", nameof(input));
+                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
@@ -181,7 +181,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided input data doesn't match input shape", nameof(input));
+                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
@@ -210,7 +210,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided input data doesn't match input shape", nameof(input));
+                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
@@ -239,7 +239,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided input data doesn't match input shape", nameof(input));
+                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
@@ -268,7 +268,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided input data doesn't match input shape", nameof(input));
+                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
@@ -297,7 +297,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided input data doesn't match input shape", nameof(input));
+                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
@@ -333,7 +333,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -343,7 +343,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided input data peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
@@ -383,7 +383,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -393,7 +393,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided input data peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
@@ -433,7 +433,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -443,7 +443,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided input data peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
@@ -483,7 +483,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -493,7 +493,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided input data peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
@@ -533,7 +533,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -543,7 +543,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided input data peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
@@ -583,7 +583,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -593,7 +593,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided input data peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))

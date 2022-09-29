@@ -54,7 +54,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -209,7 +209,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -263,7 +263,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)
@@ -317,7 +317,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided input data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
                 }
 
                 if (outputs[i] == null)

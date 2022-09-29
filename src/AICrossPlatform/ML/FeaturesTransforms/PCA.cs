@@ -1,10 +1,11 @@
 ﻿using AI.DataStructs.Algebraic;
+using AI.ML.MatrixUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AI.ML.MatrixUtils
+namespace AI.ML.FeaturesTransforms
 {
     /// <summary>
     /// Метод главных компонент
@@ -60,7 +61,7 @@ namespace AI.ML.MatrixUtils
         /// <param name="matrix">Матрица данных</param>
         public PCAInfo Train(Matrix matrix)
         {
-            
+
             Matrix var_matrix = Matrix.GetCovMatrixFromColumns(matrix); // Получение кор. матрицы
             EigenValuesVectors eigen = new EigenValuesVectors(var_matrix, Iterations, Eps); // Вычисление собственных значений и векторов
             Info = new PCAInfo();
@@ -70,8 +71,8 @@ namespace AI.ML.MatrixUtils
             k = k > var_matrix.Height ? var_matrix.Height : k;
 
             var eigenvalues = eigen.Eigenvalues;
-            
-            eigenvalues.Sort((x,y)=>y.CompareTo(x)); // Поиск главных компонент
+
+            eigenvalues.Sort((x, y) => y.CompareTo(x)); // Поиск главных компонент
 
             // Оценка качества
             if (k == var_matrix.Height)
@@ -79,7 +80,7 @@ namespace AI.ML.MatrixUtils
                 Info.SaveVar = eigenvalues.Sum();
                 Info.LastVar = 0;
             }
-            else 
+            else
             {
                 Info.SaveVar = 0;
                 Info.LastVar = 0;
@@ -100,6 +101,17 @@ namespace AI.ML.MatrixUtils
             return Info;
         }
 
+
+        /// <summary>
+        /// Обучение PCA
+        /// </summary>
+        /// <param name="vectors">Матрица данных</param>
+        public PCAInfo Train(Vector[] vectors)
+        {
+            Matrix matrix = Matrix.FromVectorsAsRows(vectors);
+            return Train(matrix);
+        }
+
         /// <summary>
         /// Прямое преобразование
         /// </summary>
@@ -116,7 +128,7 @@ namespace AI.ML.MatrixUtils
         /// </summary>
         /// <param name="vector">Данные</param>
         /// <param name="isNormal">Нормализовывать ли</param>
-        public Vector Transform(Vector vector, bool isNormal = false) 
+        public Vector Transform(Vector vector, bool isNormal = false)
         {
             return Transform(new[] { vector }, isNormal)[0];
         }
@@ -132,14 +144,14 @@ namespace AI.ML.MatrixUtils
             if (_pca == null)
                 throw new Exception("Обучите алгоритм PCA!");
 
-            Matrix res = data * _pca; 
+            Matrix res = data * _pca;
 
             // Нужна ли нормализация 
             if (isNormal)
             {
                 for (int i = 0; i < res.Width; i++)
                     for (int j = 0; j < res.Height; j++)
-                        res[j,i] /= _sqrtEigenvalues[i];
+                        res[j, i] /= _sqrtEigenvalues[i];
             }
 
             return res;
@@ -150,7 +162,7 @@ namespace AI.ML.MatrixUtils
     /// Информация о преобразовании
     /// </summary>
     [Serializable]
-    public class PCAInfo 
+    public class PCAInfo
     {
         /// <summary>
         /// Доля сохраненной энергии

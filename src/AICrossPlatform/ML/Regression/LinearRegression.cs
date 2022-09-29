@@ -31,19 +31,13 @@ namespace AI.ML.Regression
     }
 
 
-
-
-
-
-
-
     /// <summary>
     /// Линейная регрессия
     /// </summary>
     public class LinearRegression
     {
         /// <summary>
-        /// Парамметры линейной регрессии
+        /// Параметры линейной регрессии
         /// </summary>
         public LinearRegressionModel Lrm { get; set; }
 

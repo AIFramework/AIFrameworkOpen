@@ -18,7 +18,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace AI.ML.Regression
 {
     /// <summary>
-    /// Multiple regression
+    /// Множественная линейная регрессия
     /// </summary>
     [Serializable]
     public class MultipleRegression : IRegression
@@ -169,7 +169,7 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Loading the model
+        /// Загрузка the model
         /// </summary>
         /// <param name="path">The path to the file</param>
         public void LoadModel(string path)
@@ -191,15 +191,15 @@ namespace AI.ML.Regression
 
             catch
             {
-                throw new ArgumentException("Loading error");
+                throw new ArgumentException("Ошибка загрузки");
             }
         }
 
         /// <summary>
-        /// Multiple regression training
+        /// Обучение множественной регрессии
         /// </summary>
-        /// <param name="data">Features</param>
-        /// <param name="targets">Ideal outputs</param>
+        /// <param name="data">Признаки</param>
+        /// <param name="targets">Целевые выходы</param>
         public void Train(Vector[] data, Vector targets)
         {
             n = data.Length;

@@ -153,7 +153,7 @@ namespace AI.ML.Classifiers
         {
             if (features.Length != classes.Length)
             {
-                throw new InvalidOperationException("The number of feature vectors and the class method do not match");
+                throw new InvalidOperationException("The number of Вектор признаковs and the class method do not match");
             }
 
             for (int i = 0; i < features.Length; i++)

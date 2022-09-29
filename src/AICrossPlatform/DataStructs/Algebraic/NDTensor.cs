@@ -437,7 +437,7 @@ namespace AI.DataStructs.Algebraic
 
         #region Сохранение
         /// <summary>
-        /// Saves NDTensor to file
+        /// Сохранениеs NDTensor to file
         /// </summary>
         /// <param name="path"></param>
         public void Save(string path)
@@ -445,7 +445,7 @@ namespace AI.DataStructs.Algebraic
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Saves NDTensor to stream
+        /// Сохранениеs NDTensor to stream
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)

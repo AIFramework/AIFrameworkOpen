@@ -3,7 +3,7 @@
 namespace AI.ML.Distances
 {
     /// <summary>
-    /// Distances between distributions
+    /// Расстояниеs between distributions
     /// </summary>
     [Serializable]
     public static class DistancesBetweenDistributions

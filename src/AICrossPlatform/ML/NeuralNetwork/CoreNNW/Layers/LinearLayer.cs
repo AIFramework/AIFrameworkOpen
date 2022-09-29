@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Linear layer without bias
+    /// Линейный слой без смещения
     /// </summary>
     [Serializable]
     public class LinearLayer : ILearningLayer
@@ -37,7 +37,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public int TrainableParameters => _w.Shape.Count;
 
         /// <summary>
-        /// Linear layer without bias
+        /// Линейный слой без смещения
         /// </summary>
         public LinearLayer(int inputDimension, int outputDimension, double initParamsStdDev, Random rnd)
         {
@@ -46,7 +46,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             _w = NNValue.Random(outputDimension, inputDimension, initParamsStdDev, rnd);
         }
         /// <summary>
-        /// Linear layer without bias
+        /// Линейный слой без смещения
         /// </summary>
         public LinearLayer(Shape3D inputShape, int outputDimension, double initParamsStdDev, Random rnd)
         {
@@ -55,7 +55,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             _w = NNValue.Random(outputDimension, inputShape.Height, initParamsStdDev, rnd);
         }
         /// <summary>
-        /// Linear layer without bias
+        /// Линейный слой без смещения
         /// </summary>
         public LinearLayer(int outputDimension)
         {

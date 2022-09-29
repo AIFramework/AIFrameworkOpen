@@ -856,7 +856,7 @@ namespace AI.DataStructs.WithComplexElements
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Saves vector to stream
+        /// Сохранениеs vector to stream
         /// </summary>
         /// <param name="stream"></param>
         public void Save(Stream stream)

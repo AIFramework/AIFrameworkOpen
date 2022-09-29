@@ -40,7 +40,7 @@ namespace AI.ML.Distances
             return Math.Sqrt(SquareEucl(A, B));
         }
         /// <summary>
-        /// Distance L-infinity
+        /// Расстояние L-infinity
         /// </summary>
         public static double LinfDist(IAlgebraicStructure<double> A, IAlgebraicStructure<double> B)
         {

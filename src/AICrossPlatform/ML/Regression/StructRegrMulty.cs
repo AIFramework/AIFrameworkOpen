@@ -12,24 +12,24 @@ using System;
 namespace AI.ML.Regression
 {
     /// <summary>
-    /// Structure for storing regression data
+    /// Структура для хранения регрессионных данных
     /// </summary>
     [Serializable]
     public class StructRegrMulty
     {
         /// <summary>
-        /// Target vector
+        /// Целевой вектор
         /// </summary>
         private Vector _targ = new Vector(0);
 
         /// <summary>
-        /// Center of the hypersphere
+        /// Координата центра гиперсферы
         /// </summary>
         private Vector _centGiperSfer = new Vector();// Координата центра гиперсферы
 
 
         /// <summary>
-        /// Target vector
+        /// Целевой вектор
         /// </summary>
         public Vector Targets
         {
@@ -38,7 +38,7 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Center of the hypersphere
+        /// Координата центра гиперсферы
         /// </summary>
         public Vector CentGiperSfer
         {
@@ -47,7 +47,7 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Distance
+        /// Расстояние
         /// </summary>
         public double R
         {
@@ -56,7 +56,7 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Extra options
+        /// Дополнительные опции
         /// </summary>
         public double[] Params
         {

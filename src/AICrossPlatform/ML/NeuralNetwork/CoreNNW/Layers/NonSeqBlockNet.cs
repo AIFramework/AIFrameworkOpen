@@ -119,9 +119,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public void OnlyUse()
         {
             foreach (var layer in _layers)
-            {
                 layer.OnlyUse();
-            }
         }
     }
 }

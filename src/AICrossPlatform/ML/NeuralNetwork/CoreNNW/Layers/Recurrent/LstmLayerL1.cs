@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Long short-term memory(LSTM) layer (inpGate = 1.0 - forgetGate)
+    /// Слой LSTM (inpGate = 1.0 - forgetGate)
     /// </summary>
     [Serializable]
     public class LSTMLayerL1 : ILearningLayer, IRecurrentLayer
@@ -47,7 +47,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public int TrainableParameters => 3 * OutputShape.Height * (InputShape.Height + OutputShape.Height);
 
         /// <summary>
-        /// Long short-term memory(LSTM) layer (inpGate = 1.0 - forgetGate)
+        /// Слой LSTM (inpGate = 1.0 - forgetGate)
         /// </summary>
         /// <param name="inputDimension">Размерность входа</param>
         /// <param name="outputDimension">Размерность выхода</param>
@@ -61,7 +61,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             ResetState();
         }
         /// <summary>
-        /// Long short-term memory(LSTM) layer (inpGate = 1.0 - forgetGate)
+        /// Слой LSTM (inpGate = 1.0 - forgetGate)
         /// </summary>
         /// <param name="inputShape">Размерность входа</param>
         /// <param name="outputDimension">Размерность выхода</param>
@@ -74,7 +74,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             ResetState(); // Запуск НС
         }
         /// <summary>
-        /// Long short-term memory(LSTM) layer
+        /// Слой LSTM (inpGate = 1.0 - forgetGate)
         /// </summary>
         /// <param name="outputDimension">Размерность выхода</param>
         public LSTMLayerL1(int outputDimension)

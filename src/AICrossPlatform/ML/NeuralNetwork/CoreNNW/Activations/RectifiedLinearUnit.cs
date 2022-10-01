@@ -45,27 +45,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 
         private float Forward(float x)
         {
-            if (x >= 0)
-            {
-                return x;
-            }
-            else
-            {
-                return x * _slope;
-            }
+            return x >= 0 ? x : _slope * x;
         }
 
         private float Backward(float x)
         {
-
-            if (x >= 0)
-            {
-                return 1.0f;
-            }
-            else
-            {
-                return _slope;
-            }
+            return x >= 0 ? 1.0f : _slope;            
         }
 
         /// <summary>
@@ -78,9 +63,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             int len = x.Data.Length;
 
             for (int i = 0; i < len; i++)
-            {
                 valueMatrix.Data[i] = Forward(x.Data[i]);
-            }
+            
 
             return valueMatrix;
         }
@@ -94,9 +78,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             int len = x.Data.Length;
 
             for (int i = 0; i < len; i++)
-            {
                 valueMatrix.Data[i] = Backward(x.Data[i]);
-            }
+            
 
             return valueMatrix;
         }

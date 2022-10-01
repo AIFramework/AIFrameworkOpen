@@ -48,7 +48,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Слой копирования
         /// </summary>
         /// <param name="count">Число копий</param>
-        /// <param name="act">Non-linear function</param>
+        /// <param name="act">Нелинейная функция</param>
         public CopyistLayer(int count, IActivation act = null)
         {
             _count = count;

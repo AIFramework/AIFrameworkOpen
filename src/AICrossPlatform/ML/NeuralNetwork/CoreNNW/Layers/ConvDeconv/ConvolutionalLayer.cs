@@ -93,7 +93,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public int TrainableParameters => FilterStrucuture.FilterCount * FilterStrucuture.FilterH * FilterStrucuture.FilterW * InputShape.Depth;
         /// <summary>
-        /// Initializer numerator
+        /// Числитель генератора случайных чисел
         /// </summary>
         public double Numerator { get; set; }
         /// <summary>

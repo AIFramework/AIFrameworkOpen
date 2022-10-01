@@ -72,7 +72,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             ResetState();
         }
         /// <summary>
-        /// Neural network microcontroller
+        /// Нейросетевой контроллер
         /// </summary>
         /// <param name="inputShape">Размерность входа</param>
         /// <param name="outputDimension">Размерность выхода</param>
@@ -84,7 +84,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             ResetState(); // Запуск НС
         }
         /// <summary>
-        /// Neural network microcontroller
+        /// Нейросетевой контроллер
         /// </summary>
         /// <param name="outputDimension">Размерность выхода</param>
         public NeuralСontroller(int outputDimension)

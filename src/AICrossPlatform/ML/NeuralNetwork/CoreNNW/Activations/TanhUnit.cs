@@ -61,7 +61,6 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             return valueMatrix;
         }
 
-
         /// <summary>
         /// Обратный проход
         /// </summary>

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Long short-term memory(LSTM) layer
+    /// LSTM слой
     /// </summary>
     [Serializable]
     public class LSTMLayer : ILearningLayer, IRecurrentLayer
@@ -49,7 +49,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public int TrainableParameters => 4 * OutputShape.Height * (InputShape.Height + OutputShape.Height);
 
         /// <summary>
-        /// Long short-term memory(LSTM) layer
+        /// LSTM слой
         /// </summary>
         /// <param name="inputDimension">Размерность входа</param>
         /// <param name="outputDimension">Размерность выхода</param>
@@ -63,7 +63,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             ResetState();
         }
         /// <summary>
-        /// Long short-term memory(LSTM) layer
+        /// LSTM слой
         /// </summary>
         /// <param name="inputShape">Размерность входа</param>
         /// <param name="outputDimension">Размерность выхода</param>
@@ -76,7 +76,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             ResetState(); // Запуск НС
         }
         /// <summary>
-        /// Long short-term memory(LSTM) layer
+        /// LSTM слой
         /// </summary>
         /// <param name="outputDimension">Размерность выхода</param>
         public LSTMLayer(int outputDimension)

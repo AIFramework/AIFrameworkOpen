@@ -13,8 +13,6 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         /// </summary>
         public float Numerator => 1;
 
-
-
         /// <summary>
         /// Синусоидальная активационная фукция
         /// </summary>

@@ -54,9 +54,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             int len = x.Data.Length;
 
             for (int i = 0; i < len; i++)
-            {
                 valueMatrix.Data[i] = 1;
-            }
 
             return valueMatrix;
         }

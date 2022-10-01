@@ -6,10 +6,10 @@ using System;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// DropOut layer
+    /// Слой Dropout
     /// </summary>
     [Serializable]
-    public class DropOut : IRandomizableLayer
+    public class Dropout : IRandomizableLayer
     {
         private readonly float _q, _nomalizer;
         private Shape3D _inputShape;
@@ -39,15 +39,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public double AddDenInSqrt => 0;
         /// <summary>
-        /// Random object for the layer
+        /// Генератор случайных
         /// </summary>
         public Random Random { get; set; }
 
         /// <summary>
-        /// Dropout layer
+        /// Слой Dropout
         /// </summary>
-        /// <param name="dropProb">Probability of disconnection with a neuron</param>
-        public DropOut(float dropProb = 0.5f)
+        /// <param name="dropProb">Вероятность разъединения с нейроном</param>
+        public Dropout(float dropProb = 0.5f)
         {
             _q = 1.0f - dropProb;
             _nomalizer = 1.0f / _q;

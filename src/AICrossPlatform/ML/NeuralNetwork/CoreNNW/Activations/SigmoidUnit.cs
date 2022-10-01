@@ -13,7 +13,6 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         /// </summary>
         public float Numerator => 2;
 
-
         /// <summary>
         /// Параметр смещения y(x) = a*sigm(b*x+eps), по-умолчанию равен eps = 0
         /// </summary>

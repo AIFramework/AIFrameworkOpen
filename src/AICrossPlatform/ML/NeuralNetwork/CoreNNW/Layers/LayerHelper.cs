@@ -19,7 +19,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
                 builder.Append(" ");
             }
 
-            return string.Format("{0}|Inp: {1} |Outp: {2} |Activation: {3} |Train params: {4}", builder.ToString(), inputShape, outputShape, activationFunctionDescription, trainableParams);
+            return string.Format("{0}|Входы: {1} |Выходы: {2} |Функция активации: {3} |Обучаемые параметры: {4}", builder.ToString(), inputShape, outputShape, activationFunctionDescription, trainableParams);
         }
     }
 }

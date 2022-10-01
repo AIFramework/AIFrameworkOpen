@@ -60,8 +60,10 @@ namespace AI.ML.FeaturesTransforms
         public AutoEncoder(int inpDim, int outpDim=2)
         {
             _inputShape = new Shape3D(inpDim);
-            LayersEncoder.Add(new LinearLayer(outpDim));
-            LayersDecoder.Add(new LinearLayer(inpDim));
+            LayersEncoder.Add(new FeedForwardLayer(2*outpDim, new ReLU(0.6)));
+            LayersEncoder.Add(new FeedForwardLayer(outpDim, new ReLU(0.8)));
+
+            LayersDecoder.Add(new FeedForwardLayer(inpDim));
             CreateNetAutoEnc();
         }
 
@@ -179,7 +181,7 @@ namespace AI.ML.FeaturesTransforms
 
             for (int i = 0; i < LayersEncoder.Count; i++)
                 _netEncoder.Layers.Add(_net.Layers[i]);
-           // _netEncoder.OnlyUse();
+            _netEncoder.OnlyUse();
         }
     }
 }

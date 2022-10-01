@@ -6,7 +6,7 @@
     public interface IActivation
     {
         /// <summary>
-        /// Initializer numerator
+        /// Числитель генератора случайных чисел
         /// </summary>
         float Numerator { get; }
         /// <summary>

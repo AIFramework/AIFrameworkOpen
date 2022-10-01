@@ -8,7 +8,6 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
     [Serializable]
     public class EliotSigUnit : IActivation
     {
-
         /// <summary>
         /// Числитель генератора случайных чисел
         /// </summary>

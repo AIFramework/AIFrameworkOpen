@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 {
     /// <summary>
-    /// Long short-term memory(LSTM) layer peephole connection
+    /// Соединения с "глазками" слоя долговременной кратковременной памяти (LSTM)
     /// </summary>
     [Serializable]
     public class LSTMLayerPeepholeConnection : ILearningLayer, IRecurrentLayer
@@ -49,7 +49,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public int TrainableParameters => CountParams();
 
         /// <summary>
-        /// Long short-term memory(LSTM) layer peephole connection
+        /// Соединения с "глазками" слоя долговременной кратковременной памяти (LSTM)
         /// </summary>
         /// <param name="inputDimension">Размерность входа</param>
         /// <param name="outputDimension">Размерность выхода</param>
@@ -61,8 +61,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             OutputShape = new Shape3D(outputDimension);
             Init(outputDimension, initParamsStdDev, rnd);
         }
+
         /// <summary>
-        /// Long short-term memory(LSTM) layer peephole connection
+        /// Соединения с "глазками" слоя долговременной кратковременной памяти (LSTM)
         /// </summary>
         /// <param name="inputShape">Размерность входа</param>
         /// <param name="outputDimension">Размерность выхода</param>
@@ -73,8 +74,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             InputShape = inputShape;
             Init(outputDimension, initParamsStdDev, rnd);
         }
+
         /// <summary>
-        /// Long short-term memory(LSTM) layer peephole connection
+        /// Соединения с "глазками" слоя долговременной кратковременной памяти (LSTM)
         /// </summary>
         /// <param name="outputDimension">Размерность выхода</param>
         public LSTMLayerPeepholeConnection(int outputDimension)

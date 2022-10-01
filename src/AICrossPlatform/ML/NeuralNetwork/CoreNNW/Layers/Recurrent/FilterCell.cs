@@ -162,7 +162,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         {
         }
         /// <summary>
-        /// Resetting the state of the neural network layer
+        /// Сброс состояния слоя нейронной сети
         /// </summary>
         public void ResetState()
         {

@@ -8,7 +8,6 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
     [Serializable]
     public class SQRBFUnit : IActivation
     {
-
         /// <summary>
         /// Числитель генератора случайных чисел
         /// </summary>

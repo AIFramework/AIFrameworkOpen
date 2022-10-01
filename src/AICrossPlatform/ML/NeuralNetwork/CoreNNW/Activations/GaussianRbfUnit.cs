@@ -25,9 +25,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             int len = x.Shape.Count;
 
             for (int i = 0; i < len; i++)
-            {
                 valueMatrix[i] = (float)Math.Exp(-Math.Pow(x[i], 2));
-            }
 
             return valueMatrix;
         }

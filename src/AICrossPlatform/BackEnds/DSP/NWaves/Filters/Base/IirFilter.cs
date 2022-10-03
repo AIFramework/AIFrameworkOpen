@@ -162,7 +162,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         {
             switch (method)
             {
-                case FilteringMethod.OverlapAdd:       // are you sure you wanna do this? It's IIR filter!
+                case FilteringMethod.OverlapAdd:       // are you sure you wanna do this? It's БИХ фильтр!
                 case FilteringMethod.OverlapSave:
                     {
                         int length = Math.Max(DefaultImpulseResponseLength, _denominatorSize + _numeratorSize);
@@ -317,7 +317,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Sequential combination of an IIR filter and any LTI filter.
+        /// Sequential combination of an БИХ фильтр and any LTI filter.
         /// </summary>
         /// <param name="filter1"></param>
         /// <param name="filter2"></param>

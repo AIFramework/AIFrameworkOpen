@@ -3,12 +3,12 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Models
 {
     /// <summary>
-    /// Interface for starting the calculation of derivatives by a chain rule
+    /// Интерфейс для запуска расчета производных по цепному правилу
     /// </summary>
     public interface IBackwardRun
     {
         /// <summary>
-        /// Starting the calculation of derivatives
+        /// Запуск расчета производных
         /// </summary>
         Action StartCalc { get; set; }
     }

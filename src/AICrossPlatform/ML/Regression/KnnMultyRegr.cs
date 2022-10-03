@@ -17,7 +17,7 @@ namespace AI.ML.Regression
     /// Регрессия (Метод k-ближ. соседей)
     /// </summary>
     [Serializable]
-    public class KnnMultyRegr : IMultyRegression
+    public class KnnMultyRegr : IMultyRegression<Vector>
     {
 
         /// <summary>

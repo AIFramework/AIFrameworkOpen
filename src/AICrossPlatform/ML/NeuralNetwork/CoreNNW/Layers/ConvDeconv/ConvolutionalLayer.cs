@@ -18,11 +18,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         private int _padX = 0, _padY = 0;
 
         /// <summary>
-        /// Filter structure
+        /// Структура фильтра
         /// </summary>
         public FilterStruct FilterStrucuture;
         /// <summary>
-        /// X-axis stride
+        /// Шаг по оси X
         /// </summary>
         public int StrideX
         {
@@ -34,7 +34,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Y-axis stride
+        /// Шаг по оси Y
         /// </summary>
         public int StrideY
         {
@@ -46,7 +46,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Padding X-axis
+        /// Дополнение нулями по оси X
         /// </summary>
         public int PaddingX
         {
@@ -58,7 +58,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Padding Y-axis
+        /// Дополнение нулями по оси Y
         /// </summary>
         public int PaddingY
         {
@@ -70,7 +70,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             }
         }
         /// <summary>
-        /// Whether the dimension of the input is preserved
+        /// Сохраняется ли размер ввода
         /// </summary>
         public bool IsSame
         {
@@ -105,11 +105,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// </summary>
         public IActivation ActivationFunction { get; set; }
         /// <summary>
-        /// Offset weights
+        /// Вес смещения
         /// </summary>
         public NNValue Bias { get; private set; }
         /// <summary>
-        /// Filter tensors
+        /// Тензоры фильтров
         /// </summary>
         public NNValue[] Filters { get; /*private TODO*/set; }
         /// <summary>
@@ -183,7 +183,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 
             if (OutputShape.Height < 0 || OutputShape.Width < 0)
             {
-                throw new InvalidOperationException($"Negative dimention: (H = {OutputShape.Height},\tW = {OutputShape.Width})");
+                throw new InvalidOperationException($"Отрицательные числа в форме: (H = {OutputShape.Height},\tW = {OutputShape.Width})");
             }
 
             ActivationFunction = func;

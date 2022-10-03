@@ -4,7 +4,7 @@ using AI.ML.NeuralNetwork.CoreNNW.Models;
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
 {
     /// <summary>
-    /// Layer interface
+    /// Интерфейс слоя нейронной сети
     /// </summary>
     public interface ILayer
     {
@@ -32,7 +32,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
         /// <param name="g">Граф автоматического дифференцирования</param>
         NNValue Forward(NNValue input, INNWGraph g);
         /// <summary>
-        /// Only use mode
+        /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче
         /// </summary>
         void OnlyUse();
     }

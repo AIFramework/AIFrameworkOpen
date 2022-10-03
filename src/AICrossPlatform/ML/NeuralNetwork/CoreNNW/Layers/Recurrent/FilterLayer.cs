@@ -103,9 +103,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             _valueOutps = new NNValue[_count];
 
             for (int i = 0; i < input.Shape.Count; i++)
-            {
                 _valueOutps[i] = FilterCells[i].Forward(_values[i], g);
-            }
 
             return g.Activate(ActivationFunction, g.ConcatinateVectors(_valueOutps));
         }
@@ -116,9 +114,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public void InitWeights(Random random)
         {
             for (int i = 0; i < _count; i++)
-            {
                 FilterCells[i] = new FilterCell(_aLen, _bLen, random);
-            }
         }
         /// <summary>
         /// Получение обучаемых параметров
@@ -129,9 +125,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             List<NNValue> param = new List<NNValue>();
 
             for (int i = 0; i < _count; i++)
-            {
                 param.AddRange(FilterCells[i].GetParameters());
-            }
 
             return param;
         }
@@ -141,9 +135,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public void ResetState()
         {
             for (int i = 0; i < _count; i++)
-            {
                 FilterCells[i].ResetState();
-            }
         }
         /// <summary>
         /// Описание слоя
@@ -160,19 +152,11 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public void OnlyUse()
         {
             for (int i = 0; i < FilterCells.Length; i++)
-            {
                 FilterCells[i].OnlyUse();
-            }
-
             for (int i = 0; i < _values.Length; i++)
-            {
                 _values[i].OnlyUse();
-            }
-
             for (int i = 0; i < _valueOutps.Length; i++)
-            {
                 _valueOutps[i].OnlyUse();
-            }
         }
     }
 }

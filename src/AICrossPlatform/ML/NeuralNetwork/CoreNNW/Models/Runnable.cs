@@ -3,13 +3,13 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Models
 {
     /// <summary>
-    /// Class for starting the calculation of derivatives by a chain rule
+    /// Класс для запуска расчета производных по цепному правилу
     /// </summary>
     [Serializable]
     public class Runnable : IBackwardRun
     {
         /// <summary>
-        /// Class for starting the calculation of derivatives by a chain rule
+        /// Запуск расчета
         /// </summary>
         public Action StartCalc { get; set; }
     }

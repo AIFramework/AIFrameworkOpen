@@ -25,7 +25,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         }
 
         /// <summary>
-        /// Updating model parameters 
+        /// Обновление параметров модели
         /// </summary>
         /// <param name="network">Нейронная сеть</param>
         /// <param name="learningRate">Скорость обучения</param>
@@ -65,7 +65,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         }
 
         /// <summary>
-        /// Resetting neural network training parameters
+        /// Сброс параметров обучения нейронной сети
         /// </summary>
         public void Reset()
         {

@@ -96,7 +96,7 @@ namespace AI.ML.NeuralNetwork
 
         #region Forward pass
         /// <summary>
-        /// Neural network forward pass
+        /// Прямой проход нейронной сети
         /// </summary>
         /// <param name="input"></param>
         public NNValue Forward(NNValue input)
@@ -109,7 +109,7 @@ namespace AI.ML.NeuralNetwork
             return output;
         }
         /// <summary>
-        /// Neural network forward pass
+        /// Прямой проход нейронной сети
         /// </summary>
         /// <param name="algebraicStructure"></param>
         /// <returns></returns>
@@ -123,7 +123,7 @@ namespace AI.ML.NeuralNetwork
             return output;
         }
         /// <summary>
-        /// Neural network forward pass
+        /// Прямой проход нейронной сети
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
@@ -137,7 +137,7 @@ namespace AI.ML.NeuralNetwork
             return output.ToVector();
         }
         /// <summary>
-        /// Neural network forward pass
+        /// Прямой проход нейронной сети
         /// </summary>
         /// <param name="algebraicStructure"></param>
         /// <returns></returns>
@@ -151,7 +151,7 @@ namespace AI.ML.NeuralNetwork
             return output.ToVector();
         }
         /// <summary>
-        /// Neural network forward pass
+        /// Прямой проход нейронной сети
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
@@ -165,7 +165,7 @@ namespace AI.ML.NeuralNetwork
             return output.ToMatrix();
         }
         /// <summary>
-        /// Neural network forward pass
+        /// Прямой проход нейронной сети
         /// </summary>
         /// <param name="algebraicStructure"></param>
         /// <returns></returns>
@@ -179,7 +179,7 @@ namespace AI.ML.NeuralNetwork
             return output.ToMatrix();
         }
         /// <summary>
-        /// Neural network forward pass
+        /// Прямой проход нейронной сети
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
@@ -193,7 +193,7 @@ namespace AI.ML.NeuralNetwork
             return output.ToTensor();
         }
         /// <summary>
-        /// Neural network forward pass
+        /// Прямой проход нейронной сети
         /// </summary>
         /// <param name="algebraicStructure"></param>
         /// <returns></returns>
@@ -207,7 +207,7 @@ namespace AI.ML.NeuralNetwork
             return output.ToTensor();
         }
         /// <summary>
-        /// Neural network forward reccurent pass
+        /// Прямой проход рекуррентной нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
@@ -228,7 +228,7 @@ namespace AI.ML.NeuralNetwork
             return outputs;
         }
         /// <summary>
-        /// Neural network forward reccurent pass
+        /// Прямой проход рекуррентной нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
@@ -249,7 +249,7 @@ namespace AI.ML.NeuralNetwork
             return outputs;
         }
         /// <summary>
-        /// Neural network forward reccurent pass
+        /// Прямой проход рекуррентной нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
@@ -270,7 +270,7 @@ namespace AI.ML.NeuralNetwork
             return outputs;
         }
         /// <summary>
-        /// Neural network forward reccurent pass
+        /// Прямой проход рекуррентной нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
@@ -291,7 +291,7 @@ namespace AI.ML.NeuralNetwork
             return outputs;
         }
         /// <summary>
-        /// Neural network forward reccurent pass
+        /// Прямой проход рекуррентной нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
@@ -312,7 +312,7 @@ namespace AI.ML.NeuralNetwork
             return outputs;
         }
         /// <summary>
-        /// Neural network forward reccurent pass
+        /// Прямой проход рекуррентной нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
@@ -333,7 +333,7 @@ namespace AI.ML.NeuralNetwork
             return outputs;
         }
         /// <summary>
-        /// Neural network forward reccurent pass
+        /// Прямой проход рекуррентной нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
@@ -354,7 +354,7 @@ namespace AI.ML.NeuralNetwork
             return outputs;
         }
         /// <summary>
-        /// Neural network forward reccurent pass
+        /// Прямой проход рекуррентной нейронной сети
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
@@ -544,7 +544,7 @@ namespace AI.ML.NeuralNetwork
         /// Обучение нейронной сети
         /// </summary>
         /// <param name="inputs">Входы</param>
-        /// <param name="outputs">Outputs(target values)</param>
+        /// <param name="outputs">Выходы (целевые значения)</param>
         public TrainInfo TrainNet(IReadOnlyList<IAlgebraicStructure<double>>[] inputs, IReadOnlyList<IAlgebraicStructure<double>>[] outputs)
         {
             bool graphPrevState = Graph.IsBackward;

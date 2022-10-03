@@ -2,9 +2,9 @@
 {
     internal static class TrainerMessages
     {
-        public const string TrainingStarted = "---------------------- Training started ------------------------";
-        public const string TrainingFinished = "---------------------- Training finished ------------------------";
-        public const string TrainingStopped = "---------------------- Training stopped ------------------------";
-        public const string TrainingCancelled = "---------------------- Training cancelled ------------------------";
+        public const string TrainingStarted = "---------------------- Обучение началось ------------------------";
+        public const string TrainingFinished = "---------------------- Обучение завершено ------------------------";
+        public const string TrainingStopped = "---------------------- Обучение остановлено ------------------------";
+        public const string TrainingCancelled = "---------------------- Обучение отменено ------------------------";
     }
 }

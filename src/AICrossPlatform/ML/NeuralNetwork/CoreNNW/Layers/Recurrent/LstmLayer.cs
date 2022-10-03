@@ -93,23 +93,23 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         {
             NNValue conc = g.ConcatinateVectors(input, _hiddenContext);
 
-            //input gate
+            //Вентиль входа
             NNValue iSum = g.MulMV(_inpGate, conc);
             NNValue i = g.Activate(s_sigmoidActivation, g.Add(iSum, _inputBias));
 
-            //forget gate
+            //Вентиль забывания
             NNValue fSum = g.MulMV(_forgetG, conc);
             NNValue forgetGate = g.Activate(s_sigmoidActivation, g.Add(fSum, _forgetBias));
 
-            //output gate
+            //Вентиль выхода
             NNValue oSum = g.MulMV(_outpGate, conc);
             NNValue outputGate = g.Activate(s_sigmoidActivation, g.Add(oSum, _outputBias));
 
-            //write operation on cells
+            //Операция записи в ячейки
             NNValue cSum = g.MulMV(_writeG, conc);
             NNValue cellInput = g.Activate(s_tanhActivation, g.Add(cSum, _cellWriteBias));
 
-            //compute new cell activation
+            // Вычисляем активацию новой ячейки
             NNValue retainCell = g.AdamarMul(forgetGate, _cellContext);
             NNValue writeCell = g.AdamarMul(i, cellInput);
             NNValue cellAct = g.Add(retainCell, writeCell);
@@ -165,7 +165,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <returns></returns>
         public override string ToString()
         {
-            return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "sigm/tanh", TrainableParameters);
+            return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "Сигмоида/тангенс", TrainableParameters);
         }
         /// <summary>
         /// Только использование, удаляются все кэши и производные, сеть становится, примерно, в 4 раза легче

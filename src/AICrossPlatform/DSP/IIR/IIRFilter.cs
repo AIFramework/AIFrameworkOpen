@@ -6,7 +6,7 @@ using System;
 namespace AI.DSP.IIR
 {
     /// <summary>
-    /// IIR filter
+    /// БИХ фильтр
     /// </summary>
     [Serializable]
     public class IIRFilter : IFilter
@@ -33,7 +33,7 @@ namespace AI.DSP.IIR
         public double Treshold { get; set; } = 1e+300;
 
         /// <summary>
-        /// IIR filter
+        /// БИХ фильтр
         /// </summary>
         /// <param name="a">Коэффициенты "A"</param>
         /// <param name="b">Coefficients b</param>
@@ -170,7 +170,7 @@ namespace AI.DSP.IIR
         /// Importing filter state
         /// </summary>
         /// <param name="inputs">Входы</param>
-        /// <param name="outputs">Outputs(target values)</param>
+        /// <param name="outputs">Выходы (целевые значения)</param>
         /// <param name="offsetA">Offset outputs</param>
         /// <param name="offsetB">Offset inputs</param>
         public void ImportState(Vector inputs, Vector outputs, int offsetA, int offsetB)

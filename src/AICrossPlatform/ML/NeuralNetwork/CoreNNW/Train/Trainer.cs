@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace AI.ML.NeuralNetwork.CoreNNW.Train
 {
     /// <summary>
-    /// Class for training neural networks
+    /// Класс "учителя" для нейронной сети
     /// </summary>
     [Serializable]
     public class Trainer : ITrainer, IReporter
@@ -23,19 +23,19 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         private INNWGraph _graph;
 
         /// <summary>
-        /// Regularization coefficient L1, if it is equal to 0 L1 no regularization
+        /// Коэффициент регуляризации L1, если он равен 0 то обучение без L1 регуляризации
         /// </summary>
         public float L1Regularization { get; set; }
         /// <summary>
-        /// Regularization coefficient L2, if it is equal to 0 L2 regularization no
+        /// Коэффициент регуляризации L2, если он равен 0 то обучение без L2 регуляризации
         /// </summary>
         public float L2Regularization { get; set; }
         /// <summary>
-        /// Learning method SGD, Adam, etc.
+        /// Метод обучения SGD, Adam и др.
         /// </summary>
         public IOptimizer Optimizer { get; set; }
         /// <summary>
-        /// Gradient clipping to avoid gradient explosion, default 3
+        /// Ограничение градиента, по-умолчанию 3
         /// </summary>
         public float GradientClipValue { get; set; } = 3;
         /// <summary>
@@ -43,54 +43,54 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// </summary>
         public TrainInfo Info { get; set; }
         /// <summary>
-        /// True if currently training another model
+        /// True, если в настоящее время обучается другая модель
         /// </summary>
         public bool IsBusy { get; private set; } = false;
         /// <summary>
-        /// Whether to stop learning when overfitting
+        /// Стоит ли прекращать обучение при переобучении
         /// </summary>
         public bool DoOverfitStop { get; set; } = false;
         /// <summary>
-        /// Whether to make intermediate saves
+        /// Стоит ли делать промежуточные сохранение
         /// </summary>
         public bool DoCheckPointSave { get; set; } = false;
         /// <summary>
-        /// Checkpoint saver
+        /// Метод создания промежуточных сохранений
         /// </summary>
         public ICheckPointSaver CheckPointSaver { get; set; } = new FileCheckPointSaver("checkpoint.nn");
         /// <summary>
-        /// The minimum value for metrics that decrease as the quality of the model increases
+        /// Минимальное значение для метрик, уменьшающееся по мере повышения качества модели.
         /// </summary>
         public double MetricsMin { get; set; } = double.NaN;
         /// <summary>
-        /// The maximum value for metrics that increase with increasing model quality
+        /// Максимальное значение для метрики, которое увеличивается с повышением качества модели.
         /// </summary>
         public double MetricsMax { get; set; } = double.NaN;
         /// <summary>
-        /// Metric
+        /// Метрика
         /// </summary>
         public Metrics Metrics { get; set; } = Metrics.R2;
         /// <summary>
-        /// Report type
+        /// Тип отчета
         /// </summary>
         public ReportType ReportType { get; set; } = ReportType.ConsoleReport;
         /// <summary>
-        /// Function that controls the training of the neural network.If it evaluates to "true", training will be stopped.
-        /// The function of the following form "bool Function (INetwork network, TrainInfo info, float bestVal)"
+        /// Функция, управляющая обучением нейронной сети. Если она оценивается как «истина», обучение будет остановлено.
+        /// Функция следующего вида "bool Function (INetwork network, TrainInfo info, float bestVal)"
         /// </summary>
         public Func<INetwork, TrainInfo, float, bool> ControlFunction { get; set; } = (net, inf, bestVal) => false;
         #endregion
 
         #region Конструкторы
         /// <summary>
-        /// Creating a trainer for a neural network
+        /// Создание "учителя" для нейронной сети
         /// </summary> 
         public Trainer()
         {
             Init();
         }
         /// <summary>
-        /// Creating a trainer for a neural network
+        /// Создание "учителя" для нейронной сети
         /// </summary> 
         /// <param name="graph">Граф автоматического дифференцирования</param>
         public Trainer(INNWGraph graph)
@@ -98,16 +98,16 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
             Init(graph);
         }
         /// <summary>
-        /// Creating a trainer for a neural network
+        /// Создание "учителя" для нейронной сети
         /// </summary> 
         /// <param name="graph">Граф автоматического дифференцирования</param>
-        /// <param name="optimizer">Optimizer training method</param>
+        /// <param name="optimizer">Оптимизатор</param>
         public Trainer(INNWGraph graph, IOptimizer optimizer)
         {
             Init(graph, optimizer);
         }
         /// <summary>
-        /// Creating a trainer for a neural network
+        /// Создание "учителя" для нейронной сети
         /// </summary> 
         public Trainer(INNWGraph graph = null, IOptimizer optimizer = null, int randSeed = 12)
         {
@@ -143,12 +143,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
 
             if (network.InputShape != data.InputShape)
             {
-                throw new InvalidOperationException("Input shapes of network and dataset mismatche");
+                throw new InvalidOperationException("Несоответствие входных форм сети и набора данных");
             }
 
             if (network.OutputShape != data.OutputShape)
             {
-                throw new InvalidOperationException("Output shapes of network and dataset mismatche");
+                throw new InvalidOperationException("Несоответствие выходных форм сети и набора данных");
             }
 
             IsBusy = true; // Бронирование трейнера
@@ -185,7 +185,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
                 {
                     bestVal = modelInfo.ValLoss;
                     CheckPointSaver.Save(network, bestVal);
-                    Report(ReportElementType.CheckPointSaved, string.Format("Saving model using {0}, val. {1:N3}", CheckPointSaver, bestVal));
+                    Report(ReportElementType.CheckPointSaved, string.Format("Сохранение модели с использованием {0}, валидация. {1:N3}", CheckPointSaver, bestVal));
                 }
                 // Функция контроля обучения
                 if (ControlFunction(network, Info, bestVal) || !contTr)
@@ -209,7 +209,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// <param name="network">Нейронная сеть</param>
         /// <param name="data">Выборка</param>
         /// <param name="minLoss">Минимальное значение ошибки</param>
-        /// <param name="cancellationToken">Token for cancelling asynchronous operation</param>
+        /// <param name="cancellationToken">Токен для отмены асинхронной операции</param>
         public async Task TrainAsync(int epochesToPass, int batchSize, float learningRate, INetwork network, IDataSet data, float minLoss = 0.0f, CancellationToken cancellationToken = default)
         {
             if (network == null)
@@ -229,12 +229,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
 
             if (network.InputShape != data.InputShape)
             {
-                throw new InvalidOperationException("Input shapes of network and dataset mismatche");
+                throw new InvalidOperationException("Несоответствие входных форм сети и набора данных");
             }
 
             if (network.OutputShape != data.OutputShape)
             {
-                throw new InvalidOperationException("Output shapes of network and dataset mismatche");
+                throw new InvalidOperationException("Несоответствие выходных форм сети и набора данных");
             }
 
             IsBusy = true; // Бронирование трейнера
@@ -281,7 +281,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
                 {
                     bestVal = modelInfo.ValLoss;
                     CheckPointSaver.Save(network, bestVal);
-                    Report(ReportElementType.CheckPointSaved, string.Format("Saving model using {0}, val. {1:N3}", CheckPointSaver, bestVal));
+                    Report(ReportElementType.CheckPointSaved, string.Format("Сохранение модели с использованием {0}, валидация. {1:N3}", CheckPointSaver, bestVal));
                 }
                 // Функция контроля обучения
                 if (ControlFunction(network, Info, bestVal) || !contTr)
@@ -444,21 +444,21 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         {
             float trLoss, valLoss = 0, metric = 0, testLoss;
             trLoss = GetLoss(network, dataSet.Training, dataSet.LossFunction);
-            string report = $"epoch[{epoch + 1}/{epochs}]  tr. loss = {trLoss:N3}";
+            string report = $"Эпоха № [{epoch + 1}/{epochs}]  ошибка обуч. = {trLoss:N3}";
             Info.TrainLoss.Add(trLoss);
 
             if (hasValidation)
             {
                 valLoss = GetLoss(network, dataSet.Validation, dataSet.LossFunction);
                 metric = (float)Tester.Test(_graph, network, dataSet.Validation, Metrics);
-                report += $"  val. loss = {valLoss:N3}  val. {Metrics} = {metric:N3}";
+                report += $"  ошибка валидации = {valLoss:N3}  валидация {Metrics} = {metric:N3}";
                 Info.ValidationLoss.Add(valLoss);
             }
 
             if (dataSet.HasTestingData && epoch + 1 == epochs)
             {
                 testLoss = GetLoss(network, dataSet.Testing, dataSet.LossFunction);
-                report += $"  test loss  = {testLoss:N3}";
+                report += $"  ошибка на тест. выборке  = {testLoss:N3}";
                 Info.TestLoss = testLoss;
             }
 
@@ -501,27 +501,27 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
 
         #region События
         /// <summary>
-        /// Calls when new report element is created
+        /// Вызывается при создании нового элемента отчета
         /// </summary>
         public event EventHandler<ReportElementEventArgs> ReportElementCreated;
         /// <summary>
-        /// Calls when epoch is passed
+        /// Вызывается при прохождении эпохи обучения
         /// </summary>
         public event EventHandler<EpochPassedEventArgs> EpochPassed;
         /// <summary>
-        /// Calls when training is started
+        /// Вызывается в начале обучения
         /// </summary>
         public event EventHandler<TrainingEventArgs> TrainingStarted;
         /// <summary>
-        /// Calls when training is finished
+        /// Вызывается в конце обучения
         /// </summary>
         public event EventHandler<TrainingEventArgs> TrainingFinished;
         /// <summary>
-        /// Calls when network training is stopped without finishing all epoches
+        /// Вызывается, когда обучение сети останавливается без завершения всех эпох
         /// </summary>
         public event EventHandler<TrainingEventArgs> TrainingStopped;
         /// <summary>
-        /// Calls when network training is cancelled by the token
+        /// Вызовы, когда обучение сети отменяется токеном
         /// </summary>
         public event EventHandler<TrainingEventArgs> TrainingCancelled;
         #endregion

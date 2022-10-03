@@ -30,9 +30,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         /// Набор данных для нерекуррентной нейронной сети
         /// </summary>
         /// <param name="inputs">Входы</param>
-        /// <param name="outputs">Outputs(target values)</param>
+        /// <param name="outputs">Выходы (целевые значения)</param>
         /// <param name="loss">Функция ошибки</param>
-        /// <param name="valSplit">Fraction of the sample to be used for validation</param>
+        /// <param name="valSplit">Часть выборки для валидации</param>
         public DataSetNoRecurrent(NNValue[] inputs, NNValue[] outputs, ILoss loss, double valSplit = 0.0) : base(inputs[0].Shape, outputs[0].Shape, loss)
         {
             if (inputs == null)
@@ -47,29 +47,29 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             for (int i = 0; i < inputs.Length; i++)
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Входные данные  ({i}) не соотвествуют форме входа", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
                 {
-                    throw new ArgumentException($"Provided output data peace({i}) doesn't match output shape", nameof(outputs));
+                    throw new ArgumentException($"Выходные данные  ({i}) не соотвествуют форме выхода", nameof(outputs));
                 }
             }
 
@@ -79,9 +79,9 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         /// Набор данных для нерекуррентной нейронной сети
         /// </summary>
         /// <param name="inputs">Входы</param>
-        /// <param name="outputs">Outputs(target values)</param>
+        /// <param name="outputs">Выходы (целевые значения)</param>
         /// <param name="loss">Функция ошибки</param>
-        /// <param name="valSplit">Fraction of the sample to be used for validation</param>
+        /// <param name="valSplit">Часть выборки для валидации</param>
         public DataSetNoRecurrent(IAlgebraicStructure<double>[] inputs, IAlgebraicStructure<double>[] outputs, ILoss loss, double valSplit = 0.0) : base(inputs[0].Shape, outputs[0].Shape, loss)
         {
             if (inputs == null)
@@ -96,7 +96,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             NNValue[] valueInp = new NNValue[inputs.Length];
@@ -106,22 +106,22 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Входные данные  ({i}) не соотвествуют форме входа", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
                 {
-                    throw new ArgumentException($"Provided output data peace({i}) doesn't match output shape", nameof(outputs));
+                    throw new ArgumentException($"Выходные данные  ({i}) не соотвествуют форме выхода", nameof(outputs));
                 }
 
                 valueInp[i] = new NNValue(inputs[i]);
@@ -152,12 +152,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
+                throw new ArgumentException("Входные данные не соотвествуют форме входа", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
             {
-                throw new ArgumentException("Provided output data doesn't match output shape", nameof(output));
+                throw new ArgumentException("Выходные данные не соотвествуют форме выхода", nameof(output));
             }
 
             TrainingInternal.Add(GetSequence(input, output));
@@ -181,12 +181,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
+                throw new ArgumentException("Входные данные не соотвествуют форме входа", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
             {
-                throw new ArgumentException("Provided output data doesn't match output shape", nameof(output));
+                throw new ArgumentException("Выходные данные не соотвествуют форме выхода", nameof(output));
             }
 
             TrainingInternal.Add(GetSequence(new NNValue(input), new NNValue(output)));
@@ -210,12 +210,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
+                throw new ArgumentException("Входные данные не соотвествуют форме входа", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
             {
-                throw new ArgumentException("Provided output data doesn't match output shape", nameof(output));
+                throw new ArgumentException("Выходные данные не соотвествуют форме выхода", nameof(output));
             }
 
             ValidationInternal.Add(GetSequence(input, output));
@@ -239,12 +239,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
+                throw new ArgumentException("Входные данные не соотвествуют форме входа", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
             {
-                throw new ArgumentException("Provided output data doesn't match output shape", nameof(output));
+                throw new ArgumentException("Выходные данные не соотвествуют форме выхода", nameof(output));
             }
 
             ValidationInternal.Add(GetSequence(new NNValue(input), new NNValue(output)));
@@ -268,12 +268,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
+                throw new ArgumentException("Входные данные не соотвествуют форме входа", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
             {
-                throw new ArgumentException("Provided output data doesn't match output shape", nameof(output));
+                throw new ArgumentException("Выходные данные не соотвествуют форме выхода", nameof(output));
             }
 
             TestingInternal.Add(GetSequence(input, output));
@@ -297,12 +297,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (!input.Shape.FuzzyEquals(InputShape))
             {
-                throw new ArgumentException("Provided Входные данные doesn't match input shape", nameof(input));
+                throw new ArgumentException("Входные данные не соотвествуют форме входа", nameof(input));
             }
 
             if (!output.Shape.FuzzyEquals(OutputShape))
             {
-                throw new ArgumentException("Provided output data doesn't match output shape", nameof(output));
+                throw new ArgumentException("Выходные данные не соотвествуют форме выхода", nameof(output));
             }
 
             TestingInternal.Add(GetSequence(new NNValue(input), new NNValue(output)));
@@ -326,29 +326,29 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             for (int i = 0; i < inputs.Length; i++)
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Входные данные  ({i}) не соотвествуют форме входа", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
                 {
-                    throw new ArgumentException($"Provided output data peace({i}) doesn't match output shape", nameof(outputs));
+                    throw new ArgumentException($"Выходные данные  ({i}) не соотвествуют форме выхода", nameof(outputs));
                 }
             }
 
@@ -373,7 +373,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             NNValue[] inputNNVal = new NNValue[inputs.Length];
@@ -383,22 +383,22 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Входные данные  ({i}) не соотвествуют форме входа", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
                 {
-                    throw new ArgumentException($"Provided output data peace({i}) doesn't match output shape", nameof(outputs));
+                    throw new ArgumentException($"Выходные данные  ({i}) не соотвествуют форме выхода", nameof(outputs));
                 }
 
                 inputNNVal[i] = new NNValue(inputs[i]);
@@ -426,29 +426,29 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             for (int i = 0; i < inputs.Length; i++)
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Входные данные  ({i}) не соотвествуют форме входа", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
                 {
-                    throw new ArgumentException($"Provided output data peace({i}) doesn't match output shape", nameof(outputs));
+                    throw new ArgumentException($"Выходные данные  ({i}) не соотвествуют форме выхода", nameof(outputs));
                 }
             }
 
@@ -473,7 +473,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             NNValue[] inputNNVal = new NNValue[inputs.Length];
@@ -483,22 +483,22 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Входные данные  ({i}) не соотвествуют форме входа", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
                 {
-                    throw new ArgumentException($"Provided output data peace({i}) doesn't match output shape", nameof(outputs));
+                    throw new ArgumentException($"Выходные данные  ({i}) не соотвествуют форме выхода", nameof(outputs));
                 }
 
                 inputNNVal[i] = new NNValue(inputs[i]);
@@ -526,29 +526,29 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             for (int i = 0; i < inputs.Length; i++)
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Входные данные  ({i}) не соотвествуют форме входа", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
                 {
-                    throw new ArgumentException($"Provided output data peace({i}) doesn't match output shape", nameof(outputs));
+                    throw new ArgumentException($"Выходные данные  ({i}) не соотвествуют форме выхода", nameof(outputs));
                 }
             }
 
@@ -573,7 +573,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             NNValue[] inputNNVal = new NNValue[inputs.Length];
@@ -583,22 +583,22 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (!inputs[i].Shape.FuzzyEquals(InputShape))
                 {
-                    throw new ArgumentException($"Provided Входные данные peace({i}) doesn't match input shape", nameof(inputs));
+                    throw new ArgumentException($"Входные данные  ({i}) не соотвествуют форме входа", nameof(inputs));
                 }
 
                 if (!outputs[i].Shape.FuzzyEquals(OutputShape))
                 {
-                    throw new ArgumentException($"Provided output data peace({i}) doesn't match output shape", nameof(outputs));
+                    throw new ArgumentException($"Выходные данные  ({i}) не соотвествуют форме выхода", nameof(outputs));
                 }
 
                 inputNNVal[i] = new NNValue(inputs[i]);
@@ -620,12 +620,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (anotherSet.InputShape != InputShape)
             {
-                throw new ArgumentException("Another dataset's input shape doesn't match current input shape", nameof(anotherSet));
+                throw new ArgumentException("Входная форма другого набора данных не соответствует текущей входной форме", nameof(anotherSet));
             }
 
             if (anotherSet.OutputShape != OutputShape)
             {
-                throw new ArgumentException("Another dataset's output shape doesn't match current output shape", nameof(anotherSet));
+                throw new ArgumentException("Выходная форма другого набора данных не соответствует текущей выходной форме", nameof(anotherSet));
             }
 
             TrainingInternal.AddRange(anotherSet.Training);

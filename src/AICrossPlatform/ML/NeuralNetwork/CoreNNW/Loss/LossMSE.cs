@@ -3,7 +3,7 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Loss
 {
     /// <summary>
-    /// Mean square of error
+    /// Средний квадрат ошибки
     /// </summary>
     [Serializable]
     public class LossMSE : ILoss

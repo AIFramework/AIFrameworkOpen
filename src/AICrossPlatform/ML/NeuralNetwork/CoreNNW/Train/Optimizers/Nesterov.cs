@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
 {
     /// <summary>
-    /// Nesterov
+    /// Метод Нестерова
     /// </summary>
     [Serializable]
     public class Nesterov : IOptimizer
@@ -14,7 +14,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         private readonly float MomentumInv;
 
         /// <summary>
-        /// Nesterov
+        /// Метод Нестерова
         /// </summary>
         public Nesterov()
         {
@@ -22,7 +22,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
             MomentumInv = 1;
         }
         /// <summary>
-        /// Nesterov
+        /// Метод Нестерова
         /// </summary>
         public Nesterov(float momentum)
         {
@@ -33,7 +33,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
 
 
         /// <summary>
-        /// Updating model parameters 
+        /// Обновление параметров модели
         /// </summary>
         /// <param name="network">Нейронная сеть</param>
         /// <param name="learningRate">Скорость обучения</param>
@@ -62,7 +62,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         }
 
         /// <summary>
-        /// Resetting neural network training parameters
+        /// Сброс параметров обучения нейронной сети
         /// </summary>
         public void Reset()
         {

@@ -140,7 +140,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <returns></returns>
         public override string ToString()
         {
-            return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "sigm/tanh", TrainableParameters);
+            return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "Сигмоида/тангенс", TrainableParameters);
         }
 
         /// <summary>

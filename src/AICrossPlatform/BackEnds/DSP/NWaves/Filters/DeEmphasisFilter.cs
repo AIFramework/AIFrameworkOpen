@@ -4,7 +4,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
     /// <summary>
-    /// Standard de-emphasis IIR filter
+    /// Standard de-emphasis БИХ фильтр
     /// </summary>
     [Serializable]
 

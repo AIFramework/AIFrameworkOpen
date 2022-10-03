@@ -10,7 +10,7 @@ using System.IO;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 {
     /// <summary>
-    /// Набор данных for DSP tasks
+    /// Набор данных для задач цифровой обработки сигналов (ЦОС)
     /// </summary>
     [Serializable]
     public class SignalProcessingDataSet : DataSet, ISavable
@@ -19,17 +19,17 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         private readonly Random _rnd = new Random(5);
 
         /// <summary>
-        /// Набор данных for DSP tasks
+        /// Набор данных для задач цифровой обработки сигналов (ЦОС)
         /// </summary>
         /// <param name="loss"></param>
         public SignalProcessingDataSet(ILoss loss = null) : base(new Shape(1, 1, 1), new Shape(1, 1, 1), loss) { }
         /// <summary>
-        /// Набор данных for DSP tasks
+        /// Набор данных для задач цифровой обработки сигналов (ЦОС)
         /// </summary>
         /// <param name="inputs">Входы</param>
-        /// <param name="outputs">Outputs(target values)</param>
+        /// <param name="outputs">Выходы (целевые значения)</param>
         /// <param name="loss">Функция ошибки</param>
-        /// <param name="valSplit">Fraction of the sample to be used for validation</param>
+        /// <param name="valSplit">Часть выборки для валидации</param>
         public SignalProcessingDataSet(Vector[] inputs, Vector[] outputs, ILoss loss, double valSplit = 0.0) : base(new Shape(1, 1, 1), new Shape(1, 1, 1), loss)
         {
             if (inputs == null)
@@ -44,7 +44,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             List<NNValue>[] valueInp = new List<NNValue>[inputs.Length];
@@ -54,17 +54,17 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (inputs[i].Count != outputs[i].Count)
                 {
-                    throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                    throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
                 }
 
                 valueInp[i] = new List<NNValue>();
@@ -100,7 +100,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (input.Count != output.Count)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             List<NNValue> valueInp = new List<NNValue>(input.Count);
@@ -133,7 +133,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (input.Count != output.Count)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             List<NNValue> valueInp = new List<NNValue>(input.Count);
@@ -166,7 +166,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (input.Count != output.Count)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             List<NNValue> valueInp = new List<NNValue>(input.Count);
@@ -199,7 +199,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
             }
 
             List<NNValue>[] valueInp = new List<NNValue>[inputs.Length];
@@ -209,17 +209,17 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (inputs[i].Count != outputs[i].Count)
                 {
-                    throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                    throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
                 }
 
                 valueInp[i] = new List<NNValue>();
@@ -253,7 +253,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new ArgumentException("Count of inputs and outputs mismatches");
+                throw new ArgumentException("Количество входов не совпадает с числом выходов");
             }
 
             List<NNValue>[] valueInp = new List<NNValue>[inputs.Length];
@@ -263,17 +263,17 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (inputs[i].Count != outputs[i].Count)
                 {
-                    throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                    throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
                 }
 
                 valueInp[i] = new List<NNValue>();
@@ -307,7 +307,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (inputs.Length != outputs.Length)
             {
-                throw new ArgumentException("Count of inputs and outputs mismatches");
+                throw new ArgumentException("Количество входов не совпадает с числом выходов");
             }
 
             List<NNValue>[] valueInp = new List<NNValue>[inputs.Length];
@@ -317,17 +317,17 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
             {
                 if (inputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(inputs), $"Provided Входные данные peace({i}) is null");
+                    throw new ArgumentNullException(nameof(inputs), $"Входные данные  ({i}) — null");
                 }
 
                 if (outputs[i] == null)
                 {
-                    throw new ArgumentNullException(nameof(outputs), $"Provided output data peace({i}) is null");
+                    throw new ArgumentNullException(nameof(outputs), $"Выходные данные  ({i}) — null");
                 }
 
                 if (inputs[i].Count != outputs[i].Count)
                 {
-                    throw new InvalidOperationException("Count of inputs and outputs mismatches");
+                    throw new InvalidOperationException("Количество входов не совпадает с числом выходов");
                 }
 
                 valueInp[i] = new List<NNValue>();
@@ -355,12 +355,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
 
             if (anotherSet.InputShape != InputShape)
             {
-                throw new ArgumentException("Another dataset's input shape doesn't match current input shape", nameof(anotherSet));
+                throw new ArgumentException("Входная форма другого набора данных не соответствует текущей входной форме", nameof(anotherSet));
             }
 
             if (anotherSet.OutputShape != OutputShape)
             {
-                throw new ArgumentException("Another dataset's output shape doesn't match current output shape", nameof(anotherSet));
+                throw new ArgumentException("Выходная форма другого набора данных не соответствует текущей выходной форме", nameof(anotherSet));
             }
 
             TrainingInternal.AddRange(anotherSet.Training);

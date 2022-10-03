@@ -5,21 +5,21 @@ using System.Diagnostics;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
 {
     /// <summary>
-    /// Данные sequence used in network training
+    /// Данные последовательности
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Step count = {Steps.Count}")]
     public class DataSequence
     {
         /// <summary>
-        /// Sequence of steps
+        /// Элементы последовательности
         /// </summary>
         public IReadOnlyList<DataStep> Steps { get; }
 
         /// <summary>
-        /// Данные sequence
+        /// Данные последовательности
         /// </summary>
-        /// <param name="steps">Array of steps</param>
+        /// <param name="steps">Массив шагов</param>
         public DataSequence(params DataStep[] steps)
         {
             if (steps == null)
@@ -29,7 +29,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
 
             if (steps.Length == 0)
             {
-                throw new ArgumentException("Step count can't be 0", nameof(steps));
+                throw new ArgumentException("Число шагов не может быть 0", nameof(steps));
             }
 
             Steps = new List<DataStep>(steps).AsReadOnly();

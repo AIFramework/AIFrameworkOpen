@@ -3,7 +3,7 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Loss
 {
     /// <summary>
-    /// Calculation of the error for the cross entropy provided that the output is Softmax
+    /// Расчет ошибки кросс-энтропии при условии, что на выходе Softmax
     /// </summary>
     [Serializable]
     public class CrossEntropyWithSoftmax : ILoss

@@ -4,7 +4,7 @@ using System;
 namespace AI.ML.NeuralNetwork.CoreNNW.Train
 {
     /// <summary>
-    /// Information about training a neural network
+    /// Информация об обучении нейронной сети
     /// </summary>
     [Serializable]
     public class TrainInfo

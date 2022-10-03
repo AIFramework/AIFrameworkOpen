@@ -17,7 +17,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers.ConvDeconv
         private readonly ConvolutionalLayer _convolution;
 
         /// <summary>
-        /// Whether the dimension of the input is preserved
+        /// Сохраняется ли размер ввода
         /// </summary>
         public bool IsSame { get => _convolution.IsSame; set => _convolution.IsSame = value; }
         /// <summary>

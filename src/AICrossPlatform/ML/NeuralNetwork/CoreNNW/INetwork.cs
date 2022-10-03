@@ -13,19 +13,19 @@ namespace AI.ML.NeuralNetwork.CoreNNW
     public interface INetwork : ISavable
     {
         /// <summary>
-        /// Inputs shape
+        /// Форма входа
         /// </summary>
         Shape3D InputShape { get; set; }
         /// <summary>
-        /// Outputs shape
+        /// Форма выхода
         /// </summary>
         Shape3D OutputShape { get; }
         /// <summary>
-        /// Number of trainable parameters
+        /// Число обучаемых параметров
         /// </summary>
         int TrainableParameters { get; }
         /// <summary>
-        /// List of layers
+        /// Список слоев
         /// </summary>
         List<ILayer> Layers { get; set; }
 
@@ -44,7 +44,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <returns></returns>
         NNValue Forward(IAlgebraicStructure<double> input, INNWGraph g);
         /// <summary>
-        /// Reset state, must be in a recurrent neural network
+        /// Сброс состояния рекуррентной сети
         /// </summary>
         void ResetState();
         /// <summary>
@@ -53,15 +53,15 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <returns></returns>
         List<NNValue> GetParameters();
         /// <summary>
-        /// Append a new layer to the network
+        /// Добавление нового слоя в НС
         /// </summary>
-        /// <param name="layer">New layer</param>
+        /// <param name="layer">Новый слой</param>
         void AddNewLayer(ILayer layer);
         /// <summary>
-        /// Append a new layer to the network
+        /// Добавление нового слоя в НС
         /// </summary>
-        /// <param name="inputShape">Input shape</param>
-        /// <param name="layer">new layer</param>
+        /// <param name="inputShape">Форма входа</param>
+        /// <param name="layer">Новый слой</param>
         void AddNewLayer(Shape3D inputShape, ILayer layer);
 
         /// <summary>

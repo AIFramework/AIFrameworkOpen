@@ -3,7 +3,7 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
 {
     /// <summary>
-    /// Layer with Активационная функция
+    /// Слой с активационной функции
     /// </summary>
     public interface IActivatableLayer : ILayer
     {

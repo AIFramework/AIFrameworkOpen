@@ -104,23 +104,23 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             NNValue commandLine = g.MulMV(commandGet, conc);
 
 
-            //forget gate
+            //Вентиль забывания
             NNValue fSum = g.AdamarMul(forgetG, commandLine);
             NNValue forgetGate = g.Activate(forgetGateActivation, g.Add(fSum, forgetBias));
 
-            //input gate
+            //Вентиль входа
             NNValue iSum = g.AdamarMul(forgetG, commandLine);
             NNValue i = g.Activate(cellInputActivation, g.Add(iSum, inputBias));
 
-            //output gate
+            //Вентиль выхода
             NNValue oSum = g.AdamarMul(outpGate, commandLine);
             NNValue outputGate = g.Activate(outputGateActivation, g.Add(oSum, outputBias));
 
-            //write operation on cells
+            //Операция записи в ячейки
             NNValue cSum = g.MulMV(writeG, conc);
             NNValue cellInput = g.Activate(cellInputActivation, g.Add(cSum, cellWriteBias));
 
-            //compute new cell activation
+            // Вычисляем активацию новой ячейки
             NNValue retainCell = g.AdamarMul(forgetGate, _cellContext);
             NNValue writeCell = g.AdamarMul(i, cellInput);
             NNValue cellAct = g.Add(retainCell, writeCell);
@@ -217,7 +217,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("LstmLayerL1     \t|inp: {0} |outp: {1} |Non lin. activate: {3} |TrainParams: {2}", InputShape, OutputShape, TrainableParameters, "sigm/tanh");
+            return string.Format("LstmLayerL1     \t|Вход: {0} |Выходы: {1} |Нелинейная ф-я активации: {3} |Число обучаемых параметров: {2}", InputShape, OutputShape, TrainableParameters, "Сигмоида/тангенс");
         }
 
         /// <summary>

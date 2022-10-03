@@ -4,7 +4,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
     /// <summary>
-    /// DC removal IIR filter
+    /// DC removal БИХ фильтр
     /// </summary>
     [Serializable]
 

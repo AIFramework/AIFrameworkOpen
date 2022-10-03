@@ -5,10 +5,10 @@ using System.Diagnostics;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
 {
     /// <summary>
-    /// Данные step
+    /// Данные элемента последовательности
     /// </summary>
     [Serializable]
-    [DebuggerDisplay("Input shape = {Input?.Shape.ToString(),nq}, Output shape = {TargetOutput?.Shape.ToString(),nq}")]
+    [DebuggerDisplay("Форма входа = {Input?.Shape.ToString(),nq}, Форма выходных данных = {TargetOutput?.Shape.ToString(),nq}")]
     public class DataStep
     {
         /// <summary>
@@ -21,7 +21,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
         public NNValue TargetOutput { get; }
 
         /// <summary>
-        /// Данные step
+        /// Данные элемента последовательности
         /// </summary>
         /// <param name="input">Тензор входных данных</param>
         /// <param name="targetOutput">Тензор выходных данных</param>
@@ -41,10 +41,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
             TargetOutput = targetOutput.Clone();
         }
         /// <summary>
-        /// Данные step
+        /// Данные элемента последовательности
         /// </summary>
         /// <param name="input">Вход</param>
-        /// <param name="targetOutput">Output</param>
+        /// <param name="targetOutput">Выход</param>
         public DataStep(double[] input, double[] targetOutput)
         {
             if (input == null)
@@ -60,7 +60,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
             }
         }
         /// <summary>
-        /// Данные step
+        /// Данные элемента последовательности
         /// </summary>
         /// <param name="input">Тензор входных данных</param>
         public DataStep(NNValue input)
@@ -73,7 +73,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
             Input = input.Clone();
         }
         /// <summary>
-        /// Данные step
+        /// Данные элемента последовательности
         /// </summary>
         /// <param name="input">Вход</param>
         public DataStep(double[] input)

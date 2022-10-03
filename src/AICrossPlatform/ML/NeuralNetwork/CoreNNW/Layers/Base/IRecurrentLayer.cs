@@ -1,7 +1,7 @@
 ﻿namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
 {
     /// <summary>
-    /// Interface for recurrent layers
+    /// Интерфейс рекуррентного слоя
     /// </summary>
     public interface IRecurrentLayer : ILayer
     {

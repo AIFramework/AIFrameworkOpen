@@ -140,7 +140,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         {
             switch (method)
             {
-                case FilteringMethod.OverlapAdd:       // are you sure you wanna do this? It's IIR filter!
+                case FilteringMethod.OverlapAdd:       // are you sure you wanna do this? It's БИХ фильтр!
                 case FilteringMethod.OverlapSave:
                     {
                         int length = Math.Max(DefaultImpulseResponseLength, _denominatorSize + _numeratorSize);

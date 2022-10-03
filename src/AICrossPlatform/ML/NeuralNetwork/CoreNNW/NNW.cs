@@ -16,7 +16,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
     /// Нейронная сеть
     /// </summary>
     [Serializable]
-    [DebuggerDisplay("Input shape = {InputShape?.ToString(),nq}, Output shape = {OutputShape?.ToString(),nq}")]
+    [DebuggerDisplay("Форма входа = {InputShape?.ToString(),nq}, Форма выходных данных = {OutputShape?.ToString(),nq}")]
     public class NNW : INetwork
     {
         #region Поля и свойства
@@ -166,7 +166,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             if (input.Shape != InputShape)
             {
-                throw new ArgumentException("Inpud data shape doesn't match network input shape", nameof(input));
+                throw new ArgumentException("Входные данные не соответствуют форме входа", nameof(input));
             }
 
             NNValue prev = input;
@@ -240,7 +240,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             sb.AppendLine();
             sb.AppendLine();
-            sb.AppendFormat("Input shape: {0} | Output shape: {1} | Trainable parameters: {2}", InputShape, OutputShape, TrainableParameters);
+            sb.AppendFormat("Форма входа: {0} | Форма выходных данных: {1} | Обучаемые параметры: {2}", InputShape, OutputShape, TrainableParameters);
 
             return sb.ToString();
         }

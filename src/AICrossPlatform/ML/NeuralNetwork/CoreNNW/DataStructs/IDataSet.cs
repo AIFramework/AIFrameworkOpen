@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
 {
     /// <summary>
-    /// Набор данных interface
+    /// Интерфейс набор обучающих данных
     /// </summary>
     public interface IDataSet
     {
@@ -26,19 +26,19 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
         /// </summary>
         IReadOnlyList<DataSequence> Training { get; }
         /// <summary>
-        /// Validation subset
+        /// Валидационная подвыборка
         /// </summary>
         IReadOnlyList<DataSequence> Validation { get; }
         /// <summary>
-        /// Tells if validation subset is present
+        /// Есть ли валидационная подвыборка
         /// </summary>
         bool HasValidationData { get; }
         /// <summary>
-        /// Testing subset
+        /// Тестовая подвыборка
         /// </summary>
         IReadOnlyList<DataSequence> Testing { get; }
         /// <summary>
-        /// Tells if testing subset is present
+        /// Есть ли тестовая подвыборка
         /// </summary>
         bool HasTestingData { get; }
     }

@@ -13,14 +13,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         private readonly float SmoothEpsilon = 1e-8f;
         private readonly float SmoothEpsilon2 = 1e-4f;
         /// <summary>
-        /// Resetting neural network training parameters
+        /// Сброс параметров обучения нейронной сети
         /// </summary>
         public void Reset()
         {
 
         }
         /// <summary>
-        /// Updating model parameters 
+        /// Обновление параметров модели
         /// </summary>
         /// <param name="network">Нейронная сеть</param>
         /// <param name="learningRate">Скорость обучения</param>

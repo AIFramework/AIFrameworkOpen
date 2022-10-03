@@ -132,7 +132,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <returns></returns>
         public override string ToString()
         {
-            return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "sigm/tanh", TrainableParameters);
+            return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "Сигмоида/тангенс", TrainableParameters);
         }
 
         /// <summary>
@@ -169,7 +169,6 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             _hreset = NNValue.Random(outputDimension, inputDimension, initParamsStdDev, rnd);
             _hHreset = NNValue.Random(outputDimension, outputDimension, initParamsStdDev, rnd);
             _breset = new NNValue(outputDimension);
-            //_context = new NNValue();
         }
         #endregion
     }

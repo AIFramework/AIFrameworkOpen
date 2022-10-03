@@ -287,7 +287,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Sequential combination of an FIR and IIR filter
+        /// Sequential combination of an FIR and БИХ фильтр
         /// </summary>
         /// <param name="filter1"></param>
         /// <param name="filter2"></param>
@@ -313,7 +313,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Parallel combination of an FIR and IIR filter
+        /// Parallel combination of an FIR and БИХ фильтр
         /// </summary>
         /// <param name="filter1"></param>
         /// <param name="filter2"></param>

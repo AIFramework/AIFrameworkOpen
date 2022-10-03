@@ -34,32 +34,32 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
         /// </summary>
         public IReadOnlyList<DataSequence> Training => TrainingInternal.AsReadOnly();
         /// <summary>
-        /// Validation subset internal storage
+        /// Проверка внутренней памяти подвыборки
         /// </summary>
         protected List<DataSequence> ValidationInternal { get; }
         /// <summary>
-        /// Validation subset
+        /// Валидационная подвыборка
         /// </summary>
         public IReadOnlyList<DataSequence> Validation => ValidationInternal.AsReadOnly();
         /// <summary>
-        /// Tells if validation subset is present
+        /// Есть ли валидационная подвыборка
         /// </summary>
         public bool HasValidationData => ValidationInternal != null && ValidationInternal.Count > 0;
         /// <summary>
-        /// Testing subset internal storage
+        /// Тестовая подвыборка internal storage
         /// </summary>
         protected List<DataSequence> TestingInternal { get; }
         /// <summary>
-        /// Testing subset
+        /// Тестовая подвыборка
         /// </summary>
         public IReadOnlyList<DataSequence> Testing => TestingInternal.AsReadOnly();
         /// <summary>
-        /// Tells if testing subset is present
+        /// Есть ли тестовая подвыборка
         /// </summary>
         public bool HasTestingData => TestingInternal != null && TestingInternal.Count > 0;
 
         /// <summary>
-        /// Initialize dataset with given input and output shape and loss
+        /// Инициализировать набор данных с заданной входной и выходной формой и потерями
         /// </summary>
         /// <param name="inputShape"></param>
         /// <param name="outputShape"></param>
@@ -78,7 +78,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
 
             if (inputShape.Rank > 3)
             {
-                throw new ArgumentException("Rank of the input shape is greater than 3", nameof(inputShape));
+                throw new ArgumentException("Ранг входных данных должен быть меньше или равен 3", nameof(inputShape));
             }
 
             switch (inputShape.Rank)
@@ -98,7 +98,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataStructs
 
             if (outputShape.Rank > 3)
             {
-                throw new ArgumentException("Rank of the output shape if greater than 3", nameof(inputShape));
+                throw new ArgumentException("Ранг выходных данных должен быть меньше или равен 3", nameof(inputShape));
             }
 
             switch (outputShape.Rank)

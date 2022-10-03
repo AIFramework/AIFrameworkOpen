@@ -3,12 +3,12 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Layers.Base
 {
     /// <summary>
-    /// Layer that requires randomizer for work
+    /// Слой, для работы которого требуется рандомизатор
     /// </summary>
     public interface IRandomizableLayer : ILayer
     {
         /// <summary>
-        /// Random object for the layer
+        /// Генератор псевдослучайных чисел
         /// </summary>
         Random Random { set; }
     }

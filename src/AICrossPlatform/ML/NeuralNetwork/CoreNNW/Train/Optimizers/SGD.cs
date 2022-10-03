@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
 {
     /// <summary>
-    /// Stochastic gradient descent
+    /// Стохастический градиентный спуск (SGD)
     /// </summary>
     [Serializable]
     public class SGD : IOptimizer
@@ -15,7 +15,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         public float Momentum { get; set; }
 
         /// <summary>
-        /// Stochastic gradient descent, moment = 0
+        /// Стохастический градиентный спуск (SGD), moment = 0
         /// </summary>
         public SGD()
         {
@@ -23,7 +23,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         }
 
         /// <summary>
-        /// Stochastic gradient descent
+        /// Стохастический градиентный спуск (SGD)
         /// </summary>
         /// <param name="momentum">Moment</param>
         public SGD(float momentum)
@@ -33,7 +33,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         }
 
         /// <summary>
-        /// Resetting Teaching Parameters
+        /// Сброс параметров обучения
         /// </summary>
         public void Reset()
         {
@@ -41,14 +41,14 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         }
 
         /// <summary>
-        /// Updating parameters 
+        /// Обновление параметров
         /// </summary>
-        /// <param name="network"> Neural network</param>
-        /// <param name="learningRate"> Learning rate</param>
-        /// <param name="gradClip"> Maximum gradient value</param>
-        /// <param name="gradGain">Gradient enhancement factor</param>
-        /// <param name="L1">L1 regularization</param>
-        /// <param name="L2">L2 regularization</param>
+        /// <param name="network">Нейронная сеть</param>
+        /// <param name="learningRate">Скорость обучения</param>
+        /// <param name="gradClip"> Максимальное значение градиента</param>
+        /// <param name="gradGain">Усиление градиента (множитель)</param>
+        /// <param name="L1">L1 регуляризация</param>
+        /// <param name="L2">L2 регуляризация</param>
         public void UpdateModelParams(INetwork network, float learningRate, float gradClip, float L1, float L2, float gradGain)
         {
             System.Collections.Generic.List<NNValue> paramss = network.GetParameters();

@@ -4,13 +4,13 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Operations
 {
     /// <summary>
-    /// Envelope follower (detector)
+    /// Огибающая (detector)
     /// </summary>
     [Serializable]
     public class EnvelopeFollower : IOnlineFilter
     {
         /// <summary>
-        /// Attack time
+        /// Время атаки
         /// </summary>
         private float _attackTime;
 
@@ -60,7 +60,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         private float _gr;
 
         /// <summary>
-        /// Sampling rate
+        /// Частота дискретизации
         /// </summary>
         private readonly int _fs;
 

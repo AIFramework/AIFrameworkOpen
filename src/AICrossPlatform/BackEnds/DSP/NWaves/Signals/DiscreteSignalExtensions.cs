@@ -5,7 +5,7 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Signals
 {
     /// <summary>
-    /// In general, any finite DT signal is simply an array of data sampled at certain sampling rate.
+    /// In general, any finite DT signal is simply an array of data sampled at certain Частота дискретизации.
     /// 
     /// This array of samples can be:
     ///     - delayed (shifted) by positive or negative number of samples
@@ -59,7 +59,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         public static DiscreteSignal Superimpose(this DiscreteSignal signal1, DiscreteSignal signal2)
         {
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,
-                                        "Sampling rate of signal1", "sampling rate of signal2");
+                                        "Частота дискретизации of signal1", "Частота дискретизации of signal2");
 
             DiscreteSignal superimposed;
 
@@ -93,7 +93,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         public static DiscreteSignal SuperimposeMany(this DiscreteSignal signal1, DiscreteSignal signal2, int[] positions)
         {
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,
-                                        "Sampling rate of signal1", "sampling rate of signal2");
+                                        "Частота дискретизации of signal1", "Частота дискретизации of signal2");
 
             int totalLength = Math.Max(signal1.Length, signal2.Length + positions.Max());
 
@@ -124,7 +124,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         public static DiscreteSignal Subtract(this DiscreteSignal signal1, DiscreteSignal signal2)
         {
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,
-                                        "Sampling rate of signal1", "sampling rate of signal2");
+                                        "Частота дискретизации of signal1", "Частота дискретизации of signal2");
 
             DiscreteSignal subtracted;
 
@@ -163,7 +163,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         public static DiscreteSignal Concatenate(this DiscreteSignal signal1, DiscreteSignal signal2)
         {
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,
-                                        "Sampling rate of signal1", "sampling rate of signal2");
+                                        "Частота дискретизации of signal1", "Частота дискретизации of signal2");
 
             return new DiscreteSignal(
                             signal1.SamplingRate,

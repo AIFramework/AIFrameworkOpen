@@ -8,7 +8,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
     /// <summary>
     /// Base class for finite real-valued discrete-time signals.
     /// 
-    /// In general, any finite DT signal is simply an array of data sampled at certain sampling rate.
+    /// In general, any finite DT signal is simply an array of data sampled at certain Частота дискретизации.
     /// 
     /// See also DiscreteSignalExtensions for additional functionality of DT signals.
     /// 
@@ -43,12 +43,12 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// The most efficient constructor for initializing discrete signals
         /// </summary>
-        /// <param name="samplingRate">Sampling rate</param>
+        /// <param name="samplingRate">Частота дискретизации</param>
         /// <param name="samples">Array of samples</param>
         /// <param name="allocateNew">Set to true if new memory should be allocated for data</param>
         public DiscreteSignal(int samplingRate, float[] samples, bool allocateNew = false)
         {
-            Guard.AgainstNonPositive(samplingRate, "Sampling rate");
+            Guard.AgainstNonPositive(samplingRate, "Частота дискретизации");
 
             SamplingRate = samplingRate;
             Samples = allocateNew ? samples.FastCopy() : samples;
@@ -57,7 +57,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Constructor for creating a signal from collection of samples
         /// </summary>
-        /// <param name="samplingRate">Sampling rate</param>
+        /// <param name="samplingRate">Частота дискретизации</param>
         /// <param name="samples">Collection of samples</param>
         public DiscreteSignal(int samplingRate, IEnumerable<float> samples)
             : this(samplingRate, samples?.ToArray())
@@ -67,12 +67,12 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Constructor for creating a signal of specified length filled with specified values
         /// </summary>
-        /// <param name="samplingRate">Sampling rate</param>
+        /// <param name="samplingRate">Частота дискретизации</param>
         /// <param name="length">Number of samples</param>
         /// <param name="value">Value of each sample</param>
         public DiscreteSignal(int samplingRate, int length, float value = 0.0f)
         {
-            Guard.AgainstNonPositive(samplingRate, "Sampling rate");
+            Guard.AgainstNonPositive(samplingRate, "Частота дискретизации");
 
             SamplingRate = samplingRate;
 
@@ -88,12 +88,12 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Constructor for creating a signal from collection of integer samples
         /// </summary>
-        /// <param name="samplingRate">Sampling rate</param>
+        /// <param name="samplingRate">Частота дискретизации</param>
         /// <param name="samples">Collection of integer samples</param>
         /// <param name="normalizeFactor">Some normalization coefficient</param>
         public DiscreteSignal(int samplingRate, IEnumerable<int> samples, float normalizeFactor = 1.0f)
         {
-            Guard.AgainstNonPositive(samplingRate, "Sampling rate");
+            Guard.AgainstNonPositive(samplingRate, "Частота дискретизации");
 
             SamplingRate = samplingRate;
 

@@ -10,14 +10,14 @@ namespace AI.DSP.MusicUtils
     public class EchoReverb
     {
         /// <summary>
-        /// Project sampling rate
+        /// Project Частота дискретизации
         /// </summary>
         public int SampleRate { get; set; }
 
         /// <summary>
         /// Echo and reverb
         /// </summary>
-        /// <param name="sr">Project sampling rate</param>
+        /// <param name="sr">Project Частота дискретизации</param>
         public EchoReverb(int sr)
         {
             SampleRate = sr;

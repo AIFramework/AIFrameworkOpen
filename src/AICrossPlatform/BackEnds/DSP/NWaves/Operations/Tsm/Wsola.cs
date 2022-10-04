@@ -86,7 +86,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 
             // IMO these are good parameters for different stretch ratios
 
-            if (_stretch > 1.5)        // parameters are for 22.05 kHz sampling rate, so they will be adjusted for an input signal
+            if (_stretch > 1.5)        // parameters are for 22.05 kHz Частота дискретизации, so they will be adjusted for an input signal
             {
                 _windowSize = 1024;     // 46,4 ms
                 _hopAnalysis = 128;     //  5,8 ms
@@ -136,7 +136,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         public DiscreteSignal ApplyTo(DiscreteSignal signal,
                                       FilteringMethod method = FilteringMethod.Auto)
         {
-            // adjust default parameters for a new sampling rate
+            // adjust default parameters for a new Частота дискретизации
 
             if (signal.SamplingRate != 22050 && !_userParameters)
             {

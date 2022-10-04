@@ -4,21 +4,21 @@ using System.Threading.Tasks;
 namespace AI.BackEnds.DSP.NWaves.Audio.Interfaces
 {
     /// <summary>
-    /// Interface for audio playback functionality
+    /// Интерфейс для воспроизведения звука
     /// </summary>
     public interface IAudioPlayer
     {
         /// <summary>
-        /// Sound volume in range [0.0f, 1.0f]
+        /// Громкость звука в диапазоне [0.0f, 1.0f]
         /// </summary>
         float Volume { get; set; }
 
         /// <summary>
-        /// Play samples contained in DiscreteSignal asynchronously
+        /// Асинхронное воспроизведение звука
         /// </summary>
-        /// <param name="signal">Signal to play</param>
-        /// <param name="startPos">Number of the first sample to play</param>
-        /// <param name="endPos">Number of the last sample to play</param>
+        /// <param name="signal">Сигнал для проигрывания</param>
+        /// <param name="startPos">Начальная позиция для воспроизведения</param>
+        /// <param name="endPos">Конечная позиция для проигрывания (-1 — проигрывать весь файл)</param>
         /// <param name="bitDepth">Number of bits per one sample</param>
         Task PlayAsync(DiscreteSignal signal, int startPos = 0, int endPos = -1, short bitDepth = 16);
 
@@ -26,8 +26,8 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Interfaces
         /// Play samples contained in WAV file (or some other source) asynchronously
         /// </summary>
         /// <param name="source">WAV file (or other source) to play</param>
-        /// <param name="startPos">Number of the first sample to play</param>
-        /// <param name="endPos">Number of the last sample to play</param>
+        /// <param name="startPos">Начальная позиция для воспроизведения</param>
+        /// <param name="endPos">Конечная позиция для проигрывания (-1 — проигрывать весь файл)</param>
         Task PlayAsync(string source, int startPos = 0, int endPos = -1);
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Interfaces
         void Pause();
 
         /// <summary>
-        /// Resume playing audio
+        /// Возобновление воспроизведения аудио
         /// </summary>
         void Resume();
 

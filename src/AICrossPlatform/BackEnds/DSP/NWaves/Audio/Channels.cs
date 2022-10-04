@@ -3,34 +3,34 @@
 namespace AI.BackEnds.DSP.NWaves.Audio
 {
     /// <summary>
-    /// Most used channels are: left and right.
-    /// Also we add the special case: interleaved channels
+    /// Наиболее используемые каналы: левый и правый.
+    /// Также мы добавляем особый случай: чередующиеся каналы
     /// </summary>
     [Serializable]
     public enum Channels
     {
         /// <summary>
-        /// Left channel (=0)
+        /// Левый канал (=0)
         /// </summary>
         Left,
 
         /// <summary>
-        /// Right channel (=1)
+        /// Правый канал (=1)
         /// </summary>
         Right,
 
         /// <summary>
-        /// Mono as sum of all channels
+        /// Моно как сумма всех каналов
         /// </summary>
         Sum = 253,
 
         /// <summary>
-        /// Mono as average from all channels
+        /// Моно как среднее всех каналов
         /// </summary>
         Average = 254,
 
         /// <summary>
-        /// Interleaved channels
+        /// Перемешаный канал
         /// </summary>
         Interleave = 255
     }

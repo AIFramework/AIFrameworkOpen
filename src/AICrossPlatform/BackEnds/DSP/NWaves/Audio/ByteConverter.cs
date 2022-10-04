@@ -3,13 +3,13 @@
 namespace AI.BackEnds.DSP.NWaves.Audio
 {
     /// <summary>
-    /// Static class providing methods for conversion between PCM bytes and float[] data.
+    /// Статический класс, предоставляющий методы для преобразования между байтами PCM и данными float[].
     /// </summary>
     [Serializable]
     public static class ByteConverter
     {
         /// <summary>
-        /// Convert Pcm_8bit to floats
+        /// Конвертирование из Pcm_8bit в float[]
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="floats"></param>
@@ -41,7 +41,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         }
 
         /// <summary>
-        /// Convert floats to Pcm_8bit
+        /// Конвертирование из float[] в Pcm_8bit
         /// </summary>
         /// <param name="floats"></param>
         /// <param name="bytes"></param>
@@ -73,7 +73,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         }
 
         /// <summary>
-        /// Convert Pcm_16bit to floats (little-endian or big-endian)
+        /// Конвертирование из Pcm_16bit в float[]
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="floats"></param>
@@ -133,7 +133,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         }
 
         /// <summary>
-        /// Convert floats to Pcm_16bit (little-endian or big-endian)
+        /// Конвертирование из float[] в Pcm_16bit
         /// </summary>
         /// <param name="floats"></param>
         /// <param name="bytes"></param>

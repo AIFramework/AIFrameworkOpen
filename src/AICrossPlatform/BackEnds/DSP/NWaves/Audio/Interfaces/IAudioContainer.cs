@@ -4,19 +4,19 @@ using System.Collections.Generic;
 namespace AI.BackEnds.DSP.NWaves.Audio.Interfaces
 {
     /// <summary>
-    /// Interface for sound containers
+    /// Интерфейс для контейнеров данных аудиофайлов
     /// </summary>
     public interface IAudioContainer
     {
         /// <summary>
-        /// Discrete signals contained in container's channels
+        /// Дискретные сигналы (каналы)
         /// </summary>
         List<DiscreteSignal> Signals { get; }
 
         /// <summary>
-        /// Indexing based on channel type
+        /// Индексация по типу канала
         /// </summary>
-        /// <param name="channel">channel type (left, right or interleave)</param>
+        /// <param name="channel">Типы каналов (правый, левый или чередующийся)</param>
         /// <returns></returns>
         DiscreteSignal this[Channels channel] { get; }
     }

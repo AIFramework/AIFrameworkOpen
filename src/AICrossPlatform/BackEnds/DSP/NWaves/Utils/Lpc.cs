@@ -112,10 +112,10 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         }
 
         /// <summary>
-        /// Method returns LPC order for a given sampling rate 
+        /// Method returns LPC order for a given Частота дискретизации 
         /// according to the best practices.
         /// </summary>
-        /// <param name="samplingRate">Sampling rate</param>
+        /// <param name="samplingRate">Частота дискретизации</param>
         /// <returns>LPC order</returns>
         public static int EstimateOrder(int samplingRate)
         {

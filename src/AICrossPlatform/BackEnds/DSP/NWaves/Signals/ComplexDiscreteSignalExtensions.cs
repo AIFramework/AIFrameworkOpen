@@ -7,7 +7,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
 {
     /// <summary>
     /// Any finite complex DT signal is simply two arrays of data (real and imaginary parts)
-    /// sampled at certain sampling rate.
+    /// sampled at certain Частота дискретизации.
     /// 
     /// This arrays of samples can be:
     ///     - delayed (shifted) by positive or negative number of samples
@@ -60,7 +60,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         public static ComplexDiscreteSignal Superimpose(this ComplexDiscreteSignal signal1, ComplexDiscreteSignal signal2)
         {
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,
-                                        "Sampling rate of signal1", "sampling rate of signal2");
+                                        "Частота дискретизации of signal1", "Частота дискретизации of signal2");
 
             ComplexDiscreteSignal superimposed;
 
@@ -97,7 +97,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         public static ComplexDiscreteSignal Concatenate(this ComplexDiscreteSignal signal1, ComplexDiscreteSignal signal2)
         {
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,
-                                        "Sampling rate of signal1", "sampling rate of signal2");
+                                        "Частота дискретизации of signal1", "Частота дискретизации of signal2");
 
             return new ComplexDiscreteSignal(
                             signal1.SamplingRate,
@@ -212,7 +212,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
             this ComplexDiscreteSignal signal1, ComplexDiscreteSignal signal2)
         {
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,
-                                        "Sampling rate of signal1", "sampling rate of signal2");
+                                        "Частота дискретизации of signal1", "Частота дискретизации of signal2");
 
             int length = signal1.Length;
 
@@ -244,7 +244,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
             this ComplexDiscreteSignal signal1, ComplexDiscreteSignal signal2)
         {
             Guard.AgainstInequality(signal1.SamplingRate, signal2.SamplingRate,
-                                        "Sampling rate of signal1", "sampling rate of signal2");
+                                        "Частота дискретизации of signal1", "Частота дискретизации of signal2");
 
             int length = signal1.Length;
 

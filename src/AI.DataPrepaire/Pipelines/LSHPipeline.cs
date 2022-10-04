@@ -32,7 +32,7 @@ namespace AI.DataPrepaire.Pipelines
         /// <summary>
         /// Регрессия
         /// </summary>
-        public IMultyRegression ProbRegr { get; set; }
+        public IMultyRegression<Vector> ProbRegr { get; set; }
 
         /// <summary>
         /// Детектор аномальных и/или неподходящих данных

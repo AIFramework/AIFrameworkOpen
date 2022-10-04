@@ -9,7 +9,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
     /// Base class for finite complex-valued discrete-time signals.
     /// 
     /// Any finite complex DT signal is stored as two arrays of data (real parts and imaginary parts)
-    /// sampled at certain sampling rate.
+    /// sampled at certain Частота дискретизации.
     /// 
     /// See also ComplexDiscreteSignalExtensions for additional functionality of complex DT signals.
     /// 
@@ -50,13 +50,13 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// The most efficient constructor for initializing complex signals
         /// </summary>
-        /// <param name="samplingRate">Sampling rate of the signal</param>
+        /// <param name="samplingRate">Частота дискретизации of the signal</param>
         /// <param name="real">Array of real parts of the complex-valued signal</param>
         /// <param name="imag">Array of imaginary parts of the complex-valued signal</param>
         /// <param name="allocateNew">Set to true if new memory should be allocated for data</param>
         public ComplexDiscreteSignal(int samplingRate, double[] real, double[] imag = null, bool allocateNew = false)
         {
-            Guard.AgainstNonPositive(samplingRate, "Sampling rate");
+            Guard.AgainstNonPositive(samplingRate, "Частота дискретизации");
 
             SamplingRate = samplingRate;
             Real = allocateNew ? real.FastCopy() : real;
@@ -95,7 +95,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <param name="imag"></param>
         public ComplexDiscreteSignal(int samplingRate, int length, double real = 0.0, double imag = 0.0)
         {
-            Guard.AgainstNonPositive(samplingRate, "Sampling rate");
+            Guard.AgainstNonPositive(samplingRate, "Частота дискретизации");
 
             SamplingRate = samplingRate;
 
@@ -118,7 +118,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <param name="normalizeFactor"></param>
         public ComplexDiscreteSignal(int samplingRate, IEnumerable<int> samples, double normalizeFactor = 1.0)
         {
-            Guard.AgainstNonPositive(samplingRate, "Sampling rate");
+            Guard.AgainstNonPositive(samplingRate, "Частота дискретизации");
 
             SamplingRate = samplingRate;
 

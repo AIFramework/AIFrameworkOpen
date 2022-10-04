@@ -36,7 +36,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method returns universal triangular filterbank weights based on given frequencies.
         /// </summary>
         /// <param name="fftSize">Assumed size of FFT</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="frequencies">Array of frequency tuples (left, center, right) for each filter</param>
         /// <param name="vtln">VTLN frequency warper</param>
         /// <param name="mapper">Frequency scale mapper (e.g. herz-to-mel) used here only for proper weighting</param>
@@ -98,7 +98,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method returns universal rectangular filterbank weights based on given frequencies.
         /// </summary>
         /// <param name="fftSize">Assumed size of FFT</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="frequencies">Array of frequency tuples (left, center, right) for each filter</param>
         /// <param name="vtln">VTLN frequency warper</param>
         /// <param name="mapper">Frequency scale mapper (e.g. herz-to-mel)</param>
@@ -157,7 +157,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method returns FIR bandpass (close to trapezoidal) filterbank based on given frequencies.
         /// </summary>
         /// <param name="fftSize">Assumed size of FFT</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="frequencies">Array of frequency tuples (left, center, right) for each filter</param>
         /// <param name="vtln">VTLN frequency warper</param>
         /// <param name="mapper">Frequency scale mapper (e.g. herz-to-mel)</param>
@@ -199,7 +199,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method returns BiQuad bandpass overlapping filters based on given frequencies.
         /// </summary>
         /// <param name="fftSize">Assumed size of FFT</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="frequencies">Array of frequency tuples (left, center, right) for each filter</param>
         /// <returns>Array of BiQuad bandpass filters</returns>
         public static float[][] BiQuad(int fftSize, int samplingRate, Tuple<double, double, double>[] frequencies)
@@ -226,7 +226,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="scaleMapper">The function that converts Hz to other frequency scale</param>
         /// <param name="inverseMapper">The function that converts frequency from alternative scale back to Hz</param>
         /// <param name="filterCount">Число фильтров</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <param name="overlap">Flag indicating that bands should overlap</param>
@@ -287,7 +287,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method returns frequency tuples for uniformly spaced frequency bands on Herz scale.
         /// </summary>
         /// <param name="combFilterCount">Число фильтров</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <param name="overlap">Flag indicating that bands should overlap</param>
@@ -303,7 +303,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method returns frequency tuples for uniformly spaced frequency bands on Mel scale.
         /// </summary>
         /// <param name="melFilterCount">Number of mel filters to create</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <param name="overlap">Flag indicating that bands should overlap</param>
@@ -319,7 +319,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// (according to M.Slaney's formula).
         /// </summary>
         /// <param name="melFilterCount">Number of mel filters to create</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <param name="overlap">Flag indicating that bands should overlap</param>
@@ -334,7 +334,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method returns frequency tuples for uniformly spaced frequency bands on Bark scale (Traunmueller, 1990).
         /// </summary>
         /// <param name="barkFilterCount">Number of bark filters to create</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <param name="overlap">Flag indicating that bands should overlap</param>
@@ -349,7 +349,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method returns frequency tuples for uniformly spaced frequency bands on Bark scale (Wang, 1992).
         /// </summary>
         /// <param name="barkFilterCount">Number of bark filters to create</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <param name="overlap">Flag indicating that bands should overlap</param>
@@ -364,7 +364,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method returns frequency tuples for critical bands.
         /// </summary>
         /// <param name="filterCount">Число фильтров</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <returns>Array of frequency tuples for each Critical Band filter</returns>
@@ -434,7 +434,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method returns frequency tuples for octave bands.
         /// </summary>
         /// <param name="octaveCount">Number of octave filters to create</param>
-        /// <param name="samplingRate">Assumed sampling rate of a signal</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <param name="overlap">Flag indicating that bands should overlap</param>
@@ -487,7 +487,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// </summary>
         /// <param name="filterCount">Number of mel filters</param>
         /// <param name="fftSize">Assumed size of FFT</param>
-        /// <param name="samplingRate">Assumed sampling rate</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <param name="normalizeGain">True if gain should be normalized; false if all filters should have same height 1.0</param>
@@ -574,7 +574,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// </summary>
         /// <param name="erbFilterCount">Number of ERB filters</param>
         /// <param name="fftSize">Assumed size of FFT</param>
-        /// <param name="samplingRate">Assumed sampling rate</param>
+        /// <param name="samplingRate">Assumed Частота дискретизации</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
         /// <param name="normalizeGain">True if gain should be normalized; false if all filters should have same height 1.0</param>

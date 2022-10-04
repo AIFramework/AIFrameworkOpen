@@ -7,52 +7,46 @@ using System.Threading.Tasks;
 namespace AI.BackEnds.DSP.NWaves.Audio.Mci
 {
     /// <summary>
-    /// Audio player based on MCI.
-    /// 
-    /// MciAudioPlayer works only with Windows, since it uses winmm.dll and MCI commands.
-    /// 
-    /// MciAudioPlayer lets MCI do all the heavy-lifting with sound playback.
-    /// It launches MCI command and just awaits for amount of time 
-    /// corresponding to the duration of a given segment.
-    /// 
-    /// If the playback was paused, the player memorizes how many milliseconds
-    /// it was "idle" and then adds this time to the total awaiting time.
-    /// 
+    /// Аудиоплеер, основанный на MCI. 
+    /// MciAudioPlayer работает только в Windows, поскольку использует winmm.dll и команды MCI. 
+    /// MciAudioPlayer позволяет MCI выполнять всю тяжелую работу по воспроизведению звука. 
+    /// Он запускает команду MCI и просто ожидает некоторое время, соответствующее длительности заданного сегмента. 
+    /// Если воспроизведение было приостановлено, плеер запоминает, сколько миллисекунд он "простаивал", а затем добавляет это время к общему времени ожидания.
     /// </summary>
     [Serializable]
     public class MciAudioPlayer : IAudioPlayer
     {
         /// <summary>
-        /// Hidden alias for an MCI waveaudio device
+        /// Скрытый псевдоним для устройства MCI waveaudio
         /// </summary>
         private string _alias;
 
         /// <summary>
-        /// Duration of pause in milliseconds
+        /// Длительность паузы в миллисекундах
         /// </summary>
         private int _pauseDuration;
 
         /// <summary>
-        /// The exact time when playback was paused
+        /// Точное время, когда воспроизведение было приостановлено
         /// </summary>
         private DateTime _pauseTime;
 
         /// <summary>
-        /// The flag indicating whether audio playback is currently paused
+        /// Флаг, указывающий, приостановлено ли в данный момент воспроизведение аудио.
         /// </summary>
         private bool _isPaused;
 
         /// <summary>
-        /// Volume (measured in percents from the range [0.0f, 1.0f])
+        /// Громкость (измеряется в процентах из диапазона [0.0f, 1.0f])
         /// </summary>
         public float Volume { get; set; }
 
         /// <summary>
-        /// Play audio contained in WAV file asynchronously
+        /// Асинхронное воспроизведение аудио из WAV-файла
         /// </summary>
-        /// <param name="source">WAV file to play</param>
-        /// <param name="startPos">Number of the first sample to play</param>
-        /// <param name="endPos">Number of the last sample to play</param>
+        /// <param name="source">WAV-файл</param>
+        /// <param name="startPos">Начальная позиция для воспроизведения</param>
+        /// <param name="endPos">Конечная позиция для проигрывания (-1 — проигрывать весь файл)</param>
         public async Task PlayAsync(string source, int startPos = 0, int endPos = -1)
         {
             if (_isPaused)
@@ -123,9 +117,8 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
         }
 
         /// <summary>
-        /// Unfortunately, MCI does not provide means for playing audio from buffers in memory.
-        /// Moreover, since NWaves library is portable, there's even no easy way to write the buffer 
-        /// into temporary file and play it here (it could be a workaround for the problem).
+        ///К сожалению, MCI не предоставляет средств для воспроизведения аудио из буферов в памяти.Более того, поскольку библиотека NWaves является переносимой, 
+        /// нет даже простого способа записать буфер во временный файл и воспроизвести его здесь (это может быть обходным решением проблемы).
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="startPos"></param>
@@ -137,7 +130,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
         }
 
         /// <summary>
-        /// Pause audio playback
+        /// Пауза
         /// </summary>
         public void Pause()
         {
@@ -154,7 +147,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
         }
 
         /// <summary>
-        /// Resume playing audio
+        /// Возобновление воспроизведения аудио
         /// </summary>
         public void Resume()
         {
@@ -173,7 +166,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
         }
 
         /// <summary>
-        /// Stop playing audio and close MCI device
+        /// Остановить проигрывание и закрыть MCI девайс
         /// </summary>
         public void Stop()
         {

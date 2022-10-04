@@ -1,22 +1,22 @@
 ﻿namespace AI.BackEnds.DSP.NWaves.Audio.Interfaces
 {
     /// <summary>
-    /// Interface with functionality for audio recording
+    /// Интерфейс для записи звука
     /// </summary>
     public interface IAudioRecorder
     {
         /// <summary>
-        /// Start recording audio with specific settings
+        /// Начать запись звука с определенными настройками
         /// </summary>
-        /// <param name="samplingRate">Sampling rate</param>
-        /// <param name="channelCount">Number of channels (1=mono, 2=stereo)</param>
-        /// <param name="bitsPerSample">Number of bits per sample (8, 16, 24 or 32)</param>
+        /// <param name="samplingRate">Частота дискретизации</param>
+        /// <param name="channelCount">Число каналов (1-моно, 2-стерео)</param>
+        /// <param name="bitsPerSample">Количество бит на отсчет (8, 16, 24 or 32)</param>
         void StartRecording(int samplingRate, short channelCount, short bitsPerSample);
 
         /// <summary>
-        /// Stop recording audio and save recorded sound to file or any other destination
+        /// Остановка записи
         /// </summary>
-        /// <param name="destination">Output file (destination) name</param>
+        /// <param name="destination">Путь для сохранения</param>
         void StopRecording(string destination);
     }
 }

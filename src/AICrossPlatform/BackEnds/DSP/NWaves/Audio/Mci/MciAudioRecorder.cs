@@ -12,11 +12,11 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
     public class MciAudioRecorder : IAudioRecorder
     {
         /// <summary>
-        /// Start recording audio with specific settings
+        /// Начать запись звука с определенными настройками
         /// </summary>
-        /// <param name="samplingRate">Sampling rate</param>
-        /// <param name="channelCount">Number of channels (1=mono, 2=stereo)</param>
-        /// <param name="bitsPerSample">Number of bits per sample (8, 16, 24 or 32)</param>
+        /// <param name="samplingRate">Частота дискретизации</param>
+        /// <param name="channelCount">Число каналов (1-моно, 2-стерео)</param>
+        /// <param name="bitsPerSample">Количество бит на отсчет (8, 16, 24 or 32)</param>
         public void StartRecording(int samplingRate = 44100, short channelCount = 1, short bitsPerSample = 16)
         {
             string mciCommand = "open new type waveaudio alias capture";
@@ -24,7 +24,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
 
             if (result != 0)
             {
-                throw new System.InvalidOperationException("Could not open device for recording!");
+                throw new InvalidOperationException("Could not open device for recording!");
             }
 
             mciCommand = string.Format("set capture alignment {0} bitspersample {1} samplespersec {2} " +
@@ -41,9 +41,9 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
         }
 
         /// <summary>
-        /// Stop recording audio and save it to destination WAV-file
+        /// Остановка запись и сохранение в wave
         /// </summary>
-        /// <param name="destination">Output WAV file containing recorderd sound</param>
+        /// <param name="destination">Выходной WAV-файл, содержащий записанный звук</param>
         public void StopRecording(string destination)
         {
             string mciCommand = "stop capture";

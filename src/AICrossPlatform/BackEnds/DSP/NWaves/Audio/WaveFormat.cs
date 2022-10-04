@@ -3,7 +3,7 @@
 namespace AI.BackEnds.DSP.NWaves.Audio
 {
     /// <summary>
-    /// Standard WAVE header
+    /// Стандартный заголовок WAVE
     /// </summary>
     [Serializable]
     public struct WaveFormat
@@ -29,7 +29,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         public int ByteRate;
 
         /// <summary>
-        /// КаналCount * BitsPerSample / 8
+        /// ChannelCount * BitsPerSample / 8
         /// </summary>
         public short Align;
 

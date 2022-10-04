@@ -29,7 +29,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         {
             if (carrier.SamplingRate != modulator.SamplingRate)
             {
-                throw new ArgumentException("Sampling rates must be the same!");
+                throw new ArgumentException("Частота дискретизацииs must be the same!");
             }
 
             return new DiscreteSignal(carrier.SamplingRate,
@@ -90,7 +90,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <param name="modulatorFrequency">Modulator frequency</param>
         /// <param name="modulationIndex">Modulation index (depth)</param>
         /// <param name="length">Length of FM signal</param>
-        /// <param name="samplingRate">Sampling rate</param>
+        /// <param name="samplingRate">Частота дискретизации</param>
         /// <returns>Sinusoidal FM signal</returns>
         public DiscreteSignal FrequencySinusoidal(
                                         float carrierFrequency,
@@ -120,7 +120,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <param name="carrierAmplitude">Carrier signal amplitude</param>
         /// <param name="modulationIndex">Modulation index (depth)</param>
         /// <param name="length">Length of FM signal</param>
-        /// <param name="samplingRate">Sampling rate</param>
+        /// <param name="samplingRate">Частота дискретизации</param>
         /// <returns>Sinusoidal FM signal</returns>
         public DiscreteSignal FrequencyLinear(
                                         float carrierFrequency,

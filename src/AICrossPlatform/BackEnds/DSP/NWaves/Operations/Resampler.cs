@@ -7,7 +7,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Operations
 {
     /// <summary>
-    /// Class responsible for sampling rate conversion
+    /// Class responsible for Частота дискретизации conversion
     /// </summary>
     [Serializable]
     public class Resampler

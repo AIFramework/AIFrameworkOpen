@@ -8,7 +8,7 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Audio
 {
     /// <summary>
-    /// WAV file container
+    /// Wav файл
     /// </summary>
     [Serializable]
     public class WaveFile : IAudioContainer
@@ -203,38 +203,38 @@ namespace AI.BackEnds.DSP.NWaves.Audio
 
                 default:
                     throw new ArgumentException(
-                        "Wrong bit depth! Supported values are: " + string.Join(", ", SupportedBitDepths));
+                        "Неправильная битовая глубина! Поддерживаются следующие значения: " + string.Join(", ", SupportedBitDepths));
             }
         }
 
         /// <summary>
-        /// This constructor loads signals into container.
+        /// Этот конструктор загружает сигналы в контейнер.
         /// </summary>
-        /// <param name="signals">Signals to be loaded into container</param>
-        /// <param name="bitsPerSample">Bit Глубина</param>
+        /// <param name="signals">Сигналы для загрузки в контейнер</param>
+        /// <param name="bitsPerSample">Биты квантования</param>
         public WaveFile(IList<DiscreteSignal> signals, short bitsPerSample = 16)
         {
             if (signals == null || !signals.Any())
             {
-                throw new ArgumentException("At least one signal must be provided");
+                throw new ArgumentException("Должен быть как минимум один сигнал");
             }
 
             int samplingRate = signals[0].SamplingRate;
             if (signals.Any(s => s.SamplingRate != samplingRate))
             {
-                throw new ArgumentException("Signals must be sampled at the same sampling rate");
+                throw new ArgumentException("Сигналы должны быть дискретизированы с одинаковой частотой дискретизации");
             }
 
             int length = signals[0].Length;
             if (signals.Any(s => s.Length != length))
             {
-                throw new ArgumentException("Signals must have the same length");
+                throw new ArgumentException("Сигналы должны иметь одинаковую длину");
             }
 
             if (!SupportedBitDepths.Contains(bitsPerSample))
             {
                 throw new ArgumentException(
-                            "Wrong bit depth! Supported values are: " + string.Join(", ", SupportedBitDepths));
+                            "Неправильная битовая глубина! Поддерживаются следующие значения: " + string.Join(", ", SupportedBitDepths));
             }
 
             WaveFormat waveFmt;
@@ -255,7 +255,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         /// This constructor loads one signal into container.
         /// </summary>
         /// <param name="signal">Signal to be loaded into container</param>
-        /// <param name="bitsPerSample">Bit Глубина</param>
+        /// <param name="bitsPerSample">Биты квантования</param>
         public WaveFile(DiscreteSignal signal, short bitsPerSample = 16) : this(new[] { signal }, bitsPerSample)
         {
         }

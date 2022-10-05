@@ -5,7 +5,7 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
 {
     /// <summary>
-    /// Adaptive filter (Least-Mean-Squares with variable steps)
+    /// Адаптивный фильтр (Least-Mean-Squares with variable steps)
     /// </summary>
     [Serializable]
     public class VariableStepLmsFilter : AdaptiveFilter
@@ -16,12 +16,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
         private readonly float[] _mu;
 
         /// <summary>
-        /// Leakage
+        /// Утечка
         /// </summary>
         private readonly float _leakage;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="order"></param>
         /// <param name="mu"></param>
@@ -35,7 +35,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
         }
 
         /// <summary>
-        /// Process input and desired samples
+        /// Входные данные процесса и целевые данные
         /// </summary>
         /// <param name="input"></param>
         /// <param name="desired"></param>

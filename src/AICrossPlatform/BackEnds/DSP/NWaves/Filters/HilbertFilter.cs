@@ -17,7 +17,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         public int Size { get; }
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size">size of the filter</param>
         public HilbertFilter(int size = 128) : base(MakeKernel(size))

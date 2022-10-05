@@ -26,7 +26,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         private bool _isRight;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="filterLeft"></param>
         /// <param name="filterRight"></param>

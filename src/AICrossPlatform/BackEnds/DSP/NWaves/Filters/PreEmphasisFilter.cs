@@ -17,7 +17,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         private float _prevSample;
 
         /// <summary>
-        /// Constructor computes simple 1st order kernel
+        /// Конструктор computes simple 1st order kernel
         /// </summary>
         /// <param name="a">Pre-emphasis coefficient</param>
         /// <param name="normalize">Normalize freq response to unit gain</param>

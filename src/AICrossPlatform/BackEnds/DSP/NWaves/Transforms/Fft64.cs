@@ -27,7 +27,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly double[] _sinTbl;
 
         /// <summary>
-        /// Constructor accepting the size of FFT
+        /// Конструктор accepting the size of FFT
         /// </summary>
         /// <param name="fftSize">Size of FFT</param>
         public Fft64(int fftSize = 512)

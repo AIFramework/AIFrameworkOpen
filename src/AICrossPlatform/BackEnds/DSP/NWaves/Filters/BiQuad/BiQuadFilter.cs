@@ -18,14 +18,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
         private double _out2;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         protected BiQuadFilter() : base(new[] { 1.0, 0, 0 }, new[] { 1.0, 0, 0 })
         {
         }
 
         /// <summary>
-        /// Constructor for user-defined TF
+        /// Конструктор for user-defined TF
         /// </summary>
         /// <param name="b0"></param>
         /// <param name="b1"></param>

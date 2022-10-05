@@ -16,7 +16,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         {
             if (arg < 1e-30)
             {
-                throw new ArgumentException($"{argName} must be positive!");
+                throw new ArgumentException($"{argName} должен быть положительным!");
             }
         }
         /// <summary>
@@ -26,7 +26,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         {
             if (Math.Abs(arg2 - arg1) > 1e-30)
             {
-                throw new ArgumentException($"{arg1Name} must be equal to {arg2Name}!");
+                throw new ArgumentException($"{arg1Name} должен быть равен {arg2Name}!");
             }
         }
         /// <summary>
@@ -36,7 +36,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         {
             if (high - low < 1e-30)
             {
-                throw new ArgumentException($"{highName} must be greater than {lowName}!");
+                throw new ArgumentException($"{highName} должен быть больше {lowName}!");
             }
         }
         /// <summary>
@@ -46,7 +46,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         {
             if (low > high)
             {
-                throw new ArgumentException($"{lowName} must not exceed {highName}!");
+                throw new ArgumentException($"{lowName} не должен превышать {highName}!");
             }
         }
         /// <summary>
@@ -58,7 +58,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
 
             if (n != 1 << pow)
             {
-                throw new ArgumentException($"{argName} must be a power of 2!");
+                throw new ArgumentException($"{argName} должен быть степенью 2!");
             }
         }
         /// <summary>
@@ -68,7 +68,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         {
             if (n % 2 == 0)
             {
-                throw new ArgumentException($"{argName} must be an odd number!");
+                throw new ArgumentException($"{argName} должен быть нечетным!");
             }
         }
         /// <summary>
@@ -80,16 +80,16 @@ namespace AI.BackEnds.DSP.NWaves.Utils
 
             if (n < 4 || n % 2 != 0)
             {
-                throw new ArgumentException("Frequency array must have even number of at least 4 values!");
+                throw new ArgumentException("Массив частот должен иметь четное количество значений не менее 4!");
             }
 
             if (freqs[0] != 0 || freqs[n - 1] != 0.5)
             {
-                throw new ArgumentException("Frequency array must start with 0 and end with 0.5!");
+                throw new ArgumentException("Массив частот должен начинаться с 0 и заканчиваться 0,5!");
             }
 
-            Guard.AgainstInequality(desired.Length, n / 2, "Size of desired array", "half-size of freqs array");
-            Guard.AgainstInequality(weights.Length, n / 2, "Size of weights array", "half-size of freqs array");
+            Guard.AgainstInequality(desired.Length, n / 2, "Размер желаемого массива", "половинный размер массива частот");
+            Guard.AgainstInequality(weights.Length, n / 2, "Размер массива весов", "половинный размер массива частот");
         }
     }
 }

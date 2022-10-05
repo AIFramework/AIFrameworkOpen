@@ -21,7 +21,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
         public double Q { get; protected set; }
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="freq"></param>
         /// <param name="q"></param>

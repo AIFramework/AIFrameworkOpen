@@ -12,7 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevI
     public class BandPassFilter : IirFilter64
     {
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="f1">Нижняя частота среза</param>
         /// <param name="f2">Верхняя частота среза</param>

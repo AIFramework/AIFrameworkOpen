@@ -57,7 +57,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         public int HopSize => _fftSize - _kernel.Length + 1;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="kernel"></param>
         /// <param name="fftSize"></param>

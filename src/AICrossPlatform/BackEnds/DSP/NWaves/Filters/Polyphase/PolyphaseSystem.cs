@@ -36,7 +36,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
         public FirFilter[] MultirateFilters { get; private set; }
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="kernel"></param>
         /// <param name="filterCount"></param>

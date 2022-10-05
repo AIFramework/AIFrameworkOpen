@@ -26,7 +26,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly Fft64 _fft64;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size">Size of Hilbert Transform</param>
         /// <param name="doublePrecision"></param>

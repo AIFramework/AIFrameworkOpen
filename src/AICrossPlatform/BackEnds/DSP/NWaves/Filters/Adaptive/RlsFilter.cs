@@ -3,7 +3,7 @@
 namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
 {
     /// <summary>
-    /// Adaptive filter (Recursive-Least-Squares algorithm)
+    /// Адаптивный фильтр (Recursive-Least-Squares алгоритм)
     /// </summary>
     [Serializable]
     public class RlsFilter : AdaptiveFilter
@@ -14,22 +14,22 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
         private readonly float _lambda;
 
         /// <summary>
-        /// Inverse corr matrix
+        /// Обратная корреляционная матрица
         /// </summary>
         private readonly float[,] _p;
 
         /// <summary>
-        /// Matrix of gain coefficients
+        /// Матрица коэффициентов усиления
         /// </summary>
         private readonly float[] _gains;
 
         /// <summary>
-        /// Temporary matrices for calculations
+        /// Временные матрицы для расчетов
         /// </summary>
         private readonly float[,] _dp, _tmp;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="order"></param>
         /// <param name="lambda"></param>
@@ -50,7 +50,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
         }
 
         /// <summary>
-        /// Process input and desired samples
+        /// Входные данные процесса и целевые данные
         /// </summary>
         /// <param name="input"></param>
         /// <param name="desired"></param>

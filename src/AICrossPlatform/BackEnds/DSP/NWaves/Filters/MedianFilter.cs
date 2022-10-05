@@ -18,7 +18,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         public int Size { get; }
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size"></param>
         public MedianFilter(int size = 9)

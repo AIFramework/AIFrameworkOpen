@@ -14,7 +14,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         public short AudioFormat;
 
         /// <summary>
-        /// 1 - mono, 2 - stereo
+        /// 1 - моно, 2 - стерео звук
         /// </summary>
         public short ChannelCount;
 
@@ -34,7 +34,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         public short Align;
 
         /// <summary>
-        /// 8, 16, 24, 32
+        /// 8, 16, 24, 32 (Разрядность квантования)
         /// </summary>
         public short BitsPerSample;
     }

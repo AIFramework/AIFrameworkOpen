@@ -14,38 +14,32 @@ namespace AI.BackEnds.DSP.NWaves.Audio
     public class WaveFile : IAudioContainer
     {
         /// <summary>
-        /// Signals from all channels.
-        /// Usually:
-        /// 
-        ///     Signals.Count = 1 (mono)
-        /// or
-        ///     Signals.Count = 2 (stereo)
+        /// Сигналы со всех каналов.
+        ///  
+        ///     Signals.Count = 1 (Моно)
+        /// или
+        ///     Signals.Count = 2 (Стерео)
         /// 
         /// </summary>
         public List<DiscreteSignal> Signals { get; }
 
         /// <summary>
-        /// Wav header struct
+        /// Структура Wav заголовка
         /// </summary>
         public WaveFormat WaveFmt { get; }
 
         /// <summary>
-        /// Supported bit depths
+        /// Поддерживаемые разрядности квантования
         /// </summary>
         public short[] SupportedBitDepths = { 8, 16, 24, 32 };
 
         /// <summary>
-        /// This constructor loads signals from a wave file.
-        /// 
-        /// Since NWaves is .NET Standard 2.0 library, there's no universal FileStream class.
-        /// So it's supposed that the client code will take care 
-        /// for extracting the stream from a wave file.
-        /// 
+        /// Этот конструктор загружает сигналы из волнового файла.
+        ///
+        /// Поскольку NWaves является библиотекой .NET Standard 2.0, универсального класса FileStream не существует.
         /// </summary>
-        /// <param name="waveStream">Input stream</param>
-        /// <param name="normalized">Normalization flag</param>
-        /// <returns></returns>
-        /// <exception>Possible null exception</exception>
+        /// <param name="waveStream">Поток входа</param>
+        /// <param name="normalized">Нормализовать ли данные</param>
         public WaveFile(Stream waveStream, bool normalized = true)
         {
             using BinaryReader reader = new BinaryReader(waveStream);
@@ -252,19 +246,19 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         }
 
         /// <summary>
-        /// This constructor loads one signal into container.
+        /// Этот конструктор загружает сигналы в контейнер.
         /// </summary>
-        /// <param name="signal">Signal to be loaded into container</param>
+        /// <param name="signal">Сигналы для загрузки в контейнер</param>
         /// <param name="bitsPerSample">Биты квантования</param>
         public WaveFile(DiscreteSignal signal, short bitsPerSample = 16) : this(new[] { signal }, bitsPerSample)
         {
         }
 
         /// <summary>
-        /// Method saves the contents of a wave file to stream.
+        /// Сохранение файла в поток
         /// </summary>
-        /// <param name="waveStream">Output stream for saving</param>
-        /// <param name="normalized">Normalization flag</param>
+        /// <param name="waveStream">Поток для сохранения</param>
+        /// <param name="normalized">Номализовать ли данные</param>
         public void SaveTo(Stream waveStream, bool normalized = true)
         {
             using BinaryWriter writer = new BinaryWriter(waveStream);
@@ -352,16 +346,16 @@ namespace AI.BackEnds.DSP.NWaves.Audio
         }
 
         /// <summary>
-        /// Fancy indexer:
+        /// Легенда индексов:
         /// 
         ///     waveFile[Channels.Left] -> waveFile.Signals[0]
         ///     waveFile[Channels.Right] -> waveFile.Signals[1]
-        ///     waveFile[Channels.Average] -> returns channel-averaged (new) signal
-        ///     waveFile[Channels.Interleave] -> returns interleaved (new) signal
+        ///     waveFile[Channels.Average] -> returns channel-averaged (Новый) signal
+        ///     waveFile[Channels.Interleave] -> Возвращает чередующийся (Новый) сигнал
         /// 
         /// </summary>
-        /// <param name="channel">Channel enum</param>
-        /// <returns>Signal from the channel or interleaved signal</returns>
+        /// <param name="channel">Перечисление каналов</param>
+        /// <returns>Сигнал из канала или чередующийся сигнал</returns>
         public DiscreteSignal this[Channels channel]
         {
             get

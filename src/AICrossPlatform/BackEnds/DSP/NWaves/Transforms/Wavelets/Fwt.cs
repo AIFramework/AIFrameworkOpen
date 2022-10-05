@@ -46,7 +46,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
         protected float[] _temp;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size"></param>
         /// <param name="wavelet"></param>

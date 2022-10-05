@@ -12,7 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
     public class HighPassFilter : IirFilter64
     {
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="freq"></param>
         /// <param name="order"></param>

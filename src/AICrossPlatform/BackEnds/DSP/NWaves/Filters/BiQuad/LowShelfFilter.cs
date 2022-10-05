@@ -26,7 +26,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
         public double Gain { get; protected set; }
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="freq"></param>
         /// <param name="q"></param>

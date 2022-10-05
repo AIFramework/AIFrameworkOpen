@@ -55,7 +55,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         }
 
         /// <summary>
-        /// Constructor for creating a signal from collection of samples
+        /// Конструктор for creating a signal from collection of samples
         /// </summary>
         /// <param name="samplingRate">Частота дискретизации</param>
         /// <param name="samples">Collection of samples</param>
@@ -65,7 +65,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         }
 
         /// <summary>
-        /// Constructor for creating a signal of specified length filled with specified values
+        /// Конструктор for creating a signal of specified length filled with specified values
         /// </summary>
         /// <param name="samplingRate">Частота дискретизации</param>
         /// <param name="length">Number of samples</param>
@@ -86,7 +86,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         }
 
         /// <summary>
-        /// Constructor for creating a signal from collection of integer samples
+        /// Конструктор for creating a signal from collection of integer samples
         /// </summary>
         /// <param name="samplingRate">Частота дискретизации</param>
         /// <param name="samples">Collection of integer samples</param>

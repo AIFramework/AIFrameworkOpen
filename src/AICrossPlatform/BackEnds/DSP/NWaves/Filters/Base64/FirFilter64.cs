@@ -69,7 +69,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         protected int _delayLineOffset;
 
         /// <summary>
-        /// Constructor accepting the 64-bit kernel of a filter
+        /// Конструктор accepting the 64-bit kernel of a filter
         /// </summary>
         /// <param name="kernel"></param>
         public FirFilter64(IEnumerable<double> kernel)
@@ -88,7 +88,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Constructor accepting the transfer function.
+        /// Конструктор accepting the transfer function.
         /// 
         /// Coefficients (used for filtering) will be cast to doubles anyway,
         /// but filter will store the reference to TransferFunction object for FDA.

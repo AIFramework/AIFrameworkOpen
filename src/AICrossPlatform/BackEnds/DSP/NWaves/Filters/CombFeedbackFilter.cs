@@ -20,7 +20,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         private readonly int _delay;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="m">Delay</param>
         /// <param name="b0">Coefficient b0</param>

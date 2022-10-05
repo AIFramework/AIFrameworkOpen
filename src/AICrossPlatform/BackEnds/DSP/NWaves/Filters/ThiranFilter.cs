@@ -18,7 +18,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     public class ThiranFilter : IirFilter
     {
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="order"></param>
         /// <param name="delta"></param>

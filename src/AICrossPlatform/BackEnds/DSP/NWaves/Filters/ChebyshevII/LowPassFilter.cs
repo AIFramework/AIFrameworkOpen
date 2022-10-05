@@ -13,7 +13,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
     public class LowPassFilter : IirFilter64
     {
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="freq">Частота среза</param>
         /// <param name="order">Порядок</param>

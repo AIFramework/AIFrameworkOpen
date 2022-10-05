@@ -17,7 +17,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         public int Size { get; }
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size">Size of the filter, window length (must be odd number)</param>
         /// <param name="deriv"></param>

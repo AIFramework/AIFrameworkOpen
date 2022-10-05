@@ -22,7 +22,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         private float _out1;
 
         /// <summary>
-        /// Constructor creates simple 1st order recursive filter
+        /// Конструктор creates simple 1st order recursive filter
         /// </summary>
         /// <param name="r">R coefficient (usually in [0.9, 1] range)</param>
         public DcRemovalFilter(double r = 0.995) : base(new[] { 1.0, -1 }, new[] { 1.0, -r })

@@ -75,7 +75,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         protected readonly double[] _phaseTotal;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="stretch"></param>
         /// <param name="hopAnalysis"></param>

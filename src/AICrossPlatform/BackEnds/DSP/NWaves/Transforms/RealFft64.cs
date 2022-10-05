@@ -43,7 +43,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly double[] _im;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size"></param>
         public RealFft64(int size)

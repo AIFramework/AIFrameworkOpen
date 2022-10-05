@@ -23,7 +23,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         private readonly List<float[]> _magnitudes;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="spectrogram"></param>
         /// <param name="stft"></param>

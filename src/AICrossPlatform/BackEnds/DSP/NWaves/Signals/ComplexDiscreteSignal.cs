@@ -76,7 +76,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         }
 
         /// <summary>
-        /// Constructor for initializing complex signals with any float enumerables
+        /// Конструктор for initializing complex signals with any float enumerables
         /// </summary>
         /// <param name="samplingRate"></param>
         /// <param name="real"></param>
@@ -87,7 +87,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         }
 
         /// <summary>
-        /// Constructor creates the complex signal of specified length filled with specified values
+        /// Конструктор creates the complex signal of specified length filled with specified values
         /// </summary>
         /// <param name="samplingRate"></param>
         /// <param name="length"></param>
@@ -111,7 +111,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         }
 
         /// <summary>
-        /// Constructor for initializing complex signals with any integer enumerables
+        /// Конструктор for initializing complex signals with any integer enumerables
         /// </summary>
         /// <param name="samplingRate"></param>
         /// <param name="samples"></param>

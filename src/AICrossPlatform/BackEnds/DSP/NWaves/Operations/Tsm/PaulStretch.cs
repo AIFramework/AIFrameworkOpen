@@ -14,7 +14,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         private readonly Random _rand = new Random();
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="stretch"></param>
         /// <param name="hopAnalysis"></param>

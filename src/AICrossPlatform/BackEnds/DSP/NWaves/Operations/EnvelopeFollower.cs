@@ -65,7 +65,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         private readonly int _fs;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="samplingRate"></param>
         /// <param name="attackTime"></param>

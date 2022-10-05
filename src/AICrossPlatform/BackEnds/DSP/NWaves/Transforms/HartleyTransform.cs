@@ -27,7 +27,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly float[] _im;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size"></param>
         public HartleyTransform(int size)

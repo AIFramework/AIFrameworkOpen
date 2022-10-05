@@ -36,7 +36,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         private readonly MedianFilter _medianPercussive;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="fftSize"></param>
         /// <param name="hopSize"></param>

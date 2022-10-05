@@ -15,7 +15,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
         public double Freq { get; protected set; }
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="freq"></param>
         public LowPassFilter(double freq)

@@ -5,13 +5,13 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
 {
     /// <summary>
-    /// Base abstract class for adaptive filters
+    /// Базовый абстрактный класс адаптивных фильтров
     /// </summary>
     [Serializable]
     public abstract class AdaptiveFilter : FirFilter
     {
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="order"></param>
         public AdaptiveFilter(int order) : base(new float[order])
@@ -20,17 +20,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
         }
 
         /// <summary>
-        /// Init weights
+        /// Начальные веса
         /// </summary>
         /// <param name="weights"></param>
         public void Init(float[] weights)
         {
-            Guard.AgainstInequality(_kernelSize, weights.Length, "Filter order", "Weights array size");
+            Guard.AgainstInequality(_kernelSize, weights.Length, "Порядок фильтра", "размерности массива весов");
             ChangeKernel(weights);
         }
 
         /// <summary>
-        /// Process one sample of input signal and one sample of desired signal
+        /// Обработка одного образца входного сигнала и одного образца полезного сигнала
         /// </summary>
         /// <param name="input"></param>
         /// <param name="desired"></param>

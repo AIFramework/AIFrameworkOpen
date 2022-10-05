@@ -107,7 +107,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="order"></param>
         /// <param name="freqs"></param>

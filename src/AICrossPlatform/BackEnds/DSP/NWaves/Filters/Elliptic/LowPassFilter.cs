@@ -12,7 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
     public class LowPassFilter : IirFilter64
     {
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="freq"></param>
         /// <param name="order"></param>

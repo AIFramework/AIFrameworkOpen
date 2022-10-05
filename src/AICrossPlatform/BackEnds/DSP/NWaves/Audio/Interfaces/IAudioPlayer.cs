@@ -23,15 +23,15 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Interfaces
         Task PlayAsync(DiscreteSignal signal, int startPos = 0, int endPos = -1, short bitDepth = 16);
 
         /// <summary>
-        /// Play samples contained in WAV file (or some other source) asynchronously
+        /// Воспроизведение сигналов, содержащихся в файле WAV (или другом источнике), асинхронно
         /// </summary>
-        /// <param name="source">WAV file (or other source) to play</param>
+        /// <param name="source">WAV-файл (или другой источник) для воспроизведения</param>
         /// <param name="startPos">Начальная позиция для воспроизведения</param>
         /// <param name="endPos">Конечная позиция для проигрывания (-1 — проигрывать весь файл)</param>
         Task PlayAsync(string source, int startPos = 0, int endPos = -1);
 
         /// <summary>
-        /// Pause playing audio
+        /// Пауза
         /// </summary>
         void Pause();
 
@@ -41,7 +41,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Interfaces
         void Resume();
 
         /// <summary>
-        /// Stop playing audio
+        /// Остановка воспроизведения
         /// </summary>
         void Stop();
     }

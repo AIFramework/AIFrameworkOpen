@@ -76,7 +76,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         protected int _delayLineOffset;
 
         /// <summary>
-        /// Constructor accepting the 32-bit kernel of a filter
+        /// Конструктор accepting the 32-bit kernel of a filter
         /// </summary>
         /// <param name="kernel"></param>
         public FirFilter(IEnumerable<float> kernel)
@@ -95,7 +95,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Constructor accepting the 64-bit kernel of a filter.
+        /// Конструктор accepting the 64-bit kernel of a filter.
         /// 
         /// NOTE.
         /// This will simply cast values to floats!
@@ -108,7 +108,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Constructor accepting the transfer function.
+        /// Конструктор accepting the transfer function.
         /// 
         /// Coefficients (used for filtering) will be cast to floats anyway,
         /// but filter will store the reference to TransferFunction object for FDA.

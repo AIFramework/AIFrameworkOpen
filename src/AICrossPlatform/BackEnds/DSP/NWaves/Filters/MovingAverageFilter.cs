@@ -21,7 +21,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         public int Size { get; }
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size">size of the filter</param>
         public MovingAverageFilter(int size = 9) : base(MakeKernel(size))

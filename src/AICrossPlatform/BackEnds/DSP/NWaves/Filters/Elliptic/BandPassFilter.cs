@@ -13,7 +13,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
     public class BandPassFilter : IirFilter
     {
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="freq1"></param>
         /// <param name="freq2"></param>

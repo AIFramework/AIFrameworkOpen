@@ -11,7 +11,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     public class DeEmphasisFilter : OnePoleFilter
     {
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="a">De-emphasis coefficient</param>
         /// <param name="normalize">Normalize freq response to unit gain</param>

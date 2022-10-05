@@ -37,7 +37,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         private readonly double _scaleRight;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="alpha">Warping factor</param>
         /// <param name="lowFreq">Lower frequency</param>

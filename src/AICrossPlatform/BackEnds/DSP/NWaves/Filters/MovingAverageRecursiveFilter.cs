@@ -30,7 +30,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         private float _out1;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size">size of the filter</param>
         public MovingAverageRecursiveFilter(int size = 9) : base(MakeNumerator(size), new[] { 1f, -1 })

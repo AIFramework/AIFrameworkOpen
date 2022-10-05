@@ -19,7 +19,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         public int Columns { get; set; }
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="rows"></param>
         /// <param name="columns"></param>

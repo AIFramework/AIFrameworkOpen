@@ -16,14 +16,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
         private float _prev;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         protected OnePoleFilter() : base(new[] { 1.0 }, new[] { 1.0, 0 })
         {
         }
 
         /// <summary>
-        /// Constructor for user defined coefficients
+        /// Конструктор for user defined coefficients
         /// </summary>
         /// <param name="b"></param>
         /// <param name="a"></param>

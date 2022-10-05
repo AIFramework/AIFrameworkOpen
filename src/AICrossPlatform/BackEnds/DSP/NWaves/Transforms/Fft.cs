@@ -38,7 +38,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly float[] _imagSpectrum;
 
         /// <summary>
-        /// Constructor accepting the size of FFT
+        /// Конструктор accepting the size of FFT
         /// </summary>
         /// <param name="fftSize">Size of FFT</param>
         public Fft(int fftSize = 512)

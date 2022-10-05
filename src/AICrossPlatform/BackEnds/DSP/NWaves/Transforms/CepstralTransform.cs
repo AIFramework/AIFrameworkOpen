@@ -49,7 +49,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly double[] _unwrapped;
 
         /// <summary>
-        /// Constructor with necessary parameters
+        /// Конструктор with necessary parameters
         /// </summary>
         /// <param name="cepstrumSize"></param>
         /// <param name="fftSize"></param>

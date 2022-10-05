@@ -12,7 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
     public class BandStopFilter : IirFilter64
     {
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="freq1"></param>
         /// <param name="freq2"></param>

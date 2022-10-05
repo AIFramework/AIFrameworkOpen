@@ -40,7 +40,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
         public float[] HiR { get; set; }
 
         /// <summary>
-        /// Constructor from wavelet family and number of taps
+        /// Конструктор from wavelet family and number of taps
         /// </summary>
         /// <param name="waveletFamily"></param>
         /// <param name="taps">Set for all wavelets</param>
@@ -50,7 +50,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms.Wavelets
         }
 
         /// <summary>
-        /// Constructor from name
+        /// Конструктор from name
         /// </summary>
         /// <param name="name"></param>
         public Wavelet(string name)

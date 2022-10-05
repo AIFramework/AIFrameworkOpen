@@ -44,7 +44,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly float[] _imagSpectrum;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size"></param>
         public RealFft(int size)

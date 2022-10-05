@@ -4,7 +4,7 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
 {
     /// <summary>
-    /// Adaptive filter (Normalized Least-Mean-Squares algorithm + Epsilon)
+    /// Адаптивный фильтр (нормализованный Least-Mean-Squares алгоритм + смещение)
     /// </summary>
     [Serializable]
     public class NlmsFilter : AdaptiveFilter
@@ -15,17 +15,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
         private readonly float _mu;
 
         /// <summary>
-        /// Epsilon
+        /// Смещение
         /// </summary>
         private readonly float _eps;
 
         /// <summary>
-        /// Leakage
+        /// Утечка
         /// </summary>
         private readonly float _leakage;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="order"></param>
         /// <param name="mu"></param>
@@ -39,7 +39,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Adaptive
         }
 
         /// <summary>
-        /// Process input and desired samples
+        /// Входные данные процесса и целевые данные
         /// </summary>
         /// <param name="input"></param>
         /// <param name="desired"></param>

@@ -13,7 +13,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
     public class BandStopFilter : IirFilter64
     {
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="f1"></param>
         /// <param name="f2"></param>

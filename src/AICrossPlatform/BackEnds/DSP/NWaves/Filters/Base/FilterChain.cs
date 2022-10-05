@@ -17,7 +17,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         private readonly List<IOnlineFilter> _filters;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="filters"></param>
         public FilterChain(IEnumerable<IOnlineFilter> filters = null)
@@ -26,7 +26,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Constructor from collection of transfer functions (e.g., SOS sections).
+        /// Конструктор from collection of transfer functions (e.g., SOS sections).
         /// This constructor will create IIR (!) filters.
         /// </summary>
         /// <param name="tfs"></param>

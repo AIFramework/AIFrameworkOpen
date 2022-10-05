@@ -52,7 +52,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly float _gain;
 
         /// <summary>
-        /// Constructor with necessary parameters
+        /// Конструктор with necessary parameters
         /// </summary>
         /// <param name="windowSize">Size of window</param>
         /// <param name="hopSize">Hop (overlap) size</param>

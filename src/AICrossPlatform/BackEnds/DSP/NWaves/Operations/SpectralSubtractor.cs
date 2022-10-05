@@ -49,7 +49,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         private readonly float[] _noiseAcc;
 
         /// <summary>
-        /// Constructor from float[] noise
+        /// Конструктор from float[] noise
         /// </summary>
         /// <param name="noise"></param>
         /// <param name="fftSize"></param>
@@ -65,7 +65,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         }
 
         /// <summary>
-        /// Constructor from DiscreteSignal noise
+        /// Конструктор from DiscreteSignal noise
         /// </summary>
         /// <param name="noise"></param>
         /// <param name="fftSize"></param>

@@ -16,7 +16,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly int _fftSize;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="fftSize">Size of FFT</param>
         public Goertzel(int fftSize)

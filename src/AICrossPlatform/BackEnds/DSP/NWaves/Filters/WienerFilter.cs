@@ -24,7 +24,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         private readonly double _noise;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="size"></param>
         /// <param name="noise"></param>

@@ -30,7 +30,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         private readonly int[] _peaks;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="stretch"></param>
         /// <param name="hopAnalysis"></param>

@@ -57,7 +57,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 
 
         /// <summary>
-        /// Constructor with detailed WSOLA settings
+        /// Конструктор with detailed WSOLA settings
         /// </summary>
         /// <param name="stretch">Stretch ratio</param>
         /// <param name="windowSize"></param>
@@ -77,7 +77,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         }
 
         /// <summary>
-        /// Constructor with smart parameter autoderivation 
+        /// Конструктор with smart parameter autoderivation 
         /// </summary>
         /// <param name="stretch"></param>
         public Wsola(double stretch)

@@ -29,7 +29,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         private float[] _imag2;
 
         /// <summary>
-        /// Constructor
+        /// Конструктор
         /// </summary>
         /// <param name="fftSize">FFT size</param>
         public Convolver(int fftSize = 0)

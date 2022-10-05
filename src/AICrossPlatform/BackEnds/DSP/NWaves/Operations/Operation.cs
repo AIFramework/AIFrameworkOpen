@@ -81,7 +81,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         }
 
         /// <summary>
-        /// Method implements block convolution of signals (using either OLA or OLS algorithm)
+        /// Method implements block convolution of signals (using either OLA or OLS алгоритм)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="kernel"></param>

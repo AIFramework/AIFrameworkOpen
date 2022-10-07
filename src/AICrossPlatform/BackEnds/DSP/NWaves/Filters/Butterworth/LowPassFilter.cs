@@ -21,7 +21,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Butterworth
         }
 
         /// <summary>
-        /// TF generator
+        /// Создание передаточной функции
         /// </summary>
         /// <param name="freq"></param>
         /// <param name="order"></param>

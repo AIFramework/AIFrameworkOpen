@@ -6,13 +6,13 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
     /// <summary>
-    /// Chain of filters
+    /// Сеть фильтров
     /// </summary>
     [Serializable]
     public class FilterChain : IFilter, IOnlineFilter
     {
         /// <summary>
-        /// List of filters in the chain
+        /// Список фильтров в цепочке
         /// </summary>
         private readonly List<IOnlineFilter> _filters;
 
@@ -26,8 +26,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Конструктор from collection of transfer functions (e.g., SOS sections).
-        /// This constructor will create IIR (!) filters.
+        /// Конструктор из набора передаточных функций (например, секций SOS).
+        /// Этот конструктор создаст БИХ (!) фильтры.
         /// </summary>
         /// <param name="tfs"></param>
         public FilterChain(IEnumerable<TransferFunction> tfs)
@@ -41,7 +41,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Add filter to the chain
+        /// Добавить фильтр в цепочку
         /// </summary>
         /// <param name="filter"></param>
         public void Add(IOnlineFilter filter)
@@ -50,7 +50,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Insert filter at specified index into the chain
+        /// Вставить фильтр в цепочку
         /// </summary>
         /// <param name="idx"></param>
         /// <param name="filter"></param>
@@ -60,7 +60,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Remove filter at specified index from the chain
+        /// Удалить фильтр по индексу
         /// </summary>
         /// <param name="idx"></param>
         public void RemoveAt(int idx)
@@ -69,7 +69,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Process sample by the chain of filters
+        /// Онлайн фильтрация
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
@@ -86,7 +86,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Reset state of all filters
+        /// Перезапуск всех фильтров
         /// </summary>
         public void Reset()
         {
@@ -97,7 +97,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Offline filtering
+        /// Фильтрация всего сигнала
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>

@@ -12,7 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     public class PreEmphasisFilter : FirFilter
     {
         /// <summary>
-        /// Delay line
+        /// Линия задержки
         /// </summary>
         private float _prevSample;
 
@@ -45,7 +45,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Offline filtering
+        /// Фильтрация всего сигнала
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>

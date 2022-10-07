@@ -56,7 +56,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Reset filters
+        /// Перезапуск фильтраs
         /// </summary>
         public void Reset()
         {
@@ -65,7 +65,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Offline filtering
+        /// Фильтрация всего сигнала
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>

@@ -11,7 +11,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
     public class OnePoleFilter : IirFilter
     {
         /// <summary>
-        /// Delay line
+        /// Линия задержки
         /// </summary>
         private float _prev;
 
@@ -45,7 +45,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
         }
 
         /// <summary>
-        /// Reset filter
+        /// Перезапуск фильтра
         /// </summary>
         public override void Reset()
         {

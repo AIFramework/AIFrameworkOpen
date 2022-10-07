@@ -7,25 +7,25 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 {
     /// <summary>
-    /// 64-х битны фильтр на б
+    /// 64-х битный фильтр
     /// </summary>
     [Serializable]
     public class ZiFilter64 : IFilter64, IOnlineFilter64
     {
         /// <summary>
-        /// Numerator part coefficients in filter's transfer function 
+        /// Numerator part coefficients in filter's Передаточная функция 
         /// (non-recursive part in difference equations)
         /// </summary>
         protected readonly double[] _b;
 
         /// <summary>
-        /// Denominator part coefficients in filter's transfer function 
+        /// Denominator part coefficients in filter's Передаточная функция 
         /// (recursive part in difference equations).
         /// </summary>
         protected readonly double[] _a;
 
         /// <summary>
-        /// State vector
+        /// Вектор состояний
         /// </summary>
         protected readonly double[] _zi;
 
@@ -35,7 +35,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         public double[] Zi => _zi;
 
         /// <summary>
-        /// Transfer function
+        /// Передаточная функция
         /// </summary>
         protected TransferFunction _tf;
 
@@ -49,10 +49,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Parameterized constructor (from arrays of 64-bit coefficients)
+        /// Параметризованный конструктор (from arrays of 64-bit coefficients)
         /// </summary>
-        /// <param name="b">TF numerator coefficients</param>
-        /// <param name="a">TF denominator coefficients</param>
+        /// <param name="b">Коэф. в числителе передаточной функции</param>
+        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
         public ZiFilter64(IEnumerable<double> b, IEnumerable<double> a)
         {
             _b = b.ToArray();
@@ -76,16 +76,16 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Parameterized constructor (from transfer function).
+        /// Параметризованный конструктор (from Передаточная функция).
         /// </summary>
-        /// <param name="tf">Transfer function</param>
+        /// <param name="tf">Передаточная функция</param>
         public ZiFilter64(TransferFunction tf) : this(tf.Numerator, tf.Denominator)
         {
             Tf = tf;
         }
 
         /// <summary>
-        /// Init filter
+        /// Инициализация фильтра
         /// </summary>
         /// <param name="zi"></param>
         public virtual void Init(double[] zi)
@@ -94,7 +94,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Apply filter to entire signal (offline)
+        /// Применить фильтр ко всему сигналу (офлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -105,10 +105,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Online filtering with initial conditions
+        /// Онлайн-фильтрация с начальными условиями
         /// </summary>
-        /// <param name="input">Input sample</param>
-        /// <returns>Output sample</returns>
+        /// <param name="input">Входной отсчет</param>
+        /// <returns>Выходной отсчет</returns>
         public double Process(double input)
         {
             double output = (_b[0] * input) + _zi[0];
@@ -122,7 +122,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Zero-phase filtering (analog of filtfilt() in MATLAB/sciPy)
+        /// Нуль-фазовая фильтрация (аналог filtfilt() в MATLAB/sciPy)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="padLength"></param>
@@ -203,7 +203,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Reset filter
+        /// Перезапуск фильтра
         /// </summary>
         public void Reset()
         {

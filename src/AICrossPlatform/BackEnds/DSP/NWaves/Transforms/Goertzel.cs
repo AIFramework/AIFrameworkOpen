@@ -55,7 +55,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <summary>
         /// Overloaded method for DiscreteSignal
         /// </summary>
-        /// <param name="input">Input signal</param>
+        /// <param name="input">Входной сигнал</param>
         /// <param name="n">Number of the frequency component</param>
         /// <returns>nth component of a complex spectrum</returns>
         public Complex Direct(DiscreteSignal input, int n)

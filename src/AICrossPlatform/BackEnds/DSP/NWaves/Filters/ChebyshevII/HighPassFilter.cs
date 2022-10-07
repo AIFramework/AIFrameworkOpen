@@ -23,7 +23,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
         }
 
         /// <summary>
-        /// TF generator
+        /// Создание передаточной функции
         /// </summary>
         private static TransferFunction MakeTf(double freq, int order, double ripple = 0.1)
         {

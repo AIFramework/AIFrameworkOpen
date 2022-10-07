@@ -23,7 +23,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevI
         }
 
         /// <summary>
-        /// TF generator
+        /// Создание передаточной функции
         /// </summary>
         /// <param name="freq"></param>
         /// <param name="order">Порядок</param>

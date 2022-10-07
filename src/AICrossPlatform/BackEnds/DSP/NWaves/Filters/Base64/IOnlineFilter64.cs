@@ -1,19 +1,19 @@
 ﻿namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 {
     /// <summary>
-    /// Interface for all objects that support online filtering
+    /// Интерфейс для всех объектов, поддерживающих онлайн-фильтрацию
     /// </summary>
     public interface IOnlineFilter64
     {
         /// <summary>
-        /// Method implements online filtering (sample-by-sample)
+        /// Метод реализует онлайн фильтрацию (отсчет за отсчетом)
         /// </summary>
-        /// <param name="input">Input sample</param>
-        /// <returns>Output sample</returns>
+        /// <param name="input">Входной отсчет</param>
+        /// <returns>Выходной отсчет</returns>
         double Process(double input);
 
         /// <summary>
-        /// Method for resetting state
+        /// Сброс состояния
         /// </summary>
         void Reset();
     }

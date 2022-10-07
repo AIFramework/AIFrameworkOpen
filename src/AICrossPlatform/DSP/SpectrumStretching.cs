@@ -13,8 +13,8 @@ namespace AI.DSP
         /// <summary>
         /// Spectrum stretching
         /// </summary>
-        /// <param name="signal">Input signal</param>
-        /// <param name="k">Stretch ratio</param>
+        /// <param name="signal">Входной сигнал</param>
+        /// <param name="k">Коэффициент растяжения</param>
         /// <param name="lFilt"></param>
         public static Vector SpectrumStretch(Vector signal, double k, int lFilt = 15)
         {

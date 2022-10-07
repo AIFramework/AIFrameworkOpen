@@ -8,19 +8,19 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 {
     /// <summary>
-    /// Class representing Finite Impulse Response filters
+    /// КИХ фильтр
     /// </summary>
     [Serializable]
     public class FirFilter64 : IFilter64, IOnlineFilter64
     {
         /// <summary>
-        /// Filter kernel (impulse response)
+        /// Ядро фильтра (импульсная характеристика)
         /// </summary>
         public double[] Kernel => _b.Take(_kernelSize).ToArray();
 
         /// <summary>
         /// 
-        /// Numerator part coefficients in filter's transfer function 
+        /// Numerator part coefficients in filter's Передаточная функция 
         /// (non-recursive part in difference equations).
         /// 
         /// Note.
@@ -35,12 +35,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         protected readonly double[] _b;
 
         /// <summary>
-        /// Kernel length
+        /// Размер ядра
         /// </summary>
         protected int _kernelSize;
 
         /// <summary>
-        /// Transfer function (created lazily or set specifically if needed)
+        /// Передаточная функция (created lazily or set specifically if needed)
         /// </summary>
         protected TransferFunction _tf;
         /// <summary>
@@ -59,12 +59,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         public int KernelSizeForBlockConvolution { get; set; } = 64;
 
         /// <summary>
-        /// Internal buffer for delay line
+        /// Внутренний буфер для линии задержки
         /// </summary>
         protected double[] _delayLine;
 
         /// <summary>
-        /// Current offset in delay line
+        /// Текущее смещение в линии задержки
         /// </summary>
         protected int _delayLineOffset;
 
@@ -88,7 +88,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Конструктор accepting the transfer function.
+        /// Конструктор accepting the Передаточная функция.
         /// 
         /// Coefficients (used for filtering) will be cast to doubles anyway,
         /// but filter will store the reference to TransferFunction object for FDA.
@@ -101,7 +101,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Apply filter to entire signal (offline)
+        /// Применить фильтр ко всему сигналу (офлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -213,7 +213,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Reset filter
+        /// Перезапуск фильтра
         /// </summary>
         public void Reset()
         {

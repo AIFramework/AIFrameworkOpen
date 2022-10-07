@@ -3,33 +3,33 @@
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
     /// <summary>
-    /// General filtering strategy
+    /// Общая стратегия фильтрации
     /// </summary>
     [Serializable]
     public enum FilteringMethod
     {
         /// <summary>
-        /// Filtering strategy is dynamically defined by NWaves library
+        /// Стратегия фильтрации динамически определяется библиотекой NWaves.
         /// </summary>
         Auto,
 
         /// <summary>
-        /// Filtering in time domain based on difference equations
+        /// Фильтрация во временной области на основе разностных уравнений
         /// </summary>
         DifferenceEquation,
 
         /// <summary>
-        /// Filtering in frequency domain based on OLA algorithm
+        /// Фильтрация в частотной области на основе алгоритма OLA
         /// </summary>
         OverlapAdd,
 
         /// <summary>
-        /// Filtering in frequency domain based on OLS algorithm
+        /// Фильтрация в частотной области на основе алгоритма OLS
         /// </summary>
         OverlapSave,
 
         /// <summary>
-        /// Filtering strategy is defined fully in code by user
+        /// Кастомная фильтрация
         /// </summary>
         Custom
     }

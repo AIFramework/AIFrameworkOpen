@@ -31,12 +31,12 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         private readonly RealFft _fft;
 
         /// <summary>
-        /// Offset in the input delay line
+        /// Offset in the input Линия задержки
         /// </summary>
         private int _bufferOffset;
 
         /// <summary>
-        /// Offset in the delay line
+        /// Offset in the Линия задержки
         /// </summary>
         private int _outputBufferOffset;
 
@@ -67,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             _fftSize = MathUtils.NextPowerOfTwo(fftSize);
 
-            Guard.AgainstExceedance(_kernel.Length, _fftSize, "Kernel length", "the size of FFT");
+            Guard.AgainstExceedance(_kernel.Length, _fftSize, "Размер ядра", "the size of FFT");
 
             _fft = new RealFft(_fftSize);
 
@@ -164,7 +164,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             int i = 0, j = 0;
 
-            for (; i < firstCount; i++)    // first HopSize-1 samples are just placed in the delay line
+            for (; i < firstCount; i++)    // first HopSize-1 samples are just placed in the Линия задержки
             {
                 Process(signal[i]);
             }
@@ -187,7 +187,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         }
 
         /// <summary>
-        /// Reset filter internals
+        /// Перезапуск фильтра internals
         /// </summary>
         public void Reset()
         {

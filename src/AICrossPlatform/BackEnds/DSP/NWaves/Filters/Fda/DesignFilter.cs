@@ -348,7 +348,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         #endregion
 
 
-        #region design transfer functions for IIR pole filters (Butterworth, Chebyshev, etc.)
+        #region design Передаточная функцияs for IIR pole filters (Butterworth, Chebyshev, etc.)
 
 
         /// <summary>
@@ -357,7 +357,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="freq">Cutoff frequency in range [0, 0.5]</param>
         /// <param name="poles">Analog prototype poles</param>
         /// <param name="zeros">Analog prototype zeros</param>
-        /// <returns>Transfer function</returns>
+        /// <returns>Передаточная функция</returns>
         public static TransferFunction IirLpTf(double freq, Complex[] poles, Complex[] zeros = null)
         {
             double[] pre = new double[poles.Length];
@@ -423,7 +423,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="freq">Cutoff frequency in range [0, 0.5]</param>
         /// <param name="poles">Analog prototype poles</param>
         /// <param name="zeros">Analog prototype zeros</param>
-        /// <returns>Transfer function</returns>
+        /// <returns>Передаточная функция</returns>
         public static TransferFunction IirHpTf(double freq, Complex[] poles, Complex[] zeros = null)
         {
             double[] pre = new double[poles.Length];
@@ -489,7 +489,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="freq2">Right cutoff frequency in range [0, 0.5]</param>
         /// <param name="poles">Analog prototype poles</param>
         /// <param name="zeros">Analog prototype zeros</param>
-        /// <returns>Transfer function</returns>
+        /// <returns>Передаточная функция</returns>
         public static TransferFunction IirBpTf(double freq1, double freq2, Complex[] poles, Complex[] zeros = null)
         {
             Guard.AgainstInvalidRange(freq1, freq2, "lower frequency", "upper frequency");
@@ -579,7 +579,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="freq2">Right cutoff frequency in range [0, 0.5]</param>
         /// <param name="poles">Analog prototype poles</param>
         /// <param name="zeros">Analog prototype zeros</param>
-        /// <returns>Transfer function</returns>
+        /// <returns>Передаточная функция</returns>
         public static TransferFunction IirBsTf(double freq1, double freq2, Complex[] poles, Complex[] zeros = null)
         {
             Guard.AgainstInvalidRange(freq1, freq2, "lower frequency", "upper frequency");
@@ -689,8 +689,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <summary>
         /// Zpk to second-order sections.
         /// </summary>
-        /// <param name="tf">Transfer function</param>
-        /// <returns>Array of SOS transfer functions</returns>
+        /// <param name="tf">Передаточная функция</param>
+        /// <returns>Array of SOS Передаточная функцияs</returns>
         public static TransferFunction[] TfToSos(TransferFunction tf)
         {
             List<Complex> zeros = tf.Zeros.ToComplexNumbers().ToList();

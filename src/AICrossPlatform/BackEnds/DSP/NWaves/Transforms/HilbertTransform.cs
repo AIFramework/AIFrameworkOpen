@@ -123,7 +123,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <summary>
         /// Direct Hilbert Transform
         /// </summary>
-        /// <param name="signal">Input signal</param>
+        /// <param name="signal">Входной сигнал</param>
         /// <returns>Hilbert Transform</returns>
         public DiscreteSignal Direct(DiscreteSignal signal)
         {

@@ -87,7 +87,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Reset filter
+        /// Перезапуск фильтра
         /// </summary>
         public void Reset()
         {

@@ -27,7 +27,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// TF generator
+        /// Создание передаточной функции
         /// </summary>
         /// <param name="order"></param>
         /// <param name="delta"></param>

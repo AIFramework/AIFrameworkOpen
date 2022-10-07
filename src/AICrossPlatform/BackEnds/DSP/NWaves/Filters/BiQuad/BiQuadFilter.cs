@@ -10,7 +10,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
     public class BiQuadFilter : IirFilter64
     {
         /// <summary>
-        /// Delay line
+        /// Линия задержки
         /// </summary>
         private double _in1;
         private double _in2;
@@ -57,7 +57,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
         }
 
         /// <summary>
-        /// Reset filter
+        /// Перезапуск фильтра
         /// </summary>
         public override void Reset()
         {

@@ -14,11 +14,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     public class IirFilter : LtiFilter
     {
         /// <summary>
-        /// Numerator part coefficients in filter's transfer function 
+        /// Numerator part coefficients in filter's Передаточная функция 
         /// (non-recursive part in difference equations)
         /// 
         /// These coefficients have single precision since they are used for filtering!
-        /// For filter design analysis specify transfer function (Tf property).
+        /// For filter design analysis specify Передаточная функция (Tf property).
         /// 
         /// Note.
         /// This array is created from duplicated coefficients:
@@ -31,11 +31,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         public readonly float[] _b;
 
         /// <summary>
-        /// Denominator part coefficients in filter's transfer function 
+        /// Denominator part coefficients in filter's Передаточная функция 
         /// (recursive part in difference equations).
         /// 
         /// These coefficients have single precision since they are used for filtering!
-        /// For filter design  analysis specify transfer function (Tf property).
+        /// For filter design  analysis specify Передаточная функция (Tf property).
         /// 
         /// Note.
         /// This array is created from duplicated coefficients:
@@ -58,7 +58,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         protected readonly int _denominatorSize;
 
         /// <summary>
-        /// Transfer function (created lazily or set specifically if needed)
+        /// Передаточная функция (created lazily or set specifically if needed)
         /// </summary>
         protected TransferFunction _tf;
 
@@ -77,7 +77,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         public int DefaultImpulseResponseLength { get; set; } = 512;
 
         /// <summary>
-        /// Internal buffers for delay lines
+        /// Internal buffers for Линия задержкиs
         /// </summary>
         protected float[] _delayLineA;
         /// <summary>
@@ -86,7 +86,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         protected float[] _delayLineB;
 
         /// <summary>
-        /// Current offsets in delay lines
+        /// Current offsets in Линия задержкиs
         /// </summary>
         protected int _delayLineOffsetA;
         /// <summary>
@@ -95,10 +95,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         protected int _delayLineOffsetB;
 
         /// <summary>
-        /// Parameterized constructor (from arrays of 32-bit coefficients)
+        /// Параметризованный конструктор (from arrays of 32-bit coefficients)
         /// </summary>
-        /// <param name="b">TF numerator coefficients</param>
-        /// <param name="a">TF denominator coefficients</param>
+        /// <param name="b">Коэф. в числителе передаточной функции</param>
+        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
         public IirFilter(IEnumerable<float> b, IEnumerable<float> a)
         {
             _numeratorSize = b.Count();
@@ -125,34 +125,34 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Parameterized constructor (from arrays of 64-bit coefficients)
+        /// Параметризованный конструктор (from arrays of 64-bit coefficients)
         /// 
         /// NOTE.
         /// It will simply cast values to floats!
         /// If you need to preserve precision for filter design  analysis, use constructor with TransferFunction!
         /// 
         /// </summary>
-        /// <param name="b">TF numerator coefficients</param>
-        /// <param name="a">TF denominator coefficients</param>
+        /// <param name="b">Коэф. в числителе передаточной функции</param>
+        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
         public IirFilter(IEnumerable<double> b, IEnumerable<double> a) : this(b.ToFloats(), a.ToFloats())
         {
         }
 
         /// <summary>
-        /// Parameterized constructor (from transfer function).
+        /// Параметризованный конструктор (from Передаточная функция).
         /// 
         /// Coefficients (used for filtering) will be cast to floats anyway,
         /// but filter will store the reference to TransferFunction object for FDA.
         /// 
         /// </summary>
-        /// <param name="tf">Transfer function</param>
+        /// <param name="tf">Передаточная функция</param>
         public IirFilter(TransferFunction tf) : this(tf.Numerator, tf.Denominator)
         {
             Tf = tf;
         }
 
         /// <summary>
-        /// Apply filter to entire signal (offline)
+        /// Применить фильтр ко всему сигналу (офлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -282,7 +282,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Reset filter
+        /// Перезапуск фильтра
         /// </summary>
         public override void Reset()
         {

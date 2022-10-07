@@ -8,25 +8,25 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
     /// <summary>
-    /// Class representing Finite Impulse Response filters
+    /// КИХ фильтр
     /// </summary>
     [Serializable]
     public class FirFilter : LtiFilter
     {
         /// <summary>
-        /// Filter kernel (impulse response)
+        /// Ядро фильтра (импульсная характеристика)
         /// </summary>
         public float[] Kernel => _b.Take(_kernelSize).ToArray();
 
         /// <summary>
         /// 
-        /// Numerator part coefficients in filter's transfer function 
+        /// Numerator part coefficients in filter's Передаточная функция 
         /// (non-recursive part in difference equations).
         /// 
         /// Since the number of coefficients can be really big,
         /// we store ONLY float versions and they are used for filtering.
         /// 
-        /// For design  analysis use the transfer function (Tf property, set via constructor).
+        /// For design  analysis use the Передаточная функция (Tf property, set via constructor).
         /// By default Tf is null, so if you need your FIR filter to do just filtering, you won't waste RAM.
         /// 
         /// Note.
@@ -41,12 +41,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         protected readonly float[] _b;
 
         /// <summary>
-        /// Kernel length
+        /// Размер ядра
         /// </summary>
         protected int _kernelSize;
 
         /// <summary>
-        /// Transfer function (created lazily or set specifically if needed)
+        /// Передаточная функция
         /// </summary>
         protected TransferFunction _tf;
 
@@ -66,12 +66,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         public int KernelSizeForBlockConvolution { get; set; } = 64;
 
         /// <summary>
-        /// Internal buffer for delay line
+        /// Внутренний буфер для линии задержки
         /// </summary>
         protected float[] _delayLine;
 
         /// <summary>
-        /// Current offset in delay line
+        /// Текущее смещение в линии задержки
         /// </summary>
         protected int _delayLineOffset;
 
@@ -108,7 +108,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Конструктор accepting the transfer function.
+        /// Конструктор accepting the Передаточная функция.
         /// 
         /// Coefficients (used for filtering) will be cast to floats anyway,
         /// but filter will store the reference to TransferFunction object for FDA.
@@ -121,7 +121,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Apply filter to entire signal (offline)
+        /// Применить фильтр ко всему сигналу (офлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -264,7 +264,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Reset filter
+        /// Перезапуск фильтра
         /// </summary>
         public override void Reset()
         {

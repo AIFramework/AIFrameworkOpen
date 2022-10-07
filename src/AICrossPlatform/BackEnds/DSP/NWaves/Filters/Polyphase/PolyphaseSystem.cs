@@ -13,7 +13,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
     public class PolyphaseSystem : IFilter, IOnlineFilter
     {
         /// <summary>
-        /// Polyphase filters with transfer function E(z^k).
+        /// Polyphase filters with Передаточная функция E(z^k).
         /// 
         /// Example:
         /// h = [1, 2, 3, 4, 3, 2, 1],  k = 3
@@ -25,7 +25,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
         public FirFilter[] Filters { get; private set; }
 
         /// <summary>
-        /// Polyphase filters with transfer function E(z) used for multi-rate processing.
+        /// Polyphase filters with Передаточная функция E(z) used for multi-rate processing.
         /// 
         /// h = [1, 2, 3, 4, 3, 2, 1],  k = 3
         /// 

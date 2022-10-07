@@ -25,7 +25,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         public int Size { get; }
 
         /// <summary>
-        /// Delay line
+        /// Линия задержки
         /// </summary>
         private float _out1;
 
@@ -39,7 +39,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// TF generator
+        /// Создание передаточной функции
         /// </summary>
         /// <param name="size"></param>
         /// <returns></returns>
@@ -114,7 +114,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Reset filter
+        /// Перезапуск фильтра
         /// </summary>
         public override void Reset()
         {

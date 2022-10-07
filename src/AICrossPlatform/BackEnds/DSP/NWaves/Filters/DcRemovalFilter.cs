@@ -16,7 +16,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         private readonly float _r;
 
         /// <summary>
-        /// Delay line
+        /// Линия задержки
         /// </summary>
         private float _in1;
         private float _out1;

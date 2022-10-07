@@ -122,7 +122,7 @@ namespace AI.DSP.IIR
         /// <summary>
         /// Recursive filter output
         /// </summary>
-        /// <param name="signal">Input signal</param>
+        /// <param name="signal">Входной сигнал</param>
         public Vector FilterOutp(Vector signal)
         {
             Reset();
@@ -132,7 +132,7 @@ namespace AI.DSP.IIR
         /// <summary>
         /// Recursive filter output
         /// </summary>
-        /// <param name="signal">Input signal</param>
+        /// <param name="signal">Входной сигнал</param>
         /// <param name="iteration">Filtering iterations</param>
         public Vector FilterOutp(Vector signal, int iteration)
         {

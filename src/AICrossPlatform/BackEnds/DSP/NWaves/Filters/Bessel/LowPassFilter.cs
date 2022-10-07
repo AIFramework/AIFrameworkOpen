@@ -21,7 +21,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
         }
 
         /// <summary>
-        /// TF generator
+        /// Создание передаточной функции
         /// </summary>
         /// <param name="freq"></param>
         /// <param name="order"></param>

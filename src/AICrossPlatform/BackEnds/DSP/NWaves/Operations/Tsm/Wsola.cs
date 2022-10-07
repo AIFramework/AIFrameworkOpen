@@ -15,7 +15,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     public class Wsola : IFilter
     {
         /// <summary>
-        /// Stretch ratio
+        /// Коэффициент растяжения
         /// </summary>
         protected readonly double _stretch;
 
@@ -59,7 +59,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         /// <summary>
         /// Конструктор with detailed WSOLA settings
         /// </summary>
-        /// <param name="stretch">Stretch ratio</param>
+        /// <param name="stretch">Коэффициент растяжения</param>
         /// <param name="windowSize"></param>
         /// <param name="hopAnalysis"></param>
         /// <param name="maxDelta"></param>
@@ -84,9 +84,9 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         {
             _stretch = stretch;
 
-            // IMO these are good parameters for different stretch ratios
+            // IMO these are good parameters for different Коэффициент растяженияs
 
-            if (_stretch > 1.5)        // parameters are for 22.05 kHz Частота дискретизации, so they will be adjusted for an input signal
+            if (_stretch > 1.5)        // parameters are for 22.05 kHz Частота дискретизации, so they will be adjusted for an Входной сигнал
             {
                 _windowSize = 1024;     // 46,4 ms
                 _hopAnalysis = 128;     //  5,8 ms

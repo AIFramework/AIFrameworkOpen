@@ -13,7 +13,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     public abstract class LtiFilter : IFilter, IOnlineFilter
     {
         /// <summary>
-        /// Transfer function.
+        /// Передаточная функция.
         /// 
         /// It's made abstract as of ver.0.9.2 to allow subclasses using memory more efficiently.
         /// It's supposed that subclasses will generate TransferFunction object on the fly from filter coeffs
@@ -31,23 +31,23 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         public abstract TransferFunction Tf { get; protected set; }
 
         /// <summary>
-        /// The offline filtering algorithm that should be implemented by particular subclass
+        /// The Фильтрация всего сигнала algorithm that should be implemented by particular subclass
         /// </summary>
-        /// <param name="signal">Signal for filtering</param>
-        /// <param name="method">General filtering strategy</param>
-        /// <returns>Filtered signal</returns>
+        /// <param name="signal">Фильтруемый(исходный) сигнал</param>
+        /// <param name="method">Общая стратегия фильтрации</param>
+        /// <returns>Отфильтрованный сигнал</returns>
         public abstract DiscreteSignal ApplyTo(DiscreteSignal signal,
                                                FilteringMethod method = FilteringMethod.Auto);
 
         /// <summary>
         /// The online filtering algorithm should be implemented by particular subclass
         /// </summary>
-        /// <param name="input">Input sample</param>
-        /// <returns>Output sample</returns>
+        /// <param name="input">Входной отсчет</param>
+        /// <returns>Выходной отсчет</returns>
         public abstract float Process(float input);
 
         /// <summary>
-        /// Reset filter (clear all internal buffers)
+        /// Перезапуск фильтра (clear all internal buffers)
         /// </summary>
         public abstract void Reset();
     }

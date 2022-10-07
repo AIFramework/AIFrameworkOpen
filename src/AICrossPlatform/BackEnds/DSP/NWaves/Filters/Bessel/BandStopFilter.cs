@@ -6,7 +6,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
 {
     /// <summary>
-    /// Band-stop Bessel filter
+    /// Полосно-заграждающий фильтр Бесселя
     /// </summary>
     [Serializable]
     public class BandStopFilter : IirFilter64
@@ -22,7 +22,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
         }
 
         /// <summary>
-        /// TF generator
+        /// Создание передаточной функции
         /// </summary>
         /// <param name="f1"></param>
         /// <param name="f2"></param>

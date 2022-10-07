@@ -65,12 +65,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         protected readonly float[] _window;
 
         /// <summary>
-        /// Delay line
+        /// Линия задержки
         /// </summary>
         private readonly float[] _dl;
 
         /// <summary>
-        /// Offset in the input delay line
+        /// Offset in the input Линия задержки
         /// </summary>
         private int _inOffset;
 
@@ -185,7 +185,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                                              float[] filteredRe, float[] filteredIm);
 
         /// <summary>
-        /// Reset filter internals
+        /// Перезапуск фильтра internals
         /// </summary>
         public virtual void Reset()
         {

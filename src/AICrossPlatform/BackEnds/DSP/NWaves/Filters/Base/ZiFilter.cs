@@ -13,19 +13,19 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     public class ZiFilter : LtiFilter
     {
         /// <summary>
-        /// Numerator part coefficients in filter's transfer function 
+        /// Numerator part coefficients in filter's Передаточная функция 
         /// (non-recursive part in difference equations)
         /// </summary>
         protected readonly float[] _b;
 
         /// <summary>
-        /// Denominator part coefficients in filter's transfer function 
+        /// Denominator part coefficients in filter's Передаточная функция 
         /// (recursive part in difference equations).
         /// </summary>
         protected readonly float[] _a;
 
         /// <summary>
-        /// State vector
+        /// Вектор состояний
         /// </summary>
         protected readonly float[] _zi;
         /// <summary>
@@ -34,7 +34,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         public float[] Zi => _zi;
 
         /// <summary>
-        /// Transfer function
+        /// Передаточная функция
         /// </summary>
         protected TransferFunction _tf;
 
@@ -48,10 +48,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Parameterized constructor (from arrays of 32-bit coefficients)
+        /// Параметризованный конструктор (from arrays of 32-bit coefficients)
         /// </summary>
-        /// <param name="b">TF numerator coefficients</param>
-        /// <param name="a">TF denominator coefficients</param>
+        /// <param name="b">Коэф. в числителе передаточной функции</param>
+        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
         public ZiFilter(IEnumerable<float> b, IEnumerable<float> a)
         {
             _b = b.ToArray();
@@ -75,30 +75,30 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Parameterized constructor (from arrays of 64-bit coefficients)
+        /// Параметризованный конструктор (from arrays of 64-bit coefficients)
         /// 
         /// NOTE.
         /// It will simply cast values to floats!
         /// If you need to preserve precision for filter design  analysis, use constructor with TransferFunction!
         /// 
         /// </summary>
-        /// <param name="b">TF numerator coefficients</param>
-        /// <param name="a">TF denominator coefficients</param>
+        /// <param name="b">Коэф. в числителе передаточной функции</param>
+        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
         public ZiFilter(IEnumerable<double> b, IEnumerable<double> a) : this(b.ToFloats(), a.ToFloats())
         {
         }
 
         /// <summary>
-        /// Parameterized constructor (from transfer function).
+        /// Параметризованный конструктор (from Передаточная функция).
         /// </summary>
-        /// <param name="tf">Transfer function</param>
+        /// <param name="tf">Передаточная функция</param>
         public ZiFilter(TransferFunction tf) : this(tf.Numerator, tf.Denominator)
         {
             Tf = tf;
         }
 
         /// <summary>
-        /// Init filter
+        /// Инициализация фильтра
         /// </summary>
         /// <param name="zi"></param>
         public virtual void Init(float[] zi)
@@ -107,7 +107,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Init filter (cast double precision to single precision)
+        /// Инициализация фильтра (cast double precision to single precision)
         /// </summary>
         /// <param name="zi"></param>
         public virtual void Init(double[] zi)
@@ -116,7 +116,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Apply filter to entire signal (offline)
+        /// Применить фильтр ко всему сигналу (офлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -128,7 +128,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Offline filtering with initial conditions (for tests)
+        /// Фильтрация всего сигнала with initial conditions (for tests)
         /// </summary>
         /// <param name="signal"></param>
         /// <returns></returns>
@@ -151,10 +151,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Online filtering with initial conditions
+        /// Онлайн-фильтрация с начальными условиями
         /// </summary>
-        /// <param name="input">Input sample</param>
-        /// <returns>Output sample</returns>
+        /// <param name="input">Входной отсчет</param>
+        /// <returns>Выходной отсчет</returns>
         public override float Process(float input)
         {
             float output = (_b[0] * input) + _zi[0];
@@ -168,7 +168,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Zero-phase filtering (analog of filtfilt() in MATLAB/sciPy)
+        /// Нуль-фазовая фильтрация (аналог filtfilt() в MATLAB/sciPy)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="padLength"></param>
@@ -250,7 +250,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Reset filter
+        /// Перезапуск фильтра
         /// </summary>
         public override void Reset()
         {

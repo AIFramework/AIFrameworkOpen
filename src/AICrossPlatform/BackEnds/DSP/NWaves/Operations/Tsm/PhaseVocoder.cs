@@ -30,7 +30,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         protected readonly int _fftSize;
 
         /// <summary>
-        /// Stretch ratio
+        /// Коэффициент растяжения
         /// </summary>
         protected readonly double _stretch;
 
@@ -105,7 +105,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         }
 
         /// <summary>
-        /// Phase Vocoder algorithm
+        /// Алгоритм фазового вокодера
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -182,7 +182,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         }
 
         /// <summary>
-        /// Reset phase vocoder
+        /// Перезапуск фазового вокодера
         /// </summary>
         public virtual void Reset()
         {

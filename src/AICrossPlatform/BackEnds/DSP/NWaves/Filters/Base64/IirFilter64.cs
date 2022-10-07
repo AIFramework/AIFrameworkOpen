@@ -14,7 +14,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
     public class IirFilter64 : IFilter64, IOnlineFilter64
     {
         /// <summary>
-        /// Numerator part coefficients in filter's transfer function 
+        /// Numerator part coefficients in filter's Передаточная функция 
         /// (non-recursive part in difference equations)
         /// 
         /// Note.
@@ -28,7 +28,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         public readonly double[] _b;
 
         /// <summary>
-        /// Denominator part coefficients in filter's transfer function 
+        /// Denominator part coefficients in filter's Передаточная функция 
         /// (recursive part in difference equations).
         /// 
         /// Note.
@@ -52,7 +52,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         protected readonly int _denominatorSize;
 
         /// <summary>
-        /// Transfer function (created lazily or set specifically if needed)
+        /// Передаточная функция (created lazily or set specifically if needed)
         /// </summary>
         protected TransferFunction _tf;
         /// <summary>
@@ -118,20 +118,20 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Parameterized constructor (from transfer function).
+        /// Параметризованный конструктор (from Передаточная функция).
         /// 
         /// Coefficients (used for filtering) will be cast to doubles anyway,
         /// but filter will store the reference to TransferFunction object for FDA.
         /// 
         /// </summary>
-        /// <param name="tf">Transfer function</param>
+        /// <param name="tf">Передаточная функция</param>
         public IirFilter64(TransferFunction tf) : this(tf.Numerator, tf.Denominator)
         {
             Tf = tf;
         }
 
         /// <summary>
-        /// Apply filter to entire signal (offline)
+        /// Применить фильтр ко всему сигналу (офлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -223,7 +223,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Reset filter
+        /// Перезапуск фильтра
         /// </summary>
         public virtual void Reset()
         {

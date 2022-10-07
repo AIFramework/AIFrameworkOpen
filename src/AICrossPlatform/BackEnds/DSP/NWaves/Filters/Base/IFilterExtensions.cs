@@ -10,11 +10,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     public static class FilterExtensions
     {
         /// <summary>
-        /// Method implements online filtering for discrete signals
+        /// Метод реализует онлайн-фильтрацию для дискретного сигнала
         /// </summary>
-        /// <param name="filter">Some filter</param>
-        /// <param name="input">Input signal</param>
-        /// <returns>Filtered signal</returns>
+        /// <param name="filter">Фильтр</param>
+        /// <param name="input">Входной сигнал</param>
+        /// <returns>Отфильтрованный сигнал</returns>
         public static DiscreteSignal Process(this IOnlineFilter filter,
                                                   DiscreteSignal input)
         {
@@ -24,11 +24,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Method implements online filtering (frame-by-frame)
+        /// Метод реализует онлайн-фильтрацию (frame-by-frame)
         /// </summary>
         /// <param name="filter">Фильтр</param>
-        /// <param name="input">Input block of samples</param>
-        /// <param name="output">Block of filtered samples</param>
+        /// <param name="input">Блок(фрейм) входного сигнала</param>
+        /// <param name="output">Блок(фрейм) отфильтрованного сигнала</param>
         /// <param name="count">Number of samples to filter</param>
         /// <param name="inputPos">Input starting position</param>
         /// <param name="outputPos">Output starting position</param>
@@ -55,7 +55,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <summary>
         /// NOTE. For educational purposes and for testing online filtering.
         /// 
-        /// Implementation of offline filtering in time domain frame-by-frame.
+        /// Implementation of Фильтрация всего сигнала in time domain frame-by-frame.
         /// 
         /// </summary>
         /// <param name="signal"></param>

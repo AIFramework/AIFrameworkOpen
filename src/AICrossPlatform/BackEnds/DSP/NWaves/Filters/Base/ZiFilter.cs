@@ -13,14 +13,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     public class ZiFilter : LtiFilter
     {
         /// <summary>
-        /// Numerator part coefficients in filter's Передаточная функция 
-        /// (non-recursive part in difference equations)
+        /// Числитель передаточной функции фильтра
+        /// (Не рекусивная часть разностного фильтра)
         /// </summary>
         protected readonly float[] _b;
 
         /// <summary>
-        /// Denominator part coefficients in filter's Передаточная функция 
-        /// (recursive part in difference equations).
+        /// Знаменатель передаточной функции фильтра 
+        /// (Рекусивная часть разностного фильтра)
         /// </summary>
         protected readonly float[] _a;
 
@@ -75,7 +75,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Параметризованный конструктор (from arrays of 64-bit coefficients)
+        /// Параметризованный конструктор (Массив 64х битных коэффициентов)
         /// 
         /// NOTE.
         /// It will simply cast values to floats!
@@ -89,7 +89,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Параметризованный конструктор (from Передаточная функция).
+        /// Параметризованный конструктор (Передаточная функция).
         /// </summary>
         /// <param name="tf">Передаточная функция</param>
         public ZiFilter(TransferFunction tf) : this(tf.Numerator, tf.Denominator)

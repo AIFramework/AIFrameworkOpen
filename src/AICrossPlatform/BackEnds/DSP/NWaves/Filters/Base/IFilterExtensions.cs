@@ -29,9 +29,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <param name="filter">Фильтр</param>
         /// <param name="input">Блок(фрейм) входного сигнала</param>
         /// <param name="output">Блок(фрейм) отфильтрованного сигнала</param>
-        /// <param name="count">Number of samples to filter</param>
-        /// <param name="inputPos">Input starting position</param>
-        /// <param name="outputPos">Output starting position</param>
+        /// <param name="count">Количество образцов для фильтрации</param>
+        /// <param name="inputPos">Введите начальную позицию</param>
+        /// <param name="outputPos">Выходное исходное положение</param>
         public static void Process(this IOnlineFilter filter,
                                    float[] input,
                                    float[] output,
@@ -53,9 +53,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// NOTE. For educational purposes and for testing online filtering.
-        /// 
-        /// Implementation of Фильтрация всего сигнала in time domain frame-by-frame.
+        /// Реализация фильтра во временной области (Фильтрация блоками)
         /// 
         /// </summary>
         /// <param name="signal"></param>

@@ -6,7 +6,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
 {
     /// <summary>
-    /// Band-pass Bessel filter
+    /// Полосовой Bessel filter
     /// </summary>
     [Serializable]
     public class BandPassFilter : IirFilter64

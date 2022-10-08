@@ -14,45 +14,41 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
     public class IirFilter64 : IFilter64, IOnlineFilter64
     {
         /// <summary>
-        /// Numerator part coefficients in filter's Передаточная функция 
-        /// (non-recursive part in difference equations)
         /// 
-        /// Note.
-        /// This array is created from duplicated coefficients:
+        /// Числитель передаточной функции рекурсивного фильтра
+        /// Этот массив создан из дублированного ядра фильтра:
         /// 
-        ///  numerator              _b
+        ///  числитель                _b
         /// [1 2 3 4 5] -> [1 2 3 4 5 1 2 3 4 5]
         /// 
-        /// Such memory layout leads to speed-up of online filtering.
+        /// Такое расположение памяти приводит к значительному ускорению онлайн-фильтраци
         /// </summary>
         public readonly double[] _b;
 
         /// <summary>
-        /// Denominator part coefficients in filter's Передаточная функция 
-        /// (recursive part in difference equations).
         /// 
-        /// Note.
-        /// This array is created from duplicated coefficients:
+        /// Знаменатель передаточной функции рекурсивного фильтра
+        /// Этот массив создан из дублированного ядра фильтра:
         /// 
-        ///  denominator             _a
-        ///  [1 2 3 4 5] -> [1 2 3 4 5 1 2 3 4 5]
+        ///  Знаменатель                _b
+        /// [1 2 3 4 5] -> [1 2 3 4 5 1 2 3 4 5]
         /// 
-        /// Such memory layout leads to speed-up of online filtering.
+        /// Такое расположение памяти приводит к значительному ускорению онлайн-фильтраци
         /// </summary>
         public readonly double[] _a;
 
         /// <summary>
-        /// Number of numerator coefficients
+        /// Количество коэффициентов числителя
         /// </summary>
         protected readonly int _numeratorSize;
 
         /// <summary>
-        /// Number of denominator (feedback) coefficients
+        /// Количество коэффициентов знаменателя (обратной связи)
         /// </summary>
         protected readonly int _denominatorSize;
 
         /// <summary>
-        /// Передаточная функция (created lazily or set specifically if needed)
+        /// Передаточная функция (создается лениво или устанавливается специально, если нужно)
         /// </summary>
         protected TransferFunction _tf;
         /// <summary>
@@ -65,7 +61,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Default length of truncated impulse response
+        /// Импульсная характеристика по умолчанию
         /// </summary>
         public int DefaultImpulseResponseLength { get; set; } = 512;
 
@@ -88,10 +84,10 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         protected int _delayLineOffsetB;
 
         /// <summary>
-        /// 64-х битный БИХ фильтр
+        /// Параметризованный конструктор ( 32-битные коэффициенты)
         /// </summary>
-        /// <param name="b">Коэф. числителя перед. функции</param>
-        /// <param name="a">Коэф. знаменателя перед. функции</param>
+        /// <param name="b">Коэф. в числителе передаточной функции</param>
+        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
         public IirFilter64(IEnumerable<double> b, IEnumerable<double> a)
         {
             _numeratorSize = b.Count();
@@ -118,11 +114,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Параметризованный конструктор (from Передаточная функция).
-        /// 
-        /// Coefficients (used for filtering) will be cast to doubles anyway,
-        /// but filter will store the reference to TransferFunction object for FDA.
-        /// 
+        /// Параметризованный конструктор (Передаточная функция).
         /// </summary>
         /// <param name="tf">Передаточная функция</param>
         public IirFilter64(TransferFunction tf) : this(tf.Numerator, tf.Denominator)
@@ -156,7 +148,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// IIR online filtering (sample-by-sample)
+        /// БИХ-фильтрация (отсчет за отсчетом)
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
@@ -193,9 +185,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Change filter coefficients online (numerator part)
+        /// Изменить коэффициенты фильтра онлайн (числитель)
         /// </summary>
-        /// <param name="b">New coefficients</param>
+        /// <param name="b">Новые коэффициенты</param>
         public void ChangeNumeratorCoeffs(double[] b)
         {
             if (b.Length == _numeratorSize)
@@ -208,9 +200,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Change filter coefficients online (denominator / recursive part)
+        /// Изменить коэффициенты фильтра онлайн (знаменатель / рекурсивная часть)
         /// </summary>
-        /// <param name="a">New coefficients</param>
+        /// <param name="a">Новые коэффициенты</param>
         public void ChangeDenominatorCoeffs(double[] a)
         {
             if (a.Length == _denominatorSize)
@@ -235,7 +227,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Divide all filter coefficients by _a[0] and normalize TF
+        /// Нормализует передаточную функцию (делит все коэффициенты на _a[0])
         /// </summary>
         public void Normalize()
         {

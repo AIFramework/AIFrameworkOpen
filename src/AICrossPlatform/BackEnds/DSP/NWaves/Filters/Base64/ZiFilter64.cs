@@ -13,14 +13,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
     public class ZiFilter64 : IFilter64, IOnlineFilter64
     {
         /// <summary>
-        /// Numerator part coefficients in filter's Передаточная функция 
-        /// (non-recursive part in difference equations)
+        /// Числитель передаточной функции фильтра
+        /// (Не рекусивная часть разностного фильтра)
         /// </summary>
         protected readonly double[] _b;
 
         /// <summary>
-        /// Denominator part coefficients in filter's Передаточная функция 
-        /// (recursive part in difference equations).
+        /// Знаменатель передаточной функции фильтра 
+        /// (Рекусивная часть разностного фильтра)
         /// </summary>
         protected readonly double[] _a;
 
@@ -49,7 +49,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Параметризованный конструктор (from arrays of 64-bit coefficients)
+        /// Параметризованный конструктор (Массив 64х битных коэффициентов)
         /// </summary>
         /// <param name="b">Коэф. в числителе передаточной функции</param>
         /// <param name="a">Коэф. в знаминателе передаточной функции</param>
@@ -76,7 +76,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Параметризованный конструктор (from Передаточная функция).
+        /// Параметризованный конструктор (Передаточная функция).
         /// </summary>
         /// <param name="tf">Передаточная функция</param>
         public ZiFilter64(TransferFunction tf) : this(tf.Numerator, tf.Denominator)

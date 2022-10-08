@@ -6,7 +6,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevI
 {
     /// <summary>
-    /// Band-pass Chebyshev-I filter
+    /// Полосовой Chebyshev-I filter
     /// </summary>
     [Serializable]
     public class BandPassFilter : IirFilter64

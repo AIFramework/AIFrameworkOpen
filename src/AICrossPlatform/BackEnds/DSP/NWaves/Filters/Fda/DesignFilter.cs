@@ -483,7 +483,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         }
 
         /// <summary>
-        /// Design TF for band-pass pole filter
+        /// Design TF for Полосовой pole filter
         /// </summary>
         /// <param name="freq1">Left cutoff frequency in range [0, 0.5]</param>
         /// <param name="freq2">Right cutoff frequency in range [0, 0.5]</param>

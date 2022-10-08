@@ -20,23 +20,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
         /// <summary>
         /// 
-        /// Numerator part coefficients in filter's Передаточная функция 
-        /// (non-recursive part in difference equations).
+        /// Числитель передаточной функции нерекурсивного фильтра
+        /// Этот массив создан из дублированного ядра фильтра:
         /// 
-        /// Since the number of coefficients can be really big,
-        /// we store ONLY float versions and they are used for filtering.
-        /// 
-        /// For design  analysis use the Передаточная функция (Tf property, set via constructor).
-        /// By default Tf is null, so if you need your FIR filter to do just filtering, you won't waste RAM.
-        /// 
-        /// Note.
-        /// This array is created from duplicated filter kernel:
-        /// 
-        ///   kernel                _b
+        ///   Ядро                _b
         /// [1 2 3 4 5] -> [1 2 3 4 5 1 2 3 4 5]
         /// 
-        /// Such memory layout leads to significant speed-up of online filtering.
-        /// 
+        /// Такое расположение памяти приводит к значительному ускорению онлайн-фильтраци
         /// </summary>
         protected readonly float[] _b;
 
@@ -60,8 +50,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// If _kernelSize exceeds this value, 
-        /// the filtering code will always call Overlap-Save routine.
+        /// Если _kernelSize превышает это значение, код фильтрации всегда будет вызывать процедуру Overlap-Save.
         /// </summary>
         public int KernelSizeForBlockConvolution { get; set; } = 64;
 
@@ -76,7 +65,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         protected int _delayLineOffset;
 
         /// <summary>
-        /// Конструктор accepting the 32-bit kernel of a filter
+        /// Конструктор
         /// </summary>
         /// <param name="kernel"></param>
         public FirFilter(IEnumerable<float> kernel)
@@ -95,12 +84,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Конструктор accepting the 64-bit kernel of a filter.
-        /// 
-        /// NOTE.
-        /// This will simply cast values to floats!
-        /// If you need to preserve precision for filter design  analysis, use constructor with TransferFunction!
-        /// 
+        /// Создание фильтра при помощи установки ядра.
         /// </summary>
         /// <param name="kernel"></param>
         public FirFilter(IEnumerable<double> kernel) : this(kernel.ToFloats())
@@ -108,11 +92,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Конструктор accepting the Передаточная функция.
-        /// 
-        /// Coefficients (used for filtering) will be cast to floats anyway,
-        /// but filter will store the reference to TransferFunction object for FDA.
-        /// 
+        /// Конструктор, принимающий передаточную функцию
         /// </summary>
         /// <param name="tf">Передаточная функция</param>
         public FirFilter(TransferFunction tf) : this(tf.Numerator.ToFloats())
@@ -160,7 +140,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// FIR online filtering (sample-by-sample)
+        /// КИХ-фильтрация (отсчет за отсчетом)
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
@@ -170,25 +150,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             float output = 0f;
 
-            for (int i = 0, j = _kernelSize - _delayLineOffset; i < _kernelSize; i++, j++)
-            {
-                output += _delayLine[i] * _b[j];
-            }
+            for (int i = 0, j = _kernelSize - _delayLineOffset; i < _kernelSize; i++, j++)  output += _delayLine[i] * _b[j];
 
-            if (--_delayLineOffset < 0)
-            {
-                _delayLineOffset = _kernelSize - 1;
-            }
+            if (--_delayLineOffset < 0) _delayLineOffset = _kernelSize - 1;
 
             return output;
         }
 
         /// <summary>
-        /// Process all signal samples in loop.
-        /// The Process() code is inlined in the loop for better performance
-        /// (especially for smaller kernels).
+        /// Обрабатывает все отсчеты сигнала в цикле. Код Process() встроен в цикл для повышения производительности (особенно для небольших ядер).
         /// </summary>
-        /// <param name="samples"></param>
+        /// <param name="samples">Отсчеты сигнала</param>
         /// <returns></returns>
         public float[] ProcessAllSamples(float[] samples)
         {
@@ -202,29 +174,22 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                 float output = 0f;
 
                 for (int i = 0, j = _kernelSize - _delayLineOffset; i < _kernelSize; i++, j++)
-                {
                     output += _delayLine[i] * _b[j];
-                }
 
                 if (--_delayLineOffset < 0)
-                {
                     _delayLineOffset = _kernelSize - 1;
-                }
 
                 filtered[k++] = output;
             }
 
             while (k < filtered.Length)
-            {
                 filtered[k++] = Process(0);
-            }
 
             return filtered;
         }
 
         /// <summary>
-        /// The most straightforward implementation of the difference equation:
-        /// code the difference equation as it is (it's slower than ProcessAllSamples)
+        /// Применить фильтр ко всему сигналу (офлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <returns></returns>
@@ -235,23 +200,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             float[] output = new float[input.Length + _kernelSize - 1];
 
             for (int n = 0; n < output.Length; n++)
-            {
                 for (int k = 0; k < _kernelSize; k++)
-                {
                     if (n >= k && n < input.Length + k)
-                    {
                         output[n] += _b[k] * input[n - k];
-                    }
-                }
-            }
 
             return new DiscreteSignal(signal.SamplingRate, output);
         }
 
         /// <summary>
-        /// Change filter kernel online
+        /// Изменить ядро фильтра
         /// </summary>
-        /// <param name="kernel">New kernel</param>
+        /// <param name="kernel">Новое ядро</param>
         public void ChangeKernel(float[] kernel)
         {
             if (kernel.Length == _kernelSize)

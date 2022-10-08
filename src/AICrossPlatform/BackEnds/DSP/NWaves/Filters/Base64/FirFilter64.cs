@@ -20,17 +20,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
 
         /// <summary>
         /// 
-        /// Numerator part coefficients in filter's Передаточная функция 
-        /// (non-recursive part in difference equations).
+        /// Числитель передаточной функции нерекурсивного фильтра
+        /// Этот массив создан из дублированного ядра фильтра:
         /// 
-        /// Note.
-        /// This array is created from duplicated filter kernel:
-        /// 
-        ///   kernel                _b
+        ///   Ядро                _b
         /// [1 2 3 4 5] -> [1 2 3 4 5 1 2 3 4 5]
         /// 
-        /// Such memory layout leads to significant speed-up of online filtering.
-        /// 
+        /// Такое расположение памяти приводит к значительному ускорению онлайн-фильтраци
         /// </summary>
         protected readonly double[] _b;
 
@@ -40,7 +36,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         protected int _kernelSize;
 
         /// <summary>
-        /// Передаточная функция (created lazily or set specifically if needed)
+        /// Передаточная функция (создается лениво или устанавливается специально, если нужно)
         /// </summary>
         protected TransferFunction _tf;
         /// <summary>
@@ -53,8 +49,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// If _kernelSize exceeds this value, 
-        /// the filtering code will always call Overlap-Save routine.
+        /// Если _kernelSize превышает это значение, код фильтрации всегда будет вызывать процедуру Overlap-Save.
         /// </summary>
         public int KernelSizeForBlockConvolution { get; set; } = 64;
 
@@ -69,7 +64,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         protected int _delayLineOffset;
 
         /// <summary>
-        /// Конструктор accepting the 64-bit kernel of a filter
+        /// Конструктор, прием 64-битного ядра фильтра
         /// </summary>
         /// <param name="kernel"></param>
         public FirFilter64(IEnumerable<double> kernel)
@@ -88,11 +83,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Конструктор accepting the Передаточная функция.
-        /// 
-        /// Coefficients (used for filtering) will be cast to doubles anyway,
-        /// but filter will store the reference to TransferFunction object for FDA.
-        /// 
+        /// Конструктор, принимающий передаточную функцию
         /// </summary>
         /// <param name="tf">Передаточная функция</param>
         public FirFilter64(TransferFunction tf) : this(tf.Numerator)
@@ -135,7 +126,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// FIR online filtering (sample-by-sample)
+        /// КИХ-фильтрация (отсчет за отсчетом)
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
@@ -159,11 +150,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Process all signal samples in loop.
-        /// The Process() code is inlined in the loop for better performance
-        /// (especially for smaller kernels).
+        /// Обрабатывает все отсчеты сигнала в цикле. Код Process() встроен в цикл для повышения производительности (особенно для небольших ядер).
         /// </summary>
-        /// <param name="samples"></param>
+        /// <param name="samples">Отсчеты сигнала</param>
         /// <returns></returns>
         public double[] ProcessAllSamples(double[] samples)
         {
@@ -198,9 +187,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Change filter kernel online
+        /// Изменить ядро фильтра
         /// </summary>
-        /// <param name="kernel">New kernel</param>
+        /// <param name="kernel">Новое ядро</param>
         public void ChangeKernel(double[] kernel)
         {
             if (kernel.Length == _kernelSize)

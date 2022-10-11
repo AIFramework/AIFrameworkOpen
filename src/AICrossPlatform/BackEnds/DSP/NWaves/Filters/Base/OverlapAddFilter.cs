@@ -25,12 +25,12 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
     public abstract class OverlapAddFilter : IFilter, IOnlineFilter, IMixable
     {
         /// <summary>
-        /// Wet mix
+        /// Влажная смесь
         /// </summary>
         public float Wet { get; set; } = 1f;
 
         /// <summary>
-        /// Dry mix
+        /// Сухая смесь
         /// </summary>
         public float Dry { get; set; } = 0f;
 
@@ -40,17 +40,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         protected readonly int _hopSize;
 
         /// <summary>
-        /// Size of FFT for analysis and synthesis
+        /// Размер блока БПФ для анализа и синтеза
         /// </summary>
         protected readonly int _fftSize;
 
         /// <summary>
-        /// ISTFT normalization gain
+        /// Коэффициент нормализации ISTFT
         /// </summary>
         protected float _gain;
 
         /// <summary>
-        /// Size of frame overlap
+        /// Размер перекрытия (в отсчетах)
         /// </summary>
         protected readonly int _overlapSize;
 
@@ -60,7 +60,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         protected readonly RealFft _fft;
 
         /// <summary>
-        /// Window coefficients
+        /// Весовое окно
         /// </summary>
         protected readonly float[] _window;
 
@@ -70,17 +70,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         private readonly float[] _dl;
 
         /// <summary>
-        /// Offset in the input Линия задержки
+        /// Смещение входа в линии задержки
         /// </summary>
         private int _inOffset;
 
         /// <summary>
-        /// Offset in the output buffer
+        /// Смещение в выходном буфере
         /// </summary>
         private int _outOffset;
 
         /// <summary>
-        /// Internal buffers
+        /// Внутренние буферы
         /// </summary>
         private readonly float[] _re;
         private readonly float[] _im;
@@ -90,7 +90,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
 
         /// <summary>
-        /// Constuctor
+        /// Конструктор
         /// </summary>
         /// <param name="hopSize"></param>
         /// <param name="fftSize"></param>
@@ -119,7 +119,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Online processing (sample after sample)
+        /// Онлайн-обработка
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
@@ -136,7 +136,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Process one frame (FFT block)
+        /// Обработка одного БПФ блока
         /// </summary>
         public virtual void ProcessFrame()
         {
@@ -162,7 +162,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             _filteredRe.FastCopyTo(_lastSaved, _overlapSize, _hopSize);
 
-            for (int i = 0; i < _filteredRe.Length; i++)  // Wet/Dry mix
+            for (int i = 0; i < _filteredRe.Length; i++)  // Wet/Сухая смесь
             {
                 _filteredRe[i] *= Wet * _gain;
                 _filteredRe[i] += _dl[i] * Dry;
@@ -175,17 +175,17 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Process one spectrum at each STFT step
+        /// Обработка одного спектра на каждом шаге STFT
         /// </summary>
-        /// <param name="re">Real parts of input spectrum</param>
-        /// <param name="im">Imaginary parts of input spectrum</param>
-        /// <param name="filteredRe">Real parts of output spectrum</param>
-        /// <param name="filteredIm">Imaginary parts of output spectrum</param>
+        /// <param name="re">Реальная часть спектра</param>
+        /// <param name="im">Мнимая часть входного спектра</param>
+        /// <param name="filteredRe">Реальная часть выходного спектра</param>
+        /// <param name="filteredIm">Мнимая часть выходного спектра</param>
         public abstract void ProcessSpectrum(float[] re, float[] im,
                                              float[] filteredRe, float[] filteredIm);
 
         /// <summary>
-        /// Перезапуск фильтра internals
+        /// Перезапуск фильтра 
         /// </summary>
         public virtual void Reset()
         {
@@ -201,7 +201,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Offline processing
+        /// Оффлайн обработка
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>

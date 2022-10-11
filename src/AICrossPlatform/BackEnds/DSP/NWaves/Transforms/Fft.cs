@@ -12,7 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     public class Fft
     {
         /// <summary>
-        /// The size of FFT
+        /// The Размер блока БПФ
         /// </summary>
         public int Size => _fftSize;
         private readonly int _fftSize;
@@ -38,9 +38,9 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly float[] _imagSpectrum;
 
         /// <summary>
-        /// Конструктор accepting the size of FFT
+        /// Конструктор accepting the Размер блока БПФ
         /// </summary>
-        /// <param name="fftSize">Size of FFT</param>
+        /// <param name="fftSize">Размер блока БПФ</param>
         public Fft(int fftSize = 512)
         {
             Guard.AgainstNotPowerOfTwo(fftSize, "FFT size");

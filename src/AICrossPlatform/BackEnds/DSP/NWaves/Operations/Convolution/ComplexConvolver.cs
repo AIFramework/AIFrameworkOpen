@@ -11,7 +11,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
     /// Class responsible for complex-valued convolution.
     /// 
     /// ComplexConvolver does not participate in heavy calculations,
-    /// so it does not contain internal buffers.
+    /// so it does not contain Внутренние буферы.
     /// 
     /// Memory is allocated for each operation ad-hoc.
     /// 

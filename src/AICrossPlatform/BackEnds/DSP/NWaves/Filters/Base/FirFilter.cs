@@ -101,7 +101,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Применить фильтр ко всему сигналу (офлайн)
+        /// Применить фильтр ко всему сигналу (оффлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -189,7 +189,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Применить фильтр ко всему сигналу (офлайн)
+        /// Применить фильтр ко всему сигналу (оффлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <returns></returns>

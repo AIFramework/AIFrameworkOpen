@@ -58,7 +58,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         }
 
         /// <summary>
-        /// Frequency modulation (FM)
+        /// Частота modulation (FM)
         /// </summary>
         /// <param name="baseband">Baseband signal</param>
         /// <param name="carrierAmplitude">Carrier amplitude</param>

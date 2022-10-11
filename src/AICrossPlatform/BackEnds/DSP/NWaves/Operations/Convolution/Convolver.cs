@@ -13,12 +13,12 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
     public class Convolver
     {
         /// <summary>
-        /// FFT size
+        /// Размер блока (число отсчетов) для преобразования Фурье
         /// </summary>
         private int _fftSize;
 
         /// <summary>
-        /// FFT transformer
+        /// Метод вычисления БПФ
         /// </summary>
         private RealFft _fft;
 
@@ -80,8 +80,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         /// <summary>
         /// Fast convolution via FFT for arrays of samples (maximally in-place).
         /// This version is best suited for block processing when memory needs to be reused.
-        /// Input arrays must have size equal to the size of FFT.
-        /// FFT size MUST be set properly in constructor!
+        /// Input arrays must have size equal to the Размер блока БПФ.
+        /// Размер блока (число отсчетов) для преобразования Фурье MUST be set properly in constructor!
         /// </summary>
         /// <param name="input">Real parts of the 1st signal (zero-padded)</param>
         /// <param name="kernel">Real parts of the 2nd signal (zero-padded)</param>
@@ -130,8 +130,8 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         /// <summary>
         /// Fast cross-correlation via FFT for arrays of samples (maximally in-place).
         /// This version is best suited for block processing when memory needs to be reused.
-        /// Input arrays must have size equal to the size of FFT.
-        /// FFT size MUST be set properly in constructor!
+        /// Input arrays must have size equal to the Размер блока БПФ.
+        /// Размер блока (число отсчетов) для преобразования Фурье MUST be set properly in constructor!
         /// </summary>
         /// <param name="input1">Real parts of the 1st signal (zero-padded)</param>
         /// <param name="input2">Real parts of the 2nd signal (zero-padded)</param>

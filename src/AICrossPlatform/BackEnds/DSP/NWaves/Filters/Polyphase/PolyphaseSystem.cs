@@ -6,16 +6,16 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
 {
     /// <summary>
-    /// System of polyphase filters
+    /// 
     /// </summary>
     [Serializable]
 
     public class PolyphaseSystem : IFilter, IOnlineFilter
     {
         /// <summary>
-        /// Polyphase filters with Передаточная функция E(z^k).
+        /// Полифазный фильтр с передаточной функцией E(z^k).
         /// 
-        /// Example:
+        /// Пример:
         /// h = [1, 2, 3, 4, 3, 2, 1],  k = 3
         /// 
         /// e0 = [1, 0, 0, 4, 0, 0, 1]
@@ -25,7 +25,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
         public FirFilter[] Filters { get; private set; }
 
         /// <summary>
-        /// Polyphase filters with Передаточная функция E(z) used for multi-rate processing.
+        /// Полифазный фильтр с передаточной функцией E(z) используется для многоскоростной обработки.
         /// 
         /// h = [1, 2, 3, 4, 3, 2, 1],  k = 3
         /// 
@@ -86,7 +86,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
         }
 
         /// <summary>
-        /// Polyphase decimation (for type-I systems)
+        /// Полифазная (многоскоростная) децимация
         /// </summary>
         /// <param name="signal"></param>
         /// <returns></returns>
@@ -187,7 +187,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Polyphase
         }
 
         /// <summary>
-        /// Offline processing
+        /// Оффлайн обработка
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method">Метод фильтрации</param>

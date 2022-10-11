@@ -25,7 +25,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
         }
 
         /// <summary>
-        /// Конструктор for user-defined TF
+        /// Конструктор использующий коэффициенты передаточной функции
         /// </summary>
         /// <param name="b0"></param>
         /// <param name="b1"></param>
@@ -40,7 +40,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
         }
 
         /// <summary>
-        /// Online filtering (sample-by-sample)
+        /// Онлайн-фильтрация (отсчет за отсчетом)
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>

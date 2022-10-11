@@ -3,14 +3,14 @@
 namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
 {
     /// <summary>
-    /// Class for one-pole low-pass filter
+    /// Класс для полюсно-нулевого фильтра нижних частот
     /// </summary>
     [Serializable]
 
     public class LowPassFilter : OnePoleFilter
     {
         /// <summary>
-        /// Frequency
+        /// Частота
         /// </summary>
         public double Freq { get; protected set; }
 
@@ -24,7 +24,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
         }
 
         /// <summary>
-        /// Set filter coefficients
+        /// Установить коэффициенты фильтра
         /// </summary>
         /// <param name="freq"></param>
         private void SetCoefficients(double freq)
@@ -38,7 +38,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
         }
 
         /// <summary>
-        /// Change filter parameters (preserving its state)
+        /// Изменить параметры фильтра (с сохранением его состояния)
         /// </summary>
         /// <param name="freq"></param>
         public void Change(double freq)

@@ -87,7 +87,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// TF constructor from state space
+        /// Передаточная функция из объекта StateSpace
         /// </summary>
         /// <param name="stateSpace"></param>
         public TransferFunction(StateSpace stateSpace)
@@ -137,7 +137,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Get state-space representation
+        /// Представление в виде StateSpace объекта
         /// </summary>
         /// <returns></returns>
         public StateSpace StateSpace
@@ -149,7 +149,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
                 if (M > K)
                 {
-                    throw new ArgumentException("Numerator size must not exceed denominator size");
+                    throw new ArgumentException("Размер числителя не должен превышать размер знаменателя");
                 }
 
                 double a0 = Denominator[0];    // normalize: all further results will be divided by a0

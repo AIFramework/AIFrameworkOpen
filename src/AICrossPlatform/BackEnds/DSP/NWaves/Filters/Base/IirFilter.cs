@@ -67,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         public int DefaultImpulseResponseLength { get; set; } = 512;
 
         /// <summary>
-        /// Internal buffers for Линия задержкиs
+        /// Внутренние буферы for Линия задержкиs
         /// </summary>
         protected float[] _delayLineA;
         /// <summary>
@@ -133,7 +133,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Применить фильтр ко всему сигналу (офлайн)
+        /// Применить фильтр ко всему сигналу (оффлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -200,7 +200,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Применить фильтр ко всему сигналу (офлайн)
+        /// Применить фильтр ко всему сигналу (оффлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <returns></returns>

@@ -6,20 +6,20 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
     /// <summary>
-    /// Wiener filter.
-    /// Implementation is identical to scipy.signal.wiener().
+    /// Фильтр Винера
+    /// Реализация идентична scipy.signal.wiener().
     /// </summary>
     [Serializable]
 
     public class WienerFilter : IFilter, IOnlineFilter
     {
         /// <summary>
-        /// Size of the Wiener filter
+        /// Размер фильтра Винера
         /// </summary>
         private readonly int _size;
 
         /// <summary>
-        /// Estimated noise power
+        /// Расчетная мощность шума
         /// </summary>
         private readonly double _noise;
 

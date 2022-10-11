@@ -5,13 +5,13 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
     /// <summary>
-    /// FFT transformer for real inputs
+    /// Метод вычисления БПФ for real inputs
     /// </summary>
     [Serializable]
     public class RealFft
     {
         /// <summary>
-        /// Size of FFT
+        /// Размер блока БПФ
         /// </summary>
         public int Size => _fftSize * 2;
 
@@ -36,7 +36,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly float[] _ar, _br, _ai, _bi;
 
         /// <summary>
-        /// Internal buffers
+        /// Внутренние буферы
         /// </summary>
         private readonly float[] _re;
         private readonly float[] _im;
@@ -49,7 +49,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="size"></param>
         public RealFft(int size)
         {
-            Guard.AgainstNotPowerOfTwo(size, "Size of FFT");
+            Guard.AgainstNotPowerOfTwo(size, "Размер блока БПФ");
 
             _fftSize = size / 2;
 

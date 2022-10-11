@@ -16,7 +16,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     public class MovingAverageFilter : FirFilter
     {
         /// <summary>
-        /// Size of the filter: number of samples for averaging
+        /// Размер фильтра: number of samples for averaging
         /// </summary>
         public int Size { get; }
 
@@ -30,7 +30,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Kernel generator
+        /// Генератор ядра
         /// </summary>
         /// <param name="size"></param>
         /// <returns></returns>

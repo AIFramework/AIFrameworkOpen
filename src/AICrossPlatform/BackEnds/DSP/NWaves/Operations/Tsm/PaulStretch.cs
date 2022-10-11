@@ -9,7 +9,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     internal class PaulStretch : PhaseVocoder
     {
         /// <summary>
-        /// Randomizer for phases
+        /// Рандомизатор для фаз
         /// </summary>
         private readonly Random _rand = new Random();
 

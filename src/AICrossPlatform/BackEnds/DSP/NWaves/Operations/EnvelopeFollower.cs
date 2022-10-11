@@ -78,7 +78,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         }
 
         /// <summary>
-        /// Envelope following is essentialy a low-pass filtering
+        /// Envelope following is essentialy a Фильтр нижних частот filtering
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>

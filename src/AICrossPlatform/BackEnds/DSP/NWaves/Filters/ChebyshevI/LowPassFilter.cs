@@ -6,7 +6,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevI
 {
     /// <summary>
-    /// Low-pass Chebyshev-I filter
+    /// Фильтр нижних частот Чебышёва первого рода
     /// </summary>
     [Serializable]
 

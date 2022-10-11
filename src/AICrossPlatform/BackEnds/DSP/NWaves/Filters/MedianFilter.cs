@@ -68,7 +68,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Online filtering (sample-by-sample)
+        /// Онлайн-фильтрация (отсчет за отсчетом)
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>

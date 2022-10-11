@@ -16,7 +16,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     public class Stft
     {
         /// <summary>
-        /// Size of FFT (in samples)
+        /// Размер блока БПФ (in samples)
         /// </summary>
         public int Size => _fftSize;
         private readonly int _fftSize;
@@ -47,7 +47,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly float[] _windowSamples;
 
         /// <summary>
-        /// ISTFT normalization gain
+        /// Коэффициент нормализации ISTFT
         /// </summary>
         private readonly float _gain;
 
@@ -57,7 +57,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="windowSize">Size of window</param>
         /// <param name="hopSize">Hop (overlap) size</param>
         /// <param name="window">Type of the Оконная функция to apply</param>
-        /// <param name="fftSize">Size of FFT</param>
+        /// <param name="fftSize">Размер блока БПФ</param>
         public Stft(int windowSize = 1024, int hopSize = 256, WindowTypes window = WindowTypes.Hann, int fftSize = 0)
         {
             _fftSize = fftSize >= windowSize ? fftSize : MathUtils.NextPowerOfTwo(windowSize);

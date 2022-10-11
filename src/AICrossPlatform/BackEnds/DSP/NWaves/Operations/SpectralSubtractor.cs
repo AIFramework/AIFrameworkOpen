@@ -42,7 +42,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// </summary>
         private readonly float[] _noiseEstimate;
 
-        // Internal buffers for noise estimation
+        // Внутренние буферы for noise estimation
 
         private readonly float[] _noiseBuf;
         private readonly float[] _noiseSpectrum;
@@ -76,12 +76,12 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         }
 
         /// <summary>
-        /// Process one spectrum at each STFT step
+        /// Обработка одного спектра на каждом шаге STFT
         /// </summary>
-        /// <param name="re">Real parts of input spectrum</param>
-        /// <param name="im">Imaginary parts of input spectrum</param>
-        /// <param name="filteredRe">Real parts of output spectrum</param>
-        /// <param name="filteredIm">Imaginary parts of output spectrum</param>
+        /// <param name="re">Реальная часть спектра</param>
+        /// <param name="im">Мнимая часть входного спектра</param>
+        /// <param name="filteredRe">Реальная часть выходного спектра</param>
+        /// <param name="filteredIm">Мнимая часть выходного спектра</param>
         public override void ProcessSpectrum(float[] re, float[] im,
                                              float[] filteredRe, float[] filteredIm)
         {

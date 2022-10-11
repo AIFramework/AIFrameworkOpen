@@ -6,7 +6,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
 {
     /// <summary>
-    /// Low-pass Bessel filter
+    /// Фильтр нижних частот Бесселя
     /// </summary>
     [Serializable]
     public class LowPassFilter : IirFilter64

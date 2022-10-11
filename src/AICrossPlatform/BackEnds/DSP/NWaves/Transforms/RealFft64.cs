@@ -12,7 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     public class RealFft64
     {
         /// <summary>
-        /// Size of FFT
+        /// Размер блока БПФ
         /// </summary>
         public int Size => _fftSize * 2;
 
@@ -37,7 +37,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         private readonly double[] _ar, _br, _ai, _bi;
 
         /// <summary>
-        /// Internal buffers
+        /// Внутренние буферы
         /// </summary>
         private readonly double[] _re;
         private readonly double[] _im;
@@ -48,7 +48,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="size"></param>
         public RealFft64(int size)
         {
-            Guard.AgainstNotPowerOfTwo(size, "Size of FFT");
+            Guard.AgainstNotPowerOfTwo(size, "Размер блока БПФ");
 
             _fftSize = size / 2;
 

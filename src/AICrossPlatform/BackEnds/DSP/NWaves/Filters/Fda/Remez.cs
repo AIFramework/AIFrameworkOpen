@@ -7,7 +7,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
     /// <summary>
     /// Optimal equiripple filter designer based on Remez (Parks-McClellan) algorithm.
     /// 
-    /// Example:
+    /// Пример:
     /// 
     ///     var order = 57;
     ///     var freqs = new double[] { 0, 0.15, 0.17, 0.5 };
@@ -116,7 +116,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="gridDensity"></param>
         public Remez(int order, double[] freqs, double[] desired, double[] weights, int gridDensity = 16)
         {
-            Guard.AgainstEvenNumber(order, "The order of the filter");
+            Guard.AgainstEvenNumber(order, "Порядок фильтра");
             Guard.AgainstIncorrectFilterParams(freqs, desired, weights);
 
             Order = order;

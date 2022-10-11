@@ -11,14 +11,14 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
     public class Goertzel
     {
         /// <summary>
-        /// Size of FFT
+        /// Размер блока БПФ
         /// </summary>
         private readonly int _fftSize;
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="fftSize">Size of FFT</param>
+        /// <param name="fftSize">Размер блока БПФ</param>
         public Goertzel(int fftSize)
         {
             _fftSize = fftSize;

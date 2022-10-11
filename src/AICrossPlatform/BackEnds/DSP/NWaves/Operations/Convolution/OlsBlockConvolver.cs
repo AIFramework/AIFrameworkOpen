@@ -16,32 +16,32 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
     public class OlsBlockConvolver : IFilter, IOnlineFilter
     {
         /// <summary>
-        /// Filter kernel
+        /// Ядро фильтра
         /// </summary>
         private readonly float[] _kernel;
 
         /// <summary>
-        /// FFT size (also the size of one analyzed chunk)
+        /// Размер блока (число отсчетов) для преобразования Фурье
         /// </summary>
         private readonly int _fftSize;
 
         /// <summary>
-        /// FFT transformer
+        /// Метод вычисления БПФ
         /// </summary>
         private readonly RealFft _fft;
 
         /// <summary>
-        /// Offset in the Линия задержки
+        /// Смещение в линии задержки
         /// </summary>
         private int _bufferOffset;
 
         /// <summary>
-        /// Offset in the Линия задержки
+        /// Смещение в линии задержки
         /// </summary>
         private int _outputBufferOffset;
 
         /// <summary>
-        /// internal buffers
+        /// Внутренние буферы
         /// </summary>
         private readonly float[] _kernelSpectrumRe;
         private readonly float[] _kernelSpectrumIm;
@@ -67,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             _fftSize = MathUtils.NextPowerOfTwo(fftSize);
 
-            Guard.AgainstExceedance(_kernel.Length, _fftSize, "Размер ядра", "the size of FFT");
+            Guard.AgainstExceedance(_kernel.Length, _fftSize, "Размер ядра", "the Размер блока БПФ");
 
             _fft = new RealFft(_fftSize);
 
@@ -106,7 +106,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         }
 
         /// <summary>
-        /// OLS online filtering (sample-by-sample)
+        /// OLS Онлайн-фильтрация (отсчет за отсчетом)
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>

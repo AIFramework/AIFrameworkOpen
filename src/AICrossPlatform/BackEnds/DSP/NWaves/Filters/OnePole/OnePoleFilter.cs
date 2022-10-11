@@ -4,7 +4,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
 {
     /// <summary>
-    /// One-Pole filter base class
+    /// Базовый класс полюсно-нулевых фильтров
     /// </summary>
     [Serializable]
 
@@ -32,7 +32,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.OnePole
         }
 
         /// <summary>
-        /// Online filtering (sample-by-sample)
+        /// Онлайн-фильтрация (отсчет за отсчетом)
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>

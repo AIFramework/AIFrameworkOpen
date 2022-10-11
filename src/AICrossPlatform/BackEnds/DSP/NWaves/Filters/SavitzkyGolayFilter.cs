@@ -19,7 +19,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="size">Size of the filter, window length (must be odd number)</param>
+        /// <param name="size">Размер фильтра, window length (must be odd number)</param>
         /// <param name="deriv"></param>
         public SavitzkyGolayFilter(int size, int deriv = 0) : base(MakeKernel(size, deriv))
         {
@@ -27,7 +27,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Kernel generator.
+        /// Генератор ядра.
         /// It simply gives coefficient from precomputed arrays
         /// </summary>
         /// <param name="size"></param>
@@ -125,7 +125,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
                                                    0.02214582,  0.01152796, -0.00010112, -0.01274143, -0.02639296, -0.04105572 };
                         break;
                     default:
-                        throw new ArgumentException("Size of the filter must be in range [5, 31]!");
+                        throw new ArgumentException("Размер фильтра must be in range [5, 31]!");
                 }
             }
             else if (deriv == 1)
@@ -221,7 +221,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
                                                  -0.00403226, -0.00443548, -0.00483871, -0.00524194, -0.00564516, -0.00604839 };
                         break;
                     default:
-                        throw new ArgumentException("Size of the filter must be in range [5, 31]!");
+                        throw new ArgumentException("Размер фильтра must be in range [5, 31]!");
                 }
             }
             else if (deriv == 2)
@@ -314,7 +314,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
                                                   1.12498736e-03,  1.46627566e-03,  1.83284457e-03 };
                         break;
                     default:
-                        throw new ArgumentException("Size of the filter must be in range [5, 31]!");
+                        throw new ArgumentException("Размер фильтра must be in range [5, 31]!");
                 }
             }
             else

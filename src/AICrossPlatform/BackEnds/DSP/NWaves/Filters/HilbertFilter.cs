@@ -12,7 +12,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     public class HilbertFilter : FirFilter
     {
         /// <summary>
-        /// Size of the filter
+        /// Размер фильтра
         /// </summary>
         public int Size { get; }
 
@@ -26,7 +26,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Kernel generator
+        /// Генератор ядра
         /// </summary>
         /// <param name="size"></param>
         /// <returns></returns>

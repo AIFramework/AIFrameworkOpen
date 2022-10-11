@@ -6,12 +6,12 @@
     public interface IMixable
     {
         /// <summary>
-        /// Wet mix
+        /// Влажная смесь
         /// </summary>
         float Wet { get; set; }
 
         /// <summary>
-        /// Dry mix
+        /// Сухая смесь
         /// </summary>
         float Dry { get; set; }
     }

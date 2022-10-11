@@ -7,7 +7,7 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
     /// <summary>
-    /// LTI filter based on state space representation
+    /// Фильтр LTI на основе представления пространства состояний
     /// </summary>
     [Serializable]
     public class ZiFilter : LtiFilter
@@ -48,7 +48,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Параметризованный конструктор (from arrays of 32-bit coefficients)
+        /// Параметризованный конструктор (На основе 32-битных коэффицентов)
         /// </summary>
         /// <param name="b">Коэф. в числителе передаточной функции</param>
         /// <param name="a">Коэф. в знаминателе передаточной функции</param>
@@ -76,11 +76,6 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
         /// <summary>
         /// Параметризованный конструктор (Массив 64х битных коэффициентов)
-        /// 
-        /// NOTE.
-        /// It will simply cast values to floats!
-        /// If you need to preserve precision for filter design  analysis, use constructor with TransferFunction!
-        /// 
         /// </summary>
         /// <param name="b">Коэф. в числителе передаточной функции</param>
         /// <param name="a">Коэф. в знаминателе передаточной функции</param>
@@ -107,7 +102,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Инициализация фильтра (cast double precision to single precision)
+        /// Инициализация фильтра (преобразует double в float)
         /// </summary>
         /// <param name="zi"></param>
         public virtual void Init(double[] zi)
@@ -116,7 +111,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Применить фильтр ко всему сигналу (офлайн)
+        /// Применить фильтр ко всему сигналу (оффлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -128,7 +123,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Фильтрация всего сигнала with initial conditions (for tests)
+        /// Фильтрация всего сигнала с начальным условием
         /// </summary>
         /// <param name="signal"></param>
         /// <returns></returns>

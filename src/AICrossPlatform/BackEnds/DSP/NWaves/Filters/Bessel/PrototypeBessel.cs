@@ -24,7 +24,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
         }
 
         /// <summary>
-        /// Analog poles of Bessel filter
+        /// Полюсы аналогового фильтра Бесселя
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>

@@ -40,14 +40,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                                                FilteringMethod method = FilteringMethod.Auto);
 
         /// <summary>
-        /// The online filtering algorithm should be implemented by particular subclass
+        /// The Онлайн-фильтрация algorithm should be implemented by particular subclass
         /// </summary>
         /// <param name="input">Входной отсчет</param>
         /// <returns>Выходной отсчет</returns>
         public abstract float Process(float input);
 
         /// <summary>
-        /// Перезапуск фильтра (clear all internal buffers)
+        /// Перезапуск фильтра (clear all Внутренние буферы)
         /// </summary>
         public abstract void Reset();
     }

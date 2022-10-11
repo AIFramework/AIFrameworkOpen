@@ -5,7 +5,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters
 {
     /// <summary>
-    /// Feedback comb filter:
+    /// Гребенчатый фильтр с обратной связью:
     /// 
     ///     y[n] = b0 * x[n] - am * y[n - m]
     /// 
@@ -15,14 +15,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     public class CombFeedbackFilter : IirFilter
     {
         /// <summary>
-        /// Delay (m)
+        /// Задержка на m шагов
         /// </summary>
         private readonly int _delay;
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="m">Delay</param>
+        /// <param name="m">Задержка</param>
         /// <param name="b0">Coefficient b0</param>
         /// <param name="am">Coefficient am</param>
         public CombFeedbackFilter(int m, double b0 = 1.0, double am = 0.6) : base(new float[1], new float[m + 1])
@@ -35,7 +35,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Online filtering (sample-by-sample)
+        /// Онлайн-фильтрация (отсчет за отсчетом)
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
@@ -57,7 +57,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Apply filter
+        /// Применить фильтр
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -89,7 +89,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Change coefficients (preserving the state)
+        /// Изменить состояние (сохранение состояния)
         /// </summary>
         /// <param name="b0"></param>
         /// <param name="am"></param>

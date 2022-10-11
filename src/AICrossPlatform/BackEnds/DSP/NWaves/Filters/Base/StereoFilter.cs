@@ -5,23 +5,23 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Filters.Base
 {
     /// <summary>
-    /// Filter for filtering data in interleaved stereo buffers
+    /// Фильтр для фильтрации данных в чередующихся стереофонических буферах
     /// </summary>
     [Serializable]
     public class StereoFilter : IFilter, IOnlineFilter
     {
         /// <summary>
-        /// Filter for signal in left channel
+        /// Фильтр для левого канала
         /// </summary>
         private readonly IOnlineFilter _filterLeft;
 
         /// <summary>
-        /// Filter for signal in right channel
+        /// Фильтр для правого канала
         /// </summary>
         private readonly IOnlineFilter _filterRight;
 
         /// <summary>
-        /// Internal flag for switching between left and right channels
+        /// Внутренний флаг для переключения между левым и правым каналами
         /// </summary>
         private bool _isRight;
 
@@ -37,7 +37,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         }
 
         /// <summary>
-        /// Online filtering
+        /// Онлайн-фильтрация
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>

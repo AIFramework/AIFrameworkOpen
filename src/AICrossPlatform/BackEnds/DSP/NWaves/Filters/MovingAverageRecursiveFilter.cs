@@ -20,7 +20,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     public class MovingAverageRecursiveFilter : IirFilter
     {
         /// <summary>
-        /// Size of the filter: number of samples for averaging
+        /// Размер фильтра: number of samples for averaging
         /// </summary>
         public int Size { get; }
 
@@ -54,7 +54,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Apply filter by fast recursive strategy
+        /// Применить фильтр by fast recursive strategy
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -91,7 +91,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Online filtering (sample-by-sample)
+        /// Онлайн-фильтрация (отсчет за отсчетом)
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>

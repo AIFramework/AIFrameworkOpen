@@ -35,7 +35,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <summary>
         /// Method returns universal triangular filterbank weights based on given frequencies.
         /// </summary>
-        /// <param name="fftSize">Assumed size of FFT</param>
+        /// <param name="fftSize">Assumed Размер блока БПФ</param>
         /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="frequencies">Array of frequency tuples (left, center, right) for each filter</param>
         /// <param name="vtln">VTLN frequency warper</param>
@@ -97,7 +97,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <summary>
         /// Method returns universal rectangular filterbank weights based on given frequencies.
         /// </summary>
-        /// <param name="fftSize">Assumed size of FFT</param>
+        /// <param name="fftSize">Assumed Размер блока БПФ</param>
         /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="frequencies">Array of frequency tuples (left, center, right) for each filter</param>
         /// <param name="vtln">VTLN frequency warper</param>
@@ -156,7 +156,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <summary>
         /// Method returns FIR bandpass (close to trapezoidal) filterbank based on given frequencies.
         /// </summary>
-        /// <param name="fftSize">Assumed size of FFT</param>
+        /// <param name="fftSize">Assumed Размер блока БПФ</param>
         /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="frequencies">Array of frequency tuples (left, center, right) for each filter</param>
         /// <param name="vtln">VTLN frequency warper</param>
@@ -198,7 +198,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <summary>
         /// Method returns BiQuad bandpass overlapping filters based on given frequencies.
         /// </summary>
-        /// <param name="fftSize">Assumed size of FFT</param>
+        /// <param name="fftSize">Assumed Размер блока БПФ</param>
         /// <param name="samplingRate">Assumed Частота дискретизации of a signal</param>
         /// <param name="frequencies">Array of frequency tuples (left, center, right) for each filter</param>
         /// <returns>Array of BiQuad bandpass filters</returns>
@@ -486,7 +486,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method creates overlapping triangular mel filters (as suggested by Malcolm Slaney).
         /// </summary>
         /// <param name="filterCount">Number of mel filters</param>
-        /// <param name="fftSize">Assumed size of FFT</param>
+        /// <param name="fftSize">Assumed Размер блока БПФ</param>
         /// <param name="samplingRate">Assumed Частота дискретизации</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>
@@ -573,7 +573,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// Method creates overlapping ERB filters (ported from Malcolm Slaney's MATLAB code).
         /// </summary>
         /// <param name="erbFilterCount">Number of ERB filters</param>
-        /// <param name="fftSize">Assumed size of FFT</param>
+        /// <param name="fftSize">Assumed Размер блока БПФ</param>
         /// <param name="samplingRate">Assumed Частота дискретизации</param>
         /// <param name="lowFreq">Lower bound of the frequency range</param>
         /// <param name="highFreq">Upper bound of the frequency range</param>

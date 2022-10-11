@@ -19,7 +19,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         private const int MinResamplingFilterOrder = 101;
 
         /// <summary>
-        /// Interpolation followed by low-pass filtering
+        /// Interpolation followed by Фильтр нижних частот filtering
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="factor"></param>
@@ -56,7 +56,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         }
 
         /// <summary>
-        /// Decimation preceded by low-pass filtering
+        /// Decimation preceded by Фильтр нижних частот filtering
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="factor"></param>

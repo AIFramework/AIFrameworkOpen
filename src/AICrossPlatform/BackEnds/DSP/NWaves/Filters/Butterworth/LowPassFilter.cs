@@ -6,7 +6,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.Butterworth
 {
     /// <summary>
-    /// Class for Butterworth IIR LP filter.
+    /// Фильтр Баттервордта нижних частот
     /// </summary>
     [Serializable]
     public class LowPassFilter : IirFilter64

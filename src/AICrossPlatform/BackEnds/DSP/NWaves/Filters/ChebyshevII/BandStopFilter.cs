@@ -6,7 +6,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
 {
     /// <summary>
-    /// Band-stop Chebyshev-II filter
+    /// Полосно заграждающий (режекторный) фильтр Чебышёва второго рода
     /// </summary>
     [Serializable]
 

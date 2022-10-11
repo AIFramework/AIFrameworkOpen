@@ -24,7 +24,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         public int Size { get; }
 
         /// <summary>
-        /// FFT transformer
+        /// Метод вычисления БПФ
         /// </summary>
         private readonly Fft _fft;
 

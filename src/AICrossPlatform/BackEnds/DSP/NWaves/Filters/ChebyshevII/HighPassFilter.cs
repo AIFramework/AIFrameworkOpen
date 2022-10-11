@@ -6,7 +6,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.ChebyshevII
 {
     /// <summary>
-    /// High-pass Chebyshev-II filter
+    /// Фильтр верхних частот Чебышёва второго рода
     /// </summary>
     [Serializable]
 

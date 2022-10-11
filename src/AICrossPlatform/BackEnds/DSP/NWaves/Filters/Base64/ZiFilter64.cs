@@ -94,7 +94,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         }
 
         /// <summary>
-        /// Применить фильтр ко всему сигналу (офлайн)
+        /// Применить фильтр ко всему сигналу (оффлайн)
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>

@@ -3,20 +3,20 @@
 namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
 {
     /// <summary>
-    /// BiQuad LP filter.
-    /// The Коэффициенты "A"re calculated automatically according to 
+    /// Биквадратный фильтр нижних частот
+    /// The coef "A"re calculated automatically according to 
     /// audio-eq-cookbook by R.Bristow-Johnson and WebAudio API.
     /// </summary>
     [Serializable]
     public class LowPassFilter : BiQuadFilter
     {
         /// <summary>
-        /// Frequency
+        /// Частота
         /// </summary>
         public double Freq { get; protected set; }
 
         /// <summary>
-        /// Q
+        /// Добротность
         /// </summary>
         public double Q { get; protected set; }
 
@@ -31,7 +31,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
         }
 
         /// <summary>
-        /// Set filter coefficients
+        /// Установить коэффициенты фильтра
         /// </summary>
         /// <param name="freq"></param>
         /// <param name="q"></param>
@@ -56,7 +56,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.BiQuad
         }
 
         /// <summary>
-        /// Change filter parameters (preserving its state)
+        /// Изменить параметры фильтра (с сохранением его состояния)
         /// </summary>
         /// <param name="freq"></param>
         /// <param name="q"></param>

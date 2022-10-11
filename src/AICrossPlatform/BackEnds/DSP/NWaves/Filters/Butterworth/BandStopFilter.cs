@@ -6,7 +6,7 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Filters.Butterworth
 {
     /// <summary>
-    /// Class for Butterworth IIR BS filter.
+    /// Режекторный фильтр Баттервордта
     /// </summary>
     [Serializable]
     public class BandStopFilter : IirFilter64

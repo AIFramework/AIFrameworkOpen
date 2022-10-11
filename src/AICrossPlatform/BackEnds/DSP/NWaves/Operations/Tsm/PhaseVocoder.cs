@@ -9,7 +9,7 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 {
     /// <summary>
-    /// Conventional Phase Vocoder
+    /// Обычный фазовый вокодер
     /// </summary>
     [Serializable]
     public class PhaseVocoder : IFilter
@@ -25,7 +25,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         protected readonly int _hopSynthesis;
 
         /// <summary>
-        /// Size of FFT for analysis and synthesis
+        /// Размер блока БПФ для анализа и синтеза
         /// </summary>
         protected readonly int _fftSize;
 
@@ -40,17 +40,17 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         protected readonly RealFft _fft;
 
         /// <summary>
-        /// Window coefficients
+        ///Весовое окно
         /// </summary>
         protected readonly float[] _window;
 
         /// <summary>
-        /// ISTFT normalization gain
+        /// Коэффициент нормализации ISTFT
         /// </summary>
         protected readonly float _gain;
 
         /// <summary>
-        /// Linearly spaced frequencies
+        /// Линейно разнесенные частоты
         /// </summary>
         protected readonly double[] _omega;
 
@@ -60,17 +60,17 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         protected readonly float[] _re;
 
         /// <summary>
-        /// Internal buffer for imaginary parts of analyzed block
+        /// Внутренний буфер для мнимых частей анализируемого блока
         /// </summary>
         protected readonly float[] _im;
 
         /// <summary>
-        /// Array of phases computed at previous step
+        /// Массив фаз, вычисленный на предыдущем шаге
         /// </summary>
         protected readonly double[] _prevPhase;
 
         /// <summary>
-        /// Array of new synthesized phases
+        /// Массив новых синтезированных фаз
         /// </summary>
         protected readonly double[] _phaseTotal;
 
@@ -156,8 +156,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         }
 
         /// <summary>
-        /// Process one spectrum at each STFT step.
-        /// This routine is different for different PV-based techniques.
+        /// Обработка одного спектра на каждом шаге STFT.
         /// </summary>
         public virtual void ProcessSpectrum()
         {

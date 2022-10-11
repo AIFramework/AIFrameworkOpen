@@ -15,14 +15,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters
     public class CombFeedforwardFilter : FirFilter
     {
         /// <summary>
-        /// Delay (m)
+        /// Задержка на m шагов
         /// </summary>
         private readonly int _delay;
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="m">Delay</param>
+        /// <param name="m">Задержка</param>
         /// <param name="b0">Coefficient b0</param>
         /// <param name="bm">Coefficient bm</param>
         /// <param name="normalize"></param>
@@ -33,9 +33,9 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Kernel generator
+        /// Генератор ядра
         /// </summary>
-        /// <param name="m">Delay</param>
+        /// <param name="m">Задержка</param>
         /// <param name="b0">Coefficient b0</param>
         /// <param name="bm">Coefficient bm</param>
         /// <param name="normalize"></param>
@@ -56,7 +56,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Online filtering (sample-by-sample)
+        /// Онлайн-фильтрация (отсчет за отсчетом)
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
@@ -78,7 +78,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Apply filter
+        /// Применить фильтр
         /// </summary>
         /// <param name="signal"></param>
         /// <param name="method"></param>
@@ -116,7 +116,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         }
 
         /// <summary>
-        /// Change coefficients (preserving the state)
+        /// Изменить состояние (сохранение состояния)
         /// </summary>
         /// <param name="b0"></param>
         /// <param name="bm"></param>

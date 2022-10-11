@@ -11,14 +11,14 @@ using System.Numerics;
 namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 {
     /// <summary>
-    /// Static class providing basic methods for filter design  analysis
+    /// Статический класс, предоставляющий основные методы для анализа и проектирования фильтров.
     /// </summary>
     [Serializable]
 
     public static class DesignFilter
     {
         /// <summary>
-        /// Method for ideal lowpass FIR filter design using sinc-window method
+        /// Метод создания идеального КИХ-фильтра нижних частот с использованием метода весового окна с функцией sin(x)/x
         /// </summary>
         /// <param name="order"></param>
         /// <param name="freq"></param>
@@ -26,7 +26,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns></returns>
         public static double[] FirWinLp(int order, double freq, WindowTypes window = WindowTypes.Blackman)
         {
-            Guard.AgainstEvenNumber(order, "The order of the filter");
+            Guard.AgainstEvenNumber(order, "Порядок фильтра");
 
             double[] kernel = new double[order];
 
@@ -46,7 +46,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         }
 
         /// <summary>
-        /// Method for ideal highpass FIR filter design using sinc-window method
+        /// Метод создания идеального КИХ-фильтра верхних частот с использованием метода весового окна с функцией sin(x)/x
         /// </summary>
         /// <param name="order"></param>
         /// <param name="freq"></param>
@@ -54,7 +54,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns></returns>
         public static double[] FirWinHp(int order, double freq, WindowTypes window = WindowTypes.Blackman)
         {
-            Guard.AgainstEvenNumber(order, "The order of the filter");
+            Guard.AgainstEvenNumber(order, "Порядок фильтра");
 
             double[] kernel = new double[order];
 
@@ -74,7 +74,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         }
 
         /// <summary>
-        /// Method for ideal bandpass FIR filter design using sinc-window method
+        /// Метод создания идеального полосового КИХ-фильтра с использованием метода весового окна с функцией sin(x)/x
         /// </summary>
         /// <param name="order"></param>
         /// <param name="freq1"></param>
@@ -83,8 +83,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns></returns>
         public static double[] FirWinBp(int order, double freq1, double freq2, WindowTypes window = WindowTypes.Blackman)
         {
-            Guard.AgainstEvenNumber(order, "The order of the filter");
-            Guard.AgainstInvalidRange(freq1, freq2, "lower frequency", "upper frequency");
+            Guard.AgainstEvenNumber(order, "Порядок фильтра");
+            Guard.AgainstInvalidRange(freq1, freq2, "нижняя частота", "верхняя частота");
 
             double[] kernel = new double[order];
 
@@ -105,7 +105,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         }
 
         /// <summary>
-        /// Method for ideal bandstop FIR filter design using sinc-window method
+        /// Метод создания идеального режекторного КИХ-фильтра с использованием метода весового окна с функцией sin(x)/x
         /// </summary>
         /// <param name="order"></param>
         /// <param name="freq1"></param>
@@ -114,8 +114,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns></returns>
         public static double[] FirWinBs(int order, double freq1, double freq2, WindowTypes window = WindowTypes.Blackman)
         {
-            Guard.AgainstEvenNumber(order, "The order of the filter");
-            Guard.AgainstInvalidRange(freq1, freq2, "lower frequency", "upper frequency");
+            Guard.AgainstEvenNumber(order, "Порядок фильтра");
+            Guard.AgainstInvalidRange(freq1, freq2, "нижняя частота", "верхняя частота");
 
             double[] kernel = new double[order];
 
@@ -210,7 +210,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                                    double[] phaseResponse = null,
                                    WindowTypes window = WindowTypes.Blackman)
         {
-            Guard.AgainstEvenNumber(order, "The order of the filter");
+            Guard.AgainstEvenNumber(order, "Порядок фильтра");
 
             int fftSize = MathUtils.NextPowerOfTwo(magnitudeResponse.Length);
 
@@ -265,7 +265,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                                    float[] phaseResponse = null,
                                    WindowTypes window = WindowTypes.Blackman)
         {
-            Guard.AgainstEvenNumber(order, "The order of the filter");
+            Guard.AgainstEvenNumber(order, "Порядок фильтра");
 
             int fftSize = MathUtils.NextPowerOfTwo(magnitudeResponse.Length);
 
@@ -305,7 +305,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns></returns>
         public static double[] FirLpToHp(double[] kernel)
         {
-            Guard.AgainstEvenNumber(kernel.Length, "The order of the filter");
+            Guard.AgainstEvenNumber(kernel.Length, "Порядок фильтра");
 
             double[] kernelHp = kernel.Select(k => -k).ToArray();
             kernelHp[kernelHp.Length / 2] += 1.0;
@@ -352,7 +352,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
 
         /// <summary>
-        /// Design TF for low-pass pole filter
+        /// Design TF for Фильтр нижних частот pole filter
         /// </summary>
         /// <param name="freq">Cutoff frequency in range [0, 0.5]</param>
         /// <param name="poles">Analog prototype poles</param>
@@ -418,7 +418,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         }
 
         /// <summary>
-        /// Design TF for high-pass pole filter
+        /// Design TF for фильтр нижних частот pole filter
         /// </summary>
         /// <param name="freq">Cutoff frequency in range [0, 0.5]</param>
         /// <param name="poles">Analog prototype poles</param>
@@ -492,7 +492,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns>Передаточная функция</returns>
         public static TransferFunction IirBpTf(double freq1, double freq2, Complex[] poles, Complex[] zeros = null)
         {
-            Guard.AgainstInvalidRange(freq1, freq2, "lower frequency", "upper frequency");
+            Guard.AgainstInvalidRange(freq1, freq2, "нижняя частота", "верхняя частота");
 
             double[] pre = new double[poles.Length * 2];
             double[] pim = new double[poles.Length * 2];
@@ -582,7 +582,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <returns>Передаточная функция</returns>
         public static TransferFunction IirBsTf(double freq1, double freq2, Complex[] poles, Complex[] zeros = null)
         {
-            Guard.AgainstInvalidRange(freq1, freq2, "lower frequency", "upper frequency");
+            Guard.AgainstInvalidRange(freq1, freq2, "нижняя частота", "верхняя частота");
 
             // Calculation of filter coefficients is based on Neil Robertson's post:
             // https://www.dsprelated.com/showarticle/1131.php

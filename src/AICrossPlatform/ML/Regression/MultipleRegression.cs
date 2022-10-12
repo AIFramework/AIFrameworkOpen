@@ -123,6 +123,8 @@ namespace AI.ML.Regression
         /// <returns>Выход</returns>
         public double Predict(Vector vect)
         {
+            if (_param == null) return 0;
+
             Vector inp = vect.AddOne();
             inp -= mean;
             inp /= std;
@@ -134,15 +136,13 @@ namespace AI.ML.Regression
         /// Прогноз
         /// </summary>
         /// <param name="inp">Вектора входа</param>
-        /// <returns>Output vector</returns>
+        /// <returns>Вектор выхода</returns>
         public Vector Predict(Vector[] inp)
         {
             Vector outp = new Vector(inp.Length);
 
             for (int i = 0; i < inp.Length; i++)
-            {
                 outp[i] = Predict(inp[i]);
-            }
 
             return outp;
         }
@@ -169,9 +169,9 @@ namespace AI.ML.Regression
         }
 
         /// <summary>
-        /// Загрузка the model
+        /// Загрузка модели
         /// </summary>
-        /// <param name="path">The path to the file</param>
+        /// <param name="path">Путь до файла</param>
         public void LoadModel(string path)
         {
             try
@@ -202,6 +202,50 @@ namespace AI.ML.Regression
         /// <param name="targets">Целевые выходы</param>
         public void Train(Vector[] data, Vector targets)
         {
+            DataPrepaire(data, targets);
+            GenA();
+            GenB();
+            GenParam();
+        }
+
+        /// <summary>
+        /// Обучение градиентным спуском (Эластик)
+        /// </summary>
+        public void TrainGrad(Vector[] data, Vector targets, double epoch, double lr, double l1, double l2) 
+        {
+            DataPrepaire(data, targets);
+
+            if (_param == null)
+                _param = new Vector(m);
+
+            if (_param.Count != m)
+                _param = new Vector(m);
+
+            Vector dif = new Vector(m);
+
+            // Обучение град. спуском
+            for (int i = 0; i < epoch; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    double pred = AnalyticGeometryFunctions.Dot(_x[j], _param);
+                    double delta = pred - _y[j];
+
+                    for (int k = 0; k < m; k++)
+                        dif[k] += data[j][k]*delta + l1 + l2 * _param[k]; // Вычисление производной
+                }
+
+                _param -= lr * dif;
+            }
+        }
+
+        /// <summary>
+        /// Пред. обработка
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="targets"></param>
+        private void DataPrepaire(Vector[] data, Vector targets) 
+        {
             n = data.Length;
             m = data[0].Count + 1;
 
@@ -220,21 +264,14 @@ namespace AI.ML.Regression
                 _x = new Vector[n];
 
                 for (int i = 0; i < n; i++)
-                {
                     _x[i] = data[i].Clone();
-                }
             }
 
             // append one to feaures
             for (int i = 0; i < n; i++)
-            {
                 _x[i] = _x[i].AddOne();
-            }
 
             _y = targets;
-            GenA();
-            GenB();
-            GenParam();
         }
     }
 }

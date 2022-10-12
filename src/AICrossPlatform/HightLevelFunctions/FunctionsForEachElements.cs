@@ -281,7 +281,7 @@ namespace AI.HightLevelFunctions
         /// </summary>
         /// <param name="Inp">Вектор входных данных</param>
         /// <param name="digits">до какого знака</param>
-        /// <returns>Output vector</returns>
+        /// <returns>Вектор выхода</returns>
         public static Vector Round(Vector Inp, int digits)
         {
             Vector A = new Vector(Inp.Count);

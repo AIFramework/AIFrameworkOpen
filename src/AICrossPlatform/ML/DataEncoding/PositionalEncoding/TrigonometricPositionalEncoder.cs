@@ -10,7 +10,7 @@ namespace AI.ML.DataEncoding.PositionalEncoding
     public class TrigonometricPositionalEncoder : IPositionEncoding
     {
         /// <summary>
-        /// Output vector dimension
+        /// Вектор выхода dimension
         /// </summary>
         public int Dim { get; set; }
 
@@ -20,7 +20,7 @@ namespace AI.ML.DataEncoding.PositionalEncoding
         /// <summary>
         /// Position (index) coding based on orthogonal trigonometric functions
         /// </summary>
-        /// <param name="dim">Output vector dimension</param>
+        /// <param name="dim">Вектор выхода dimension</param>
         public TrigonometricPositionalEncoder(int dim = 512)
         {
             if (dim % 2 == 1)

@@ -65,7 +65,7 @@ namespace AI.ML.Genetic.GeneticCore
         /// <param name="countParam">Number of parameters</param>
         /// <param name="function">Utility function</param>
         /// <param name="inp">Вектор входаs</param>
-        /// <param name="outp">Output vectors</param>
+        /// <param name="outp">Вектор выходаs</param>
         /// <param name="valDown">Search lower bound</param>
         /// <param name="valUp">Search upper bound</param>
         public Population(int countCell, int countParam, Func<Vector, Vector, Vector> function, Vector[] inp, Vector[] outp, double valDown = -10, double valUp = 10)
@@ -95,7 +95,7 @@ namespace AI.ML.Genetic.GeneticCore
         /// <param name="countParam">Number of parameters</param>
         /// <param name="function">Utility function</param>
         /// <param name="inp">Вектор входных данных</param>
-        /// <param name="outp">Output vector</param>
+        /// <param name="outp">Вектор выхода</param>
         /// <param name="valDown">Search lower bound</param>
         /// <param name="valUp">Search upper bound</param>
         public Population(int countCell, int countParam, Func<Vector, Vector, Vector> function, Vector inp, Vector outp, double valDown = -10, double valUp = 10)

@@ -10,8 +10,14 @@ namespace AI.ML.SeqPredict
     [Serializable]
     public class SeqPrediction : ISeqPredict
     {
-        private readonly IRegression regressor;
-        private readonly int window;
+        /// <summary>
+        /// Регрессионный алгоритм
+        /// </summary>
+        protected IRegression regressor;
+        /// <summary>
+        /// Размер окна
+        /// </summary>
+        protected int window;
 
         /// <summary>
         /// Прогнозирование последовательности
@@ -25,6 +31,11 @@ namespace AI.ML.SeqPredict
         }
 
         /// <summary>
+        /// Прогнозирование последовательности
+        /// </summary>
+        public SeqPrediction() { }
+
+        /// <summary>
         /// Обучение модели
         /// </summary>
         /// <param name="data">Последовательность</param>
@@ -34,9 +45,7 @@ namespace AI.ML.SeqPredict
             Vector Y = new Vector(seq.Count - window);
 
             for (int i = window; i < seq.Count; i++)
-            {
                 Y[i - window] = seq[i];
-            }
 
             Vector[] X = Vector.GetWindows(seq, window, 1);
             regressor.Train(X, Y);

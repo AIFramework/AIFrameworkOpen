@@ -28,7 +28,7 @@ namespace AI.NLP
         /// </summary>
         public string[] Separaters { get; set; }
         /// <summary>
-        /// Output vector dimention
+        /// Вектор выхода dimention
         /// </summary>
         public int Count { get; set; } = 50;
         /// <summary>

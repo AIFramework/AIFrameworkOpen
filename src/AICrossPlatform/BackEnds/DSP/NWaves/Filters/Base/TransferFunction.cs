@@ -264,7 +264,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
 
         /// <summary>
-        /// Evaluate impulse response
+        /// Evaluate Импульсивный ответ
         /// </summary>
         /// <param name="length">Ignored for FIR filters (where IR is full copy of numerator)</param>
         /// <returns></returns>
@@ -449,7 +449,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <summary>
         /// Конвертирование передаточной функции в полюсно-нулевую
         /// </summary>
-        /// <param name="tf">Передаточная ф-я</param>
+        /// <param name="tf">Передаточная функция</param>
         /// <param name="maxIterations">Максимальное число итераций</param>
         /// <returns></returns>
         public static ComplexDiscreteSignal TfToZp(double[] tf, int maxIterations = MathUtils.PolyRootsIterations)

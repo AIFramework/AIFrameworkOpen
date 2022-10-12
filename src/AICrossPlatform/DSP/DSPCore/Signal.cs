@@ -14,11 +14,10 @@ using System;
 namespace AI.DSP.DSPCore
 {
     /// <summary>
-    /// Description of Signal.
+    /// Реализация сигналов
     /// </summary>
     public static class Signal
     {
-
         #region Синус
         /// <summary>
         /// Синусоидальные колебания
@@ -147,7 +146,6 @@ namespace AI.DSP.DSPCore
         }
         #endregion
 
-
         #region Прямоугольный
 
         /// <summary>
@@ -272,11 +270,11 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="t">Вектор времени</param>
         /// <param name="A">Амплитуда</param>
-        /// <param name="f1">Carrier frequency</param>
+        /// <param name="f1">Несущая частота</param>
         /// <param name="fi1">Фаза модулирующего сигала</param>
         /// <param name="f2">Частота модулятора</param>
         /// <param name="fi2">Фаза модулируемого сигала</param>
-        /// <param name="k">Modulation rate</param>
+        /// <param name="k">Коэф. модуляции</param>
         /// <returns>Вектор отсчетов</returns>
         public static Vector AmkRect(Vector t, double A, double f1, double fi1, double f2, double fi2, double k)
         {
@@ -289,10 +287,10 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="t">Вектор времени</param>
         /// <param name="A">Амплитуда</param>
-        /// <param name="f1">Carrier frequency</param>
+        /// <param name="f1">Несущая частота</param>
         /// <param name="f2">Частота модулятора</param>
         /// <param name="fi2">Фаза модулируемого сигала</param>
-        /// <param name="k">Modulation rate</param>
+        /// <param name="k">Коэф. модуляции</param>
         /// <returns>Вектор отсчетов</returns>
         public static Vector AmkRect(Vector t, double A, double f1, double f2, double fi2, double k)
         {
@@ -305,9 +303,9 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="t">Вектор времени</param>
         /// <param name="A">Амплитуда</param>
-        /// <param name="f1">Carrier frequency</param>
+        /// <param name="f1">Несущая частота</param>
         /// <param name="f2">Частота модулятора</param>
-        /// <param name="k">Modulation rate</param>
+        /// <param name="k">Коэф. модуляции</param>
         /// <returns>Вектор отсчетов</returns>
         public static Vector AmkRect(Vector t, double A, double f1, double f2, double k)
         {
@@ -319,9 +317,9 @@ namespace AI.DSP.DSPCore
         /// Амплитудно-модулированые колебания (прямоугольное модулирующее колебание)
         /// </summary>
         /// <param name="t">Вектор времени</param>
-        /// <param name="f1">Carrier frequency</param>
+        /// <param name="f1">Несущая частота</param>
         /// <param name="f2">Частота модулятора</param>
-        /// <param name="k">Modulation rate</param>
+        /// <param name="k">Коэф. модуляции</param>
         /// <returns>Вектор отсчетов</returns>
         public static Vector AmkRectK(Vector t, double f1, double f2, double k)
         {
@@ -334,7 +332,7 @@ namespace AI.DSP.DSPCore
         /// </summary>
         /// <param name="t">Вектор времени</param>
         /// <param name="A">Амплитуда</param>
-        /// <param name="f1">Carrier frequency</param>
+        /// <param name="f1">Несущая частота</param>
         /// <param name="f2">Частота модулятора</param>
         /// <returns>Вектор отсчетов</returns>
         public static Vector AmkRectA(Vector t, double A, double f1, double f2)
@@ -387,11 +385,6 @@ namespace AI.DSP.DSPCore
         }
 
 
-
-
-
-
-
         /// <summary>
         /// Пачка ЛЧМ
         /// </summary>
@@ -405,10 +398,7 @@ namespace AI.DSP.DSPCore
             Vector[] v = new Vector[(int)((f * time) + 0.99)];
             Vector v1 = OneLFM(f, f0, fd);
 
-            for (int i = 0; i < v.Length; i++)
-            {
-                v[i] = v1;
-            }
+            for (int i = 0; i < v.Length; i++)  v[i] = v1;
 
             return Vector.Concat(v);
         }
@@ -422,14 +412,12 @@ namespace AI.DSP.DSPCore
 
             for (int i = 0; i < t.Count; i++)
             {
-
                 arg = 2 * Math.PI * ((f0 * t[i]) + (f0 * f * t[i] * t[i]));
                 outp[i] = Math.Cos(arg);
             }
 
             return outp;
         }
-
 
         /// <summary>
         /// ЛЧМ
@@ -447,13 +435,13 @@ namespace AI.DSP.DSPCore
 
             for (int i = 0; i < t.Count; i++)
             {
-
                 arg = 2 * Math.PI * ((f0 * t[i]) + (df / time * t[i] * t[i]));
                 outp[i] = Math.Cos(arg);
             }
 
             return outp;
         }
+
         /// <summary>
         /// Передискретизация сигнала
         /// (повышение частоты дискретизации в целое число раз)
@@ -473,26 +461,18 @@ namespace AI.DSP.DSPCore
             int end = inp.Count / 2;
 
             for (; i < end; i++)
-            {
                 cV[i] = inputSpectr[i];
-            }
 
             end = lenFull - (inp.Count / 2);
 
             for (; i < end; i++)
-            {
                 cV[i] = new System.Numerics.Complex(0, 0);
-            }
 
             for (int j = inp.Count / 2; i < lenFull; i++)
-            {
                 cV[i] = inputSpectr[j];
-            }
-
-
+            
             return FFT.CalcIFFT(cV).RealVector;
         }
-
 
         /// <summary>
         /// Норма сигнала
@@ -506,9 +486,6 @@ namespace AI.DSP.DSPCore
             return Math.Sqrt(norm);
         }
         #endregion
-
-
-
     }
 
 

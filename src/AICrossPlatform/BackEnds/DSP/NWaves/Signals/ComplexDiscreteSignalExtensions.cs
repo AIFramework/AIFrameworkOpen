@@ -184,7 +184,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Method creates new zero-padded complex discrete signal from the current signal.
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <param name="newLength">The length of a zero-padded signal.
         /// By default array is zero-padded to have length of next power of 2.</param>
         /// <returns>Zero padded complex discrete signal</returns>

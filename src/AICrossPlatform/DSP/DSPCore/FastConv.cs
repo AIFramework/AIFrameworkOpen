@@ -20,7 +20,7 @@ namespace AI.DSP.DSPCore
         /// Быстрая свертка
         /// </summary>
         /// <param name="signal">Сигнал</param>
-        /// <param name="ht">Impulse response</param>
+        /// <param name="ht">Импульсивный ответ</param>
         /// <returns></returns>
         public static Vector FastConvolution(Vector signal, Vector ht)
         {
@@ -40,7 +40,7 @@ namespace AI.DSP.DSPCore
         /// Быстрая свертка
         /// </summary>
         /// <param name="signal">Сигнал</param>
-        /// <param name="ht">Impulse response</param>
+        /// <param name="ht">Импульсивный ответ</param>
         /// <param name="fd">Частота дискретизации</param>
         /// <returns></returns>
         public static Vector FastConvolution(Vector signal, Vector ht, double fd)
@@ -62,7 +62,7 @@ namespace AI.DSP.DSPCore
         /// Быстрая нормированная свертка
         /// </summary>
         /// <param name="signal">Сигнал</param>
-        /// <param name="ht">Impulse response</param>
+        /// <param name="ht">Импульсивный ответ</param>
         /// <returns></returns>
         public static Vector FastConvolutionNorm(Vector signal, Vector ht)
         {

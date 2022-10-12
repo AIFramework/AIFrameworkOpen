@@ -12,7 +12,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Разворачивание арктангенса
         /// </summary>
-        /// <param name="data">Данные с ф-ии atan</param>
+        /// <param name="data">Данные с функции atan</param>
         /// <param name="diffMax">Максимальный разрыв</param>
         public static Vector Unwrap(Vector data, double diffMax = 2)
         {
@@ -67,13 +67,10 @@ namespace AI.HightLevelFunctions
             {
                 double mean = (data[i - 1] + data[i + 1]) / 2.0;
                 if (Math.Abs(data[i - 1] - data[i + 1]) < Math.Abs(mean - data[i]))
-                {
                     newDat[i] = mean;
-                }
+
                 else
-                {
                     newDat[i] = data[i];
-                }
             }
 
             return newDat;
@@ -138,6 +135,7 @@ namespace AI.HightLevelFunctions
                 exp1 = ((-x * x * (4 / Math.PI)) + (a * x * x)) / (1 + (a * x));
             return Math.Sign(x) * Math.Sqrt(1 - Math.Exp(exp1));
         }
+
         /// <summary>
         /// Функция ошибок
         /// </summary>
@@ -147,9 +145,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Erf(Inp[i]);
-            }
 
             return A;
         }
@@ -168,9 +164,7 @@ namespace AI.HightLevelFunctions
             Vector sequen = new Vector(Count);
 
             for (int i = 0; i < Count; i++)
-            {
                 sequen[i] = began + (i * step);
-            }
 
             return sequen;
         }
@@ -188,9 +182,7 @@ namespace AI.HightLevelFunctions
             Vector sequen = new Vector(Count);
 
             for (int i = 0; i < Count; i++)
-            {
                 sequen[i] = began + i;
-            }
 
             return sequen;
         }
@@ -210,9 +202,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = GradToRad(Inp[i]);
-            }
 
             return A;
         }
@@ -232,9 +222,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = RadToGrad(Inp[i]);
-            }
 
             return A;
         }
@@ -246,20 +234,14 @@ namespace AI.HightLevelFunctions
         public static long Factorial(int x)
         {
             if (x < 0)
-            {
-                throw new ArgumentException("Factorial argument cannot be less than zero", "x");
-            }
+                throw new ArgumentException("Факториал не может быть меньше нуля", "x");
             else if (x < 14)
-            {
                 return _factorials[x];
-            }
             else
             {
                 long outp = _factorials[13];
                 for (int i = 14; i < x + 1; i++)
-                {
                     outp *= i;
-                }
 
                 return outp;
             }
@@ -282,7 +264,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Вычисление синусов
         /// </summary>
-        /// <param name="Inp">Angle vector (in radians)</param>
+        /// <param name="Inp">Вектор углов (в радианах)</param>
         /// <returns>Вектор синусов</returns>
         public static Vector Sin(Vector Inp)
         {
@@ -313,7 +295,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Вычисление косинусов
         /// </summary>
-        /// <param name="Inp">Angle vector (in radians)</param>
+        /// <param name="Inp">Вектор углов (в радианах)</param>
         /// <returns>Вектор косинусов</returns>
         public static Vector Cos(Vector Inp)
         {
@@ -328,7 +310,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Calculating tangents
         /// </summary>
-        /// <param name="Inp">Angle vector (in radians)</param>
+        /// <param name="Inp">Вектор углов (в радианах)</param>
         /// <returns>Вектор тангенсов</returns>
         public static Vector Tan(Vector Inp)
         {
@@ -343,7 +325,7 @@ namespace AI.HightLevelFunctions
         /// <summary>
         /// Вычисление котангенсов
         /// </summary>
-        /// <param name="Inp">Angle vector (in radians)</param>
+        /// <param name="Inp">Вектор углов (в радианах)</param>
         /// <returns>Вектор котангенсов</returns>
         public static Vector ctg(Vector Inp)
         {
@@ -353,7 +335,7 @@ namespace AI.HightLevelFunctions
         /// Вычисление арксинусов
         /// </summary>
         /// <param name="Inp">Вектор синусов</param>
-        /// <returns>Angle vector (in radians)</returns>
+        /// <returns>Вектор углов (в радианах)</returns>
         public static Vector Asin(Vector Inp)
         {
             Vector A = new Vector(Inp.Count);
@@ -368,7 +350,7 @@ namespace AI.HightLevelFunctions
         /// Вычисление арккосинусов
         /// </summary>
         /// <param name="Inp">Вектор косинусов</param>
-        /// <returns>Angle vector (in radians)</returns>
+        /// <returns>Вектор углов (в радианах)</returns>
         public static Vector Acos(Vector Inp)
         {
             Vector A = new Vector(Inp.Count);
@@ -383,7 +365,7 @@ namespace AI.HightLevelFunctions
         /// Вычисление арктангенсов
         /// </summary>
         /// <param name="Inp">Вектор тангенсов</param>
-        /// <returns>Angle vector (in radians)</returns>
+        /// <returns>Вектор углов (в радианах)</returns>
         public static Vector Atan(Vector Inp)
         {
             Vector A = new Vector(Inp.Count);

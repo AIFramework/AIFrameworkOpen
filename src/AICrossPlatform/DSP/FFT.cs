@@ -265,7 +265,7 @@ namespace AI
 
 
         /// <summary>
-        /// Inverse FFT
+        /// Обратное преобразование Фурье (ОБПФ)
         /// </summary>
         /// <param name="inp">Вход</param>
         public ComplexVector IFFT(ComplexVector inp)

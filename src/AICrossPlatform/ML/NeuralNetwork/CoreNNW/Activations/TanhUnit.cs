@@ -3,7 +3,7 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 {
     /// <summary>
-    /// Активационная ф-я гиперболический тангенс
+    /// Активационная функция гиперболический тангенс
     /// y(x) = a*th(b*x)
     /// </summary>
     [Serializable]
@@ -25,7 +25,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
         public float Alpha { get; set; } = 1f;
 
         /// <summary>
-        /// Активационная ф-я гиперболический тангенс
+        /// Активационная функция гиперболический тангенс
         /// y(x) = a*th(b*x)
         /// </summary>
         public TanhUnit() { }

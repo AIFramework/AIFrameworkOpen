@@ -49,7 +49,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             ComplexDiscreteSignal spectrum = signal.Multiply(kernel);
 
-            // 3) do inverse FFT of resulting spectrum
+            // 3) do Обратное преобразование Фурье (ОБПФ) of resulting spectrum
 
             fft.Inverse(spectrum.Real, spectrum.Imag);
 
@@ -142,7 +142,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             ComplexDiscreteSignal spectrum = signal.Divide(kernel);
 
-            // 3) do inverse FFT of resulting spectrum
+            // 3) do Обратное преобразование Фурье (ОБПФ) of resulting spectrum
 
             fft.Inverse(spectrum.Real, spectrum.Imag);
 

@@ -37,7 +37,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         }
 
         /// <summary>
-        /// Amplitude modulation (AM)
+        /// Амплитудная модуляция (AM)
         /// </summary>
         /// <param name="carrier">Carrier signal</param>
         /// <param name="modulatorFrequency">Modulator frequency</param>
@@ -62,7 +62,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// </summary>
         /// <param name="baseband">Baseband signal</param>
         /// <param name="carrierAmplitude">Carrier amplitude</param>
-        /// <param name="carrierFrequency">Carrier frequency</param>
+        /// <param name="carrierFrequency">Несущая частота</param>
         /// <param name="deviation">Frequency deviation</param>
         /// <returns>RM signal</returns>
         public DiscreteSignal Frequency(DiscreteSignal baseband,
@@ -145,7 +145,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// </summary>
         /// <param name="baseband">Baseband signal</param>
         /// <param name="carrierAmplitude">Carrier amplitude</param>
-        /// <param name="carrierFrequency">Carrier frequency</param>
+        /// <param name="carrierFrequency">Несущая частота</param>
         /// <param name="deviation">Frequency deviation</param>
         /// <returns>RM signal</returns>
         public DiscreteSignal Phase(DiscreteSignal baseband,

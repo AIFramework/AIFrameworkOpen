@@ -37,7 +37,7 @@ namespace AI.DSP.Analyse
         /// <returns>Строка типа: f(x) = k*x+(b)</returns>
         public override string ToString()
         {
-            return string.Format("f(x) ={0:N3}*x+({1:N3})", K, B);
+            return string.Format("f(x) = {0:N3}*x+({1:N3})", K, B);
         }
 
         /// <summary>

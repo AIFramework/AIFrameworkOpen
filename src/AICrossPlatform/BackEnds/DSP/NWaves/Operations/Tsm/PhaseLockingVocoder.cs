@@ -4,28 +4,28 @@ using System;
 namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 {
     /// <summary>
-    /// Phase vocoder with identity phase locking [Puckette].
+    /// Фазовый вокодер с идентификацией фазы [Puckette].
     /// </summary>
     [Serializable]
     public class PhaseLockingVocoder : PhaseVocoder
     {
         /// <summary>
-        /// Array of spectrum magnitudes (at current step)
+        /// Массив значений спектра (на текущем шаге)
         /// </summary>
         private readonly double[] _mag;
 
         /// <summary>
-        /// Array of spectrum phases (at current step)
+        /// Массив фаз спектра (на текущем шаге)
         /// </summary>
         private readonly double[] _phase;
 
         /// <summary>
-        /// Array of phase deltas
+        /// Массив фазовых дельт
         /// </summary>
         private readonly double[] _delta;
 
         /// <summary>
-        /// Array of peak positions (indices)
+        /// Массив пиковых позиций (индексов)
         /// </summary>
         private readonly int[] _peaks;
 
@@ -34,7 +34,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         /// </summary>
         /// <param name="stretch"></param>
         /// <param name="hopAnalysis"></param>
-        /// <param name="fftSize"></param>\
+        /// <param name="fftSize"></param>
         public PhaseLockingVocoder(double stretch, int hopAnalysis, int fftSize = 0)
             : base(stretch, hopAnalysis, fftSize)
         {
@@ -45,7 +45,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         }
 
         /// <summary>
-        /// Process spectrum with phase-locking at each STFT step
+        /// Спектр процесса с фазовой синхронизацией на каждом шаге STFT
         /// </summary>
         public override void ProcessSpectrum()
         {

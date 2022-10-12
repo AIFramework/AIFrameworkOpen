@@ -30,8 +30,6 @@ namespace AI.DSP.DSPCore
             _pw = pw;
         }
 
-
-
         /// <summary>
         /// Поиск патернов в сигнале
         /// </summary>
@@ -60,7 +58,7 @@ namespace AI.DSP.DSPCore
     }
 
     /// <summary>
-    /// Ф-я порождения вейвлетов
+    /// Функция порождения вейвлетов
     /// </summary>
     public class PerentWavelet
     {

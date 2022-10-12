@@ -116,7 +116,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// It's problematic due to division by zero.
         /// 
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <param name="kernel">Kernel</param>
         /// <returns>Deconvolved signal</returns>
         public static ComplexDiscreteSignal Deconvolve(ComplexDiscreteSignal signal, ComplexDiscreteSignal kernel)
@@ -175,7 +175,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <summary>
         /// Time stretching with parameters set by user
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <param name="stretch">Stretch factor (ratio)</param>
         /// <param name="windowSize">Window size (for vocoders - FFT size)</param>
         /// <param name="hopSize">Hop size</param>
@@ -216,7 +216,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <summary>
         /// Time stretching with auto-derived parameters
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <param name="stretch">Stretch factor (ratio)</param>
         /// <param name="algorithm">Algorithm for TSM (optional)</param>
         /// <returns>Time stretched signal</returns>
@@ -255,7 +255,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <summary>
         /// Method for extracting the envelope of a signal
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <param name="attackTime"></param>
         /// <param name="releaseTime"></param>
         /// <returns></returns>
@@ -269,7 +269,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <summary>
         /// Full rectification
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <returns>Fully rectified signal</returns>
         public static DiscreteSignal FullRectify(DiscreteSignal signal)
         {
@@ -280,7 +280,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         /// <summary>
         /// Half rectification
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <returns>Half rectified signal</returns>
         public static DiscreteSignal HalfRectify(DiscreteSignal signal)
         {

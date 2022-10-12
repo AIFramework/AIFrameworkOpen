@@ -12,7 +12,7 @@ namespace AI.Statistics.MonteCarlo
     [Serializable]
     public class MCMC_1D
     {
-        // Логарифм ненормированной ф-ии распределения
+        // Логарифм ненормированной функции распределения
         private Func<double, double> _distr_log;
         private Random _random;
         private int _rnd_seed = 0;// Сид генератора случ. чисел

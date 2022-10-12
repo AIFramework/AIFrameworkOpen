@@ -3,7 +3,7 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 {
     /// <summary>
-    /// Радиально-базискная ф-я активации
+    /// Радиально-базискная функция активации
     /// </summary>
     [Serializable]
     public class SQRBFUnit : IActivation

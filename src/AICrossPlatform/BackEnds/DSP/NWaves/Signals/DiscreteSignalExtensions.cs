@@ -213,7 +213,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Return copy of first N samples
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <param name="sampleCount">Number of samples</param>
         /// <returns>Copy of the first samples of signal</returns>
         public static DiscreteSignal First(this DiscreteSignal signal, int sampleCount)
@@ -246,7 +246,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Full rectification (in-place)
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <returns>Fully rectified signal</returns>
         public static void FullRectify(this DiscreteSignal signal)
         {
@@ -262,7 +262,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Half rectification (in-place)
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <returns>Half rectified signal</returns>
         public static void HalfRectify(this DiscreteSignal signal)
         {

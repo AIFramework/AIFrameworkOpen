@@ -45,7 +45,7 @@ namespace AI.DSP
             set => ChData[i] = value;
         }
         /// <summary>
-        /// Voltage scale
+        /// Масштаб по напряжению
         /// </summary>
         public TypeScaleVolt ScaleVolt { get; set; }
         private readonly FFT fur;

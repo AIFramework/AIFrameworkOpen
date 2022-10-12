@@ -14,7 +14,7 @@ namespace AI.DSP.IIR
         private int aLen, bLen, ofA, ofB, bL2, aL2;
         private Vector inps, outps;
         /// <summary>
-        /// Filter name
+        /// Имя фильтра
         /// </summary>
         public string Name { get; set; }
 
@@ -23,12 +23,12 @@ namespace AI.DSP.IIR
         /// </summary>
         public Vector A { get; set; }
         /// <summary>
-        /// Coefficients b
+        /// Коэффициенты B (числитель)
         /// </summary>
         public Vector B { get; set; }
 
         /// <summary>
-        /// Signal clipping
+        /// Ограничение сигнала
         /// </summary>
         public double Treshold { get; set; } = 1e+300;
 
@@ -36,7 +36,7 @@ namespace AI.DSP.IIR
         /// БИХ фильтр
         /// </summary>
         /// <param name="a">Коэффициенты "A"</param>
-        /// <param name="b">Coefficients b</param>
+        /// <param name="b">Коэффициенты B (числитель)</param>
         public IIRFilter(Vector a, Vector b)
         {
             Init(a, b);
@@ -120,7 +120,7 @@ namespace AI.DSP.IIR
         }
 
         /// <summary>
-        /// Recursive filter output
+        /// Выход рекурсивного фильтра
         /// </summary>
         /// <param name="signal">Входной сигнал</param>
         public Vector FilterOutp(Vector signal)
@@ -130,10 +130,10 @@ namespace AI.DSP.IIR
         }
 
         /// <summary>
-        /// Recursive filter output
+        /// Выход рекурсивного фильтра
         /// </summary>
         /// <param name="signal">Входной сигнал</param>
-        /// <param name="iteration">Filtering iterations</param>
+        /// <param name="iteration">Итерации фильтрации</param>
         public Vector FilterOutp(Vector signal, int iteration)
         {
             Vector outp = signal.Clone();
@@ -159,7 +159,7 @@ namespace AI.DSP.IIR
         }
 
         /// <summary>
-        /// State export
+        /// Экспорт состояния
         /// </summary>
         public Tuple<Vector, Vector, int, int> ExportState()
         {
@@ -167,17 +167,17 @@ namespace AI.DSP.IIR
         }
 
         /// <summary>
-        /// Importing filter state
+        /// Импорт состояния фильтра
         /// </summary>
         /// <param name="inputs">Входы</param>
         /// <param name="outputs">Выходы (целевые значения)</param>
-        /// <param name="offsetA">Offset outputs</param>
-        /// <param name="offsetB">Offset inputs</param>
+        /// <param name="offsetA">Смещение выходов</param>
+        /// <param name="offsetB">Смещение входов</param>
         public void ImportState(Vector inputs, Vector outputs, int offsetA, int offsetB)
         {
             if (inputs.Count != bLen || outputs.Count != aLen)
             {
-                throw new ArgumentException("Dimensions do not match, state import is not possible!");
+                throw new ArgumentException("Размерности не совпадают, импорт невозможен");
             }
 
             ofA = offsetA;
@@ -187,9 +187,9 @@ namespace AI.DSP.IIR
         }
 
         /// <summary>
-        /// Filter save
+        /// Созранение фильтра
         /// </summary>
-        /// <param name="path">Path</param>
+        /// <param name="path">Путь</param>
         public void Save(string path)
         {
             /*
@@ -197,16 +197,16 @@ namespace AI.DSP.IIR
             * Проверочное слово "iir"
             * Название Unicode
             * Коэффициенты "A"
-            * Coefficients b
+            * Коэффициенты B (числитель)
             */
             InMemoryDataStream bs = new InMemoryDataStream();
             bs.Write("iir").Write(Name).Write(A.CutAndZero(aLen)).Write(B.CutAndZero(bLen)).Zip().Save(path);
         }
 
         /// <summary>
-        /// Filter load
+        /// Загрузка фильтра
         /// </summary>
-        /// <param name="path">Path</param>
+        /// <param name="path">Путь</param>
         public static IIRFilter Load(string path)
         {
             /*
@@ -214,7 +214,7 @@ namespace AI.DSP.IIR
              * Проверочное слово "iir"
              * Название Unicode
              * Коэффициенты "A"
-             * Coefficients b
+             * Коэффициенты B (числитель)
              */
             InMemoryDataStream bs = new InMemoryDataStream(path, isZipped: true);
             bs.UnZip();
@@ -232,9 +232,9 @@ namespace AI.DSP.IIR
         }
 
         /// <summary>
-        /// Filter load
+        /// Загрузка фильтра
         /// </summary>
-        /// <param name="data">Buffer</param>
+        /// <param name="data">Буфер данных</param>
         public static IIRFilter Load(byte[] data)
         {
             /*
@@ -242,7 +242,7 @@ namespace AI.DSP.IIR
              * Проверочное слово "iir"
              * Название Unicode
              * Коэффициенты "A"
-             * Coefficients b
+             * Коэффициенты B (числитель)
              */
             InMemoryDataStream bs = new InMemoryDataStream(data, isZipped: true);
             bs.UnZip();

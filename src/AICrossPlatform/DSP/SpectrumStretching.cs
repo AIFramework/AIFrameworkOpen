@@ -5,13 +5,13 @@ using System;
 namespace AI.DSP
 {
     /// <summary>
-    /// Spectrum stretching and compression class
+    /// Растяжение и сжатие спектра
     /// </summary>
     [Serializable]
     public class SpectrumStretching
     {
         /// <summary>
-        /// Spectrum stretching
+        /// Растяжение спектра
         /// </summary>
         /// <param name="signal">Входной сигнал</param>
         /// <param name="k">Коэффициент растяжения</param>

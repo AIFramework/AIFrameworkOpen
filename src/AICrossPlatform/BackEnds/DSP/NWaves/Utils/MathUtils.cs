@@ -290,7 +290,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         #region polynomials
 
         /// <summary>
-        /// Максимальное число итераций для расчета полюсно-нулевой ф-ии используемое по-умолчанию
+        /// Максимальное число итераций для расчета полюсно-нулевой функции используемое по-умолчанию
         /// </summary>
         public const int PolyRootsIterations = 25000;
 

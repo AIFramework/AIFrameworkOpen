@@ -14,7 +14,7 @@ using System;
 namespace AI.DSP.DSPCore
 {
     /// <summary>
-    /// Description of OptimalFilter.
+    /// Оптимальный (согласованный) фильтр
     /// </summary>
     [Serializable]
     public class OptimalFilter

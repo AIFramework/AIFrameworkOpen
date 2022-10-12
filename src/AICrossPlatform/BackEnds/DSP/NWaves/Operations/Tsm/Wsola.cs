@@ -9,7 +9,7 @@ using System.Linq;
 namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
 {
     /// <summary>
-    /// Waveform-Synchronized Overlap-Add
+    /// Добавление синхронизированного перекрытия сигнала
     /// </summary>
     [Serializable]
     public class Wsola : IFilter
@@ -25,39 +25,39 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         private int _windowSize;
 
         /// <summary>
-        /// Hop size at analysis stage (STFT decomposition)
+        /// Размер прыжка на этапе анализа (разложение STFT)
         /// </summary>
         private int _hopAnalysis;
 
         /// <summary>
-        /// Hop size at synthesis stage (STFT merging)
+        /// Размер прыжка на этапе анализа (объединение STFT)
         /// </summary>
         private int _hopSynthesis;
 
         /// <summary>
-        /// Maximum length of the fragment for search of the most similar waveform
+        /// Максимальная длина фрагмента для поиска наиболее похожего сигнала
         /// </summary>
         private int _maxDelta;
 
         /// <summary>
-        /// True if parameters were set by user (not by default)
+        /// Истинно, если параметры были установлены пользователем (не по умолчанию)
         /// </summary>
         private readonly bool _userParameters;
 
         /// <summary>
-        /// Internal convolver
-        /// (will be used for evaluating auto-correlation if the window size is too big)
+        /// Внутренний алгоритм свертки
+        /// (будет использоваться для оценки автокорреляции слишком большого размера окна)
         /// </summary>
         private Convolver _convolver;
 
         /// <summary>
-        /// Cross-correlation signal
+        /// Сигнал взаимной корреляции
         /// </summary>
         private float[] _cc;
 
 
         /// <summary>
-        /// Конструктор with detailed WSOLA settings
+        /// Добавление синхронизированного перекрытия сигнала
         /// </summary>
         /// <param name="stretch">Коэффициент растяжения</param>
         /// <param name="windowSize"></param>
@@ -77,7 +77,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         }
 
         /// <summary>
-        /// Конструктор with smart parameter autoderivation 
+        /// Добавление синхронизированного перекрытия сигнала
         /// </summary>
         /// <param name="stretch"></param>
         public Wsola(double stretch)
@@ -114,7 +114,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         }
 
         /// <summary>
-        /// For large window sizes prepare the internal convolver
+        /// Для больших размеров окна подготовливает внутренний алгоритм свертки
         /// </summary>
         private void PrepareConvolver()
         {
@@ -200,7 +200,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         }
 
         /// <summary>
-        /// Position of the best found waveform similarity
+        /// Положение наилучшего найденного подобия сигнала
         /// </summary>
         /// <param name="current"></param>
         /// <param name="prev"></param>

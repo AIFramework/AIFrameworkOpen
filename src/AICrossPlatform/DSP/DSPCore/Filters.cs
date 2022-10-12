@@ -40,13 +40,10 @@ namespace AI.DSP.DSPCore
             newSt = FFT.CalcIFFT(Sw).RealVector;
 
             if (mean)
-            {
                 return newSt.CutAndZero(st.Count) + meanValue;
-            }
             else
-            {
                 return newSt.CutAndZero(st.Count);
-            }
+            
         }
         /// <summary>
         /// Реализация простого фильтра
@@ -65,14 +62,11 @@ namespace AI.DSP.DSPCore
             ComplexVector Sw = FFT.CalcFFT(newSt);
             Sw *= newKw;
             newSt = FFT.CalcIFFT(Sw).RealVector;
+
             if (mean)
-            {
                 return newSt.CutAndZero(st.Count) + meanValue;
-            }
             else
-            {
                 return newSt.CutAndZero(st.Count);
-            }
         }
         /// <summary>
         /// Реализация колебательного контура
@@ -84,24 +78,19 @@ namespace AI.DSP.DSPCore
         /// <returns>Фильтрованный сигнал</returns>
         public static Vector FilterKontur(Vector st, double Q, double f0, int fd)
         {
-            Vector newSt = st.CutAndZero(Functions.NextPow2(st.Count));
             Complex j = new Complex(0, 1);
             ComplexVector Sw = FFT.CalcFFT(st);
             ComplexVector kw = new ComplexVector(Sw.Count);
             Vector f = Signal.Frequency(kw.Count, fd);
 
             for (int i = 1; i < f.Count / 2; i++)
-            {
                 kw[i] = 1.0 / (1 + (j * Q * ((f[i] / f0) - (f0 / f[i]))));
-            }
-
+            
             for (int i = f.Count / 2; i < f.Count - 1; i++)
-            {
                 kw[i] = 1.0 / (1 + (j * Q * ((f[i] / (2 * f0)) - (2 * f0 / f[i]))));
-            }
-
+            
             Sw = Sw * kw;
-            newSt = FFT.CalcIFFT(Sw).RealVector;
+            Vector newSt = FFT.CalcIFFT(Sw).RealVector;
             return newSt.CutAndZero(st.Count);
         }
         /// <summary>
@@ -187,13 +176,8 @@ namespace AI.DSP.DSPCore
             kw += 1;
 
             for (int i = 0; i < signal.Count; i++)
-            {
                 if ((freq[i] >= sr1) && (freq[i] <= sr2))
-                {
                     kw[i] = 0;
-                }
-            }
-
 
             return Filter(signal, kw, sr1 != 0);
         }
@@ -208,22 +192,14 @@ namespace AI.DSP.DSPCore
             Vector kw = new Vector(f.Count / 2);
 
             if (afh == AFHType.Band)
-            {
-
                 for (int i = 0; i < kw.Count; i++)
-                {
                     if ((f[i] >= param[0]) && (f[i] <= param[1]))
-                    {
                         kw[i] = 1;
-                    }
-                }
-
-            }
+                   
 
             if (afh == AFHType.High)
-            {
                 kw = ActivationFunctions.Threshold(f, param[0]).CutAndZero(kw.Count);
-            }
+            
 
             if (afh == AFHType.Low)
             {
@@ -237,12 +213,8 @@ namespace AI.DSP.DSPCore
                 kw += 1;
 
                 for (int i = 0; i < kw.Count; i++)
-                {
                     if ((f[i] >= param[0]) && (f[i] <= param[1]))
-                    {
                         kw[i] = 0;
-                    }
-                }
             }
 
             return kw.AddSimmetr();
@@ -309,9 +281,7 @@ namespace AI.DSP.DSPCore
             double newPart = 1 - oldPart;
 
             for (int i = 1; i < inp.Count; i++)
-            {
                 outp[i] = (oldPart * outp[i - 1]) + (newPart * inp[i]);
-            }
 
             return outp;
         }
@@ -337,9 +307,7 @@ namespace AI.DSP.DSPCore
             Vector outp = new Vector(inp.Count / dec);
 
             for (int i = 0, k = 0, max = outp.Count - dec + 1; i < max; i += dec)
-            {
                 outp[k++] = inp2[i];
-            }
 
 
             return outp;

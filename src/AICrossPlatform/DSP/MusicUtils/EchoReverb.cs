@@ -4,27 +4,27 @@ using System;
 namespace AI.DSP.MusicUtils
 {
     /// <summary>
-    /// Class for creating echo and reverb
+    /// Эхо и реверберация
     /// </summary>
     [Serializable]
     public class EchoReverb
     {
         /// <summary>
-        /// Project Частота дискретизации
+        /// Частота дискретизации проекта
         /// </summary>
         public int SampleRate { get; set; }
 
         /// <summary>
-        /// Echo and reverb
+        /// Эхо и реверберация
         /// </summary>
-        /// <param name="sr">Project Частота дискретизации</param>
+        /// <param name="sr">Частота дискретизации проекта</param>
         public EchoReverb(int sr)
         {
             SampleRate = sr;
         }
 
         /// <summary>
-        /// Echo effect
+        /// Эхо
         /// </summary>
         public unsafe void Echo(Vector data, double timeDelay = 0.05, double volume = 0.3)
         {
@@ -42,7 +42,7 @@ namespace AI.DSP.MusicUtils
 
 
         /// <summary>
-        /// Echo effect
+        /// Эхо
         /// </summary>
         public unsafe void EchoInvers(Vector data, double timeDelay = 0.05, double volume = 0.3)
         {

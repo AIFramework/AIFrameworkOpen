@@ -14,7 +14,7 @@ using System;
 namespace AI.DSP.DSPCore
 {
     /// <summary>
-    ///Кепстральный анализ
+    /// Кепстральный анализ
     /// </summary>
     [Serializable]
     public static class Kepstr
@@ -23,7 +23,6 @@ namespace AI.DSP.DSPCore
         /// Быстрое кепстральное преобразование
         /// </summary>
         /// <param name="signal">Сигнал</param>
-        /// <returns></returns>
 		public static Vector FKT(Vector signal)
         {
             ComplexVector spectr = FFT.CalcFFT(signal);
@@ -37,7 +36,6 @@ namespace AI.DSP.DSPCore
         /// Быстрое кепстральное преобразование
         /// </summary>
         /// <param name="signal">Сигнал</param>
-        /// <returns></returns>
         public static Vector FKT(ComplexVector signal)
         {
             ComplexVector spectr = FFT.CalcFFT(signal);

@@ -27,7 +27,7 @@ namespace AI.HightLevelFunctions
             return 1.0 / (std * Math.Sqrt(2 * Math.PI)) * FunctionsForEachElements.Exp((inp - m).Transform(x => Math.Pow(x, 2)) / (-2 * std * std));
         }
         /// <summary>
-        /// Ф-я Гаусса
+        /// Функция Гаусса
         /// </summary>
         /// <param name="inp"></param>
         /// <param name="m"></param>

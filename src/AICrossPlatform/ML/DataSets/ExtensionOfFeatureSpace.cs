@@ -155,7 +155,7 @@ namespace AI.ML.DataSets
         }
 
         /// <summary>
-        /// Радиально-базисная ф-я Гаусса
+        /// Радиально-базисная функция Гаусса
         /// </summary>
         /// <param name="x">Вход</param>
         /// <param name="centers">Массив центров</param>

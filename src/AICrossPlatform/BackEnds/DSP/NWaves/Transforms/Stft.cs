@@ -207,7 +207,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <summary>
         /// Overloaded method for DiscreteSignal as an input
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <returns>Spectrogram of the signal</returns>
         public List<float[]> Spectrogram(DiscreteSignal signal)
         {
@@ -261,7 +261,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <summary>
         /// Overloaded method for DiscreteSignal as an input
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <returns>Magnitude-Phase spectrogram of the signal</returns>
         public MagnitudePhaseList MagnitudePhaseSpectrogram(DiscreteSignal signal)
         {

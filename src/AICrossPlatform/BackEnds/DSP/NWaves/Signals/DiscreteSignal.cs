@@ -166,7 +166,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Overloaded unary minus (negated signal)
         /// </summary>
-        /// <param name="s">Signal</param>
+        /// <param name="s">Сигнал</param>
         /// <returns>Negated signal</returns>
         public static DiscreteSignal operator -(DiscreteSignal s)
         {
@@ -187,7 +187,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Overloaded + (add constant)
         /// </summary>
-        /// <param name="s">Signal</param>
+        /// <param name="s">Сигнал</param>
         /// <param name="constant">Constant to add to each sample</param>
         /// <returns>Modified signal</returns>
         public static DiscreteSignal operator +(DiscreteSignal s, float constant)
@@ -198,7 +198,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Overloaded - (subtract constant)
         /// </summary>
-        /// <param name="s">Signal</param>
+        /// <param name="s">Сигнал</param>
         /// <param name="constant">Constant to subtract from each sample</param>
         /// <returns>Modified signal</returns>
         public static DiscreteSignal operator -(DiscreteSignal s, float constant)
@@ -209,7 +209,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Overloaded * (signal amplification/attenuation)
         /// </summary>
-        /// <param name="s">Signal</param>
+        /// <param name="s">Сигнал</param>
         /// <param name="coeff">Amplification coefficient</param>
         /// <returns>Amplified signal</returns>
         public static DiscreteSignal operator *(DiscreteSignal s, float coeff)

@@ -312,7 +312,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
             }
 
 
-            // finally, compute impulse response from interpolated frequency response:
+            // finally, compute Импульсивный ответ from interpolated frequency response:
 
             return ImpulseResponse();
         }
@@ -355,7 +355,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         }
 
         /// <summary>
-        /// Reconstruct impulse response from interpolated frequency response
+        /// Reconstruct Импульсивный ответ from interpolated frequency response
         /// </summary>
         /// <returns></returns>
         private double[] ImpulseResponse()
@@ -370,7 +370,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                                  .Select(i => Lagrange((double)i / Order))
                                  .ToArray();
 
-            // compute kernel (impulse response): =======================================
+            // compute kernel (Импульсивный ответ): =======================================
 
             double[] kernel = new double[Order];
 

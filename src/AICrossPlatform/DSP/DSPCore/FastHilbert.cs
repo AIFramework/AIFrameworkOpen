@@ -16,7 +16,7 @@ using Vector = AI.DataStructs.Algebraic.Vector;
 namespace AI.DSP.DSPCore
 {
     /// <summary>
-    /// Description of Hilbert.
+    /// Метод Гильберта
     /// </summary>
     public static class FastHilbert
     {
@@ -99,7 +99,7 @@ namespace AI.DSP.DSPCore
         public static Vector EnvelopeIQ(Vector st, double fd, double f0)
         {
             double _2pi = Math.PI * 2;
-            ComplexVector complexVector = Filters.ButterworthLowCFH(st.Count, f0, (int)fd, 5); // передаточная ф-я фильтра Батерворта 5-го порядка
+            ComplexVector complexVector = Filters.ButterworthLowCFH(st.Count, f0, (int)fd, 5); // передаточная функция фильтра Батерворта 5-го порядка
 
 
             Vector t = new Vector(st.Count);
@@ -135,7 +135,7 @@ namespace AI.DSP.DSPCore
         public static Vector PhaseIQ(Vector st, double fd, double f0)
         {
             double _2pi = Math.PI * 2;
-            ComplexVector complexVector = Filters.ButterworthLowCFH(st.Count, f0, (int)fd, 5); // передаточная ф-я фильтра Батерворта 5-го порядка
+            ComplexVector complexVector = Filters.ButterworthLowCFH(st.Count, f0, (int)fd, 5); // передаточная функция фильтра Батерворта 5-го порядка
 
 
             Vector t = new Vector(st.Count);
@@ -172,7 +172,7 @@ namespace AI.DSP.DSPCore
         public static Tuple<Vector, Vector> IQ(Vector st, double fd, double f0)
         {
             double _2pi = Math.PI * 2;
-            ComplexVector complexVector = Filters.ButterworthLowCFH(st.Count, f0, (int)fd, 5); // передаточная ф-я фильтра Батерворта 5-го порядка
+            ComplexVector complexVector = Filters.ButterworthLowCFH(st.Count, f0, (int)fd, 5); // передаточная функция фильтра Батерворта 5-го порядка
 
 
             Vector t = new Vector(st.Count);

@@ -3,7 +3,7 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 {
     /// <summary>
-    /// Радиально-базисная активационная ф-я
+    /// Радиально-базисная активационная функция
     /// </summary>
     [Serializable]
     public class GaussianRbfUnit : IActivation

@@ -15,12 +15,12 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
     public class PhaseVocoder : IFilter
     {
         /// <summary>
-        /// Hop size at analysis stage (STFT decomposition)
+        /// Размер прыжка на этапе анализа (разложение STFT)
         /// </summary>
         protected readonly int _hopAnalysis;
 
         /// <summary>
-        /// Hop size at synthesis stage (STFT merging)
+        /// Размер прыжка на этапе анализа (объединение STFT)
         /// </summary>
         protected readonly int _hopSynthesis;
 
@@ -55,7 +55,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         protected readonly double[] _omega;
 
         /// <summary>
-        /// Internal buffer for real parts of analyzed block
+        /// Внутренний буфер для реальных частей анализируемого блока
         /// </summary>
         protected readonly float[] _re;
 

@@ -18,7 +18,7 @@ namespace AI.HightLevelFunctions
         }
 
         /// <summary>
-        /// Сигмоидальная однополярная активационная ф-я
+        /// Сигмоидальная однополярная активационная функция
         /// </summary>
         /// <param name="Inp">Входной вектор</param>
         /// <param name="betta">Угол наклона</param>
@@ -27,7 +27,7 @@ namespace AI.HightLevelFunctions
             return 1.0 / (1 + FunctionsForEachElements.Exp(Inp * (-betta)));
         }
         /// <summary>
-        /// Сигмоидальная однополярная активационная ф-я
+        /// Сигмоидальная однополярная активационная функция
         /// </summary>
         /// <param name="x">Входное значение</param>
         /// <param name="betta">Угол наклона</param>
@@ -36,7 +36,7 @@ namespace AI.HightLevelFunctions
             return 1.0 / (1 + Math.Exp(x * (-betta)));
         }
         /// <summary>
-        /// Сигмоидальная однополярная активационная ф-я
+        /// Сигмоидальная однополярная активационная функция
         /// </summary>
         /// <param name="x">Входное значение</param>
         /// <param name="betta">Угол наклона</param>
@@ -45,7 +45,7 @@ namespace AI.HightLevelFunctions
             return -Math.Log((1 / x) - 1) / betta;
         }
         /// <summary>
-        /// Сигмоидальная однополярная активационная ф-я
+        /// Сигмоидальная однополярная активационная функция
         /// </summary>
         /// <param name="x">Входное значение</param>
         /// <param name="betta">Угол наклона</param>
@@ -54,7 +54,7 @@ namespace AI.HightLevelFunctions
             return -FunctionsForEachElements.Ln((1 / x) - 1) / betta;
         }
         /// <summary>
-        /// Сигмоидальная биполярная активационная ф-я
+        /// Сигмоидальная биполярная активационная функция
         /// </summary>
         /// <param name="Inp">Входной вектор</param>
         /// <param name="betta">Угол наклона</param>
@@ -63,7 +63,7 @@ namespace AI.HightLevelFunctions
             return FunctionsForEachElements.Tanh(Inp * betta);
         }
         /// <summary>
-        /// Пороговая активационная ф-я
+        /// Пороговая активационная функция
         /// </summary>
         /// <param name="Inp">Входной вектор</param>
         /// <param name="threshold">Порог</param>

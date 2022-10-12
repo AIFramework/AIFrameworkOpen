@@ -203,7 +203,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="order">Filter order</param>
         /// <param name="magnitudeResponse">Magnitude response</param>
         /// <param name="phaseResponse">Phase response</param>
-        /// <param name="window">Window</param>
+        /// <param name="window">Окно</param>
         /// <returns>FIR filter kernel</returns>
         public static double[] Fir(int order,
                                    double[] magnitudeResponse,
@@ -245,7 +245,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// </summary>
         /// <param name="order">Filter order</param>
         /// <param name="frequencyResponse">Complex frequency response</param>
-        /// <param name="window">Window</param>
+        /// <param name="window">Окно</param>
         /// <returns>FIR filter kernel</returns>
         public static double[] Fir(int order, ComplexDiscreteSignal frequencyResponse, WindowTypes window = WindowTypes.Blackman)
         {
@@ -258,7 +258,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         /// <param name="order">Filter order</param>
         /// <param name="magnitudeResponse">Magnitude response</param>
         /// <param name="phaseResponse">Phase response</param>
-        /// <param name="window">Window</param>
+        /// <param name="window">Окно</param>
         /// <returns>FIR filter kernel</returns>
         public static double[] Fir(int order,
                                    float[] magnitudeResponse,

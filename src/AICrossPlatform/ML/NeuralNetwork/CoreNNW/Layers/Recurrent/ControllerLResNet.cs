@@ -260,7 +260,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("LstmLayerL1     \t|Вход: {0} |Выходы: {1} |Нелинейная ф-я активации: {3} |Число обучаемых параметров: {2}", InputShape, OutputShape, TrainableParameters, "Сигмоида/тангенс");
+            return string.Format("LstmLayerL1     \t|Вход: {0} |Выходы: {1} |Нелинейная функция активации: {3} |Число обучаемых параметров: {2}", InputShape, OutputShape, TrainableParameters, "Сигмоида/тангенс");
         }
 
         /// <summary>

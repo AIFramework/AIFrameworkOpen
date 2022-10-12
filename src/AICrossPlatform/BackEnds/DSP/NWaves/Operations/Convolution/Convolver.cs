@@ -109,7 +109,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
                 _imag1[i] = im / _fftSize;
             }
 
-            // 3) do inverse FFT of resulting spectrum
+            // 3) do Обратное преобразование Фурье (ОБПФ) of resulting spectrum
 
             _fft.Inverse(_real1, _imag1, output);
         }

@@ -17,8 +17,8 @@ namespace AI
         /// <summary>
         /// Свертка
         /// </summary>
-        /// <param name="signal">Signal</param>
-        /// <param name="Ht">Impulse response</param>
+        /// <param name="signal">Сигнал</param>
+        /// <param name="Ht">Импульсивный ответ</param>
         public static Vector DirectConvolution(Vector signal, Vector Ht)
         {
             Vector ht = Ht.Revers();
@@ -40,8 +40,8 @@ namespace AI
         /// <summary>
         /// Свертка
         /// </summary>
-        /// <param name="signal">Signal</param>
-        /// <param name="Ht">Impulse response</param>
+        /// <param name="signal">Сигнал</param>
+        /// <param name="Ht">Импульсивный ответ</param>
         public static Vector ConvolutionNormal(Vector signal, Vector Ht)
         {
             Vector ht = Ht.Revers();
@@ -66,8 +66,8 @@ namespace AI
         /// <summary>
         /// Свертка
         /// </summary>
-        /// <param name="signal">Signal</param>
-        /// <param name="ht">Impulse response</param>
+        /// <param name="signal">Сигнал</param>
+        /// <param name="ht">Импульсивный ответ</param>
         /// <param name="fd">Частота дискретизации</param>
     	public static Vector DirectConvolution(Vector signal, Vector ht, double fd)
         {
@@ -76,8 +76,8 @@ namespace AI
         /// <summary>
         /// Creating a new signal reference vector
         /// </summary>
-        /// <param name="st">Signal</param>
-        /// <param name="htLen">Impulse response length</param>
+        /// <param name="st">Сигнал</param>
+        /// <param name="htLen">Импульсивный ответ length</param>
         public static Vector StWithHt(Vector st, int htLen)
         {
             int nMax = st.Count + (2 * htLen);
@@ -93,8 +93,8 @@ namespace AI
         /// <summary>
         /// Creating a new signal reference vector
         /// </summary>
-        /// <param name="st">Signal</param>
-        /// <param name="htLen">Impulse response length</param>
+        /// <param name="st">Сигнал</param>
+        /// <param name="htLen">Импульсивный ответ length</param>
         public static ComplexVector StWithHt(ComplexVector st, int htLen)
         {
             int nMax = st.Count + (2 * htLen);

@@ -38,7 +38,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         public double AddDenInSqrt => 0;
 
         /// <summary>
-        /// Активационная ф-я
+        /// Активационная функция
         /// </summary>
         public IActivation ActivationFunction { get; set; } = new LinearUnit();
 
@@ -155,7 +155,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <returns></returns>
         public override string ToString()
         {
-            return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "Сигмоидальная ф-я", TrainableParameters);
+            return LayerHelper.GetLayerDescription(GetType().Name, InputShape, OutputShape, "Сигмоидальная функция", TrainableParameters);
         }
 
         #region Приватные методы

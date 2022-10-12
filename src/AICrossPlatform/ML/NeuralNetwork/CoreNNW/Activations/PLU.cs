@@ -3,7 +3,7 @@
 namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 {
     /// <summary>
-    /// Активационная ф-я PLU (двусторонний ограничитель)
+    /// Активационная функция PLU (двусторонний ограничитель)
     /// </summary>
     [Serializable]
     public class PLU : IActivation
@@ -19,7 +19,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 
 
         /// <summary>
-        /// Активационная ф-я PLU (двусторонний ограничитель)
+        /// Активационная функция PLU (двусторонний ограничитель)
         /// </summary>
         public PLU()
         {
@@ -27,7 +27,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
             _max = 1;
         }
         /// <summary>
-        /// Активационная ф-я PLU (двусторонний ограничитель)
+        /// Активационная функция PLU (двусторонний ограничитель)
         /// </summary>
         /// <param name="slope">Наклон за линейным участком</param>
         /// <param name="max">Максимальное значение линейного участка</param>

@@ -4,18 +4,18 @@ using System;
 namespace AI.DSP.Analyse
 {
     /// <summary>
-    /// Welch method
+    /// Метода Уэлча
     /// </summary>
     [Serializable]
     public class Welch
     {
         /// <summary>
-        ///  Welch method run
+        /// Запуск метода Уэлча
         /// </summary>
-        /// <param name="signal">Signal</param>
+        /// <param name="signal">Сигнал</param>
         /// <param name="window">Окно</param>
-        /// <param name="overlap">Overlap</param>
-        /// <param name="windowForFFT">Window weighting function</param>
+        /// <param name="overlap">Перекрытие</param>
+        /// <param name="windowForFFT">Функция взвешивания окна</param>
         public static Vector WelchRun(Vector signal, int window, double overlap, Vector windowForFFT)
         {
             FFT fft = new FFT(window);
@@ -43,11 +43,11 @@ namespace AI.DSP.Analyse
         }
 
         /// <summary>
-        /// Running the periodogram method
+        /// Запуск метода периодограммы
         /// </summary>
-        /// <param name="signal">Signal</param>
-        /// <param name="window">Window</param>
-        /// <param name="windowForFFT">Window weighting function</param>
+        /// <param name="signal">Сигнал</param>
+        /// <param name="window">Окно</param>
+        /// <param name="windowForFFT">Функция взвешивания окна</param>
         public static Vector BartlettRun(Vector signal, int window, Vector windowForFFT)
         {
             return WelchRun(signal, window, 0, windowForFFT);

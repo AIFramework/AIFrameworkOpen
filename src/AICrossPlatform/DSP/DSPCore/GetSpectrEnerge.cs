@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace AI.DSP.DSPCore
 {
     /// <summary>
-    /// Description of GetSpectrEnerge.
+    /// Анализ формант
     /// </summary>
     [Serializable]
     public class GetSpectrEnerge
@@ -61,9 +61,7 @@ namespace AI.DSP.DSPCore
             iD = new IntervalData();
 
             for (int i = 0; i < bFI.Count; i++)
-            {
                 iD.Add((int)(bFI[i] * Count / _fd), (int)(eFI[i] * Count / _fd)); // Перевод частот в отсчеты
-            }
         }
 
 

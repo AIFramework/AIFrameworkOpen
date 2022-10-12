@@ -13,7 +13,7 @@ namespace AI
     {
 
         /// <summary>
-        /// Hann (Henning) window provides -31.5 dB sidelobe level
+        /// Окно Ханна (Хенинга) (-31 дб)
         /// </summary>
         /// <param name="windowSize">Размер окна</param>
         public static Vector HannWindow(int windowSize)
@@ -24,7 +24,7 @@ namespace AI
         }
 
         /// <summary>
-        /// Hamming window provides -42 dB sidelobe level
+        /// Окно Хэмминга (-42 дб)
         /// </summary>
         /// <param name="windowSize">Размер окна</param>
         public static Vector HammingWindow(int windowSize)
@@ -35,7 +35,7 @@ namespace AI
         }
 
         /// <summary>
-        /// Rectangular window provides -13 dB sidelobe level
+        /// Прямоугольное окно (-13 дб)
         /// </summary>
         /// <param name="windowSize">Размер окна</param>
         public static Vector RectWindow(int windowSize)
@@ -44,7 +44,7 @@ namespace AI
         }
 
         /// <summary>
-        /// Blackman window provides sidelobe level -58 db
+        /// Окно Блэкмана (-58 дб)
         /// </summary>
         /// <param name="windowSize">Размер окна</param>
         public static Vector BlackmanWindow(int windowSize)

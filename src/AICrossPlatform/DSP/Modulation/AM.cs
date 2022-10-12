@@ -5,7 +5,7 @@ using System;
 namespace AI.DSP.Modulation
 {
     /// <summary>
-    /// Amplitude modulation
+    /// Амплитудная модуляция
     /// </summary>
     [Serializable]
     public class AM : IModulator
@@ -17,8 +17,8 @@ namespace AI.DSP.Modulation
         /// Инициализация модулятора ампл. модуляции
         /// </summary>
         /// <param name="fd">Частота дискретизации</param>
-        /// <param name="f0">Carrier frequency</param>
-        /// <param name="m">Modulation rate</param>
+        /// <param name="f0">Несущая частота</param>
+        /// <param name="m">Коэф. модуляции</param>
         public AM(int fd, double f0, double m = 1)
         {
             _2pi = Math.PI * 2;
@@ -51,7 +51,7 @@ namespace AI.DSP.Modulation
         /// <summary>
         /// Демодуляция
         /// </summary>
-        /// <param name="channel">Channel с модулированным сигналом</param>
+        /// <param name="channel">Канал с модулированным сигналом</param>
         public Channel Demodulate(Channel channel)
         {
             Vector dat = FastHilbert.EnvelopeIQ(channel.ChData, _fd, _f0);

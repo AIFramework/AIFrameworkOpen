@@ -15,7 +15,7 @@ namespace AI.ML.Clustering
 {
 
     /// <summary>
-    /// FOREL clustering
+    /// Кластеризация методом FOREL
     /// </summary>
     [Serializable]
     public class Forel : IClustering
@@ -28,7 +28,7 @@ namespace AI.ML.Clustering
 
 
         /// <summary>
-        /// Clusters array
+        /// Массив кластеров
         /// </summary>
         public Cluster[] Clusters => clusters.ToArray();
 
@@ -39,7 +39,7 @@ namespace AI.ML.Clustering
 
 
         /// <summary>
-        /// FOREL clustering
+        /// Кластеризация методом FOREL
         /// </summary>
         public Forel()
         {
@@ -47,9 +47,9 @@ namespace AI.ML.Clustering
         }
 
         /// <summary>
-        /// Clustering training
+        /// Обучение кластеризации
         /// </summary>
-        /// <param name="dataset">Vectors</param>
+        /// <param name="dataset">Векторы</param>
         /// <param name="minR">Minimum cluster radius</param>
         public void Train(Vector[] dataset, int minR = 0)
         {
@@ -111,8 +111,8 @@ namespace AI.ML.Clustering
             return indexClass;
         }
 
-        /// <summary>Classify vectors</summary>
-        /// <param name="vectors">Vectors</param>
+        /// <summary>Классификация векторов</summary>
+        /// <param name="vectors">Векторы</param>
         public int[] Classify(IEnumerable<Vector> vectors)
         {
             return vectors.Select((vector) => Classify(vector)).ToArray();

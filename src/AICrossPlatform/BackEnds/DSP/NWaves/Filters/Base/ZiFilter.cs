@@ -51,7 +51,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// Параметризованный конструктор (На основе 32-битных коэффицентов)
         /// </summary>
         /// <param name="b">Коэф. в числителе передаточной функции</param>
-        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
+        /// <param name="a">Коэф. в знаменателе передаточной функции</param>
         public ZiFilter(IEnumerable<float> b, IEnumerable<float> a)
         {
             _b = b.ToArray();
@@ -78,7 +78,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// Параметризованный конструктор (Массив 64х битных коэффициентов)
         /// </summary>
         /// <param name="b">Коэф. в числителе передаточной функции</param>
-        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
+        /// <param name="a">Коэф. в знаменателе передаточной функции</param>
         public ZiFilter(IEnumerable<double> b, IEnumerable<double> a) : this(b.ToFloats(), a.ToFloats())
         {
         }

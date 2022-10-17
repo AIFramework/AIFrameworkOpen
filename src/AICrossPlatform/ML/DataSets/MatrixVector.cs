@@ -11,7 +11,7 @@ namespace AI.ML.DataSets
     {
         private readonly Random random = new Random();
         /// <summary>
-        /// random instance
+        /// Случайный экземпляр
         /// </summary>
         /// <returns></returns>
         public MatrixVectorSample MatrixVectorSempleRand()

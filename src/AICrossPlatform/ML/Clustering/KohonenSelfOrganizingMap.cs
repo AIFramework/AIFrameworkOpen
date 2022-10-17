@@ -100,7 +100,7 @@ namespace AI.ML.Clustering
         }
 
         /// <summary>
-        /// 
+        /// Обучение и классификация
         /// </summary>
         /// <param name="vect"></param>
         /// <returns></returns>

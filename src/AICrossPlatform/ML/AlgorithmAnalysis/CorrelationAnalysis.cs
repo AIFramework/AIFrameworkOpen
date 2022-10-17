@@ -12,19 +12,19 @@ using System;
 namespace AI.ML.AlgorithmAnalysis
 {
     /// <summary>
-    /// Correlation analysis (orthogonality check)
+    /// Корреляционный анализ, проверка ортогональности
     /// </summary>
     [Serializable]
     public class CorrelationAnalysis
     {
         /// <summary>
-        /// Normalized correlation matrix
+        /// Проверка нормализованной ортогональной матрицы
         /// </summary>
         public Matrix CorMatrNorm { get; protected set; }
 
 
         /// <summary>
-        /// Correlation analysis
+        /// Корреляционный анализ, проверка ортогональности
         /// </summary>
         public CorrelationAnalysis(Matrix matrix)
         {
@@ -33,7 +33,7 @@ namespace AI.ML.AlgorithmAnalysis
         }
 
         /// <summary>
-        /// Average Orthogonality Coefficient
+        /// Средний коэффициент ортогональности
         /// </summary>
         public double MeanOrtog()
         {
@@ -43,7 +43,7 @@ namespace AI.ML.AlgorithmAnalysis
         }
 
         /// <summary>
-        /// Determinant of the correlation matrix (one of the multicollinearity indicators)
+        /// Определитель корреляционной матрицы (один из показателей мультиколлинеарности)
         /// </summary>
         public double CorMatrDeterm()
         {

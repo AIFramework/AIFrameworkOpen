@@ -10,8 +10,13 @@ namespace AI.DataPrepaire.Tokenizers
     [Serializable]
     public class TokenizerBase<T> : ITokenizer<T>
     {
-
+        /// <summary>
+        /// Словарь значение -> токен
+        /// </summary>
         protected Dictionary<T, int> encoder = new Dictionary<T, int>();
+        /// <summary>
+        /// Массив для декодирования
+        /// </summary>
         protected T[] decoder;
 
         /// <summary>
@@ -114,17 +119,26 @@ namespace AI.DataPrepaire.Tokenizers
 
 
 
-
+        /// <summary>
+        /// Не реализовано
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public virtual T[] DecodeBatchObj(IEnumerable<IEnumerable<int>> ids)
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Не реализовано
+        /// </summary>
         public virtual T DecodeObj(IEnumerable<int> ids)
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Не реализовано
+        /// </summary>
         public virtual int[] Encode(T data)
         {
             throw new NotImplementedException();
@@ -160,6 +174,12 @@ namespace AI.DataPrepaire.Tokenizers
         }
 
         // ToDo: Дописать логику
+        /// <summary>
+        /// Не реализовано
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public virtual int[,] EncodeBatch(IEnumerable<T> data)
         {
             throw new NotImplementedException();

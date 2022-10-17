@@ -120,6 +120,7 @@ namespace AI.DataPrepaire.Pipelines
         /// Классификация объекта на базе распределения
         /// </summary>
         /// <param name="input">Входной объект</param>
+        /// <param name="temp">Температура</param>
         public virtual int StoсhasticClassify(T input, double temp = 1)
         {
             return RandomItemSelection<T>.GetIndex(ClassifyProb(input), random, temp);
@@ -129,6 +130,7 @@ namespace AI.DataPrepaire.Pipelines
         /// Классификация объекта на базе распределения
         /// </summary>
         /// <param name="input">Входной объект</param>
+        /// <param name="temp">Температура</param>
         public virtual int[] StoсhasticClassify(T[] input, double temp = 1)
         {
             int[] clsIds = new int[input.Length];
@@ -184,9 +186,6 @@ namespace AI.DataPrepaire.Pipelines
         /// <summary>
         /// Обучение и тестирование
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="marks"></param>
-        /// <returns></returns>
         public virtual string TrainTest(T[] data, int[] marks, double trainPart = 0.9, int seed = 0, bool reportForEachClass = true)
         {
 
@@ -322,7 +321,7 @@ namespace AI.DataPrepaire.Pipelines
             /// <summary>
             /// Добавление объекта в выборку
             /// </summary>
-            /// <param name="obj">Классифицируемый объект/param>
+            /// <param name="obj">Классифицируемый объект </param>
             /// <param name="clIndex">Индекс</param>
             public void Add(T obj, int clIndex)
             {

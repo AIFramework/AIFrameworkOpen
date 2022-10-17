@@ -52,7 +52,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// Параметризованный конструктор (Массив 64х битных коэффициентов)
         /// </summary>
         /// <param name="b">Коэф. в числителе передаточной функции</param>
-        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
+        /// <param name="a">Коэф. в знаменателе передаточной функции</param>
         public ZiFilter64(IEnumerable<double> b, IEnumerable<double> a)
         {
             _b = b.ToArray();

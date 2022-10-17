@@ -4,13 +4,13 @@ using System;
 namespace AI.ML.DataEncoding.PositionalEncoding
 {
     /// <summary>
-    /// Position (index) coding based on orthogonal trigonometric functions
+    /// Позиционное (индексное) кодирование на основе ортогональных тригонометрических функций
     /// </summary>
     [Serializable]
     public class TrigonometricPositionalEncoder : IPositionEncoding
     {
         /// <summary>
-        /// Вектор выхода dimension
+        /// Размерность вектора выхода
         /// </summary>
         public int Dim { get; set; }
 
@@ -18,14 +18,14 @@ namespace AI.ML.DataEncoding.PositionalEncoding
         private readonly double coef;
 
         /// <summary>
-        /// Position (index) coding based on orthogonal trigonometric functions
+        /// Позиционное (индексное) кодирование на основе ортогональных тригонометрических функций
         /// </summary>
-        /// <param name="dim">Вектор выхода dimension</param>
+        /// <param name="dim">Размерность вектора выхода</param>
         public TrigonometricPositionalEncoder(int dim = 512)
         {
             if (dim % 2 == 1)
             {
-                throw new Exception("dim is not divisible by 2 without remainder");
+                throw new Exception("Размерность не делится на 2 без остатка");
             }
 
             Dim = dim;
@@ -43,7 +43,7 @@ namespace AI.ML.DataEncoding.PositionalEncoding
 
 
         /// <summary>
-        /// Getting the vector position code(index)
+        /// Получение кода позиции вектора (индекса)
         /// </summary>
         public Vector GetCode(int position)
         {
@@ -51,7 +51,7 @@ namespace AI.ML.DataEncoding.PositionalEncoding
         }
 
         /// <summary>
-        /// Getting the vector position code(time)
+        /// Получение кода позиции вектора (Время)
         /// </summary>
         public Vector GetCode(double position)
         {

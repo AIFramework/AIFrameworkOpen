@@ -13,7 +13,7 @@ namespace AI.ML.DataSets
         private readonly Random _random = new Random();
 
         /// <summary>
-        /// 
+        /// Выдает случайную матрицу
         /// </summary>
         /// <returns></returns>
         public MatrixIntSample GetRandMatrixIntSemple()

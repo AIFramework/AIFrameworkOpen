@@ -4,22 +4,22 @@ using System;
 namespace AI.ML.DataEncoding.PositionalEncoding
 {
     /// <summary>
-    /// Multiscale position coding
+    /// Многомасштабное кодирование позиции, предполагается, что размерность может быть представлена ​​как 2^N
     /// </summary>
     [Serializable]
     public class MultiscaleEncoder : IPositionEncoding
     {
         /// <summary>
-        /// Dimension
+        /// Размерность
         /// </summary>
         public int Dim { get; set; }
 
         private readonly int[] dims;
 
         /// <summary>
-        /// Multiscale position coding, it is assumed that the dimension can be represented as 2^N
+        /// Многомасштабное кодирование позиции, предполагается, что размерность может быть представлена ​​как 2^N
         /// </summary>
-        /// <param name="dim">Dimension</param>
+        /// <param name="dim">Размерность</param>
         public MultiscaleEncoder(int dim)
         {
             Dim = dim;
@@ -42,9 +42,9 @@ namespace AI.ML.DataEncoding.PositionalEncoding
 
 
         /// <summary>
-        /// Getting a multi-scale position code, the code is represented by a vector
+        /// Получение многомасштабного кода положения, код представляется вектором
         /// </summary>
-        /// <param name="position">Position</param>
+        /// <param name="position">Позиция</param>
         public Vector GetCode(int position)
         {
             Vector outp = new Vector(0);
@@ -62,9 +62,9 @@ namespace AI.ML.DataEncoding.PositionalEncoding
         }
 
         /// <summary>
-        /// Getting a multi-scale position code, the code is represented by a vector
+        /// Получение многомасштабного кода положения, код представляется вектором
         /// </summary>
-        /// <param name="position">Position</param>
+        /// <param name="position">Позиция</param>
         public Vector GetCode(double position)
         {
             return GetCode((int)position);

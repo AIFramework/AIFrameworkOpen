@@ -8,15 +8,26 @@ namespace AI.DataPrepaire.DataNormalizers
     /// </summary>
     public class EmptyNormalizer : Normalizer
     {
+        /// <summary>
+        /// Восстановление данных
+        /// </summary>
+        /// <param name="normalizeData"></param>
+        /// <returns></returns>
         public override IAlgebraicStructure<double> Denormalize(IAlgebraicStructure<double> normalizeData)
         {
             return normalizeData;
         }
 
+        /// <summary>
+        /// Ничего не делает
+        /// </summary>
         public override void Train(IEnumerable<IAlgebraicStructure<double>> data)
         {
         }
 
+        /// <summary>
+        /// Преобразование данных
+        /// </summary>
         public override IAlgebraicStructure<double> Transform(IAlgebraicStructure<double> data)
         {
             return data;

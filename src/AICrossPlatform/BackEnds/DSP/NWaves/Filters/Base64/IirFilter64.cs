@@ -87,7 +87,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
         /// Параметризованный конструктор ( 32-битные коэффициенты)
         /// </summary>
         /// <param name="b">Коэф. в числителе передаточной функции</param>
-        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
+        /// <param name="a">Коэф. в знаменателе передаточной функции</param>
         public IirFilter64(IEnumerable<double> b, IEnumerable<double> a)
         {
             _numeratorSize = b.Count();

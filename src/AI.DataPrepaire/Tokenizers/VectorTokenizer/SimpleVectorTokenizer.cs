@@ -12,12 +12,30 @@ namespace AI.DataPrepaire.Tokenizers.VectorTokenizer
     [Serializable]
     public class SimpleVectorTokenizer : ITokenizer<Vector>
     {
+        /// <summary>
+        /// Неизвестный токен
+        /// </summary>
         public int UnknowToken { get; set; } = -1;
+        /// <summary>
+        /// Токен заполнения
+        /// </summary>
         public int PadToken { get; set; } = -2;
+        /// <summary>
+        /// Токен начала
+        /// </summary>
         public int StartToken { get; set; } = -3;
+        /// <summary>
+        /// Токен конца
+        /// </summary>
         public int EndToken { get; set; } = -4;
+        /// <summary>
+        /// Максимальное число токенов
+        /// </summary>
         public int MaxSize { get; set; } = 1024;
 
+        /// <summary>
+        /// Функция векторного преобразования
+        /// </summary>
         public Func<Vector, Vector> VectorTransformer;
 
         /// <summary>

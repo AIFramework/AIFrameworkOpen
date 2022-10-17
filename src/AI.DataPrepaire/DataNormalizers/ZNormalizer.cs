@@ -11,10 +11,16 @@ namespace AI.DataPrepaire.DataNormalizers
     [Serializable]
     public class ZNormalizer : Normalizer
     {
+        /// <summary>
+        /// Среднее
+        /// </summary>
         public double[] Mean { get; set; }
+        /// <summary>
+        /// СКО
+        /// </summary>
         public double[] Std { get; set; }
 
-        public double Eps = 1e-200;
+        private double _eps = 1e-200;
 
 
         /// <summary>
@@ -41,7 +47,7 @@ namespace AI.DataPrepaire.DataNormalizers
             for (int i = 0; i < Std.Length; i++)
             {
                 Mean[i] /= algebraicStructures.Length;
-                Std[i] = Std[i] == 0 ? Eps : (Std[i] / algebraicStructures.Length) - (Mean[i] * Mean[i]);
+                Std[i] = Std[i] == 0 ? _eps : (Std[i] / algebraicStructures.Length) - (Mean[i] * Mean[i]);
                 Std[i] = Math.Sqrt(Std[i]);
             }
         }

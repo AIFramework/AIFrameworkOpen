@@ -39,12 +39,17 @@ namespace AI.DataPrepaire.Pipelines.RL
             Actor = actor;
         }
 
+        /// <summary>
+        /// Модель обучения с подкреплением  (без критика)
+        /// </summary>
         public RLWithoutCriticPipeline() { }
 
         /// <summary>
         /// Выполнить действие
         /// </summary>
         /// <param name="state">Состояние</param>
+        /// <param name="conf">Уверенность</param>
+        /// <param name="t">Температура</param>
         public virtual int GetAction(T state, double conf = 0.0, double t = 1)
         {
             double sep = Actor.random.NextDouble();

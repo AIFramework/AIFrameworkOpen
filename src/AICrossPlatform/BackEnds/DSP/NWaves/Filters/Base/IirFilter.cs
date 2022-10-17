@@ -88,7 +88,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// Параметризованный конструктор ( 32-битные коэффициенты)
         /// </summary>
         /// <param name="b">Коэф. в числителе передаточной функции</param>
-        /// <param name="a">Коэф. в знаминателе передаточной функции</param>
+        /// <param name="a">Коэф. в знаменателе передаточной функции</param>
         public IirFilter(IEnumerable<float> b, IEnumerable<float> a)
         {
             _numeratorSize = b.Count();
@@ -118,7 +118,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// Параметризованный конструктор ( 32-битные коэффициенты)
         /// </summary>
         /// <param name="b">Коэф. в числителе передаточной функции</param>
-        /// <param name="a">Коэф. в знаминателе передаточной функции</param
+        /// <param name="a">Коэф. в знамнателе передаточной функции</param>
         public IirFilter(IEnumerable<double> b, IEnumerable<double> a) : this(b.ToFloats(), a.ToFloats())
         {
         }

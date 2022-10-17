@@ -76,7 +76,7 @@ namespace AI.ML.Clustering
         public Func<Vector, Vector, double> DistanceFunction { get; set; } = Distances.BaseDist.EuclideanDistance;
 
         /// <summary>
-        /// Clusters array
+        /// Массив кластеров
         /// </summary>
         public Cluster[] Clusters
         {
@@ -97,24 +97,24 @@ namespace AI.ML.Clustering
             }
         }
 
-        /// <summary>Classify vector</summary>
+        /// <summary>Классификация вектора</summary>
         /// <param name="vector">Вектор</param>
         public int Classify(Vector vector)
         {
             return NearestVector(vector);
         }
 
-        /// <summary>Classify vectors</summary>
-        /// <param name="vectors">Vectors</param>
+        /// <summary>Классификация векторов</summary>
+        /// <param name="vectors">Векторы</param>
         public int[] Classify(IEnumerable<Vector> vectors)
         {
             return vectors.Select((vector) => Classify(vector)).ToArray();
         }
 
         /// <summary>
-        /// Clustering training
+        /// Обучение кластеризации
         /// </summary>
-        /// <param name="dataset">Vectors</param>
+        /// <param name="dataset">Векторы</param>
         /// <param name="seed">Seed</param>
         public void Train(Vector[] dataset, int seed = 10)
         {

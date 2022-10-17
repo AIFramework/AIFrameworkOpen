@@ -74,6 +74,7 @@ namespace AI.DataPrepaire.Pipelines
         /// Хэширование объектов
         /// </summary>
         /// <param name="input">Вход</param>
+        /// /// <param name="tr">Порог</param>
         public virtual string GetHash(T input, double tr = 0.01)
         {
             Vector prob = GetProb(input);
@@ -89,6 +90,7 @@ namespace AI.DataPrepaire.Pipelines
         /// Хэширование объектов
         /// </summary>
         /// <param name="input">Вход</param>
+        /// <param name="tr">Порог</param>
         public virtual string[] GetHash(T[] input, double tr = 0.01)
         {
             string[] clProbs = new string[input.Length];
@@ -227,7 +229,7 @@ namespace AI.DataPrepaire.Pipelines
             /// <summary>
             /// Добавление объекта в выборку
             /// </summary>
-            /// <param name="obj">Признаковое описание/param>
+            /// <param name="obj">Признаковое описание</param>
             /// <param name="probs">Индекс</param>
             public void Add(T obj, Vector probs)
             {

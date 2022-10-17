@@ -16,6 +16,11 @@ namespace AI.DataPrepaire.Pipelines.Utils
 
         }
 
+        /// <summary>
+        /// Аугментация
+        /// </summary>
+        /// <param name="sample"></param>
+        /// <returns></returns>
         public override T[] Augmetation(T sample)
         {
             return new[] { sample };

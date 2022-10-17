@@ -12,7 +12,7 @@ using System;
 namespace AI.ML.Clustering
 {
     /// <summary>
-    /// Cluster structure
+    /// Структура кластера
     /// </summary>
     [Serializable]
     public class Cluster
@@ -34,7 +34,7 @@ namespace AI.ML.Clustering
         }
 
         /// <summary>
-        /// Cluster center
+        /// Центр кластера
         /// </summary>
         public Vector Centr
         {

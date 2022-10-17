@@ -6,30 +6,30 @@ using System.Collections.Generic;
 namespace AI.ML.DataSets.Synthetic
 {
     /// <summary>
-    /// Point clouds synthesis
+    /// Синтетические облака точек (данных)
     /// </summary>
     [Serializable]
     public class PointClouds
     {
         private readonly List<Vector> pointsList = new List<Vector>();
         /// <summary>
-        /// Dimention
+        /// Размерность
         /// </summary>
         public int Dimention { get; set; }
 
         private readonly Random random = new Random(10);
 
         /// <summary>
-        /// Point cloud synthesis
+        /// Синтетические облака точек (данных)
         /// </summary>
-        /// <param name="dim">Dimention</param>
+        /// <param name="dim">Размерность</param>
         public PointClouds(int dim = 2)
         {
             Dimention = dim;
         }
 
         /// <summary>
-        /// Add point cloud
+        /// Добавить облако точек (данных)
         /// </summary>
         public void AddCloud(int count, Vector centr, CloudType type = CloudType.Hypersphere, Vector std = null)
         {
@@ -63,7 +63,7 @@ namespace AI.ML.DataSets.Synthetic
         }
 
         /// <summary>
-        /// Output as an array
+        /// Вывести как массив данных
         /// </summary>
         public Vector[] GetArray()
         {
@@ -73,16 +73,16 @@ namespace AI.ML.DataSets.Synthetic
         }
 
         /// <summary>
-        /// Point cloud type
+        /// Тип облака точек
         /// </summary>
         public enum CloudType
         {
             /// <summary>
-            /// Hypersphere
+            /// Гиперсфера
             /// </summary>
             Hypersphere,
             /// <summary>
-            /// Hypercube 
+            /// Гиперкуб
             /// </summary>
             Hypercube
         }

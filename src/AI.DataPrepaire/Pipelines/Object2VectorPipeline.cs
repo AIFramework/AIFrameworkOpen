@@ -12,7 +12,7 @@ namespace AI.DataPrepaire.Pipelines
     public abstract class Object2VectorPipeline<T>
     {
         /// <summary>
-        // Извлечение признаков из данных
+        /// Извлечение признаков из данных
         /// </summary>
         public FeaturesExtractor<T> Extractor { get; set; }
 

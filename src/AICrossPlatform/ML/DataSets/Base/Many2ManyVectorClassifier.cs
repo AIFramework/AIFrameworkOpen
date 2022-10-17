@@ -40,10 +40,10 @@ namespace AI.ML.DataSets.Base
         }
 
         /// <summary>
-        /// Getting a dataset, for use with a neural network manager
+        /// Получение набора данных для использования с менеджером нейронной сети
         /// </summary>
         /// <param name="data">Набор данных</param>
-        /// <param name="doShuffling">Whether it is necessary to shuffle the data in random order</param>
+        /// <param name="doShuffling">Нужно ли перемешивать данные в случайном порядке</param>
         public Many2ManyVectorClassifierDataset GetDataset(IEnumerable<Many2ManyVectorClassifier> data, bool doShuffling = true)
         {
             Many2ManyVectorClassifier[] array = data.ToArray();

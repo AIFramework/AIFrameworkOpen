@@ -5,7 +5,7 @@ using System.Linq;
 namespace AI.ML.AlgorithmAnalysis
 {
     /// <summary>
-    /// Quality metrics for assessing classification
+    /// Метрики качества классфикатора
     /// </summary>
     [Serializable]
     public static class MetricsForClassification
@@ -27,7 +27,7 @@ namespace AI.ML.AlgorithmAnalysis
             return y / real.Length;
         }
         /// <summary>
-        /// Algorithm precision value for each class
+        /// Точность алгоритма для каждого класса
         /// </summary>
         public static Vector PrecisionForEachClass(int[] real, int[] outAlg)
         {
@@ -52,14 +52,14 @@ namespace AI.ML.AlgorithmAnalysis
             return new Vector(ac);
         }
         /// <summary>
-        /// Average precision across all classes
+        /// Средня точность алгоритма
         /// </summary>
         public static double AveragePrecision(int[] real, int[] outAlg)
         {
             return PrecisionForEachClass(real, outAlg).Mean();
         }
         /// <summary>
-        /// Confusion matrix (confusion)
+        /// Матрица ошибок (перепутывания)
         /// </summary>
         public static Matrix ConfusionMatrix(int[] real, int[] outAlg)
         {
@@ -74,7 +74,7 @@ namespace AI.ML.AlgorithmAnalysis
             return matrix;
         }
         /// <summary>
-        /// Recall
+        /// полнота
         /// </summary>
         public static double Recall(int[] real, int[] outAlg)
         {
@@ -96,7 +96,7 @@ namespace AI.ML.AlgorithmAnalysis
             return nom / denom;
         }
         /// <summary>
-        /// Algorithm recall value for each class
+        /// Полнота для каждого класса
         /// </summary>
         public static Vector RecallForEachClass(int[] real, int[] outAlg)
         {
@@ -118,14 +118,14 @@ namespace AI.ML.AlgorithmAnalysis
             return data;
         }
         /// <summary>
-        /// Average recall across all classes
+        /// Средняя полнота
         /// </summary>
         public static double AverageRecall(int[] real, int[] outAlg)
         {
             return RecallForEachClass(real, outAlg).Mean();
         }
         /// <summary>
-        /// F measure formula: 2 * recall * precision / (recall + precision)
+        /// F-1 мера, формула: 2 * recall * precision / (recall + precision)
         /// </summary>
         public static double FMeasure(int[] real, int[] outAlg)
         {
@@ -135,7 +135,7 @@ namespace AI.ML.AlgorithmAnalysis
             return 2.0 * pr * rec / (pr + rec);
         }
         /// <summary>
-        /// F measure formula: (1+beta^2) * recall * precision / (recall + beta^2 * precision)
+        /// F мера, формула: (1+beta^2) * recall * precision / (recall + beta^2 * precision)
         /// </summary>
         public static double FMeasure(int[] real, int[] outAlg, double beta)
         {
@@ -146,24 +146,24 @@ namespace AI.ML.AlgorithmAnalysis
             return (1 + b2) * pr * rec / ((b2 * pr) + rec);
         }
         /// <summary>
-        /// Complete classifier metrics report
+        /// Составляет отчет по всем метрикам
         /// </summary>
         public static string FullReport(int[] real, int[] outAlg, double betaForFMeasure = 1, bool isForEachClass = false)
         {
-            string report = $"Precision:             {GetElementReport(AveragePrecision(real, outAlg))}";
-            report += $"\nAverage Recall:      {GetElementReport(AverageRecall(real, outAlg))}";
-            report += $"\nFMeasure:            {GetElementReport(FMeasure(real, outAlg, betaForFMeasure))}";
-            report += $"\nAccuracy:            {GetElementReport(Accuracy(real, outAlg))}";
+            string report = $"Средняя точность:             {GetElementReport(AveragePrecision(real, outAlg))}";
+            report += $"\nСредняя полнота:      {GetElementReport(AverageRecall(real, outAlg))}";
+            report += $"\nF-Мера:            {GetElementReport(FMeasure(real, outAlg, betaForFMeasure))}";
+            report += $"\nАккуратность:            {GetElementReport(Accuracy(real, outAlg))}";
 
             if (isForEachClass)
             {
-                report += "\n\n\n--Precision value for each class--\n";
+                report += "\n\n\n--Значение точности для каждого класса--\n";
 
                 Vector pr = PrecisionForEachClass(real, outAlg);
 
                 for (int i = 0; i < pr.Count; i++)
                 {
-                    report += $"\nClass #{i + 1}:  {GetElementReport(pr[i])}";
+                    report += $"\nКласс № {i + 1}:  {GetElementReport(pr[i])}";
                 }
             }
 

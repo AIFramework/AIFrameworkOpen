@@ -672,9 +672,9 @@ namespace AI.DataStructs.Algebraic
             int len = Count; // Длинна вектора
 
             for (int i = 1; i < len; i++)
-                this[i - 1] = this[i];
+                base[i - 1] = base[i];
 
-            this[len - 1] = item;
+            base[len - 1] = item;
         }
 
         /// <summary>

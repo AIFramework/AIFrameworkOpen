@@ -11,8 +11,17 @@ namespace AI.DataPrepaire.DataNormalizers
     [Serializable]
     public class MinimaxNomalizer : Normalizer
     {
+        /// <summary>
+        /// Минимумы по столбцам
+        /// </summary>
         public double[] Min { get; set; }
+        /// <summary>
+        /// Максимумы по столбцам
+        /// </summary>
         public double[] Max { get; set; }
+        /// <summary>
+        /// Размах по столбцам
+        /// </summary>
         public double[] MaxMinusMin { get; set; }
 
 

@@ -94,10 +94,8 @@ namespace AI.DataPrepaire.Pipelines
 
 
         /// <summary>
-        /// Обучение ковейера
+        /// Обучение конвейера
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="labels"></param>
         public virtual void Train(IEnumerable<T> data, IEnumerable<double> labels, bool yNormal = true)
         {
 
@@ -155,9 +153,6 @@ namespace AI.DataPrepaire.Pipelines
         /// <summary>
         /// Обучение и тестирование
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="marks"></param>
-        /// <returns></returns>
         public virtual double TrainTest(T[] data, double[] marks, double trainPart = 0.9, int seed = 0, bool yNormal = true)
         {
             List<T> trainX = new List<T>((int)(trainPart * data.Length));
@@ -291,7 +286,7 @@ namespace AI.DataPrepaire.Pipelines
             /// <summary>
             /// Добавление объекта в выборку
             /// </summary>
-            /// <param name="obj">Классифицируемый объект/param>
+            /// <param name="obj">Классифицируемый объект</param>
             /// <param name="target">Целевое значение</param>
             public void Add(T obj, double target)
             {
@@ -323,7 +318,7 @@ namespace AI.DataPrepaire.Pipelines
             /// <summary>
             /// Элемент датасета
             /// </summary>
-            /// <param name="classN">Индекс класса</param>
+            /// <param name="target">Целевое значение</param>
             /// <param name="obj">Классифицируемый объект</param>
             public DataSampleR(T obj, double target)
             {

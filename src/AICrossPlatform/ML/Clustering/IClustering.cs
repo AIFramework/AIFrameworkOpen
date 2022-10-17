@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AI.ML.Clustering
 {
     /// <summary>
-    /// Interface for metric clustering algorithms
+    /// Интерфейс для метрического алгоритма кластеризации
     /// </summary>
     public interface IClustering
     {
@@ -20,10 +20,10 @@ namespace AI.ML.Clustering
         int[] Classify(IEnumerable<Vector> vectors);
 
         /// <summary>
-        /// Clustering training
+        /// Обучение кластеризации
         /// </summary>
-        /// <param name="dataset">Vectors</param>
-        /// <param name="param">Free parametr</param>
+        /// <param name="dataset">Векторы</param>
+        /// <param name="param">Свободный параметр</param>
         void Train(Vector[] dataset, int param);
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace AI.ML.Clustering
         Func<Vector, Vector, double> DistanceFunction { get; set; }
 
         /// <summary>
-        /// Clusters array
+        /// Массив кластеров
         /// </summary>
         Cluster[] Clusters { get; }
     }

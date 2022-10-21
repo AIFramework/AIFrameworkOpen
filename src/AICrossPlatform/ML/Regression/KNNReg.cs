@@ -1,4 +1,5 @@
 ﻿/*
+/*
  * Created by SharpDevelop.
  * User: 01
  * Date: 31.03.2016
@@ -124,7 +125,7 @@ namespace AI.ML.Regression
 
             catch
             {
-                throw new Exception("Save error (source: kNNRegr)");
+                throw new Exception("Ошибка сохранения (источник:  kNNRegr)");
             }
         }
 
@@ -157,7 +158,7 @@ namespace AI.ML.Regression
 
             catch
             {
-                throw new Exception("Load error (source: KnnMultyRegr)");
+                throw new Exception("Ошибка загрузки (источник: KnnMultyRegr)");
             }
 
         }

@@ -39,7 +39,7 @@ namespace AI.Extensions
         /// <summary>
         /// Writes IByteConvertable to the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="convertable"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -56,7 +56,7 @@ namespace AI.Extensions
         /// <summary>
         /// Writes IByteConvertable array to the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="convertables"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -77,7 +77,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads vector from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector ReadVector(this InMemoryDataStream stream)
@@ -87,7 +87,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads vector from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -99,7 +99,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads vector array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector[] ReadVectors(this InMemoryDataStream stream)
@@ -117,7 +117,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads vector array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -129,7 +129,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads matrix from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix ReadMatrix(this InMemoryDataStream stream)
@@ -139,7 +139,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads matrix from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -151,7 +151,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads matrix array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix[] ReadMatrices(this InMemoryDataStream stream)
@@ -169,7 +169,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads matrix array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -181,7 +181,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads tensor from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Tensor ReadTensor(this InMemoryDataStream stream)
@@ -191,7 +191,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads tensor from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -203,7 +203,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads tensor array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Tensor[] ReadTensors(this InMemoryDataStream stream)
@@ -221,7 +221,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads tensor array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -233,7 +233,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads NDTensor from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static NDTensor ReadNDTensor(this InMemoryDataStream stream)
@@ -243,7 +243,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads NDTensor from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -255,7 +255,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads NDTensor array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static NDTensor[] ReadNDTensors(this InMemoryDataStream stream)
@@ -273,7 +273,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads NDTensor array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -285,7 +285,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads NNValue from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static NNValue ReadNNValue(this InMemoryDataStream stream)
@@ -295,7 +295,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads NNValue from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -307,7 +307,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads NNValue array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static NNValue[] ReadNNValues(this InMemoryDataStream stream)
@@ -325,7 +325,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads NNValue array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -337,7 +337,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads complex vector from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ComplexVector ReadComplexVector(this InMemoryDataStream stream)
@@ -347,7 +347,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads complex vector from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -359,7 +359,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads complex vector array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ComplexVector[] ReadComplexVectors(this InMemoryDataStream stream)
@@ -377,7 +377,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads complex vector array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -389,7 +389,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads complex matrix from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ComplexMatrix ReadComplexMatrix(this InMemoryDataStream stream)
@@ -399,7 +399,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads complex matrix from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -411,7 +411,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads complex matrix array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ComplexMatrix[] ReadComplexMatrices(this InMemoryDataStream stream)
@@ -429,7 +429,7 @@ namespace AI.Extensions
         /// <summary>
         /// Reads complex matrix array from the stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="result"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

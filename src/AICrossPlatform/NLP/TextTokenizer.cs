@@ -71,26 +71,20 @@ namespace AI.NLP
             if (WordCount == -1)
             {
                 for (int i = 0; i < dic.Length; i++)
-                {
                     dictionary.Add(dic[i].Word, i);
-                }
             }
             else
             {
                 int len = Math.Min(WordCount, dic.Length);
 
                 for (int i = 0; i < len; i++)
-                {
                     dictionary.Add(dic[i].Word, i);
-                }
             }
 
             Words = new string[dictionary.Count];
 
             foreach (KeyValuePair<string, int> word in dictionary)
-            {
                 Words[word.Value] = word.Key;
-            }
 
         }
 
@@ -110,13 +104,9 @@ namespace AI.NLP
             {
                 string word = IsStem ? Stemmers.StemmerRus.TransformingWord(array[i]) : array[i];
                 if (dictionary.ContainsKey(word))
-                {
                     vec[i] = dictionary[word];
-                }
                 else
-                {
                     vec[i] = -1;
-                }
             }
 
             return vec;
@@ -130,9 +120,7 @@ namespace AI.NLP
             string wordP = IsStem ? Stemmers.StemmerRus.TransformingWord(outp) : outp;
 
             if (dictionary.ContainsKey(wordP))
-            {
                 return dictionary[wordP];
-            }
 
             return dictionary.Count;
         }
@@ -166,35 +154,25 @@ namespace AI.NLP
             if (!Separaters.Contains(" "))
             {
                 for (int i = 0; i < Separaters.Length; i++)
-                {
                     Separaters[i] = Separaters[i].Replace(" ", "");
-                }
 
                 outp = outp.Replace(" ", " ");
             }
 
             for (int i = 0; i < DelChars.Length; i++)
-            {
                 outp = outp.Replace(DelChars[i], '\0');
-            }
 
 
             for (int i = 0; i < Separaters.Length; i++)
-            {
                 outp = outp.Replace(Separaters[i], " ");
-            }
 
 
             if (IsLower)
-            {
                 outp = outp.ToLower();
-            }
 
 
             while (outp.Contains("  "))
-            {
                 outp = outp.Replace("  ", " ");
-            }
 
             return outp;
         }

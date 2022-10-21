@@ -70,13 +70,13 @@ namespace AI.NLP
         /// <summary>
         /// Данные вероятностного словаря
         /// </summary>
-        /// <param name="text">Тукст</param>
+        /// <param name="text">Текст</param>
         /// <returns></returns>
         public ProbabilityDictionaryData[] Run(string text)
         {
             GetWords(text);
             Analis();
-            list.Sort((a, b) => a.Probability.CompareTo(b.Probability) * -1); // Sotrting массива
+            list.Sort((a, b) => a.Probability.CompareTo(b.Probability) * -1); // Сортировка массива
             pDictionary = list.ToArray(); // создание массива
             return pDictionary;
         }
@@ -115,9 +115,7 @@ namespace AI.NLP
             string[] strs = new string[len];
 
             for (int i = 0; i < len; i++)
-            {
                 strs[i] = wsp[i].Word;
-            }
 
             return strs;
         }
@@ -131,12 +129,8 @@ namespace AI.NLP
         {
 
             foreach (char ch in str)
-            {
                 if (char.IsDigit(ch) || char.IsSeparator(ch))
-                {
                     return true;
-                }
-            }
 
             return false;
         }
@@ -151,23 +145,12 @@ namespace AI.NLP
             bool flag;
 
             if (IsDigitDel)
-            {
                 Words.RemoveAll(DigialPredickat);// Удаление строк с числами
-            }
 
             foreach (string str in stop)
-            {
-                do
-                {
-                    flag = Words.Remove(str);
-                }
-                while (flag);
-            }
-
-
+                do flag = Words.Remove(str); while (flag);
 
             flag = false;
-
 
             // Составление словаря	
             while (Words.Count != 0)
@@ -177,36 +160,18 @@ namespace AI.NLP
                 ProbabilityDictionaryData fD = new ProbabilityDictionaryData();
 
                 for (int i = 0; i < Words.Count; i++)
-                {
-                    if (Words[i] == str)
-                    {
-                        count++;
-                    }
-                }
-
+                    if (Words[i] == str)  count++;
 
                 fD.Probability = count / n;
                 fD.Word = str;
 
                 list.Add(fD); // Добавить элемент
 
-
                 // Удаление данных
-                do
-                {
-                    flag = Words.Remove(str);
-                }
-                while (flag);
-
+                do flag = Words.Remove(str); while (flag);
             }
 
         }
-
-
-
-
-
-
 
 
         /// <summary>
@@ -221,17 +186,10 @@ namespace AI.NLP
             int len = (pDictionary.Length < index) ? pDictionary.Length : index;
 
             for (int i = 0; i < len; i++)
-            {
                 output += pDictionary[i].Word + " " + pDictionary[i].Probability + "\n";
-            }
 
             return output.Trim();
         }
-
-
-
-
-
 
         /// <summary>
         /// Получение слов
@@ -251,12 +209,7 @@ namespace AI.NLP
                 f = true;
 
                 for (int i = 0; i < stop.Length; i++)
-                {
-                    if (stop[i] == str)
-                    {
-                        f = false;
-                    }
-                }
+                    if (stop[i] == str)  f = false;
 
                 if (f)
                 {
@@ -292,20 +245,13 @@ namespace AI.NLP
                 f = true;
 
                 for (int i = 0; i < stop.Length; i++)
-                {
-                    if (stop[i] == str)
-                    {
-                        f = false;
-                    }
-                }
+                    if (stop[i] == str) f = false;
 
                 if (f)
                 {
                     word = str;
                     if (IsStem)
-                    {
                         word = StemmerRus.TransformingWord(word);
-                    }
 
                     Words.Add(word);
                 }

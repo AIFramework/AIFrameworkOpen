@@ -1,25 +1,35 @@
-﻿using AI.DataStructs;
-using AI.DataStructs.Algebraic;
+﻿using AI.DataStructs.Algebraic;
+using AI.DataStructs;
 using AI.Extensions;
 using AI.Statistics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
-namespace AI.NLP
+namespace AI.ML.HMM
 {
     /// <summary>
-    /// Быстрые марковские цепи
+    /// Марковская цепь (Быстрый алгоритм)
     /// </summary>
     [Serializable]
-    public class HMMFast : ISavable
+    public class MCFast
     {
         #region Поля и свойства
+
+        /// <summary>
+        /// Токен начала
+        /// </summary>
+        public int StartToken { get; set; } = -1;
+
+        /// <summary>
+        /// Токен окончания
+        /// </summary>
+        public int EndToken { get; set; } = -2;
+
         /// <summary>
         /// Элемент модели
         /// </summary>
-        public HMMFastModel[] Models { get; private set; }
+        public MCFastModel[] Models { get; private set; }
         /// <summary>
         /// Глубина моделирования
         /// </summary>
@@ -38,13 +48,13 @@ namespace AI.NLP
         /// <summary>
         /// Быстрые марковские цепи
         /// </summary>
-        public HMMFast() { }
+        public MCFast() { }
         /// <summary>
         /// Быстрые марковские цепи
         /// </summary>
-        public HMMFast(HMMFastModel[] models, Vector prob)
+        public MCFast(MCFastModel[] models, Vector prob)
         {
-            Models = new HMMFastModel[models.Length];
+            Models = new MCFastModel[models.Length];
             NGram = models[0].Model.Length;
             Array.Copy(models, 0, Models, 0, models.Length);
             ProbabilityVector = prob.Clone();
@@ -55,59 +65,41 @@ namespace AI.NLP
         /// <summary>
         /// Обучение языковой модели
         /// </summary>
-        /// <param name="trainText">Тренировочный текст</param>
+        /// <param name="trainSeq">Тренировочная последовательность</param>
         /// <param name="addStart">Добавлять ли старт вначале</param>
-        public void Train(string trainText, bool addStart = false)
+        public void Train(int[] trainSeq, bool addStart = false)
         {
-            if (trainText == null)
-            {
-                throw new ArgumentNullException(nameof(trainText));
-            }
+            if (trainSeq == null)
+                throw new ArgumentNullException(nameof(trainSeq));
 
-            string trainTextFinal;
+            List<int> trainTextFinal = new List<int>(trainSeq.Length);
 
             if (addStart)
-            {
-                StringBuilder sb = new StringBuilder();
-
                 for (int i = 0; i < NGram - 1; i++)
-                {
-                    sb.Append("<start> ");
-                }
+                    trainTextFinal.Add(StartToken);
 
-                trainTextFinal = sb.ToString() + trainText.ToLower(); // тренировочный текст
-            }
+            trainTextFinal.AddRange(trainSeq); // Добвление последовательности
 
-            else
-            {
-                trainTextFinal = trainText.ToLower();
-            }
-
-            string[] words = trainTextFinal.Split(); // массив слов
-            List<HMMFastModel> list = new List<HMMFastModel>(); // модель
-            string[] nG = new string[NGram]; // n-Грамма
+            List<MCFastModel> list = new List<MCFastModel>(); // модель
+            int[] nG = new int[NGram]; // n-Грамма
 
             for (int i = 0; i < NGram; i++)
-            {
-                nG[i] = words[i]; // Заполнение первой n-грамы
-            }
+                nG[i] = trainTextFinal[i]; // Заполнение первой n-грамы
 
-            HMMFastModel data = new HMMFastModel(nG, 1);
+            MCFastModel data = new MCFastModel(nG, 1);
             list.Add(data); // добавление н-грамы в список
             bool flag; // установка флага, который проверяет есть ли данная н-грама
 
-            for (int i = 0; i < words.Length - NGram + 1; i++)
+            for (int i = 0; i < trainTextFinal.Count - NGram + 1; i++)
             {
-                nG = new string[NGram]; // сброс н-грамы для повторного использования
+                nG = new int[NGram]; // сброс н-грамы для повторного использования
 
                 for (int k = 0; k < NGram; k++)
-                {
-                    nG[k] = words[i + k]; // заполнение новой н-грамы
-                }
+                    nG[k] = trainTextFinal[i + k]; // заполнение новой н-грамы
+
                 flag = false; // флаг устанавливается в false
 
                 for (int j = 0; j < list.Count; j++)
-                {
                     // Сравненние массивов строк, если они равны возвращается true
                     if (nG.ElementWiseEqual(list[j].Model))
                     {
@@ -116,11 +108,11 @@ namespace AI.NLP
                         break;// выход из цикла
                     }
 
-                }
+
                 //Если н-грамы нет — добавляем ее
                 if (!flag)
                 {
-                    data = new HMMFastModel(nG, 1);
+                    data = new MCFastModel(nG, 1);
                     list.Add(data);
                 }
             }
@@ -129,7 +121,7 @@ namespace AI.NLP
 
             for (int i = 0; i < list.Count; i++)
             {
-                list[i].Probability /= words.Length;
+                list[i].Probability /= trainTextFinal.Count;
                 ProbabilityVector[i] = list[i].Probability;
             }
 
@@ -140,150 +132,125 @@ namespace AI.NLP
         /// <summary>
 		/// Генерация текста
 		/// </summary>
-		/// <param name="num">число слов</param>
-		/// <returns>сгенерированная строка</returns>
-		public string Generate(int num)
+		/// <param name="num">Число токенов</param>
+		/// <returns>Сгенерированная строка</returns>
+		public int[] Generate(int num)
         {
             Random random = new Random();
 
-            string[] strs = Models[random.Next(Models.Length)].Model;
+            int[] tokens = Models[random.Next(Models.Length)].Model;
 
-            return Generate(num, strs, random);
+            return Generate(num, tokens, random);
         }
         /// <summary>
         /// Генерация текста
         /// </summary>
         /// <param name="num">число слов</param>
-        /// <param name="strs">начальное состояние</param>
+        /// <param name="tokens">начальное состояние</param>
         /// <returns>сгенерированная строка</returns>
-        public string Generate(int num, string[] strs)
+        public int[] Generate(int num, int[] tokens)
         {
-            return Generate(num, strs, new Random());
+            return Generate(num, tokens, new Random());
         }
         /// <summary>
         /// Генерация текста
         /// </summary>
         /// <param name="num">число слов</param>
-        /// <param name="strs">начальное состояние</param>
+        /// <param name="tokens">начальное состояние</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
         /// <returns>сгенерированная строка</returns>
-        public string Generate(int num, string[] strs, Random rnd)
+        public int[] Generate(int num, int[] tokens, Random rnd)
         {
             if (num <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(num), "Count of words must be positive value");
-            }
+                throw new ArgumentOutOfRangeException(nameof(num), "Число слов должно быть больше нуля");
 
-            if (strs == null)
-            {
-                throw new ArgumentNullException(nameof(strs));
-            }
+            if (tokens == null)
+                throw new ArgumentNullException(nameof(tokens));
 
             if (rnd == null)
-            {
                 throw new ArgumentNullException(nameof(rnd));
-            }
 
-            string[] strs2 = new string[num]; // Массив для генерации
-            string[] wordBeg = new string[NGram - 1]; // начальное состояние н-граммы
-            string str = string.Empty; // сгенерированная строка
-            HMMNextWord[] nextWords; // массив "следующий слов", концы н-грам с соот. вероятностями
+            List<int> seqTokensGenerate = new List<int>(num + NGram); // Массив для генерации
+            int[] startNgramState = new int[NGram - 1]; // начальное состояние н-граммы
+            List<int> generatedSeqList = new List<int>(num + NGram); // сгенерированная строка
+            MCNextToken[] nextToken; // массив "следующих токенов", концы н-грам с соот. вероятностями
             bool stop = false;
 
             int i = 0;
 
             for (; i < NGram - 1; i++)
-            {
-                strs2[i] = strs[i];
-            }
+                seqTokensGenerate.Add(tokens[i]);
 
             for (; i < num && !stop; i++)
             {
-                Array.Copy(strs2, i - NGram + 1, wordBeg, 0, NGram - 1);
-                nextWords = FindInversProbabilityNGramm(wordBeg); // получения завершений н-граммы с соот вероятностями
+                // ToDo: Оптимизировать
+                Array.Copy(seqTokensGenerate.ToArray(), i - NGram + 1, startNgramState, 0, NGram - 1);
+                nextToken = FindInversProbabilityNGramm(startNgramState); // получения завершений н-граммы с соот вероятностями
 
-                if (nextWords.Length == 0)
-                {
-                    break;
-                }
+                if (nextToken.Length == 0) break;
 
                 int counter = 0, // счетчик
-                mZ = nextWords.Length; // модуль кольца вычетов
+                mZ = nextToken.Length; // модуль кольца вычетов
 
                 while (true)
                 {
-                    if (rnd.NextDouble() > nextWords[counter % mZ].Probability)
+                    if (rnd.NextDouble() > nextToken[counter % mZ].Probability)
                     {
-                        strs2[i] = nextWords[counter % mZ].Value;
-                        if (strs2[i] == "<start>" || strs2[i] == "<end>")
+                        seqTokensGenerate.Add(nextToken[counter % mZ].Value);
+                        if (seqTokensGenerate[i] == StartToken || seqTokensGenerate[i] == EndToken)
                         {
                             stop = true;
                             break;
                         }
-                        str += " " + strs2[i];
+                        generatedSeqList.Add(seqTokensGenerate[i]);
                         break;
                     }
 
-                    if (counter > num * 100)
-                    {
-                        break;
-                    }
-
+                    if (counter > num * 100) break;
                     counter++;
                 }
             }
 
-            return str;
+            return generatedSeqList.ToArray();
         }
         /// <summary>
-        /// Преобразование текста в вектор + изменение модели
+        /// Преобразование последовательности в вектор + изменение модели
         /// </summary>
         /// <param name="text">текст</param>
         /// <returns>вектор</returns>
-        public Vector TextToVector(string text)
+        public Vector SeqToVector(int[] text)
         {
             if (text == null)
-            {
                 throw new ArgumentNullException(nameof(text));
-            }
 
             for (int i = 0; i < Models.Length; i++)
-            {
                 Models[i].Probability = 0;
-            }
 
-            string trainText = text.ToLower(); // тренировочный текст
-            string[] words = trainText.Split(); // массив слов
-            string[] nG; // n-Грамма
+            int[] nG; // n-Грамма
             Vector output;
 
 
-            for (int i = 0; i < words.Length - NGram + 1; i++)
+            for (int i = 0; i < text.Length - NGram + 1; i++)
             {
-                nG = new string[NGram]; // сброс н-грамы для повторного использования
+                nG = new int[NGram]; // сброс н-грамы для повторного использования
 
                 for (int k = 0; k < NGram; k++)
-                {
-                    nG[k] = words[i + k]; // заполнение новой н-грамы
-                }
+                    nG[k] = text[i + k]; // заполнение новой н-грамы
 
                 for (int j = 0; j < Models.Length; j++)
-                {
                     // Сравненние массивов строк, если они равны возвращается true
                     if (nG.ElementWiseEqual(Models[j].Model))
                     {
                         Models[j].Probability++; // Увеличение значения счетчика для данной н-грамы
                         break;// выход из цикла
                     }
-
-                }
             }
 
             ProbabilityVector = new Vector(Models.Length); // вероятностный вектор
 
             for (int i = 0; i < Models.Length; i++)
             {
-                Models[i].Probability /= words.Length;
+                Models[i].Probability /= text.Length;
                 ProbabilityVector[i] = Models[i].Probability;
             }
 
@@ -297,17 +264,17 @@ namespace AI.NLP
 
         #region Сохранение
         /// <summary>
-        /// Сохранениеs HMMFast to file
+        /// Сохранение Марковской модели в файл
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             BinarySerializer.Save(path, this);
         }
         /// <summary>
-        /// Сохранениеs HMMFast to stream
+        /// Сохранение Марковской модели в поток
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         public void Save(Stream stream)
         {
             BinarySerializer.Save(stream, this);
@@ -316,31 +283,31 @@ namespace AI.NLP
 
         #region Загрузка
         /// <summary>
-        /// Loads HMMFast from file
+        /// Загрузка марковской модели из файла
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <returns></returns>
-        public static HMMFast Load(string path)
+        public static MCFast Load(string path)
         {
-            return BinarySerializer.Load<HMMFast>(path);
+            return BinarySerializer.Load<MCFast>(path);
         }
         /// <summary>
-        /// Loads HMMFast from stream
+        /// Загрузка марковской модели из потока
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
-        public static HMMFast Load(Stream stream)
+        public static MCFast Load(Stream stream)
         {
-            return BinarySerializer.Load<HMMFast>(stream);
+            return BinarySerializer.Load<MCFast>(stream);
         }
         #endregion
 
         #endregion
 
         #region Приватные методы
-        private HMMNextWord[] FindInversProbabilityNGramm(string[] begin)
+        private MCNextToken[] FindInversProbabilityNGramm(int[] begin)
         {
-            List<HMMNextWord> hmmList = new List<HMMNextWord>();
+            List<MCNextToken> hmmList = new List<MCNextToken>();
             bool flag;
 
             for (int i = 0; i < Models.Length; i++)
@@ -348,73 +315,18 @@ namespace AI.NLP
                 flag = true;
 
                 for (int j = 0; j < NGram - 1; j++)
-                {
                     if (begin[j] != Models[i].Model[j])
                     {
                         flag = false;
                         break;
                     }
-                }
 
                 if (flag)
-                {
-                    hmmList.Add(new HMMNextWord(Models[i].Model[NGram - 1], InvertedProbabilityVector[i]));
-                }
+                    hmmList.Add(new MCNextToken(Models[i].Model[NGram - 1], InvertedProbabilityVector[i]));
             }
 
             return hmmList.ToArray();
         }
         #endregion
-    }
-
-    /// <summary>
-    /// Блок для сохранения
-    /// </summary>
-    [Serializable]
-    public class HMMFastModel
-    {
-        /// <summary>
-        /// N-грамма
-        /// </summary>
-		public string[] Model { get; }
-        /// <summary>
-        /// Вероятность
-        /// </summary>
-        public double Probability { get; set; }
-
-        /// <summary>
-        /// Создание параметров для хранения марковской цепи
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="probability"></param>
-        public HMMFastModel(string[] model, double probability)
-        {
-            Model = model;
-            Probability = probability;
-        }
-    }
-
-    /// <summary>
-    /// Слово
-    /// </summary>
-    public class HMMNextWord
-    {
-        /// <summary>
-        /// Слово
-        /// </summary>
-		public string Value { get; }
-        /// <summary>
-        /// Вероятность
-        /// </summary>
-		public double Probability { get; }
-
-        /// <summary>
-        /// Слово
-        /// </summary>
-        public HMMNextWord(string val, double pr)
-        {
-            Value = val;
-            Probability = pr;
-        }
     }
 }

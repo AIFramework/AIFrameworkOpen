@@ -505,7 +505,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Сохранениеs matrix to file
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             BinarySerializer.Save(path, this);
@@ -513,7 +513,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Сохранениеs matrix to stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         public void Save(Stream stream)
         {
             BinarySerializer.Save(stream, this);
@@ -532,7 +532,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Loads matrix from file
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <returns></returns>
         public static ComplexMatrix Load(string path)
         {
@@ -551,7 +551,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Loads matrix from stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         public static ComplexMatrix Load(Stream stream)
         {

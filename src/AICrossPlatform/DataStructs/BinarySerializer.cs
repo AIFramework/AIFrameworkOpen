@@ -55,7 +55,7 @@ namespace AI.DataStructs
         /// Загрузка из потока
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         public static T Load<T>(Stream stream)
         {
@@ -117,7 +117,7 @@ namespace AI.DataStructs
         /// <summary>
         /// Сохранение в поток
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="data"></param>
         public static void Save<T>(Stream stream, T data)
         {

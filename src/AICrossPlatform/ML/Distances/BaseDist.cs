@@ -10,13 +10,13 @@ namespace AI.ML.Distances
     public static class BaseDist
     {
         /// <summary>
-        /// Lp family distances
+        /// Lp семейство расстояний
         /// </summary>
         public static double LpDist(IAlgebraicStructure<double> A, IAlgebraicStructure<double> B, int p)
         {
             if (A.Shape.Count != B.Shape.Count)
             {
-                throw new InvalidOperationException("Dimensions of the given structures mismatche");
+                throw new InvalidOperationException("Размерности не совпадают");
             }
 
             double res = 0, sempl;
@@ -33,7 +33,7 @@ namespace AI.ML.Distances
             return res;
         }
         /// <summary>
-        /// Euclidean distance
+        /// Евклидово расстояние
         /// </summary>
         public static double EuclideanDistance(IAlgebraicStructure<double> A, IAlgebraicStructure<double> B)
         {
@@ -47,14 +47,14 @@ namespace AI.ML.Distances
             return LinfDist((Vector)A.Data, (Vector)B.Data);
         }
         /// <summary>
-        /// Cosine similarity
+        /// Косинусное сходство
         /// </summary>
         public static double Cos(IAlgebraicStructure<double> a, IAlgebraicStructure<double> b)
         {
             return ((Vector)a.Data).Cos(b.Data);
         }
         /// <summary>
-        /// Cosine distance
+        /// Косинусное расстояние
         /// </summary>
         public static double CosDist(IAlgebraicStructure<double> a, IAlgebraicStructure<double> b)
         {
@@ -63,7 +63,7 @@ namespace AI.ML.Distances
             return 1.0 - (cos < eps ? eps : cos);
         }
         /// <summary>
-        /// Square of Euclidean distance
+        /// Квадрат эвклидова расстояния
         /// </summary>
         public static double SquareEucl(IAlgebraicStructure<double> a, IAlgebraicStructure<double> b)
         {
@@ -79,7 +79,7 @@ namespace AI.ML.Distances
             return sum;
         }
         /// <summary>
-        /// Square of Euclidean distance
+        /// Манхетонское расстояние
         /// </summary>
         public static double ManhattanDistance(IAlgebraicStructure<double> a, IAlgebraicStructure<double> b)
         {

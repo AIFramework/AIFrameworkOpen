@@ -18,9 +18,7 @@ namespace AI.NLP
         public static string Normalize(string input, bool isLower = true)
         {
             if (input.Contains("base64"))
-            {
                 return input;
-            }
 
             string output = isLower ? input.ToLower() : input;
             output = output.Replace("\r", "");
@@ -30,13 +28,9 @@ namespace AI.NLP
 
 
             while (output.Contains("  "))
-            {
                 output = output.Replace("  ", " ");
-            }
             while (output.Contains(".."))
-            {
                 output = output.Replace("..", ".");
-            }
 
             return output.Trim(' ');
         }
@@ -56,19 +50,14 @@ namespace AI.NLP
             outp = isLower? outp.ToLower() : outp;
 
             for (int i = 0; i < outp.Length; i++)
-            {
                 if (char.IsLetterOrDigit(outp[i]) || outp[i] == ' ')
-                {
                     charsADigit.Add(outp[i]);
-                }
-            }
+                
 
             string output = new string(charsADigit.ToArray());
 
             while (output.Contains("  "))
-            {
                 output = output.Replace("  ", " ");
-            }
 
             return output;
         }
@@ -84,19 +73,13 @@ namespace AI.NLP
             string outp = input.ToLower().Replace("\n", " ").Replace("\t", " ").Replace("ё", "е");
 
             for (int i = 0; i < outp.Length; i++)
-            {
                 if (char.IsLetter(outp[i]) || outp[i] == ' ')
-                {
                     chars.Add(outp[i]);
-                }
-            }
 
             string output = new string(chars.ToArray());
 
             while (output.Contains("  "))
-            {
                 output = output.Replace("  ", " ");
-            }
 
             return output;
         }
@@ -113,19 +96,13 @@ namespace AI.NLP
             string outp = input.ToLower().Replace("\n", " ").Replace("\t", " ").Replace("ё", "е");
 
             for (int i = 0; i < outp.Length; i++)
-            {
                 if (IsRusLeter(outp[i]) || outp[i] == ' ')
-                {
                     chars.Add(outp[i]);
-                }
-            }
 
             string output = new string(chars.ToArray());
 
             while (output.Contains("  "))
-            {
                 output = output.Replace("  ", " ");
-            }
 
             return output;
         }
@@ -147,15 +124,12 @@ namespace AI.NLP
             string oldWord = "";
 
             for (int i = 0; i < strs.Length; i++)
-            {
                 if (strs[i] != oldWord)
                 {
                     stringBuilder.Append(strs[i]);
                     stringBuilder.Append(" ");
                     oldWord = strs[i];
                 }
-            }
-
 
             return stringBuilder.ToString().Trim(' ');
         }

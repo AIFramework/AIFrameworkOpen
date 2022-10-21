@@ -28,12 +28,8 @@ namespace AI
 
 
             for (int i = 0; i < nMax; i++)
-            {
                 for (int j = 0; j < ht.Count; j++)
-                {
                     outp[i] += st[i + j] * ht[j];
-                }
-            }
 
             return outp;
         }
@@ -51,12 +47,8 @@ namespace AI
 
 
             for (int i = 0; i < nMax; i++)
-            {
                 for (int j = 0; j < ht.Count; j++)
-                {
                     outp[i] += st[i + j] * ht[j];
-                }
-            }
 
             double e1 = AnalyticGeometryFunctions.NormVect(signal);
             double e2 = AnalyticGeometryFunctions.NormVect(ht);
@@ -74,41 +66,36 @@ namespace AI
             return DirectConvolution(signal, ht) / fd;
         }
         /// <summary>
-        /// Creating a new signal reference vector
+        /// Создание нового опорного вектора сигнала
         /// </summary>
         /// <param name="st">Сигнал</param>
-        /// <param name="htLen">Импульсивный ответ length</param>
+        /// <param name="htLen">Длинна импульсной характеристики</param>
         public static Vector StWithHt(Vector st, int htLen)
         {
             int nMax = st.Count + (2 * htLen);
             double[] stN = new double[nMax];
 
             for (int j = htLen, max = j + st.Count, i = 0; j < max; j++)
-            {
                 stN[j] = st[i++];
-            }
 
             return new Vector(stN);
         }
         /// <summary>
-        /// Creating a new signal reference vector
+        /// Создание нового опорного вектора сигнала
         /// </summary>
         /// <param name="st">Сигнал</param>
-        /// <param name="htLen">Импульсивный ответ length</param>
+        /// <param name="htLen">Длинна импульсной характеристики</param>
         public static ComplexVector StWithHt(ComplexVector st, int htLen)
         {
             int nMax = st.Count + (2 * htLen);
             Complex[] stN = new Complex[nMax];
 
             for (int j = htLen, max = j + st.Count, i = 0; j < max; j++)
-            {
                 stN[j] = st[i++];
-            }
-
             return new ComplexVector(stN);
         }
         /// <summary>
-        /// Direct convolution complex vector
+        /// Прямая свертка комплексного вектора
         /// </summary>
         public static ComplexVector DirectConvolution(ComplexVector A, ComplexVector B)
         {

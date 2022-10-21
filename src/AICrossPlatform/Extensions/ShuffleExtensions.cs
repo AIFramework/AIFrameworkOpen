@@ -29,10 +29,10 @@ namespace AI.Extensions
             }
         }
         /// <summary>
-        /// Shuffle a list using the Knuth method
+        /// Перемешивание списка методом Кнута
         /// </summary>
-        /// <param name="data">List</param>
-        /// <param name="seed">Random number generator seed</param>
+        /// <param name="data">Список</param>
+        /// <param name="seed">Seed для генератора псевдо-случайных чисел</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Shuffle<T>(this IList<T> data, int? seed = null)
         {

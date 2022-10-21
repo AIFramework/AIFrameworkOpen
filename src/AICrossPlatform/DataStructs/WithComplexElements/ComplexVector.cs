@@ -850,7 +850,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Сохранить в файл
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             BinarySerializer.Save(path, this);
@@ -858,7 +858,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Сохранениеs vector to stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         public void Save(Stream stream)
         {
             BinarySerializer.Save(stream, this);
@@ -877,7 +877,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Загрузить из файла
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <returns></returns>
         public static ComplexVector Load(string path)
         {
@@ -896,7 +896,7 @@ namespace AI.DataStructs.WithComplexElements
         /// <summary>
         /// Загрузить из потока
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         public static ComplexVector Load(Stream stream)
         {

@@ -129,7 +129,7 @@ namespace AI
         /// <summary>
         /// Сохранениеvector как звука
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <param name="vector"></param>
         /// <param name="fd"></param>
         public void SaveVector(string path, Vector vector, int fd)

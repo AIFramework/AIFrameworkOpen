@@ -4,18 +4,18 @@ using System;
 namespace AI.Statistics
 {
     /// <summary>
-    /// Random selection of items
+    /// Случайный выбор
     /// </summary>
-    /// <typeparam name="T">Array type</typeparam>
+    /// <typeparam name="T">Тип массива элементов</typeparam>
     [Serializable]
     public class RandomItemSelection<T>
     {
         /// <summary>
-        /// Random selection of elements with a given distribution function
+        /// Случайный выбор элемента по заданному распределению
         /// </summary>
-        /// <param name="distributionFunction">Samples of a discrete distribution function</param>
-        /// <param name="arrayStates">Array of states</param>
-        /// <param name="random">Random number generator</param>
+        /// <param name="distributionFunction">Дискретная функция распределния</param>
+        /// <param name="arrayStates">Массив элементов</param>
+        /// <param name="random">Генератор псевдо-случайных чисел</param>
         public static T GetElement(Vector distributionFunction, T[] arrayStates, Random random)
         {
             while (true)

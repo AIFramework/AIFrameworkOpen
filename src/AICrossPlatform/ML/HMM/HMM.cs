@@ -20,7 +20,6 @@ namespace AI.ML.HMM
         private int[] states;
         private readonly Random rnd = new Random();
 
-
         /// <summary>
         /// Марковская цепь
         /// </summary>
@@ -79,11 +78,8 @@ namespace AI.ML.HMM
             stateMatrix = new Matrix(_stateMatrix);
         }
 
-
-
-
         /// <summary>
-        /// Maximum transition probability
+        /// Максимальная вероятность перехода
         /// </summary>
         /// <param name="matrix">Матрица состояний</param>
         private double GetMax(double[,] matrix)
@@ -104,12 +100,11 @@ namespace AI.ML.HMM
             return max;
         }
 
-
         /// <summary>
-        /// Generating text
+        /// Генерация текста
         /// </summary>
-        /// <param name="num">Шагs count</param>
-        /// <param name="begin">The first word</param>
+        /// <param name="num">Число шагов</param>
+        /// <param name="begin">Первое слово</param>
         public int[] Generate(int num, int begin)
         {
             int[] seq = new int[num];

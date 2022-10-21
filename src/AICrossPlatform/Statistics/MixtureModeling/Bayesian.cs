@@ -121,9 +121,7 @@ namespace AI.Statistics.MixtureModeling
         {
             int[] indicators = new int[inps.Count];
             for (int i = 0; i < inps.Count; i++)
-            {
                 indicators[i] = LogArgmax1D(inps[i], distribution, param_dist, apriori);
-            }
             return indicators;
         }
 
@@ -138,9 +136,7 @@ namespace AI.Statistics.MixtureModeling
         {
             int[] indicators = new int[inps.Length];
             for (int i = 0; i < inps.Length; i++)
-            {
                 indicators[i] = LogArgmaxND(inps[i], distribution, param_dist, apriori);
-            }
             return indicators;
         }
 

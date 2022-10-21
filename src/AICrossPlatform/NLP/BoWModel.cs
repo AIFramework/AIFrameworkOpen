@@ -1,5 +1,4 @@
-﻿
-using AI.DataStructs.Algebraic;
+﻿using AI.DataStructs.Algebraic;
 using AI.Statistics;
 using System;
 using System.IO;
@@ -8,35 +7,35 @@ using System.IO;
 namespace AI.NLP
 {
     /// <summary>
-    /// Bag-of-Words model
+    /// Bag-of-Words (Мешок слов)
     /// </summary>
     [Serializable]
     public class BoWModel
     {
         private readonly string[] model;
         /// <summary>
-        /// A vector where all 0's except for the word position
+        /// Вектор, в котором все 0, кроме позиции слова
         /// </summary>
 		public Vector vector;
         /// <summary>
-        /// Are stop words analyzed
+        /// Анализировать ли стоп слова
         /// </summary>
 		public bool isStop { get; set; }
         /// <summary>
-        /// Are numbers being skipped
+        /// Пропускать ли числа
         /// </summary>
 		public bool isDig { get; set; }
         /// <summary>
-        /// Vector / Dictionary Length
+        /// Размерность вектора/словаря
         /// </summary>
 		public int Len;
         /// <summary>
-        /// Is the vector normalization
+        /// Нужно ли нормализовать вектор
         /// </summary>
 		public bool IsNormalise { get; set; }
 
         /// <summary>
-        ///  Bag-of-Words model
+        ///  Bag-of-Words (Мешок слов)
         /// </summary>
         public BoWModel(string pathModel)
         {
@@ -49,9 +48,9 @@ namespace AI.NLP
         }
 
         /// <summary>
-        /// Getting a vector from text
+        /// Вычислить вектор из текста
         /// </summary>
-        /// <param name="text">Text</param>
+        /// <param name="text">Текст</param>
         public Vector GetVector(string text)
         {
             ProbabilityDictionary prob = new ProbabilityDictionary(isStop, isDig);
@@ -60,15 +59,9 @@ namespace AI.NLP
             vector = new Vector(vector.Count);
 
             for (int i = 0; i < pds.Length; i++)
-            {
                 for (int j = 0; j < model.Length; j++)
-                {
                     if (pds[i].Word == model[j].Trim('\r'))
-                    {
                         vector[j]++;
-                    }
-                }
-            }
 
             if (IsNormalise)
             {
@@ -80,7 +73,7 @@ namespace AI.NLP
         }
 
         /// <summary>
-        /// Generating a model
+        /// Генерация/создание модели
         /// </summary>
         public static void ModelGen(string text, string path, bool isStop = false)
         {
@@ -90,9 +83,7 @@ namespace AI.NLP
             string[] newModel = new string[len];
 
             for (int i = 0; i < len; i++)
-            {
                 newModel[i] = pb[i].Word;
-            }
 
             File.WriteAllLines(path, newModel);
         }

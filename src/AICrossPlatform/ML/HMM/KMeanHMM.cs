@@ -6,20 +6,20 @@ using System.Linq;
 namespace AI.ML.HMM
 {
     /// <summary>
-    /// Hidden Markov model with state extraction based on the k-means algorithm
+    /// Скрытая марковская модель с выделением состояний на основе алгоритма k-средних
     /// </summary>
     [Serializable]
     public class KMeanHMM
     {
         /// <summary>
-        /// Extractor based on the k-means algorithm
+        /// Алгоритм выделения состояний на основе алгоритма k-средних
         /// </summary>
         public KMeans KMean { get; set; }
 
         private readonly HMM hmm = new HMM();
 
         /// <summary>
-        /// Hidden Markov model with state extraction based on the k-means algorithm
+        /// Скрытая марковская модель с выделением состояний на основе алгоритма k-средних
         /// </summary>
         public KMeanHMM(int numClasters = 3)
         {
@@ -27,9 +27,9 @@ namespace AI.ML.HMM
         }
 
         /// <summary>
-        /// Obtaining a matrix of probabilities of transitions between states
+        /// Получение матрицы вероятностей переходов между состояниями
         /// </summary>
-        /// <param name="seq">sequence of vectors</param>
+        /// <param name="seq">Последовательность векторов</param>
         public Matrix GetTransitionMatrix(Vector[] seq)
         {
             int[] states = KMean.Classify(seq).ToArray();
@@ -38,9 +38,9 @@ namespace AI.ML.HMM
         }
 
         /// <summary>
-        /// Obtaining a vector of probabilities of transitions between states
+        /// Получение вектора вероятностей переходов между состояниями
         /// </summary>
-        /// <param name="seq">Sequence of vectors</param>
+        /// <param name="seq">Последовательность векторов</param>
         public Vector GetTransitionVector(Vector[] seq)
         {
             return GetTransitionMatrix(seq).Data;
@@ -49,7 +49,7 @@ namespace AI.ML.HMM
         /// <summary>
         /// Model training
         /// </summary>
-        /// <param name="seqInp">Sequence of vectors</param>
+        /// <param name="seqInp">Последовательность векторов</param>
         public void Train(Vector[] seqInp)
         {
             KMean.Train(seqInp);
@@ -58,9 +58,9 @@ namespace AI.ML.HMM
         }
 
         /// <summary>
-        /// Only Markov chein train
+        /// Обучение только Марковской модели(без кластеризации)
         /// </summary>
-        /// <param name="seqInp">Sequence of vectors</param>
+        /// <param name="seqInp">Последовательность векторов</param>
         public void TrainHMM(Vector[] seqInp)
         {
             int[] states = KMean.Classify(seqInp).ToArray();
@@ -68,10 +68,10 @@ namespace AI.ML.HMM
         }
 
         /// <summary>
-        /// Generating a sequence of states
+        /// Генерация последовательности состояний
         /// </summary>
-        /// <param name="start">Start vector</param>
-        /// <param name="len">Sequence length</param>
+        /// <param name="start">Вектор начала</param>
+        /// <param name="len">Длинна последовательности</param>
         public int[] Generate(Vector start, int len)
         {
             int state = KMean.Classify(start);

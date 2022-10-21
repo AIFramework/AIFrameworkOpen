@@ -512,7 +512,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <summary>
         /// Load TF numerator and denominator from csv file
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="delimiter"></param>
         public static TransferFunction FromCsv(Stream stream, char delimiter = ',')
         {
@@ -533,7 +533,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <summary>
         /// Serialize TF numerator and denominator to csv file
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="delimiter"></param>
         public void ToCsv(Stream stream, char delimiter = ',')
         {

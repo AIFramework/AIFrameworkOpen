@@ -70,22 +70,13 @@ namespace AI.NLP
             Dictionary<string, double> data = new Dictionary<string, double>();
 
             for (int i = 0; i < Words.Count; i++)
-            {
                 if (data.ContainsKey(Words[i]))
-                {
                     data[Words[i]]++;
-                }
                 else
-                {
                     data.Add(Words[i], 1);
-                }
-            }
-
 
             foreach (KeyValuePair<string, double> sempl in data)
-            {
                 pDictionary.Add(sempl.Key, sempl.Value / Words.Count);
-            }
 
         }
 

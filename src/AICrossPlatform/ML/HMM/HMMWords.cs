@@ -42,7 +42,7 @@ namespace AI.ML.HMM
         /// <summary>
         /// Обучение
         /// </summary>
-        /// <param name="TrainText">Training text</param>
+        /// <param name="TrainText">Обучающая выборка (Текст)</param>
         public void Train(string TrainText)
         {
 
@@ -94,7 +94,7 @@ namespace AI.ML.HMM
 
 
         /// <summary>
-        /// Maximum transition probability
+        /// Максимальная вероятность перехода
         /// </summary>
         /// <param name="matrix">Матрица состояний</param>
         private double GetMax(double[,] matrix)
@@ -117,10 +117,10 @@ namespace AI.ML.HMM
 
 
         /// <summary>
-        /// Generating text
+        /// Генерация текста
         /// </summary>
-        /// <param name="num">How many words</param>
-        /// <param name="begin">The first word</param>
+        /// <param name="num">Число шагов</param>
+        /// <param name="begin">Первое слово</param>
         public string Generate(int num, string begin)
         {
             string[] chs = new string[num];

@@ -71,16 +71,10 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 if (Inp[i] >= threshold)
-                {
                     A[i] = 1;
-                }
                 else
-                {
                     A[i] = 0;
-                }
-            }
 
             return A;
         }
@@ -95,16 +89,10 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 if ((Inp[i] >= thresholdDoun) && (Inp[i] <= thresholdUp))
-                {
                     A[i] = 1;
-                }
                 else
-                {
                     A[i] = 0;
-                }
-            }
 
             return A;
         }
@@ -118,16 +106,10 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 if (Inp[i] >= threshold)
-                {
                     A[i] = Inp[i];
-                }
                 else
-                {
                     A[i] = 0;
-                }
-            }
 
             return A;
         }
@@ -141,16 +123,10 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 if ((Inp[i] >= thresholdDoun) && (Inp[i] <= thresholdUp))
-                {
                     A[i] = Inp[i];
-                }
                 else
-                {
                     A[i] = 0;
-                }
-            }
 
             return A;
         }
@@ -165,23 +141,13 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
 
             for (int i = 0; i < inp.Height; i++)
-            {
                 for (int j = 0; j < inp.Width; j++)
-                {
                     if ((inp[i, j] >= thresholdDoun) && (inp[i, j] <= thresholdUp))
-                    {
                         A[i, j] = inp[i, j];
-                    }
                     else if (inp[i, j] <= thresholdUp)
-                    {
                         A[i, j] = 0;
-                    }
                     else
-                    {
                         A[i, j] = 1;
-                    }
-                }
-            }
             return A;
         }
         /// <summary>
@@ -216,9 +182,7 @@ namespace AI.HightLevelFunctions
             int len = A.Shape.Count;
 
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = (inp.Data[i] >= threshold) ? 1 : 0;
-            }
 
             return A;
         }
@@ -233,9 +197,7 @@ namespace AI.HightLevelFunctions
             int len = tensorOut.Shape.Count;
 
             for (int i = 0; i < len; i++)
-            {
                 tensorOut.Data[i] = Sigmoid(tensor.Data[i], betta);
-            }
 
             return tensorOut;
         }
@@ -249,9 +211,7 @@ namespace AI.HightLevelFunctions
             int len = tensorOut.Shape.Count;
 
             for (int i = 0; i < len; i++)
-            {
                 tensorOut.Data[i] = Math.Log10(tensor.Data[i]);
-            }
 
             return tensorOut;
         }
@@ -265,19 +225,9 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(Inp.Height, Inp.Width);
 
             for (int i = 0; i < Inp.Height; i++)
-            {
                 for (int j = 0; j < Inp.Width; j++)
-                {
-                    if (Inp[i, j] >= threshold)
-                    {
-                        A[i, j] = Inp[i, j];
-                    }
-                    else
-                    {
-                        A[i, j] = 0;
-                    }
-                }
-            }
+                    if (Inp[i, j] >= threshold) A[i, j] = Inp[i, j];
+                    else A[i, j] = 0;
             return A;
         }
         /// <summary>
@@ -290,24 +240,12 @@ namespace AI.HightLevelFunctions
             Vector[] A = new Vector[Inp.Length];
 
             for (int i = 0; i < A.Length; i++)
-            {
                 A[i] = new Vector(Inp[i].Count);
-            }
 
             for (int i = 0; i < Inp.Length; i++)
-            {
                 for (int j = 0; j < Inp[i].Count; j++)
-                {
-                    if (Inp[i][j] >= threshold)
-                    {
-                        A[i][j] = Inp[i][j];
-                    }
-                    else
-                    {
-                        A[i][j] = 0;
-                    }
-                }
-            }
+                    if (Inp[i][j] >= threshold) A[i][j] = Inp[i][j];
+                    else A[i][j] = 0;
             return A;
         }
     }

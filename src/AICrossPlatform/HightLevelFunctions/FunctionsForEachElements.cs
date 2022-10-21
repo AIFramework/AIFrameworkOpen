@@ -23,13 +23,11 @@ namespace AI.HightLevelFunctions
             for (int i = 0; i < diff.Count; i++)
             {
                 if (diff[i] >= diffMax)
-                {
                     ofset += diff[i];
-                }
+
                 else if (diff[i] <= -diffMax)
-                {
                     ofset += diff[i];
-                }
+
                 newDat[i] = ofset - data[i];
             }
 
@@ -45,9 +43,7 @@ namespace AI.HightLevelFunctions
             Vector outp = new Vector(pow.Count);
 
             for (int i = 0; i < pow.Count; i++)
-            {
                 outp[i] = Math.Pow(a, pow[i]);
-            }
 
             return outp;
         }
@@ -255,9 +251,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Factorial((int)Inp[i]);
-            }
 
             return A;
         }
@@ -270,9 +264,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Sin(Inp[i]);
-            }
 
             return A;
         }
@@ -286,9 +278,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Round(Inp[i], digits);
-            }
 
             return A;
         }
@@ -301,9 +291,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Cos(Inp[i]);
-            }
 
             return A;
         }
@@ -316,9 +304,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Tan(Inp[i]);
-            }
 
             return A;
         }
@@ -340,9 +326,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Asin(Inp[i]);
-            }
 
             return A;
         }
@@ -355,9 +339,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Acos(Inp[i]);
-            }
 
             return A;
         }
@@ -370,9 +352,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Atan(Inp[i]);
-            }
 
             return A;
         }
@@ -384,9 +364,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Log10(Inp[i]);
-            }
 
             return A;
         }
@@ -398,9 +376,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Log(Inp[i]);
-            }
 
             return A;
         }
@@ -429,9 +405,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Exp(Inp[i]);
-            }
 
             return A;
         }
@@ -458,9 +432,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Sign(Inp[i]);
-            }
 
             return A;
         }
@@ -472,9 +444,7 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Sqrt(Inp[i]);
-            }
 
             return A;
         }
@@ -486,12 +456,8 @@ namespace AI.HightLevelFunctions
         {
             Matrix A = new Matrix(Inp.Height, Inp.Width);
             for (int i = 0; i < Inp.Height; i++)
-            {
                 for (int j = 0; j < Inp.Width; j++)
-                {
                     A[i, j] = Math.Sin(Inp[i, j]);
-                }
-            }
 
             return A;
         }
@@ -504,10 +470,8 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(Inp.Height, Inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Exp(Inp.Data[i]);
-            }
-
+          
             return A;
         }
         /// <summary>
@@ -519,9 +483,7 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Tanh(inp.Data[i]);
-            }
 
             return A;
         }
@@ -534,10 +496,8 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Cos(inp.Data[i]);
-            }
-
+            
             return A;
         }
         /// <summary>
@@ -549,10 +509,8 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Tan(inp.Data[i]);
-            }
-
+            
             return A;
         }
         /// <summary>
@@ -572,10 +530,8 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Asin(inp.Data[i]);
-            }
-
+            
             return A;
         }
         /// <summary>
@@ -587,10 +543,8 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Acos(inp.Data[i]);
-            }
-
+            
             return A;
         }
         /// <summary>
@@ -602,10 +556,8 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Atan(inp.Data[i]);
-            }
-
+            
             return A;
         }
         /// <summary>
@@ -617,9 +569,7 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Abs(inp.Data[i]);
-            }
 
             return A;
         }
@@ -632,10 +582,8 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Sqrt(inp.Data[i]);
-            }
-
+            
             return A;
         }
         /// <summary>
@@ -647,10 +595,8 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Log10(inp.Data[i]);
-            }
-
+            
             return A;
         }
         /// <summary>
@@ -662,10 +608,8 @@ namespace AI.HightLevelFunctions
             Matrix A = new Matrix(inp.Height, inp.Width);
             int len = A.Shape.Count;
             for (int i = 0; i < len; i++)
-            {
                 A.Data[i] = Math.Log(inp.Data[i]);
-            }
-
+            
             return A;
         }
         /// <summary>
@@ -692,10 +636,8 @@ namespace AI.HightLevelFunctions
         {
             Vector A = new Vector(Inp.Count);
             for (int i = 0; i < Inp.Count; i++)
-            {
                 A[i] = Math.Abs(Inp[i]);
-            }
-
+            
             return A;
         }
     }

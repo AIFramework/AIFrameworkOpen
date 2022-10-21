@@ -147,12 +147,8 @@ namespace AI.Statistics
             Vector vector = new Vector(matrix.Height);
 
             for (int i = 0; i < matrix.Height; i++)
-            {
                 for (int j = 0; j < matrix.Width; j++)
-                {
                     vector[i] += matrix[i, j];
-                }
-            }
 
             return vector / matrix.Width;
         }
@@ -168,12 +164,8 @@ namespace AI.Statistics
             Vector vector = new Vector(matrix.Height);
 
             for (int i = 0; i < matrix.Width; i++)
-            {
                 for (int j = 0; j < matrix.Height; j++)
-                {
                     vector[i] += matrix[j, i];
-                }
-            }
 
             return vector;
         }
@@ -188,12 +180,8 @@ namespace AI.Statistics
             Vector vector = new Vector(matrix.Width);
 
             for (int i = 0; i < matrix.Width; i++)
-            {
                 for (int j = 0; j < matrix.Height; j++)
-                {
                     vector[i] += matrix[j, i];
-                }
-            }
 
             return vector / matrix.Height;
         }

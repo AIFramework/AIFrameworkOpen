@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AI.ML.Genetic.GeneticCore
 {
     /// <summary>
-    /// Cell population
+    /// Популяция клеток
     /// </summary>
     [Serializable]
     public class Population : List<Cell>
@@ -13,17 +13,17 @@ namespace AI.ML.Genetic.GeneticCore
         private readonly Vector[] X, Y;
         private readonly Random rnd = new Random(10);
         /// <summary>
-        /// Mutation probability
+        /// Вероятность мутации
         /// </summary>
         public double mutProb = 0.2;
         /// <summary>
-        /// Crossover point
+        /// Скрещивание
         /// </summary>
         public double k = 0.5;
         private int top = 5;
 
         /// <summary>
-        /// Number of leaders to breed
+        /// Число лидеров для размножения
         /// </summary>
         public int LiderCount
         {
@@ -32,7 +32,7 @@ namespace AI.ML.Genetic.GeneticCore
         }
 
         /// <summary>
-        /// Mutation value
+        /// Величина мутации
         /// </summary>
         public double MutationValue
         {
@@ -40,7 +40,7 @@ namespace AI.ML.Genetic.GeneticCore
         }
 
         /// <summary>
-        /// Search upper bound
+        /// Верхняя граница поиска (ГПСЧ)
         /// </summary>
         public double DValueUp
         {
@@ -50,7 +50,7 @@ namespace AI.ML.Genetic.GeneticCore
 
 
         /// <summary>
-        /// Search lower bound
+        /// Нижняя граница поиска (ГПСЧ)
         /// </summary>
         public double DValueDown
         {
@@ -61,13 +61,13 @@ namespace AI.ML.Genetic.GeneticCore
         /// <summary>
         /// Population
         /// </summary>
-        /// <param name="countCell">Number of cells</param>
-        /// <param name="countParam">Number of parameters</param>
-        /// <param name="function">Utility function</param>
-        /// <param name="inp">Вектор входаs</param>
-        /// <param name="outp">Вектор выходаs</param>
-        /// <param name="valDown">Search lower bound</param>
-        /// <param name="valUp">Search upper bound</param>
+        /// <param name="countCell">Число клеток</param>
+        /// <param name="countParam">Число параметров</param>
+        /// <param name="function">Функция полезности</param>
+        /// <param name="inp">Вектор входных данных</param>
+        /// <param name="outp">Вектор выхода</param>
+        /// <param name="valDown">Минимальное значение поиска параметров</param>
+        /// <param name="valUp">Максимальное значение поиска параметра</param>
         public Population(int countCell, int countParam, Func<Vector, Vector, Vector> function, Vector[] inp, Vector[] outp, double valDown = -10, double valUp = 10)
         {
             DValueDown = valDown;
@@ -89,15 +89,15 @@ namespace AI.ML.Genetic.GeneticCore
         }
 
         /// <summary>
-        /// Population
+        /// Популяция
         /// </summary>
-        /// <param name="countCell">Number of cells</param>
-        /// <param name="countParam">Number of parameters</param>
-        /// <param name="function">Utility function</param>
+        /// <param name="countCell">Число клеток</param>
+        /// <param name="countParam">Число параметров</param>
+        /// <param name="function">Функция полезности</param>
         /// <param name="inp">Вектор входных данных</param>
         /// <param name="outp">Вектор выхода</param>
-        /// <param name="valDown">Search lower bound</param>
-        /// <param name="valUp">Search upper bound</param>
+        /// <param name="valDown">Минимальное значение поиска параметров</param>
+        /// <param name="valUp">Максимальное значение поиска параметра</param>
         public Population(int countCell, int countParam, Func<Vector, Vector, Vector> function, Vector inp, Vector outp, double valDown = -10, double valUp = 10)
         {
             DValueDown = valDown;
@@ -126,10 +126,10 @@ namespace AI.ML.Genetic.GeneticCore
         }
 
         /// <summary>
-        ///  Passing a function from one variable
+        ///  Передача функции от одной переменной
         /// </summary>
-        /// <param name="inp">Vector of inputs</param>
-        /// <param name="indCell">Cell number</param>
+        /// <param name="inp">Вектор входов</param>
+        /// <param name="indCell">Номер клетки</param>
         public Vector CellOut(Vector inp, int indCell = 0)
         {
             Vector outp = new Vector(inp.Count);
@@ -143,9 +143,9 @@ namespace AI.ML.Genetic.GeneticCore
         }
 
         /// <summary>
-        /// Epoch of cells
+        /// Эпоха для клеток
         /// </summary>
-        /// <param name="count">Number of children</param>
+        /// <param name="count">Число потомков</param>
         public void Epoch(int count = 100)
         {
             Cell[] liders = new Cell[top];
@@ -189,16 +189,16 @@ namespace AI.ML.Genetic.GeneticCore
         }
 
         /// <summary>
-        /// Points for one example
+        /// Баллы за один пример
         /// </summary>
-        /// <param name="outp">Model output</param>
-        /// <param name="targ">Target value</param>
+        /// <param name="outp">Выход модели</param>
+        /// <param name="targ">Целевые значения</param>
         private double Score(Vector outp, Vector targ)
         {
             return Distances.BaseDist.EuclideanDistance(outp, targ);
         }
         /// <summary>
-        /// Sotrting
+        /// Сортировка
         /// </summary>
         public void SortCells()
         {
@@ -215,9 +215,9 @@ namespace AI.ML.Genetic.GeneticCore
             Sort((x, y) => x.Score.CompareTo(y.Score));
         }
         /// <summary>
-        /// Cell mutation
+        /// Мутация клетки
         /// </summary>
-        /// <param name="input">Original cell</param>
+        /// <param name="input">Оригинальная клетка</param>
         public Cell Mutation(Cell input)
         {
             int pc = input.Parametrs.Count;

@@ -1,7 +1,8 @@
-﻿using AI.DataStructs.Algebraic;
+﻿using AI.DataPrepaire.NLPUtils.TextGeneration;
+using AI.DataStructs.Algebraic;
 using System;
 
-namespace AI.NLP
+namespace AI.DataPrepaire.NLPUtils
 {
     /// <summary>
     /// Методы сравнения строк
@@ -17,22 +18,16 @@ namespace AI.NLP
         /// <returns></returns>
         public static float LevenshteinDistance(string input, string target)
         {
-
             int diff;
             int[,] m = new int[input.Length + 1, target.Length + 1];
 
             for (int i = 0; i <= input.Length; i++)
-            {
                 m[i, 0] = i;
-            }
 
             for (int j = 0; j <= target.Length; j++)
-            {
                 m[0, j] = j;
-            }
 
             for (int i = 1; i <= input.Length; i++)
-            {
                 for (int j = 1; j <= target.Length; j++)
                 {
                     diff = (input[i - 1] == target[j - 1]) ? 0 : 1;
@@ -41,7 +36,6 @@ namespace AI.NLP
                                              m[i, j - 1] + 1),
                                              m[i - 1, j - 1] + diff);
                 }
-            }
 
             double outp = m[input.Length, target.Length];
             double k = Math.Min(input.Length, target.Length) / 4.0;
@@ -65,9 +59,7 @@ namespace AI.NLP
             int len = Math.Min(inps.Length, targs.Length);
 
             for (int i = 0; i < len; i++)
-            {
                 output += LevenshteinDistance(inps[i], targs[i]);
-            }
 
             return output / len;
         }
@@ -80,10 +72,7 @@ namespace AI.NLP
         /// <param name="n">Количество слов</param>
         public static float HistogramCos(string input, string target, int n)
         {
-            HMMFast hMMFast = new HMMFast
-            {
-                NGram = n
-            };
+            HMMFast hMMFast = new HMMFast { NGram = n };
 
             hMMFast.Train(target + " " + input);
             Vector a = hMMFast.TextToVector(input);
@@ -100,11 +89,7 @@ namespace AI.NLP
         /// <param name="n">Количество слов</param>
         public static float HistogramCrossEntropy(string input, string target, int n)
         {
-            HMMFast hMMFast = new HMMFast
-            {
-                NGram = n
-            };
-
+            HMMFast hMMFast = new HMMFast { NGram = n };
             hMMFast.Train(target + " " + input);
             Vector a = hMMFast.TextToVector(input);
             Vector b = hMMFast.TextToVector(target);
@@ -115,9 +100,7 @@ namespace AI.NLP
             float outp2 = 0;
 
             for (int i = 0; i < a.Count; i++)
-            {
                 outp2 -= (float)(b[i] * Math.Log10(a[i] + 1e-10));
-            }
 
             outp2 = 1f / (1f + outp2);
 
@@ -132,17 +115,11 @@ namespace AI.NLP
         public static float HistogramCrossEntropy(string input, string target)
         {
             if (input.Split(' ').Length <= 4)
-            {
                 return HistogramCrossEntropy(input, target, 1);
-            }
             else if (input.Split(' ').Length < 20)
-            {
                 return HistogramCrossEntropy(input, target, 2);
-            }
             else
-            {
                 return HistogramCrossEntropy(input, target, 3);
-            }
         }
 
         /// <summary>
@@ -153,17 +130,11 @@ namespace AI.NLP
         public static float HistogramCos(string input, string target)
         {
             if (input.Split(' ').Length <= 4)
-            {
                 return HistogramCos(input, target, 1);
-            }
             else if (input.Split(' ').Length < 20)
-            {
                 return HistogramCos(input, target, 2);
-            }
             else
-            {
                 return HistogramCos(input, target, 3);
-            }
         }
     }
 }

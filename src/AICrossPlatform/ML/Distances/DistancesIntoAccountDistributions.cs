@@ -3,7 +3,7 @@
 namespace AI.ML.Distances
 {
     /// <summary>
-    /// Расстояниеs between points taking into account distributions, or distances from a point to a distribution.
+    /// Расстояния между точками с учетом распределений или расстояния от точки до распределения.
     /// </summary>
     [Serializable]
     public static class DistancesIntoAccountDistributions

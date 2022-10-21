@@ -23,7 +23,7 @@ namespace AI
     {
         #region Взаимокорелляция
         /// <summary>
-        /// Cross-correlation of two real vectors
+        /// ВКФ для двух векторов из действительных чисел
         /// </summary>
         /// <param name="A">Первый вектор</param>
         /// <param name="B">Второй вектор</param>
@@ -63,7 +63,7 @@ namespace AI
 
 
         /// <summary>
-        /// Cross-correlation of two complex vectors
+        /// ВКФ для двух векторов из комплексных чисел
         /// </summary>
         /// <param name="A">Первый вектор</param>
         /// <param name="B">Второй вектор</param>
@@ -77,25 +77,17 @@ namespace AI
 
 
             for (int i = 0; i < nMax; i++)
-            {
                 for (int j = 0; j < ht.Count; j++)
-                {
                     outp[i] += st[i + j] * ht[j];
-                }
-            }
 
 
             Complex d1 = 0, d2 = 0;
 
             for (int i = 0; i < ht.Count; i++)
-            {
                 d1 += ht[i] * ht[i];
-            }
 
             for (int i = 0; i < signal.Count; i++)
-            {
                 d2 += signal[i] * signal[i];
-            }
 
             return outp / Complex.Sqrt(d1 * d2);
         }

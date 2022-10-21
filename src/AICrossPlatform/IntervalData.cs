@@ -48,9 +48,7 @@ namespace AI
             Vector[] outps = new Vector[bIntervals.Count];
 
             for (int i = 0; i < outps.Length; i++)
-            {
                 outps[i] = inputVector.GetInterval(bIntervals[i], endIntervals[i]);
-            }
 
             return outps;
         }
@@ -65,9 +63,7 @@ namespace AI
             Vector outps = new Vector(bIntervals.Count);
 
             for (int i = 0; i < outps.Count; i++)
-            {
                 outps[i] = vect2doub(input.GetInterval(bIntervals[i], endIntervals[i]));
-            }
 
             return outps;
         }

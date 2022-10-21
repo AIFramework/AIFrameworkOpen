@@ -640,7 +640,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         /// <summary>
         /// Сохранить датасет в файл
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             BinarySerializer.Save(path, this);
@@ -648,7 +648,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         /// <summary>
         /// Сохранить датасет в поток
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         public void Save(Stream stream)
         {
             BinarySerializer.Save(stream, this);
@@ -659,7 +659,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         /// <summary>
         /// Загрузить датасет из файла
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <returns></returns>
         public static DataSetNoRecurrent Load(string path)
         {
@@ -668,7 +668,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.DataSets
         /// <summary>
         /// Загрузить датасет из потока
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         public static DataSetNoRecurrent Load(Stream stream)
         {

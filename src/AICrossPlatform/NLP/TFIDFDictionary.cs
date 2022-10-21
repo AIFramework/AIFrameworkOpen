@@ -6,22 +6,22 @@ using System.IO;
 namespace AI.NLP
 {
     /// <summary>
-    /// TF-IDF Dictionary
+    /// TF-IDF словарь
     /// </summary>
     [Serializable]
     public class TFIDFDictionary
     {
         /// <summary>
-        /// TF-IDF algorithm
+        /// TF-IDF алгоритм
         /// </summary>
-        public TFIDF tFIDF { get; set; }
+        public TFIDF TfIdf { get; set; }
 
         private readonly int _n;
 
         /// <summary>
-        /// Generating TF-IDF Dictionary
+        /// Создание словаря tf-idf
         /// </summary>
-        /// <param name="pathToDir">Path to the directory with documents</param>
+        /// <param name="pathToDir">Путь до директории с документами</param>
         public TFIDFDictionary(string pathToDir)
         {
             string[] fs = Directory.GetFiles(pathToDir);
@@ -30,33 +30,27 @@ namespace AI.NLP
             _n = fs.Length;
 
             for (int i = 0; i < fs.Length; i++)
-            {
                 strs[i] = File.ReadAllText(fs[i]);
-            }
 
-            tFIDF = new TFIDF(strs);
+            TfIdf = new TFIDF(strs);
         }
 
         /// <summary>
-        /// Word to vector based on dictionary
+        /// Преобразование слова в вектор
         /// </summary>
-        /// <param name="word">Word</param>
+        /// <param name="word">Слово</param>
         public Vector ToVect(string word)
         {
             Vector ind = new Vector(_n);
             for (int i = 0; i < ind.Count; i++)
-            {
-                ind[i] = tFIDF.TF_IDF_Str(word, i);
-
-            }
-
+                ind[i] = TfIdf.TF_IDF_Str(word, i);
 
             return ind / ind.Max();
         }
 
 
         /// <summary>
-        /// Word proximity calculation
+        /// Расчет близости слов
         /// </summary>
         /// <returns></returns>
         public double Sim(string word1, string word2)
@@ -66,11 +60,11 @@ namespace AI.NLP
 
 
         /// <summary>
-        /// Drawing up a vector dictionary
+        /// Составление векторного словаря
         /// </summary>
         public Dictionary<string, Vector> VectorDictionary()
         {
-            Dictionary<string, double>[] dotDicts = tFIDF.pDs;
+            Dictionary<string, double>[] dotDicts = TfIdf.pDs;
             Dictionary<string, Vector> vecDict = new Dictionary<string, Vector>();
 
             for (int i = 0; i < dotDicts.Length; i++)

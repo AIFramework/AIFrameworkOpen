@@ -5,19 +5,19 @@ using System.Globalization;
 namespace AI
 {
     /// <summary>
-    /// Global settings
+    /// Глобальные настройки
     /// </summary>
     public static class AISettings
     {
         private static readonly NumberFormatInfo s_provider;
         private static readonly NumberFormatInfo s_providerComa;
         /// <summary>
-        /// Global epsilon (default = 1e-8)
+        /// Глобальный эпсилон(смещение) (по-умолчанию = 1e-80)
         /// </summary>
-        public static double GlobalEps { get; set; } = 1e-8;
+        public static double GlobalEps { get; set; } = 1e-80;
 
         /// <summary>
-        /// Basic function for fft
+        /// Базовая функция БПФ
         /// </summary>
         public static Func<ComplexVector, bool, ComplexVector> FFTCore { get; set; } = FFT.BaseStaticFFT;
 
@@ -37,14 +37,14 @@ namespace AI
         }
 
         /// <summary>
-        /// Get a provider for a dot as decimal separator conversion 
+        /// Получить провайдер для конвертирования чисел в строку и наоборот с точкой в кач. разделителя
         /// </summary>
         public static NumberFormatInfo GetProvider()
         {
             return s_provider;
         }
         /// <summary>
-        /// Get a comma conversion provider
+        ///  Получить провайдер для конвертирования чисел в строку и наоборот с запятой в кач. разделителя
         /// </summary>
         public static NumberFormatInfo GetProviderComa()
         {

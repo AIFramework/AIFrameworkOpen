@@ -69,16 +69,13 @@ namespace AI.Statistics.MixtureModeling
         public double CulcProb(Vector x)
         {
             if (IsOneD)
-            {
-                throw new Exception("Is 1D distribution");
-            }
+                throw new Exception("Это одномерное распределение");
 
             double fx = 0;
 
             for (int i = 0; i < _paramDistsND.Length; i++)
-            {
                 fx += _w[i] * _perentDistribution.CulcProb(x, _paramDistsND[i]);
-            }
+
             return fx;
         }
 

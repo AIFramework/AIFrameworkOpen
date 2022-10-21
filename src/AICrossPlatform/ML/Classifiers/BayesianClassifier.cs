@@ -67,7 +67,7 @@ namespace AI.ML.Classifiers
         /// <summary>
         /// Не реализовано
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <exception cref="NotImplementedException"></exception>
         public void Save(string path)
         {

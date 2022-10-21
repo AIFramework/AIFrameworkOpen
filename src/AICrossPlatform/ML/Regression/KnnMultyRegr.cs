@@ -132,7 +132,7 @@ namespace AI.ML.Regression
 
             catch
             {
-                throw new Exception("Save error (source: KnnMultyRegr)");
+                throw new Exception("Ошибка сохранения (источник: KnnMultyRegr)");
             }
         }
 
@@ -161,7 +161,7 @@ namespace AI.ML.Regression
 
             catch
             {
-                throw new Exception("Load error (source: KnnMultyRegr)");
+                throw new Exception("Ошибка загрузки (источник: KnnMultyRegr)");
             }
 
         }

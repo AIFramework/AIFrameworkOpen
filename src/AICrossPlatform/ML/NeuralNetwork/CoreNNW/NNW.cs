@@ -262,7 +262,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Сохранение сети в поток
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         public void Save(Stream stream)
         {
             BinarySerializer.Save(stream, this);

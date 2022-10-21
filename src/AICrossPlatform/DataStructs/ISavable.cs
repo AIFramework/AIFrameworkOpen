@@ -10,12 +10,12 @@ namespace AI.DataStructs
         /// <summary>
         /// Сохранение в файл
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         void Save(string path);
         /// <summary>
         /// Сохранение в поток
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         void Save(Stream stream);
     }
 }

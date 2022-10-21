@@ -2002,7 +2002,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Сохранить в файл
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             BinarySerializer.Save(path, this);
@@ -2010,7 +2010,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Сохранениеs vector to stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         public void Save(Stream stream)
         {
             BinarySerializer.Save(stream, this);
@@ -2018,7 +2018,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Сохранить в текстовый файл
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         public void SaveAsText(string path)
         {
             File.WriteAllText(path, ToString());
@@ -2037,7 +2037,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Загрузить из файла
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <returns></returns>
         public static Vector Load(string path)
         {
@@ -2097,7 +2097,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Загрузить из потока
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         public static Vector Load(Stream stream)
         {
@@ -2111,7 +2111,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         ///Загрузить из текстового файла
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <returns></returns>
         public static Vector LoadAsText(string path)
         {

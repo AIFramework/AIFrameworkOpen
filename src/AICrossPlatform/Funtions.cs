@@ -124,9 +124,7 @@ namespace AI
             double summ = 0;
 
             for (int i = 0; i < mass.Length; i++)
-            {
                 summ += mass[i];
-            }
 
             return summ;
         }
@@ -139,9 +137,7 @@ namespace AI
             float summ = 0;
 
             for (int i = 0; i < mass.Length; i++)
-            {
                 summ += mass[i];
-            }
 
             return summ;
         }
@@ -157,9 +153,7 @@ namespace AI
             Vector vect = new Vector(vectors[0].Count);
 
             for (int i = 0; i < vectors.Length; i++)
-            {
                 vect += vectors[i];
-            }
 
             return vect;
         }
@@ -174,9 +168,7 @@ namespace AI
             double summ = 0;
 
             for (int i = 0; i < n; i++)
-            {
                 summ += vect[i];
-            }
 
             return summ;
         }
@@ -189,9 +181,7 @@ namespace AI
             int summ = 0;
 
             for (int i = 0; i < mass.Length; i++)
-            {
                 summ += mass[i];
-            }
 
             return summ;
         }
@@ -204,11 +194,8 @@ namespace AI
             int n = vect.Count;
             Complex summ = 0;
 
-
             for (int i = 0; i < n; i++)
-            {
                 summ += vect[i];
-            }
 
             return summ;
         }

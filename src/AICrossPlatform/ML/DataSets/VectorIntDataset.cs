@@ -283,7 +283,7 @@ namespace AI.ML.DataSets
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <param name="separator"></param>
         /// <returns></returns>
         public static VectorIntDataset CsvToVid(string path, char separator = ',')

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AI.DataPrepaire.Tokenizers.TextTokenizers
 {
@@ -36,6 +37,14 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         {
             IsLower = isLower;
             TrainFromTextFile(path_to_text);
+        }
+
+        /// <summary>
+        /// Токенизатор на уровне слов 
+        /// </summary>
+        public WordTokenizer(bool isLower = true)
+        {
+            IsLower = isLower;
         }
 
 
@@ -79,6 +88,14 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         public void TrainFromTextFile(string path)
         {
             string text = File.ReadAllText(path);
+            TrainFromText(text);
+        }
+
+        /// <summary>
+        /// Обучение/создание токенизатора
+        /// </summary>
+        public void TrainFromText(string text)
+        {
             text = NLP.TextStandard.OnlyCharsAndDigit(text, IsLower);
             NLP.ProbabilityDictionaryHash probability = new NLP.ProbabilityDictionaryHash(false);
             var data = probability.Run(text);
@@ -118,7 +135,6 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
             // загружаем обученный токенизатор
             this.decoder = decoder;
             encoder = words;
-
         }
     }
 }

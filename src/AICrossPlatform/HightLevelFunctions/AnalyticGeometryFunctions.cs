@@ -38,14 +38,12 @@ namespace AI.HightLevelFunctions
             double dot = 0;
 
             for (int i = 0; i < vector.Count; i++)
-            {
                 dot += vector[i] * vector2[i];
-            }
 
             return dot;
         }
         /// <summary>
-        /// Projection of vector A onto vector B
+        /// Проекция вектора A на вектор B
         /// </summary>
         public static Vector ProectionAtoB(Vector A, Vector B)
         {
@@ -53,23 +51,21 @@ namespace AI.HightLevelFunctions
             return k * B;
         }
         /// <summary>
-        /// Angle between vectors
+        /// Угол между векторами
         /// </summary>
-        /// <returns>Returns the angle in radians</returns>
+        /// <returns>Возвращает угол в радианах</returns>
         public static double AngleVect(Vector vector, Vector vector2)
         {
             double a = Dot(vector, vector2), b = NormVect(vector) * NormVect(vector2);
             return Math.Acos(a / b);
         }
         /// <summary>
-        /// Calculates the vector connecting point A to point B
+        /// Вычисляет расстояния по компонентам от точки A до B
         /// </summary>
         public static Vector VectorFromAToB(Vector pointA, Vector pointB)
         {
             if (pointA.Count != pointB.Count)
-            {
-                throw new ArgumentException("The dimensions of the points do not match");
-            }
+                throw new ArgumentException("Размерности не совпадают");
 
             return pointB - pointA;
         }
@@ -81,7 +77,7 @@ namespace AI.HightLevelFunctions
             return NormVect(VectorFromAToB(pointA, pointB));
         }
         /// <summary>
-        /// Rotate a vector by specified angles
+        /// Повернуть вектор на заданные углы
         /// </summary>
         public static Vector VectorRotate(Vector inp, double angl, int indAx1, int indAx2)
         {

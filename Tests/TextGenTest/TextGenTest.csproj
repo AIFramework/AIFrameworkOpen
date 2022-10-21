@@ -81,6 +81,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\AI.DataPrepaire\AI.DataPrepaire.csproj">
+      <Project>{1374ba17-a844-46f2-8d4d-95a1e0261d5e}</Project>
+      <Name>AI.DataPrepaire</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\AICrossPlatform\AICrossPlatform.csproj">
       <Project>{467aef8d-96aa-48ad-b06c-988a980bfb41}</Project>
       <Name>AICrossPlatform</Name>

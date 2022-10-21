@@ -1622,7 +1622,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Сохранение матрицы в файл
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             BinarySerializer.Save(path, this);
@@ -1630,7 +1630,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Сохранение матрицы в поток
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         public void Save(Stream stream)
         {
             BinarySerializer.Save(stream, this);
@@ -1638,7 +1638,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Сохранение матрицы в файл в текстовом формате
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         public void SaveAsText(string path)
         {
             File.WriteAllText(path, ToString());
@@ -1657,7 +1657,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Загрузка матрицы
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <returns></returns>
         public static Matrix Load(string path)
         {
@@ -1666,7 +1666,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Загрузка матрицы
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         public static Matrix Load(Stream stream)
         {
@@ -1675,7 +1675,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Загрузка матрицы
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <returns></returns>
         public static Matrix LoadAsText(string path)
         {

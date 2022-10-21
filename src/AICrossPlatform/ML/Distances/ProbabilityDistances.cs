@@ -4,13 +4,13 @@ using System;
 namespace AI.ML.Distances
 {
     /// <summary>
-    /// Probability (entropy) distances
+    /// Вероятностные (энтропийные) расстояния
     /// </summary>
     [Serializable]
     public static class ProbabilityDistances
     {
         /// <summary>
-        /// Kullback–Leibler divergence
+        /// Дивергенция Кульбака Лэйблера
         /// </summary>
         public static double DKL(Vector v1, Vector v2)
         {
@@ -22,13 +22,15 @@ namespace AI.ML.Distances
         }
 
         /// <summary>
-        /// Symmetrical Kullback - Leibler divergence
+        /// Дивергенция Кульбака Лэйблера (симетричная)
         /// </summary>
         public static double DKLSymmetrical(Vector v1, Vector v2)
         {
+            double eps = AISettings.GlobalEps;
+
             return Functions.Summ(
                 Vector.Crosser(v1, v2,
-                (x, y) => (x * Math.Log((x + AISettings.GlobalEps) / (y + AISettings.GlobalEps))) + (y * Math.Log((y + AISettings.GlobalEps) / (x + AISettings.GlobalEps)))
+                (x, y) => (x * Math.Log((x + eps) / (y + eps))) + (y * Math.Log((y + eps) / (x + eps)))
                 )
                 ) / (2 * v2.Count);
         }

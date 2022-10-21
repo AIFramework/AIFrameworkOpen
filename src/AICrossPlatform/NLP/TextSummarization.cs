@@ -46,9 +46,7 @@ namespace AI.NLP
             dataSummTexts.Sort((a, b) => a.W.CompareTo(b.W) * -1);
 
             for (int i = 0; i < num; i++)
-            {
                 outp += dataSummTexts[i].Str + "\n\n";
-            }
 
             return outp;
 
@@ -67,9 +65,7 @@ namespace AI.NLP
 
 
             while (t.Contains("  "))
-            {
                 t = t.Replace("  ", " ");
-            }
 
 
             //Сокращения
@@ -87,22 +83,16 @@ namespace AI.NLP
             t = Regex.Replace(t, rectPat, "");
             t = Regex.Replace(t, uKPat2, "");
 
-
-
             // Замена знаков
             t = t.Replace("!", ".").Replace("?", ".");
 
             while (t.Contains(".."))
-            {
                 t = t.Replace("..", ".");
-            }
-
-
             return t.Split('.').Transform(x => x.Trim() + ".");
         }
 
         /// <summary>
-        /// The first step of the algorithm(compilation of probabilistic dictionaries)
+        /// Первый шаг алгоритма (составление вероятностных словарей)
         /// </summary>
         /// <param name="text">Текст</param>
         private void Step1(string text)
@@ -112,18 +102,14 @@ namespace AI.NLP
             probabilityDictionaryDataSeqs = new ProbabilityDictionaryData[seqs.Length][];
 
             for (int i = 0; i < seqs.Length; i++)
-            {
                 probabilityDictionaryDataSeqs[i] = probabilityDictionary.Run(seqs[i]);
-            }
 
             string text2 = string.Join(" ", seqs);
             probabilityDictionaryDatas = probabilityDictionary.Run(text2);
         }
 
 
-        /// <summary>
-        /// Second step of making the list: sentence, weight
-        /// </summary>
+        // Второй шаг составления списка: предложение, вес
         private void Step2()
         {
             for (int i = 0; i < seqs.Length; i++)
@@ -132,19 +118,14 @@ namespace AI.NLP
                 {
                     double w = GetW(i);
                     if (!(double.IsNaN(w) || double.IsInfinity(w)))
-                    {
                         dataSummTexts.Add(new DataSummText(seqs[i], w));
-                    }
-
                 }
                 catch { }
             }
         }
 
 
-        /// <summary>
-        /// Calculating the semantic weight of a sentence
-        /// </summary>
+        // Расчет семантического веса
         private double GetW(int ind)
         {
             double[] inSeq = new double[probabilityDictionaryDataSeqs[ind].Length], allText = new double[probabilityDictionaryDataSeqs[ind].Length];
@@ -158,18 +139,12 @@ namespace AI.NLP
                 word = probabilityDictionaryDataSeqs[ind][i].Word;
 
                 for (int j = 0; j < probabilityDictionaryDatas.Length; j++)
-                {
                     if (probabilityDictionaryDatas[j].Word == word)
-                    {
                         allText[i] = probabilityDictionaryDatas[j].Probability;
-                    }
-                }
             }
 
             for (int i = 0; i < inSeq.Length; i++)
-            {
                 w += allText[i] / inSeq[i];
-            }
 
             return w / inSeq.Length;
         }

@@ -56,7 +56,7 @@ namespace AI.DataStructs
         /// <summary>
         /// Creates DataStream for reading data from file
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <param name="isEncrypted"></param>
         /// <param name="isZipped"></param>
         public InMemoryDataStream(string path, bool isEncrypted = false, bool isZipped = false)
@@ -109,7 +109,7 @@ namespace AI.DataStructs
         /// <summary>
         /// Creates DataStream for reading data from System.IO.Stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="isEncrypted"></param>
         /// <param name="isZipped"></param>
         public InMemoryDataStream(Stream stream, bool isEncrypted = false, bool isZipped = false)
@@ -2223,7 +2223,7 @@ namespace AI.DataStructs
         /// <summary>
         /// Сохранениеs data to the file
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             if (_data.Length == 0)
@@ -2237,7 +2237,7 @@ namespace AI.DataStructs
         /// <summary>
         /// Сохранениеs data to the System.IO.Stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         public void Save(Stream stream)
         {
             if (_data.Length == 0)
@@ -2270,7 +2270,7 @@ namespace AI.DataStructs
         /// <summary>
         /// Inintialize DataStream for reading data from file
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <param name="isEncrypted"></param>
         /// <param name="isZipped"></param>
         /// <returns></returns>
@@ -2282,7 +2282,7 @@ namespace AI.DataStructs
         /// <summary>
         /// Inintialize DataStream for reading data from System.IO.Stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <param name="isEncrypted"></param>
         /// <param name="isZipped"></param>
         /// <returns></returns>

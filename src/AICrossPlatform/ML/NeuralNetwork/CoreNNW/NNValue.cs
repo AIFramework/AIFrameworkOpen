@@ -506,7 +506,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Сохранить NNValue в файл
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         public void Save(string path)
         {
             BinarySerializer.Save(path, this);
@@ -514,7 +514,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Сохранить NNValue в поток
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         public void Save(Stream stream)
         {
             BinarySerializer.Save(stream, this);
@@ -559,7 +559,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Загрузить из файла
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь до файла</param>
         /// <returns></returns>
         public static NNValue Load(string path)
         {
@@ -568,7 +568,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Загрузить из потока
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         public static NNValue Load(Stream stream)
         {
@@ -586,7 +586,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <summary>
         /// Прочитать тензор из потока
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="stream">Поток</param>
         /// <returns></returns>
         public static NNValue FromDataStream(InMemoryDataStream stream)
         {

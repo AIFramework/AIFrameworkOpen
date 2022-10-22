@@ -11,10 +11,43 @@ namespace AI.DataPrepaire.NLPUtils
     public static class CompareStringMethods
     {
         /// <summary>
+        /// Схожесть последовательностей выраженая через расстояние Левенштейна
+        /// </summary>
+        /// <param name="input">Входные данные</param>
+        /// <param name="target">Целевое значение</param>
+        /// <returns></returns>
+        public static float LevenshteinDistance(int[] input, int[] target)
+        {
+            int diff;
+            int[,] m = new int[input.Length + 1, target.Length + 1];
+
+            for (int i = 0; i <= input.Length; i++)
+                m[i, 0] = i;
+
+            for (int j = 0; j <= target.Length; j++)
+                m[0, j] = j;
+
+            for (int i = 1; i <= input.Length; i++)
+                for (int j = 1; j <= target.Length; j++)
+                {
+                    diff = (input[i - 1] == target[j - 1]) ? 0 : 1;
+
+                    m[i, j] = Math.Min(Math.Min(m[i - 1, j] + 1,
+                                             m[i, j - 1] + 1),
+                                             m[i - 1, j - 1] + diff);
+                }
+
+            double outp = m[input.Length, target.Length];
+            double k = Math.Min(input.Length, target.Length) / 4.0;
+
+            return (float)HightLevelFunctions.DistributionFunctions.GaussNorm1(outp, 0, k);
+        }
+
+        /// <summary>
         /// Схожесть строк выраженая через расстояние Левенштейна
         /// </summary>
-        /// <param name="input"></param>
-        /// <param name="target"></param>
+        /// <param name="input">Входные данные</param>
+        /// <param name="target">Целевое значение</param>
         /// <returns></returns>
         public static float LevenshteinDistance(string input, string target)
         {
@@ -46,8 +79,8 @@ namespace AI.DataPrepaire.NLPUtils
         /// <summary>
         /// Корреляция строк выраженая через расстояние Левенштейна
         /// </summary>
-        /// <param name="input"></param>
-        /// <param name="target"></param>
+        /// <param name="input">Входные данные</param>
+        /// <param name="target">Целевое значение</param>
         /// <returns></returns>
         public static float WordCorellation(string input, string target)
         {

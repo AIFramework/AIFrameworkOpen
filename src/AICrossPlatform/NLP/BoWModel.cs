@@ -54,7 +54,7 @@ namespace AI.NLP
         public Vector GetVector(string text)
         {
             ProbabilityDictionary prob = new ProbabilityDictionary(isStop, isDig);
-            ProbabilityDictionaryData[] pds = prob.Run(text);
+            ProbabilityDictionaryData<string>[] pds = prob.Run(text);
 
             vector = new Vector(vector.Count);
 
@@ -78,7 +78,7 @@ namespace AI.NLP
         public static void ModelGen(string text, string path, bool isStop = false)
         {
             ProbabilityDictionary prob = new ProbabilityDictionary(isStop);
-            ProbabilityDictionaryData[] pb = prob.Run(text);
+            ProbabilityDictionaryData<string>[] pb = prob.Run(text);
             int len = pb.Length;
             string[] newModel = new string[len];
 

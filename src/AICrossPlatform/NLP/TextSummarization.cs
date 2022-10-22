@@ -13,9 +13,9 @@ namespace AI.NLP
     public class TextSummarization
     {
         private readonly List<DataSummText> dataSummTexts = new List<DataSummText>();
-        private ProbabilityDictionaryData[] probabilityDictionaryDatas;
+        private ProbabilityDictionaryData<string>[] probabilityDictionaryDatas;
         private readonly ProbabilityDictionary probabilityDictionary = new ProbabilityDictionary();
-        private ProbabilityDictionaryData[][] probabilityDictionaryDataSeqs;
+        private ProbabilityDictionaryData<string>[][] probabilityDictionaryDataSeqs;
         private string[] seqs;
         private static readonly string nPat = @"[А-Я]\."; // паттерн инициалов
         private static readonly string uKPat = @" [а-я]\."; // паттерн различных сокращений
@@ -99,7 +99,7 @@ namespace AI.NLP
         {
             seqs = GetSeqs(text);
 
-            probabilityDictionaryDataSeqs = new ProbabilityDictionaryData[seqs.Length][];
+            probabilityDictionaryDataSeqs = new ProbabilityDictionaryData<string>[seqs.Length][];
 
             for (int i = 0; i < seqs.Length; i++)
                 probabilityDictionaryDataSeqs[i] = probabilityDictionary.Run(seqs[i]);

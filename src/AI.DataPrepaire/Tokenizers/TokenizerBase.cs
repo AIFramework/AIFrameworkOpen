@@ -71,10 +71,11 @@ namespace AI.DataPrepaire.Tokenizers
             int[] idsArray = ids.ToArray();
             T[] decoderArray = new T[idsArray.Length];
 
+            if (decoder == null)
+                throw new Exception("Обучите токенизатор");
+
             for (int i = 0; i < idsArray.Length; i++)
-            {
                 decoderArray[i] = decoder[idsArray[i]];
-            }
 
             return decoderArray;
         }
@@ -165,9 +166,7 @@ namespace AI.DataPrepaire.Tokenizers
                 int[] tokens = Encode(dArr[batch_count]); // Кодирование каждой последовательности
 
                 for (int token_ids = 0; token_ids < tokens.Length; token_ids++)
-                {
                     batch_tokens[batch_count, token_ids] = tokens[token_ids]; // Заполнение батча
-                }
             }
 
             return batch_tokens;

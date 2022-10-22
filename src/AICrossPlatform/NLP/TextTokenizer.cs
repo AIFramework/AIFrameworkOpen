@@ -66,7 +66,7 @@ namespace AI.NLP
         {
             string inp = Preproc(text);
             ProbabilityDictionary probabilityDictionary = new ProbabilityDictionary(false, false, IsStem);
-            ProbabilityDictionaryData[] dic = probabilityDictionary.Run(inp);
+            ProbabilityDictionaryData<string>[] dic = probabilityDictionary.Run(inp);
 
             if (WordCount == -1)
             {

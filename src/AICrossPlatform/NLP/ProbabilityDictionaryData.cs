@@ -15,12 +15,12 @@ namespace AI.NLP
     /// Данные вероятностного словаря
     /// </summary>
     [Serializable]
-    public class ProbabilityDictionaryData
+    public class ProbabilityDictionaryData<T>
     {
         /// <summary>
         /// Слово
         /// </summary>
-		public string Word { get; set; }
+		public T Word { get; set; }
         /// <summary>
         /// Вероятность встретить это слово
         /// </summary>

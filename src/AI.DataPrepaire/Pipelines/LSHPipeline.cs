@@ -132,7 +132,7 @@ namespace AI.DataPrepaire.Pipelines
         /// Обучение ковейера
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="target"></param>
+        /// <param name="target">Целевое значение</param>
         public virtual void Train(IEnumerable<T> data, IEnumerable<Vector> target)
         {
             //Очистка данных

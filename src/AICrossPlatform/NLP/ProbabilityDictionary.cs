@@ -23,9 +23,9 @@ namespace AI.NLP
         /// <summary>
         /// Вероятностный словарь
         /// </summary>
-        public ProbabilityDictionaryData[] pDictionary { get; private set; }
+        public ProbabilityDictionaryData<string>[] pDictionary { get; private set; }
 
-        private readonly List<ProbabilityDictionaryData> list = new List<ProbabilityDictionaryData>();
+        private readonly List<ProbabilityDictionaryData<string>> list = new List<ProbabilityDictionaryData<string>>();
         private readonly List<string> Words = new List<string>();
         private int n;
         /// <summary>
@@ -72,7 +72,7 @@ namespace AI.NLP
         /// </summary>
         /// <param name="text">Текст</param>
         /// <returns></returns>
-        public ProbabilityDictionaryData[] Run(string text)
+        public ProbabilityDictionaryData<string>[] Run(string text)
         {
             GetWords(text);
             Analis();
@@ -89,7 +89,7 @@ namespace AI.NLP
         /// <param name="text">Текст для генерации</param>
         public string[] GetWordsRunAll(string text)
         {
-            ProbabilityDictionaryData[] wsp = Run(text);
+            ProbabilityDictionaryData<string>[] wsp = Run(text);
             string[] strs = new string[wsp.Length];
 
             for (int i = 0; i < wsp.Length; i++)
@@ -109,7 +109,7 @@ namespace AI.NLP
         /// <param name="numW">Число слов</param>
         public string[] GetWordsRun(string text, int numW = 30)
         {
-            ProbabilityDictionaryData[] wsp = Run(text);
+            ProbabilityDictionaryData<string>[] wsp = Run(text);
             int len = (pDictionary.Length < numW) ? pDictionary.Length : numW;
 
             string[] strs = new string[len];
@@ -157,7 +157,7 @@ namespace AI.NLP
             {
                 string str = Words[0];
                 double count = 0;
-                ProbabilityDictionaryData fD = new ProbabilityDictionaryData();
+                ProbabilityDictionaryData<string> fD = new ProbabilityDictionaryData<string>();
 
                 for (int i = 0; i < Words.Count; i++)
                     if (Words[i] == str)  count++;

@@ -55,7 +55,7 @@ namespace AI.DataPrepaire.Pipelines.Utils
         /// Создание набора для классификации из одного примера
         /// </summary>
         /// <param name="sample"></param>
-        /// <param name="target"></param>
+        /// <param name="target">Целевое значение</param>
         /// <returns></returns>
         public virtual Tuple<T[], double[]> Augmetation(T sample, double target)
         {

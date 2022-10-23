@@ -29,10 +29,6 @@ namespace AI.DataPrepaire.NLPUtils.TextGeneration
         /// Вектор вероятностей
         /// </summary>
 		public Vector ProbabilityVector => _mc.ProbabilityVector;
-        /// <summary>
-        /// 1- вектор вероятностей, полезен для установки квантелей
-        /// </summary>
-		public Vector InvertedProbabilityVector => _mc.InvertedProbabilityVector;
         #endregion
 
         #region Конструкторы

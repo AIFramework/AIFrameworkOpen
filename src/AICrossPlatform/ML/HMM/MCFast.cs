@@ -26,17 +26,18 @@ namespace AI.ML.HMM
         ключ - это завершение, а значение - вероятность того, что n-грамма завершится именно так 
          */
         private Dictionary<int[], Dictionary<int, double>> _dataMC = new Dictionary<int[], Dictionary<int, double>>(new IntArrayEqualityComparer());
-
+        // Карта ключей, для создания вектора
+        private List<McMapElement> _map = new List<McMapElement>();
+        private bool _setedWLim = false;
+        private HashSet<int> _wList; // Список разрешенных токенов
         /// <summary>
         /// Токен начала
         /// </summary>
         public int StartToken { get; set; } = -1;
-
         /// <summary>
         /// Токен окончания
         /// </summary>
         public int EndToken { get; set; } = -2;
-
         /// <summary>
         /// Глубина моделирования
         /// </summary>
@@ -45,10 +46,7 @@ namespace AI.ML.HMM
         /// Вектор вероятностей
         /// </summary>
 		public Vector ProbabilityVector { get; set; }
-        /// <summary>
-        /// 1- вектор вероятностей, полезен для установки квантелей
-        /// </summary>
-		public Vector InvertedProbabilityVector { get; set; }
+
         #endregion
 
         #region Конструкторы
@@ -111,14 +109,25 @@ namespace AI.ML.HMM
                 }
             }
 
-            ProbabilityVector = new Vector(0); // вероятностный вектор
+            CreateVector();
+        }
 
-            // Создание вектора вероятностей
-            foreach (var item in _dataMC)
-                foreach (var ends in item.Value)
-                    ProbabilityVector.Add(_dataMC[item.Key][ends.Key]);
-            
-            InvertedProbabilityVector = 0.9999 - (ProbabilityVector / Statistic.MaximalValue(ProbabilityVector)); // создание генеративного вектора
+        /// <summary>
+        /// Белый список токенов
+        /// </summary>
+        public void SetLimitationsWList(int[] wList) 
+        {
+            if (wList == null)
+                throw new ArgumentNullException("wList имеет тип null");
+            if (wList.Length == 0)
+                throw new ArgumentException("wList - пустой массив");
+
+            _wList = new HashSet<int>();
+
+            foreach (var item in wList)
+                if (!_wList.Contains(item)) _wList.Add(item);
+
+            _setedWLim = true;
         }
         /// <summary>
 		/// Генерация текста
@@ -178,7 +187,7 @@ namespace AI.ML.HMM
             for (int i = 0; i < num && !stop; i++)
             {
 
-                nextToken = CalculateProbabilityNGramm(generatedSeqList, i);
+                nextToken = CalculateProbabilityNGramm(generatedSeqList);
                 if (nextToken==null) break; // Если нет продолжения
 
                 int counter = 0, // счетчик
@@ -212,7 +221,23 @@ namespace AI.ML.HMM
         /// <returns>вектор</returns>
         public Vector SeqToVector(int[] seq)
         {
-            throw new Exception("Не реализовано");
+            Vector ret = new Vector(_map.Count);
+            int ngramCount = seq.Length - NGram + 1, // Число проходов
+                lenBuff = NGram - 1; // Длинна буфера (ключа)
+            int[] buffNgMinus1 = new int[lenBuff];
+
+            for (int i = 0; i < ngramCount; i++)
+            {
+                for (int j = 0; j < lenBuff; j++)
+                    buffNgMinus1[j] = seq[i + j]; // Сбор n-грамм без завершения
+
+                int[] key = CopyKey(buffNgMinus1);// Копирование(перезапись) ключа
+                int endKey = seq[i + lenBuff]; // Ключ завершения n граммы
+                int index = GetIndex(key, endKey);// Индекс в карте ключей
+                if (index >= 0) ret[index]++;
+            }
+
+            return ret/ret.Sum();
         }
 
         #region Сериализация
@@ -260,6 +285,15 @@ namespace AI.ML.HMM
         #endregion
 
         #region Приватные методы
+        // Получить индекс в карте ключей
+        private int GetIndex(int[] key, int end) 
+        {
+            McMapElement mcMap = new McMapElement(key, end);
+
+            for (int i = 0; i < _map.Count; i++)
+                if (_map[i] == mcMap) return i;
+            return -1;
+        }
 
         // Копирует ключ
         private int[] CopyKey(int[] key) 
@@ -269,14 +303,29 @@ namespace AI.ML.HMM
             return keyCopy;
         }
 
+        // Создание вектора
+        private void CreateVector() 
+        {
+            // Создание карты
+            _map.Clear();
+            // Создание карты ключей
+            foreach (var item in _dataMC)
+                foreach (var ends in item.Value)
+                    _map.Add(new McMapElement(item.Key, ends.Key));
+            // вероятностный вектор
+            ProbabilityVector = new Vector(_map.Count); 
+            // Создание вектора вероятностей
+            for (int i = 0; i < _map.Count; i++)
+                ProbabilityVector[i] = _dataMC[_map[i].KeyStart][_map[i].KeyEnd];
+        }
+
         /// <summary>
         /// Вычисление вероятностей токенов
         /// </summary>
         /// <param name="start">Начальная последовательность</param>
-        /// <param name="index">Индекс начала n-граммы</param>
-        public MCNextToken[] CalculateProbabilityNGramm(List<int> start, int index)
+        public MCNextToken[] CalculateProbabilityNGramm(List<int> start)
         {
-
+            int index = start.Count - NGram+1;
             int lenBuff = NGram - 1;
             int[] buffNgMinus1 = new int[lenBuff];
 
@@ -289,16 +338,28 @@ namespace AI.ML.HMM
 
             var data = _dataMC[key];
             int countNext = data.Count;
-            MCNextToken[] nextToken = new MCNextToken[countNext];// массив "следующих токенов", концы н-грам с соот. вероятностями
-            int idx = 0;
+            List<MCNextToken> nextToken = new List<MCNextToken>(countNext);// массив "следующих токенов", концы н-грам с соот. вероятностями
             double denom = 0;
 
-            foreach (var item in data) denom += item.Value;
+            if (_setedWLim) // При активном ограничении (белый список)
+            {
+                foreach (var item in data)
+                    if (_wList.Contains(item.Key)) denom += item.Value;
 
-            foreach (var item in data)
-                nextToken[idx++] = new MCNextToken(item.Key, item.Value/denom);
+                if (denom == 0) return null; // Знаменатель равен нулю, значит нет элементов
 
-            return nextToken;
+                foreach (var item in data)
+                    if (_wList.Contains(item.Key)) nextToken.Add(new MCNextToken(item.Key, item.Value / denom));
+            }
+            else // Без него
+            {
+                foreach (var item in data) denom += item.Value;
+                foreach (var item in data)
+                    nextToken.Add(new MCNextToken(item.Key, item.Value / denom));
+            }
+
+
+            return nextToken.ToArray();
         }
 
         // Получить выходной массив
@@ -313,340 +374,35 @@ namespace AI.ML.HMM
             return outArray;
         }
         #endregion
+
+        /// <summary>
+        /// Элемент карты марковской цепи
+        /// </summary>
+        [Serializable]
+        public class McMapElement
+        {
+            /// <summary>
+            /// Ключ начала n-gramm
+            /// </summary>
+            public int[] KeyStart;
+
+            /// <summary>
+            /// Ключ завершения n-gramm
+            /// </summary>
+            public int KeyEnd;
+
+            /// <summary>
+            /// Элемент карты марковской цепи
+            /// </summary>
+            /// <param name="keyStart">Ключ начала n-gramm</param>
+            /// <param name="keyEnd">Ключ завершения n-gramm</param>
+            public McMapElement(int[] keyStart, int keyEnd) 
+            {
+                KeyStart = keyStart;
+                KeyEnd = keyEnd;
+            }
+
+        }
     }
+
 }
-
-
-
-//using AI.DataStructs.Algebraic;
-//using AI.DataStructs;
-//using AI.Extensions;
-//using AI.Statistics;
-//using System;
-//using System.Collections.Generic;
-//using System.IO;
-
-//namespace AI.ML.HMM
-//{
-//    /// <summary>
-//    /// Марковская цепь (Быстрый алгоритм)
-//    /// </summary>
-//    [Serializable]
-//    public class MCFast
-//    {
-//        #region Поля и свойства
-
-//        /// <summary>
-//        /// Токен начала
-//        /// </summary>
-//        public int StartToken { get; set; } = -1;
-
-//        /// <summary>
-//        /// Токен окончания
-//        /// </summary>
-//        public int EndToken { get; set; } = -2;
-
-//        /// <summary>
-//        /// Элемент модели
-//        /// </summary>
-//        public MCFastModel[] Models { get; private set; }
-//        /// <summary>
-//        /// Глубина моделирования
-//        /// </summary>
-//		public int NGram { get; set; } = 3;
-//        /// <summary>
-//        /// Вектор вероятностей
-//        /// </summary>
-//		public Vector ProbabilityVector { get; set; }
-//        /// <summary>
-//        /// 1- вектор вероятностей, полезен для установки квантелей
-//        /// </summary>
-//		public Vector InvertedProbabilityVector { get; set; }
-//        #endregion
-
-//        #region Конструкторы
-//        /// <summary>
-//        /// Быстрые марковские цепи
-//        /// </summary>
-//        public MCFast() { }
-//        /// <summary>
-//        /// Быстрые марковские цепи
-//        /// </summary>
-//        public MCFast(MCFastModel[] models, Vector prob)
-//        {
-//            Models = new MCFastModel[models.Length];
-//            NGram = models[0].Model.Length;
-//            Array.Copy(models, 0, Models, 0, models.Length);
-//            ProbabilityVector = prob.Clone();
-//            InvertedProbabilityVector = 0.9999 - (ProbabilityVector / prob.Max());
-//        }
-//        #endregion
-
-//        /// <summary>
-//        /// Обучение языковой модели
-//        /// </summary>
-//        /// <param name="trainSeq">Тренировочная последовательность</param>
-//        /// <param name="addStart">Добавлять ли старт вначале</param>
-//        public void Train(int[] trainSeq, bool addStart = false)
-//        {
-//            if (trainSeq == null)
-//                throw new ArgumentNullException(nameof(trainSeq));
-
-//            List<int> trainTextFinal = new List<int>(trainSeq.Length);
-
-//            if (addStart)
-//                for (int i = 0; i < NGram - 1; i++)
-//                    trainTextFinal.Add(StartToken);
-
-//            trainTextFinal.AddRange(trainSeq); // Добвление последовательности
-
-//            List<MCFastModel> list = new List<MCFastModel>(); // модель
-//            int[] nG = new int[NGram]; // n-Грамма
-
-//            for (int i = 0; i < NGram; i++)
-//                nG[i] = trainTextFinal[i]; // Заполнение первой n-грамы
-
-//            MCFastModel data = new MCFastModel(nG, 1);
-//            list.Add(data); // добавление н-грамы в список
-//            bool nGramIsExist; // установка флага, который проверяет есть ли данная н-грама
-
-//            for (int i = 0; i < trainTextFinal.Count - NGram + 1; i++)
-//            {
-//                nG = new int[NGram]; // сброс н-грамы для повторного использования
-
-//                for (int k = 0; k < NGram; k++)
-//                    nG[k] = trainTextFinal[i + k]; // заполнение новой н-грамы
-
-//                nGramIsExist = false; // флаг устанавливается в false
-
-//                for (int j = 0; j < list.Count; j++)
-//                    // Сравненние массивов строк, если они равны возвращается true
-//                    if (nG.ElementWiseEqual(list[j].Model))
-//                    {
-//                        nGramIsExist = true; // флаг устанавливается в true
-//                        list[j].Probability++; // Увеличение значения счетчика для данной н-грамы
-//                        break;// выход из цикла
-//                    }
-
-
-//                //Если н-грамы нет — добавляем ее
-//                if (!nGramIsExist)
-//                {
-//                    data = new MCFastModel(nG, 1);
-//                    list.Add(data);
-//                }
-//            }
-
-//            ProbabilityVector = new Vector(list.Count); // вероятностный вектор
-
-//            for (int i = 0; i < list.Count; i++)
-//            {
-//                list[i].Probability /= trainTextFinal.Count;
-//                ProbabilityVector[i] = list[i].Probability;
-//            }
-
-//            Models = list.ToArray(); // получение массива н-грам с вероятностями
-
-//            InvertedProbabilityVector = 0.9999 - (ProbabilityVector / Statistic.MaximalValue(ProbabilityVector)); // создание генеративного вектора
-//        }
-//        /// <summary>
-//		/// Генерация текста
-//		/// </summary>
-//		/// <param name="num">Число токенов</param>
-//		/// <returns>Сгенерированная строка</returns>
-//		public int[] Generate(int num)
-//        {
-//            Random random = new Random();
-
-//            int[] tokens = Models[random.Next(Models.Length)].Model;
-
-//            return Generate(num, tokens, random);
-//        }
-//        /// <summary>
-//        /// Генерация текста
-//        /// </summary>
-//        /// <param name="num">число слов</param>
-//        /// <param name="tokens">начальное состояние</param>
-//        /// <returns>сгенерированная строка</returns>
-//        public int[] Generate(int num, int[] tokens)
-//        {
-//            return Generate(num, tokens, new Random());
-//        }
-//        /// <summary>
-//        /// Генерация текста
-//        /// </summary>
-//        /// <param name="num">число слов</param>
-//        /// <param name="tokens">начальное состояние</param>
-//        /// <param name="rnd">Генератор псевдо-случайных чисел</param>
-//        /// <returns>сгенерированная строка</returns>
-//        public int[] Generate(int num, int[] tokens, Random rnd)
-//        {
-//            if (num <= 0)
-//                throw new ArgumentOutOfRangeException(nameof(num), "Длинна последовательности должна быть больше нуля");
-
-//            if (tokens == null)
-//                throw new ArgumentNullException(nameof(tokens));
-
-//            if (rnd == null)
-//                throw new ArgumentNullException(nameof(rnd));
-
-//            List<int> seqTokensGenerate = new List<int>(num + NGram); // Массив для генерации
-//            int[] startNgramState = new int[NGram - 1]; // начальное состояние н-граммы
-//            List<int> generatedSeqList = new List<int>(num + NGram); // сгенерированная строка
-//            MCNextToken[] nextToken; // массив "следующих токенов", концы н-грам с соот. вероятностями
-//            bool stop = false;
-
-//            int i = 0;
-
-//            for (; i < NGram - 1; i++)
-//                seqTokensGenerate.Add(tokens[i]);
-
-//            for (; i < num && !stop; i++)
-//            {
-//                // ToDo: Оптимизировать
-//                Array.Copy(seqTokensGenerate.ToArray(), i - NGram + 1, startNgramState, 0, NGram - 1);
-//                nextToken = FindInversProbabilityNGramm(startNgramState); // получения завершений н-граммы с соот вероятностями
-
-//                if (nextToken.Length == 0) break;
-
-//                int counter = 0, // счетчик
-//                mZ = nextToken.Length; // модуль кольца вычетов
-
-//                while (true)
-//                {
-//                    if (rnd.NextDouble() > nextToken[counter % mZ].Probability)
-//                    {
-//                        seqTokensGenerate.Add(nextToken[counter % mZ].Value);
-//                        if (seqTokensGenerate[i] == StartToken || seqTokensGenerate[i] == EndToken)
-//                        {
-//                            stop = true;
-//                            break;
-//                        }
-//                        generatedSeqList.Add(seqTokensGenerate[i]);
-//                        break;
-//                    }
-
-//                    if (counter > num * 100) break;
-//                    counter++;
-//                }
-//            }
-
-//            return generatedSeqList.ToArray();
-//        }
-//        /// <summary>
-//        /// Преобразование последовательности в вектор + изменение модели
-//        /// </summary>
-//        /// <param name="text">текст</param>
-//        /// <returns>вектор</returns>
-//        public Vector SeqToVector(int[] text)
-//        {
-//            if (text == null)
-//                throw new ArgumentNullException(nameof(text));
-
-//            for (int i = 0; i < Models.Length; i++)
-//                Models[i].Probability = 0;
-
-//            int[] nG; // n-Грамма
-//            Vector output;
-
-
-//            for (int i = 0; i < text.Length - NGram + 1; i++)
-//            {
-//                nG = new int[NGram]; // сброс н-грамы для повторного использования
-
-//                for (int k = 0; k < NGram; k++)
-//                    nG[k] = text[i + k]; // заполнение новой н-грамы
-
-//                for (int j = 0; j < Models.Length; j++)
-//                    // Сравненние массивов строк, если они равны возвращается true
-//                    if (nG.ElementWiseEqual(Models[j].Model))
-//                    {
-//                        Models[j].Probability++; // Увеличение значения счетчика для данной н-грамы
-//                        break;// выход из цикла
-//                    }
-//            }
-
-//            ProbabilityVector = new Vector(Models.Length); // вероятностный вектор
-
-//            for (int i = 0; i < Models.Length; i++)
-//            {
-//                Models[i].Probability /= text.Length;
-//                ProbabilityVector[i] = Models[i].Probability;
-//            }
-
-//            output = ProbabilityVector / Statistic.MaximalValue(ProbabilityVector);
-//            InvertedProbabilityVector = 0.9999 - output; // создание генеративного вектора
-
-//            return output;
-//        }
-
-//        #region Сериализация
-
-//        #region Сохранение
-//        /// <summary>
-//        /// Сохранение Марковской модели в файл
-//        /// </summary>
-//        /// <param name="path">Путь до файла</param>
-//        public void Save(string path)
-//        {
-//            BinarySerializer.Save(path, this);
-//        }
-//        /// <summary>
-//        /// Сохранение Марковской модели в поток
-//        /// </summary>
-//        /// <param name="stream">Поток</param>
-//        public void Save(Stream stream)
-//        {
-//            BinarySerializer.Save(stream, this);
-//        }
-//        #endregion
-
-//        #region Загрузка
-//        /// <summary>
-//        /// Загрузка марковской модели из файла
-//        /// </summary>
-//        /// <param name="path">Путь до файла</param>
-//        /// <returns></returns>
-//        public static MCFast Load(string path)
-//        {
-//            return BinarySerializer.Load<MCFast>(path);
-//        }
-//        /// <summary>
-//        /// Загрузка марковской модели из потока
-//        /// </summary>
-//        /// <param name="stream">Поток</param>
-//        /// <returns></returns>
-//        public static MCFast Load(Stream stream)
-//        {
-//            return BinarySerializer.Load<MCFast>(stream);
-//        }
-//        #endregion
-
-//        #endregion
-
-//        #region Приватные методы
-//        private MCNextToken[] FindInversProbabilityNGramm(int[] begin)
-//        {
-//            List<MCNextToken> hmmList = new List<MCNextToken>();
-//            bool flag;
-
-//            for (int i = 0; i < Models.Length; i++)
-//            {
-//                flag = true;
-
-//                for (int j = 0; j < NGram - 1; j++)
-//                    if (begin[j] != Models[i].Model[j])
-//                    {
-//                        flag = false;
-//                        break;
-//                    }
-
-//                if (flag)
-//                    hmmList.Add(new MCNextToken(Models[i].Model[NGram - 1], InvertedProbabilityVector[i]));
-//            }
-
-//            return hmmList.ToArray();
-//        }
-//        #endregion
-//    }
-//}

@@ -4,6 +4,7 @@ using AI.DataStructs.Algebraic;
 using AI.ML.HMM;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -29,7 +30,11 @@ namespace TextGenTest
         {
             SetN();
             _hmm.NGram = _n;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             _hmm.Train(richTextBox1.Text, true);
+            timer.Stop();
+            MessageBox.Show($"Время обучения: {timer.ElapsedMilliseconds/1000.0} сек");
         }
 
         private void SetN()
@@ -47,7 +52,11 @@ namespace TextGenTest
 
             inp.AddRange(strArr);
 
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             richTextBox2.Text = textBox1.Text + " " + _hmm.Generate(120, inp.ToArray());
+            timer.Stop();
+            MessageBox.Show($"Время генерации: {timer.ElapsedMilliseconds / 1000.0} сек");
         }
     }
 

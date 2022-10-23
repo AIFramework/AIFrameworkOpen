@@ -7,6 +7,7 @@ namespace AI.DataStructs.Data
     /// <summary>
     /// Класс для сравнения и генерации хэшей массива целых чисел
     /// </summary>
+    [Serializable]
     public class IntArrayEqualityComparer : IEqualityComparer<int[]>
     {
         /// <summary>

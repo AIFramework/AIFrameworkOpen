@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AI.DataStructs.Algebraic;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,12 +14,24 @@ namespace AI.DataPrepaire.DataLoader
         /// <summary>
         /// Имя колонки
         /// </summary>
-        public string Name;
+        public string Name => _name;
 
         /// <summary>
         /// Данные
         /// </summary>
         public List<object> Data;
+
+        private string _name;
+
+        /// <summary>
+        /// Столбец данных
+        /// </summary>
+        public DataItem(string name, List<object> data)
+        {
+            _name = name;
+            Data = data;
+        }
+
 
         /// <summary>
         /// Преобразовать в определенный тип
@@ -43,6 +56,15 @@ namespace AI.DataPrepaire.DataLoader
             }
 
             return list;
+        }
+
+        /// <summary>
+        /// Перевод данных в вектор
+        /// </summary>
+        /// <returns></returns>
+        public Vector ToVector() 
+        {
+            return ToType<double>().ToArray();
         }
         
     }

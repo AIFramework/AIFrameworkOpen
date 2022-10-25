@@ -20,6 +20,11 @@ namespace AI.DataPrepaire.DataLoader
         private List<string> _indexis = new List<string>();
 
         /// <summary>
+        /// Число строк
+        /// </summary>
+        public int Len => _frame[_indexis[0]].Data.Count;
+
+        /// <summary>
         /// Добавление/получение/изменение набора данных по имени
         /// </summary>
         /// <param name="name"></param>
@@ -153,5 +158,66 @@ namespace AI.DataPrepaire.DataLoader
         {
             return GetRow<double>(rowIndex);
         }
+
+        /// <summary>
+        /// Получить срез по глубине(строкам)
+        /// </summary>
+        /// <param name="indStart">Начальный индекс</param>
+        /// <param name="len">Конечный индекс</param>
+        public DataTable GetSlice(int indStart, int len) 
+        {
+            DataTable dataTable = new DataTable();
+                        
+            for (int i = 0; i < _indexis.Count; i++)
+            {
+                DataItem source = _frame[_indexis[i]];
+                DataItem items = new DataItem(_indexis[i], new List<object>(len - indStart));
+
+                items.TypeColum = source.TypeColum;
+
+                for (int j = indStart; j < len; j++)
+                    items.Data[j] = source.Data[j];
+
+                dataTable.Add(items);
+                dataTable._indexis[i] = _indexis[i];
+            }
+
+            return dataTable;
+        }
+
+
+        /// <summary>
+        /// Отображение таблицы строкой
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            int len = Len;
+
+            DataItem[] dataItems = new DataItem[_indexis.Count];
+            for (int i = 0; i < _indexis.Count; i++)
+                dataItems[i] = _frame[_indexis[i]];
+
+
+            for (int i = 0; i < len; i++)
+            {
+                stringBuilder.Append(i);
+                stringBuilder.Append("\t");
+
+                if(i == 9&&len>25) i = len - 10; // Чтобы было не больше 20 строк
+
+                for (int j = 0; j < _indexis.Count; j++)
+                {
+                    stringBuilder.Append(dataItems[j].Data[i]);
+                    stringBuilder.Append("\t\t\t");
+                }
+
+                stringBuilder.Append('\n');
+            }
+
+            return stringBuilder.ToString();
+        }
+
     }
 }

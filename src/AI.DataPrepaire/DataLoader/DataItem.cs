@@ -17,6 +17,11 @@ namespace AI.DataPrepaire.DataLoader
         public string Name => _name;
 
         /// <summary>
+        /// Тип данных
+        /// </summary>
+        public TypeData TypeColum = TypeData.UnDef;
+
+        /// <summary>
         /// Данные
         /// </summary>
         public List<object> Data;
@@ -66,6 +71,80 @@ namespace AI.DataPrepaire.DataLoader
         {
             return ToType<double>().ToArray();
         }
+
+        /// <summary>
+        /// Определяет тип
+        /// </summary>
+        private void TypeDetected() 
+        {
+            try {
+                try {
+                    double.Parse((string)Data[0], AISettings.GetProvider());
+                    TypeColum = TypeData.DigitP;
+                }
+                catch {
+                    double.Parse((string)Data[0], AISettings.GetProviderComa());
+                    TypeColum = TypeData.DigitC;
+                }
+
+            }
+            catch
+            {
+                if (Data[0] is string) TypeColum = TypeData.String;
+                else TypeColum = TypeData.UnDef;
+            }
+        }
+
+        /// <summary>
+        /// Преобразовывает данные (Служебный метод)
+        /// </summary>
+        public void Convert() 
+        {
+            TypeDetected();
+
+            if (TypeColum == TypeData.DigitP)
+                for (int i = 0; i < Data.Count; i++)
+                    Data[i] = double.Parse(((string)Data[i]).Replace("\"", ""), AISettings.GetProvider());
+
+            if (TypeColum == TypeData.DigitC)
+                for (int i = 0; i < Data.Count; i++)
+                    Data[i] = double.Parse(((string)Data[i]).Replace("\"", ""), AISettings.GetProviderComa());
+
+        }
+
+        /// <summary>
+        /// Изменение столбца
+        /// </summary>
+        /// <param name="transformFunc">Функция трансформации</param>
+        public void TransformSelf(Func<object, object> transformFunc)
+        {
+            for (int i = 0; i < Data.Count; i++)
+                Data[i] = transformFunc(Data[i]);
+        }
         
+    }
+
+    /// <summary>
+    /// Тип данных
+    /// </summary>
+    public enum TypeData 
+    {
+        /// <summary>
+        /// Число строка(Разделитель запятая)
+        /// </summary>
+        DigitC,
+
+        /// <summary>
+        /// Число строка (Разделитель точка)
+        /// </summary>
+        DigitP,
+        /// <summary>
+        /// Строка
+        /// </summary>
+        String,
+        /// <summary>
+        /// Неопределен
+        /// </summary>
+        UnDef
     }
 }

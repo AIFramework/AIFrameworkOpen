@@ -23,7 +23,10 @@ namespace AI.DataPrepaire.DataLoader.Formats
             DataTable dataFrame = new DataTable();
 
             for (int i = 0; i < dataItems.Length; i++)
+            {
+                dataItems[i].Convert();
                 dataFrame.Add(dataItems[i]);
+            }
             
             return dataFrame;
         }

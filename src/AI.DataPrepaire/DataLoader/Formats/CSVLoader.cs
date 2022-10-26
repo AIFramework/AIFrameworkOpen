@@ -44,7 +44,7 @@ namespace AI.DataPrepaire.DataLoader.Formats
 
                 // Создание столбцов данных
                 for (int i = 0; i < headers.Length; i++)
-                    dataItems[i] = new DataItem(headers[i], new List<object>());
+                    dataItems[i] = new DataItem(headers[i], new List<dynamic>());
 
                 // Запись данных
                 while (!reader.EndOfStream)

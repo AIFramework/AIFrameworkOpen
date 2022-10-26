@@ -57,7 +57,7 @@ namespace AI.DataPrepaire.DataLoader
         /// </summary>
         /// <param name="name">Имя</param>
         /// <param name="data">Данные</param>
-        public void Add(string name, IEnumerable<object> data) 
+        public void Add(string name, IEnumerable<dynamic> data) 
         {
             DataItem dataItem = new DataItem(name, data.ToList());
             this[name] = dataItem;
@@ -118,7 +118,7 @@ namespace AI.DataPrepaire.DataLoader
         /// <returns></returns>
         public object[] GetRow(int rowIndex)
         {
-            object[] ret = new object[_indexis.Count];
+            dynamic[] ret = new dynamic[_indexis.Count];
 
             for (int i = 0; i < _indexis.Count; i++)
                 ret[i] = _frame[_indexis[i]].Data[rowIndex];
@@ -171,7 +171,7 @@ namespace AI.DataPrepaire.DataLoader
             for (int i = 0; i < _indexis.Count; i++)
             {
                 DataItem source = _frame[_indexis[i]];
-                DataItem items = new DataItem(_indexis[i], new List<object>(len - indStart));
+                DataItem items = new DataItem(_indexis[i], new List<dynamic>(len - indStart));
 
                 items.TypeColum = source.TypeColum;
 

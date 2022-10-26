@@ -24,14 +24,14 @@ namespace AI.DataPrepaire.DataLoader
         /// <summary>
         /// Данные
         /// </summary>
-        public List<object> Data;
+        public List<dynamic> Data;
 
         private string _name;
 
         /// <summary>
         /// Столбец данных
         /// </summary>
-        public DataItem(string name, List<object> data)
+        public DataItem(string name, List<dynamic> data)
         {
             _name = name;
             Data = data;
@@ -52,11 +52,11 @@ namespace AI.DataPrepaire.DataLoader
             {
                 try
                 {
-                    list[i] = (T)Data[i];
+                    list.Add((T)Data[i]);
                 }
                 catch
                 {
-                    throw new Exception($"Элемент {Data[i]}, с индексом {i}, не может быть преобразован в тип {typeof(T)}");
+                    throw new Exception($"Элемент {Data[i]}, с индексом {i} и типом {Data[i].GetType()}, не может быть преобразован в тип {typeof(T)}");
                 }
             }
 
@@ -116,10 +116,12 @@ namespace AI.DataPrepaire.DataLoader
         /// Изменение столбца
         /// </summary>
         /// <param name="transformFunc">Функция трансформации</param>
-        public void TransformSelf(Func<object, object> transformFunc)
+        public void TransformSelf(Func<dynamic, dynamic> transformFunc)
         {
             for (int i = 0; i < Data.Count; i++)
                 Data[i] = transformFunc(Data[i]);
+
+            Convert();
         }
         
     }

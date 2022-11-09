@@ -9,6 +9,7 @@ namespace AI
     /// <summary>
     /// FFT Оконная функцияs
     /// </summary>
+    [Serializable]
     public static class WindowForFFT
     {
 

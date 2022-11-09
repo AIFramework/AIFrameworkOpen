@@ -55,4 +55,80 @@ namespace AI.DSP.Analyse
 
 
     }
+
+
+    /// <summary>
+    /// Данные преобразования Уэлча
+    /// </summary>
+    [Serializable]
+    public class WelchData 
+    {
+        /// <summary>
+        /// Спектральная плотность мощности
+        /// </summary>
+        public Vector PSD;
+        
+        /// <summary>
+        /// Половина спектральной плотности мощности
+        /// </summary>
+        public Vector HalfPSD
+        {
+            get { return PSD.CutAndZero(PSD.Count / 2); }
+        }
+
+        /// <summary>
+        /// Массив частот
+        /// </summary>
+        public Vector Freq;
+
+        /// <summary>
+        /// Половина массива частот
+        /// </summary>
+        public Vector HalfFreq 
+        {
+            get { return Freq.CutAndZero(Freq.Count / 2); }
+        }
+
+        /// <summary>
+        /// Данные преобразования Уэлча
+        /// </summary>
+        public WelchData(Vector spectrum, Vector freq, WelchPSDType welchPSDType = WelchPSDType.Abs)
+        {
+
+            PSD = welchPSDType == WelchPSDType.Abs? spectrum : spectrum.Transform(x=>10*Math.Log10(x));
+            Freq = freq;
+        }
+
+        /// <summary>
+        /// Данные преобразования Уэлча
+        /// </summary>
+        public WelchData(Vector spectrum, double sr, WelchPSDType welchPSDType = WelchPSDType.Abs) 
+        {
+            PSD = welchPSDType == WelchPSDType.Abs ? spectrum : spectrum.Transform(x => 10 * Math.Log10(x));
+
+            Freq = new Vector(PSD.Count);
+            
+            double step = sr/Freq.Count;
+            Freq[0] = step;
+
+            for (int i = 1; i < PSD.Count; i++)
+                Freq[i] = Freq[i - 1] + step;
+        }
+    }
+
+    /// <summary>
+    /// Тип представления СПМ
+    /// </summary>
+    [Serializable]
+    public enum WelchPSDType 
+    {
+        /// <summary>
+        /// Децибеллы
+        /// </summary>
+        Db,
+        /// <summary>
+        /// Абсолютные значения
+        /// </summary>
+        Abs
+    }
 }

@@ -75,6 +75,12 @@
     <Compile Include="Charts\Control\HeatMapControl.Designer.cs">
       <DependentUpon>HeatMapControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Charts\Control\SpectrumWelchAnalyser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Charts\Control\SpectrumWelchAnalyser.Designer.cs">
+      <DependentUpon>SpectrumWelchAnalyser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Charts\Data\DataMethods.cs" />
     <Compile Include="Charts\Data\IData.cs" />
     <Compile Include="Charts\Data\VectorBasedData.cs" />
@@ -127,6 +133,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Charts\Control\ChartVisual.resx">
       <DependentUpon>ChartVisual.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Charts\Control\SpectrumWelchAnalyser.resx">
+      <DependentUpon>SpectrumWelchAnalyser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Charts\Forms\FormChart.resx">
       <DependentUpon>FormChart.cs</DependentUpon>

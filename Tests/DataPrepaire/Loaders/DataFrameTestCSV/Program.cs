@@ -11,10 +11,11 @@ namespace DataFrameTestCSV
     {
         static void Main(string[] args)
         {
-            var csv = CSVLoader.Read("iris.csv",',');
-            var dataLine = csv.GetRow(3);
-            var colums = csv.GetColums();
-            var df = csv.GetSubTable(new[] { colums[1], colums[2] });
+            var csv = CSVLoader.Read("iris.csv",','); // Загрузка csv
+            csv.ColumnToCategorical(4); // Получение категорий
+            var dataLine = csv.GetRow(3); // 3я строка
+            var colums = csv.GetColums(); // Имена столбцов
+            var df = csv.GetSubTable(new[] { colums[1], colums[2] }); // Построение подтаблицы с указанными столбцами
 
             Console.WriteLine(csv);
         }

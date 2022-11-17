@@ -160,6 +160,27 @@ namespace AI.DataPrepaire.DataLoader
         }
 
         /// <summary>
+        /// Преобразование категорий в индексы (возвращает словарь для преобразования)
+        /// </summary>
+        /// <param name="colIndex">Индекс столбца</param>
+        /// <returns></returns>
+        public Dictionary<object, int> ColumnToCategorical(int colIndex = 0)
+        {
+            string name = _indexis[colIndex];
+            return ColumnToCategorical(name);
+        }
+
+        /// <summary>
+        /// Преобразование категорий в индексы (возвращает словарь для преобразования)
+        /// </summary>
+        /// <param name="colName">Имя столбца</param>
+        /// <returns></returns>
+        public Dictionary<object, int> ColumnToCategorical(string colName)
+        {
+            return this[colName].SelfCategoryToIndex();
+        }
+
+        /// <summary>
         /// Получить срез по глубине(строкам)
         /// </summary>
         /// <param name="indStart">Начальный индекс</param>
@@ -218,6 +239,7 @@ namespace AI.DataPrepaire.DataLoader
 
             return stringBuilder.ToString();
         }
+
 
     }
 }

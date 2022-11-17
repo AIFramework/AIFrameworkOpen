@@ -123,7 +123,37 @@ namespace AI.DataPrepaire.DataLoader
 
             Convert();
         }
-        
+
+        /// <summary>
+        /// Метод возвращает словарь с индексами и объектами категорий, ключ - объект
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<dynamic, int> GetCategoryIndex()
+        {
+            Dictionary<dynamic, int> obj_indexCat = new Dictionary<dynamic, int>();
+            int indexCat = 0;
+
+            foreach (var item in Data)
+                if (!obj_indexCat.ContainsKey(item))
+                    obj_indexCat[item] = indexCat++;
+
+            return obj_indexCat;
+        }
+
+        /// <summary>
+        /// Заменяет категории на соот. индексы и возвращает словарь для преобразования
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<dynamic, int> SelfCategoryToIndex()
+        {
+            Dictionary<dynamic, int> obj_indexCat = GetCategoryIndex();
+
+            for (int i = 0; i < Data.Count; i++)
+                Data[i] = obj_indexCat[Data[i]];
+
+            return obj_indexCat;
+        }
+
     }
 
     /// <summary>

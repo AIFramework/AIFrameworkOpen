@@ -120,7 +120,7 @@ namespace AI.DSP.Analyse
     /// Тип представления СПМ
     /// </summary>
     [Serializable]
-    public enum WelchPSDType 
+    public enum WelchPSDType : byte
     {
         /// <summary>
         /// Децибеллы

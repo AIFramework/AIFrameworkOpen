@@ -12,6 +12,28 @@ namespace AI.NLP
     public static class StringExtention
     {
         /// <summary>
+        /// Объединение строк
+        /// </summary>
+        /// <param name="strings"></param>
+        /// <param name="sep"></param>
+        /// <returns></returns>
+        public static string Concatinate(this string[] strings, string sep = "\n")
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int i = 0; i < strings.Length; i++)
+            {
+                stringBuilder.Append(strings[i]);
+                
+                if(i< strings.Length-1)
+                    stringBuilder.Append(sep);
+            }
+
+            return stringBuilder.ToString();
+        }
+
+
+        /// <summary>
         /// Разделение по строке
         /// </summary>
         /// <param name="text">Текст</param>

@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Signals", "Signals", "{C5D9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpectrumAnalyzer", "Tests\Signals\SpectrumAnalyzer\SpectrumAnalyzer.csproj", "{66FDB7E6-1388-42B4-A46D-A7CF929B5C87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldModel", "Tests\WorldModel\WorldModel.csproj", "{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{66FDB7E6-1388-42B4-A46D-A7CF929B5C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66FDB7E6-1388-42B4-A46D-A7CF929B5C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66FDB7E6-1388-42B4-A46D-A7CF929B5C87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{4C18CC29-C29E-49F6-8172-6C584F92E415} = {1D8E7971-CD1C-421C-9571-5816F6D7EECC}
 		{C5D90AF6-2E7C-4EF5-8448-E5F9471F6AC1} = {4FB793E6-5E89-46E1-A966-DA32DFDFBF11}
 		{66FDB7E6-1388-42B4-A46D-A7CF929B5C87} = {C5D90AF6-2E7C-4EF5-8448-E5F9471F6AC1}
+		{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068} = {4FB793E6-5E89-46E1-A966-DA32DFDFBF11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {195084AE-6B2F-490D-AB30-834665F7A953}

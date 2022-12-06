@@ -17,7 +17,10 @@ namespace AI.ML.HMM
         /// Обратная матрица состояний (1-matr_state)
         /// </summary>
         public Matrix stateAlter;
-        private int[] states;
+        /// <summary>
+        /// Состояния
+        /// </summary>
+        public int[] states;
         private readonly Random rnd = new Random();
 
         /// <summary>
@@ -87,15 +90,9 @@ namespace AI.ML.HMM
             double max = matrix[0, 0];
 
             for (int j = 0; j < states.Length; j++)
-            {
                 for (int k = 0; k < states.Length; k++)
-                {
                     if (matrix[j, k] > max)
-                    {
                         max = matrix[j, k];
-                    }
-                }
-            }
 
             return max;
         }

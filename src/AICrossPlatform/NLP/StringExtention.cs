@@ -57,5 +57,45 @@ namespace AI.NLP
         {
             return Regex.Replace(text, pattern, x => transformer(x.Value));
         }
+
+
+        /// <summary>
+        /// Находит разность между строками, например "привет" - "ве" = "прит"
+        /// </summary>
+        /// <param name="text1">Строка из которой вычитаем</param>
+        /// <param name="text2">Строка которую вычитаем</param>
+        public static string Diff(this string text1, string text2)
+        {
+            int len = text1.Length-text2.Length;
+          
+            if (len < 0) throw new Exception("Вычитаемое больше уменьшаемого");
+            if (!text1.Contains(text2)) throw new Exception("Уменьшаемое не содержит вычитаемое");
+            char[] result = new char[len];
+
+            for (int start = 0, j = 0; start < text1.Length-text2.Length && j < text1.Length; start++, j++)
+            {
+                bool isCont = false;
+
+                if (text1[start] == text2[0])
+                {
+                    isCont = true;
+
+                    for (int i = 0; i < text2.Length; i++)
+                        if (text1[start + i] != text2[i])
+                        {
+                            isCont = false;
+                            break;
+                        }
+                }
+
+                j = isCont ? j + text2.Length : j; // Пропуск вычитания
+
+                result[start] = text1[j];
+
+            }
+
+
+            return new string(result);
+        }
     }
 }

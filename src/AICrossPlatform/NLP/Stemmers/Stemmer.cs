@@ -65,9 +65,7 @@ namespace AI.NLP.Stemmers
             string[] strs = new string[words.Length];
 
             for (int i = 0; i < words.Length; i++)
-            {
                 strs[i] = TransformingWord(words[i]);
-            }
 
             return strs;
         }
@@ -89,41 +87,37 @@ namespace AI.NLP.Stemmers
                 string rv = groupCollection[2].ToString();
 
                 MatchCollection temp = PERFECTIVEGROUND.Matches(rv);
-                string StringTemp = ReplaceFirst(temp, rv);
+                string stringTemp = ReplaceFirst(temp, rv);
 
 
-                if (StringTemp.Equals(rv))
+                if (stringTemp.Equals(rv))
                 {
                     MatchCollection tempRV = REFLEXIVE.Matches(rv);
                     rv = ReplaceFirst(tempRV, rv);
                     temp = ADJECTIVE.Matches(rv);
-                    StringTemp = ReplaceFirst(temp, rv);
-                    if (!StringTemp.Equals(rv))
+                    stringTemp = ReplaceFirst(temp, rv);
+                    if (!stringTemp.Equals(rv))
                     {
-                        rv = StringTemp;
+                        rv = stringTemp;
                         tempRV = PARTICIPLE.Matches(rv);
                         rv = ReplaceFirst(tempRV, rv);
                     }
                     else
                     {
                         temp = VERB.Matches(rv);
-                        StringTemp = ReplaceFirst(temp, rv);
-                        if (StringTemp.Equals(rv))
+                        stringTemp = ReplaceFirst(temp, rv);
+                        if (stringTemp.Equals(rv))
                         {
                             tempRV = NOUN.Matches(rv);
                             rv = ReplaceFirst(tempRV, rv);
                         }
                         else
-                        {
-                            rv = StringTemp;
-                        }
+                            rv = stringTemp;
                     }
 
                 }
                 else
-                {
-                    rv = StringTemp;
-                }
+                    rv = stringTemp;
 
                 MatchCollection tempRv = I.Matches(rv);
                 rv = ReplaceFirst(tempRv, rv);
@@ -134,8 +128,8 @@ namespace AI.NLP.Stemmers
                 }
 
                 temp = P.Matches(rv);
-                StringTemp = ReplaceFirst(temp, rv);
-                if (StringTemp.Equals(rv))
+                stringTemp = ReplaceFirst(temp, rv);
+                if (stringTemp.Equals(rv))
                 {
                     tempRv = SUPERLATIVE.Matches(rv);
                     rv = ReplaceFirst(tempRv, rv);
@@ -143,9 +137,8 @@ namespace AI.NLP.Stemmers
                     rv = ReplaceFirst(tempRv, rv);
                 }
                 else
-                {
-                    rv = StringTemp;
-                }
+                    rv = stringTemp;
+
                 word = pre + rv;
 
             }
@@ -155,27 +148,24 @@ namespace AI.NLP.Stemmers
 
         private static string ReplaceFirst(MatchCollection collection, string part)
         {
-            string StringTemp = "";
-            if (collection.Count == 0)
-            {
-                return part;
-            }
+            string stringTemp;
+            if (collection.Count == 0)  return part;
 
             else
             {
-                StringTemp = part;
+                stringTemp = part;
                 for (int i = 0; i < collection.Count; i++)
                 {
                     GroupCollection GroupCollection = collection[i].Groups;
-                    if (StringTemp.Contains(GroupCollection[i].ToString()))
+                    if (stringTemp.Contains(GroupCollection[i].ToString()))
                     {
                         string deletePart = GroupCollection[i].ToString();
-                        StringTemp = StringTemp.Replace(deletePart, "");
+                        stringTemp = stringTemp.Replace(deletePart, "");
                     }
 
                 }
             }
-            return StringTemp;
+            return stringTemp;
         }
     }
 }

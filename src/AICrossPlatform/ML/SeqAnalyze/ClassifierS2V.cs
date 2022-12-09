@@ -28,6 +28,17 @@ namespace AI.ML.SeqAnalyze
             set { _s2v[ints] = value; }
         }
 
+
+        /// <summary>
+        /// Число правил
+        /// </summary>
+        public int CountRules => _s2v.CountRules;
+
+        /// <summary>
+        /// Регрессор
+        /// </summary>
+        public States2Vector States2Vector => _s2v;
+
         // S2V регрессор
         private States2Vector _s2v;
         // Число классов
@@ -150,6 +161,17 @@ namespace AI.ML.SeqAnalyze
             return inp.Transform(x => 1.0 / (1 + Math.Exp(-x)));
         }
 
+        /// <summary>
+        /// Добавление правила для классификатора
+        /// </summary>
+        /// <param name="states"></param>
+        /// <param name="cl_mark"></param>
+        /// <param name="gain"></param>
+        public void AddRuleCl(int[] states, int cl_mark, double gain = 100) 
+        {
+            var dat = gain*Vector.OneHotPol(cl_mark, _n_cl - 1);
+            this[states] = dat;
+        }
     }
 
     /// <summary>

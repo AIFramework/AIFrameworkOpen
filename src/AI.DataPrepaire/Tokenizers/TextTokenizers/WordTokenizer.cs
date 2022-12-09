@@ -24,27 +24,35 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         public int DictLen { get { return decoder.Length; } }
 
         /// <summary>
+        /// Трансформация строки
+        /// </summary>
+        public Func<string, string> TransformerStr { get; set; }
+
+        /// <summary>
         /// Токенизатор на уровне слов 
         /// </summary>
-        public WordTokenizer(string[] decoder, Dictionary<string, int> encoder) : base(decoder, encoder)
+        public WordTokenizer(string[] decoder, Dictionary<string, int> encoder, Func<string, string> transformerStr = null) : base(decoder, encoder)
         {
+            TransformerStr = transformerStr;
         }
 
         /// <summary>
         /// Токенизатор на уровне слов 
         /// </summary>
-        public WordTokenizer(string path_to_text, bool isLower = true)
+        public WordTokenizer(string path_to_text, bool isLower = true, Func<string, string> transformerStr = null)
         {
             IsLower = isLower;
+            TransformerStr = transformerStr; 
             TrainFromTextFile(path_to_text);
         }
 
         /// <summary>
         /// Токенизатор на уровне слов 
         /// </summary>
-        public WordTokenizer(bool isLower = true)
+        public WordTokenizer(bool isLower = true, Func<string, string> transformerStr = null)
         {
             IsLower = isLower;
+            TransformerStr = transformerStr;
         }
 
 
@@ -56,7 +64,8 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         /// <returns></returns>
         public override int[] Encode(string data)
         {
-            string[] words = NLP.TextStandard.OnlyCharsAndDigit(data, IsLower).Split(' ');
+            string new_str = TransformerStr == null? NLP.TextStandard.OnlyCharsAndDigit(data, false): TransformerStr(data);
+            string[] words = new_str.Split(' ');
             return Encode(words);
         }
 
@@ -96,7 +105,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         /// </summary>
         public void TrainFromText(string text)
         {
-            text = NLP.TextStandard.OnlyCharsAndDigit(text, IsLower);
+            text = TransformerStr == null ? NLP.TextStandard.OnlyCharsAndDigit(text, false) : TransformerStr(text);
             NLP.ProbabilityDictionaryHash probability = new NLP.ProbabilityDictionaryHash(false);
             var data = probability.Run(text);
 

@@ -15,7 +15,15 @@ namespace AI.DataPrepaire.NLPUtils.TextClassification
     {
 
         WordTokenizer wordTokenizer = new WordTokenizer();
-        ClassifierS2V classifier;
+        /// <summary>
+        /// Классификатор
+        /// </summary>
+        public ClassifierS2V classifier;
+
+        /// <summary>
+        /// Число правил
+        /// </summary>
+        public int CountRules => classifier.CountRules;
 
         /// <summary>
         /// Классификатор текста на базе правил
@@ -51,5 +59,18 @@ namespace AI.DataPrepaire.NLPUtils.TextClassification
             int[] inp =  wordTokenizer.Encode(text);
             return classifier.Classify(inp)[0];
         }
+
+
+        /// <summary>
+        /// Добавление правила
+        /// </summary>
+        /// <param name="rull"></param>
+        /// <param name="class_mark"></param>
+        public void AddRule(string rull, int class_mark) 
+        {
+            int[] tokens = wordTokenizer.Encode(rull);
+            classifier.AddRuleCl(tokens, class_mark);
+        }
+
     }
 }

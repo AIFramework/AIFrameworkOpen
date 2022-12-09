@@ -16,6 +16,11 @@ namespace AI.ML.SeqAnalyze
     {
 
         /// <summary>
+        /// Число правил
+        /// </summary>
+        public int CountRules => _data_marks.Count;
+
+        /// <summary>
         /// Размерность вектора ассоциаций
         /// </summary>
         public int VectorDimention => _vectorDimention;
@@ -45,7 +50,8 @@ namespace AI.ML.SeqAnalyze
                     ValueDictRegressor valueDict = new ValueDictRegressor()
                     {
                         CountActiv = 1,
-                        NGram = (short)state.Length
+                        NGram = (short)state.Length,
+                        TargetValue = value
                     };
 
                     _data_marks.Add(state, valueDict);
@@ -335,7 +341,7 @@ namespace AI.ML.SeqAnalyze
 
             data.Sort((x, y) => y.Item2.GetImportance().CompareTo(x.Item2.GetImportance())); // Сортировка для top-p
 
-            while (p < top_p) 
+            while (p <= top_p) 
             {
                 var l = data[index++];
                 keyValues.Add(l.Item1, l.Item2);

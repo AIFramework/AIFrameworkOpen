@@ -61,10 +61,14 @@ namespace AI.ML.SeqAnalyze
             }
         }
 
-        // Максимальный размер контекста
-        private int _max_n_gramm;
-        // Значение до которого должна дойти интегральное значение важности после сортировки
-        private double _top_p;
+        /// <summary>
+        /// Максимальный размер контекста
+        /// </summary>
+        public int MaxNGramm;
+        /// <summary>
+        /// Значение до которого должна дойти интегральное значение важности после сортировки
+        /// </summary>
+        public double TopP;
         // Размерность вектора
         private int _vectorDimention = -1;
         // Данные о векторах и состояниях
@@ -82,8 +86,8 @@ namespace AI.ML.SeqAnalyze
         /// </summary>
         public States2Vector(int max_n_gram, double top_p)
         {
-            _max_n_gramm = max_n_gram;
-            _top_p = top_p;
+            MaxNGramm = max_n_gram;
+            TopP = top_p;
             Activation = Lin;
         }
 
@@ -113,7 +117,7 @@ namespace AI.ML.SeqAnalyze
             int n = 0;
 
             // Проход по всем длиннам буфера
-            for (int i = _max_n_gramm; i > 0; i--)
+            for (int i = MaxNGramm; i > 0; i--)
             {
                 RingBuffer<int> ringBuffer = new RingBuffer<int>(i);
                 List<int[]> used = new List<int[]>();
@@ -180,7 +184,7 @@ namespace AI.ML.SeqAnalyze
 
             TrainCandidateSearch(data, targets); // Обучение
             Tuning(data, y, (int)(ep*0.5), 2); // Согласование
-            Optimize2(_top_p* _top_p);
+            Optimize2(TopP* TopP);
             Tuning(data, y, ep, 1); // Согласование
         }
 
@@ -261,9 +265,9 @@ namespace AI.ML.SeqAnalyze
         // Обучение на одной последовательности с вектором меток
         private void TrainCandidateSearch(int[][] seqs, Vector[] targets) 
         {
-            for (int i = 1; i < _max_n_gramm+1; i++)
+            for (int i = 1; i < MaxNGramm+1; i++)
                 TrainCalcNG(seqs, targets, (short)i);
-            Optimize2(Math.Pow(_top_p, 0.2));
+            Optimize2(Math.Pow(TopP, 0.2));
         }
 
         // Обучение с определенной длинной n-граммы

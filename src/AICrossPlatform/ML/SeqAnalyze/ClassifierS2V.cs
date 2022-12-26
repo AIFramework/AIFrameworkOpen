@@ -41,8 +41,10 @@ namespace AI.ML.SeqAnalyze
 
         // S2V регрессор
         private States2Vector _s2v;
-        // Число классов
-        private int _n_cl;
+        /// <summary>
+        /// Число классов
+        /// </summary>
+        public int NumCl;
         private S2VClType _s2VClType;
 
 
@@ -56,7 +58,7 @@ namespace AI.ML.SeqAnalyze
         public ClassifierS2V(int nCl, int max_n_gramm, double top_p = 0.75, S2VClType s2VClType = S2VClType.OneClassPredict) 
         {
             _s2v = new States2Vector(max_n_gramm, top_p);
-            _n_cl = nCl;
+            NumCl = nCl;
             _s2VClType = s2VClType;
 
             if (s2VClType == S2VClType.OneClassPredict) _s2v.Activation = SoftMax;
@@ -74,7 +76,7 @@ namespace AI.ML.SeqAnalyze
             int i = 0;
 
             foreach (var item in classes)
-                targets[i++] = Vector.OneHotPol(item, _n_cl-1);
+                targets[i++] = Vector.OneHotPol(item, NumCl-1);
 
             _s2v.Train(statesArray, targets);
         }
@@ -169,7 +171,7 @@ namespace AI.ML.SeqAnalyze
         /// <param name="gain"></param>
         public void AddRuleCl(int[] states, int cl_mark, double gain = 100) 
         {
-            var dat = gain*Vector.OneHotPol(cl_mark, _n_cl - 1);
+            var dat = gain*Vector.OneHotPol(cl_mark, NumCl - 1);
             this[states] = dat;
         }
     }

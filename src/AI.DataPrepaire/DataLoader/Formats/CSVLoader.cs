@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Net.Security;
 
 
 namespace AI.DataPrepaire.DataLoader.Formats
@@ -10,7 +11,7 @@ namespace AI.DataPrepaire.DataLoader.Formats
     /// Загрузчик CSV файлов
     /// </summary>
     [Serializable]
-    public class CSVLoader
+    public static class CSVLoader
     {
         /// <summary>
         /// Загрузка csv
@@ -19,15 +20,27 @@ namespace AI.DataPrepaire.DataLoader.Formats
         public static DataTable Read(string csvPath, string separator = ",")
         {
             DataItem[] dataItems = Reader(csvPath, separator);
-            DataTable dataFrame = new DataTable();
+            return ToTable(dataItems);
+        }
 
-            for (int i = 0; i < dataItems.Length; i++)
-            {
-                dataItems[i].Convert();
-                dataFrame.Add(dataItems[i]);
-            }
+        /// <summary>
+        /// Загрузка csv из потока
+        /// </summary>
+        /// <returns></returns>
+        public static DataTable Read(StreamReader csvStream, char separator = ',')
+        {
+            return Read(csvStream, new string(new[] { separator }));
+        }
 
-            return dataFrame;
+
+        /// <summary>
+        /// Загрузка csv из потока
+        /// </summary>
+        /// <returns></returns>
+        public static DataTable Read(StreamReader csvStream, string separator = ",")
+        {
+            DataItem[] dataItems = Reader(csvStream, separator);
+            return ToTable(dataItems);
         }
 
         /// <summary>
@@ -46,26 +59,50 @@ namespace AI.DataPrepaire.DataLoader.Formats
         {
             using (var reader = new StreamReader(pathToCsv))
             {
-                // Получение заголовков
-                var headers = GetValues(reader.ReadLine(), separator);
-                DataItem[] dataItems = new DataItem[headers.Length];
-
-                // Создание столбцов данных
-                for (int i = 0; i < headers.Length; i++)
-                    dataItems[i] = new DataItem(headers[i], new List<dynamic>());
-
-                // Запись данных
-                while (!reader.EndOfStream)
-                {
-                    var values = GetValues(reader.ReadLine(), separator);
-
-                    for (int i = 0; i < headers.Length; i++)
-                        dataItems[i].Data.Add(values[i]);
-                }
-
-                return dataItems;
+                return Reader(reader, separator);
             }
 
+        }
+
+        /// <summary>
+        /// Получение таблицы
+        /// </summary>
+        /// <param name="dataItems"></param>
+        /// <returns></returns>
+        private static DataTable ToTable(DataItem[] dataItems) 
+        {
+            DataTable dataFrame = new DataTable();
+
+            for (int i = 0; i < dataItems.Length; i++)
+            {
+                dataItems[i].Convert();
+                dataFrame.Add(dataItems[i]);
+            }
+
+            return dataFrame;
+        }
+
+        // Работа с потоком
+        private static DataItem[] Reader(StreamReader csvStream, string separator) 
+        {
+            // Получение заголовков
+            var headers = GetValues(csvStream.ReadLine(), separator);
+            DataItem[] dataItems = new DataItem[headers.Length];
+
+            // Создание столбцов данных
+            for (int i = 0; i < headers.Length; i++)
+                dataItems[i] = new DataItem(headers[i], new List<dynamic>());
+
+            // Запись данных
+            while (!csvStream.EndOfStream)
+            {
+                var values = GetValues(csvStream.ReadLine(), separator);
+
+                for (int i = 0; i < headers.Length; i++)
+                    dataItems[i].Data.Add(values[i]);
+            }
+
+            return dataItems;
         }
 
 

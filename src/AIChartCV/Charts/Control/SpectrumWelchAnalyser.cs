@@ -59,7 +59,7 @@ namespace AI.Charts.Control
         /// <param name="signal"></param>
         public void Analyze(Vector signal) 
         {
-            Vector fft = Welch.WelchRun(signal, FFTBlock, 0.5, WindowW);
+            Vector fft = Welch.WelchRun(signal, FFTBlock, 0.5, WindowW)/FFTBlock;
             WelchData welchData = new WelchData(fft, SR, WelchPSDTypeData);
             chartVisual1.PlotBlack(welchData.HalfFreq + FreqOffset, welchData.HalfPSD);
         }

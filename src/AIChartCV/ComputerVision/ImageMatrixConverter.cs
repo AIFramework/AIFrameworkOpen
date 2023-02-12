@@ -28,8 +28,9 @@ namespace AI.ComputerVision
         /// <returns>изображение</returns>
         public static Bitmap GetBitmap(string path)
         {
-            FileStream fs = new FileStream(path, FileMode.Open);
-            return LoadImage(fs);
+            return (Bitmap)Bitmap.FromFile(path);
+            //FileStream fs = new FileStream(path, FileMode.Open);
+            //return LoadImage(fs);
         }
 
         /// <summary>

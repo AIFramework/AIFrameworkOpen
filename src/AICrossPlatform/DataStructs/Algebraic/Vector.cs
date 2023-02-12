@@ -1132,7 +1132,7 @@ namespace AI.DataStructs.Algebraic
         {
             double max = Max();
             double min = Min();
-            double d = 1.0 / (max - min);
+            double d = 1.0 / (max - min+double.Epsilon);
 
             return Transform(x => (x - min) / d);
         }

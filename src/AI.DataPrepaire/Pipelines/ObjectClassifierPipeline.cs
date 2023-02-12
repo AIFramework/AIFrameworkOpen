@@ -123,7 +123,7 @@ namespace AI.DataPrepaire.Pipelines
         /// <param name="temp">Температура</param>
         public virtual int StoсhasticClassify(T input, double temp = 1)
         {
-            return RandomItemSelection<T>.GetIndex(ClassifyProb(input), random, temp);
+            return RandomItemSelection.GetIndex(ClassifyProb(input), random, temp);
         }
 
         /// <summary>

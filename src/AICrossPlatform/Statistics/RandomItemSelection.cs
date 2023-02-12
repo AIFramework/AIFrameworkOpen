@@ -8,7 +8,7 @@ namespace AI.Statistics
     /// </summary>
     /// <typeparam name="T">Тип массива элементов</typeparam>
     [Serializable]
-    public class RandomItemSelection<T>
+    public class RandomItemSelection
     {
         /// <summary>
         /// Случайный выбор элемента по заданному распределению
@@ -16,7 +16,7 @@ namespace AI.Statistics
         /// <param name="distributionFunction">Дискретная функция распределния</param>
         /// <param name="arrayStates">Массив элементов</param>
         /// <param name="random">Генератор псевдо-случайных чисел</param>
-        public static T GetElement(Vector distributionFunction, T[] arrayStates, Random random)
+        public static T GetElement<T>(Vector distributionFunction, T[] arrayStates, Random random)
         {
             while (true)
             {

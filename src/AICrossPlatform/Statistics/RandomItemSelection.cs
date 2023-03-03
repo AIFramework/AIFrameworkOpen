@@ -6,7 +6,6 @@ namespace AI.Statistics
     /// <summary>
     /// Случайный выбор
     /// </summary>
-    /// <typeparam name="T">Тип массива элементов</typeparam>
     [Serializable]
     public class RandomItemSelection
     {

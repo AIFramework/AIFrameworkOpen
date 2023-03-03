@@ -15,6 +15,17 @@ namespace AI.DataStructs.Data
         public T[] Data { get; set; }
 
         /// <summary>
+        /// Доступ по индексу
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public T this[int i]
+        {
+            get { return Data[i]; }
+            set { Data[i] = value; }
+        }
+
+        /// <summary>
         /// Число элементов буфера
         /// </summary>
         public int Length

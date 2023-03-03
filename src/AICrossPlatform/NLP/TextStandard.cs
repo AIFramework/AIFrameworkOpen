@@ -24,7 +24,7 @@ namespace AI.NLP
             output = output.Replace("\r", "");
             output = output.Replace("\t", " ").Replace("\n", " ");
             output = output.Replace("!", ".").Replace("?", ".");
-            output = output.Replace("—", "-").Replace("--", "-");
+            output = output.Replace("—", "-").Replace("--", "-").Replace("ё", "е");
 
 
             while (output.Contains("  "))
@@ -46,7 +46,7 @@ namespace AI.NLP
         {
             List<char> charsADigit = new List<char>();
 
-            string outp = input.ToLower().Replace("\n", " ").Replace("\t", " ").Replace("ё", "е");
+            string outp = Normalize(input, isLower);
             outp = isLower? outp.ToLower() : outp;
 
             for (int i = 0; i < outp.Length; i++)
@@ -66,11 +66,12 @@ namespace AI.NLP
         /// В запросе остаются только буквы и знаки пробела
         /// </summary>
         /// <param name="input">Входной текст</param>
-        public static string OnlyChars(string input)
+        /// <param name="isLower">Переводить ли в нижний регистр</param>
+        public static string OnlyChars(string input, bool isLower = true)
         {
             List<char> chars = new List<char>();
 
-            string outp = input.ToLower().Replace("\n", " ").Replace("\t", " ").Replace("ё", "е");
+            string outp = Normalize(input, isLower);
 
             for (int i = 0; i < outp.Length; i++)
                 if (char.IsLetter(outp[i]) || outp[i] == ' ')
@@ -93,7 +94,7 @@ namespace AI.NLP
         {
             List<char> chars = new List<char>();
 
-            string outp = input.ToLower().Replace("\n", " ").Replace("\t", " ").Replace("ё", "е");
+            string outp = Normalize(input);
 
             for (int i = 0; i < outp.Length; i++)
                 if (IsRusLeter(outp[i]) || outp[i] == ' ')
@@ -132,6 +133,51 @@ namespace AI.NLP
                 }
 
             return stringBuilder.ToString().Trim(' ');
+        }
+
+        /// <summary>
+        /// Выдает множество слов
+        /// </summary>
+        /// <param name="input">Входной текст</param>
+        /// <param name="preprocessingString">Обработчик текста</param>
+        /// <param name="preprocessingWord">Обработчик слов</param>
+        /// <param name="appendWord">Добавалять ли слово в список</param>
+        /// <returns></returns>
+        public static HashSet<string> GetWords(string input, Func<string, string> preprocessingString, Func<string, string> preprocessingWord, Func<string, bool> appendWord)
+        {
+            HashSet<string> set = new HashSet<string>();
+            string[] words = preprocessingString(input).Split(' ');
+
+            for (int i = 0; i < words.Length; i++)
+                if (!set.Contains(words[i]) && appendWord(words[i])) set.Add(
+                    preprocessingWord(words[i])
+                    );
+            
+            return set;
+        }
+
+        /// <summary>
+        /// Сходство текстов на базе множеств
+        /// </summary>
+        public static double SimTextDice(HashSet<string> set1, HashSet<string> set2)
+        {
+            double sim = 0;
+            foreach (var item in set1)
+                if (set2.Contains(item)) sim++;
+
+            return 2 * sim / (set1.Count + set2.Count);
+        }
+
+        /// <summary>
+        /// Асимvетричное сходство текстов на базе множеств
+        /// </summary>
+        public static double SimTextDiceAsymmetric(HashSet<string> main, HashSet<string> set)
+        {
+            double sim = 0;
+            foreach (var item in main)
+                if (set.Contains(item)) sim++;
+
+            return sim / main.Count;
         }
     }
 }

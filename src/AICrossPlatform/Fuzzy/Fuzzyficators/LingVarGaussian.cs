@@ -9,6 +9,7 @@ namespace AI.Fuzzy.Fuzzyficators
     /// <summary>
     /// Лингвистическая переменная
     /// </summary>
+    [Serializable]
     public class LingVarGaussian
     {
         KNNCl _knn = new KNNCl();

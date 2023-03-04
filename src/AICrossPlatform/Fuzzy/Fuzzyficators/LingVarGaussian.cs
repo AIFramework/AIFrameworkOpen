@@ -54,5 +54,21 @@ namespace AI.Fuzzy.Fuzzyficators
             int cl = _knn.Classify(features);
             return _strings[cl];
         }
+
+        /// <summary>
+        /// Преобразование вектора в нечеткое множество
+        /// </summary>
+        /// <param name="features"></param>
+        /// <returns></returns>
+        public Dictionary<string, double> FeaturesToFuzzySet(Vector features) 
+        {
+            var probs = _knn.ClassifyProbVector(features);
+            Dictionary<string, double> result = new Dictionary<string, double>();
+
+            for (int i = 0; i < probs.Count; i++)
+                result.Add(_strings[i], probs[i]);
+            
+            return result;
+        }
     }
 }

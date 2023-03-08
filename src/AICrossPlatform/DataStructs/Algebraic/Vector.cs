@@ -2,6 +2,7 @@
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.DataStructs.Shapes;
 using AI.HightLevelFunctions;
+using AI.ML.NeuralNetwork.CoreNNW.Optimizers;
 using AI.Statistics;
 using System;
 using System.Collections;
@@ -1271,8 +1272,7 @@ namespace AI.DataStructs.Algebraic
         /// <returns></returns>
         public Vector ZNormalise()
         {
-            return (Clone() - Mean()) / Std();
-        }
+            return (Clone() - Mean()) / (Std() + AISettings.GlobalEps);         }
         /// <summary>
         /// Нормализация (ско = 1, среднее = 0)
         /// </summary>
@@ -1281,7 +1281,7 @@ namespace AI.DataStructs.Algebraic
         /// <returns></returns>
         public Vector Normalise(Vector mean, Vector std)
         {
-            return (Clone() - mean) / std;
+            return (Clone() - mean) / (std+AISettings.GlobalEps);
         }
         #endregion
 

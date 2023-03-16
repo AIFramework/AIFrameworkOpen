@@ -18,18 +18,9 @@ namespace AI.Fuzzy
             get => _flv;
             set
             {
-                if (value > 1)
-                {
-                    _flv = 1;
-                }
-                else if (value < 0)
-                {
-                    _flv = 0;
-                }
-                else
-                {
-                    _flv = value;
-                }
+                if (value > 1) _flv = 1;
+                else if (value < 0) _flv = 0;
+                else _flv = value;
             }
 
         }
@@ -99,5 +90,15 @@ namespace AI.Fuzzy
         {
             return @if > 0 ? Math.Min(1, then / @if) : 1;
         }
+
+        /// <summary>
+        /// Импликация Мамдани
+        /// </summary>
+        public static FLV MamdaniImplication(FLV @if, FLV then)
+        {
+            return  Math.Min(@if, then);
+        }
+
+
     }
 }

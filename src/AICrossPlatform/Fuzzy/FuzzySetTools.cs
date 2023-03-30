@@ -15,7 +15,7 @@ namespace AI.Fuzzy
         /// </summary>
         /// <param name="sets"></param>
         /// <returns></returns>
-        public static Dictionary<T, double> Merge<T>(IEnumerable<Dictionary<string, double>> sets)
+        public static Dictionary<T, double> Merge<T>(IEnumerable<Dictionary<T, double>> sets)
         {
             Dictionary<T, double>[] setArr = (Dictionary<T, double>[]) sets.ToArray().Clone();
             Dictionary<T, double> result = new Dictionary<T, double>();
@@ -33,9 +33,10 @@ namespace AI.Fuzzy
         /// </summary>
         /// <param name="set"></param>
         /// <returns></returns>
-        public static Dictionary<string, double> Strs2FuzzySet(IEnumerable<string> set) 
+        public static Dictionary<T, double> Array2FuzzySet<T>(IEnumerable<T> set) 
         {
-            Dictionary<string, double> ret = new Dictionary<string, double>();
+
+            Dictionary<T, double> ret = new Dictionary<T, double>();
 
             foreach (var item in set)
                 if (!ret.ContainsKey(item))

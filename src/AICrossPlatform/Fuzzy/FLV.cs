@@ -3,7 +3,7 @@
 namespace AI.Fuzzy
 {
     /// <summary>
-    /// Fuzzy Logic Variable(FLV)
+    /// Нечетка логическая переменная(FLV)
     /// </summary>
     [Serializable]
     public class FLV

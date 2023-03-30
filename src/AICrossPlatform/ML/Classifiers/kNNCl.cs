@@ -141,7 +141,8 @@ namespace AI.ML.Classifiers
             {
                 Vector classes = new Vector(_count);
                 Rang(inp);
-                H = Classes[K - 1].R;
+                int k = Classes.Count < K? Classes.Count : K;
+                H = Classes[k - 1].R;
 
                 for (int i = 0; i < K; i++)
                 {
@@ -275,12 +276,13 @@ namespace AI.ML.Classifiers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Vector ToVector(int i)
         {
-            int mark = Classes[i].ClassMark;
+            int index = i < Classes.Count-1?i:Classes.Count-1;
+            int mark = Classes[index].ClassMark;
             Vector outp = new Vector(_count);
 
             if (IsParsenMethod)
             {
-                double r = Classes[i].R / H;
+                double r = Classes[index].R / H;
                 outp[mark] = KernelParsenWindow(r);
             }
             else

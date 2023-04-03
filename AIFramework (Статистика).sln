@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpectrumAnalyzer", "Tests\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldModel", "Tests\WorldModel\WorldModel.csproj", "{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocsHeaps", "Tests\Statistics\RocsHeaps\RocsHeaps.csproj", "{88CD2482-C4DE-42BE-9974-166C82C36F17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,10 @@ Global
 		{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88CD2482-C4DE-42BE-9974-166C82C36F17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88CD2482-C4DE-42BE-9974-166C82C36F17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88CD2482-C4DE-42BE-9974-166C82C36F17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88CD2482-C4DE-42BE-9974-166C82C36F17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +108,7 @@ Global
 		{C5D90AF6-2E7C-4EF5-8448-E5F9471F6AC1} = {4FB793E6-5E89-46E1-A966-DA32DFDFBF11}
 		{66FDB7E6-1388-42B4-A46D-A7CF929B5C87} = {C5D90AF6-2E7C-4EF5-8448-E5F9471F6AC1}
 		{F23CAEC8-A9BC-4F7D-BDA0-B1D5072FF068} = {4FB793E6-5E89-46E1-A966-DA32DFDFBF11}
+		{88CD2482-C4DE-42BE-9974-166C82C36F17} = {4FB793E6-5E89-46E1-A966-DA32DFDFBF11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {195084AE-6B2F-490D-AB30-834665F7A953}

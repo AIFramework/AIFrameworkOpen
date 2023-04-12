@@ -3,8 +3,8 @@
 Random random = new Random();
 
 
-int count_rocks = 50600;
-int count_heaps = 10;
+int count_rocks = 1800;
+int count_heaps = 6;
 
 int[] rocs = new int[count_rocks];
 List<int>[] heaps = new List<int>[count_heaps];
@@ -18,16 +18,19 @@ InitHeaps();
 // Метод оптимизации
 SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(Cost(heaps))
 {
-    T = 2000,
+    T = 20,
     Kt = 1.02
 };
 
+
+int iter = 0;
 for (int i = 0; i < 1500000000; i++)
 {
     double cost = Cost(heaps);
     if (cost <= 6) break; // Критерий останова
-    if(i%200 == 0)
+    if(i%1000 == 0)
         Console.WriteLine(cost);
+    iter++;
 
     var new_heaps = Step(); // Делаем шаг оптимизации
 
@@ -36,7 +39,7 @@ for (int i = 0; i < 1500000000; i++)
 }
 
 double cost1 = Cost(heaps);
-Console.WriteLine(cost1);
+Console.WriteLine($"iter: {iter}\ncost: {cost1}");
 
 
 
@@ -79,9 +82,9 @@ List<int>[] ExCh()
 
     try
     {
-        int a = heaps_new[heap1][position_in_heap1];
-        heaps_new[heap1][position_in_heap1] = heaps_new[heap2][position_in_heap2];
-        heaps_new[heap2][position_in_heap2] = a;
+        (heaps_new[heap2][position_in_heap2], heaps_new[heap1][position_in_heap1]) 
+                                            = 
+        (heaps_new[heap1][position_in_heap1], heaps_new[heap2][position_in_heap2]);
     }
     catch { }
     return heaps_new;

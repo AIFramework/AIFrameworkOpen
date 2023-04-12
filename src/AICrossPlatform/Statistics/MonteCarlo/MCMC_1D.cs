@@ -69,7 +69,7 @@ namespace AI.Statistics.MonteCarlo
 
 
         /// <summary>
-        /// Вероятность принятия значения (перех. фдро цепи Маркова)
+        /// Вероятность принятия значения (перех. ядро цепи Маркова)
         /// </summary>
         /// <param name="old_value">Старое значение</param>
         /// <param name="new_value">Новое значение</param>

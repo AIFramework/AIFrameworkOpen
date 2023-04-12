@@ -204,9 +204,7 @@ namespace AI.ML.Classifiers
         public void Train(Vector[] features, int[] classes)
         {
             if (features.Length != classes.Length)
-            {
                 throw new InvalidOperationException("Число вектров признаков и число меток классов не совпадают");
-            }
 
             for (int i = 0; i < features.Length; i++)
             {

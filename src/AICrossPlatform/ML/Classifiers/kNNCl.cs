@@ -127,9 +127,7 @@ namespace AI.ML.Classifiers
                 Rang(inp);
 
                 for (int i = 0; i < Classes.Count; i++)
-                {
                     classes += ToVector(i);
-                }
 
                 classes /= classes.Sum();
 
@@ -145,9 +143,7 @@ namespace AI.ML.Classifiers
                 H = Classes[k - 1].R;
 
                 for (int i = 0; i < K; i++)
-                {
                     classes += ToVector(i);
-                }
 
                 classes /= classes.Sum();
 
@@ -168,9 +164,7 @@ namespace AI.ML.Classifiers
                 Rang(inp);
 
                 for (int i = 0; i < Classes.Count; i++)
-                {
                     classes += ToVector(i);
-                }
 
                 classes /= classes.Max();
 
@@ -185,9 +179,7 @@ namespace AI.ML.Classifiers
                 H = Classes[K - 1].R;
 
                 for (int i = 0; i < K; i++)
-                {
                     classes += ToVector(i);
-                }
 
                 classes /= classes.Max();
 
@@ -207,9 +199,7 @@ namespace AI.ML.Classifiers
                 throw new InvalidOperationException("Число вектров признаков и число меток классов не совпадают");
 
             for (int i = 0; i < features.Length; i++)
-            {
                 AddClass(features[i], classes[i]);
-            }
         }
         /// <summary>
         /// Обучение на базе набора данных вектор-класс
@@ -218,9 +208,7 @@ namespace AI.ML.Classifiers
         public void Train(VectorIntDataset dataset)
         {
             for (int i = 0; i < dataset.Count; i++)
-            {
-                AddClass(dataset[i].Features, dataset[i].ClassMark);
-            }
+            AddClass(dataset[i].Features, dataset[i].ClassMark);
         }
         /// <summary>
         /// Сохранить в файл
@@ -286,7 +274,7 @@ namespace AI.ML.Classifiers
             else
             {
                 outp[mark] = 1;
-            }
+            }   
 
 
             return outp;
@@ -297,9 +285,7 @@ namespace AI.ML.Classifiers
         {
 
             for (int i = 0; i < Classes.Count; i++)
-            {
-                Classes[i].R = Dist(inp, Classes[i].Features); // Вычисление билжайшего центра
-            }
+            Classes[i].R = Dist(inp, Classes[i].Features);
 
             Classes.Sort((a, b) => a.R.CompareTo(b.R));
         }
@@ -311,9 +297,7 @@ namespace AI.ML.Classifiers
             List<int> indexis = new List<int>();
 
             for (int i = 0; i < Classes.Count; i++)
-            {
-                indexis.Add(Classes[i].ClassMark);
-            }
+            indexis.Add(Classes[i].ClassMark);  
 
             return indexis.Max() + 1;
 

@@ -17,7 +17,7 @@ namespace AI.Fuzzy
         /// <returns></returns>
         public static Dictionary<T, double> Merge<T>(IEnumerable<Dictionary<T, double>> sets)
         {
-            Dictionary<T, double>[] setArr = (Dictionary<T, double>[]) sets.ToArray().Clone();
+            Dictionary<T, double>[] setArr = (Dictionary<T, double>[])sets.ToArray().Clone();
             Dictionary<T, double> result = new Dictionary<T, double>();
 
             foreach (var set in setArr)
@@ -26,6 +26,18 @@ namespace AI.Fuzzy
                     else result.Add(setEl.Key, setEl.Value);
 
             return result;
+        }
+
+        /// <summary>
+        /// Объединение 2х множеств
+        /// </summary>
+        /// <param name="set_1">Множество 1</param>
+        /// <param name="set_2">Множество 2</param>
+        /// <returns></returns>
+        public static Dictionary<T, double> Add<T>(Dictionary<T, double> set_1, Dictionary<T, double> set_2)
+        {
+            Dictionary<T, double>[] sets = {set_1, set_2 };
+            return Merge(sets);
         }
 
         /// <summary>
@@ -97,6 +109,42 @@ namespace AI.Fuzzy
             intersection_of_fuzzy_sets *= 2 / (sum_w_1 + sum_w_2);
 
             return intersection_of_fuzzy_sets;
+        }
+
+        /// <summary>
+        /// Все ли объекты множества являются типом T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="set"></param>
+        /// <returns></returns>
+        public static bool DicObjIsDicT<T>(Dictionary<object, double> set)
+        {
+            bool is_dic_t = true;
+
+            foreach (var item in set)
+                if (!(item.Key is T))
+                {
+                    is_dic_t = false;
+                    break;
+                }
+
+            return is_dic_t;
+        }
+
+        /// <summary>
+        /// Конвертирует все объекты множества в тип T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="set"></param>
+        /// <returns></returns>
+        public static Dictionary<T, double> SetConvert<T>(Dictionary<object, double> set)
+        {
+            Dictionary<T, double> new_set = new Dictionary<T, double>();
+
+            foreach (var item in set)
+                new_set.Add((T)item.Key, item.Value);
+
+            return new_set;
         }
     }
 }

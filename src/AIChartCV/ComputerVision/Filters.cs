@@ -1,5 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.Statistics;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -99,6 +100,26 @@ namespace AI.ComputerVision
         }
 
 
+
+        /// <summary>
+        /// Фильтрация функцией
+        /// </summary>
+        public static Matrix FunctionFilter(Matrix img, Func<Vector, double> func_filter, int w = 3, int h = 3)
+        {
+            int H = img.Height - h + 1, W = img.Width - w + 1;
+            Matrix newMatr = new Matrix(H, W);
+
+            Parallel.For(0, H, i =>
+            {
+                for (int j = 0; j < W; j++)
+                    newMatr[i, j] = FilterF(img, w, h, j, i, func_filter);
+            });
+
+            return newMatr;
+
+        }
+
+
         // Элемент медианного фильтра
         private static double FilterMedian(Matrix img, Matrix filter, int dx, int dy)
         {
@@ -122,19 +143,25 @@ namespace AI.ComputerVision
         // Элемент СКО фильтра
         private static double FilterSCO(Matrix img, Matrix filter, int dx, int dy)
         {
-
             Vector vect = new Vector(filter.Width * filter.Height);
 
-
             for (int i = 0, k = 0; i < filter.Height; i++)
-            {
                 for (int j = 0; j < filter.Width; j++)
-                {
                     vect[k++] = img[dy + i, dx + j] * filter[i, j];
-                }
-            }
 
             return Statistic.CalcStd(vect);
+        }
+
+        // Элемент фильтра-функции
+        private static double FilterF(Matrix img, int w, int h, int dx, int dy, Func<Vector, double> func)
+        {
+            Vector vect = new Vector(w * h);
+
+            for (int i = 0, k = 0; i < h; i++)
+                for (int j = 0; j < w; j++)
+                    vect[k++] = img[dy + i, dx + j];
+
+            return func(vect);
         }
 
     }

@@ -80,7 +80,7 @@ namespace TestNNW
             CopyistLayer copyistLayer = new CopyistLayer(10);
             Console.WriteLine(copyistLayer);
 
-            DropOut dropOut = new DropOut();
+            Dropout dropOut = new Dropout();
             Console.WriteLine(dropOut);
 
             FeedForwardLayer feedForwardLayer = new FeedForwardLayer(10, 10, new LinearUnit(), new Random());

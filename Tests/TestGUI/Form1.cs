@@ -15,7 +15,7 @@ namespace TestGUI
 {
     public partial class TestGui : Form
     {
-        private readonly GraphCPU _graph = new GraphCPU();
+        private readonly NNWGraphCPU _graph = new NNWGraphCPU();
         private readonly NNW _net = new NNW();
         private Trainer _tr;
         private static DataSetNoRecurrent s_dataSet;

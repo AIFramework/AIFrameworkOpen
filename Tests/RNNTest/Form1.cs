@@ -69,26 +69,26 @@ namespace RNNTest
         /// <summary>
         /// Создает нейросеть
         /// </summary>
-        //static NNW GetNN()
-        //{
-        //    NNW lstm = new NNW();
-        //    lstm.AddNewLayer(new Shape3D(1), new CopyistLayer(4));
-        //    lstm.AddNewLayer(new FilterLayer());
-        //    lstm.AddNewLayer(new Agregate());
-        //    return lstm;
-        //}
-
-        /// <summary>
-        /// Создает нейросеть
-        /// </summary>
         static NNW GetNN()
         {
             NNW lstm = new NNW();
-            lstm.AddNewLayer(new Shape3D(1), new FeedForwardLayer(8, new ReLU()));
-            lstm.AddNewLayer(new ControllerLResNet(4));
-            lstm.AddNewLayer(new FeedForwardLayer(1));
+            lstm.AddNewLayer(new Shape3D(1), new CopyistLayer(4));
+            lstm.AddNewLayer(new FilterLayer());
+            lstm.AddNewLayer(new Agregate());
             return lstm;
         }
+
+        ///// <summary>
+        ///// Создает нейросеть
+        ///// </summary>
+        //static NNW GetNN()
+        //{
+        //    NNW lstm = new NNW();
+        //    lstm.AddNewLayer(new Shape3D(1), new FeedForwardLayer(8, new ReLU()));
+        //    lstm.AddNewLayer(new ControllerLResNet(4));
+        //    lstm.AddNewLayer(new FeedForwardLayer(1));
+        //    return lstm;
+        //}
 
 
         /// <summary>

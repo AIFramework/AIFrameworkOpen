@@ -180,7 +180,7 @@ namespace AI.ML.HMM
             bool stop = false;
 
             // Установка затравки
-            for (int i = lenBuff; i > 0; i--)
+            for (int i = lenBuff; i != -1; i--)
                 generatedSeqList.Add(tokens[lenBuff-i]);
             
 

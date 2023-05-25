@@ -56,16 +56,16 @@ namespace FuzzyL
             int[] clo = new int[2 * N];
             for (int i = 0; i < N; i++)
             {
-                cli[i] = cl_inp1 + k * Statistic.Rand(cl_inp1.Count);
-                cli[i + N] = cl_inp2 + k * Statistic.Rand(cl_inp1.Count);
+                cli[i] = cl_inp1 + k * Statistic.UniformDistribution(cl_inp1.Count);
+                cli[i + N] = cl_inp2 + k * Statistic.UniformDistribution(cl_inp1.Count);
 
                 clo[i] = 0;
                 clo[i + N] = 1;
             }
 
             // Тестовые векторы
-            Vector test1 = cl_inp1 + k * Statistic.Rand(cl_inp1.Count);
-            Vector test2 = cl_inp2 + k * Statistic.Rand(cl_inp1.Count);
+            Vector test1 = cl_inp1 + k * Statistic.UniformDistribution(cl_inp1.Count);
+            Vector test2 = cl_inp2 + k * Statistic.UniformDistribution(cl_inp1.Count);
 
 
 

@@ -18,7 +18,7 @@ namespace AI.ML.Regression
     public class StructRegr
     {
         private double _targ = -1; // Имя класса
-        private Vector _centGiperSfer = new Vector();// Координата центра гиперсферы
+        private Vector _centGiperSfer = new Vector(3);// Координата центра гиперсферы
 
 
         /// <summary>

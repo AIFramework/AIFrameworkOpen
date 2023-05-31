@@ -6,7 +6,7 @@ namespace AI.Charts.Data
     [Serializable]
     internal class VectorBasedData : IData
     {
-        private Vector _x = new Vector(0), _y = new Vector(0);
+        private Vector _x = new Vector(), _y = new Vector();
 
         public int Count { get; set; }
 

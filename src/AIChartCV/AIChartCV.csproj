@@ -94,6 +94,7 @@
     <Compile Include="ComputerVision\BinaryImg.cs" />
     <Compile Include="ComputerVision\CalculateBinaryEl.cs" />
     <Compile Include="ComputerVision\CompImg.cs" />
+    <Compile Include="ComputerVision\ComplexImg\BaseTransforms.cs" />
     <Compile Include="ComputerVision\FeaturesInBinaryImg.cs" />
     <Compile Include="ComputerVision\Filters.cs" />
     <Compile Include="ComputerVision\FiltersEachElements\FilterEE.cs" />

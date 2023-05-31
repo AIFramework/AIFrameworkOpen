@@ -273,7 +273,7 @@ namespace AI.ML.Regression
         /// <returns></returns>
         public Vector ImpObj()
         {
-            Vector vs = new Vector(0);
+            Vector vs = new Vector();
 
             for (int i = 0; i < reges.Classes.Count; i++)
             {

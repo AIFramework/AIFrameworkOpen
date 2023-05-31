@@ -15,7 +15,7 @@ namespace AI.ML.Classifiers
     {
         private readonly NonCorrelatedGaussian nonCorrelatedGaussian = new NonCorrelatedGaussian();
         private List<Dictionary<string, Vector>> classifiersParams = new List<Dictionary<string, Vector>>();
-        private Vector w = new Vector(0);
+        private Vector w = new Vector();
 
         /// <summary>
         /// Классификатор основанный на теореме Байеса

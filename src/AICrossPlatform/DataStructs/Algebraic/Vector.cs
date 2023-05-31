@@ -136,9 +136,9 @@ namespace AI.DataStructs.Algebraic
 
         #region Конструкторы
         /// <summary>
-        /// Создает вектор емкости 3
+        /// Создает вектор емкости 0
         /// </summary>
-        public Vector() : base(3) { AddRange(new double[3]); }
+        public Vector() : base(0) { AddRange(new double[0]); }
         /// <summary>
         /// Создает вектор емкости n
         /// </summary>
@@ -1135,7 +1135,7 @@ namespace AI.DataStructs.Algebraic
             double min = Min();
             double d = 1.0 / (max - min+double.Epsilon);
 
-            return Transform(x => (x - min) / d);
+            return Transform(x => (x - min) * d);
         }
         /// <summary>
         /// Минимальное значение
@@ -1773,7 +1773,7 @@ namespace AI.DataStructs.Algebraic
 
             if (trimmed == "[]")
             {
-                Vector res = new Vector();
+                Vector res = new Vector(3);
                 res.Clear();
                 return res;
             }
@@ -1825,7 +1825,7 @@ namespace AI.DataStructs.Algebraic
 
             if (trimmed == "[]")
             {
-                Vector empty = new Vector();
+                Vector empty = new Vector(3);
                 empty.Clear();
                 result = empty;
                 return true;
@@ -1835,7 +1835,7 @@ namespace AI.DataStructs.Algebraic
 
             string[] nums = content.Split(' ');
 
-            Vector res = new Vector();
+            Vector res = new Vector(3);
             res.Clear();
 
             foreach (string strNum in nums)
@@ -2060,7 +2060,7 @@ namespace AI.DataStructs.Algebraic
         /// <param name="path">Путь</param>
         public static Vector LoadAsBinary(string path)
         {
-            Vector vect = new Vector();
+            Vector vect = new Vector(3);
             int len;
 
             using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None))

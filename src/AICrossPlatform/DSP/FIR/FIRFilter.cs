@@ -40,7 +40,7 @@ namespace AI.DSP.FIR
         /// <param name="input">Сигнал</param>
         public Vector FilterOutp(Vector input)
         {
-            Vector outp = new Vector(0);
+            Vector outp = new Vector();
 
             switch (convType)
             {

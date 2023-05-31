@@ -10,7 +10,7 @@ namespace TestNNW
 
         private static void TestVector()
         {
-            Vector vector = new Vector();
+            Vector vector = new Vector(3);
             vector.Clear();
 
             for (int i = 0; i < _rand.Next(4, 10); i++)
@@ -24,10 +24,10 @@ namespace TestNNW
             Console.WriteLine(Vector.Parse(str).ToString());
 
             string norm = "[5 7.2 3.4 50]";
-            Console.WriteLine($"Parse result from \"{norm}\": {Vector.TryParse(norm, out Vector res)}, result: \"{res ?? new Vector()}\"");
+            Console.WriteLine($"Parse result from \"{norm}\": {Vector.TryParse(norm, out Vector res)}, result: \"{res ?? new Vector(3)}\"");
 
             string bad = "[5 7.2 3.4 50}";
-            Console.WriteLine($"Parse result from \"{bad}\": {Vector.TryParse(bad, out Vector res2)}, result: \"{res2 ?? new Vector()}\"");
+            Console.WriteLine($"Parse result from \"{bad}\": {Vector.TryParse(bad, out Vector res2)}, result: \"{res2 ?? new Vector(3)}\"");
         }
 
         private static void TestMatrix()
@@ -50,7 +50,7 @@ namespace TestNNW
 
             for (int i = 0; i < _rand.Next(4, 10); i++)
             {
-                Vector v = new Vector();
+                Vector v = new Vector(3);
                 v.Clear();
 
                 for (int j = 0; j < width; j++)
@@ -69,7 +69,7 @@ namespace TestNNW
 
             for (int i = 0; i < _rand.Next(4, 10); i++)
             {
-                Vector v = new Vector();
+                Vector v = new Vector(3);
                 v.Clear();
 
                 for (int j = 0; j < _rand.Next(4, 10); j++)

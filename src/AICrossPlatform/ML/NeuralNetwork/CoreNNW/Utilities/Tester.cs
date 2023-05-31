@@ -76,8 +76,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Utilities
         public static double Test(INNWGraph g, INetwork net, IEnumerable<DataSequence> dataset, Metrics regressionTests)
         {
 
-            Vector y = new Vector(0);
-            Vector t = new Vector(0);
+            Vector y = new Vector();
+            Vector t = new Vector();
 
             foreach (DataSequence item in dataset)
             {

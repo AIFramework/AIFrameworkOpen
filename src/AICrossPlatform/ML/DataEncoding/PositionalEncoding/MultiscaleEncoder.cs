@@ -47,7 +47,7 @@ namespace AI.ML.DataEncoding.PositionalEncoding
         /// <param name="position">Позиция</param>
         public Vector GetCode(int position)
         {
-            Vector outp = new Vector(0);
+            Vector outp = new Vector();
 
             for (int i = 0; i < dims.Length; i++)
             {

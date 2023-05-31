@@ -27,8 +27,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
         /// </summary>
         public TrainInfo()
         {
-            TrainLoss = new Vector(0);
-            ValidationLoss = new Vector(0);
+            TrainLoss = new Vector();
+            ValidationLoss = new Vector();
         }
     }
 }

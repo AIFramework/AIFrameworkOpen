@@ -63,7 +63,7 @@ namespace AI.ComputerVision
 
             Vector outp = GetVectorFromImg(bitmap) - mean;
 
-            Vector data = new Vector(0);
+            Vector data = new Vector();
 
             for (int i = 0; i < ind.Count; i++)
             {

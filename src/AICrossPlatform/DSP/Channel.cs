@@ -56,7 +56,7 @@ namespace AI.DSP
         /// </summary>
         public Channel()
         {
-            ChData = new Vector();
+            ChData = new Vector(3);
             Fd = 1;
             Name = "Ch";
             Description = "";

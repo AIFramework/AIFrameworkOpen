@@ -20,12 +20,12 @@ namespace AI.ML.Regression
         /// <summary>
         /// Целевой вектор
         /// </summary>
-        private Vector _targ = new Vector(0);
+        private Vector _targ = new Vector();
 
         /// <summary>
         /// Координата центра гиперсферы
         /// </summary>
-        private Vector _centGiperSfer = new Vector();// Координата центра гиперсферы
+        private Vector _centGiperSfer = new Vector(3);// Координата центра гиперсферы
 
 
         /// <summary>

@@ -28,8 +28,8 @@ namespace RLTest
         List<Vector> xList = new List<Vector>();
         List<int> yList = new List<int>();
         RLEnv rL = new RLEnv();
-        Vector scores = new Vector(0);
-        Vector x = new Vector(0);
+        Vector scores = new Vector();
+        Vector x = new Vector();
         int allCount = 0;
         int lenM = 40; // Длинна матча
 
@@ -121,11 +121,11 @@ namespace RLTest
         /// <param name="marks"></param>
         public void ShowScatter(int[] marks) 
         {
-            Vector cl1X = new Vector(0);
-            Vector cl1Y = new Vector(0);
+            Vector cl1X = new Vector();
+            Vector cl1Y = new Vector();
 
-            Vector cl2X = new Vector(0);
-            Vector cl2Y = new Vector(0);
+            Vector cl2X = new Vector();
+            Vector cl2Y = new Vector();
             
 
             for (int i = 0; i < marks.Length-1; i++)

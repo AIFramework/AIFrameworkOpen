@@ -14,7 +14,7 @@ namespace TestNNW
         {
             Console.WriteLine("===================================");
             Console.WriteLine("Vector test:");
-            Vector vector = new Vector();
+            Vector vector = new Vector(3);
             for (int i = 0; i < _rand.Next(10); i++)
             {
                 vector.Add(_rand.Next(10));

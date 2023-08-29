@@ -146,5 +146,21 @@ namespace AI.Fuzzy
 
             return new_set;
         }
+
+        /// <summary>
+        /// Конвертирует все объекты множества в тип object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="set"></param>
+        /// <returns></returns>
+        public static Dictionary<object, double> SetConvertToObj<T>(Dictionary<T, double> set)
+        {
+            Dictionary<object, double> new_set = new Dictionary<object, double>();
+
+            foreach (var item in set)
+                new_set.Add((object)item.Key, item.Value);
+
+            return new_set;
+        }
     }
 }

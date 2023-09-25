@@ -123,7 +123,7 @@
       <Name>AI.DataPrepaire</Name>
     </ProjectReference>
     <ProjectReference Include="..\AI.ONNX\AI.ONNX.csproj">
-      <Project>{bca316a2-e3e7-4b56-bc51-4b7565199c0a}</Project>
+      <Project>{24bb688c-ede8-4423-b709-d4a268843bf8}</Project>
       <Name>AI.ONNX</Name>
     </ProjectReference>
     <ProjectReference Include="..\AICrossPlatform\AICrossPlatform.csproj">

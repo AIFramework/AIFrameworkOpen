@@ -36,15 +36,11 @@ namespace AI.DSP.DSPCore
 
 
             for (int i = 0; i < n1; i++)
-            {
                 cv[i] = cv[i] * mj;
-            }
 
 
             for (int i = n1; i < n2; i++)
-            {
                 cv[i] = cv[i] * j;
-            }
 
             cv = FFT.CalcIFFT(cv).CutAndZero(st.Count);
             return cv.RealVector;
@@ -59,9 +55,7 @@ namespace AI.DSP.DSPCore
             Vector stH = ConjugateToTheHilbert(st);
 
             for (int i = 0; i < st.Count; i++)
-            {
                 cv[i] = new Complex(st[i], stH[i]);
-            }
 
             return cv;
         }

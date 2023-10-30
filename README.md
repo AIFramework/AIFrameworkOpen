@@ -1,3 +1,8 @@
+![Stars](https://img.shields.io/github/stars/AIFramework/AIFrameworkOpen?style=flat-square)
+![Forks](https://img.shields.io/github/forks/AIFramework/AIFrameworkOpen?style=flat-square)
+![Watchers](https://img.shields.io/github/watchers/AIFramework/AIFrameworkOpen?style=flat-square)
+
+
 <img src="https://github.com/AIFramework/AIFrameworkOpen/blob/main/Docs/img/logo.png?raw=true" width=300 />
 
 # AIFramework версия 2.2 Open

@@ -84,7 +84,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
                 _delta[peakPos] = peakPhase - _prevPhase[peakPos];
 
                 double deltaUnwrapped = _delta[peakPos] - (_hopAnalysis * _omega[peakPos]);
-                double deltaWrapped = MathUtils.Mod(deltaUnwrapped + Math.PI, 2 * Math.PI) - Math.PI;
+                double deltaWrapped = MathUtilsDSP.Mod(deltaUnwrapped + Math.PI, 2 * Math.PI) - Math.PI;
 
                 double freq = _omega[peakPos] + (deltaWrapped / _hopAnalysis);
 

@@ -11,7 +11,7 @@ using System;
 using System.Threading.Tasks;
 
 
-namespace AI.Algebra
+namespace AI.MathUtils.Algebra
 {
     /// <summary>
     /// Метод Крамера

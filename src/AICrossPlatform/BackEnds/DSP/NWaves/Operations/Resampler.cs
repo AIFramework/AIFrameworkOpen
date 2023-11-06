@@ -141,7 +141,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
                     float t = x - j;
                     float w = (float)(0.5 * (1.0 + Math.Cos(t / order * Math.PI)));    // Hann window
-                    float sinc = (float)MathUtils.Sinc(t);                             // Sinc function
+                    float sinc = (float)MathUtilsDSP.Sinc(t);                             // Sinc function
                     output[n] += w * sinc * input[j];
                 }
             }

@@ -1,5 +1,5 @@
-﻿using AI.Algebra;
-using AI.DataStructs.Algebraic;
+﻿using AI.DataStructs.Algebraic;
+using AI.MathUtils.Algebra;
 using System;
 using System.Collections.Generic;
 using System.Text;

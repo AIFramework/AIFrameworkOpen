@@ -213,7 +213,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns>Bark frequency</returns>
         public static double HerzToBarkSlaney(double herz)
         {
-            return 6 * MathUtils.Asinh(herz / 600);
+            return 6 * MathUtilsDSP.Asinh(herz / 600);
         }
 
         /// <summary>

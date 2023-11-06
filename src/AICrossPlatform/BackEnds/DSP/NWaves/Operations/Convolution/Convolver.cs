@@ -67,7 +67,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             if (_fft == null)
             {
-                PrepareMemory(MathUtils.NextPowerOfTwo(length));
+                PrepareMemory(MathUtilsDSP.NextPowerOfTwo(length));
             }
 
             float[] output = new float[_fftSize];

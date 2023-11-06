@@ -192,7 +192,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         {
             if (newLength <= 0)
             {
-                newLength = MathUtils.NextPowerOfTwo(signal.Length);
+                newLength = MathUtilsDSP.NextPowerOfTwo(signal.Length);
             }
 
             return new ComplexDiscreteSignal(
@@ -274,7 +274,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <returns></returns>
         public static double[] Unwrap(this double[] phase, double tolerance = Math.PI)
         {
-            return MathUtils.Unwrap(phase, tolerance);
+            return MathUtilsDSP.Unwrap(phase, tolerance);
         }
 
         /// <summary>

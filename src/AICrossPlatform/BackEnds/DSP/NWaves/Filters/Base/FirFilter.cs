@@ -118,13 +118,13 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             {
                 case FilteringMethod.OverlapAdd:
                     {
-                        int fftSize = MathUtils.NextPowerOfTwo(4 * _kernelSize);
+                        int fftSize = MathUtilsDSP.NextPowerOfTwo(4 * _kernelSize);
                         OlaBlockConvolver blockConvolver = OlaBlockConvolver.FromFilter(this, fftSize);
                         return blockConvolver.ApplyTo(signal);
                     }
                 case FilteringMethod.OverlapSave:
                     {
-                        int fftSize = MathUtils.NextPowerOfTwo(4 * _kernelSize);
+                        int fftSize = MathUtilsDSP.NextPowerOfTwo(4 * _kernelSize);
                         OlsBlockConvolver blockConvolver = OlsBlockConvolver.FromFilter(this, fftSize);
                         return blockConvolver.ApplyTo(signal);
                     }

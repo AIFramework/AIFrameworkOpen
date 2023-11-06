@@ -153,8 +153,8 @@ namespace AI.BackEnds.DSP.NWaves.Utils
             p[p.Length - 1] = -1;
             q[q.Length - 1] = 1;
 
-            double[] pRoots = MathUtils.PolynomialRoots(p.ToDoubles()).Select(r => r.Phase).ToArray();
-            double[] qRoots = MathUtils.PolynomialRoots(q.ToDoubles()).Select(r => r.Phase).ToArray();
+            double[] pRoots = MathUtilsDSP.PolynomialRoots(p.ToDoubles()).Select(r => r.Phase).ToArray();
+            double[] qRoots = MathUtilsDSP.PolynomialRoots(q.ToDoubles()).Select(r => r.Phase).ToArray();
 
             Array.Sort(pRoots);
             Array.Sort(qRoots);

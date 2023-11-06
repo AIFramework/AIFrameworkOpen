@@ -2,7 +2,7 @@
 using AI.HightLevelFunctions;
 using System;
 
-namespace AI.Combinatorics
+namespace AI.MathUtils.Combinatorics
 {
     /// <summary>
     /// Базовые функции коммбинарики

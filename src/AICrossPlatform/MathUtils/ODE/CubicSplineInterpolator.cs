@@ -1,8 +1,8 @@
 ﻿using System;
-using AI.Algebra;
 using AI.DataStructs.Algebraic;
+using AI.MathUtils.Algebra;
 
-namespace AI.ODE
+namespace AI.MathUtils.ODE
 {
     [Serializable]
     public class CubicSplineInterpolator

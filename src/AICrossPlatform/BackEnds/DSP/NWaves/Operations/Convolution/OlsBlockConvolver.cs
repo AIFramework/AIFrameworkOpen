@@ -65,7 +65,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         {
             _kernel = kernel.ToArray();
 
-            _fftSize = MathUtils.NextPowerOfTwo(fftSize);
+            _fftSize = MathUtilsDSP.NextPowerOfTwo(fftSize);
 
             Guard.AgainstExceedance(_kernel.Length, _fftSize, "Размер ядра", "the Размер блока БПФ");
 
@@ -101,7 +101,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         /// <returns></returns>
         public static OlsBlockConvolver FromFilter(FirFilter filter, int fftSize)
         {
-            fftSize = MathUtils.NextPowerOfTwo(fftSize);
+            fftSize = MathUtilsDSP.NextPowerOfTwo(fftSize);
             return new OlsBlockConvolver(filter.Kernel, fftSize);
         }
 

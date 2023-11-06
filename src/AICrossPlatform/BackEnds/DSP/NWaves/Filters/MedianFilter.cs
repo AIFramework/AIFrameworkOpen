@@ -83,7 +83,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
 
             _buf.FastCopyTo(_tmp, _buf.Length);
 
-            return MathUtils.FindNth(_tmp, Size / 2, 0, Size - 1);
+            return MathUtilsDSP.FindNth(_tmp, Size / 2, 0, Size - 1);
         }
 
         /// <summary>

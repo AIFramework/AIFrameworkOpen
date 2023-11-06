@@ -6,9 +6,9 @@
  * 
  * Для изменения этого шаблона используйте меню "Инструменты | Параметры | Кодирование | Стандартные заголовки".
  */
-using AI.Algebra;
 using AI.DataStructs.Algebraic;
 using AI.HightLevelFunctions;
+using AI.MathUtils.Algebra;
 using AI.Statistics;
 using System;
 using System.IO;

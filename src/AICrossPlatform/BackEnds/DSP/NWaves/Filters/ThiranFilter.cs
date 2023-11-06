@@ -56,7 +56,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters
                 a *= (delta - n + i) / (delta - n + k + i);
             }
 
-            a *= Math.Pow(-1, k) * MathUtils.BinomialCoefficient(k, n);
+            a *= Math.Pow(-1, k) * MathUtilsDSP.BinomialCoefficient(k, n);
 
             return a;
         }

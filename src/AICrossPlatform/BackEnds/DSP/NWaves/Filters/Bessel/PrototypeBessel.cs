@@ -19,8 +19,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
         /// <returns></returns>
         public static double Reverse(int k, int n)
         {
-            return MathUtils.Factorial((2 * n) - k) /
-                (Math.Pow(2, n - k) * MathUtils.Factorial(k) * MathUtils.Factorial(n - k));
+            return MathUtilsDSP.Factorial((2 * n) - k) /
+                (Math.Pow(2, n - k) * MathUtilsDSP.Factorial(k) * MathUtilsDSP.Factorial(n - k));
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Bessel
                               .Select(i => Reverse(order - i, order))
                               .ToArray();
 
-            Complex[] poles = MathUtils.PolynomialRoots(a);
+            Complex[] poles = MathUtilsDSP.PolynomialRoots(a);
 
             // ...and normalize
 

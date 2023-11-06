@@ -62,7 +62,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="normalize"></param>
         public void Direct(float[] input, float[] outputRe, float[] outputIm, bool normalize = true)
         {
-            MathUtils.InterpolateLinear(_linScale, input, _expScale, outputRe);
+            MathUtilsDSP.InterpolateLinear(_linScale, input, _expScale, outputRe);
 
             for (int i = 0; i < outputRe.Length; i++)
             {

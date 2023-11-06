@@ -60,7 +60,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="fftSize">Размер блока БПФ</param>
         public Stft(int windowSize = 1024, int hopSize = 256, WindowTypes window = WindowTypes.Hann, int fftSize = 0)
         {
-            _fftSize = fftSize >= windowSize ? fftSize : MathUtils.NextPowerOfTwo(windowSize);
+            _fftSize = fftSize >= windowSize ? fftSize : MathUtilsDSP.NextPowerOfTwo(windowSize);
             _fft = new RealFft(_fftSize);
 
             _hopSize = hopSize;

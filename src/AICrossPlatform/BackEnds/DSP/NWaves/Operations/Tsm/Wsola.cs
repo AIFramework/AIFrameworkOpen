@@ -118,7 +118,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Tsm
         /// </summary>
         private void PrepareConvolver()
         {
-            int fftSize = MathUtils.NextPowerOfTwo(_windowSize + _maxDelta - 1);
+            int fftSize = MathUtilsDSP.NextPowerOfTwo(_windowSize + _maxDelta - 1);
 
             if (fftSize >= 512)
             {

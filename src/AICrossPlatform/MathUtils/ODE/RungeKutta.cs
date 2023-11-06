@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AI.ODE
+namespace AI.MathUtils.ODE
 {
     /// <summary>
     /// Solves an ordinary differential equation using the 4th order Runge-Kutta method.

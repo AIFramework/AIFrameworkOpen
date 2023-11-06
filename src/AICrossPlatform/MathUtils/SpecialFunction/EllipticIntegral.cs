@@ -1,7 +1,7 @@
 ﻿using AI.HightLevelFunctions;
 using System;
 
-namespace AI.SpecialFunction
+namespace AI.MathUtils.SpecialFunction
 {
 
     /// <summary>
@@ -21,12 +21,12 @@ namespace AI.SpecialFunction
             double pi2 = Math.PI;
             pi2 = pi2 / 2.0;
 
-            double bas = k * k / (1 - (k * k));
+            double bas = k * k / (1 - k * k);
 
 
             if (k < 0.65)
             {
-                return (1 + (0.25 * bas) - (0.125 * bas * k * k)) * pi2;
+                return (1 + 0.25 * bas - 0.125 * bas * k * k) * pi2;
             }
             else if (k >= 1.0)
             {
@@ -34,7 +34,7 @@ namespace AI.SpecialFunction
             }
             else
             {
-                double outp = 1 + (0.25 * bas) - (0.125 * bas * k * k);
+                double outp = 1 + 0.25 * bas - 0.125 * bas * k * k;
 
 
                 for (int i = 3; i < 6; i++)

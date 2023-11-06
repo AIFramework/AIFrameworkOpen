@@ -244,7 +244,7 @@ namespace AI.BackEnds.DSP.NWaves.Signals
         /// <summary>
         /// Get unwrapped phase
         /// </summary>
-        public double[] PhaseUnwrapped => MathUtils.Unwrap(Phase);
+        public double[] PhaseUnwrapped => MathUtilsDSP.Unwrap(Phase);
 
 
         #region overloaded operators

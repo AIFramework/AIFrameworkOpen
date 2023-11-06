@@ -1,7 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
 
-namespace AI.Algebra
+namespace AI.MathUtils.Algebra
 {
     /// <summary>
     /// Метод Гаусса с выч. сложностью O(n^3)
@@ -39,10 +39,10 @@ namespace AI.Algebra
                         A[k, index] = 0;
                         for (int j = index + 1; j < Count; j++)
                         {
-                            A[k, j] = A[k, j] - (A[index, j] * сoef);
+                            A[k, j] = A[k, j] - A[index, j] * сoef;
                         }
 
-                        B[k] = B[k] - (B[index] * сoef);
+                        B[k] = B[k] - B[index] * сoef;
                     }
                 }
             }

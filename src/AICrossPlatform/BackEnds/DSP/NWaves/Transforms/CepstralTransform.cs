@@ -60,7 +60,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
 
             if (cepstrumSize > fftSize)
             {
-                fftSize = MathUtils.NextPowerOfTwo(cepstrumSize);
+                fftSize = MathUtilsDSP.NextPowerOfTwo(cepstrumSize);
             }
 
             _fft = new Fft(fftSize);

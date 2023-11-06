@@ -6,7 +6,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
     /// <summary>
     /// Static class providing some helpful math functions
     /// </summary>
-    public static class MathUtils
+    public static class MathUtilsDSP
     {
         /// <summary>
         /// Sinc-function

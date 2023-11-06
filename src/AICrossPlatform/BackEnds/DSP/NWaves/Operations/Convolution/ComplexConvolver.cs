@@ -32,7 +32,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             if (fftSize == 0)
             {
-                fftSize = MathUtils.NextPowerOfTwo(length);
+                fftSize = MathUtilsDSP.NextPowerOfTwo(length);
             }
 
             Fft64 fft = new Fft64(fftSize);
@@ -98,7 +98,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
         {
             // first, try to divide polynomials
 
-            Complex[][] div = MathUtils.DividePolynomial(signal.Real.Zip(signal.Imag, (r, i) => new Complex(r, i)).ToArray(),
+            Complex[][] div = MathUtilsDSP.DividePolynomial(signal.Real.Zip(signal.Imag, (r, i) => new Complex(r, i)).ToArray(),
                                                    kernel.Real.Zip(kernel.Imag, (r, i) => new Complex(r, i)).ToArray());
 
             Complex[] quotient = div[0];
@@ -117,7 +117,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             if (fftSize == 0)
             {
-                fftSize = MathUtils.NextPowerOfTwo(signal.Length);
+                fftSize = MathUtilsDSP.NextPowerOfTwo(signal.Length);
             }
 
             Fft64 fft = new Fft64(fftSize);

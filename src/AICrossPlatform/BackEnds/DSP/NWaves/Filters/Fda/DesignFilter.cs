@@ -212,7 +212,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             Guard.AgainstEvenNumber(order, "Порядок фильтра");
 
-            int fftSize = MathUtils.NextPowerOfTwo(magnitudeResponse.Length);
+            int fftSize = MathUtilsDSP.NextPowerOfTwo(magnitudeResponse.Length);
 
             double[] real = phaseResponse == null ?
                        magnitudeResponse.PadZeros(fftSize) :
@@ -267,7 +267,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
         {
             Guard.AgainstEvenNumber(order, "Порядок фильтра");
 
-            int fftSize = MathUtils.NextPowerOfTwo(magnitudeResponse.Length);
+            int fftSize = MathUtilsDSP.NextPowerOfTwo(magnitudeResponse.Length);
 
             float[] real = phaseResponse == null ?
                        magnitudeResponse.PadZeros(fftSize) :
@@ -376,7 +376,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             // 2) switch to z-domain
 
-            MathUtils.BilinearTransform(pre, pim);
+            MathUtilsDSP.BilinearTransform(pre, pim);
 
 
             // === if zeros are also specified do the same steps 1-2 with zeros ===
@@ -395,7 +395,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                     zim[k] = z.Imaginary;
                 }
 
-                MathUtils.BilinearTransform(zre, zim);
+                MathUtilsDSP.BilinearTransform(zre, zim);
             }
             // otherwise create zeros (same amount as poles) and set them all to -1
             else
@@ -442,7 +442,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             // 2) switch to z-domain
 
-            MathUtils.BilinearTransform(pre, pim);
+            MathUtilsDSP.BilinearTransform(pre, pim);
 
 
             // === if zeros are also specified do the same steps 1-2 with zeros ===
@@ -461,7 +461,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                     zim[k] = z.Imaginary;
                 }
 
-                MathUtils.BilinearTransform(zre, zim);
+                MathUtilsDSP.BilinearTransform(zre, zim);
             }
             // otherwise create zeros (same amount as poles) and set them all to -1
             else
@@ -523,7 +523,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             // 2) switch to z-domain
 
-            MathUtils.BilinearTransform(pre, pim);
+            MathUtilsDSP.BilinearTransform(pre, pim);
 
 
             // === if zeros are also specified do the same steps 1-2 with zeros ===
@@ -549,7 +549,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                     zim[zeros.Length + k] = z2.Imaginary;
                 }
 
-                MathUtils.BilinearTransform(zre, zim);
+                MathUtilsDSP.BilinearTransform(zre, zim);
             }
             // otherwise create zeros (same amount as poles) and set them all to [-1, -1, -1, ..., 1, 1, 1]
             else
@@ -616,7 +616,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
 
             // 2) switch to z-domain
 
-            MathUtils.BilinearTransform(pre, pim);
+            MathUtilsDSP.BilinearTransform(pre, pim);
 
 
             // === if zeros are also specified do the same steps 1-2 with zeros ===
@@ -642,7 +642,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Fda
                     zim[zeros.Length + k] = z2.Imaginary;
                 }
 
-                MathUtils.BilinearTransform(zre, zim);
+                MathUtilsDSP.BilinearTransform(zre, zim);
             }
             // otherwise create zeros (same amount as poles) and set the following values:
             else

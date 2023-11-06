@@ -146,7 +146,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         {
             double n = 2.0 / (length - 1);
             return Enumerable.Range(0, length)
-                             .Select(i => MathUtils.I0(alpha * Math.Sqrt(1 - (((i * n) - 1) * ((i * n) - 1)))) / MathUtils.I0(alpha))
+                             .Select(i => MathUtilsDSP.I0(alpha * Math.Sqrt(1 - (((i * n) - 1) * ((i * n) - 1)))) / MathUtilsDSP.I0(alpha))
                              .ToFloats();
         }
 
@@ -165,7 +165,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
 
             for (int i = 0; i <= length / 2; i++)
             {
-                sum += MathUtils.I0(Math.PI * alpha * Math.Sqrt(1 - (((i * n) - 1) * ((i * n) - 1))));
+                sum += MathUtilsDSP.I0(Math.PI * alpha * Math.Sqrt(1 - (((i * n) - 1) * ((i * n) - 1))));
                 kbd[i] = (float)sum;
             }
 
@@ -196,7 +196,7 @@ namespace AI.BackEnds.DSP.NWaves.Windows
         {
             double n = 2.0 / (length - 1);
             return Enumerable.Range(0, length)
-                             .Select(i => MathUtils.Sinc((i * n) - 1))
+                             .Select(i => MathUtilsDSP.Sinc((i * n) - 1))
                              .ToFloats();
         }
 

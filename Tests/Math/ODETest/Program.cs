@@ -1,4 +1,4 @@
-﻿using AI.ODE;
+﻿using AI.MathUtils.ODE;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +16,8 @@ namespace ODETest
             double x0 = 0;
             double y0 = 1;
             double xEnd = 10;
-            double h = 0.1;
-            int p = 10;
+            double h = 0.001;
+            int p = 4;
 
             var (yCorrected, errorEstimate) = RungeKutta.RungeRombergRK4(f, x0, y0, xEnd, h, p);
             Console.WriteLine("Приближенное решение: " + yCorrected);

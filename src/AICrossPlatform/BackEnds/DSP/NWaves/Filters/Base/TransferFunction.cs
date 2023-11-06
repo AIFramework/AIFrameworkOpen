@@ -30,7 +30,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <summary>
         /// Максимальное количество итераций для вычисления нулей/полюсов (корней многочленов): 25000 по умолчанию
         /// </summary>
-        public int CalculateZpIterations { get; set; } = MathUtils.PolyRootsIterations;
+        public int CalculateZpIterations { get; set; } = MathUtilsDSP.PolyRootsIterations;
 
         /// <summary>
         /// Нули передаточной функции
@@ -346,8 +346,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             for (int i = 0; i < gd.Length; i++)
             {
                 Complex z = Complex.FromPolarCoordinates(1, -omega);
-                Complex num = MathUtils.EvaluatePolynomial(cr, z);
-                Complex den = MathUtils.EvaluatePolynomial(cc, z);
+                Complex num = MathUtilsDSP.EvaluatePolynomial(cr, z);
+                Complex den = MathUtilsDSP.EvaluatePolynomial(cc, z);
 
                 gd[i] = Complex.Abs(den) < 1e-30 ? 0 : (num / den).Real - dn;
 
@@ -384,8 +384,8 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         {
             Complex w = Complex.FromPolarCoordinates(1, freq);
 
-            double gain = Complex.Abs(MathUtils.EvaluatePolynomial(Denominator, w) /
-                                   MathUtils.EvaluatePolynomial(Numerator, w));
+            double gain = Complex.Abs(MathUtilsDSP.EvaluatePolynomial(Denominator, w) /
+                                   MathUtilsDSP.EvaluatePolynomial(Numerator, w));
 
             for (int i = 0; i < Numerator.Length; i++)
             {
@@ -428,7 +428,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             for (int k = 1; k < zp.Length; k++)
             {
                 Complex[] poly1 = new Complex[] { 1, new Complex(-zp.Real[k], -zp.Imag[k]) };
-                poly = MathUtils.MultiplyPolynomials(poly, poly1);
+                poly = MathUtilsDSP.MultiplyPolynomials(poly, poly1);
             }
 
             return poly.Select(p => p.Real).ToArray();
@@ -452,14 +452,14 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
         /// <param name="tf">Передаточная функция</param>
         /// <param name="maxIterations">Максимальное число итераций</param>
         /// <returns></returns>
-        public static ComplexDiscreteSignal TfToZp(double[] tf, int maxIterations = MathUtils.PolyRootsIterations)
+        public static ComplexDiscreteSignal TfToZp(double[] tf, int maxIterations = MathUtilsDSP.PolyRootsIterations)
         {
             if (tf.Length <= 1)
             {
                 return null;
             }
 
-            Complex[] roots = MathUtils.PolynomialRoots(tf, maxIterations);
+            Complex[] roots = MathUtilsDSP.PolynomialRoots(tf, maxIterations);
 
             return new ComplexDiscreteSignal(1, roots.Select(r => r.Real),
                                                 roots.Select(r => r.Imaginary));

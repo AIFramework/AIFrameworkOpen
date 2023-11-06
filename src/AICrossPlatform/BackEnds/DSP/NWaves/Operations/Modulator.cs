@@ -185,7 +185,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
         {
             float[] diff = new float[signal.Length];
 
-            MathUtils.Diff(signal.Samples, diff);
+            MathUtilsDSP.Diff(signal.Samples, diff);
 
             HilbertTransform ht = new HilbertTransform(signal.Length, false);
             float[] mag = ht.AnalyticSignal(diff).Magnitude();

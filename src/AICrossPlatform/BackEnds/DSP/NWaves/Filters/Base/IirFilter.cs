@@ -147,7 +147,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
                 case FilteringMethod.OverlapSave:
                     {
                         int length = Math.Max(DefaultImpulseResponseLength, _denominatorSize + _numeratorSize);
-                        int fftSize = MathUtils.NextPowerOfTwo(4 * length);
+                        int fftSize = MathUtilsDSP.NextPowerOfTwo(4 * length);
                         DiscreteSignal ir = new DiscreteSignal(signal.SamplingRate, Tf.ImpulseResponse(length).ToFloats());
                         return Operation.BlockConvolve(signal, ir, fftSize, method);
                     }

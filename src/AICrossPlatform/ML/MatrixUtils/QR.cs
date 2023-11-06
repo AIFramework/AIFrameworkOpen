@@ -1,4 +1,4 @@
-﻿using AI.Algebra;
+﻿using AI.MathUtils.Algebra;
 using AI.DataStructs.Algebraic;
 using System;
 using System.Collections.Generic;

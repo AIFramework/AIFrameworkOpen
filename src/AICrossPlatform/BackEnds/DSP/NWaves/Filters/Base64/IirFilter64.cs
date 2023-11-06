@@ -136,7 +136,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base64
                 case FilteringMethod.OverlapSave:
                     {
                         int length = Math.Max(DefaultImpulseResponseLength, _denominatorSize + _numeratorSize);
-                        int fftSize = MathUtils.NextPowerOfTwo(4 * length);
+                        int fftSize = MathUtilsDSP.NextPowerOfTwo(4 * length);
                         double[] ir = Tf.ImpulseResponse(length);
                         return new OlsBlockConvolver64(ir, fftSize).ApplyTo(signal);
                     }

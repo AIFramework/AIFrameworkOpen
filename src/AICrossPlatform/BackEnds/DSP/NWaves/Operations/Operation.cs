@@ -231,7 +231,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
             IFilter stretchFilter;
 
-            int frameSize = MathUtils.NextPowerOfTwo(1024 * signal.SamplingRate / 16000);
+            int frameSize = MathUtilsDSP.NextPowerOfTwo(1024 * signal.SamplingRate / 16000);
 
             switch (algorithm)
             {

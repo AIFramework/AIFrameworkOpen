@@ -85,7 +85,7 @@ namespace AI.DSP.Analyse
         public static Vector SignalSmooth(Vector signal, int k = 10)
         {
             KNNReg kNNReg = new KNNReg();
-            kNNReg.Train(signal, signal); // Создание автоассоциативной памяти (для сглаживания)
+            kNNReg.Train(Vector.Seq(0,1,signal.Count), signal);
             kNNReg.IsNadrMethod = true;
             kNNReg.K = k;
             return kNNReg.PredictV(signal);

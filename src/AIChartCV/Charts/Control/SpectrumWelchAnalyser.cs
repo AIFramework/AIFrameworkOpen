@@ -57,11 +57,13 @@ namespace AI.Charts.Control
         /// Спектральный анализ сигнала
         /// </summary>
         /// <param name="signal"></param>
-        public void Analyze(Vector signal) 
+        public (Vector, Vector) Analyze(Vector signal) 
         {
             Vector fft = Welch.WelchRun(signal, FFTBlock, 0.5, WindowW)/FFTBlock;
             WelchData welchData = new WelchData(fft, SR, WelchPSDTypeData);
             chartVisual1.PlotBlack(welchData.HalfFreq + FreqOffset, welchData.HalfPSD);
+
+            return (welchData.HalfPSD, welchData.HalfFreq + FreqOffset);
         }
     }
 }

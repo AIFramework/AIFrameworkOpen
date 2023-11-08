@@ -1,9 +1,5 @@
 ﻿using AI.MathUtils.ODE;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ODETest
 {
@@ -15,13 +11,12 @@ namespace ODETest
 
             double x0 = 0;
             double y0 = 1;
-            double xEnd = 10;
-            double h = 0.001;
-            int p = 4;
+            double xEnd = 20;
+            double h = 0.1;
 
-            var (yCorrected, errorEstimate) = RungeKutta.RungeRombergRK4(f, x0, y0, xEnd, h, p);
-            Console.WriteLine("Приближенное решение: " + yCorrected);
-            Console.WriteLine("Оценка погрешности: " + errorEstimate);
+            var rk = RungeKutta.RungeRombergRK4(f, x0, y0, xEnd, h);
+            Console.WriteLine("Приближенное решение: " + rk.Y);
+            Console.WriteLine("Оценка погрешности: " + rk.ErrorEstimate);
         }
     }
 }

@@ -235,14 +235,12 @@ namespace AI.ML.Regression
         /// <summary>
         /// Обучение регрессии
         /// </summary>
-        /// <param name="tData">Входные данные</param>
-        /// <param name="targs">Данные выходов</param>
+        /// <param name="tData">Входные данные (Каждое значение вектора отдельная точка)</param>
+        /// <param name="targs">Данные выходов (Предсказания)</param>
         public void Train(Vector tData, Vector targs)
         {
             for (int i = 0; i < tData.Count; i++)
-            {
                 Train(new Vector(tData[i]), targs[i]);
-            }
         }
 
 

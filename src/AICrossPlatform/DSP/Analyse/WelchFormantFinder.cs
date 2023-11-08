@@ -1,5 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.DSP.DSPCore;
+using AI.ML.Regression;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,10 +29,12 @@ namespace AI.DSP.Analyse
         /// <param name="thresholdFactor">Множитель адаптивного порога</param>
         /// <param name="smoothParam">Параметр сглаживания</param>
         /// <returns>Вектор пиков</returns>
-        public static Vector FindFormants(Vector welchData, Vector freqs, double thresholdFactor = 1, double smoothParam = 0.3)
+        public static Vector FindFormants(Vector welchData, Vector freqs, double thresholdFactor = 1, double smoothParam = 0.03)
         {
+            int k = (int)(welchData.Count*smoothParam);
+
             // Сглаживание данных
-            Vector smooth = Filters.ExpAv(welchData, smoothParam);
+            Vector smooth = SignalSmooth(welchData, k);
             double sum = smooth.Sum();
             // Средняя мощность
             double averagePower = sum / smooth.Count;
@@ -70,6 +73,22 @@ namespace AI.DSP.Analyse
             // Убираем частоты, которые не были обновлены (остались нулевыми)
             formantFrequencies.RemoveAll(freq => freq == 0);
             return formantFrequencies.ToArray();
+        }
+
+
+        /// <summary>
+        /// Сглаживание сигнала методом Надарая-Ватсона
+        /// </summary>
+        /// <param name="signal">Сигнал</param>
+        /// <param name="k">Число соседей</param>
+        /// <returns></returns>
+        public static Vector SignalSmooth(Vector signal, int k = 10)
+        {
+            KNNReg kNNReg = new KNNReg();
+            kNNReg.Train(signal, signal); // Создание автоассоциативной памяти (для сглаживания)
+            kNNReg.IsNadrMethod = true;
+            kNNReg.K = k;
+            return kNNReg.PredictV(signal);
         }
     }
 }

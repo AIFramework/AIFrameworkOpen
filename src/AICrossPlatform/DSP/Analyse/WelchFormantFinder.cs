@@ -1,5 +1,4 @@
 ﻿using AI.DataStructs.Algebraic;
-using AI.DSP.DSPCore;
 using AI.ML.Regression;
 using System.Collections.Generic;
 using System.Linq;

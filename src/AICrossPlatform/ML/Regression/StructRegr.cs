@@ -20,6 +20,19 @@ namespace AI.ML.Regression
         private double _targ = -1; // Имя класса
         private Vector _centGiperSfer = new Vector(3);// Координата центра гиперсферы
 
+        /// <summary>
+        ///  Набор данных регрессии item
+        /// </summary>
+        public StructRegr() { }
+
+        /// <summary>
+        ///  Набор данных регрессии item
+        /// </summary>
+        public StructRegr(Vector f, double target) 
+        {
+            _targ = target;
+            _centGiperSfer = f;
+        }
 
         /// <summary>
         /// Значение целевой переменной

@@ -17,7 +17,7 @@ namespace AI.Statistics
         /// <param name="random">Генератор псевдо-случайных чисел</param>
         public static T GetElement<T>(Vector distributionFunction, T[] arrayStates, Random random)
         {
-            while (true)
+            for (int i = 0; i < 2*arrayStates.Length; i++)
             {
                 int index = random.Next(arrayStates.Length);
                 if (random.NextDouble() < distributionFunction[index])
@@ -25,6 +25,8 @@ namespace AI.Statistics
                     return arrayStates[index];
                 }
             }
+
+            return arrayStates[distributionFunction.MaxElementIndex()];
         }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace AI.Statistics
         {
             Vector d = t != 1? distributionFunction.Transform(x => Math.Pow(x, 1.0/t)): distributionFunction;
 
-            while (true)
+            for (int i = 0; i < 2 * distributionFunction.Count; i++)
             {
                 int index = random.Next(d.Count);
                 if (random.NextDouble() < d[index])
@@ -42,6 +44,8 @@ namespace AI.Statistics
                     return index;
                 }
             }
+
+            return distributionFunction.MaxElementIndex();
         }
     }
 }

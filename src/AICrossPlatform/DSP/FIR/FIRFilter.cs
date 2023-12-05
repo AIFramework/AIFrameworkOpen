@@ -1,5 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.DSP.DSPCore;
+using AI.HightLevelFunctions;
 using System;
 
 namespace AI.DSP.FIR
@@ -14,6 +15,7 @@ namespace AI.DSP.FIR
         private readonly int transientsInd; // отсчеты переходного процесса
         private readonly FIRCalcConvType convType;
         private readonly int _fd;
+        private Vector signalInp;
         /// <summary>
         /// Имя фильтра
         /// </summary>
@@ -31,6 +33,8 @@ namespace AI.DSP.FIR
             convType = calcConvType;
             transientsInd = _ht.Count / 2;
             _fd = fd;
+
+            signalInp = new Vector(_ht.Count);
         }
 
 
@@ -60,6 +64,17 @@ namespace AI.DSP.FIR
 
 
             return outp.GetInterval(transientsInd * 2, input.Count + transientsInd);
+        }
+
+        /// <summary>
+        /// Фильтрация сигнала по одному отсчету
+        /// </summary>
+        /// <param name="signal"></param>
+        /// <returns></returns>
+        public double FilterOutp(double signal)
+        {
+            signalInp.AddCBE(signal);
+            return AnalyticGeometryFunctions.Dot(signalInp, _ht);
         }
     }
 

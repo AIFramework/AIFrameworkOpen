@@ -86,7 +86,8 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 throw new ArgumentNullException(nameof(layer));
             }
 
-            Shape3D shape = Layers[Layers.Count - 1].OutputShape;
+
+            Shape3D shape = Layers[Layers.Count-1].OutputShape;
             layer.InputShape = shape;
             if (layer is IRandomizableLayer randomizableLayer)
             {

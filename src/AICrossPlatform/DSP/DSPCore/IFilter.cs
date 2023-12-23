@@ -18,5 +18,12 @@ namespace AI.DSP.DSPCore
         /// <param name="signal">Исходный сигнал</param>
         /// <returns>Отфильтрованный</returns>
         Vector FilterOutp(Vector signal);
+
+        /// <summary>
+        /// Запуск фильтрации
+        /// </summary>
+        /// <param name="signal">Исходный сигнал</param>
+        /// <returns>Отфильтрованный</returns>
+        double FilterOutp(double signal);
     }
 }

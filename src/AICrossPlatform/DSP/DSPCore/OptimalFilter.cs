@@ -31,8 +31,6 @@ namespace AI.DSP.DSPCore
         {
             fur = new FFT(n);
             corFunc = fur.CalcFFT(signal.Revers().CutAndZero(n)) / fur.SemplesCount;
-
-
         }
 
         /// <summary>

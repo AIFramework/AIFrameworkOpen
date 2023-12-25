@@ -25,9 +25,7 @@ namespace AI.DSP
             Vector ret = new Vector(len);
 
             for (int i = 0; i < len; i++)
-            {
-                ret[i] = s2[(int)(k * i)];
-            }
+            ret[i] = s2[(int)(k * i)];
 
 
             return ret;

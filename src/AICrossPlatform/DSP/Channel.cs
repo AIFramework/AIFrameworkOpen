@@ -121,9 +121,7 @@ namespace AI.DSP
             Channel[] retObj = new Channel[vects.Length];
 
             for (int i = 0; i < vects.Length; i++)
-            {
                 retObj[i] = new Channel(vects[i], fd, "Ch: " + i);
-            }
 
             return retObj;
         }
@@ -136,9 +134,7 @@ namespace AI.DSP
             Vector[] vs = new Vector[channels.Length];
 
             for (int i = 0; i < channels.Length; i++)
-            {
                 vs[i] = channels[i].ChData;
-            }
 
             return vs;
         }

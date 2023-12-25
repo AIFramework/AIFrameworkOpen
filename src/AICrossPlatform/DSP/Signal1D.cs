@@ -43,9 +43,7 @@ namespace AI.DSP
             set
             {
                 for (int i = 0; i < Count; i++)
-                {
-                    this[i].ScaleVolt = value;
-                }
+                this[i].ScaleVolt = value;
             }
         }
 
@@ -106,9 +104,7 @@ namespace AI.DSP
             else
             {
                 if (signal.ScaleVolt != ScaleVolt)
-                {
-                    signal.ConvertVolt(ScaleVolt);
-                }
+                signal.ConvertVolt(ScaleVolt);
 
                 base.Add(signal);
             }
@@ -140,9 +136,7 @@ namespace AI.DSP
             Vector[] vcs = new Vector[Count];
 
             for (int i = 0; i < Count; i++)
-            {
-                vcs[i] = this[i].ChData - trends[i].ChData;
-            }
+            vcs[i] = this[i].ChData - trends[i].ChData;
 
             return new Signal1D(vcs, Fd);
         }
@@ -155,9 +149,7 @@ namespace AI.DSP
             Vector[] vcs = new Vector[Count];
 
             for (int i = 0; i < Count; i++)
-            {
-                vcs[i] = withOutTrends[i].ChData / Statistic.CalcStd(withOutTrends[i].ChData);
-            }
+            vcs[i] = withOutTrends[i].ChData / Statistic.CalcStd(withOutTrends[i].ChData);
 
             return new Signal1D(vcs, Fd);
         }
@@ -172,7 +164,7 @@ namespace AI.DSP
             {
                 vcs[i] = this[i].ChData - Statistic.ExpectedValue(this[i].ChData);
                 vcs[i] /= Statistic.CalcStd(vcs[i]);
-            }
+            }   
 
             return new Signal1D(vcs, Fd);
         }
@@ -198,9 +190,7 @@ namespace AI.DSP
             Vector[] vcs = new Vector[Count];
 
             for (int i = 0; i < Count; i++)
-            {
-                vcs[i] = GetSpectr(i);
-            }
+                vcs[i] = GetSpectr(i); 
 
             return vcs;
         }
@@ -261,9 +251,8 @@ namespace AI.DSP
         {
             Signal1D retObj = new Signal1D();
             for (int i = 0; i < Count; i++)
-            {
-                retObj.Add(this[i].ConvertVolt(typeScaleVolt));
-            }
+            retObj.Add(this[i].ConvertVolt(typeScaleVolt));
+
             return retObj;
         }
         /// <summary>
@@ -274,9 +263,8 @@ namespace AI.DSP
         {
             Signal1D retObj = new Signal1D();
             for (int i = 0; i < Count; i++)
-            {
-                retObj.Add(this[i].Filtration(filter));
-            }
+            retObj.Add(this[i].Filtration(filter));
+
             return retObj;
         }
         /// <summary>
@@ -307,9 +295,7 @@ namespace AI.DSP
             string[] names = new string[Count];
 
             for (int i = 0; i < names.Length; i++)
-            {
-                names[i] = this[i].Name;
-            }
+            names[i] = this[i].Name;
 
             return names;
         }

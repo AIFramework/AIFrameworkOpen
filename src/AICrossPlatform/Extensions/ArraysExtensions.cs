@@ -16,9 +16,7 @@ namespace AI.Extensions
             double[] dArr = new double[array.Length];
 
             for (int i = 0; i < array.Length; i++)
-            {
-                dArr[i] = array[i];
-            }
+            dArr[i] = array[i];
 
             return dArr;
         }
@@ -30,9 +28,7 @@ namespace AI.Extensions
             double[] dArr = new double[array.Length];
 
             for (int i = 0; i < array.Length; i++)
-            {
-                dArr[i] = array[i];
-            }
+            dArr[i] = array[i];
 
             return dArr;
         }
@@ -44,9 +40,7 @@ namespace AI.Extensions
             double[] dArr = new double[array.Length];
 
             for (int i = 0; i < array.Length; i++)
-            {
-                dArr[i] = array[i];
-            }
+            dArr[i] = array[i];
 
             return dArr;
         }
@@ -58,9 +52,7 @@ namespace AI.Extensions
             double[] dArr = new double[array.Length];
 
             for (int i = 0; i < array.Length; i++)
-            {
-                dArr[i] = (double)array[i];
-            }
+            dArr[i] = (double)array[i];
 
             return dArr;
         }
@@ -72,9 +64,7 @@ namespace AI.Extensions
             double[] dArr = new double[array.Length];
 
             for (int i = 0; i < array.Length; i++)
-            {
-                dArr[i] = array[i];
-            }
+            dArr[i] = array[i];
 
             return dArr;
         }
@@ -86,9 +76,7 @@ namespace AI.Extensions
             double[] dArr = new double[array.Length];
 
             for (int i = 0; i < array.Length; i++)
-            {
-                dArr[i] = array[i];
-            }
+            dArr[i] = array[i];
 
             return dArr;
         }
@@ -105,9 +93,7 @@ namespace AI.Extensions
             for (int i = 0; i < array.GetLength(0); i++)
             {
                 for (int j = 0; j < array.GetLength(1); j++)
-                {
-                    dArr[i, j] = array[i, j];
-                }
+                dArr[i, j] = array[i, j];
             }
 
             return dArr;
@@ -122,9 +108,7 @@ namespace AI.Extensions
             for (int i = 0; i < array.GetLength(0); i++)
             {
                 for (int j = 0; j < array.GetLength(1); j++)
-                {
-                    dArr[i, j] = array[i, j];
-                }
+                dArr[i, j] = array[i, j];   
             }
 
             return dArr;
@@ -139,9 +123,8 @@ namespace AI.Extensions
             for (int i = 0; i < array.GetLength(0); i++)
             {
                 for (int j = 0; j < array.GetLength(1); j++)
-                {
                     dArr[i, j] = array[i, j];
-                }
+                   
             }
 
             return dArr;

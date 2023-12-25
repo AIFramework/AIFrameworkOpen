@@ -32,12 +32,9 @@ namespace AI.DSP.MusicUtils
             int len = data.Count;
 
             for (int i = 0; i < len; i++)
-            {
                 if (i >= steps)
-                {
-                    data[i] += volume * data[i - steps];
-                }
-            }
+                data[i] += volume * data[i - steps];
+            
         }
 
 
@@ -50,12 +47,7 @@ namespace AI.DSP.MusicUtils
             int len = data.Count;
 
             for (int i = 0; i < len; i++)
-            {
-                if (i >= steps)
-                {
-                    data[i - steps] += volume * data[i];
-                }
-            }
+                if (i >= steps) data[i - steps] += volume * data[i];
         }
     }
 }

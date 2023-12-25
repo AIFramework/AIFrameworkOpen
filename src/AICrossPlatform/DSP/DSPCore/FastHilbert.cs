@@ -99,9 +99,7 @@ namespace AI.DSP.DSPCore
             Vector t = new Vector(st.Count);
 
             for (int i = 0; i < t.Count; i++)
-            {
                 t[i] = i / fd;
-            }
 
             Vector cos = new Vector(t.Count);
             Vector sin = new Vector(t.Count);

@@ -1,4 +1,4 @@
-﻿using AI.DataStructs.Algebraic;
+﻿
 using AI.DataStructs.WithComplexElements;
 using AI.HightLevelFunctions;
 using System;
@@ -32,7 +32,6 @@ namespace AI.DSP.DSPCore
 
 
             Vector outp = furie.RealIFFT(cs).CutAndZero(nMax);
-
             return outp;
         }
 
@@ -87,9 +86,7 @@ namespace AI.DSP.DSPCore
             {
 
                 for (int i = 0; i < size; i++)
-                {
                     summ += pV[i];
-                }
                 return summ / size;
             }
         }
@@ -106,9 +103,7 @@ namespace AI.DSP.DSPCore
             {
 
                 for (int i = 0; i < size; i++)
-                {
-                    summ += pV[i] * pV[i];
-                }
+                     summ += pV[i] * pV[i];
                 return summ;
             }
         }
@@ -126,9 +121,7 @@ namespace AI.DSP.DSPCore
                 fixed (double* pointerA = a)
                 {
                     for (int i = 0; i < size; i++)
-                    {
-                        resPointer[i] = pointerA[i] - b;
-                    }
+                         resPointer[i] = pointerA[i] - b;
                 }
             }
 
@@ -143,9 +136,7 @@ namespace AI.DSP.DSPCore
             fixed (double* pointerA = a)
             {
                 for (int i = 0; i < size; i++)
-                {
-                    pointerA[i] = pointerA[i] / b;
-                }
+                     pointerA[i] = pointerA[i] / b;
             }
 
 
@@ -164,9 +155,7 @@ namespace AI.DSP.DSPCore
                     fixed (Complex* pointerB = b)
                     {
                         for (int i = 0; i < size; i++)
-                        {
                             resPointer[i] = pointerA[i] * pointerB[i];
-                        }
                     }
                 }
             }
@@ -185,9 +174,7 @@ namespace AI.DSP.DSPCore
                 fixed (double* pointer = inp)
                 {
                     for (int i = 0; i < size; i++)
-                    {
                         resPointer[i] = pointer[size - 1 - i];
-                    }
                 }
             }
 

@@ -90,14 +90,10 @@ namespace AI.DSP.IIR
             outps[ofA] = 0;
 
             for (int i = 0, j = bLen - ofB; i < bLen; i++, j++)
-            {
                 outp += inps[i] * B[j];
-            }
 
             for (int i = 0, j = aLen - ofA; i < aLen; i++, j++)
-            {
                 outp -= outps[i] * A[j];
-            }
 
             //Ограничение сигнала
             if (outp > Treshold) outp = Treshold;
@@ -106,14 +102,12 @@ namespace AI.DSP.IIR
             outps[ofA] = outp;
 
             if (--ofB < 0)
-            {
                 ofB = bLen - 1;
-            }
+            
 
             if (--ofA < 0)
-            {
                 ofA = aLen - 1;
-            }
+            
 
 
             return outp;

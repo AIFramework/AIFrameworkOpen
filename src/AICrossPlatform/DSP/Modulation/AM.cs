@@ -39,13 +39,9 @@ namespace AI.DSP.Modulation
         public Channel Modulate(Channel signalIn)
         {
             if (Math.Abs(_fd - signalIn.Fd) < 0.3)
-            {
                 return ModulateSimple(signalIn);
-            }
             else
-            {
                 throw new ArgumentException("не совпадают частоты дискретизации");
-            }
         }
 
         /// <summary>
@@ -75,9 +71,7 @@ namespace AI.DSP.Modulation
             Vector outp = new Vector(data.Count);
 
             for (int i = 0; i < outp.Count; i++)
-            {
                 outp[i] = (1 + (data[i] * mDivDataMax)) * Math.Sin(_2pi * i * _dt * _f0) / n;
-            }
 
             Channel retCh = new Channel(outp, _fd, signal.Name, signal.Description)
             {

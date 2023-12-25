@@ -63,19 +63,13 @@ namespace AI.DSP.DSPCore
             Matrix W = new Matrix(M, Count);
             double lambda = 1.0 / Math.Sqrt(Count);
             for (int j = 0; j < W.Width; j++)
-            {
                 W[0, j] = lambda;
-            }
 
             lambda = Math.Sqrt(2.0 / Count);
 
             for (int i = 1; i < W.Height; i++)
-            {
                 for (int j = 0; j < W.Width; j++)
-                {
                     W[i, j] = lambda * Math.Cos(GetArg(i, j, Count));
-                }
-            }
 
             return W;
         }

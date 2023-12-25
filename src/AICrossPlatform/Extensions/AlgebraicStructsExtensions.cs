@@ -19,16 +19,10 @@ namespace AI.Extensions
             Tensor tensor = new Tensor(matrices[0].Height, matrices[0].Width, matrices.Length);
 
             for (int i = 0; i < tensor.Depth; i++)
-            {
                 for (int j = 0; j < tensor.Height; j++)
-                {
                     for (int k = 0; k < tensor.Width; k++)
-                    {
                         tensor[j, k, i] = matrices[i][j, k];
-                    }
-                }
-
-            }
+                
 
             return tensor;
         }
@@ -115,12 +109,9 @@ namespace AI.Extensions
             Matrix matrix = new Matrix(H, W);
 
             for (int i = 0, k = 0; i < H; i++)
-            {
                 for (int j = 0; j < W; j++)
-                {
                     matrix[i, j] = matrixData[k++];
-                }
-            }
+            
 
             return matrix;
         }
@@ -225,9 +216,7 @@ namespace AI.Extensions
             Vector vector = new Vector(n);
 
             for (int i = 0; i < n; i++)
-            {
                 vector[i] = array[i][dim];
-            }
 
             return vector;
         }

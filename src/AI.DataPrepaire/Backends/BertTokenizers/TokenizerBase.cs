@@ -51,7 +51,33 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
             var tokens = Tokenize(texts.ToArray());
 
             // Добавление паддинга для соблюдения длины последовательности.
-            var padding = sequenceLength - tokens.Count <=0 ? Enumerable.Repeat(0, sequenceLength - tokens.Count).ToList() : new List<int>(0);
+            var padding = sequenceLength - tokens.Count > 0 ? Enumerable.Repeat(0, sequenceLength - tokens.Count).ToList() : new List<int>(0);
+
+            // Формирование списков для InputIds, TokenTypeIds и AttentionMask.
+            var tokenIndexes = tokens.Select(token => token.VocabularyIndex).Concat(padding).ToArray();
+            var segmentIndexes = tokens.Select(token => token.SegmentIndex).Concat(padding).ToArray();
+            var inputMask = tokens.Select(o => 1).Concat(padding).ToArray();
+
+            // Сборка результатов в список кортежей.
+            var output = tokenIndexes.Zip(segmentIndexes, Tuple.Create)
+                .Zip(inputMask, (t, z) => Tuple.Create(t.Item1, t.Item2, z));
+
+            return output.Select(x => (InputIds: x.Item1, TokenTypeIds: x.Item2, AttentionMask: x.Item3)).ToList();
+        }
+
+        /// <summary>
+        /// Кодирует входные тексты в виде токенов и возвращает список кортежей (InputIds, TokenTypeIds, AttentionMask).
+        /// </summary>
+        /// <param name="text">Входной текст для токенизации</param>
+        /// <param name="sequenceLength">Длина последовательности токенов.</param>
+        /// <returns>Список кортежей (InputIds, TokenTypeIds, AttentionMask).</returns>
+        public virtual List<(int InputIds, int TokenTypeIds, int AttentionMask)> Encode(string text, int sequenceLength = 0)
+        {
+            // Получение токенов из текстов.
+            var tokens = Tokenize(text);
+
+            // Добавление паддинга для соблюдения длины последовательности.
+            var padding = sequenceLength - tokens.Count > 0 ? Enumerable.Repeat(0, sequenceLength - tokens.Count).ToList() : new List<int>(0);
 
             // Формирование списков для InputIds, TokenTypeIds и AttentionMask.
             var tokenIndexes = tokens.Select(token => token.VocabularyIndex).Concat(padding).ToArray();
@@ -71,9 +97,29 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
         /// <param name="texts">Входные тексты для токенизации.</param>
         /// <param name="sequenceLength">Длина последовательности токенов.</param>
         /// <returns>Структуру с токенами</returns>
-        public virtual TokenizeResult Encode2Struct(IEnumerable<string> texts, int sequenceLength = 0) 
+        public virtual TokenizeResult Encode2Struct(IEnumerable<string> texts, int sequenceLength = 0)
         {
             var enc = Encode(texts, sequenceLength);
+
+            var hfTokens = new TokenizeResult()
+            {
+                InputIds = enc.Select(t => t.InputIds).ToArray(),
+                AttentionMask = enc.Select(t => t.AttentionMask).ToArray(),
+                TypeIds = enc.Select(t => t.TokenTypeIds).ToArray(),
+            };
+
+            return hfTokens;
+        }
+
+        /// <summary>
+        /// Кодирует входные тексты в виде токенов
+        /// </summary>
+        /// <param name="text">Входной текст для токенизации</param>
+        /// <param name="sequenceLength">Длина последовательности токенов</param>
+        /// <returns>Структуру с токенами</returns>
+        public virtual TokenizeResult Encode2Struct(string text, int sequenceLength = 0)
+        {
+            var enc = Encode(text, sequenceLength);
 
             var hfTokens = new TokenizeResult()
             {

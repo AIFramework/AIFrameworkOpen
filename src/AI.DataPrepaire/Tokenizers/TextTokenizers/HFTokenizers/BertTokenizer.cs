@@ -12,7 +12,10 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
     [Serializable]
     public class BertTokenizer : TokenizerBase
     {
-        bool _isUnCased;
+        /// <summary>
+        /// Конфигурация токенизатора
+        /// </summary>
+        public BertTokenizerConfig TokenizerConfig { get; set; } = new BertTokenizerConfig();
 
         /// <summary>
         /// Инициализирует новый экземпляр класса BertTokenizer.
@@ -21,7 +24,17 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
         /// <param name="isUnCased">Учитывать ли регистр при токенизации</param>
         public BertTokenizer(string path, bool isUnCased = true) : base(path)
         {
-            _isUnCased = isUnCased;
+            TokenizerConfig.DoLowerCase = isUnCased;
+        }
+
+        // ToDo: Реализовать
+        /// <summary>
+        /// Загрузка пред. обученного токенизатора Bert
+        /// </summary>
+        /// <param name="pathToFolder">Путь до папки</param>
+        public BertTokenizer FromPretrained(string pathToFolder)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -31,7 +44,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
         /// <returns></returns>
         protected override IEnumerable<string> TokenizeSentence(string text)
         {
-            return BertSentenceTokenize(_isUnCased? text.ToLower(): text);
+            return BertSentenceTokenize(TokenizerConfig.DoLowerCase ? text.ToLower(): text);
         }
 
 

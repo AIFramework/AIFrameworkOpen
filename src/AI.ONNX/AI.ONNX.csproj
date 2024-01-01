@@ -10,11 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NLP\Bert\" />
-    <Folder Include="NLP\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.16.0" />
   </ItemGroup>
 

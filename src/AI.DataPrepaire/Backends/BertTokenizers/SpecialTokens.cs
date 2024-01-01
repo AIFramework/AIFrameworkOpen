@@ -46,7 +46,7 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
         /// <summary>
         /// Загрузка токенов из JSON
         /// </summary>
-        public SpecialTokens FromJson(string jsonMapPath)
+        public static SpecialTokens FromJson(string jsonMapPath)
         { 
             string json = File.ReadAllText(jsonMapPath);
             SpecialTokens tokens = JsonSerializer.Deserialize<SpecialTokens>(json);

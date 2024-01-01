@@ -4,16 +4,13 @@ using AI.ONNX.NLP.Bert;
 
 var bertPath = "all-MiniLM-L6-v2.onnx";
 BertTokenizer tokenizer = new BertTokenizer("vocab.txt");
-BertInfer bertInfer = new BertInfer(bertPath);
+BertInfer model = new BertInfer(bertPath);
 
-var encoded1 = tokenizer.Encode2Struct("kittens love milk");
-Vector vects1 = bertInfer.Forward(encoded1.InputIds, encoded1.AttentionMask, encoded1.TypeIds)[1];
+BertEmbedder embedder = new BertEmbedder(tokenizer, model);
 
-var encoded2 = tokenizer.Encode2Struct("cats love milk");
-Vector vects2 = bertInfer.Forward(encoded2.InputIds, encoded2.AttentionMask, encoded2.TypeIds)[1];
-
-var encoded3 = tokenizer.Encode2Struct("Colab is a hosted Jupyter Notebook service that requires no configuration and provides free access to compute resources");
-Vector vects3 = bertInfer.Forward(encoded3.InputIds, encoded3.AttentionMask, encoded3.TypeIds)[1];
+Vector vects1 = embedder.ForwardAsSbert("kittens love milk");
+Vector vects2 = embedder.ForwardAsSbert("cats love milk");
+Vector vects3 = embedder.ForwardAsSbert("Colab is a hosted Jupyter Notebook service that requires no configuration and provides free access to compute resources");
 
 
 Console.WriteLine(vects1.Cos(vects2));

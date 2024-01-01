@@ -18,7 +18,7 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
         /// <summary>
         /// Специальные токены
         /// </summary>
-        public Tokens SpecialTokenMap { get; set; } = new Tokens();
+        public SpecialTokens SpecialTokenMap { get; set; } = new SpecialTokens();
 
         /// <summary>
         /// Список слов из словаря.
@@ -187,7 +187,7 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
             // Исходное множество токенов содержит только метку классификации.
             IEnumerable<string> tokens = new string[] { SpecialTokenMap.Classification };
 
-            // Добавление токенов для каждого текста и метку разделения.
+            // ToDo: Сделать параллельную обработку
             foreach (var text in texts)
             {
                 tokens = tokens.Concat(TokenizeSentence(text));

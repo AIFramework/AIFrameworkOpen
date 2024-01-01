@@ -11,11 +11,13 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
     [Serializable]
     public class BertTokenizer : CasedTokenizer
     {
+
         /// <summary>
         /// Инициализирует новый экземпляр класса BertTokenizer.
         /// </summary>
         /// <param name="path">Путь к файлу словаря.</param>
-        public BertTokenizer(string path) : base(path)
+        /// <param name="splitWords">Разделять ли по словам</param>
+        public BertTokenizer(string path, bool splitWords = true) : base(path, splitWords)
         {
             
         }

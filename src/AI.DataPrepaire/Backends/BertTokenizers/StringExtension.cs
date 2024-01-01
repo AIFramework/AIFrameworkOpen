@@ -22,25 +22,27 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
         /// <returns>Перечисление подстрок, включая разделители.</returns>
         public static IEnumerable<string> SplitAndKeep(this string inputString, params char[] delimiters)
         {
-            int start = 0, index;
+            int start = 0, index = 0;
+            int length = inputString.Length;
 
-            while ((index = inputString.IndexOfAny(delimiters, start)) != -1)
+            while (index < length)
             {
-                // Если есть символы между предыдущей позицией start и текущим индексом index, добавляем их в результат.
-                if (index - start > 0)
-                    yield return inputString.Substring(start, index - start);
+                index = inputString.IndexOfAny(delimiters, start);
 
-                // Добавляем найденный разделитель.
+                if (index == -1)
+                {
+                    yield return inputString.Substring(start);
+                    yield break;
+                }
+
+                if (index > start)
+                {
+                    yield return inputString.Substring(start, index - start);
+                }
+
                 yield return inputString.Substring(index, 1);
 
-                // Обновляем значение start для продолжения поиска следующего разделителя.
-                start = index + 1;
-            }
-
-            // Проверяем, есть ли оставшиеся символы после последнего разделителя, и если есть, добавляем их в результат.
-            if (start < inputString.Length)
-            {
-                yield return inputString.Substring(start);
+                start = ++index;
             }
         }
     }

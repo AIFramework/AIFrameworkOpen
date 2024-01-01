@@ -3,7 +3,7 @@ using AI.DataStructs.Algebraic;
 using AI.ONNX.NLP.Bert;
 
 var bertPath = "all-MiniLM-L6-v2.onnx";
-BertTokenizer tokenizer = new BertTokenizer("vocab.txt", true);
+BertTokenizer tokenizer = new BertTokenizer("vocab.txt");
 BertInfer bertInfer = new BertInfer(bertPath);
 
 var encoded1 = tokenizer.Encode2Struct("kittens love milk");

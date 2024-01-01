@@ -14,6 +14,12 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
     [Serializable]
     public abstract class TokenizerBase
     {
+
+        /// <summary>
+        /// Специальные токены
+        /// </summary>
+        public Tokens SpecialTokenMap { get; set; } = new Tokens();
+
         /// <summary>
         /// Список слов из словаря.
         /// </summary>
@@ -179,13 +185,13 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
         public virtual List<(string Token, int VocabularyIndex, int SegmentIndex)> Tokenize(params string[] texts)
         {
             // Исходное множество токенов содержит только метку классификации.
-            IEnumerable<string> tokens = new string[] { Tokens.Classification };
+            IEnumerable<string> tokens = new string[] { SpecialTokenMap.Classification };
 
             // Добавление токенов для каждого текста и метку разделения.
             foreach (var text in texts)
             {
                 tokens = tokens.Concat(TokenizeSentence(text));
-                tokens = tokens.Concat(new string[] { Tokens.Separation });
+                tokens = tokens.Concat(new string[] { SpecialTokenMap.Separation });
             }
 
             // Получение токенов и их индексов в словаре и сегментов.
@@ -214,10 +220,8 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
             {
                 segmentIndexes.Add(segmentIndex);
 
-                if (token == Tokens.Separation)
-                {
+                if (token == SpecialTokenMap.Separation)
                     segmentIndex++;
-                }
             }
 
             return segmentIndexes;
@@ -230,51 +234,44 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
         /// <returns>Список токенов вместе с их индексами в словаре.</returns>
         private IEnumerable<(string Token, int VocabularyIndex)> TokenizeSubwords(string word)
         {
-            // Если слово уже есть в словаре, возвращаем его.
-            if (_vocabularyDict.ContainsKey(word))
-            {
-                return new (string, int)[] { (word, _vocabularyDict[word]) };
-            }
+            if (_vocabularyDict.TryGetValue(word, out int vocabIndex))
+                return new[] { (word, vocabIndex) };
 
-            // Иначе разбиваем слово на подслова.
             var tokens = new List<(string, int)>();
             var remaining = word;
+            int wordLength = word.Length;
 
-            while (!string.IsNullOrEmpty(remaining) && remaining.Length > 2)
+            while (wordLength > 2)
             {
                 string prefix = null;
                 int subwordLength = remaining.Length;
+
                 while (subwordLength >= 1)
                 {
                     string subword = remaining.Substring(0, subwordLength);
-                    if (!_vocabularyDict.ContainsKey(subword))
+
+                    if (_vocabularyDict.TryGetValue(subword, out int subwordIndex))
                     {
-                        subwordLength--;
-                        continue;
+                        prefix = subword;
+                        tokens.Add((prefix, subwordIndex));
+                        break;
                     }
 
-                    prefix = subword;
-                    break;
+                    subwordLength--;
                 }
 
                 if (prefix == null)
                 {
-                    tokens.Add((Tokens.Unknown, _vocabularyDict[Tokens.Unknown]));
-
+                    tokens.Add((SpecialTokenMap.Unknown, _vocabularyDict[SpecialTokenMap.Unknown]));
                     return tokens;
                 }
 
-                var regex = new Regex(prefix);
-                remaining = regex.Replace(remaining, "##", 1);
-
-                tokens.Add((prefix, _vocabularyDict[prefix]));
+                remaining = $"##{remaining.Substring(prefix.Length)}";
+                wordLength = remaining.Length;
             }
 
-            // Если осталось непустое слово и список токенов пуст, добавляем метку неизвестного слова.
-            if (!string.IsNullOrWhiteSpace(word) && !tokens.Any())
-            {
-                tokens.Add((Tokens.Unknown, _vocabularyDict[Tokens.Unknown]));
-            }
+            if (!string.IsNullOrWhiteSpace(word) && tokens.Count == 0)
+                tokens.Add((SpecialTokenMap.Unknown, _vocabularyDict[SpecialTokenMap.Unknown]));
 
             return tokens;
         }

@@ -9,29 +9,37 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
     public class Tokens
     {
         /// <summary>
-        /// Пустой токен (паддинг).
+        /// Пустой токен (паддинг)
         /// </summary>
-        public const string Padding = "";
+        public string Padding = "";
 
         /// <summary>
-        /// Метка для неизвестных слов.
+        /// Метка для неизвестных слов
         /// </summary>
-        public const string Unknown = "[UNK]";
+        public string Unknown = "[UNK]";
 
         /// <summary>
-        /// Метка для классификации.
+        /// Метка для классификации
         /// </summary>
-        public const string Classification = "[CLS]";
+        public string Classification = "[CLS]";
 
         /// <summary>
-        /// Метка разделения.
+        /// Метка разделения
         /// </summary>
-        public const string Separation = "[SEP]";
+        public string Separation = "[SEP]";
 
         /// <summary>
-        /// Метка маскировки.
+        /// Метка маскировки
         /// </summary>
-        public const string Mask = "[MASK]";
+        public string Mask = "[MASK]";
+
+        /// <summary>
+        /// Загрузка токенов из JSON
+        /// </summary>
+        public void FromJson(string jsonMap)
+        { 
+            throw new NotImplementedException();
+        }
     }
 
 }

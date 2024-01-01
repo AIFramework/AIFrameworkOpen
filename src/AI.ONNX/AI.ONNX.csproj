@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AI.DataPrepaire\AI.DataPrepaire.csproj" />
     <ProjectReference Include="..\AICrossPlatform\AICrossPlatform.csproj" />
   </ItemGroup>
 

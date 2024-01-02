@@ -14,6 +14,7 @@ namespace AI.ONNX.NLP.Bert
     {
         public BertInfer BertInference { get; set; }
         public BertTokenizer Tokenizer { get; set; }
+        public BertConfig Config { get; set; } = new BertConfig();
 
         /// <summary>
         /// Эмбеддер последовательностей на базе Bert
@@ -41,6 +42,31 @@ namespace AI.ONNX.NLP.Bert
             var tokens = Tokenizer.Encode(text);
             var output = BertInference.Forward(tokens.InputIds, tokens.AttentionMask, tokens.TypeIds);
             return output[1]; // ToDo: Добавить логику для моделей с одним выходом
+        }
+
+        /// <summary>
+        /// Прямой проход, преобразует каждый токен в эмбеддинг
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public IEnumerable<Vector> ForwardBert(string text) 
+        {
+            var tokens = Tokenizer.Encode(text);
+            var output = BertInference.Forward(tokens.InputIds, tokens.AttentionMask, tokens.TypeIds)[0];
+
+            int numVectors = output.Count / Config.HiddenSize;
+            Vector[] vectors = new Vector[numVectors];
+
+            for (int i = 0; i < numVectors; i++)
+            {
+                vectors[i] = new Vector(Config.HiddenSize);
+                int ofset = i*Config.HiddenSize;
+
+                for (int j = 0; j < Config.HiddenSize; j++)
+                    vectors[i][j] = output[ofset + j];
+            }
+
+            return vectors;
         }
     }
 }

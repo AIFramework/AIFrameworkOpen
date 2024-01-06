@@ -4,14 +4,12 @@ using AI.ML.NeuralNetwork.CoreNNW.Models;
 using AI.ML.NeuralNetwork.CoreNNW.Optimizers;
 using AI.ML.NeuralNetwork.CoreNNW;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using AI.ML.NeuralNetwork.CoreNNW.Layers;
 using AI.ML.NeuralNetwork.CoreNNW.Activations;
 using AI.ML.NeuralNetwork;
 using AI.DataStructs.Shapes;
-using AI.BackEnds.DSP.NWaves.Utils;
 using AI.Statistics;
+using AI.DataStructs;
 
 namespace AI.ML.Regression
 {
@@ -24,10 +22,24 @@ namespace AI.ML.Regression
         private Random _rnd = new Random();
         private readonly NNW _net;
 
+        /// <summary>
+        /// Средний вектор входа
+        /// </summary>
         public Vector MeanInp { get; set; }
+
+        /// <summary>
+        /// Разброс значений на входе
+        /// </summary>
         public Vector StdInp { get; set; }
 
+        /// <summary>
+        /// Средний вектор выхода
+        /// </summary>
         public Vector MeanOutp { get; set; }
+
+        /// <summary>
+        /// Разброс значений на выходе
+        /// </summary>
         public Vector StdOutp { get; set; }
 
 
@@ -77,9 +89,7 @@ namespace AI.ML.Regression
             _net = new NNW();
 
             if (h == 0)
-            {
                 _net.AddNewLayer(new Shape3D(inputDim), new FeedForwardLayer(outputDim, new LinearUnit()));
-            }
             else
             {
                 if(activationH == null)
@@ -152,6 +162,22 @@ namespace AI.ML.Regression
 
 
             manager.TrainNet(inp, outp);
+        }
+
+        /// <summary>
+        /// Сохранение в бинарный файл
+        /// </summary>
+        public void Save(string path) 
+        {
+            BinarySerializer.Save(path, this);
+        }
+
+        /// <summary>
+        /// Загрузка из бинарного файла
+        /// </summary>
+        public static NeuralMultyRegression LoadFromFile(string path) 
+        {
+            return BinarySerializer.Load<NeuralMultyRegression>(path);
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers;
+﻿using AI.DataPrepaire.DataLoader.NNWBlockLoader;
+using AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers;
 using AI.DataStructs.Algebraic;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AI.ONNX.NLP.Bert
@@ -15,6 +17,7 @@ namespace AI.ONNX.NLP.Bert
         public BertInfer BertInference { get; set; }
         public BertTokenizer Tokenizer { get; set; }
         public BertConfig Config { get; set; } = new BertConfig();
+        public List<INNWBlockV2V> V2VBlocks = new List<INNWBlockV2V>(); 
 
         /// <summary>
         /// Эмбеддер последовательностей на базе Bert
@@ -37,11 +40,16 @@ namespace AI.ONNX.NLP.Bert
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public Vector ForwardAsSbert(string text) 
+        public Vector ForwardSBert(string text) 
         {
-            var tokens = Tokenizer.Encode(text);
-            var output = BertInference.Forward(tokens.InputIds, tokens.AttentionMask, tokens.TypeIds);
-            return output[1]; // ToDo: Добавить логику для моделей с одним выходом
+            var outputBert = ForwardBert(text);
+            var output = Vector.Mean(outputBert.ToArray()); // ToDo: Добавить логику для моделей с одним выходом
+            
+            if (V2VBlocks.Count > 0) 
+                foreach (var block in V2VBlocks)
+                    output = block.Forward(output);
+
+            return output;
         }
 
         /// <summary>

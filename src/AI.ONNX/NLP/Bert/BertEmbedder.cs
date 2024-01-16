@@ -76,5 +76,21 @@ namespace AI.ONNX.NLP.Bert
 
             return vectors;
         }
+
+
+        /// <summary>
+        /// Загрузка пред. обученного эмбедера
+        /// </summary>
+        /// <param name="pathToFolder"></param>
+        /// <returns></returns>
+        public static BertEmbedder FromPretrained(string pathToFolder) 
+        {
+            BertTokenizer tokenizer = new BertTokenizer($"{pathToFolder}\\vocab.txt");
+            tokenizer.TokenizerConfig = BertTokenizerConfig.FromJson($"{pathToFolder}\\tokenizer_config.json");
+            BertInfer model = new BertInfer($"{pathToFolder}\\model.onnx");
+            BertEmbedder embedder = new BertEmbedder(tokenizer, model);
+            embedder.Config = BertConfig.FromJson($"{pathToFolder}\\config.json");
+            return embedder;
+        }
     }
 }

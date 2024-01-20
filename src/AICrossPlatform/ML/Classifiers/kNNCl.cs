@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace AI.ML.Classifiers
 {
@@ -17,199 +18,202 @@ namespace AI.ML.Classifiers
     public class KNNCl : IClassifier
     {
         #region Поля и свойства
-        private int _count;
-
         /// <summary>
-        /// Число соседей
+        /// Количество соседей для учёта в алгоритме KNN.
         /// </summary>
         public int K { get; set; } = 4;
+
         /// <summary>
-        /// Ширина окна
+        /// Ширина окна для метода окна Парзена.
         /// </summary>
         public double H { get; set; } = 1;
+
         /// <summary>
-        /// Фиксирована ли ширина окна
+        /// Указывает, фиксирована ли ширина окна.
         /// </summary>
         public bool IsFixed { get; set; } = false;
+
         /// <summary>
-        /// Использовать ли метод Парзена
+        /// Указывает, используется ли метод окна Парзена.
         /// </summary>
         public bool IsParsenMethod { get; set; } = false;
+
         /// <summary>
-        /// Ядро окна Парзена
+        /// Функция ядра для окна Парзена.
         /// </summary>
         public Func<double, double> KernelParsenWindow { get; set; }
+
         /// <summary>
-        /// Функция измерения расстояния
+        /// Функция для измерения расстояния между векторами.
         /// </summary>
         public Func<Vector, Vector, double> Dist { get; set; }
+
         /// <summary>
-        /// Набор данных
+        /// Набор классов для классификации.
         /// </summary>
-        public StructClasses Classes { get; set; }
+        public StructClasses Classes { get; private set; } = new StructClasses();
+
+        private int _count;
+
         #endregion
 
         #region Конструкторы
+
         /// <summary>
-        /// Метод k-ближайших соседей
+        /// Инициализация экземпляра класса KNNCl с настройками по умолчанию.
         /// </summary>
         public KNNCl()
         {
-            Classes = new StructClasses();
-            KernelParsenWindow = RbfK;
-            Dist = Distances.BaseDist.SquareEucl;
-
+            InitializeDefaults();
         }
-        /// <summary>
-        /// Метод k-ближайших соседей
-        /// </summary>
-        public KNNCl(VectorIntDataset vectorClasses)
-        {
-            Classes = new StructClasses();
-            KernelParsenWindow = RbfK;
-            Dist = Distances.BaseDist.SquareEucl;
-            K = 4;
-            H = 1;
 
+        /// <summary>
+        /// Инициализация экземпляра класса KNNCl с использованием предоставленного набора данных.
+        /// </summary>
+        /// <param name="vectorClasses">Набор данных для классификации.</param>
+        public KNNCl(VectorIntDataset vectorClasses) : this()
+        {
             foreach (VectorClass item in vectorClasses)
             {
                 AddClass(item.Features, item.ClassMark);
             }
         }
+
+        /// <summary>
+        /// Инициализация экземпляра класса KNNCl с предоставленным набором классов.
+        /// </summary>
+        /// <param name="classifikator">Набор классов для классификации.</param>
+        public KNNCl(StructClasses classifikator) : this()
+        {
+            Classes = classifikator ?? throw new ArgumentNullException(nameof(classifikator));
+        }
+
+        /// <summary>
+        /// Устанавливает настройки по умолчанию.
+        /// </summary>
+        private void InitializeDefaults()
+        {
+            KernelParsenWindow = RbfK;
+            Dist = Distances.BaseDist.SquareEucl;
+        }
+
         #endregion
 
         /// <summary>
-        /// Радиально-базисная функция окна
+        /// Радиально-базисная функция ядра.
         /// </summary>
-        public double RbfK(double r)
-        {
-            return Math.Exp(-2 * r * r);
-        }
+        /// <param name="r">Радиальное расстояние.</param>
+        /// <returns>Результат радиально-базисной функции.</returns>
+        public double RbfK(double r) => Math.Exp(-2 * r * r);
+
         /// <summary>
-        /// Метод k-ближайших соседей
+        /// Классифицирует входной вектор и возвращает индекс класса с максимальной вероятностью.
         /// </summary>
-        /// <param name="classifikator">Коллекция классов</param>
-        public KNNCl(StructClasses classifikator)
-        {
-            Classes = classifikator;
-        }
-        /// <summary>
-        /// Распознавание
-        /// </summary>
-        /// <param name="inp">Вектор входа</param>
+        /// <param name="inp">Входной вектор для классификации.</param>
+        /// <returns>Индекс класса с максимальной вероятностью.</returns>
         public int Classify(Vector inp)
         {
+            if (inp == null) throw new ArgumentNullException(nameof(inp));
             return ClassifyProbVector(inp).MaxElementIndex();
         }
+
         /// <summary>
-        /// Добавить класс
+        /// Добавляет новый класс в набор классов.
         /// </summary>
-        /// <param name="features">Вектор признаков</param>
-        /// <param name="num">Метка </param>
+        /// <param name="features">Вектор признаков класса.</param>
+        /// <param name="num">Метка класса.</param>
         public void AddClass(Vector features, int num)
         {
-            VectorClass structClass = new VectorClass
-            {
-                Features = features.Clone(),
-                ClassMark = num
-            };
-            Classes.Add(structClass);
+            if (features == null) throw new ArgumentNullException(nameof(features));
+            Classes.Add(new VectorClass { Features = features.Clone(), ClassMark = num });
             _count = GetN();
         }
+        
+        
+        
+
+
         /// <summary>
-        /// Распознавание вектора, представить вектором распределения вероятностей
+        /// Распознаёт вектор и возвращает вектор вероятностей классов.
         /// </summary>
+        /// <param name="inp">Входной вектор.</param>
         public Vector ClassifyProbVector(Vector inp)
         {
-            if (IsFixed && IsParsenMethod)
+            Rang(inp);
+            Vector classes = new Vector(_count);
+            int limit = UpdateLimitAndH();  // Метод для обновления 'limit' и 'H'
+
+            double sum = 0;
+            Parallel.For(0, limit, i =>
             {
-                Vector classes = new Vector(_count);
-                Rang(inp);
+                var classVector = ToVector(i, IsParsenMethod);
+                lock (classes)
+                {
+                    classes += classVector;
+                    sum += classVector.Sum(); // или другая логика в зависимости от 'ToVector'
+                }
+            });
 
-                for (int i = 0; i < Classes.Count; i++)
-                    classes += ToVector(i);
-
-                classes /= classes.Sum();
-
-
-                return classes;
-            }
-
-            else
-            {
-                Vector classes = new Vector(_count);
-                Rang(inp);
-                int k = Classes.Count < K? Classes.Count : K;
-                H = Classes[k - 1].R;
-
-                for (int i = 0; i < K; i++)
-                    classes += ToVector(i);
-
-                classes /= classes.Sum();
-
-
-                return classes;
-            }
-
+            classes /= sum;
+            return classes;
         }
+
         /// <summary>
-        /// Возвращает вектор, его длина равна количеству классов, на позиции распознанного класса установлено значение 1
+        /// Возвращает вектор распознавания классов с максимальным значением 1 для распознанного класса.
         /// </summary>
-        /// <param name="inp">Вектор входных данных</param>
+        /// <param name="inp">Входной вектор.</param>
         public Vector RecognizeVectorMax(Vector inp)
         {
-            if (IsFixed && IsParsenMethod)
+            Rang(inp);
+            Vector classes = new Vector(_count);
+            int limit = UpdateLimitAndH(); 
+
+            double max = 0;
+            Parallel.For(0, limit, i =>
             {
-                Vector classes = new Vector(_count);
-                Rang(inp);
+                var classVector = ToVector(i, IsParsenMethod);
+                lock (classes)
+                {
+                    classes += classVector;
+                    max = Math.Max(max, classVector.Max()); // или другая логика в зависимости от 'ToVector'
+                }
+            });
 
-                for (int i = 0; i < Classes.Count; i++)
-                    classes += ToVector(i);
-
-                classes /= classes.Max();
-
-
-                return classes;
-            }
-
-            else
-            {
-                Vector classes = new Vector(_count);
-                Rang(inp);
-                H = Classes[K - 1].R;
-
-                for (int i = 0; i < K; i++)
-                    classes += ToVector(i);
-
-                classes /= classes.Max();
-
-
-                return classes;
-            }
-
+            classes /= max;
+            return classes;
         }
+
+        private int UpdateLimitAndH()
+        {
+            int limit = IsFixed && IsParsenMethod ? Classes.Count : Math.Min(K, Classes.Count);
+            if (!IsFixed || !IsParsenMethod) H = Classes[limit - 1].R;
+            return limit;
+        }
+
         /// <summary>
-        /// Обучение классификатора
+        /// Обучает классификатор.
         /// </summary>
-        /// <param name="features">Признаки</param>
-        /// <param name="classes">Метки классов</param>
+        /// <param name="features">Массив признаков.</param>
+        /// <param name="classes">Массив меток классов.</param>
         public void Train(Vector[] features, int[] classes)
         {
             if (features.Length != classes.Length)
-                throw new InvalidOperationException("Число вектров признаков и число меток классов не совпадают");
+                throw new InvalidOperationException("Размерности векторов признаков и классов не совпадают.");
 
             for (int i = 0; i < features.Length; i++)
                 AddClass(features[i], classes[i]);
         }
+
         /// <summary>
-        /// Обучение на базе набора данных вектор-класс
+        /// Обучает классификатор на основе набора данных.
         /// </summary>
-        /// <param name="dataset">Набор данных Vector-int32</param>
+        /// <param name="dataset">Набор данных.</param>
         public void Train(VectorIntDataset dataset)
         {
-            for (int i = 0; i < dataset.Count; i++)
-            AddClass(dataset[i].Features, dataset[i].ClassMark);
+            foreach (var item in dataset)
+                AddClass(item.Features, item.ClassMark);
         }
+
         /// <summary>
         /// Сохранить в файл
         /// </summary>
@@ -259,14 +263,15 @@ namespace AI.ML.Classifiers
         /// Transform to vector
         /// </summary>
         /// <param name="i">Индекс</param>
+        /// <param name="isParsenMethod">Используется ли окно Парзена</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Vector ToVector(int i)
+        private Vector ToVector(int i, bool isParsenMethod)
         {
-            int index = i < Classes.Count-1?i:Classes.Count-1;
+            int index = i < Classes.Count - 1 ? i : Classes.Count - 1;
             int mark = Classes[index].ClassMark;
             Vector outp = new Vector(_count);
 
-            if (IsParsenMethod)
+            if (isParsenMethod)
             {
                 double r = Classes[index].R / H;
                 outp[mark] = KernelParsenWindow(r);
@@ -274,34 +279,23 @@ namespace AI.ML.Classifiers
             else
             {
                 outp[mark] = 1;
-            }   
-
+            }
 
             return outp;
         }
-        // Ранжирование
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Rang(Vector inp)
         {
-
-            for (int i = 0; i < Classes.Count; i++)
-            Classes[i].R = Dist(inp, Classes[i].Features);
+            Parallel.For(0, Classes.Count, i => {
+                Classes[i].R = Dist(inp, Classes[i].Features);
+            });
 
             Classes.Sort((a, b) => a.R.CompareTo(b.R));
         }
 
-        // Получение числа классов
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private int GetN()
-        {
-            List<int> indexis = new List<int>();
-
-            for (int i = 0; i < Classes.Count; i++)
-            indexis.Add(Classes[i].ClassMark);  
-
-            return indexis.Max() + 1;
-
-        }
+        private int GetN() => Classes.Select(c => c.ClassMark).Distinct().Count();
         #endregion
     }
 }

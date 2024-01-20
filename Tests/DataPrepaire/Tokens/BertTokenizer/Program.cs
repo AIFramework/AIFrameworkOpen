@@ -5,7 +5,7 @@ using AI.DataStructs.Algebraic;
 using AI.ML.Classifiers;
 using AI.ML.Distances;
 using AI.ONNX.NLP.Bert;
-
+using System.Diagnostics;
 
 string path = "SbertDistilAIFr";
 // Загрузка модели Bert
@@ -15,8 +15,8 @@ LinearLayerLoader linearLayer = LinearLayerLoader.LoadFromBinary(@$"{path}\1_Lin
 embedder.V2VBlocks.Add(linearLayer);
 
 
-//ChatBotRetrTest(embedder);
-WTest(embedder);
+ChatBotRetrTest(embedder);
+//WTest(embedder);
 
 static void SimpleTest(BertEmbedder embedder)
 {
@@ -87,12 +87,30 @@ static void ChatBotRetrTest(BertEmbedder embedder)
 
 
 
-   
 
+    
     foreach (var item in test)
     {
         var ans = kBot.GetAnswer(item);
         Console.WriteLine($"Вопрос: {item}\nОтвет: {ans.AnswerStr}\nУверенность в ответе: {ans.Conf}%\n\n");
     }
+
+
+    Stopwatch stopwatch = new Stopwatch();
+
+    int N = 30;
+
+    stopwatch.Start();
+    for (int i = 0; i < N; i++)
+    {
+        foreach (var item in test)
+        {
+            KnnBot.Answer ans = kBot.GetAnswer(item);
+        }
+    }
+    stopwatch.Stop();
+    double aps = 1000.0 * N * test.Length / stopwatch.ElapsedMilliseconds;
+
+    Console.WriteLine($"Ответов в секунду: {Math.Round(aps)}");
 
 }

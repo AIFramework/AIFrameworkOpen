@@ -56,11 +56,20 @@ namespace AI.ML.Distances
         /// <summary>
         /// Косинусное расстояние
         /// </summary>
-        public static double CosDist(IAlgebraicStructure<double> a, IAlgebraicStructure<double> b)
+        public static double CosDistRelu(IAlgebraicStructure<double> a, IAlgebraicStructure<double> b)
         {
             double eps = 1e-8;
             double cos = ((Vector)a.Data).Cos(b.Data);
             return 1.0 - (cos < eps ? eps : cos);
+        }
+
+        /// <summary>
+        /// Косинусное расстояние
+        /// </summary>
+        public static double CosDist(IAlgebraicStructure<double> a, IAlgebraicStructure<double> b)
+        {
+            double cos = ((Vector)a.Data).Cos(b.Data);
+            return -cos;
         }
         /// <summary>
         /// Квадрат эвклидова расстояния

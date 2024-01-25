@@ -16,6 +16,12 @@ namespace AI.ML.Classifiers
     public class NN : IClassifier
     {
         private StructClasses _classes;// Классификатор
+
+        /// <summary>
+        /// Функция растояния
+        /// </summary>
+        public Func<Vector, Vector, double> Dist { get; set; } = Distances.BaseDist.SquareEucl;
+
         /// <summary>
         /// Классы
         /// </summary>
@@ -57,9 +63,7 @@ namespace AI.ML.Classifiers
             Vector output = vectors[0];
 
             for (int i = 1; i < Count; i++)
-            {
                 output += vectors[i];
-            }
 
             return output / Count;
         }
@@ -85,24 +89,12 @@ namespace AI.ML.Classifiers
 
             for (int i = 0; i < _classes.Count; i++)
             {
-                _st = Distances.BaseDist.SquareEucl(inp, _classes[i].Features); // Вычисление билжайшего центра
+                _st = Dist(inp, _classes[i].Features); // Вычисление билжайшего центра
                 if (_st < _stMin)
                 {
                     _stMin = _st;
-                }
-            }
-
-
-            for (int i = 0; i < _classes.Count; i++)
-            {
-                _st = Distances.BaseDist.SquareEucl(inp, _classes[i].Features); // Вычисление билжайшего центра
-
-                if (_st == _stMin)
-                {
                     output = _classes[i].ClassMark;
-                    break;
                 }
-
             }
 
 
@@ -131,9 +123,7 @@ namespace AI.ML.Classifiers
             List<int> indexis = new List<int>();
 
             for (int i = 0; i < _classes.Count; i++)
-            {
                 indexis.Add(_classes[i].ClassMark);
-            }
 
             int Max = indexis.Max();
 
@@ -152,14 +142,11 @@ namespace AI.ML.Classifiers
         public void Train(Vector[] features, int[] classes)
         {
             if (features.Length != classes.Length)
-            {
                 throw new InvalidOperationException("Число вектров признаков и число меток классов не совпадают");
-            }
+            
 
             for (int i = 0; i < features.Length; i++)
-            {
                 AddClass(features[i], classes[i]);
-            }
         }
         /// <summary>
         /// Обучение классификатора
@@ -168,9 +155,7 @@ namespace AI.ML.Classifiers
         public void Train(VectorIntDataset dataset)
         {
             for (int i = 0; i < dataset.Count; i++)
-            {
                 AddClass(dataset[i].Features, dataset[i].ClassMark);
-            }
         }
 
         /// <summary>
@@ -182,9 +167,7 @@ namespace AI.ML.Classifiers
             VectorIntDataset data = dataset.GroupMean();
 
             for (int i = 0; i < data.Count; i++)
-            {
                 AddClass(data[i].Features, data[i].ClassMark);
-            }
         }
         /// <summary>
         /// Сохранить в файл

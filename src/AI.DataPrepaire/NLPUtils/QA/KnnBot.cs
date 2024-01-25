@@ -15,6 +15,11 @@ namespace AI.DataPrepaire.NLPUtils.QA
     public class KnnBot
     {
         /// <summary>
+        /// Алгоритм классификации
+        /// </summary>
+        public ClAlg Alg { get; set; } = ClAlg.NN;
+
+        /// <summary>
         /// Вектор средних
         /// </summary>
         public Vector Mean { get; set; }
@@ -31,7 +36,7 @@ namespace AI.DataPrepaire.NLPUtils.QA
         /// <summary>
         /// Метод ближайшего соседа
         /// </summary>
-        public KNNCl KNN { get; set; }
+        public IClassifier KNN { get; set; }
 
         /// <summary>
         /// Функция преобразования текста в вектор
@@ -92,14 +97,29 @@ namespace AI.DataPrepaire.NLPUtils.QA
             for (int i = 0; i < answers.Length; i++)
                 marksTrain[i] = classesDict[answers[i]];
 
-            
-            // Обучение
-            KNN = new KNNCl();
-            KNN.IsParsenMethod = true;
-            KNN.K = 2;
-            KNN.Dist = BaseDist.CosDistRelu;
-            KNN.Train(features, marksTrain);
 
+            // Выбор алгоритма
+            if (Alg == ClAlg.KNN)
+            {
+                // Обучение
+                KNNCl kNN = new KNNCl();
+                kNN.IsParsenMethod = true;
+                kNN.K = 2;
+                kNN.Dist = BaseDist.CosDistRelu;
+                kNN.Train(features, marksTrain);
+
+                KNN = kNN;
+            }
+
+            else if (Alg == ClAlg.NN)
+            {
+                // Обучение
+                NN nn = new NN();
+                nn.Dist = BaseDist.CosDistRelu;
+                nn.Train(features, marksTrain);
+
+                KNN = nn;
+            }
         }
 
         /// <summary>
@@ -111,12 +131,32 @@ namespace AI.DataPrepaire.NLPUtils.QA
         {
             var embd = TextTransform(text);
             embd = (embd - Mean) / Std;
+
+            if (Alg == ClAlg.NN)
+                return NNAns(embd);
+
+            else return WithProbAns(embd);   
+
+        }
+
+        // Ответ с помощью knn
+        private Answer WithProbAns(Vector embd)
+        {
             Vector vect = KNN.ClassifyProbVector(embd);
             int mark = vect.MaxElementIndex();
             double conf = Math.Round(vect[mark] * 100, 1);
             string answer = ClassesToStr[mark];
 
             return new Answer() { Conf = conf, AnswerStr = answer };
+        }
+
+        // Ответ с помощью метода эталонов
+        private Answer NNAns(Vector embd)
+        {
+            int mark = KNN.Classify(embd);
+            string answer = ClassesToStr[mark];
+
+            return new Answer() { Conf = 100, AnswerStr = answer };
         }
 
 
@@ -135,5 +175,23 @@ namespace AI.DataPrepaire.NLPUtils.QA
             /// </summary>
             public string AnswerStr { get; set; }
         }
+
+
+        /// <summary>
+        /// Алгоритм классификации
+        /// </summary>
+        public enum ClAlg 
+        {
+            /// <summary>
+            /// Метод k ближ соседей
+            /// </summary>
+            KNN,
+            /// <summary>
+            /// Метод эталонов (быстрее, но не дает уверенность)
+            /// </summary>
+            NN
+        }
     }
+
+    
 }

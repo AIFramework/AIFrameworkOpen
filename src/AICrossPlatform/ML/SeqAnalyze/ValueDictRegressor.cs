@@ -10,6 +10,11 @@ namespace AI.ML.SeqAnalyze
     public class ValueDictRegressor
     {
         /// <summary>
+        /// Индекс токена (дописать для обучения)
+        /// </summary>
+        public int Index;
+
+        /// <summary>
         /// Целевое значение
         /// </summary>
         public Vector TargetValue;

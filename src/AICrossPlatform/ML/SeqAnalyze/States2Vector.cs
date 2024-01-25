@@ -151,8 +151,58 @@ namespace AI.ML.SeqAnalyze
             return new Tuple<Vector, List<ValueDictRegressor>, int>(outpVector, list, n);
         }
 
+
+
         /// <summary>
-        /// Обучение
+        /// Кодирование одного массива состояний в укрупненный
+        /// </summary>
+        /// <param name="inp">Масив состояний</param>
+        public int[] Encode(int[] inp)
+        {
+            int[] data = (int[])inp.Clone();
+            List<int> gTokens = new List<int> ();
+
+            if (VectorDimention == -1)
+                throw new Exception("Обучите модель");
+
+           
+
+
+            // Проход по всем длиннам буфера
+            for (int i = MaxNGramm; i > 0; i--)
+            {
+                RingBuffer<int> ringBuffer = new RingBuffer<int>(i);
+                List<int[]> used = new List<int[]>();
+
+                // Проход по последовательности
+                for (int j = 0; j < data.Length; j++)
+                {
+                    ringBuffer.AddElement(data[j]);
+                    var key = CopyKey(ringBuffer.Data);
+
+
+                    if (_data_marks.ContainsKey(key))
+                    {
+                        used.Add(ringBuffer.Data); // Добавление n-gramm
+                        var dat = _data_marks[key];
+                        gTokens.Add(dat.Index);
+                    }
+                }
+
+                // Удаление групп (выбранной n-граммы)
+                foreach (var item in used)
+                    data = ArrayUtils<int>.DeleteSubArray(data, item);
+
+            }
+
+
+            return gTokens.ToArray();
+        }
+
+
+        /// <summary>
+        /// Обучение 
+        /// ToDo: Добавить рассчет индекса
         /// </summary>
         /// <param name="data">Массивы состояний</param>
         /// <param name="y">Целевые векторы</param>

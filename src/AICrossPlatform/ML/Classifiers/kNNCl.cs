@@ -144,15 +144,16 @@ namespace AI.ML.Classifiers
             int limit = UpdateLimitAndH();  // Метод для обновления 'limit' и 'H'
 
             double sum = 0;
-            Parallel.For(0, limit, i =>
+            //Parallel.For(0, limit, i =>
+            for (int i = 0; i < limit; i++)
             {
                 var classVector = ToVector(i, IsParsenMethod);
-                lock (classes)
-                {
+                //lock (classes)
+                //{
                     classes += classVector;
                     sum += classVector.Sum(); // или другая логика в зависимости от 'ToVector'
-                }
-            });
+               // }
+            }//);
 
             classes /= sum;
             return classes;

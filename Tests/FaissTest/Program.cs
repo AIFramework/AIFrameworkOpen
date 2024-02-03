@@ -1,7 +1,7 @@
 ﻿using AI.Faiss;
 using AI.Faiss.Enums;
 
-Random rnd = new Random(1);
+Random rnd = new(1);
 
 Example1();
 
@@ -10,7 +10,7 @@ void Example1()
     int dimension = 3;
     int vectorsCount = 5;
     int topK = 5;
-    using var faissIndex = FaissIndex.CreateDefault(dimension, MetricType.METRIC_INNER_PRODUCT);
+    using var faissIndex = FaissIndex.CreateDefault(dimension, MetricType.METRIC_L2);
     var data = new float[vectorsCount][];
     for (int i = 0; i < vectorsCount; i++)
     {

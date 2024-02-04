@@ -10,11 +10,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\AI.Faiss\AI.Faiss.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Include="$(ProjectDir)..\libs\*.dll">
-      <Pack>True</Pack>
-      <PackagePath>\runtimes\win-x64\native\</PackagePath>
-    </None>
-  </ItemGroup>
 </Project>

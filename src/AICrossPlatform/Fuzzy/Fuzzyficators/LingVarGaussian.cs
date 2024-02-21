@@ -64,7 +64,7 @@ namespace AI.Fuzzy.Fuzzyficators
         public Dictionary<string, double> FeaturesToFuzzySet(Vector features)
         {
             var probs = _knn.ClassifyProbVector(features);
-            Console.WriteLine($"probs: {probs}");
+            //Console.WriteLine($"probs: {probs}");
             Dictionary<string, double> result = new Dictionary<string, double>();
 
             for (int i = 0; i < probs.Count; i++)

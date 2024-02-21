@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Faiss", "Faiss", "{D1896653
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaissBase_1", "Tests\DataPrepaire\FAISS\FaissBase_1\FaissBase_1.csproj", "{987C867D-62B7-4993-ACEB-4D5FB07A735E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerTest", "Tests\DataPrepaire\Tokens\NerTest\NerTest.csproj", "{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{987C867D-62B7-4993-ACEB-4D5FB07A735E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{987C867D-62B7-4993-ACEB-4D5FB07A735E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{987C867D-62B7-4993-ACEB-4D5FB07A735E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{DFEBC879-559A-451E-8646-6F4B67687445} = {F4D49D24-084F-4865-B8FC-4F7756DCE067}
 		{D1896653-F69C-4BD4-879A-FF38C6286AB9} = {1D8E7971-CD1C-421C-9571-5816F6D7EECC}
 		{987C867D-62B7-4993-ACEB-4D5FB07A735E} = {D1896653-F69C-4BD4-879A-FF38C6286AB9}
+		{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7} = {F4D49D24-084F-4865-B8FC-4F7756DCE067}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {195084AE-6B2F-490D-AB30-834665F7A953}

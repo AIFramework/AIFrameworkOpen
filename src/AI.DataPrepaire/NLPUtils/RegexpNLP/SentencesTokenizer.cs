@@ -11,32 +11,31 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
     [Serializable]
     public class SentencesTokenizer
     {
-        /// <summary>
-        /// Набор аббревиатур, которые не следует интерпретировать как конец предложения.
-        /// </summary>
-        HashSet<string> Abbreviations { get; set; }
+       /// <summary>
+       /// Обработчик аббревиатур 
+       /// </summary>
+       public AbbreviationsNerProcessor AbbreviationsProcessor { get; set; }
 
         /// <summary>
         /// Конструктор по умолчанию, инициализирующий класс с предопределённым набором сокращений.
         /// </summary>
         public SentencesTokenizer()
         {
-            Abbreviations = new HashSet<string>(StringComparer.Ordinal)
+            var abbreviations = new HashSet<string>(StringComparer.Ordinal)
             {
-                "д", "кв", "р", "т.к", "тп", "пр", "г", "н.э", "до н.э"
+                "д.", "кв.", "ул.", "р.", "т.\\s*к.", "тп.", "пр.", "г.", @"н.\s*э.",
             };
+
+            AbbreviationsProcessor = new AbbreviationsNerProcessor(abbreviations);
         }
 
         /// <summary>
         /// Конструктор, позволяющий задать собственный набор сокращений.
         /// </summary>
         /// <param name="abbreviations">Список сокращений, которые не следует интерпретировать как конец предложения.</param>
-        public SentencesTokenizer(List<string> abbreviations)
+        public SentencesTokenizer(IEnumerable<string> abbreviations)
         {
-            Abbreviations = new HashSet<string>(StringComparer.Ordinal);
-
-            foreach (string abbreviation in abbreviations)
-                Abbreviations.Add(abbreviation);
+            AbbreviationsProcessor = new AbbreviationsNerProcessor(abbreviations);
         }
 
         /// <summary>
@@ -47,11 +46,9 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
         public List<string> Tokenize(string text)
         {
 
-            foreach (var abbreviation in Abbreviations)
-                text = text.Replace(abbreviation + ". ", abbreviation + ".");
-
+            var buffer = AbbreviationsProcessor.RunProcessor(text);
             var sentences = new List<string>();
-            var buffer = text;
+            
 
             while (buffer.Length > 0)
             {
@@ -59,24 +56,8 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
                 if (match.Success)
                 {
                     var sentence = buffer.Substring(0, match.Index + 1);
-                    var isAbbreviation = false;
-
-                    foreach (var abbr in Abbreviations)
-                        if (sentence.EndsWith(abbr + ".", StringComparison.OrdinalIgnoreCase))
-                        {
-                            isAbbreviation = true;
-                            break;
-                        }
-
-                    if (!isAbbreviation)
-                    {
-                        sentences.Add(sentence.Trim());
-                        buffer = buffer.Substring(match.Index + match.Length);
-                    }
-                    else
-                    {
-                        buffer = buffer.Substring(match.Index + match.Length);
-                    }
+                    sentences.Add(sentence.Trim());
+                    buffer = buffer.Substring(match.Index + match.Length);
                 }
                 else
                 {
@@ -84,6 +65,10 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
                     break;
                 }
             }
+
+
+            for (int i = 0; i < sentences.Count; i++)
+                sentences[i] = AbbreviationsProcessor.NerDecoder(sentences[i]);
 
             return sentences;
         }

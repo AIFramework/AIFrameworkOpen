@@ -15,12 +15,12 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER
         /// <summary>
         /// Словарь преобразования нера в токен
         /// </summary>
-        public Dictionary<string, string> NerToNerToken { get; set; }
+        public Dictionary<string, string> NerToNerToken { get; protected set; }
 
         /// <summary>
         /// Словарь преобразования токена в нер
         /// </summary>
-        public Dictionary<string, string> NerTokenToNer { get; set; }
+        public Dictionary<string, string> NerTokenToNer { get; protected set; }
 
         /// <summary>
         /// Реализация обработчика NER.

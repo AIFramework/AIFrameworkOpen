@@ -32,7 +32,7 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER
 
 
         /// <summary>
-        /// Замена номера на токен
+        /// Замена нера на токен
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
@@ -42,16 +42,15 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER
 
             foreach (Match match in matches)
             {
-                var phone = match.Value;
-                if (!NerToNerToken.ContainsKey(phone))
+                var ner = match.Value;
+                if (!NerToNerToken.ContainsKey(ner))
                 {
                     var token = $"%{NameToken}_{TokenCounter++}%";
-                    NerToNerToken.Add(phone, token);
-                    NerTokenToNer.Add(token, phone);
+                    NerToNerToken.Add(ner, token);
+                    NerTokenToNer.Add(token, ner);
                 }
 
-                // Замена номера на токен в тексте
-                text = text.Replace(phone, NerToNerToken[phone]);
+                text = text.Replace(ner, NerToNerToken[ner]);
             }
 
             return text;

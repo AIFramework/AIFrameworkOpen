@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER.SpecialNers
 {

@@ -12,11 +12,11 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER
         /// <summary>
         /// Словарь преобразования нера в токен
         /// </summary>
-        Dictionary<string, string> NerToNerToken { get; set; }
+        Dictionary<string, string> NerToNerToken { get; }
         /// <summary>
         /// Словарь преобразования токена в нер
         /// </summary>
-        Dictionary<string, string> NerTokenToNer { get; set; }
+        Dictionary<string, string> NerTokenToNer { get;}
 
         /// <summary>
         /// Преобразование нера в токен нера

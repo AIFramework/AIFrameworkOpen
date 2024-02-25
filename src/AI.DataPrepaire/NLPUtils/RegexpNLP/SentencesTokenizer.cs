@@ -23,7 +23,7 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
         {
             var abbreviations = new HashSet<string>(StringComparer.Ordinal)
             {
-                "д.", "кв.", "ул.", "р.", "т.\\s*к.", "тп.", "пр.", "г.", @"н.\s*э.",
+                "д.", "кв.", "ул.", "р.", @"т.\s*к.", "тп.", "пр.", "г.", @"н.\s*э.",
             };
 
             AbbreviationsProcessor = new AbbreviationsNerProcessor(abbreviations);

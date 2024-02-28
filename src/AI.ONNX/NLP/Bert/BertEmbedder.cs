@@ -38,7 +38,7 @@ namespace AI.ONNX.NLP.Bert
         /// Используется в методе ForwardSBert
         /// Размер блока, при включенной нарезке (чем меньше блок, тем выше скорость, но хуже качество)
         /// </summary>
-        public int BlockSize { get; set; } = 380;
+        public int BlockSize { get; set; } = 512;
 
         /// <summary>
         /// Очистка строки

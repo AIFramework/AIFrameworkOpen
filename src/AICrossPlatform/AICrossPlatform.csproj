@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	  <LangVersion>8.0</LangVersion>
-	  <Nullable>enable</Nullable>
+	  <Nullable>disable</Nullable>
     <IsPublishable>False</IsPublishable>
     <RootNamespace>AI</RootNamespace>
     <AssemblyName>AI</AssemblyName>

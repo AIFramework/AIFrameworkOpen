@@ -28,6 +28,17 @@ namespace AI.ONNX.NLP.Bert
         /// </summary>
         public Func<string, string> Cleaner { get; set; }
 
+        /// <summary>
+        /// Используется в методе ForwardSBert
+        /// Нарезать ли текст на блоки (увеличивает котекст и скорость, ухудшает качество)
+        /// </summary>
+        public bool IsCutting { get; set; } = true;
+
+        /// <summary>
+        /// Используется в методе ForwardSBert
+        /// Размер блока, при включенной нарезке (чем меньше блок, тем выше скорость, но хуже качество)
+        /// </summary>
+        public int BlockSize { get; set; } = 380;
 
         /// <summary>
         /// Очистка строки
@@ -64,17 +75,10 @@ namespace AI.ONNX.NLP.Bert
         /// <summary>
         /// Прямой проход, преобразует всю последовательность (текст) в эмбеддинг
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">Текст для векторизации</param>
         /// <returns></returns>
-        public Vector ForwardSBert(string text) 
-        {
-            var outputBert = ForwardBert(text);
-            var output = Vector.Mean(outputBert.ToArray()); // ToDo: Добавить логику для моделей с одним выходом
-
-            output = OutpTransform(output);
-
-            return output;
-        }
+        public Vector ForwardSBert(string text)
+            => IsCutting ? ForwardSBertBlocks(text) : ForwardSBertWithoutBlocs(text);
 
         /// <summary>
         /// Поблочная векторизация текста с учетом контекста
@@ -135,6 +139,45 @@ namespace AI.ONNX.NLP.Bert
             return output;
         }
 
+
+        // Прямой проход с разбивкой на блоки по blockSize символов
+        private Vector ForwardSBertBlocks(string text)
+        {
+            // Если размер блока меньше текста
+            if(text.Length<=BlockSize) return ForwardSBertWithoutBlocs(text);
+
+            int nBlocs = text.Length/BlockSize;
+            int mod = text.Length % BlockSize;
+            
+            // Рассчет векторов с учетом нарезки
+            Vector output = ForwardSBertWithoutBlocs(
+                 text.Substring(0, BlockSize)
+                );
+
+            for (int i = 0; i < nBlocs; i++)
+                output += ForwardSBertWithoutBlocs(
+                    text.Substring(i*BlockSize, BlockSize));
+
+            if (mod != 0)
+                output += ForwardSBertWithoutBlocs(
+                    text.Substring(nBlocs * BlockSize, mod));
+
+            // Рассчет среднего
+            output /= mod == 0 ? nBlocs : nBlocs + 1;
+
+            return output;
+        }
+
+        // Прямой проход с без разбивки на блоки
+        private Vector ForwardSBertWithoutBlocs(string text)
+        {
+            var outputBert = ForwardBert(text);
+            var output = Vector.Mean(outputBert.ToArray());
+
+            output = OutpTransform(output);
+
+            return output;
+        }
 
 
 

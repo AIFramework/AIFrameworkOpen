@@ -15,8 +15,9 @@ LinearLayerLoader linearLayer = LinearLayerLoader.LoadFromBinary(@$"{path}\1_Lin
 embedder.V2VBlocks.Add(linearLayer);
 
 
-ChatBotRetrTest(embedder);
+//ChatBotRetrTest(embedder);
 //WTest(embedder);
+SimpleTest(embedder);
 
 static void SimpleTest(BertEmbedder embedder)
 {
@@ -57,6 +58,7 @@ static void WTest(BertEmbedder embedder)
     Console.WriteLine(vects2.Cos(vects2_t));
     Console.ReadKey();
 }
+
 
 static void ChatBotRetrTest(BertEmbedder embedder)
 {

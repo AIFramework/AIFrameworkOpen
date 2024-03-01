@@ -18,6 +18,11 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
         public BertTokenizerConfig TokenizerConfig { get; set; } = new BertTokenizerConfig();
 
         /// <summary>
+        /// Разбивать ли текст на слова
+        /// </summary>
+        public bool SplitSp { get; set; } = true;
+
+        /// <summary>
         /// Инициализирует новый экземпляр класса BertTokenizer.
         /// </summary>
         /// <param name="path">Путь к файлу словаря.</param>
@@ -50,6 +55,10 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
 
         private List<string> BertSentenceTokenize(string text)
         {
+            // Если не требуется разбивка
+            if(!SplitSp)
+                return text.SplitAndKeep(".,;:\\/?!#$%()=+-*\"'–_`<>&^@{}[]|~'".ToArray()).ToList();
+
             List<string> result = new List<string>();
 
             // Разбиваем текст на слова, используя пробелы и переводы строк в качестве разделителей.

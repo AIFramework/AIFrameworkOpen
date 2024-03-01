@@ -1,6 +1,8 @@
 ﻿using AI;
+using AI.DataPrepaire.Backends.BertTokenizers;
 using AI.DataPrepaire.DataLoader.NNWBlockLoader;
 using AI.DataPrepaire.NLPUtils.QA;
+using AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers;
 using AI.DataStructs.Algebraic;
 using AI.ML.Classifiers;
 using AI.ML.Distances;
@@ -17,7 +19,9 @@ embedder.V2VBlocks.Add(linearLayer);
 
 //ChatBotRetrTest(embedder);
 //WTest(embedder);
-SimpleTest(embedder);
+//SimpleTest(embedder);
+
+TokenizerTest("path_to_vocab");
 
 static void SimpleTest(BertEmbedder embedder)
 {
@@ -117,4 +121,16 @@ static void ChatBotRetrTest(BertEmbedder embedder)
 
     Console.WriteLine($"Ответов в секунду: {Math.Round(aps)}");
 
+}
+
+static void TokenizerTest(string path) 
+{
+    SpecialTokens specialTokens = new SpecialTokens();
+    specialTokens.Classification = "<s>";
+    specialTokens.Separation = "</s>";
+
+    BertTokenizer tokenizer = new BertTokenizer(path, false);
+    tokenizer.SplitSp = true;
+    tokenizer.SpecialTokenMap = specialTokens;
+    var enc = tokenizer.Encode("Всем привет!");
 }

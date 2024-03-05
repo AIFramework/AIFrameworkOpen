@@ -6,10 +6,10 @@ using System.Linq;
 namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
 {
     /// <summary>
-    /// Класс BertTokenizer представляет токенизатор для модели BERT.
+    /// Класс BertWithOutSplitWordTokenizer представляет токенизатор для модели BERT, без разделения по словам.
     /// </summary>
     [Serializable]
-    public class BertTokenizer : TokenizerBase
+    public class BertWithOutSplitWordTokenizer : TokenizerBase
     {
         /// <summary>
         /// Конфигурация токенизатора
@@ -21,9 +21,10 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
         /// </summary>
         /// <param name="path">Путь к файлу словаря.</param>
         /// <param name="isUnCased">Учитывать ли регистр при токенизации</param>
-        public BertTokenizer(string path, bool isUnCased = true) : base(path)
+        public BertWithOutSplitWordTokenizer(string path, bool isUnCased = true) : base(path)
         {
             TokenizerConfig.DoLowerCase = isUnCased;
+            TokenWordPart = "";
         }
 
         // ToDo: Реализовать
@@ -31,7 +32,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
         /// Загрузка пред. обученного токенизатора Bert
         /// </summary>
         /// <param name="pathToFolder">Путь до папки</param>
-        public BertTokenizer FromPretrained(string pathToFolder)
+        public BertWithOutSplitWordTokenizer FromPretrained(string pathToFolder)
         {
             throw new NotImplementedException();
         }
@@ -51,13 +52,14 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
         {
             List<string> result = new List<string>();
 
-            // Разбиваем текст на слова, используя пробелы и переводы строк в качестве разделителей.
-            string[] words = text.Split(new string[] { " ", "   ", "\r\n" }, StringSplitOptions.None);
+            // Разбиваем текст на строки
+            string[] lines = text.Split(new string[] { " ", "   ", "\r\n" }, StringSplitOptions.None);
 
-            foreach (string word in words)
+            foreach (string line in lines)
             {
+                string spCh = "▁" + line.Replace(" ", "▁");
                 // Затем разбиваем каждое слово на токены с учетом дополнительных символов-разделителей.
-                IEnumerable<string> tokens = word.SplitAndKeep(".,;:\\/?!#$%()=+-*\"'–_`<>&^@{}[]|~'".ToArray());
+                IEnumerable<string> tokens = spCh.SplitAndKeep(".,;:\\/?!#$%()=+-*\"'–_`<>&^@{}[]|~'".ToArray());
 
                 // Добавляем полученные токены в общий результат.
                 result.AddRange(tokens);

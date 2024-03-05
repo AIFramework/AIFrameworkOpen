@@ -21,7 +21,7 @@ embedder.V2VBlocks.Add(linearLayer);
 //WTest(embedder);
 //SimpleTest(embedder);
 
-TokenizerTest("path_to_vocab");
+TokenizerTest("vocab.txt");
 
 static void SimpleTest(BertEmbedder embedder)
 {
@@ -129,8 +129,7 @@ static void TokenizerTest(string path)
     specialTokens.Classification = "<s>";
     specialTokens.Separation = "</s>";
 
-    BertTokenizer tokenizer = new BertTokenizer(path, false);
-    tokenizer.SplitSp = true;
+    BertWithOutSplitWordTokenizer tokenizer = new BertWithOutSplitWordTokenizer(path, false);
     tokenizer.SpecialTokenMap = specialTokens;
     var enc = tokenizer.Encode("Всем привет!");
 }

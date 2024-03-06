@@ -58,10 +58,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers
             foreach (string line in lines)
             {
                 string spCh = "▁" + line.Replace(" ", "▁");
-                // Затем разбиваем каждое слово на токены с учетом дополнительных символов-разделителей.
                 IEnumerable<string> tokens = spCh.SplitAndKeep(".,;:\\/?!#$%()=+-*\"'–_`<>&^@{}[]|~'".ToArray());
-
-                // Добавляем полученные токены в общий результат.
                 result.AddRange(tokens);
             }
 

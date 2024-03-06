@@ -47,12 +47,10 @@ namespace AI.ONNX.NLP.Bert
         /// <returns></returns>
         public static string CleanString(string text)
         {
-            string seq = text.Replace('\n', ' ');
-            Regex rChar = new Regex("[^A-zА-яЁё0-9\": ]");
-            Regex rSpaces = new Regex("\\s+");
-            seq = rChar.Replace(seq, " ");
-            seq = rSpaces.Replace(seq, " ").Trim();
-            return seq.ToLower();
+            string seq = Regex.Replace(text, @"\r?\n", " ");
+            seq = Regex.Replace(seq, @"[^\w\d\"": ]", " ");
+            seq = Regex.Replace(seq, @"\s+", " ");
+            return seq.Trim().ToLower();
         }
 
         /// <summary>

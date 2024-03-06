@@ -7,7 +7,7 @@ using AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER.SpecialNers;
 
 var ner = new CombineNerProcessor();
 var abb = new AbbreviationsNerProcessor(new[] {"н. э.", "т.к.", "т. к.", "р." });
-var text = "В 900 году до н. э. т. к. было это. Мой номер +8 999 666 555 4. А.В. Александров идет к И.К. Гаврилову. Сайт vkre.com/su. Почта zzszzs@mszk.com. Адрес ул. Гон, д. 56, кв. 882. Созвонимся в 22.16 или 22:39";
+var text = "В 900 \n году до н. \r\n э. т. к. было это. Мой номер +8 999 666 555 4. А.В. Александров идет к И.К. Гаврилову. Сайт vkre.com/su. Почта zzszzs@mszk.com. Адрес ул. Гон, д. 56, кв. 882. Созвонимся в 22.16 или 22:39";
 
 
 var result = ner.RunProcessor(text);

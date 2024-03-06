@@ -48,7 +48,7 @@ namespace AI.ONNX.NLP.Bert
         public static string CleanString(string text)
         {
             string seq = Regex.Replace(text, @"\r?\n", " ");
-            seq = Regex.Replace(seq, @"[^\w\d\"": ]", " ");
+            seq = Regex.Replace(seq, @"[^A-zА-яЁё0-9\"": ]", " ");
             seq = Regex.Replace(seq, @"\s+", " ");
             return seq.Trim().ToLower();
         }

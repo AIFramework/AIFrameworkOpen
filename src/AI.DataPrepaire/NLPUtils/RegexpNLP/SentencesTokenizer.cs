@@ -42,8 +42,9 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
         /// Разделяет входной текст на предложения, учитывая сокращения.
         /// </summary>
         /// <param name="text">Текст для токенизации.</param>
+        /// <param name="withTrim">Обрезание пробельных символов</param>
         /// <returns>Список предложений, извлечённых из входного текста.</returns>
-        public List<string> Tokenize(string text)
+        public List<string> Tokenize(string text, bool withTrim = true)
         {
 
             var buffer = AbbreviationsProcessor.RunProcessor(text);
@@ -55,13 +56,16 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
                 var match = Regex.Match(buffer, @"[\.!\?](\s+|$)");
                 if (match.Success)
                 {
-                    var sentence = buffer.Substring(0, match.Index + 1);
-                    sentences.Add(sentence.Trim());
+                    var length = withTrim ?
+                        match.Index + 1 :
+                        match.Index + match.Length;
+                    var sentence = buffer.Substring(0, length);
+                    sentences.Add(withTrim ? sentence.Trim() : sentence);
                     buffer = buffer.Substring(match.Index + match.Length);
                 }
                 else
                 {
-                    sentences.Add(buffer.Trim());
+                    sentences.Add(withTrim ? buffer.Trim() : buffer);
                     break;
                 }
             }
@@ -78,13 +82,14 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
         /// Разделяет входной текст на предложения, учитывая сокращения и именованные сущности.
         /// </summary>
         /// <param name="text">Текст для токенизации.</param>
+        /// <param name="withTrim">Обрезание пробельных символов</param>
         /// <returns>Список предложений, извлечённых из входного текста.</returns>
-        public List<string> TokenizeWithNer(string text)
+        public List<string> TokenizeWithNer(string text, bool withTrim = true)
         {
             CombineNerProcessor nerProcessor = new CombineNerProcessor();
 
             var textNer = nerProcessor.RunProcessor(text);
-            var sentences = Tokenize(textNer);
+            var sentences = Tokenize(textNer, withTrim);
 
             for (int i = 0; i < sentences.Count; i++)
                 sentences[i] = nerProcessor.NerDecoder(sentences[i]);

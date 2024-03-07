@@ -6,8 +6,8 @@ using AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER.SpecialNers;
 
 
 var ner = new CombineNerProcessor();
-var abb = new AbbreviationsNerProcessor(new[] {"н. э.", "т.к.", "т. к.", "р." });
-var text = "В 900 \n году до н. \r\n э. т. к. было это. Мой номер +8 999 666 555 4. А.В. Александров идет к И.К. Гаврилову. Сайт vkre.com/su. Почта zzszzs@mszk.com. Адрес ул. Гон, д. 56, кв. 882. Созвонимся в 22.16 или 22:39";
+var abb = new AbbreviationsNerProcessor(new string[] { "д.", "кв.", "ул.", "р.", @"т.\s*к.", "тп.", "пр.", "г.", @"н.\s*э.", @"(\d+.)+" });
+var text = "Добрый день.\nВ 900 \n году до н. \r\n э. т. к. было это. Мой номер +8 999 666 555 4. А.В. Александров идет к И.К. Гаврилову. Сайт vkre.com/su. Почта zzszzs@mszk.com. Адрес ул. Гон, д. 56, кв. 882. Созвонимся в 22.16 или 22:39";
 
 
 var result = ner.RunProcessor(text);
@@ -28,7 +28,7 @@ foreach (var item in data)
     Console.WriteLine(item);
 
 
-data = sentences.TokenizeWithNer(text);
+data = sentences.TokenizeWithNer(text, withTrim: false);
 Console.WriteLine($"\n\n\nТокенизация c нерами:\n");
 foreach (var item in data)
     Console.WriteLine(item);

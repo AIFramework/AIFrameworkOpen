@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
@@ -39,6 +38,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FaissTest", "Tests\FaissTest\FaissTest.csproj", "{E70E194C-7FC3-47E6-9625-7DF1D94C72A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI.Faiss", "src\AI.Faiss\AI.Faiss.csproj", "{79F59117-7BA2-44A6-9639-641061D668F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerTest", "Tests\DataPrepaire\Tokens\NerTest\NerTest.csproj", "{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,6 +90,10 @@ Global
 		{79F59117-7BA2-44A6-9639-641061D668F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79F59117-7BA2-44A6-9639-641061D668F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79F59117-7BA2-44A6-9639-641061D668F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +113,7 @@ Global
 		{987C867D-62B7-4993-ACEB-4D5FB07A735E} = {D1896653-F69C-4BD4-879A-FF38C6286AB9}
 		{E70E194C-7FC3-47E6-9625-7DF1D94C72A3} = {4FB793E6-5E89-46E1-A966-DA32DFDFBF11}
 		{79F59117-7BA2-44A6-9639-641061D668F3} = {7FCA39FE-2C02-4DCC-9BBE-7A53718683F9}
+		{A0826AFB-B1B4-4B8A-8B46-B2913D0A63F7} = {F4D49D24-084F-4865-B8FC-4F7756DCE067}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {195084AE-6B2F-490D-AB30-834665F7A953}

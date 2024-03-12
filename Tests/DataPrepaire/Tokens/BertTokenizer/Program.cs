@@ -1,6 +1,8 @@
 ﻿using AI;
+using AI.DataPrepaire.Backends.BertTokenizers;
 using AI.DataPrepaire.DataLoader.NNWBlockLoader;
 using AI.DataPrepaire.NLPUtils.QA;
+using AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers;
 using AI.DataStructs.Algebraic;
 using AI.ML.Classifiers;
 using AI.ML.Distances;
@@ -15,24 +17,29 @@ LinearLayerLoader linearLayer = LinearLayerLoader.LoadFromBinary(@$"{path}\1_Lin
 embedder.V2VBlocks.Add(linearLayer);
 
 
-ChatBotRetrTest(embedder);
+//ChatBotRetrTest(embedder);
 //WTest(embedder);
+//SimpleTest(embedder);
+
+TokenizerTest("vocab.txt");
 
 static void SimpleTest(BertEmbedder embedder)
 {
 
+    for (int i = 0; i < 1000; i++)
+    {
+        // Векторизация предложений
+        Vector vects1 = embedder.ForwardSBert("Kittens love milk");
+        Vector vects2 = embedder.ForwardSBert("Visual Studio Code (VS Code) — текстовый редактор, разработанный Microsoft для Windows, Linux и macOS.");
+        Vector vects3 = embedder.ForwardSBert("Visual Studio Code, also commonly referred to as VS Code,[12] is a source-code editor developed by Microsoft for Windows, Linux and macOS.");
+        Vector vects1_rus = embedder.ForwardSBert("Котята любят молоко");
 
-    // Векторизация предложений
-    Vector vects1 = embedder.ForwardSBert("Kittens love milk");
-    Vector vects2 = embedder.ForwardSBert("Visual Studio Code (VS Code) — текстовый редактор, разработанный Microsoft для Windows, Linux и macOS.");
-    Vector vects3 = embedder.ForwardSBert("Visual Studio Code, also commonly referred to as VS Code,[12] is a source-code editor developed by Microsoft for Windows, Linux and macOS.");
-    Vector vects1_rus = embedder.ForwardSBert("Котята любят молоко");
-
-    // Рассчет близости между текстами
-    Console.WriteLine(vects1.Cos(vects1_rus));
-    Console.WriteLine(vects1.Cos(vects2));
-    Console.WriteLine(vects2.Cos(vects3));
-    Console.WriteLine(vects1.Cos(vects3));
+        // Рассчет близости между текстами
+        Console.WriteLine(vects1.Cos(vects1_rus));
+        Console.WriteLine(vects1.Cos(vects2));
+        Console.WriteLine(vects2.Cos(vects3));
+        Console.WriteLine(vects1.Cos(vects3));
+    }
     Console.ReadKey();
 }
 
@@ -57,6 +64,7 @@ static void WTest(BertEmbedder embedder)
     Console.WriteLine(vects2.Cos(vects2_t));
     Console.ReadKey();
 }
+
 
 static void ChatBotRetrTest(BertEmbedder embedder)
 {
@@ -113,4 +121,15 @@ static void ChatBotRetrTest(BertEmbedder embedder)
 
     Console.WriteLine($"Ответов в секунду: {Math.Round(aps)}");
 
+}
+
+static void TokenizerTest(string path) 
+{
+    SpecialTokens specialTokens = new SpecialTokens();
+    specialTokens.Classification = "<s>";
+    specialTokens.Separation = "</s>";
+
+    BertWithOutSplitWordTokenizer tokenizer = new BertWithOutSplitWordTokenizer(path, false);
+    tokenizer.SpecialTokenMap = specialTokens;
+    var enc = tokenizer.Encode("Всем привет!");
 }

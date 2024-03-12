@@ -33,21 +33,29 @@ namespace AI.ONNX.NLP.Bert
             RunOptions runOptions = new RunOptions();
             var input = CreateInput(I2L(inpIds), I2L(attentionMask), I2L(types));
 
-            var resultTensors = _session.Run(runOptions, input, _session.OutputNames);
-            
-            // ToDo: Нормально реализовать, неоптимизированный метод для сбора эмбеддингов
-            //double[] data = (Vector)resultTensors[0].GetTensorDataAsSpan<float>().ToArray();
-            //Matrix matrix = new Matrix(inpIds.Count(), _dim);
-            //matrix.Data = data;
-            //Matrix.GetColumns(matrix.Transpose());
+            try
+            {
+                using var resultTensors = _session.Run(runOptions, input, _session.OutputNames);
+                // ToDo: Нормально реализовать, неоптимизированный метод для сбора эмбеддингов
+                //double[] data = (Vector)resultTensors[0].GetTensorDataAsSpan<float>().ToArray();
+                //Matrix matrix = new Matrix(inpIds.Count(), _dim);
+                //matrix.Data = data;
+                //Matrix.GetColumns(matrix.Transpose());
 
 
-            var output = new Vector[resultTensors.Count];
+                var output = new Vector[resultTensors.Count];
 
-            for (int i = 0; i < resultTensors.Count; i++)
-                output[i] = resultTensors[i].GetTensorDataAsSpan<float>().ToArray();
+                for (int i = 0; i < resultTensors.Count; i++)
+                    output[i] = resultTensors[i].GetTensorDataAsSpan<float>().ToArray();
 
-            return output;
+                return output;
+            }
+            finally
+            {
+                input["input_ids"].Dispose();
+                input["input_mask"].Dispose();
+                input["segment_ids"].Dispose();
+            }
         }
 
         public Dictionary<string, OrtValue> CreateInput(long[] inpIds, long[] attentionMask, long[] types) 

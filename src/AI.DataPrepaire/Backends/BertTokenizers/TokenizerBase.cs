@@ -13,6 +13,12 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
     {
 
         /// <summary>
+        /// Часть неоконченного слова
+        /// </summary>
+        public string TokenWordPart = "##";
+
+
+        /// <summary>
         /// Специальные токены
         /// </summary>
         public SpecialTokens SpecialTokenMap { get; set; } = new SpecialTokens();
@@ -116,8 +122,8 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
 
             tokens.ForEach(token =>
             {
-                if (token.StartsWith("##"))
-                    currentToken = token.Replace("##", "") + currentToken;
+                if (token.StartsWith(TokenWordPart))
+                    currentToken = token.Replace(TokenWordPart, "") + currentToken;
                 else
                 {
                     currentToken = token + currentToken;
@@ -221,7 +227,7 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
                     return tokens;
                 }
 
-                remaining = $"##{remaining.Substring(prefix.Length)}";
+                remaining = $"{TokenWordPart}{remaining.Substring(prefix.Length)}";
                 wordLength = remaining.Length;
             }
 

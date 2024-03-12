@@ -3,9 +3,14 @@ using System.Runtime.InteropServices;
 
 namespace AI.Faiss.Base;
 
-internal class FaissIndexHandle(IntPtr invalidHandleValue, bool ownsHandle) : SafeHandle(invalidHandleValue, ownsHandle)
+internal class FaissIndexHandle : SafeHandle
 {
     public override bool IsInvalid => handle == IntPtr.Zero;
+
+    public FaissIndexHandle(IntPtr invalidHandleValue, bool ownsHandle) : base(invalidHandleValue, ownsHandle)
+    {
+        
+    }
 
     protected override bool ReleaseHandle()
     {

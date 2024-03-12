@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<FaissEnv Condition=" '$(FaissEnv)' == '' AND '$([MSBuild]::IsOsPlatform(OSX))' ">osx</FaissEnv>
+		<FaissEnv Condition=" '$(FaissEnv)' == '' AND '$([MSBuild]::IsOsPlatform(Linux))' ">linux</FaissEnv>
+		<FaissEnv Condition=" '$(FaissEnv)' == '' AND ('$(Prefer32Bit)' == 'true' OR '$(PlatformTarget)' == 'x86') AND '$([MSBuild]::IsOsPlatform(Windows))' ">win-x86</FaissEnv>
+		<FaissEnv Condition=" '$(FaissEnv)' == '' ">win-x64</FaissEnv>
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\$(FaissEnv)\native\*.dll">
+			<Link>%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Visible>False</Visible>
+		</Content>
+	</ItemGroup>
+</Project>

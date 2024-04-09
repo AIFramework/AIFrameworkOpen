@@ -14,7 +14,7 @@ namespace AI.ExplainitALL.Metrics
     /// Класс для определения матрицы схожестей
     /// </summary>
     [Serializable]
-    public abstract class SimMatrix<T>
+    public abstract class SimBiEncoderMatrix<T> : ISimMatrix
     {
         /// <summary>
         /// Определение схожести

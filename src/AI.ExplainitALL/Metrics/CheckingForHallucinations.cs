@@ -16,16 +16,16 @@ namespace AI.ExplainitALL.Metrics
     /// Класс для выявления галлюцинаций в RAG задачах
     /// </summary>
     [Serializable]
-    public class CheckingForHallucinations<T>
+    public class CheckingForHallucinations
     {
 
-        public SimMatrix<T> SimMatrixAlg { get; set; }
+        public ISimMatrix SimMatrixAlg { get; set; }
         SentencesTokenizer Sentences { get; set; } = new SentencesTokenizer();
 
         /// <summary>
         /// Класс для выявления галлюцинаций в RAG задачах
         /// </summary>
-        public CheckingForHallucinations(SimMatrix<T> simMatrixAlg)
+        public CheckingForHallucinations(ISimMatrix simMatrixAlg)
         {
             SimMatrixAlg = simMatrixAlg;
         }

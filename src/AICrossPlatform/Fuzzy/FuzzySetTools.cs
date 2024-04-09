@@ -162,5 +162,6 @@ namespace AI.Fuzzy
 
             return new_set;
         }
+
     }
 }

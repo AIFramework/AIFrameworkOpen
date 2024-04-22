@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIChartCV", "src\AIChartCV\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AICrossPlatform", "src\AICrossPlatform\AICrossPlatform.csproj", "{467AEF8D-96AA-48AD-B06C-988A980BFB41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Faiss", "src\AI.Faiss\AI.Faiss.csproj", "{F9272CA3-590B-417D-B202-E6D90199207D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{467AEF8D-96AA-48AD-B06C-988A980BFB41}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{467AEF8D-96AA-48AD-B06C-988A980BFB41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{467AEF8D-96AA-48AD-B06C-988A980BFB41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9272CA3-590B-417D-B202-E6D90199207D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9272CA3-590B-417D-B202-E6D90199207D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9272CA3-590B-417D-B202-E6D90199207D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9272CA3-590B-417D-B202-E6D90199207D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 		{7E52FA14-7F3A-4D10-A817-27C1E26A3AB0} = {7FCA39FE-2C02-4DCC-9BBE-7A53718683F9}
 		{2ED3435F-F827-41E2-82B4-ED781A16B156} = {7FCA39FE-2C02-4DCC-9BBE-7A53718683F9}
 		{467AEF8D-96AA-48AD-B06C-988A980BFB41} = {7FCA39FE-2C02-4DCC-9BBE-7A53718683F9}
+		{F9272CA3-590B-417D-B202-E6D90199207D} = {7FCA39FE-2C02-4DCC-9BBE-7A53718683F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {195084AE-6B2F-490D-AB30-834665F7A953}

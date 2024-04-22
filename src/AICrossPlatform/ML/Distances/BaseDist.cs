@@ -1,5 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AI.ML.Distances
 {
@@ -101,5 +103,34 @@ namespace AI.ML.Distances
 
             return sum;
         }
+
+        #region Схожесть на множествах
+
+        /// <summary>
+        /// Коэфициент Жаккара
+        /// </summary>
+        /// <typeparam name="T">Тип данных множества</typeparam>
+        /// <param name="set1">Множество 1</param>
+        /// <param name="set2">Множество 2</param>
+        public static double JaccardCoef<T>(HashSet<T> set1, HashSet<T> set2)
+        {
+            double numerator = set1.Intersect(set2).Count();
+            double denumerator = set1.Union(set2).Count();
+            return numerator / denumerator;
+        }
+        /// <summary>
+        /// Коэфициент Жаккара с нормировкой на минимальное множество
+        /// </summary>
+        /// <typeparam name="T">Тип данных множества</typeparam>
+        /// <param name="set1">Множество 1</param>
+        /// <param name="set2">Множество 2</param>
+        public static double JaccardCoefMin<T>(HashSet<T> set1, HashSet<T> set2)
+        {
+            double numerator = set1.Intersect(set2).Count();
+            double denumerator = Math.Min(set1.Count(), set2.Count());
+            return numerator / denumerator;
+        }
+
+        #endregion
     }
 }

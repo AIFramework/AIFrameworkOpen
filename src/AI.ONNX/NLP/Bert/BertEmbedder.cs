@@ -4,6 +4,7 @@ using AI.DataPrepaire.Tokenizers.TextTokenizers.HFTokenizers;
 using AI.DataStructs.Algebraic;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -203,11 +204,11 @@ namespace AI.ONNX.NLP.Bert
         /// <returns></returns>
         public static BertEmbedder FromPretrained(string pathToFolder) 
         {
-            BertTokenizer tokenizer = new BertTokenizer($"{pathToFolder}\\vocab.txt");
-            tokenizer.TokenizerConfig = BertTokenizerConfig.FromJson($"{pathToFolder}\\tokenizer_config.json");
-            BertInfer model = new BertInfer($"{pathToFolder}\\model.onnx");
+            BertTokenizer tokenizer = new BertTokenizer(Path.Combine(pathToFolder, "vocab.txt"));
+            tokenizer.TokenizerConfig = BertTokenizerConfig.FromJson(Path.Combine(pathToFolder, "tokenizer_config.json"));
+            BertInfer model = new BertInfer(Path.Combine(pathToFolder, "model.onnx"));
             BertEmbedder embedder = new BertEmbedder(tokenizer, model);
-            embedder.Config = BertConfig.FromJson($"{pathToFolder}\\config.json");
+            embedder.Config = BertConfig.FromJson(Path.Combine(pathToFolder, "config.json"));
             return embedder;
         }
 

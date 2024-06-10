@@ -53,7 +53,7 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
 
             while (buffer.Length > 0)
             {
-                var match = Regex.Match(buffer, @"[\.!\?](\s+|$)");
+                var match = Regex.Match(buffer, @"[\.!\?]");
                 if (match.Success)
                 {
                     var length = withTrim ?

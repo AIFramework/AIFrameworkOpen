@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AI.DSP
+namespace AI.DSP.DSPCore
 {
     /// <summary>
     /// Масштаб в вольтах

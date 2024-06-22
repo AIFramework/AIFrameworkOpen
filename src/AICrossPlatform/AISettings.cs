@@ -16,11 +16,6 @@ namespace AI
         /// </summary>
         public static double GlobalEps { get; set; } = 1e-80;
 
-        /// <summary>
-        /// Базовая функция БПФ
-        /// </summary>
-        public static Func<ComplexVector, bool, ComplexVector> FFTCore { get; set; } = FFT.BaseStaticFFT;
-
         static AISettings()
         {
             s_provider = new NumberFormatInfo

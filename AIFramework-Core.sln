@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI.DataPrepaire", "src\AI.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AICrossPlatform", "src\AICrossPlatform\AICrossPlatform.csproj", "{BAEAF915-8681-45D9-ACB0-4D71AB3D90D0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI.DSP", "src\AI.DSP\AI.DSP.csproj", "{205ABAE1-17D2-4436-8D3C-B6E6A6DA382B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BAEAF915-8681-45D9-ACB0-4D71AB3D90D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAEAF915-8681-45D9-ACB0-4D71AB3D90D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAEAF915-8681-45D9-ACB0-4D71AB3D90D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{205ABAE1-17D2-4436-8D3C-B6E6A6DA382B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205ABAE1-17D2-4436-8D3C-B6E6A6DA382B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205ABAE1-17D2-4436-8D3C-B6E6A6DA382B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205ABAE1-17D2-4436-8D3C-B6E6A6DA382B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -102,6 +102,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\AI.DSP\AI.DSP.csproj">
+      <Project>{88021186-88ae-4460-97bb-ba6122c27126}</Project>
+      <Name>AI.DSP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\AIChartCV\AIChartCV.csproj">
       <Project>{2ed3435f-f827-41e2-82b4-ed781a16b156}</Project>
       <Name>AIChartCV</Name>

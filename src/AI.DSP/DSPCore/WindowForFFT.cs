@@ -1,9 +1,8 @@
-﻿
-using AI.DataStructs.Algebraic;
+﻿using AI.DataStructs.Algebraic;
 using AI.HightLevelFunctions;
 using System;
 
-namespace AI
+namespace AI.DSP.DSPCore
 {
 
     /// <summary>
@@ -31,7 +30,7 @@ namespace AI
         public static Vector HammingWindow(int windowSize)
         {
             Vector n = Vector.SeqBeginsWithZero(1, windowSize);
-            Vector w = 0.53836 - (0.46164 * FunctionsForEachElements.Cos(Math.PI * 2.0 * n / (windowSize - 1)));
+            Vector w = 0.53836 - 0.46164 * FunctionsForEachElements.Cos(Math.PI * 2.0 * n / (windowSize - 1));
             return w;
         }
 
@@ -55,7 +54,7 @@ namespace AI
             double a0 = (1 - a) / 2.0, a2 = a / 2.0;
 
             Vector cos1 = FunctionsForEachElements.Cos(Math.PI * 2.0 * n / (windowSize - 1)), cos2 = FunctionsForEachElements.Cos(Math.PI * 4.0 * n / (windowSize - 1));
-            Vector w = a0 - (a1 * cos1) + (a2 * cos2);
+            Vector w = a0 - a1 * cos1 + a2 * cos2;
             return w;
         }
 

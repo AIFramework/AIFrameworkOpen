@@ -4,7 +4,7 @@ using System;
 using Vector = AI.DataStructs.Algebraic.Vector;
 using System.Numerics;
 
-namespace AI
+namespace AI.DSP.DSPCore
 {
     /// <summary>
     /// Быстрое преобразование Фурье (БПФ)
@@ -43,10 +43,10 @@ namespace AI
                 Complex* pointerToRotateCoef = rotateCoef;
 
                 for (int i = 0; i < halfSemplesCount; i++)
-                *pointerToRotateCoef++ = Complex.Exp(-1 * 2 * Complex.ImaginaryOne * Math.PI * i / semplesCount);
+                    *pointerToRotateCoef++ = Complex.Exp(-1 * 2 * Complex.ImaginaryOne * Math.PI * i / semplesCount);
 
                 for (int i = 0; i < halfSemplesCount; i++)
-                *pointerToRotateCoef++ = Complex.Exp(2 * Complex.ImaginaryOne * Math.PI * i / semplesCount);
+                    *pointerToRotateCoef++ = Complex.Exp(2 * Complex.ImaginaryOne * Math.PI * i / semplesCount);
             }
 
         }
@@ -61,12 +61,12 @@ namespace AI
                 if (canonic)
                 {
                     for (int i = 0; i < halfSemplesCount; i++)
-                    *pointerToRotateCoef++ = Complex.Exp(-2 * Complex.ImaginaryOne * Math.PI * i / semplesCount);
+                        *pointerToRotateCoef++ = Complex.Exp(-2 * Complex.ImaginaryOne * Math.PI * i / semplesCount);
                 }
                 else
                 {
                     for (int i = 0; i < halfSemplesCount; i++)
-                    *pointerToRotateCoef++ = Complex.Exp(2 * Complex.ImaginaryOne * Math.PI * i / semplesCount);
+                        *pointerToRotateCoef++ = Complex.Exp(2 * Complex.ImaginaryOne * Math.PI * i / semplesCount);
                 }
             }
 
@@ -87,7 +87,7 @@ namespace AI
                     for (int j = i, movePointer = halfLenght; j > 0; j /= 2, movePointer /= 2)
                     {
                         if (j % 2 == 1)
-                        revers += movePointer;
+                            revers += movePointer;
                     }
 
                     if (i < revers)
@@ -110,7 +110,7 @@ namespace AI
                         {
                             for (int k = j, maxK = j + i; k < maxK; k++)
                             {
-                                pointerToRotateCoef = pointerToRotateCoefFixed + ((k - j) * (halfLenght / i)); // Перерасчет указателя на поворотные множители
+                                pointerToRotateCoef = pointerToRotateCoefFixed + (k - j) * (halfLenght / i); // Перерасчет указателя на поворотные множители
                                 Complex oddW = *(pRetFixed + k + i) * *pointerToRotateCoef;
                                 pRet = pRetFixed + k;
                                 Complex evenBuf = *pRet;
@@ -134,7 +134,7 @@ namespace AI
         // Статический вызов
         private static ComplexVector FftS(ComplexVector input, bool canonic)
         {
-            return AISettings.FFTCore(input, canonic);
+            return AIDSPSettings.FFTCore(input, canonic);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace AI
             ComplexVector compInp = new ComplexVector(SemplesCount);
 
             for (int i = 0; i < inp.Count; i++)
-            compInp[i] = new Complex(inp[i], 0);
+                compInp[i] = new Complex(inp[i], 0);
 
             return BaseFFT(compInp, canonic);
         }
@@ -182,7 +182,7 @@ namespace AI
 
 
             for (int i = 0; i < sizeOld; i++)
-            complex[i] = new Complex(inp[i], 0);
+                complex[i] = new Complex(inp[i], 0);
 
 
             return FftS(new ComplexVector(complex), canonic);
@@ -195,14 +195,14 @@ namespace AI
         public static double[] CalcIFFTReal(Complex[] inp, int size = -1)
         {
             if (size < 0)
-            size = inp.Length;
+                size = inp.Length;
 
             Complex[] cs = Fft(inp, false);
             double[] dbs = new double[size];
             double oldSize = cs.Length;
 
             for (int i = 0; i < size; i++)
-            dbs[i] = (cs[i] / oldSize).Real;
+                dbs[i] = (cs[i] / oldSize).Real;
 
 
             return dbs;
@@ -329,14 +329,14 @@ namespace AI
             double[,] matr = new double[lenFr, lenTime];
 
             for (int i = 0; i < lenTime; i++)
-            vects[i] = Vector.GetIntervalDouble(i * lenFr, (i + 1) * lenFr, data);
+                vects[i] = Vector.GetIntervalDouble(i * lenFr, (i + 1) * lenFr, data);
 
             for (int i = 0; i < lenTime; i++)
             {
                 vects[i] = CalcFFT(vects[i]).MagnitudeVector / lenFr;
 
                 for (int j = 0; j < lenFr; j++)
-                matr[j, i] = vects[i][j];
+                    matr[j, i] = vects[i][j];
             }
 
             return new Matrix(matr);
@@ -368,7 +368,7 @@ namespace AI
                 vects[i] /= vects[i].Count;
 
                 for (int j = 0; j < vects[i].Count; j++)
-                matr[j, i] = vects[i][j];
+                    matr[j, i] = vects[i][j];
             }
 
             return new Matrix(matr);

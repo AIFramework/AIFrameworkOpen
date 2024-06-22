@@ -1,6 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 
-namespace AI.DSP
+namespace AI.DSP.DSPCore
 {
     /// <summary>
     /// Равнобедренная трапеция (окно убирающее разрыв фазы)
@@ -23,11 +23,11 @@ namespace AI.DSP
             for (int i = 1; i < len; i++)
             {
                 if (i < up)
-                outp[i] = k + outp[i - 1];
+                    outp[i] = k + outp[i - 1];
                 else if (i > down)
-                outp[i] = outp[i - 1] - k;
+                    outp[i] = outp[i - 1] - k;
                 else
-                outp[i] = 1;
+                    outp[i] = 1;
             }
 
             return outp;

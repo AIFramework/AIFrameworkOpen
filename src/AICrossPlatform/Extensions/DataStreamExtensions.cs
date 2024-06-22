@@ -386,58 +386,58 @@ namespace AI.Extensions
             result = ReadComplexVectors(stream);
             return stream;
         }
-        /// <summary>
-        /// Reads complex matrix from the stream
-        /// </summary>
-        /// <param name="stream">Поток</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ComplexMatrix ReadComplexMatrix(this InMemoryDataStream stream)
-        {
-            return ComplexMatrix.FromDataStream(stream);
-        }
-        /// <summary>
-        /// Reads complex matrix from the stream
-        /// </summary>
-        /// <param name="stream">Поток</param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static InMemoryDataStream ReadComplexMatrix(this InMemoryDataStream stream, out ComplexMatrix result)
-        {
-            result = ComplexMatrix.FromDataStream(stream);
-            return stream;
-        }
-        /// <summary>
-        /// Reads complex matrix array from the stream
-        /// </summary>
-        /// <param name="stream">Поток</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ComplexMatrix[] ReadComplexMatrices(this InMemoryDataStream stream)
-        {
-            int length = stream.ReadInt();
-            ComplexMatrix[] result = new ComplexMatrix[length];
+        ///// <summary>
+        ///// Reads complex matrix from the stream
+        ///// </summary>
+        ///// <param name="stream">Поток</param>
+        ///// <returns></returns>
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static ComplexMatrix ReadComplexMatrix(this InMemoryDataStream stream)
+        //{
+        //    return ComplexMatrix.FromDataStream(stream);
+        //}
+        ///// <summary>
+        ///// Reads complex matrix from the stream
+        ///// </summary>
+        ///// <param name="stream">Поток</param>
+        ///// <param name="result"></param>
+        ///// <returns></returns>
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static InMemoryDataStream ReadComplexMatrix(this InMemoryDataStream stream, out ComplexMatrix result)
+        //{
+        //    result = ComplexMatrix.FromDataStream(stream);
+        //    return stream;
+        //}
+        ///// <summary>
+        ///// Reads complex matrix array from the stream
+        ///// </summary>
+        ///// <param name="stream">Поток</param>
+        ///// <returns></returns>
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static ComplexMatrix[] ReadComplexMatrices(this InMemoryDataStream stream)
+        //{
+        //    int length = stream.ReadInt();
+        //    ComplexMatrix[] result = new ComplexMatrix[length];
 
-            for (int i = 0; i < length; i++)
-            {
-                result[i] = ReadComplexMatrix(stream);
-            }
+        //    for (int i = 0; i < length; i++)
+        //    {
+        //        result[i] = ReadComplexMatrix(stream);
+        //    }
 
-            return result;
-        }
-        /// <summary>
-        /// Reads complex matrix array from the stream
-        /// </summary>
-        /// <param name="stream">Поток</param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static InMemoryDataStream ReadComplexMatrices(this InMemoryDataStream stream, out ComplexMatrix[] result)
-        {
-            result = ReadComplexMatrices(stream);
-            return stream;
-        }
+        //    return result;
+        //}
+        ///// <summary>
+        ///// Reads complex matrix array from the stream
+        ///// </summary>
+        ///// <param name="stream">Поток</param>
+        ///// <param name="result"></param>
+        ///// <returns></returns>
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static InMemoryDataStream ReadComplexMatrices(this InMemoryDataStream stream, out ComplexMatrix[] result)
+        //{
+        //    result = ReadComplexMatrices(stream);
+        //    return stream;
+        //}
         #endregion
     }
 }

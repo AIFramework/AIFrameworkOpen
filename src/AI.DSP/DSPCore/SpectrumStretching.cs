@@ -1,8 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
-using AI.DSP.DSPCore;
 using System;
 
-namespace AI.DSP
+namespace AI.DSP.DSPCore
 {
     /// <summary>
     /// Растяжение и сжатие спектра
@@ -25,7 +24,7 @@ namespace AI.DSP
             Vector ret = new Vector(len);
 
             for (int i = 0; i < len; i++)
-            ret[i] = s2[(int)(k * i)];
+                ret[i] = s2[(int)(k * i)];
 
 
             return ret;

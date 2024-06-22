@@ -1,4 +1,6 @@
-﻿namespace AI.DSP.Modulation
+﻿using AI.DSP.DSPCore;
+
+namespace AI.DSP.Modulation
 {
     /// <summary>
     /// Интерфейс модулятора

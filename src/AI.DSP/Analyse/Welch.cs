@@ -1,4 +1,5 @@
 ﻿using AI.DataStructs.Algebraic;
+using AI.DSP.DSPCore;
 using System;
 
 namespace AI.DSP.Analyse

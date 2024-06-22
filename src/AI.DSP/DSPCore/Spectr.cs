@@ -1,7 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
 
-namespace AI.DSP
+namespace AI.DSP.DSPCore
 {
     /// <summary>
     /// Базовый интерфейс реализации спектров

@@ -1,5 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.DSP.Analyse;
+using AI.DSP.DSPCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

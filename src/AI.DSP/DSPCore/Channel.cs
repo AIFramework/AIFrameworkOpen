@@ -1,12 +1,11 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using AI.DSP.Analyse;
-using AI.DSP.DSPCore;
 using AI.HightLevelFunctions;
 using AI.Statistics;
 using System;
 
-namespace AI.DSP
+namespace AI.DSP.DSPCore
 {
     /// <summary>
     /// Канал

@@ -1,11 +1,7 @@
-﻿using AI.BackEnds.DSP.NWaves.Operations;
-using AI.BackEnds.DSP.NWaves.Signals;
-using AI.DataStructs.Shapes;
+﻿using AI.DataStructs.Shapes;
 using AI.HightLevelFunctions;
-using AI.ML.NeuralNetwork.CoreNNW.Optimizers;
 using AI.Statistics;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -965,22 +961,9 @@ namespace AI.DataStructs.Algebraic
             Vector C = (Count % n == 0) ? new Vector(Count / n) : new Vector((Count / n) + 1);
 
             for (int i = 0, j = 0; i < Count; i += n, j++)
-            {
                 C[j] = this[i];
-            }
 
             return C;
-        }
-
-
-        /// <summary>
-        /// Децимация, с использование филтра, обертка под NWave
-        /// </summary>
-        public Vector Decimation(int n)
-        {
-            DiscreteSignal ds = new DiscreteSignal(Count, (float[])this);
-            DiscreteSignal outSignal = Operation.Decimate(ds, n);
-            return outSignal.Samples;
         }
         /// <summary>
         /// Увеличение размерности (аналог Up Sampling) 

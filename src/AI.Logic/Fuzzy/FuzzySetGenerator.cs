@@ -13,6 +13,11 @@ namespace AI.Logic.Fuzzy
     public class FuzzySetGenerator<ElType, ImgType>
     {
         /// <summary>
+        /// Имя множества
+        /// </summary>
+        public string Name { get; set; }    
+
+        /// <summary>
         /// Набор образов элементов.
         /// </summary>
         public IImageSet<ElType, ImgType> Image { get; set; }

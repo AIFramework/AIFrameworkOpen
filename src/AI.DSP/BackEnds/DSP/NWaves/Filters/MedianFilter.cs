@@ -46,12 +46,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         {
             float[] input = signal.Samples;
             float[] output = new float[input.Length];
-
-            int i = 0, j = 0;
-
+            int j = 0;
+            int i;
             for (i = 0; i < Size / 2; i++)    // feed first samples
             {
-                Process(input[i]);
+                _ = Process(input[i]);
             }
 
             for (; j < input.Length - (Size / 2); j++, i++)   // and begin populating output signal

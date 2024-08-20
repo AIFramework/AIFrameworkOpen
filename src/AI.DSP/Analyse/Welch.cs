@@ -62,13 +62,13 @@ namespace AI.DSP.Analyse
     /// Данные преобразования Уэлча
     /// </summary>
     [Serializable]
-    public class WelchData 
+    public class WelchData
     {
         /// <summary>
         /// Спектральная плотность мощности
         /// </summary>
         public Vector PSD;
-        
+
         /// <summary>
         /// Половина спектральной плотности мощности
         /// </summary>
@@ -85,7 +85,7 @@ namespace AI.DSP.Analyse
         /// <summary>
         /// Половина массива частот
         /// </summary>
-        public Vector HalfFreq 
+        public Vector HalfFreq
         {
             get { return Freq.CutAndZero(Freq.Count / 2); }
         }
@@ -96,20 +96,20 @@ namespace AI.DSP.Analyse
         public WelchData(Vector spectrum, Vector freq, WelchPSDType welchPSDType = WelchPSDType.Abs)
         {
 
-            PSD = welchPSDType == WelchPSDType.Abs? spectrum : spectrum.Transform(x=>10*Math.Log10(x));
+            PSD = welchPSDType == WelchPSDType.Abs ? spectrum : spectrum.Transform(x => 10 * Math.Log10(x));
             Freq = freq;
         }
 
         /// <summary>
         /// Данные преобразования Уэлча
         /// </summary>
-        public WelchData(Vector spectrum, double sr, WelchPSDType welchPSDType = WelchPSDType.Abs) 
+        public WelchData(Vector spectrum, double sr, WelchPSDType welchPSDType = WelchPSDType.Abs)
         {
             PSD = welchPSDType == WelchPSDType.Abs ? spectrum : spectrum.Transform(x => 10 * Math.Log10(x));
 
             Freq = new Vector(PSD.Count);
-            
-            double step = sr/Freq.Count;
+
+            double step = sr / Freq.Count;
             Freq[0] = step;
 
             for (int i = 1; i < PSD.Count; i++)

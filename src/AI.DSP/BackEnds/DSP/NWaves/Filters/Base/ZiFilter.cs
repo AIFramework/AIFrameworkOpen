@@ -230,7 +230,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             for (int i = padLength - 1; i >= 0; i--)
             {
-                Process(edgeRight[i]);
+                _ = Process(edgeRight[i]);
             }
             for (int i = output.Length - 1; i >= 0; i--)
             {
@@ -238,7 +238,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
             }
             for (int i = padLength - 1; i >= 0; i--)
             {
-                Process(edgeLeft[i]);
+                _ = Process(edgeLeft[i]);
             }
 
             return new DiscreteSignal(signal.SamplingRate, output);

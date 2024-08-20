@@ -1,10 +1,6 @@
 ﻿using AI.BackEnds.DSP.NWaves.Operations;
 using AI.BackEnds.DSP.NWaves.Signals;
 using AI.DataStructs.Algebraic;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
 
 namespace AI.DSP
 {

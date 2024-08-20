@@ -81,7 +81,7 @@
 
 //            for (int i = 0; i < outp.Count; i++)
 //                outp[i] = Math.Sin(_2pi * ((i * _dt * _f0) + (_deltF * data[i])));
-            
+
 //            Channel retCh = new Channel(outp, _fd, signal.Name, signal.Description)
 //            {
 //                ScaleVolt = signal.ScaleVolt

@@ -26,7 +26,7 @@ namespace AI.DSP.Decomposition
             }
 
             _responses = new Vector[fStart.Length];
-            
+
 
             for (int i = 0; i < fStart.Length; i++)
             {
@@ -42,7 +42,7 @@ namespace AI.DSP.Decomposition
         {
             Vector[] signals = new Vector[_responses.Length];
 
-            Parallel.For(0, _responses.Length, i =>
+            _ = Parallel.For(0, _responses.Length, i =>
             {
                 signals[i] = RunFirFilter(signal, _responses[i]);
             });
@@ -59,7 +59,7 @@ namespace AI.DSP.Decomposition
             Vector[] signals = new Vector[_responses.Length];
             Vector std = new Vector(_responses.Length);
 
-            Parallel.For(0, _responses.Length, i =>
+            _ = Parallel.For(0, _responses.Length, i =>
             {
                 signals[i] = RunFirFilter(signal, _responses[i]);
                 std[i] = signals[i].Std();//(_fe[i] - _fs[i]);

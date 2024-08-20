@@ -33,8 +33,8 @@ namespace AI.DSP.MusicUtils
 
             for (int i = 0; i < len; i++)
                 if (i >= steps)
-                data[i] += volume * data[i - steps];
-            
+                    data[i] += volume * data[i - steps];
+
         }
 
 

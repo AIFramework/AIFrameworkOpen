@@ -51,12 +51,11 @@ namespace AI.BackEnds.DSP.NWaves.Filters
         public DiscreteSignal ApplyTo(DiscreteSignal signal, FilteringMethod method = FilteringMethod.Auto)
         {
             float[] output = new float[signal.Length];
-
-            int i = 0, j = 0;
-
+            int j = 0;
+            int i;
             for (i = 0; i < _size / 2; i++)    // then feed first samples
             {
-                Process(signal[i]);
+                _ = Process(signal[i]);
             }
 
             for (; j < signal.Length - (_size / 2); j++, i++)   // and begin populating output signal

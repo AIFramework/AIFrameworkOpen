@@ -60,24 +60,24 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
             _alias = Guid.NewGuid().ToString();
 
             string mciCommand = string.Format("open \"{0}\" type waveaudio alias {1}", source, _alias);
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
 
             mciCommand = string.Format("set {0} time format samples", _alias);
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
 
             StringBuilder durationBuffer = new StringBuilder(255);
             mciCommand = string.Format("status {0} length", _alias);
-            Mci.SendString(mciCommand, durationBuffer, 255, 0);
+            _ = Mci.SendString(mciCommand, durationBuffer, 255, 0);
             int duration = int.Parse(durationBuffer.ToString());
 
             StringBuilder samplingRateBuffer = new StringBuilder(255);
             mciCommand = string.Format("status {0} samplespersec", _alias);
-            Mci.SendString(mciCommand, samplingRateBuffer, 255, 0);
+            _ = Mci.SendString(mciCommand, samplingRateBuffer, 255, 0);
             int samplingRate = int.Parse(samplingRateBuffer.ToString());
 
             mciCommand = string.Format("play {2} from {0} to {1} notify", startPos, endPos, _alias);
             mciCommand = mciCommand.Replace(" to -1", "");
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
 
             // ======= here's how we do asynchrony with old technology from 90's )) ========
 
@@ -140,7 +140,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
             }
 
             string mciCommand = string.Format("pause {0}", _alias);
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
 
             _pauseTime = DateTime.Now;
             _isPaused = true;
@@ -157,7 +157,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
             }
 
             string mciCommand = string.Format("resume {0}", _alias);
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
 
             TimeSpan pause = DateTime.Now - _pauseTime;
 
@@ -181,10 +181,10 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
             }
 
             string mciCommand = string.Format("stop {0}", _alias);
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
 
             mciCommand = string.Format("close {0}", _alias);
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
 
             _alias = null;
         }

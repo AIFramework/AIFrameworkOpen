@@ -19,7 +19,8 @@ namespace AI.ComputerVision
         /// <param name="filter">Filter matrix</param>
         public static Matrix SpatialFilter(Matrix img, Matrix filter)
         {
-            int h = img.Height, w = img.Width, hw = filter.Height * filter.Width;
+            int h = img.Height, w = img.Width;
+            _ = filter.Height * filter.Width;
             Matrix Ret16Gray = new Matrix(img.Height, img.Width);
 
             int sX = 1 - filter.Width;
@@ -63,7 +64,7 @@ namespace AI.ComputerVision
             int H = img.Height - filter.Height + 1, W = img.Width - filter.Width + 1;
             Matrix newMatr = new Matrix(H, W);
 
-            Parallel.For(0, H, i =>
+            _ = Parallel.For(0, H, i =>
             {
                 for (int j = 0; j < W; j++)
                 {
@@ -87,7 +88,7 @@ namespace AI.ComputerVision
             int H = img.Height - filter.Height + 1, W = img.Width - filter.Width + 1;
             Matrix newMatr = new Matrix(H, W);
 
-            Parallel.For(0, H, i =>
+            _ = Parallel.For(0, H, i =>
             {
                 for (int j = 0; j < W; j++)
                 {
@@ -109,7 +110,7 @@ namespace AI.ComputerVision
             int H = img.Height - h + 1, W = img.Width - w + 1;
             Matrix newMatr = new Matrix(H, W);
 
-            Parallel.For(0, H, i =>
+            _ = Parallel.For(0, H, i =>
             {
                 for (int j = 0; j < W; j++)
                     newMatr[i, j] = FilterF(img, w, h, j, i, func_filter);

@@ -398,7 +398,7 @@ namespace AI.DSP.DSPCore
             Vector[] v = new Vector[(int)((f * time) + 0.99)];
             Vector v1 = OneLFM(f, f0, fd);
 
-            for (int i = 0; i < v.Length; i++)  v[i] = v1;
+            for (int i = 0; i < v.Length; i++) v[i] = v1;
 
             return Vector.Concat(v);
         }
@@ -455,7 +455,8 @@ namespace AI.DSP.DSPCore
         {
             int k = newfd / fd;
             ComplexVector inputSpectr = FFT.CalcFFT(inp);
-            int len = inp.Count * (k - 1), lenFull = inp.Count * k;
+            _ = inp.Count * (k - 1);
+            int lenFull = inp.Count * k;
             int i = 0;
             ComplexVector cV = new ComplexVector(lenFull);
             int end = inp.Count / 2;
@@ -470,7 +471,7 @@ namespace AI.DSP.DSPCore
 
             for (int j = inp.Count / 2; i < lenFull; i++)
                 cV[i] = inputSpectr[j];
-            
+
             return FFT.CalcIFFT(cV).RealVector;
         }
 

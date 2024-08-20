@@ -30,7 +30,7 @@ namespace AI.DSP.Analyse
         /// <returns>Вектор пиков</returns>
         public static Vector FindFormants(Vector welchData, Vector freqs, double thresholdFactor = 1, double smoothParam = 0.03)
         {
-            int k = (int)(welchData.Count*smoothParam);
+            int k = (int)(welchData.Count * smoothParam);
 
             // Сглаживание данных
             Vector smooth = SignalSmooth(welchData, k);
@@ -70,7 +70,7 @@ namespace AI.DSP.Analyse
                 }
 
             // Убираем частоты, которые не были обновлены (остались нулевыми)
-            formantFrequencies.RemoveAll(freq => freq == 0);
+            _ = formantFrequencies.RemoveAll(freq => freq == 0);
             return formantFrequencies.ToArray();
         }
 
@@ -84,7 +84,7 @@ namespace AI.DSP.Analyse
         public static Vector SignalSmooth(Vector signal, int k = 10)
         {
             KNNReg kNNReg = new KNNReg();
-            kNNReg.Train(Vector.Seq(0,1,signal.Count), signal);
+            kNNReg.Train(Vector.Seq(0, 1, signal.Count), signal);
             kNNReg.IsNadrMethod = true;
             kNNReg.K = k;
             return kNNReg.PredictV(signal);

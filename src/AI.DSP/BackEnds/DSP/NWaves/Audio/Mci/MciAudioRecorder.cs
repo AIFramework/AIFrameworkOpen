@@ -34,10 +34,10 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
                                        samplingRate,
                                        channelCount,
                                        samplingRate * channelCount * bitsPerSample / 8);
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
 
             mciCommand = "record capture";
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
         }
 
         /// <summary>
@@ -47,13 +47,13 @@ namespace AI.BackEnds.DSP.NWaves.Audio.Mci
         public void StopRecording(string destination)
         {
             string mciCommand = "stop capture";
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
 
             mciCommand = string.Format("save capture {0}", destination);
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
 
             mciCommand = "close capture";
-            Mci.SendString(mciCommand, null, 0, 0);
+            _ = Mci.SendString(mciCommand, null, 0, 0);
         }
     }
 }

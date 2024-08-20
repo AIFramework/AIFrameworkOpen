@@ -150,7 +150,7 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Base
 
             float output = 0f;
 
-            for (int i = 0, j = _kernelSize - _delayLineOffset; i < _kernelSize; i++, j++)  output += _delayLine[i] * _b[j];
+            for (int i = 0, j = _kernelSize - _delayLineOffset; i < _kernelSize; i++, j++) output += _delayLine[i] * _b[j];
 
             if (--_delayLineOffset < 0) _delayLineOffset = _kernelSize - 1;
 

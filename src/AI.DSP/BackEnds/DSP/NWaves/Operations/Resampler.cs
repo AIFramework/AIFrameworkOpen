@@ -72,13 +72,9 @@ namespace AI.BackEnds.DSP.NWaves.Operations
             int filterSize = factor > MinResamplingFilterOrder / 2 ?
                              (2 * factor) + 1 :
                              MinResamplingFilterOrder;
-
-            FirFilter lpFilter = filter;
-
             if (filter == null)
             {
-                lpFilter = new FirFilter(DesignFilter.FirWinLp(filterSize, 0.5f / factor));
-
+                FirFilter lpFilter = new FirFilter(DesignFilter.FirWinLp(filterSize, 0.5f / factor));
                 signal = lpFilter.ApplyTo(signal);
             }
 

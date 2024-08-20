@@ -103,7 +103,7 @@ namespace AI.DSP.DSPCore
             {
 
                 for (int i = 0; i < size; i++)
-                     summ += pV[i] * pV[i];
+                    summ += pV[i] * pV[i];
                 return summ;
             }
         }
@@ -121,7 +121,7 @@ namespace AI.DSP.DSPCore
                 fixed (double* pointerA = a)
                 {
                     for (int i = 0; i < size; i++)
-                         resPointer[i] = pointerA[i] - b;
+                        resPointer[i] = pointerA[i] - b;
                 }
             }
 
@@ -136,7 +136,7 @@ namespace AI.DSP.DSPCore
             fixed (double* pointerA = a)
             {
                 for (int i = 0; i < size; i++)
-                     pointerA[i] = pointerA[i] / b;
+                    pointerA[i] = pointerA[i] / b;
             }
 
 
@@ -270,7 +270,7 @@ namespace AI.DSP.DSPCore
 
             Vector[] data = Vector.GetWindows(sig, w, w);
 
-            Parallel.For(0, data.Length, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, i =>
+            _ = Parallel.For(0, data.Length, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, i =>
             {
                 data[i] = FastConvolution(data[i], pattern);
             });
@@ -302,7 +302,7 @@ namespace AI.DSP.DSPCore
 
 
 
-            Parallel.For(0, data.Length, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, i =>
+            _ = Parallel.For(0, data.Length, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, i =>
             {
                 data[i] = FastConvolution(data[i], pattern);
             });

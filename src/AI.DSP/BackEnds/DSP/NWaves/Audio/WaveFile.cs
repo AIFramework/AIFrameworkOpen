@@ -49,7 +49,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
             }
 
             // ignore file size
-            reader.ReadInt32();
+            _ = reader.ReadInt32();
 
             if (reader.ReadInt32() != 0x45564157)     // "WAVE"
             {
@@ -90,7 +90,7 @@ namespace AI.BackEnds.DSP.NWaves.Audio
             if (fmtSize == 18)
             {
                 short fmtExtraSize = reader.ReadInt16();
-                reader.ReadBytes(fmtExtraSize);
+                _ = reader.ReadBytes(fmtExtraSize);
             }
 
             // there may be some wavefile meta info here,

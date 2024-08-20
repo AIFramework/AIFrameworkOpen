@@ -67,13 +67,9 @@ namespace AI.ComputerVision
         /// <param name="dy">Смещение по y</param>
         private void FilterI(int dx, int dy)
         {
-            bool akkum = true;
-
             for (int k = 0; k < 4; k++)
             {
-                akkum = true;
-
-
+                bool akkum = true;
                 for (int i = 0; i < 2; i++)
                 {
                     for (int j = 0; j < 2; j++)
@@ -98,13 +94,9 @@ namespace AI.ComputerVision
         /// <param name="dy">Смещение по y</param>
         private void FilterE(int dx, int dy)
         {
-            bool akkum = true;
-
             for (int k = 0; k < 4; k++)
             {
-                akkum = true;
-
-
+                bool akkum = true;
                 for (int i = 0; i < 2; i++)
                 {
                     for (int j = 0; j < 2; j++)

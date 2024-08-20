@@ -100,7 +100,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations
 
                 for (; k < _medianHarmonic.Size / 2; k++)    // feed first Size/2 samples
                 {
-                    _medianHarmonic.Process(harmonicMagnitudes[k][j]);
+                    _ = _medianHarmonic.Process(harmonicMagnitudes[k][j]);
                 }
 
                 for (; i < harmonicMagnitudes.Count - (_medianHarmonic.Size / 2); i++, k++)

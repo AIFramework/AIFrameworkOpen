@@ -1,8 +1,8 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using System;
-using Vector = AI.DataStructs.Algebraic.Vector;
 using System.Numerics;
+using Vector = AI.DataStructs.Algebraic.Vector;
 
 namespace AI.DSP.DSPCore
 {

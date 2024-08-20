@@ -93,7 +93,7 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         /// <returns></returns>
         public static float FromCepstrum(float[] lpcc, float[] lpc)
         {
-            int n = lpcc.Length;
+            _ = lpcc.Length;
             int p = lpc.Length;     // must be lpcOrder + 1 (!)
 
             lpc[0] = 1;

@@ -103,11 +103,11 @@ namespace AI.DSP.IIR
 
             if (--ofB < 0)
                 ofB = bLen - 1;
-            
+
 
             if (--ofA < 0)
                 ofA = aLen - 1;
-            
+
 
 
             return outp;
@@ -211,8 +211,8 @@ namespace AI.DSP.IIR
              * Коэффициенты B (числитель)
              */
             InMemoryDataStream bs = new InMemoryDataStream(path, isZipped: true);
-            bs.UnZip();
-            bs.ReadString();
+            _ = bs.UnZip();
+            _ = bs.ReadString();
             string name = bs.ReadString();
             Vector A = bs.ReadDoubles();
             Vector B = bs.ReadDoubles();
@@ -239,8 +239,8 @@ namespace AI.DSP.IIR
              * Коэффициенты B (числитель)
              */
             InMemoryDataStream bs = new InMemoryDataStream(data, isZipped: true);
-            bs.UnZip();
-            bs.ReadString();
+            _ = bs.UnZip();
+            _ = bs.ReadString();
             string name = bs.ReadString();
             Vector A = bs.ReadDoubles();
             Vector B = bs.ReadDoubles();

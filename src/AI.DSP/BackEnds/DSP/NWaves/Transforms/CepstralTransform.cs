@@ -159,7 +159,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         public DiscreteSignal Direct(DiscreteSignal signal)
         {
             float[] cepstrum = new float[Size];
-            Direct(signal.Samples, cepstrum);
+            _ = Direct(signal.Samples, cepstrum);
             return new DiscreteSignal(signal.SamplingRate, cepstrum);
         }
 
@@ -293,7 +293,7 @@ namespace AI.BackEnds.DSP.NWaves.Transforms
         /// <param name="cepstrum"></param>
         public void PhaseCepstrum(float[] input, float[] cepstrum)
         {
-            Direct(input, cepstrum);
+            _ = Direct(input, cepstrum);
 
             // use this free memory block for storing reversed cepstrum
             cepstrum.FastCopyTo(_realSpectrum, cepstrum.Length);

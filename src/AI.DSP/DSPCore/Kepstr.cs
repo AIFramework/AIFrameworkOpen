@@ -9,7 +9,6 @@
 using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using AI.DSP.Analyse;
-using AI.HightLevelFunctions;
 using System;
 
 namespace AI.DSP.DSPCore

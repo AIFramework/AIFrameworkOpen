@@ -103,7 +103,7 @@ namespace AI.DSP.DSPCore
             else
             {
                 if (signal.ScaleVolt != ScaleVolt)
-                    signal.ConvertVolt(ScaleVolt);
+                    _ = signal.ConvertVolt(ScaleVolt);
 
                 base.Add(signal);
             }

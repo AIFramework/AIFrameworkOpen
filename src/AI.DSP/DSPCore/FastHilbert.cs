@@ -6,7 +6,6 @@
  * 
  * Для изменения этого шаблона используйте меню "Инструменты | Параметры | Кодирование | Стандартные заголовки".
  */
-using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using AI.HightLevelFunctions;
 using System;

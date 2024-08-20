@@ -1,7 +1,7 @@
 ﻿using AI.BackEnds.DSP.NWaves.Filters.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace AI.BackEnds.DSP.NWaves.Filters
 {

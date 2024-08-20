@@ -15,7 +15,7 @@ namespace AI.DSP.FIR
         private readonly int transientsInd; // отсчеты переходного процесса
         private readonly FIRCalcConvType convType;
         private readonly int _fd;
-        private Vector signalInp;
+        private readonly Vector signalInp;
         /// <summary>
         /// Имя фильтра
         /// </summary>

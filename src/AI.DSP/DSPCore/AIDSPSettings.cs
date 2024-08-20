@@ -1,7 +1,5 @@
 ﻿using AI.DataStructs.WithComplexElements;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AI.DSP.DSPCore
 {

@@ -589,7 +589,7 @@ namespace AI.DataStructs.WithComplexElements
                 throw new ArgumentNullException(nameof(dataStream));
             }
 
-            dataStream.SkipIfEqual(KeyWords.ComplexMatrix).ReadMatrix(out Matrix real).ReadMatrix(out Matrix imaginary);
+            _ = dataStream.SkipIfEqual(KeyWords.ComplexMatrix).ReadMatrix(out Matrix real).ReadMatrix(out Matrix imaginary);
 
             return new ComplexMatrix(real, imaginary);
         }

@@ -56,8 +56,8 @@ namespace AI.DSP.DSPCore
         {
             float[] input = (float[])st;
             float[] dctArr = new float[Count];
-            if (IsFast)  fastDct.Direct(input, dctArr);
-            else         dct2.Direct(input, dctArr);
+            if (IsFast) fastDct.Direct(input, dctArr);
+            else dct2.Direct(input, dctArr);
 
             return dctArr;
         }
@@ -69,8 +69,8 @@ namespace AI.DSP.DSPCore
         {
             float[] input = (float[])st;
             float[] dctArr = new float[Count];
-            if (IsFast)  fastDct.DirectNorm(input, dctArr);
-            else         dct2.DirectNorm(input, dctArr);
+            if (IsFast) fastDct.DirectNorm(input, dctArr);
+            else dct2.DirectNorm(input, dctArr);
             return dctArr;
         }
 
@@ -81,8 +81,8 @@ namespace AI.DSP.DSPCore
         {
             float[] input = (float[])dct;
             float[] dctArr = new float[Count];
-            if (IsFast)  fastDct.Inverse(input, dctArr);
-            else         dct2.Inverse(input, dctArr);
+            if (IsFast) fastDct.Inverse(input, dctArr);
+            else dct2.Inverse(input, dctArr);
             return dctArr;
         }
 

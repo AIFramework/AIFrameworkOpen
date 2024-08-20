@@ -271,13 +271,11 @@ namespace AI.BackEnds.DSP.NWaves.Utils
         {
             double y = 1.0;
             double prev = 1.0;
-            double summand = 0;
-
             int i = 1;
 
             while (Math.Abs(prev) > 1e-20)
             {
-                summand = prev * x * x / (4 * i * i);
+                double summand = prev * x * x / (4 * i * i);
                 y += summand;
                 prev = summand;
                 i++;

@@ -3,7 +3,7 @@ using System;
 
 namespace AI.BackEnds.DSP.NWaves.Transforms
 {
-    
+
     /// <summary>
     /// Бих фильтр 64-битные коэф.
     /// </summary>

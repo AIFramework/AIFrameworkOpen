@@ -155,7 +155,7 @@ namespace AI.BackEnds.DSP.NWaves.Operations.Convolution
 
             for (; i < firstCount; i++)    // first HopSize-1 samples are just placed in the Линия задержки
             {
-                Process(signal[i]);
+                _ = Process(signal[i]);
             }
 
             double[] filtered = new double[signal.Length + _kernel.Length - 1];

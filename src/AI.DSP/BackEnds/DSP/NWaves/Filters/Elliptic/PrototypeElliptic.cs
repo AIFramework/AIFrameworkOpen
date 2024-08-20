@@ -163,7 +163,6 @@ namespace AI.BackEnds.DSP.NWaves.Filters.Elliptic
         {
             for (int i = 1; i <= iterCount; i++)
             {
-                Complex prevX = x;
                 double prevK = k;
 
                 k = Math.Pow(k / (1 + Math.Sqrt(1 - (k * k))), 2);

@@ -6,7 +6,6 @@
  * 
  * Для изменения этого шаблона используйте меню "Инструменты | Параметры | Кодирование | Стандартные заголовки".
  */
-using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using AI.HightLevelFunctions;
 using AI.Statistics;
@@ -43,7 +42,7 @@ namespace AI.DSP.DSPCore
                 return newSt.CutAndZero(st.Count) + meanValue;
             else
                 return newSt.CutAndZero(st.Count);
-            
+
         }
         /// <summary>
         /// Реализация простого фильтра
@@ -85,10 +84,10 @@ namespace AI.DSP.DSPCore
 
             for (int i = 1; i < f.Count / 2; i++)
                 kw[i] = 1.0 / (1 + (j * Q * ((f[i] / f0) - (f0 / f[i]))));
-            
+
             for (int i = f.Count / 2; i < f.Count - 1; i++)
                 kw[i] = 1.0 / (1 + (j * Q * ((f[i] / (2 * f0)) - (2 * f0 / f[i]))));
-            
+
             Sw = Sw * kw;
             Vector newSt = FFT.CalcIFFT(Sw).RealVector;
             return newSt.CutAndZero(st.Count);
@@ -195,11 +194,11 @@ namespace AI.DSP.DSPCore
                 for (int i = 0; i < kw.Count; i++)
                     if ((f[i] >= param[0]) && (f[i] <= param[1]))
                         kw[i] = 1;
-                   
+
 
             if (afh == AFHType.High)
                 kw = ActivationFunctions.Threshold(f, param[0]).CutAndZero(kw.Count);
-            
+
 
             if (afh == AFHType.Low)
             {

@@ -212,7 +212,7 @@ namespace AI.Charts.Control
         public void PlotBlack(Vector y, string name = "", int width = 1, bool isSpline = false)
         {
             Clear();
-            chart1.BeginInvoke((MethodInvoker)(() =>
+            _ = chart1.BeginInvoke((MethodInvoker)(() =>
             {
                 Vector x = Vector.SeqBeginsWithZero(1, y.Count);
                 //chart1.Titles[0].Text = string.Empty;
@@ -529,7 +529,7 @@ namespace AI.Charts.Control
         public void Clear()
         {
             if (chart1.InvokeRequired)
-                chart1.Invoke(new MethodInvoker(ClearInvoked));
+                _ = chart1.Invoke(new MethodInvoker(ClearInvoked));
 
             else ClearInvoked();
 
@@ -573,7 +573,7 @@ namespace AI.Charts.Control
         {
             Clipboard.Clear();
             Clipboard.SetImage(ChartImg());
-            MessageBox.Show("Изображение в буффере обмена!", "Информация");
+            _ = MessageBox.Show("Изображение в буффере обмена!", "Информация");
         }
 
         // Сохранение в файл
@@ -1057,7 +1057,7 @@ namespace AI.Charts.Control
         {
             if (chart1.InvokeRequired)
             {
-                chart1.Invoke((MethodInvoker)(() =>
+                _ = chart1.Invoke((MethodInvoker)(() =>
                 {
                     chart1.ChartAreas[0].AxisX.Maximum = xMax;
                     chart1.ChartAreas[0].AxisX.Minimum = xMin;
@@ -1075,7 +1075,7 @@ namespace AI.Charts.Control
         {
             if (chart1.InvokeRequired)
             {
-                chart1.Invoke((MethodInvoker)(() =>
+                _ = chart1.Invoke((MethodInvoker)(() =>
                 {
                     chart1.ChartAreas[0].AxisY.Maximum = yMax;
                     chart1.ChartAreas[0].AxisY.Minimum = yMin;
@@ -1140,7 +1140,7 @@ namespace AI.Charts.Control
         {
             foreach (IChartElement item in chartElements)
             {
-                chart1.Series.Remove(item.Series);
+                _ = chart1.Series.Remove(item.Series);
             }
             chartElements.Clear();
         }

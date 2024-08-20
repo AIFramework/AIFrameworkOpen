@@ -198,7 +198,7 @@ namespace AI.ML.DataSets
             if (isSave)
             {
                 if (!Directory.Exists(pathZData))
-                    Directory.CreateDirectory(pathZData);
+                    _ = Directory.CreateDirectory(pathZData);
 
                 string stdPath = $"{pathZData}\\std.vect";
                 string meanPath = Path.Combine(pathZData, "mean.vect");
@@ -343,10 +343,10 @@ namespace AI.ML.DataSets
             {
                 string features = this[i].Features.ToString();
                 features = features.Replace(' ', separator).Replace("[", "").Replace("]", "");
-                stringBuilder.Append(features);
-                stringBuilder.Append(separator);
-                stringBuilder.Append(this[i].ClassMark);
-                stringBuilder.Append("\n");
+                _ = stringBuilder.Append(features);
+                _ = stringBuilder.Append(separator);
+                _ = stringBuilder.Append(this[i].ClassMark);
+                _ = stringBuilder.Append("\n");
             }
 
             File.WriteAllText(path, stringBuilder.ToString());

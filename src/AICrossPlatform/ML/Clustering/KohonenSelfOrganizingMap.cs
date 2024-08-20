@@ -83,7 +83,7 @@ namespace AI.ML.Clustering
         {
             Vector outp = new Vector(w.Length);
 
-            Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
+            _ = Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
             {
                 outp[i] = AnalyticGeometryFunctions.Dot(w[i], vector) + bias[i];
             });
@@ -109,7 +109,7 @@ namespace AI.ML.Clustering
             double newP = 0.0001, old = 1.0 - newP;
             Vector k = new Vector(_clusters);
 
-            Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, j =>
+            _ = Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, j =>
             {
                 k[j] = DistanceFunction(vect, w[j]);
                 w[j] = (old * w[j]) - (0.01 * newP * vect);
@@ -160,7 +160,7 @@ namespace AI.ML.Clustering
 
             for (int i = 0, repCount = 0; i < dataset.Length; i++)
             {
-                Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, j =>
+                _ = Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, j =>
                 {
                     k[j] = DistanceFunction(dataset[i], w[j]);
                     w[j] = (old * w[j]) - (0.1 * newP * dataset[i]);

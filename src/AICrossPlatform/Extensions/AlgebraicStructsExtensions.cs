@@ -2,9 +2,9 @@
 
 namespace AI.Extensions
 {
-   /// <summary>
-   /// Расширения для алгебраических методов
-   /// </summary>
+    /// <summary>
+    /// Расширения для алгебраических методов
+    /// </summary>
     public static class AlgebraicStructsExtensions
     {
         #region ToTensor
@@ -22,7 +22,7 @@ namespace AI.Extensions
                 for (int j = 0; j < tensor.Height; j++)
                     for (int k = 0; k < tensor.Width; k++)
                         tensor[j, k, i] = matrices[i][j, k];
-                
+
 
             return tensor;
         }
@@ -111,7 +111,7 @@ namespace AI.Extensions
             for (int i = 0, k = 0; i < H; i++)
                 for (int j = 0; j < W; j++)
                     matrix[i, j] = matrixData[k++];
-            
+
 
             return matrix;
         }

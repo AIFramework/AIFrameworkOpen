@@ -1,8 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.MathUtils.Algebra;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AI.ML.MatrixUtils
@@ -31,25 +29,25 @@ namespace AI.ML.MatrixUtils
         /// <summary>
         /// Собственные векторы
         /// </summary>
-        public Vector[] Eigenvectors 
+        public Vector[] Eigenvectors
         {
-            get 
+            get
             {
-                if (!_isCalcVectors) 
+                if (!_isCalcVectors)
                     _eigenvectors = GetEigenvectors(_matrix, Eigenvalues);
                 return _eigenvectors;
-            } 
+            }
         }
 
 
         private Vector[] _eigenvectors;
         private bool _isCalcVectors = false;
-        private Matrix _matrix;
+        private readonly Matrix _matrix;
 
         /// <summary>
         /// Алгоритм вычисления собственных чисел и векторов
         /// </summary>
-        public EigenValuesVectors(Matrix matrix, int iterations = 60, double eps = 1e-2) 
+        public EigenValuesVectors(Matrix matrix, int iterations = 60, double eps = 1e-2)
         {
             _matrix = matrix;
             GetEigenvalues(iterations, eps);
@@ -86,7 +84,7 @@ namespace AI.ML.MatrixUtils
             Vector[] eigenvectors = new Vector[eigenvalues.Count];
             var parOptions = new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount };
 
-            Parallel.For(0, eigenvalues.Count, parOptions, i =>
+            _ = Parallel.For(0, eigenvalues.Count, parOptions, i =>
             {
                 eigenvectors[i] = GetEigenvector(a, eigenvalues[i]);
             }
@@ -124,7 +122,7 @@ namespace AI.ML.MatrixUtils
             Vector[] eigenvectors = new Vector[eigenvalues.Count];
             var parOptions = new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount };
 
-            Parallel.For(0, eigenvalues.Count, parOptions, i =>
+            _ = Parallel.For(0, eigenvalues.Count, parOptions, i =>
             {
                 eigenvectors[i] = GetEigenvector(a, eigenvalues[i]);
             }

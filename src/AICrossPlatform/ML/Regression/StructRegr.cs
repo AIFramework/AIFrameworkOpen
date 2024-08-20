@@ -28,7 +28,7 @@ namespace AI.ML.Regression
         /// <summary>
         ///  Набор данных регрессии item
         /// </summary>
-        public StructRegr(Vector f, double target) 
+        public StructRegr(Vector f, double target)
         {
             _targ = target;
             _centGiperSfer = f;

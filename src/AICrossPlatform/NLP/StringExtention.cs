@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -23,10 +22,10 @@ namespace AI.NLP
 
             for (int i = 0; i < strings.Length; i++)
             {
-                stringBuilder.Append(strings[i]);
-                
-                if(i< strings.Length-1)
-                    stringBuilder.Append(sep);
+                _ = stringBuilder.Append(strings[i]);
+
+                if (i < strings.Length - 1)
+                    _ = stringBuilder.Append(sep);
             }
 
             return stringBuilder.ToString();
@@ -38,7 +37,7 @@ namespace AI.NLP
         /// </summary>
         /// <param name="text">Текст</param>
         /// <param name="strSpliter">Строка-разделитель</param>
-        public static string[] Split(this string text, string strSpliter) 
+        public static string[] Split(this string text, string strSpliter)
         {
             return text.Split(new[] { strSpliter }, StringSplitOptions.None);
         }
@@ -48,12 +47,12 @@ namespace AI.NLP
         /// </summary>
         /// <param name="text">Текст</param>
         /// <param name="delStrs">Подстроки, которые будут удалены</param>
-        public static string Remove(this string text, string[] delStrs) 
+        public static string Remove(this string text, string[] delStrs)
         {
             string ret = text;
 
             for (int i = 0; i < delStrs.Length; i++)
-                text.Replace(delStrs[i], "");
+                _ = text.Replace(delStrs[i], "");
 
             return ret;
         }
@@ -64,7 +63,7 @@ namespace AI.NLP
         /// <param name="text">Текст</param>
         /// <param name="pattern">Патерн для замены</param>
         /// <param name="new_string">На что заменить патерн</param>
-        public static string ReReplace(this string text, string pattern, string new_string) 
+        public static string ReReplace(this string text, string pattern, string new_string)
         {
             return Regex.Replace(text, pattern, new_string);
         }
@@ -75,7 +74,7 @@ namespace AI.NLP
         /// <param name="text">Текст</param>
         /// <param name="pattern">Патерн для преобразования</param>
         /// <param name="transformer">Функция преобразования текста совпадающего с патерном</param>
-        public static string ReTransform(this string text, string pattern, Func<string, string> transformer) 
+        public static string ReTransform(this string text, string pattern, Func<string, string> transformer)
         {
             return Regex.Replace(text, pattern, x => transformer(x.Value));
         }
@@ -88,13 +87,13 @@ namespace AI.NLP
         /// <param name="text2">Строка которую вычитаем</param>
         public static string Diff(this string text1, string text2)
         {
-            int len = text1.Length-text2.Length;
-          
+            int len = text1.Length - text2.Length;
+
             if (len < 0) throw new Exception("Вычитаемое больше уменьшаемого");
             if (!text1.Contains(text2)) throw new Exception("Уменьшаемое не содержит вычитаемое");
             char[] result = new char[len];
 
-            for (int start = 0, j = 0; start < text1.Length-text2.Length && j < text1.Length; start++, j++)
+            for (int start = 0, j = 0; start < text1.Length - text2.Length && j < text1.Length; start++, j++)
             {
                 bool isCont = false;
 

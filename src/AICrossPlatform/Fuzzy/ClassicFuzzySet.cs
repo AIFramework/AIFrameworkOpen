@@ -1,10 +1,5 @@
-﻿using AI.DataStructs.Algebraic;
-using AI.Fuzzy.Fuzzyficators.FVector;
-using AI.ML.MatrixUtils;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Text;
 
 namespace AI.Fuzzy
 {
@@ -36,7 +31,7 @@ namespace AI.Fuzzy
     /// 
     /// </summary>
     [Serializable]
-    public class BaseVar 
+    public class BaseVar
     {
         /// <summary>
         /// Нечеткая переменная
@@ -55,7 +50,7 @@ namespace AI.Fuzzy
     [Serializable]
     public class FuzzyCondition : BaseVar
     {
-       
+
     }
 
     /// <summary>
@@ -92,7 +87,7 @@ namespace AI.Fuzzy
     /// Нечеткая переменная
     /// </summary>
     [Serializable]
-    public class FuzzyVariable 
+    public class FuzzyVariable
     {
         /// <summary>
         /// Нечеткие множества

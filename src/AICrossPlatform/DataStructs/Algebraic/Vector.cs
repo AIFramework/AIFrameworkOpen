@@ -14,13 +14,13 @@ namespace AI.DataStructs.Algebraic
     /// Класс, реализующий вектор и операции над ним
     /// </summary>
     [Serializable]
-    public class Vector : List<double>, IAlgebraicStructure<double> , IEquatable<Vector>, IEquatable<List<double>>, ISavable, ITextSavable, IByteConvertable
+    public class Vector : List<double>, IAlgebraicStructure<double>, IEquatable<Vector>, IEquatable<List<double>>, ISavable, ITextSavable, IByteConvertable
     {
         #region Поля и свойства
         /// <summary>
         /// Данные вектора
         /// </summary>
-        double[] IAlgebraicStructure<double> .Data => ToArray();
+        double[] IAlgebraicStructure<double>.Data => ToArray();
         /// <summary>
         /// Форма (размерность вектора)
         /// </summary>
@@ -33,12 +33,12 @@ namespace AI.DataStructs.Algebraic
         /// <param name="i">Индекс</param>
         public new double this[int i]
         {
-            get 
+            get
             {
-                if(i>=0) return base[i];
+                if (i >= 0) return base[i];
                 else return base[Count + i];
             }
-            set 
+            set
             {
                 if (i >= 0) base[i] = value;
                 else base[Count + i] = value;
@@ -49,30 +49,30 @@ namespace AI.DataStructs.Algebraic
         /// </summary>
         /// <param name="mask">Маска (true - позиции для вставки или извлечения)</param>
         /// <exception cref="Exception">Возникает исключение при несоответствии числа позиций для вставки и размерности вектора для вставки</exception>
-        public Vector this[bool[] mask] 
+        public Vector this[bool[] mask]
         {
-            get 
+            get
             {
                 int count = 0;
                 for (int i = 0; i < mask.Length; i++) if (mask[i]) count++;
-                
+
                 Vector result = new Vector(count);
-                
+
                 for (int i = 0, j = 0; i < mask.Length; i++)
                     if (mask[i]) result[j++] = this[i];
 
-                return result; 
+                return result;
             }
-            set 
+            set
             {
                 int count = 0;
                 for (int i = 0; i < mask.Length; i++) if (mask[i]) count++;
 
-                if (value.Count != count) 
+                if (value.Count != count)
                     throw new Exception("Число позиций для вставки в маске должно совпадать с размерностью вектора");
 
 
-                
+
                 for (int i = 0, j = 0; i < mask.Length; i++)
                 {
                     if (mask[i]) this[i] = value[j++];
@@ -92,23 +92,23 @@ namespace AI.DataStructs.Algebraic
                 int a = 0;
                 int b = Count;
 
-                if(start != null)
+                if (start != null)
                     a = start.Value >= 0 ? start.Value : Count + start.Value;
 
                 if (end != null)
                     b = end.Value >= 0 ? end.Value : Count + end.Value;
 
                 int s = Math.Abs(step);
-                
-                Vector ret = new Vector((b-a) / s);
 
-                for (int i = a, j = 0; i < b; i+=s) 
-                    if(j < ret.Count)  ret[j++] = base[i];
+                Vector ret = new Vector((b - a) / s);
 
-                return step < 0? ret.Revers() : ret;
+                for (int i = a, j = 0; i < b; i += s)
+                    if (j < ret.Count) ret[j++] = base[i];
+
+                return step < 0 ? ret.Revers() : ret;
             }
 
-            set 
+            set
             {
                 int a = 0;
                 int b = Count;
@@ -120,7 +120,7 @@ namespace AI.DataStructs.Algebraic
                     b = end.Value >= 0 ? end.Value : Count + end.Value;
 
                 int s = Math.Abs(step);
-                Vector inp = step >= 0 ? value: value.Revers();
+                Vector inp = step >= 0 ? value : value.Revers();
 
                 for (int i = a, j = 0; i < b; i += s)
                     if (j < inp.Count)
@@ -699,7 +699,7 @@ namespace AI.DataStructs.Algebraic
 
             for (int i = 0; i < outpVect.Count; i++)
                 outpVect[i] = double.IsNaN(this[i]) ? mean : this[i];
-            
+
 
             return outpVect;
         }
@@ -776,7 +776,7 @@ namespace AI.DataStructs.Algebraic
 
             foreach (double element in elements)
             {
-                lD.Remove(element);
+                _ = lD.Remove(element);
             }
 
             return FromList(lD);
@@ -792,7 +792,7 @@ namespace AI.DataStructs.Algebraic
 
             foreach (double element in elements)
             {
-                lD.Remove(element);
+                _ = lD.Remove(element);
             }
 
             return FromList(lD);
@@ -809,7 +809,7 @@ namespace AI.DataStructs.Algebraic
 
             foreach (double element in elements)
             {
-                lD.Remove(element);
+                _ = lD.Remove(element);
             }
 
             return FromList(lD);
@@ -1116,7 +1116,7 @@ namespace AI.DataStructs.Algebraic
         {
             double max = Max();
             double min = Min();
-            double d = 1.0 / (max - min+double.Epsilon);
+            double d = 1.0 / (max - min + double.Epsilon);
 
             return Transform(x => (x - min) * d);
         }
@@ -1255,7 +1255,8 @@ namespace AI.DataStructs.Algebraic
         /// <returns></returns>
         public Vector ZNormalise()
         {
-            return (Clone() - Mean()) / (Std() + AISettings.GlobalEps);         }
+            return (Clone() - Mean()) / (Std() + AISettings.GlobalEps);
+        }
         /// <summary>
         /// Нормализация (ско = 1, среднее = 0)
         /// </summary>
@@ -1264,7 +1265,7 @@ namespace AI.DataStructs.Algebraic
         /// <returns></returns>
         public Vector Normalise(Vector mean, Vector std)
         {
-            return (Clone() - mean) / (std+AISettings.GlobalEps);
+            return (Clone() - mean) / (std + AISettings.GlobalEps);
         }
         #endregion
 
@@ -1495,7 +1496,7 @@ namespace AI.DataStructs.Algebraic
 
             for (int i = 0; i < outp.Count; i++)
                 outp[i] = cross(x[i], y[i]);
-            
+
             return outp;
         }
         /// <summary>
@@ -1643,7 +1644,7 @@ namespace AI.DataStructs.Algebraic
         {
             Vector[] vects = GetWindows(inp, w, step);
 
-            for (int i = 0; i < vects.Length; i ++)
+            for (int i = 0; i < vects.Length; i++)
             {
                 vects[i] = transformer(vects[i]);
             }
@@ -1716,7 +1717,7 @@ namespace AI.DataStructs.Algebraic
         {
             return Statistic.EnsembleDispersion(vectors).Transform(Math.Abs);
         }
-    
+
         #endregion
 
         #region Статические методы инициализации
@@ -1881,7 +1882,7 @@ namespace AI.DataStructs.Algebraic
         {
             return new Vector(dbs.ToArray());
         }
-        
+
         #endregion
 
         #region Технические методы
@@ -1906,16 +1907,16 @@ namespace AI.DataStructs.Algebraic
             }
 
             StringBuilder str = new StringBuilder();
-            str.Append("[");
+            _ = str.Append("[");
 
             for (int i = 0; i < Count; i++)
             {
-                str.Append(this[i].ToString(numberFormatInfo));
-                str.Append(" ");
+                _ = str.Append(this[i].ToString(numberFormatInfo));
+                _ = str.Append(" ");
             }
 
             str.Length--;
-            str.Append("]");
+            _ = str.Append("]");
             return str.ToString();
         }
 

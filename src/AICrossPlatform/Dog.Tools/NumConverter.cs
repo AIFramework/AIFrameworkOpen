@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.Dog.Tools
 {
@@ -46,8 +42,8 @@ namespace AI.Dog.Tools
 
             for (int i = 0; i < binary.Length; i++)
                 ret[i] = binary[i] == '1';
-            
-            return ret; 
+
+            return ret;
         }
 
         /// <summary>
@@ -98,10 +94,10 @@ namespace AI.Dog.Tools
             if (count < str.Length)
                 throw new Exception("Необходимая размерность меньше числа символов кода");
 
-            if(count > str.Length) 
+            if (count > str.Length)
             {
                 string zeros = new string('0', count - str.Length);
-                str = zeros+ str;
+                str = zeros + str;
             }
 
             return str;
@@ -139,12 +135,12 @@ namespace AI.Dog.Tools
             string code = "";
 
             for (int i = 0; i < binary.Length; i++)
-            { 
-                bin ^= binary[i]?1:0;
+            {
+                bin ^= binary[i] ? 1 : 0;
                 code += bin;
             }
-             
-           
+
+
 
             return code.BinaryToDecimal();
         }

@@ -1,13 +1,18 @@
-﻿using System;
-using AI.DataStructs.Algebraic;
+﻿using AI.DataStructs.Algebraic;
 using AI.MathUtils.Algebra;
+using System;
 
 namespace AI.MathUtils.ODE
 {
     [Serializable]
     public class CubicSplineInterpolator
     {
-        private double[] xAxis, yAxis, coefficientsA, coefficientsB, coefficientsC, coefficientsD;
+        private readonly double[] xAxis;
+        private readonly double[] yAxis;
+        private readonly double[] coefficientsA;
+        private readonly double[] coefficientsB;
+        private double[] coefficientsC;
+        private readonly double[] coefficientsD;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CubicSplineInterpolator"/> class.

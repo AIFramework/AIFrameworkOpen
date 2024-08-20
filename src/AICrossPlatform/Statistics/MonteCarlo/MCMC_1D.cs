@@ -1,7 +1,5 @@
 ﻿using AI.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AI.Statistics.MonteCarlo
 {
@@ -13,7 +11,7 @@ namespace AI.Statistics.MonteCarlo
     public class MCMC_1D
     {
         // Логарифм ненормированной функции распределения
-        private Func<double, double> _distr_log;
+        private readonly Func<double, double> _distr_log;
         private Random _random;
         private int _rnd_seed = 0;// Сид генератора случ. чисел
         private bool _use_seed = false;// Использовать ли сид
@@ -26,15 +24,15 @@ namespace AI.Statistics.MonteCarlo
         /// <summary>
         /// Сид генератора случ. чисел
         /// </summary>
-        public int Seed 
+        public int Seed
         {
-            get 
+            get
             {
-               return  _rnd_seed;
+                return _rnd_seed;
             }
             set
             {
-                _rnd_seed= value;
+                _rnd_seed = value;
                 InitRnd();
             }
         }
@@ -73,7 +71,7 @@ namespace AI.Statistics.MonteCarlo
         /// </summary>
         /// <param name="old_value">Старое значение</param>
         /// <param name="new_value">Новое значение</param>
-        public double AcceptProb(double old_value, double new_value) 
+        public double AcceptProb(double old_value, double new_value)
         {
             return Math.Exp(_distr_log(new_value) - _distr_log(old_value));
         }
@@ -87,14 +85,14 @@ namespace AI.Statistics.MonteCarlo
         /// <param name="decorelate">Премешивать ли выборку</param>
         /// <param name="min">Минимальное значение</param>
         /// <param name="max">Максимальное значение</param>
-        public double[] Generate(int len, double min = 0, double max = 1, double start = 0, bool decorelate = true) 
+        public double[] Generate(int len, double min = 0, double max = 1, double start = 0, bool decorelate = true)
         {
             double[] data = new double[len];
             double old_value = start;
             double scale = max - min;
 
             // Выходим в стационарный режим (ждем окончания переходного процесса)
-            for (int i = 0; i < StepsTrPro; i++) 
+            for (int i = 0; i < StepsTrPro; i++)
                 old_value = NextState(old_value, min, scale);
 
             // Генерируем выборку
@@ -103,21 +101,21 @@ namespace AI.Statistics.MonteCarlo
                 data[i] = NextState(old_value, min, scale);
                 old_value = data[i];
             }
-            
-            if(decorelate) data.Shuffle();
+
+            if (decorelate) data.Shuffle();
 
             return data;
-          
+
         }
 
         // Отдает следующее значение
-        private double NextState(double old, double min, double scale) 
+        private double NextState(double old, double min, double scale)
         {
             double cand = _random.NextDouble() * scale + min;
             double prob;
 
-            while(cand == old) 
-                cand = _random.NextDouble()* scale + min;
+            while (cand == old)
+                cand = _random.NextDouble() * scale + min;
 
             prob = AcceptProb(old, cand);
 
@@ -127,7 +125,7 @@ namespace AI.Statistics.MonteCarlo
         // Инициализация генератора случайных чисел
         private void InitRnd()
         {
-            _random = _use_seed? new Random(_rnd_seed): new Random();
+            _random = _use_seed ? new Random(_rnd_seed) : new Random();
         }
     }
 }

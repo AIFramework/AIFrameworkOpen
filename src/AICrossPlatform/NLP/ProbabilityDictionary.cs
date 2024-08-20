@@ -145,7 +145,7 @@ namespace AI.NLP
             bool flag;
 
             if (IsDigitDel)
-                Words.RemoveAll(DigialPredickat);// Удаление строк с числами
+                _ = Words.RemoveAll(DigialPredickat);// Удаление строк с числами
 
             foreach (string str in stop)
                 do flag = Words.Remove(str); while (flag);
@@ -160,7 +160,7 @@ namespace AI.NLP
                 ProbabilityDictionaryData<string> fD = new ProbabilityDictionaryData<string>();
 
                 for (int i = 0; i < Words.Count; i++)
-                    if (Words[i] == str)  count++;
+                    if (Words[i] == str) count++;
 
                 fD.Probability = count / n;
                 fD.Word = str;
@@ -201,15 +201,14 @@ namespace AI.NLP
             string[] strs = text.ToLower().Replace("\r", "").Split(new char[] { ' ', '\n', '\t', '[', ']', '-' });
             n = strs.Length;
             string word;
-            bool f = true;
 
             // 
             foreach (string str in strs)
             {
-                f = true;
+                bool f = true;
 
                 for (int i = 0; i < stop.Length; i++)
-                    if (stop[i] == str)  f = false;
+                    if (stop[i] == str) f = false;
 
                 if (f)
                 {
@@ -235,14 +234,13 @@ namespace AI.NLP
 
             List<string> Words = new List<string>();
             string[] strs = TextStandard.OnlyCharsAndDigit(text).Split(' ');
-            int n = strs.Length;
+            _ = strs.Length;
             string word;
-            bool f = true;
 
             // 
             foreach (string str in strs)
             {
-                f = true;
+                bool f = true;
 
                 for (int i = 0; i < stop.Length; i++)
                     if (stop[i] == str) f = false;

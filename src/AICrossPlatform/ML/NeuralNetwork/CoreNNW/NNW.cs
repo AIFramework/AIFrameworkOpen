@@ -87,7 +87,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             }
 
 
-            Shape3D shape = Layers[Layers.Count-1].OutputShape;
+            Shape3D shape = Layers[Layers.Count - 1].OutputShape;
             layer.InputShape = shape;
             if (layer is IRandomizableLayer randomizableLayer)
             {
@@ -236,12 +236,12 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             for (int i = 0; i < Layers.Count; i++)
             {
-                sb.AppendLine(Layers[i].ToString());
+                _ = sb.AppendLine(Layers[i].ToString());
             }
 
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendFormat("Форма входа: {0} | Форма выходных данных: {1} | Обучаемые параметры: {2}", InputShape, OutputShape, TrainableParameters);
+            _ = sb.AppendLine();
+            _ = sb.AppendLine();
+            _ = sb.AppendFormat("Форма входа: {0} | Форма выходных данных: {1} | Обучаемые параметры: {2}", InputShape, OutputShape, TrainableParameters);
 
             return sb.ToString();
         }

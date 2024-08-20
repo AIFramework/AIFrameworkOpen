@@ -66,7 +66,7 @@ namespace AI.ML.SeqAnalyze
         /// Получить коэффициент важности
         /// </summary>
         /// <returns></returns>
-        public double GetKImportance() 
+        public double GetKImportance()
         {
             _importance = Math.Sqrt(NGram * CountActiv);
             return _importance;
@@ -90,7 +90,7 @@ namespace AI.ML.SeqAnalyze
         /// <param name="momentum">Момент</param>
         public void Upd(double lr, double l1, double l2, double momentum = 0.8)
         {
-            if(_oldUpd == null) _oldUpd = new Vector(TargetValue.Count);
+            if (_oldUpd == null) _oldUpd = new Vector(TargetValue.Count);
             Vector upd = lr * (TargetValueGrad + l1 + l2 * TargetValue); // Обновление веса
             TargetValue -= upd + momentum * _oldUpd;
             _oldUpd = upd;

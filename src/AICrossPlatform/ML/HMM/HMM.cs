@@ -44,7 +44,7 @@ namespace AI.ML.HMM
 
             _stateMatrix = new double[states.Length, states.Length];
             _stateAlter = new double[states.Length, states.Length];
-            int len = states.Length * states.Length;
+            _ = states.Length * states.Length;
 
 
             for (int i = 0; i < trainSeq.Length - 1; i++)

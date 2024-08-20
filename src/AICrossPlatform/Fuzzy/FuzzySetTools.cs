@@ -36,7 +36,7 @@ namespace AI.Fuzzy
         /// <returns></returns>
         public static Dictionary<T, double> Add<T>(Dictionary<T, double> set_1, Dictionary<T, double> set_2)
         {
-            Dictionary<T, double>[] sets = {set_1, set_2 };
+            Dictionary<T, double>[] sets = { set_1, set_2 };
             return Merge(sets);
         }
 
@@ -45,7 +45,7 @@ namespace AI.Fuzzy
         /// </summary>
         /// <param name="set"></param>
         /// <returns></returns>
-        public static Dictionary<T, double> Array2FuzzySet<T>(IEnumerable<T> set) 
+        public static Dictionary<T, double> Array2FuzzySet<T>(IEnumerable<T> set)
         {
 
             Dictionary<T, double> ret = new Dictionary<T, double>();
@@ -158,7 +158,7 @@ namespace AI.Fuzzy
             Dictionary<object, double> new_set = new Dictionary<object, double>();
 
             foreach (var item in set)
-                new_set.Add((object)item.Key, item.Value);
+                new_set.Add(item.Key, item.Value);
 
             return new_set;
         }

@@ -64,8 +64,8 @@ namespace AI.MathUtils.ODE
 
                 x += stepSize;
             }
-         
-            return new RungeKutta() { X = xGrid, Y = yGrid};
+
+            return new RungeKutta() { X = xGrid, Y = yGrid };
         }
 
 

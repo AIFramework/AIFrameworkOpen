@@ -2,8 +2,6 @@
 using AI.ML.MatrixUtils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AI.ML.FeaturesTransforms
 {
@@ -35,7 +33,7 @@ namespace AI.ML.FeaturesTransforms
         public double Eps { get; set; } = 0.5;
 
         // Число компонент
-        private int? _k;
+        private readonly int? _k;
         // Матрица преобразования
         private Matrix _pca;
 

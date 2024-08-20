@@ -6,7 +6,6 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
-using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using System;
 using System.Numerics;

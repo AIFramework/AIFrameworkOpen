@@ -102,7 +102,7 @@ namespace AI
             {
                 // Read any extra values
                 int fmtExtraSize = reader.ReadInt16();
-                reader.ReadBytes(fmtExtraSize);
+                _ = reader.ReadBytes(fmtExtraSize);
             }
 
             dataID = reader.ReadInt32();

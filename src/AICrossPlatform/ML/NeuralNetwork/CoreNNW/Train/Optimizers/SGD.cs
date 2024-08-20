@@ -53,7 +53,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Optimizers
         {
             System.Collections.Generic.List<NNValue> paramss = network.GetParameters();
 
-            Parallel.ForEach(paramss, m =>
+            _ = Parallel.ForEach(paramss, m =>
             {
                 for (int i = 0; i < m.Shape.Count; i++)
                 {

@@ -38,7 +38,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Число признаков для кодирования кода позиции
         /// </summary>
-        public int FeatureCodeLen 
+        public int FeatureCodeLen
         {
             get { return _featureCodeLen; }
         }
@@ -46,7 +46,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Метод кодирования позиции
         /// </summary>
-        public IPositionEncoding PositionEncoder 
+        public IPositionEncoding PositionEncoder
         {
             get { return _pEnc; }
             set
@@ -81,7 +81,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         // Число признаков для кодирования кода позиции
         private IPositionEncoding _pEnc = new MultiscaleEncoder(128);
         // Метод кодирования позиции
-        private int _featureCodeLen = 16;
+        private readonly int _featureCodeLen = 16;
         // Выделение признаков позиции
         private NNValue _poseFeatures;
         // Номер входа
@@ -220,7 +220,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             int outputDimension = inputShape!.Volume;
             //set forget bias to 1.0, as described here: http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf
             int inputDimension = inputShape.Height;
-            int con = inputDimension + outputDimension+_featureCodeLen;
+            int con = inputDimension + outputDimension + _featureCodeLen;
             InputShape = new Shape3D(inputDimension);
             OutputShape = new Shape3D(outputDimension);
 
@@ -275,7 +275,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 
 
         // Создание матрицы кодирования позиции
-        private void GenCodePositionMatrix() 
+        private void GenCodePositionMatrix()
         {
             Random random = new Random(1);
             double std = 1.0 / Math.Sqrt(_featureCodeLen * _pEnc.Dim);

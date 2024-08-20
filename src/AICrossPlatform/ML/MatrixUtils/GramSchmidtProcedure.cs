@@ -1,7 +1,5 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AI.ML.MatrixUtils
 {
@@ -17,7 +15,7 @@ namespace AI.ML.MatrixUtils
         /// <param name="a">Вектор-столбец</param>
         /// <param name="b">Матрица 2</param>
         /// <param name="colB">Столбец в матрице 2</param>
-        public static Vector GetProj(Vector a, Matrix b, int colB) 
+        public static Vector GetProj(Vector a, Matrix b, int colB)
         {
             Vector proj = new Vector(a.Count);
             double energy = 0;
@@ -34,7 +32,7 @@ namespace AI.ML.MatrixUtils
 
             for (int i = 0; i < b.Height; i++)
                 proj[i] = b[i, colB] * pCoef;
-           
+
             return proj;
         }
 
@@ -43,13 +41,13 @@ namespace AI.ML.MatrixUtils
         /// </summary>
         /// <param name="a">Матрица</param>
         /// <param name="colA">Индекс вектора</param>
-        public static Vector GetVectorCol(Matrix a, int colA) 
+        public static Vector GetVectorCol(Matrix a, int colA)
         {
             Vector col = new Vector(a.Height);
 
             for (int i = 0; i < a.Height; i++)
                 col[i] = a[i, colA];
-            
+
             return col;
         }
 
@@ -59,7 +57,7 @@ namespace AI.ML.MatrixUtils
         /// <param name="a"></param>
         /// <param name="col"></param>
         /// <param name="indexCol"></param>
-        public static void WriteColum(Matrix a, Vector col, int indexCol) 
+        public static void WriteColum(Matrix a, Vector col, int indexCol)
         {
             for (int i = 0; i < a.Height; i++) a[i, indexCol] = col[i];
         }
@@ -69,7 +67,7 @@ namespace AI.ML.MatrixUtils
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
-        public static Matrix Ortogonize(Matrix a) 
+        public static Matrix Ortogonize(Matrix a)
         {
             Matrix b = new Matrix(a.Height, a.Width);
 
@@ -94,7 +92,7 @@ namespace AI.ML.MatrixUtils
         /// </summary>
         /// <param name="a">Базис</param>
         /// <returns></returns>
-        public static Matrix GetNormalBasis(Matrix a) 
+        public static Matrix GetNormalBasis(Matrix a)
         {
             Matrix ort = Ortogonize(a);
             Matrix ortNorm = new Matrix(a.Height, a.Width);

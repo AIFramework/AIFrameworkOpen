@@ -109,7 +109,7 @@ namespace AI.ML.SeqPredict
 
 
             network.EpochesToPass = 100;
-            network.TrainNet(xS, yS);
+            _ = network.TrainNet(xS, yS);
         }
     }
 }

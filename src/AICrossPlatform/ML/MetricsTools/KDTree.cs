@@ -35,7 +35,7 @@ namespace AI.ML.MetricsTools
             var pointLabelPairs = new List<(double[], int)>();
             for (int i = 0; i < arrPoints.Count; i++)
                 pointLabelPairs.Add((arrPoints[i], labels[i]));
-            
+
             Root = BuildTree(pointLabelPairs, 0);
         }
 

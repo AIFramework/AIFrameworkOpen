@@ -15,17 +15,17 @@ namespace AI.ML.MetricsTools
         /// Вектор признаков
         /// </summary>
         public Vector DataVector { get; }
-        
+
         /// <summary>
         /// Метка класса
         /// </summary>
         public int Label { get; }
-        
+
         /// <summary>
         /// Ссылка на левую ветку
         /// </summary>
         public KDNode Left { get; set; }
-        
+
         /// <summary>
         /// Ссылка на правую ветку
         /// </summary>

@@ -4,7 +4,6 @@ using AI.Dog.Tools;
 using AI.ML.Regression;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AI.ML.SeqAnalyze
 {
@@ -35,7 +34,7 @@ namespace AI.ML.SeqAnalyze
             get
             {
                 var stStr = state;
-                return _data_marks.ContainsKey(stStr)? _data_marks[stStr].TargetValue : null;
+                return _data_marks.ContainsKey(stStr) ? _data_marks[stStr].TargetValue : null;
             }
 
             set
@@ -56,7 +55,7 @@ namespace AI.ML.SeqAnalyze
 
                     _data_marks.Add(state, valueDict);
                 }
-                _data_marks[state].GetKImportance();
+                _ = _data_marks[state].GetKImportance();
 
             }
         }
@@ -160,12 +159,12 @@ namespace AI.ML.SeqAnalyze
         public int[] Encode(int[] inp)
         {
             int[] data = (int[])inp.Clone();
-            List<int> gTokens = new List<int> ();
+            List<int> gTokens = new List<int>();
 
             if (VectorDimention == -1)
                 throw new Exception("Обучите модель");
 
-           
+
 
 
             // Проход по всем длиннам буфера
@@ -212,7 +211,7 @@ namespace AI.ML.SeqAnalyze
             int ep = (int)(600 / Math.Sqrt(data.Length));
             ep = Math.Max(ep, 10);
 
-            _y_std = Statistics.Statistic.EnsembleStd(y)+double.Epsilon;
+            _y_std = Statistics.Statistic.EnsembleStd(y) + double.Epsilon;
             _y_mean = Statistics.Statistic.MeanVector(y);
 
             Vector[] targets = new Vector[y.Length];
@@ -225,7 +224,7 @@ namespace AI.ML.SeqAnalyze
 
             if (targets.Length != data.Length)
                 throw new Exception("Размерность массива целевых векторов неравна размерности массива последовательностей состояний");
-            
+
             if (targets.Length == 0)
                 throw new Exception("Обучающая выборка пуста");
 
@@ -233,8 +232,8 @@ namespace AI.ML.SeqAnalyze
             _vectorDimention = targets[0].Count;
 
             TrainCandidateSearch(data, targets); // Обучение
-            Tuning(data, y, (int)(ep*0.5), 2); // Согласование
-            Optimize2(TopP* TopP);
+            Tuning(data, y, (int)(ep * 0.5), 2); // Согласование
+            Optimize2(TopP * TopP);
             Tuning(data, y, ep, 1); // Согласование
         }
 
@@ -244,7 +243,7 @@ namespace AI.ML.SeqAnalyze
         /// <param name="data">Список кортежей (n-грамма, вектор)</param>
         /// <param name="max_n_gramm">Максимальная длинна n-граммы</param>
         /// <param name="top_p">Значение до которого должна дойти интегральное значение важности после сортировки</param>
-        public static States2Vector CreateS2V(List<Tuple<int[], Vector>> data, int max_n_gramm, double top_p) 
+        public static States2Vector CreateS2V(List<Tuple<int[], Vector>> data, int max_n_gramm, double top_p)
         {
             States2Vector states2Vector = new States2Vector(max_n_gramm, top_p);
             states2Vector._data_marks = new Dictionary<int[], ValueDictRegressor>(new IntArrayEqualityComparer());
@@ -258,7 +257,7 @@ namespace AI.ML.SeqAnalyze
                     el.CountActiv++;
                     el.TargetValue += item.Item2;
                 }
-                else 
+                else
                 {
                     var el = new ValueDictRegressor();
                     el.CountActiv = 1;
@@ -269,10 +268,10 @@ namespace AI.ML.SeqAnalyze
             }
 
             // Расчет важностей
-            foreach (var item in states2Vector._data_marks) item.Value.GetKImportance();
+            foreach (var item in states2Vector._data_marks) _ = item.Value.GetKImportance();
 
             return states2Vector;
-        } 
+        }
 
         /// <summary>
         /// Тюнинг (градиентный спуск)
@@ -313,9 +312,9 @@ namespace AI.ML.SeqAnalyze
         }
 
         // Обучение на одной последовательности с вектором меток
-        private void TrainCandidateSearch(int[][] seqs, Vector[] targets) 
+        private void TrainCandidateSearch(int[][] seqs, Vector[] targets)
         {
-            for (int i = 1; i < MaxNGramm+1; i++)
+            for (int i = 1; i < MaxNGramm + 1; i++)
                 TrainCalcNG(seqs, targets, (short)i);
             Optimize2(Math.Pow(TopP, 0.2));
         }
@@ -381,21 +380,21 @@ namespace AI.ML.SeqAnalyze
             List<Tuple<int[], ValueDictRegressor>> data = new List<Tuple<int[], ValueDictRegressor>>(_data_marks.Count);
 
             // Заполнение списка
-            foreach (var item in _data_marks) 
+            foreach (var item in _data_marks)
                 data.Add(new Tuple<int[], ValueDictRegressor>(item.Key, item.Value));
 
-            
+
             double p = 0;
             double denom = 0;
             int index = 0;
 
             // Сумма важностей
-            foreach (var item in _data_marks) 
+            foreach (var item in _data_marks)
                 denom += item.Value.GetImportance();
 
             data.Sort((x, y) => y.Item2.GetImportance().CompareTo(x.Item2.GetImportance())); // Сортировка для top-p
 
-            while (p <= top_p) 
+            while (p <= top_p)
             {
                 var l = data[index++];
                 keyValues.Add(l.Item1, l.Item2);

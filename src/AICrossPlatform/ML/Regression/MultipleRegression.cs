@@ -211,7 +211,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Обучение градиентным спуском (Эластик)
         /// </summary>
-        public void TrainGrad(Vector[] data, Vector targets, double epoch, double lr, double l1, double l2) 
+        public void TrainGrad(Vector[] data, Vector targets, double epoch, double lr, double l1, double l2)
         {
             DataPrepaire(data, targets);
 
@@ -232,7 +232,7 @@ namespace AI.ML.Regression
                     double delta = pred - _y[j];
 
                     for (int k = 0; k < m; k++)
-                        dif[k] += data[j][k]*delta + l1 + l2 * _param[k]; // Вычисление производной
+                        dif[k] += data[j][k] * delta + l1 + l2 * _param[k]; // Вычисление производной
                 }
 
                 _param -= lr * dif;
@@ -244,7 +244,7 @@ namespace AI.ML.Regression
         /// </summary>
         /// <param name="data"></param>
         /// <param name="targets"></param>
-        private void DataPrepaire(Vector[] data, Vector targets) 
+        private void DataPrepaire(Vector[] data, Vector targets)
         {
             n = data.Length;
             m = data[0].Count + 1;

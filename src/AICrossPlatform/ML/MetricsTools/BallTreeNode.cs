@@ -147,7 +147,7 @@ namespace AI.ML.MetricsTools
 
                     if (bestNeighbors.Count > k)
                         bestNeighbors.RemoveAt(bestNeighbors.Count - 1);
-                   
+
                 }
                 return;
             }
@@ -178,7 +178,7 @@ namespace AI.ML.MetricsTools
             int result = x.CompareTo(y);
 
             // Если ключи равны, возвращаем 1, чтобы реализовать добавление одинаковых ключей
-            if (result == 0) return 1;   
+            if (result == 0) return 1;
             else return result;
         }
     }

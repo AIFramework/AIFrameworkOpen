@@ -2,7 +2,6 @@
 using AI.ML.Classifiers;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AI.Fuzzy.Fuzzyficators
 {
@@ -12,8 +11,8 @@ namespace AI.Fuzzy.Fuzzyficators
     [Serializable]
     public class LingVarGaussian
     {
-        KNNCl _knn = new KNNCl();
-        List<string> _strings = new List<string>();
+        private readonly KNNCl _knn = new KNNCl();
+        private readonly List<string> _strings = new List<string>();
 
         /// <summary>
         /// Лингвистическая переменная
@@ -23,13 +22,13 @@ namespace AI.Fuzzy.Fuzzyficators
             _knn.IsParsenMethod = true;
             _knn.K = k;
         }
-        
+
         /// <summary>
         /// Добавить переменную
         /// </summary>
         /// <param name="features"></param>
         /// <param name="nameVar"></param>
-        public void AddVar(Vector features, string nameVar) 
+        public void AddVar(Vector features, string nameVar)
         {
             int cl = -1;
 
@@ -41,7 +40,7 @@ namespace AI.Fuzzy.Fuzzyficators
                 cl = _strings.Count;
                 _strings.Add(nameVar);
             }
-                
+
 
             _knn.AddClass(features, cl);
         }
@@ -50,7 +49,7 @@ namespace AI.Fuzzy.Fuzzyficators
         /// Распознать
         /// </summary>
         /// <param name="features"></param>
-        public string Recognition(Vector features) 
+        public string Recognition(Vector features)
         {
             int cl = _knn.Classify(features);
             return _strings[cl];

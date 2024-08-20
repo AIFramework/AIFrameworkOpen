@@ -11,7 +11,6 @@ using AI.ML.NeuralNetwork.CoreNNW.Train;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AI.ML.FeaturesTransforms
 {
@@ -41,7 +40,7 @@ namespace AI.ML.FeaturesTransforms
 
         private NNW _net;
         private NNW _netEncoder;
-        private Shape3D _inputShape;
+        private readonly Shape3D _inputShape;
 
         /// <summary>
         /// Автокодировщик
@@ -57,10 +56,10 @@ namespace AI.ML.FeaturesTransforms
         /// <summary>
         /// Линейный автокодировщик
         /// </summary>
-        public AutoEncoder(int inpDim, int outpDim=2)
+        public AutoEncoder(int inpDim, int outpDim = 2)
         {
             _inputShape = new Shape3D(inpDim);
-            LayersEncoder.Add(new FeedForwardLayer(2*outpDim, new ReLU(0.6)));
+            LayersEncoder.Add(new FeedForwardLayer(2 * outpDim, new ReLU(0.6)));
             LayersEncoder.Add(new FeedForwardLayer(outpDim, new ReLU(0.8)));
 
             LayersDecoder.Add(new FeedForwardLayer(inpDim));

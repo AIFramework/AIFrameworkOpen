@@ -41,7 +41,7 @@ namespace AI.MathUtils.Algebra
             _b = B;
             _x = new Vector(_b.Count);
 
-            Parallel.For(0, _b.Count, Loop);
+            _ = Parallel.For(0, _b.Count, Loop);
 
             return _x;
         }

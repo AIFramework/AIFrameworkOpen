@@ -16,7 +16,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
             StringBuilder builder = new StringBuilder(layerName);
             while (builder.Length < 24)
             {
-                builder.Append(" ");
+                _ = builder.Append(" ");
             }
 
             return string.Format("{0}|Входы: {1} |Выходы: {2} |Функция активации: {3} |Обучаемые параметры: {4}", builder.ToString(), inputShape, outputShape, activationFunctionDescription, trainableParams);

@@ -14,7 +14,7 @@ namespace AI.DataStructs.Algebraic
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Height = {Height}, Width = {Width}, Depth = {Depth}")]
-    public class Tensor : IAlgebraicStructure<double> , IEquatable<Tensor>, ISavable, IByteConvertable
+    public class Tensor : IAlgebraicStructure<double>, IEquatable<Tensor>, ISavable, IByteConvertable
     {
         #region Поля и свойства
         /// <summary>
@@ -568,20 +568,20 @@ namespace AI.DataStructs.Algebraic
 
             for (int k = 0; k < Depth; k++)
             {
-                sb.Append("Deep #");
-                sb.Append(k + 1);
-                sb.AppendLine(":");
+                _ = sb.Append("Deep #");
+                _ = sb.Append(k + 1);
+                _ = sb.AppendLine(":");
 
                 for (int i = 0; i < Height; i++)
                 {
-                    sb.Append("[");
+                    _ = sb.Append("[");
                     for (int j = 0; j < Width; j++)
                     {
-                        sb.Append(this[i, j, k].ToString(provider));
-                        sb.Append(" ");
+                        _ = sb.Append(this[i, j, k].ToString(provider));
+                        _ = sb.Append(" ");
                     }
                     sb.Length--;
-                    sb.AppendLine("]");
+                    _ = sb.AppendLine("]");
                 }
             }
 
@@ -706,7 +706,7 @@ namespace AI.DataStructs.Algebraic
                 throw new ArgumentNullException(nameof(dataStream));
             }
 
-            dataStream.SkipIfEqual(KeyWords.Tensor).ReadInt(out int height).ReadInt(out int width).ReadInt(out int depth).ReadDoubles(out double[] tData);
+            _ = dataStream.SkipIfEqual(KeyWords.Tensor).ReadInt(out int height).ReadInt(out int width).ReadInt(out int depth).ReadDoubles(out double[] tData);
             Tensor result = new Tensor(height, width, depth)
             {
                 Data = tData

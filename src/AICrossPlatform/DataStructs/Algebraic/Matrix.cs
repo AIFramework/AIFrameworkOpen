@@ -18,7 +18,7 @@ namespace AI.DataStructs.Algebraic
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Height = {Height}, Width = {Width}")]
-    public class Matrix : IAlgebraicStructure<double> , IEquatable<Matrix>, ISavable, ITextSavable, IByteConvertable
+    public class Matrix : IAlgebraicStructure<double>, IEquatable<Matrix>, ISavable, ITextSavable, IByteConvertable
     {
         #region Поля и свойства
         /// <summary>
@@ -534,8 +534,8 @@ namespace AI.DataStructs.Algebraic
             double m = Mean();
 
             for (int i = 0; i < Data.Length; i++)
-                    outp.Data[i] = double.IsNaN(Data[i]) ? m : Data[i];
-              
+                outp.Data[i] = double.IsNaN(Data[i]) ? m : Data[i];
+
             return outp;
         }
         /// <summary>
@@ -1441,7 +1441,7 @@ namespace AI.DataStructs.Algebraic
 
                 if (width == -1)
                     width = res.Count;
-                
+
                 if (res.Count != width)
                 {
                     result = null;
@@ -1472,7 +1472,7 @@ namespace AI.DataStructs.Algebraic
             {
                 if (vectors[i].Count != width)
                     throw new ArgumentException($"Число элементов входного вектора ({i}) не равно ширине матрицы", nameof(vectors));
-                
+
                 for (int j = 0; j < width; j++)
                     result[i, j] = vectors[i][j];
             }
@@ -1497,7 +1497,7 @@ namespace AI.DataStructs.Algebraic
             {
                 if (vectors[i].Count != height)
                     throw new ArgumentException($"Число элементов входного вектора ({i}) не равно высоте матрицы", nameof(vectors));
-              
+
                 for (int j = 0; j < height; j++)
                     result[j, i] = vectors[i][j];
             }
@@ -1564,16 +1564,16 @@ namespace AI.DataStructs.Algebraic
 
             for (int i = 0; i < Height; i++)
             {
-                sb.Append("[");
+                _ = sb.Append("[");
 
                 for (int j = 0; j < Width; j++)
                 {
-                    sb.Append(this[i, j].ToString(provider));
-                    sb.Append(" ");
+                    _ = sb.Append(this[i, j].ToString(provider));
+                    _ = sb.Append(" ");
                 }
 
                 sb.Length--;
-                sb.AppendLine("]");
+                _ = sb.AppendLine("]");
             }
 
             sb.Length -= Environment.NewLine.Length;
@@ -1707,9 +1707,9 @@ namespace AI.DataStructs.Algebraic
                 throw new ArgumentNullException(nameof(dataStream));
             }
 
-            dataStream.SkipIfEqual(KeyWords.Matrix);
+            _ = dataStream.SkipIfEqual(KeyWords.Matrix);
             MatrixType type = (MatrixType)dataStream.ReadByte();
-            dataStream.ReadInt(out int height).ReadInt(out int width).ReadDoubles(out double[] mData);
+            _ = dataStream.ReadInt(out int height).ReadInt(out int width).ReadDoubles(out double[] mData);
             Matrix result = new Matrix(height, width)
             {
                 DataType = type,

@@ -109,7 +109,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             NNValue returnObj = new NNValue(1);
 
-            Parallel.For(0, v1.Shape.Count, i =>
+            _ = Parallel.For(0, v1.Shape.Count, i =>
             {
                 returnObj[0] += v1[i] * v2[i];
             });
@@ -122,7 +122,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                     {
                         float d = returnObj.DifData[0];
 
-                        Parallel.For(0, v1.Shape.Count, i =>
+                        _ = Parallel.For(0, v1.Shape.Count, i =>
                         {
                             v2.DifData[i] += v1[i] * d;
                             v1.DifData[i] += v2[i] * d;
@@ -143,7 +143,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         {
             NNValue data = new NNValue(len);
 
-            Parallel.For(1, len, i =>
+            _ = Parallel.For(1, len, i =>
             {
                 data[i] = old[i - 1];
                 data.DifData[i] = old.DifData[i - 1];
@@ -161,7 +161,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                     {
                         inp.DifData[0] += data.DifData[0];
 
-                        Parallel.For(1, len, i =>
+                        _ = Parallel.For(1, len, i =>
                         {
                             old.DifData[i - 1] = data.DifData[i];
                         });
@@ -253,7 +253,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                     {
                         int index0 = 0;
 
-                        Parallel.For(0, len, i =>
+                        _ = Parallel.For(0, len, i =>
                         {
                             vector[i] = returnObj[i][index0];
                             vector.DifData[i] = returnObj[i].DifData[index0];
@@ -526,7 +526,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         {
             NNValue returnObj = new NNValue(m1.Shape);
 
-            Parallel.For(0, m1.Shape.Count, i =>
+            _ = Parallel.For(0, m1.Shape.Count, i =>
             {
                 returnObj[i] = m1[i] + m2[i];
             });
@@ -537,7 +537,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 {
                     StartCalc = delegate ()
                     {
-                        Parallel.For(0, m1.Shape.Count, i =>
+                        _ = Parallel.For(0, m1.Shape.Count, i =>
                         {
                             m1.DifData[i] += returnObj.DifData[i];
                             m2.DifData[i] += returnObj.DifData[i];
@@ -626,7 +626,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         {
             NNValue returnObj = new NNValue(m.Shape);
 
-            Parallel.For(0, m.Data.Length, i =>
+            _ = Parallel.For(0, m.Data.Length, i =>
             {
                 returnObj.Data[i] = 1 - m.Data[i];
             });
@@ -637,7 +637,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 {
                     StartCalc = delegate ()
                     {
-                        Parallel.For(0, m.Data.Length, i =>
+                        _ = Parallel.For(0, m.Data.Length, i =>
                         {
                             m.DifData[i] -= returnObj.DifData[i];
                         });
@@ -679,7 +679,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 {
                     StartCalc = delegate ()
                     {
-                        Parallel.For(0, m1.Data.Length, i =>
+                        _ = Parallel.For(0, m1.Data.Length, i =>
                         {
                             m1.DifData[i] += returnObj.DifData[i];
                             m2.DifData[i] -= returnObj.DifData[i];
@@ -697,7 +697,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         {
             NNValue returnObj = new NNValue(tensor.Shape);
 
-            Parallel.For(0, tensor.Shape.Count, i =>
+            _ = Parallel.For(0, tensor.Shape.Count, i =>
             {
                 returnObj[i] = tensor[i] * s;
             });
@@ -708,7 +708,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 {
                     StartCalc = delegate ()
                     {
-                        Parallel.For(0, tensor.Shape.Count, i =>
+                        _ = Parallel.For(0, tensor.Shape.Count, i =>
                         {
                             tensor.DifData[i] += tensor[i] * returnObj.DifData[i];
                         });
@@ -734,7 +734,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         {
             NNValue returnObj = new NNValue(m.Shape);
 
-            Parallel.For(0, m.Shape.Count, i =>
+            _ = Parallel.For(0, m.Shape.Count, i =>
             {
                 returnObj[i] = -m[i];
             });
@@ -745,7 +745,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 {
                     StartCalc = delegate ()
                     {
-                        Parallel.For(0, m.Shape.Count, i =>
+                        _ = Parallel.For(0, m.Shape.Count, i =>
                         {
                             m.DifData[i] -= returnObj.DifData[i];
                         });
@@ -835,7 +835,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             NNValue returnObj = new NNValue(outpH, outpW, outpD);
 
-            Parallel.For(0, outpD, d =>
+            _ = Parallel.For(0, outpD, d =>
             {
                 NNValue filter = filters[d];
                 int y = -padY;
@@ -873,7 +873,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 {
                     StartCalc = delegate ()
                     {
-                        Parallel.For(0, outpD, d =>
+                        _ = Parallel.For(0, outpD, d =>
                         {
                             NNValue filter = filters[d];
                             int y = -padY;
@@ -930,7 +930,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             NNValue returnObj = new NNValue(outpH, outpW, outpD);
 
-            Parallel.For(0, outpD, d =>
+            _ = Parallel.For(0, outpD, d =>
             {
                 NNValue filter = filters[d];
                 int y = -padY;
@@ -968,7 +968,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 {
                     StartCalc = delegate ()
                     {
-                        Parallel.For(0, outpD, d =>
+                        _ = Parallel.For(0, outpD, d =>
                         {
                             NNValue filter = filters[d];
                             int y = -padY;
@@ -1101,7 +1101,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 {
                     StartCalc = delegate ()
                     {
-                        Parallel.For(0, input.Shape.Count, i =>
+                        _ = Parallel.For(0, input.Shape.Count, i =>
                         {
                             input.DifData[i] = gain * outp.DifData[i];
                         });
@@ -1176,7 +1176,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             NNValue returnObj = new NNValue(outpH, outpW, outpD);
             float stepH = 1.0f / h;
             float stepW = 1.0f / w;
-            Parallel.For(0, outpD, s =>//for (int s = 0; s < outpD; s++)
+            _ = Parallel.For(0, outpD, s =>//for (int s = 0; s < outpD; s++)
             {
                 float y1 = 0.0f;
                 for (int y = 0; y < outpH; y++, y1 += stepH)
@@ -1195,7 +1195,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 {
                     StartCalc = delegate ()
                     {
-                        Parallel.For(0, outpD, s =>//for (int s = 0; s < outpD; s++)
+                        _ = Parallel.For(0, outpD, s =>//for (int s = 0; s < outpD; s++)
                         {
                             float y1 = 0.0f;
                             for (int y_ = 0; y_ < outpH; y_++, y1 += stepH)
@@ -1373,7 +1373,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             NNValue returnObj = new NNValue(tensor.Shape);
             float val = number[0];
 
-            Parallel.For(0, tensor.Shape.Count, i =>
+            _ = Parallel.For(0, tensor.Shape.Count, i =>
             {
                 returnObj[i] = tensor[i] + val;
             });
@@ -1500,7 +1500,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             returnObj[0] = new NNValue(real.Shape);// real outp
             returnObj[1] = new NNValue(real.Shape); // Im outp
 
-            Parallel.For(0, real.Shape.Count, i =>
+            _ = Parallel.For(0, real.Shape.Count, i =>
             {
                 returnObj[0][i] = (real[i] * alpha1[0]) + (im[i] * beta1[0]) + (im[i] * real[i] * gama1[0]);
                 returnObj[1][i] = (real[i] * alpha2[0]) + (im[i] * beta2[0]) + (im[i] * real[i] * gama2[0]);
@@ -1512,7 +1512,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
                 {
                     StartCalc = delegate ()
                     {
-                        Parallel.For(0, real.Shape.Count, i =>
+                        _ = Parallel.For(0, real.Shape.Count, i =>
                         {
                             float dR = returnObj[0].DifData[i];// производные реальной части
                             float dI = returnObj[1].DifData[i];// производные мнимой части
@@ -1661,7 +1661,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             float[] a = new float[b.Length];
 
-            Parallel.For(0, a.Length, i =>
+            _ = Parallel.For(0, a.Length, i =>
             {
                 a[i] = tensor[coordY, coordX, d];
             });

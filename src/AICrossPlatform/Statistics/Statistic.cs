@@ -362,7 +362,7 @@ namespace AI.Statistics
                 for (int i = 0; i < h; i++)
                     for (int j = 0; j < w; j++)
                         tensor[i, j, k] = Gauss(random);
-                
+
             return tensor;
         }
 
@@ -504,7 +504,7 @@ namespace AI.Statistics
             int count = array.Shape.Count;
             double[] data = array.Data;
 
-            for (int i = 0; i < count; i++)  summ += data[i];
+            for (int i = 0; i < count; i++) summ += data[i];
 
             return summ / count;
 
@@ -694,7 +694,7 @@ namespace AI.Statistics
             }
 
 
-            A.Y /= _vector.Count* step;
+            A.Y /= _vector.Count * step;
             A.X = new Vector(A.Y.Count);
 
             for (int i = 0; i < A.X.Count; i++)
@@ -747,7 +747,7 @@ namespace AI.Statistics
             int n1 = x.Count;
             int n2 = y.Count;
             string exceptionStr = string.Format("Невозможно выполнить ковариацию, длинна одного вектора {0}, а второго {1}", n1, n2);
-         
+
             if (n1 != n2)
             {
                 throw new ArgumentException(exceptionStr, "Ковариация");

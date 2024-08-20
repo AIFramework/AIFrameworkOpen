@@ -149,7 +149,7 @@ namespace AI.NLP.Stemmers
         private static string ReplaceFirst(MatchCollection collection, string part)
         {
             string stringTemp;
-            if (collection.Count == 0)  return part;
+            if (collection.Count == 0) return part;
 
             else
             {

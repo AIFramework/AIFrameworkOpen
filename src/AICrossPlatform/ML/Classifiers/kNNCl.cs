@@ -2,7 +2,6 @@
 using AI.DataStructs.Algebraic;
 using AI.ML.DataSets;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -128,9 +127,9 @@ namespace AI.ML.Classifiers
             Classes.Add(new VectorClass { Features = features.Clone(), ClassMark = num });
             _count = GetN();
         }
-        
-        
-        
+
+
+
 
 
         /// <summary>
@@ -150,9 +149,9 @@ namespace AI.ML.Classifiers
                 var classVector = ToVector(i, IsParsenMethod);
                 //lock (classes)
                 //{
-                    classes += classVector;
-                    sum += classVector.Sum(); // или другая логика в зависимости от 'ToVector'
-               // }
+                classes += classVector;
+                sum += classVector.Sum(); // или другая логика в зависимости от 'ToVector'
+                                          // }
             }//);
 
             classes /= sum;
@@ -167,10 +166,10 @@ namespace AI.ML.Classifiers
         {
             Rang(inp);
             Vector classes = new Vector(_count);
-            int limit = UpdateLimitAndH(); 
+            int limit = UpdateLimitAndH();
 
             double max = 0;
-            Parallel.For(0, limit, i =>
+            _ = Parallel.For(0, limit, i =>
             {
                 var classVector = ToVector(i, IsParsenMethod);
                 lock (classes)
@@ -288,7 +287,8 @@ namespace AI.ML.Classifiers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Rang(Vector inp)
         {
-            Parallel.For(0, Classes.Count, i => {
+            _ = Parallel.For(0, Classes.Count, i =>
+            {
                 Classes[i].R = Dist(inp, Classes[i].Features);
             });
 

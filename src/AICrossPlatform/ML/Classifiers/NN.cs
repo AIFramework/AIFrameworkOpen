@@ -45,7 +45,7 @@ namespace AI.ML.Classifiers
         public NN(string path)
         {
             _classes = new StructClasses();
-            Load(path);
+            _ = Load(path);
         }
         /// <summary>
         ///  Классификатор, работающий по принципу метода эталонов
@@ -143,7 +143,7 @@ namespace AI.ML.Classifiers
         {
             if (features.Length != classes.Length)
                 throw new InvalidOperationException("Число вектров признаков и число меток классов не совпадают");
-            
+
 
             for (int i = 0; i < features.Length; i++)
                 AddClass(features[i], classes[i]);

@@ -96,7 +96,7 @@ namespace AI.Fuzzy
         /// </summary>
         public static FLV MamdaniImplication(FLV @if, FLV then)
         {
-            return  Math.Min(@if, then);
+            return Math.Min(@if, then);
         }
 
 

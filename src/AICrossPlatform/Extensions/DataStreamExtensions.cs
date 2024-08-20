@@ -47,10 +47,10 @@ namespace AI.Extensions
         {
             if (convertable == null)
             {
-                stream.Write("0");
+                _ = stream.Write("0");
             }
 
-            stream.Write(convertable!.GetBytes());
+            _ = stream.Write(convertable!.GetBytes());
             return stream;
         }
         /// <summary>
@@ -62,11 +62,11 @@ namespace AI.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static InMemoryDataStream Write(this InMemoryDataStream stream, IByteConvertable[] convertables)
         {
-            stream.Write(convertables.Length);
+            _ = stream.Write(convertables.Length);
 
             for (int i = 0; i < convertables.Length; i++)
             {
-                stream.Write(convertables[i]);
+                _ = stream.Write(convertables[i]);
             }
 
             return stream;

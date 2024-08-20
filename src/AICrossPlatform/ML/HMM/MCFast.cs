@@ -1,15 +1,9 @@
-﻿using AI.DataStructs.Algebraic;
-using AI.DataStructs;
-using AI.Extensions;
-using AI.Statistics;
+﻿using AI.DataStructs;
+using AI.DataStructs.Algebraic;
+using AI.DataStructs.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using AI.NLP;
-using System.Text;
-using System.Xml.Schema;
-using System.Linq;
-using AI.DataStructs.Data;
 
 namespace AI.ML.HMM
 {
@@ -25,9 +19,9 @@ namespace AI.ML.HMM
          Данные модели, словарь в котором ключ представляет собой начало n-граммы, а значение словарь завершений, в котором в свою очередь, 
         ключ - это завершение, а значение - вероятность того, что n-грамма завершится именно так 
          */
-        private Dictionary<int[], Dictionary<int, double>> _dataMC = new Dictionary<int[], Dictionary<int, double>>(new IntArrayEqualityComparer());
+        private readonly Dictionary<int[], Dictionary<int, double>> _dataMC = new Dictionary<int[], Dictionary<int, double>>(new IntArrayEqualityComparer());
         // Карта ключей, для создания вектора
-        private List<McMapElement> _map = new List<McMapElement>();
+        private readonly List<McMapElement> _map = new List<McMapElement>();
         private bool _setedWLim = false;
         private HashSet<int> _wList; // Список разрешенных токенов
         /// <summary>
@@ -54,7 +48,7 @@ namespace AI.ML.HMM
         /// Быстрые марковские цепи
         /// </summary>
         public MCFast() { }
-        
+
         #endregion
 
         /// <summary>
@@ -80,10 +74,10 @@ namespace AI.ML.HMM
             // -------------------------------------------------------------//
 
 
-            int ngramCount = trainTextFinal.Count - NGram+1, // Число проходов
+            int ngramCount = trainTextFinal.Count - NGram + 1, // Число проходов
                 lenBuff = NGram - 1; // Длинна буфера (ключа)
             int[] buffNgMinus1 = new int[lenBuff];
-            double probIncrease = 1.0/trainTextFinal.Count; // Прирост вероятности при новом упоминании
+            double probIncrease = 1.0 / trainTextFinal.Count; // Прирост вероятности при новом упоминании
 
             for (int i = 0; i < ngramCount; i++)
             {
@@ -94,7 +88,7 @@ namespace AI.ML.HMM
                 int[] key = CopyKey(buffNgMinus1);// Копирование(перезапись) ключа
                 int endKey = trainTextFinal[i + lenBuff]; // Ключ завершения n граммы
 
-                
+
                 if (_dataMC.ContainsKey(key)) // Если нам известно начало n-граммы
                 {
                     if (_dataMC[key].ContainsKey(endKey)) // Если нам известно завершение n-граммы
@@ -115,7 +109,7 @@ namespace AI.ML.HMM
         /// <summary>
         /// Белый список токенов
         /// </summary>
-        public void SetLimitationsWList(int[] wList) 
+        public void SetLimitationsWList(int[] wList)
         {
             if (wList == null)
                 throw new ArgumentNullException("wList имеет тип null");
@@ -125,7 +119,7 @@ namespace AI.ML.HMM
             _wList = new HashSet<int>();
 
             foreach (var item in wList)
-                if (!_wList.Contains(item)) _wList.Add(item);
+                if (!_wList.Contains(item)) _ = _wList.Add(item);
 
             _setedWLim = true;
         }
@@ -138,7 +132,7 @@ namespace AI.ML.HMM
         {
             Random random = new Random();
 
-            int[] tokens = new int[NGram-1];
+            int[] tokens = new int[NGram - 1];
 
             for (int i = 0; i < tokens.Length; i++)
                 tokens[i] = StartToken;
@@ -174,21 +168,21 @@ namespace AI.ML.HMM
                 throw new ArgumentNullException(nameof(rnd));
 
             int lenBuff = NGram - 1;
-            
+
             List<int> generatedSeqList = new List<int>(num + NGram); // сгенерированная строка
             MCNextToken[] nextToken; // массив "следующих токенов", концы н-грам с соот. вероятностями
             bool stop = false;
 
             // Установка затравки
             for (int i = lenBuff; i != -1; i--)
-                generatedSeqList.Add(tokens[lenBuff-i]);
-            
+                generatedSeqList.Add(tokens[lenBuff - i]);
+
 
             for (int i = 0; i < num && !stop; i++)
             {
 
                 nextToken = CalculateProbabilityNGramm(generatedSeqList);
-                if (nextToken==null) break; // Если нет продолжения
+                if (nextToken == null) break; // Если нет продолжения
 
                 int counter = 0, // счетчик
                 max = nextToken.Length; // максимальный индекс
@@ -237,7 +231,7 @@ namespace AI.ML.HMM
                 if (index >= 0) ret[index]++;
             }
 
-            return ret/ret.Sum();
+            return ret / ret.Sum();
         }
 
         #region Сериализация
@@ -286,7 +280,7 @@ namespace AI.ML.HMM
 
         #region Приватные методы
         // Получить индекс в карте ключей
-        private int GetIndex(int[] key, int end) 
+        private int GetIndex(int[] key, int end)
         {
             McMapElement mcMap = new McMapElement(key, end);
 
@@ -296,7 +290,7 @@ namespace AI.ML.HMM
         }
 
         // Копирует ключ
-        private int[] CopyKey(int[] key) 
+        private int[] CopyKey(int[] key)
         {
             int[] keyCopy = new int[key.Length];
             Array.Copy(key, 0, keyCopy, 0, key.Length);
@@ -304,7 +298,7 @@ namespace AI.ML.HMM
         }
 
         // Создание вектора
-        private void CreateVector() 
+        private void CreateVector()
         {
             // Создание карты
             _map.Clear();
@@ -313,7 +307,7 @@ namespace AI.ML.HMM
                 foreach (var ends in item.Value)
                     _map.Add(new McMapElement(item.Key, ends.Key));
             // вероятностный вектор
-            ProbabilityVector = new Vector(_map.Count); 
+            ProbabilityVector = new Vector(_map.Count);
             // Создание вектора вероятностей
             for (int i = 0; i < _map.Count; i++)
                 ProbabilityVector[i] = _dataMC[_map[i].KeyStart][_map[i].KeyEnd];
@@ -325,7 +319,7 @@ namespace AI.ML.HMM
         /// <param name="start">Начальная последовательность</param>
         public MCNextToken[] CalculateProbabilityNGramm(List<int> start)
         {
-            int index = start.Count - NGram+1;
+            int index = start.Count - NGram + 1;
             int lenBuff = NGram - 1;
             int[] buffNgMinus1 = new int[lenBuff];
 
@@ -363,13 +357,13 @@ namespace AI.ML.HMM
         }
 
         // Получить выходной массив
-        private int[] ToOutArray(List<int> listWithStart, int startLen) 
+        private int[] ToOutArray(List<int> listWithStart, int startLen)
         {
-            int lenBuff = NGram - 1;
+            _ = NGram - 1;
             int[] outArray = new int[listWithStart.Count - startLen];
 
             for (int i = startLen; i < listWithStart.Count; i++)
-                outArray[i- startLen] = listWithStart[i];
+                outArray[i - startLen] = listWithStart[i];
 
             return outArray;
         }
@@ -396,7 +390,7 @@ namespace AI.ML.HMM
             /// </summary>
             /// <param name="keyStart">Ключ начала n-gramm</param>
             /// <param name="keyEnd">Ключ завершения n-gramm</param>
-            public McMapElement(int[] keyStart, int keyEnd) 
+            public McMapElement(int[] keyStart, int keyEnd)
             {
                 KeyStart = keyStart;
                 KeyEnd = keyEnd;

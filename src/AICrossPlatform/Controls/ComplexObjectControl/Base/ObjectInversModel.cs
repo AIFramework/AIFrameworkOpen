@@ -2,9 +2,6 @@
 using AI.ML.NeuralNetwork.CoreNNW.Activations;
 using AI.ML.Regression;
 using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.Controls.ComplexObjectControl.Base
 {
@@ -24,14 +21,14 @@ namespace AI.Controls.ComplexObjectControl.Base
         /// </summary>
         public ObjectInversModel() { }
 
-       
+
 
         /// <summary>
         /// Получение управляющего воздействия, способного вызвать нужную реакцию
         /// </summary>
         /// <param name="state"></param>
         /// <returns></returns>
-        public virtual Vector GetControl(Vector state) 
+        public virtual Vector GetControl(Vector state)
         {
             return MultyRegression.Predict(state);
         }
@@ -40,7 +37,7 @@ namespace AI.Controls.ComplexObjectControl.Base
         /// Обучение модели
         /// </summary>
         /// <param name="dataset"></param>
-        public virtual void Train(ObjModelDataset dataset) 
+        public virtual void Train(ObjModelDataset dataset)
         {
             MultyRegression.Train(dataset.States.ToArray(), dataset.ControlActions.ToArray());
         }

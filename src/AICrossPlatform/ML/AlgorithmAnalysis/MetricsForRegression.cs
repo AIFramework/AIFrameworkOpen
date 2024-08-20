@@ -22,14 +22,14 @@ namespace AI.ML.AlgorithmAnalysis
 
             for (int i = 0; i < targ.Shape.Count; i++)
                 ts += data[i];
-            
+
             return ts;
         }
 
         /// <summary>
         /// Усредненная метрика
         /// </summary>
-        private static double AvMetric(IEnumerable<IAlgebraicStructure<double> > target, IEnumerable<IAlgebraicStructure<double> > output, Func<IAlgebraicStructure<double> , IAlgebraicStructure<double> , double> metric)
+        private static double AvMetric(IEnumerable<IAlgebraicStructure<double>> target, IEnumerable<IAlgebraicStructure<double>> output, Func<IAlgebraicStructure<double>, IAlgebraicStructure<double>, double> metric)
         {
             int len = target.Count();
             double ret = 0;
@@ -88,7 +88,7 @@ namespace AI.ML.AlgorithmAnalysis
 
             for (int i = 0; i < output.Shape.Count; i++)
                 ret += Math.Abs(dataO[i] - dataT[i]) / Math.Abs(dataT[i] + _eps);
-            
+
 
             return ret / output.Shape.Count;
         }
@@ -176,7 +176,7 @@ namespace AI.ML.AlgorithmAnalysis
 
             for (int i = 0; i < output.Shape.Count; i++)
                 ret += dataO[i] - dataT[i];
-            
+
 
             return ret / output.Shape.Count;
         }

@@ -31,7 +31,7 @@ namespace AI.Algorithms.TransportTask.PlanBuilders
                 int selectedRow = -1, selectedCol = -1;
                 bool isRowSelected = true;
 
-                // Row penalties
+                // Штрафы по строкам
                 for (int i = 0; i < rows; i++)
                 {
                     if (supplyCopy[i] == 0) continue;
@@ -50,7 +50,7 @@ namespace AI.Algorithms.TransportTask.PlanBuilders
                     }
                 }
 
-                // Column penalties
+                // Штрафы по столбцам
                 for (int j = 0; j < cols; j++)
                 {
                     if (demandCopy[j] == 0) continue;
@@ -69,20 +69,16 @@ namespace AI.Algorithms.TransportTask.PlanBuilders
                     }
                 }
 
-                if (isRowSelected)
-                {
-                    selectedCol = Enumerable.Range(0, cols)
+                if (isRowSelected) selectedCol = Enumerable.Range(0, cols)
                                             .Where(j => demandCopy[j] > 0)
                                             .OrderBy(j => costs[selectedRow, j])
                                             .First();
-                }
-                else
-                {
-                    selectedRow = Enumerable.Range(0, rows)
+                
+                else selectedRow = Enumerable.Range(0, rows)
                                             .Where(i => supplyCopy[i] > 0)
                                             .OrderBy(i => costs[i, selectedCol])
                                             .First();
-                }
+                
 
                 double allocationValue = Math.Min(supplyCopy[selectedRow], demandCopy[selectedCol]);
                 allocation[selectedRow, selectedCol] = allocationValue;

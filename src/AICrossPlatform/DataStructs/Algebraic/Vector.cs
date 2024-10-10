@@ -574,7 +574,7 @@ namespace AI.DataStructs.Algebraic
         /// </summary>
         public static implicit operator double[](Vector vector)
         {
-            return vector.ToArray();
+            return vector?.ToArray();
         }
 
         /// <summary>

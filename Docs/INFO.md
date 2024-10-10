@@ -3,7 +3,6 @@
 #### Contributors:
 * Zahar A. Ponimash 
 * Potanin Marat
-* Arthur Matsur
 
 LICENSE:
 Apache 2.0  

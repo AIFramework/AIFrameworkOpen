@@ -59,7 +59,7 @@ namespace AI.Charts.ChartElements
 
             for (int j = 0; j < xN.Count; j++)
             {
-                Series.Points.AddXY(xN[j], yN[j]);
+                _ = Series.Points.AddXY(xN[j], yN[j]);
             }
         }
     }

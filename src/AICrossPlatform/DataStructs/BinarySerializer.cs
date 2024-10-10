@@ -108,7 +108,7 @@ namespace AI.DataStructs
 
             if (!Directory.Exists(dir))
             {
-                Directory.CreateDirectory(dir);
+                _ = Directory.CreateDirectory(dir);
             }
 
             using Stream stream = File.Open(filePath, FileMode.Create);

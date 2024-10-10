@@ -112,8 +112,7 @@ namespace AI.ComputerVision
             }
 
             cV = cV.CutAndZero(n);
-
-            Vector modules = cV.MagnitudeVector;
+            _ = cV.MagnitudeVector;
             Vector phases = cV.PhaseVector;
 
             return phases;//Vector.Concatinate(new Vector[]{modules, phases});

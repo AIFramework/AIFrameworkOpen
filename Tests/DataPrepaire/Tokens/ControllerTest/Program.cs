@@ -135,7 +135,7 @@ namespace ControllerTest
 
             double prob;// вероятности на каждом шаге
 
-            int ind = AI.Statistics.RandomItemSelection<int>.GetIndex(outp, rnd);
+            int ind = AI.Statistics.RandomItemSelection.GetIndex(outp, rnd);
             listChar.Add(ind);
             int count = 0;
 
@@ -144,7 +144,7 @@ namespace ControllerTest
             while (ind != end_token && count < 60)
             {
                 outp = nNW.Forward(new NNValue(new Vector((double)ind)), graph).ToVector();
-                ind = AI.Statistics.RandomItemSelection<int>.GetIndex(outp * outp, rnd);
+                ind = AI.Statistics.RandomItemSelection.GetIndex(outp * outp, rnd);
                 prob *= outp[ind];
                 listChar.Add(ind);
                 count++;

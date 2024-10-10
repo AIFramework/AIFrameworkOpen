@@ -1,15 +1,15 @@
-﻿using AI.DataStructs.Algebraic;
+﻿using AI.DataStructs;
+using AI.DataStructs.Algebraic;
+using AI.DataStructs.Shapes;
+using AI.ML.NeuralNetwork;
+using AI.ML.NeuralNetwork.CoreNNW;
+using AI.ML.NeuralNetwork.CoreNNW.Activations;
+using AI.ML.NeuralNetwork.CoreNNW.Layers;
 using AI.ML.NeuralNetwork.CoreNNW.Loss;
 using AI.ML.NeuralNetwork.CoreNNW.Models;
 using AI.ML.NeuralNetwork.CoreNNW.Optimizers;
-using AI.ML.NeuralNetwork.CoreNNW;
-using System;
-using AI.ML.NeuralNetwork.CoreNNW.Layers;
-using AI.ML.NeuralNetwork.CoreNNW.Activations;
-using AI.ML.NeuralNetwork;
-using AI.DataStructs.Shapes;
 using AI.Statistics;
-using AI.DataStructs;
+using System;
 
 namespace AI.ML.Regression
 {
@@ -19,7 +19,7 @@ namespace AI.ML.Regression
     [Serializable]
     public class NeuralMultyRegression : IMultyRegression<Vector>
     {
-        private Random _rnd = new Random();
+        private readonly Random _rnd = new Random();
         private readonly NNW _net;
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace AI.ML.Regression
         /// <param name="outputDim">Число выходов</param>
         /// <param name="h">Количество нейронов на скрытом слое, если 0 - то сеть не имеет скрытого слоя</param>
         /// <param name="activationH">Активация скрытого слоя</param>
-        public NeuralMultyRegression(int inputDim, int outputDim, int h = 0, IActivation activationH = null) 
+        public NeuralMultyRegression(int inputDim, int outputDim, int h = 0, IActivation activationH = null)
         {
             _net = new NNW();
 
@@ -92,7 +92,7 @@ namespace AI.ML.Regression
                 _net.AddNewLayer(new Shape3D(inputDim), new FeedForwardLayer(outputDim, new LinearUnit()));
             else
             {
-                if(activationH == null)
+                if (activationH == null)
                     _net.AddNewLayer(new Shape3D(inputDim), new FeedForwardLayer(h, new ReLU(0.1)));
                 else
                     _net.AddNewLayer(new Shape3D(inputDim), new FeedForwardLayer(h, activationH));
@@ -119,7 +119,7 @@ namespace AI.ML.Regression
 
         private Vector Scale(Vector data, Vector m, Vector std)
         {
-            return (data - m) / std ;
+            return (data - m) / std;
         }
 
         private Vector DeScale(Vector data, Vector m, Vector std)
@@ -161,13 +161,13 @@ namespace AI.ML.Regression
             }
 
 
-            manager.TrainNet(inp, outp);
+            _ = manager.TrainNet(inp, outp);
         }
 
         /// <summary>
         /// Сохранение в бинарный файл
         /// </summary>
-        public void Save(string path) 
+        public void Save(string path)
         {
             BinarySerializer.Save(path, this);
         }
@@ -175,7 +175,7 @@ namespace AI.ML.Regression
         /// <summary>
         /// Загрузка из бинарного файла
         /// </summary>
-        public static NeuralMultyRegression LoadFromFile(string path) 
+        public static NeuralMultyRegression LoadFromFile(string path)
         {
             return BinarySerializer.Load<NeuralMultyRegression>(path);
         }

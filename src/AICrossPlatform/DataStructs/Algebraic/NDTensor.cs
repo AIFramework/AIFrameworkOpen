@@ -12,7 +12,7 @@ namespace AI.DataStructs.Algebraic
     /// </summary>
     [Serializable]
     [DebuggerDisplay("Shape = {Shape.ToString(),nq}")]
-    public class NDTensor : IAlgebraicStructure<double> , IEquatable<NDTensor>, ISavable, IByteConvertable
+    public class NDTensor : IAlgebraicStructure<double>, IEquatable<NDTensor>, ISavable, IByteConvertable
     {
         #region Поля и свойства
         private readonly int[] _volumes;
@@ -86,7 +86,7 @@ namespace AI.DataStructs.Algebraic
         /// </summary>
         public static bool operator !=(NDTensor left, NDTensor right)
         {
-            return !(left==right);
+            return !(left == right);
         }
         /// <summary>
         /// Сложение
@@ -309,7 +309,7 @@ namespace AI.DataStructs.Algebraic
             var ret = new NDTensor(left.Shape);
 
             for (int i = 0; i < ret.Data[i]; i++)
-                ret.Data[i] = left.Data[i]  % right;
+                ret.Data[i] = left.Data[i] % right;
 
             return ret;
         }
@@ -319,7 +319,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Преобразование в вектор
         /// </summary>
-        public Vector ToVector() 
+        public Vector ToVector()
         {
             return new Vector(Data);
         }
@@ -328,7 +328,7 @@ namespace AI.DataStructs.Algebraic
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public NNValue ToNNTensor() 
+        public NNValue ToNNTensor()
         {
             if (Shape.Rank > 3)
                 throw new Exception("Тензор не может быть преобразован в переменную нейросети, т.к. его ранг больше 3х");
@@ -338,7 +338,7 @@ namespace AI.DataStructs.Algebraic
         /// <summary>
         /// Перевод в тензор
         /// </summary>
-        public Tensor ToTensor() 
+        public Tensor ToTensor()
         {
             if (Shape.Rank > 3)
                 throw new Exception("Тензор не может быть преобразован в переменную нейросети, т.к. его ранг больше 3х");
@@ -356,7 +356,7 @@ namespace AI.DataStructs.Algebraic
             if (Shape.Rank > 2)
                 throw new Exception("Невозможно представить матрицей, ранг > 2");
 
-            Matrix matrix = Shape.Rank == 2? new Matrix(Shape[0], Shape[1]) : new Matrix(Shape[0], 1);
+            Matrix matrix = Shape.Rank == 2 ? new Matrix(Shape[0], Shape[1]) : new Matrix(Shape[0], 1);
             matrix.Data = Data;
             return matrix;
         }
@@ -364,7 +364,7 @@ namespace AI.DataStructs.Algebraic
         /// Изменение формы
         /// </summary>
         /// <param name="new_shape">Новая форма</param>
-        public NDTensor Reshape(Shape new_shape) 
+        public NDTensor Reshape(Shape new_shape)
         {
             if (new_shape.Count != Shape.Count)
                 throw new Exception("Невозможно выполнить изменение формы, число элементов старой формы не равно числу элементов новой");
@@ -507,7 +507,7 @@ namespace AI.DataStructs.Algebraic
                 throw new ArgumentNullException(nameof(dataStream));
             }
 
-            dataStream.SkipIfEqual(KeyWords.NDTensor).ReadInts(out int[] shapeVals).ReadDoubles(out double[] tData);
+            _ = dataStream.SkipIfEqual(KeyWords.NDTensor).ReadInts(out int[] shapeVals).ReadDoubles(out double[] tData);
             NDTensor tensor = new NDTensor(shapeVals)
             {
                 Data = tData
@@ -530,6 +530,6 @@ namespace AI.DataStructs.Algebraic
         }
         #endregion
 
-        
+
     }
 }

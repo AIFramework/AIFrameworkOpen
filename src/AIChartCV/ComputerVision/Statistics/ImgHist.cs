@@ -5,7 +5,7 @@ namespace AI.ComputerVision.Statistics
     /// <summary>
     /// Работа с гистограммами изображений
     /// </summary>
-    
+
     public static class ImgHist
     {
         /// <summary>

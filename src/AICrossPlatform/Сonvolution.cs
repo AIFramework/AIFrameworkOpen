@@ -1,5 +1,4 @@
-﻿using AI.DataStructs.Algebraic;
-using AI.DataStructs.WithComplexElements;
+﻿using AI.DataStructs.WithComplexElements;
 using AI.HightLevelFunctions;
 using System;
 using System.Numerics;

@@ -11,7 +11,7 @@
         byte[] GetBytes();
     }
 
-    internal static class KeyWords
+    public static class KeyWords
     {
         public const string Vector = "vect";
         public const string Matrix = "matr";

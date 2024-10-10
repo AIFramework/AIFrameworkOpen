@@ -1,5 +1,4 @@
-﻿using AI.DataStructs.Algebraic;
-using AI.DataStructs.WithComplexElements;
+﻿using AI.DataStructs.WithComplexElements;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -56,11 +55,11 @@ namespace AI
             int n = vect1.Count - window;
 
             List<double> DoubList = new List<double>();
-            double[] data = new double[window];
+            _ = new double[window];
 
             for (int i = 0; i < n; i++)
             {
-                data = new double[window];
+                double[] data = new double[window];
                 input = vect1.CutAndZero(i + window);
                 Array.Copy(input.ToArray(), i, data, 0, window);
                 input = new Vector(data);

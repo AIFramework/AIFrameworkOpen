@@ -37,7 +37,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 
         private float Forward(float x)
         {
-            return Alpha*(float)(1.0 / (1 + Math.Exp(-(Beta * x -Epsilon))));
+            return Alpha * (float)(1.0 / (1 + Math.Exp(-(Beta * x - Epsilon))));
         }
 
         private float Backward(float x)

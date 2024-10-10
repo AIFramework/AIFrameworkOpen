@@ -529,29 +529,29 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             if (DifData == null)
             {
-                stream.Write('\0');
+                _ = stream.Write('\0');
             }
             else
             {
-                stream.Write(DifData);
+                _ = stream.Write(DifData);
             }
 
             if (StepCache == null)
             {
-                stream.Write('\0');
+                _ = stream.Write('\0');
             }
             else
             {
-                stream.Write(StepCache);
+                _ = stream.Write(StepCache);
             }
 
             if (StepCache2 == null)
             {
-                stream.Write('\0');
+                _ = stream.Write('\0');
             }
             else
             {
-                stream.Write(StepCache2);
+                _ = stream.Write(StepCache2);
             }
 
             return stream.AsByteArray();
@@ -590,7 +590,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
         /// <returns></returns>
         public static NNValue FromDataStream(InMemoryDataStream stream)
         {
-            stream.SkipIfEqual(KeyWords.NNValue).ReadInts(out int[] shape).ReadFloats(out float[] valData);
+            _ = stream.SkipIfEqual(KeyWords.NNValue).ReadInts(out int[] shape).ReadFloats(out float[] valData);
             float[] difData = stream.NullIfEqual('\0').ReadFloats();
             float[] stepCache = stream.NullIfEqual('\0').ReadFloats();
             float[] stepCache2 = stream.NullIfEqual('\0').ReadFloats();
@@ -603,7 +603,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW
             };
             return result;
         }
-        
+
         /// <summary>
         /// Модификация (только использование), убирает массивы кэшей и данные производных
         /// что облегчает модель в 4 раза
@@ -655,20 +655,20 @@ namespace AI.ML.NeuralNetwork.CoreNNW
 
             for (int k = 0; k < Shape.Depth; k++)
             {
-                sb.Append("Deep #");
-                sb.Append(k + 1);
-                sb.AppendLine(":");
+                _ = sb.Append("Deep #");
+                _ = sb.Append(k + 1);
+                _ = sb.AppendLine(":");
 
                 for (int i = 0; i < Shape.Height; i++)
                 {
-                    sb.Append("[");
+                    _ = sb.Append("[");
                     for (int j = 0; j < Shape.Width; j++)
                     {
-                        sb.Append(this[i, j, k].ToString(provider));
-                        sb.Append(" ");
+                        _ = sb.Append(this[i, j, k].ToString(provider));
+                        _ = sb.Append(" ");
                     }
                     sb.Length--;
-                    sb.AppendLine("]");
+                    _ = sb.AppendLine("]");
                 }
             }
 

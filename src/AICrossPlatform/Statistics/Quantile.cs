@@ -56,8 +56,8 @@ namespace AI.Statistics
             double[] data = new double[structure.Shape.Count];
             Array.Copy(structure.Data, data, data.Length);
 
-            if (q > 1)       q = 1;
-            else if (q < 0)  q = 0;
+            if (q > 1) q = 1;
+            else if (q < 0) q = 0;
 
             int ordinal = (int)(q * data.Length - 1);
             return QuickSelection<double>.Selection(data, ordinal);
@@ -89,14 +89,14 @@ namespace AI.Statistics
             while (e > s)
             {
                 int j = Partitions(data, s, e);
-                if (j < orderStatistic)      s = j + 1;
+                if (j < orderStatistic) s = j + 1;
                 else if (j > orderStatistic) e = j - 1;
                 else return data[orderStatistic];
             }
             return data[orderStatistic];
         }
 
-   
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int Partitions(T[] data, int s, int e)
         {

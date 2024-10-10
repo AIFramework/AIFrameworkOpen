@@ -2,10 +2,6 @@
 using AI.HightLevelFunctions;
 using AI.Statistics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.Dog.Tools
 {
@@ -21,13 +17,13 @@ namespace AI.Dog.Tools
         /// <param name="bools">Массив байт</param>
         /// <param name="min">Минимальное значение</param>
         /// <param name="max">Максимальное значение</param>
-        public static Vector Bools2Vect(bool[] bools, double min = -1, double max = 1) 
+        public static Vector Bools2Vect(bool[] bools, double min = -1, double max = 1)
         {
             Vector vector = new Vector(bools.Length) + min;
 
             for (int i = 0; i < bools.Length; i++)
                 if (bools[i]) vector[i] = max;
-            
+
             return vector;
         }
 

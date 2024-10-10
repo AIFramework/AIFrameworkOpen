@@ -122,6 +122,10 @@
       <Project>{d5d79045-8651-46fc-8994-30f7873ff1e8}</Project>
       <Name>AI.DataPrepaire</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AI.DSP\AI.DSP.csproj">
+      <Project>{88021186-88ae-4460-97bb-ba6122c27126}</Project>
+      <Name>AI.DSP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AI.ONNX\AI.ONNX.csproj">
       <Project>{24bb688c-ede8-4423-b709-d4a268843bf8}</Project>
       <Name>AI.ONNX</Name>

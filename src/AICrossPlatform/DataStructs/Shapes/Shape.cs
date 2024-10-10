@@ -185,15 +185,15 @@ namespace AI.DataStructs.Shapes
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("[");
+            _ = sb.Append("[");
 
             for (int i = 0; i < Rank; i++)
             {
-                sb.Append($"D{i}: {_values[i]}, ");
+                _ = sb.Append($"D{i}: {_values[i]}, ");
             }
 
             sb.Length -= 2;
-            sb.Append("]");
+            _ = sb.Append("]");
 
             return sb.ToString();
         }

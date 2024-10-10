@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AI.Statistics.MonteCarlo
 {
@@ -10,7 +8,7 @@ namespace AI.Statistics.MonteCarlo
     [Serializable]
     public class SimulatedAnnealing
     {
-        Random rnd;
+        private readonly Random rnd;
 
         /// <summary>
         /// Предыдущая ошибка

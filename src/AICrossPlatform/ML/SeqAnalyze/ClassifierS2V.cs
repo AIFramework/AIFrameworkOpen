@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AI.ML.SeqAnalyze
 {
@@ -22,7 +21,7 @@ namespace AI.ML.SeqAnalyze
         /// </summary>
         /// <param name="ints">Вход</param>
         /// <returns></returns>
-        public Vector this[int[] ints] 
+        public Vector this[int[] ints]
         {
             get { return _s2v[ints]; }
             set { _s2v[ints] = value; }
@@ -45,7 +44,7 @@ namespace AI.ML.SeqAnalyze
         /// Число классов
         /// </summary>
         public int NumCl;
-        private S2VClType _s2VClType;
+        private readonly S2VClType _s2VClType;
 
 
         /// <summary>
@@ -55,7 +54,7 @@ namespace AI.ML.SeqAnalyze
         /// <param name="max_n_gramm">Максимальная длинна n-граммы</param>
         /// <param name="top_p">Значение до которого должна дойти интегральное значение важности после сортировки</param>
         /// <param name="s2VClType">Тип классификатора, одноклассовый/многоклассовый</param>
-        public ClassifierS2V(int nCl, int max_n_gramm, double top_p = 0.75, S2VClType s2VClType = S2VClType.OneClassPredict) 
+        public ClassifierS2V(int nCl, int max_n_gramm, double top_p = 0.75, S2VClType s2VClType = S2VClType.OneClassPredict)
         {
             _s2v = new States2Vector(max_n_gramm, top_p);
             NumCl = nCl;
@@ -69,14 +68,14 @@ namespace AI.ML.SeqAnalyze
         /// <summary>
         /// Обучение классификатора
         /// </summary>
-        public void Train(IEnumerable<int[]> states, IEnumerable<int> classes) 
+        public void Train(IEnumerable<int[]> states, IEnumerable<int> classes)
         {
             Vector[] targets = new Vector[classes.Count()];
             int[][] statesArray = states.ToArray();
             int i = 0;
 
             foreach (var item in classes)
-                targets[i++] = Vector.OneHotPol(item, NumCl-1);
+                targets[i++] = Vector.OneHotPol(item, NumCl - 1);
 
             _s2v.Train(statesArray, targets);
         }
@@ -92,7 +91,7 @@ namespace AI.ML.SeqAnalyze
         /// <param name="membership_cl_coef"></param>
         /// <param name="top_p">Значение до которого должна дойти интегральное значение важности после сортировки</param>
         /// <param name="s2VClType">Тип классификатора, одноклассовый/многоклассовый</param>
-        public ClassifierS2V CreateClassifierS2V(List<int[]>[] cls, int max_n_gramm, double membership_cl_coef = 300, double top_p = 0.75, S2VClType s2VClType = S2VClType.OneClassPredict) 
+        public ClassifierS2V CreateClassifierS2V(List<int[]>[] cls, int max_n_gramm, double membership_cl_coef = 300, double top_p = 0.75, S2VClType s2VClType = S2VClType.OneClassPredict)
         {
             ClassifierS2V classifier = new ClassifierS2V(cls.Length, max_n_gramm, top_p, s2VClType);
             var data = new List<Tuple<int[], Vector>>();
@@ -100,7 +99,7 @@ namespace AI.ML.SeqAnalyze
             for (int i = 0; i < cls.Length; i++)
             {
                 // Вектор элемента класса
-                Vector cl = Vector.OneHotBePol(i, cls.Length-1)*membership_cl_coef;
+                Vector cl = Vector.OneHotBePol(i, cls.Length - 1) * membership_cl_coef;
 
                 for (int j = 0; j < cls[i].Count; j++)
                     data.Add(new Tuple<int[], Vector>(cls[i][j], cl.Clone())); // Добавление данных класса
@@ -115,7 +114,7 @@ namespace AI.ML.SeqAnalyze
         /// Получение вектора вероятностей принадлежности к классу
         /// </summary>
         /// <param name="input">Вход (Последовательность состояний)</param>
-        public Vector ClassifyProbVector(IEnumerable<int> input) 
+        public Vector ClassifyProbVector(IEnumerable<int> input)
         {
             var inp = input.ToArray();
             return _s2v.Predict(inp);
@@ -126,7 +125,7 @@ namespace AI.ML.SeqAnalyze
         /// </summary>
         /// <param name="input">Вход (Последовательность состояний)</param>
         /// <returns></returns>
-        public int[] Classify(IEnumerable<int> input) 
+        public int[] Classify(IEnumerable<int> input)
         {
             var probs = ClassifyProbVector(input);
 
@@ -140,13 +139,13 @@ namespace AI.ML.SeqAnalyze
 
                 var retArr = output.ToArray();
 
-                return retArr.Length > 0? retArr: new[] { -1};
+                return retArr.Length > 0 ? retArr : new[] { -1 };
             }
-            else 
+            else
             {
                 int ind = probs.MaxElementIndex();
                 ind = probs[ind] >= Treshold ? ind : -1;
-                return new[] { ind};
+                return new[] { ind };
             }
         }
 
@@ -169,9 +168,9 @@ namespace AI.ML.SeqAnalyze
         /// <param name="states"></param>
         /// <param name="cl_mark"></param>
         /// <param name="gain"></param>
-        public void AddRuleCl(int[] states, int cl_mark, double gain = 100) 
+        public void AddRuleCl(int[] states, int cl_mark, double gain = 100)
         {
-            var dat = gain*Vector.OneHotPol(cl_mark, NumCl - 1);
+            var dat = gain * Vector.OneHotPol(cl_mark, NumCl - 1);
             this[states] = dat;
         }
     }
@@ -179,7 +178,7 @@ namespace AI.ML.SeqAnalyze
     /// <summary>
     /// Тип классификатора s2v
     /// </summary>
-    public enum S2VClType 
+    public enum S2VClType
     {
         /// <summary>
         /// Предсказание одного класса по входу

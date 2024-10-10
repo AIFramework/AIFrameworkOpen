@@ -392,7 +392,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Train
                 }
             }
 
-          //  Console.WriteLine($"Реальный лосс {loss/ seq.Steps.Count}");
+            //  Console.WriteLine($"Реальный лосс {loss/ seq.Steps.Count}");
 
         }
         // Обратный проход по графу и обновление коэффииентов модели

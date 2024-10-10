@@ -1,6 +1,4 @@
-﻿using AI.DataStructs.WithComplexElements;
-using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace AI
 {
@@ -15,11 +13,6 @@ namespace AI
         /// Глобальный эпсилон(смещение) (по-умолчанию = 1e-80)
         /// </summary>
         public static double GlobalEps { get; set; } = 1e-80;
-
-        /// <summary>
-        /// Базовая функция БПФ
-        /// </summary>
-        public static Func<ComplexVector, bool, ComplexVector> FFTCore { get; set; } = FFT.BaseStaticFFT;
 
         static AISettings()
         {

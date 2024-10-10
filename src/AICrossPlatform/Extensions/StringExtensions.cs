@@ -22,8 +22,8 @@ namespace AI.Extensions
 
             for (int i = 0, max = array.Length; i < max; i++)
             {
-                stringBuilder.Append(array[i]);
-                stringBuilder.Append(separator);
+                _ = stringBuilder.Append(array[i]);
+                _ = stringBuilder.Append(separator);
             }
 
             return stringBuilder.ToString().Trim(' ');
@@ -37,8 +37,8 @@ namespace AI.Extensions
 
             for (int i = 0, max = array.Length; i < max; i++)
             {
-                stringBuilder.Append(array[i].ToString(provider));
-                stringBuilder.Append(separator);
+                _ = stringBuilder.Append(array[i].ToString(provider));
+                _ = stringBuilder.Append(separator);
             }
 
             return stringBuilder.ToString().Trim(' ');
@@ -53,8 +53,8 @@ namespace AI.Extensions
 
             for (int i = 0, max = array.Length; i < max; i++)
             {
-                stringBuilder.Append(array[i].ToString(provider));
-                stringBuilder.Append(separator);
+                _ = stringBuilder.Append(array[i].ToString(provider));
+                _ = stringBuilder.Append(separator);
             }
 
             return stringBuilder.ToString().Trim(' ');
@@ -69,8 +69,8 @@ namespace AI.Extensions
 
             for (int i = 0, max = array.Length; i < max; i++)
             {
-                stringBuilder.Append(array[i].ToString(provider));
-                stringBuilder.Append(separator);
+                _ = stringBuilder.Append(array[i].ToString(provider));
+                _ = stringBuilder.Append(separator);
             }
 
             return stringBuilder.ToString().Trim(' ');

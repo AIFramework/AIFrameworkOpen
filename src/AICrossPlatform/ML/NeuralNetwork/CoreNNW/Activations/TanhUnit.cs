@@ -32,7 +32,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 
         private float Forward(float x)
         {
-            return Alpha * (float)Math.Tanh(Beta*x);
+            return Alpha * (float)Math.Tanh(Beta * x);
         }
 
         private float Backward(float x)

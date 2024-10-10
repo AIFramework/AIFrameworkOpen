@@ -74,7 +74,7 @@ namespace AI.Charts.ChartElements
         {
             if (_chart.InvokeRequired)
             {
-                _chart.BeginInvoke((MethodInvoker)(() =>
+                _ = _chart.BeginInvoke((MethodInvoker)(() =>
                 {
                     Series.Points.Clear();
 
@@ -100,7 +100,7 @@ namespace AI.Charts.ChartElements
 
                     for (int j = 0; j < xN.Count; j++)
                     {
-                        Series.Points.AddXY(xN[j], yN[j]);
+                        _ = Series.Points.AddXY(xN[j], yN[j]);
                     }
                 }));
             }
@@ -130,7 +130,7 @@ namespace AI.Charts.ChartElements
 
                 for (int j = 0; j < xN.Count; j++)
                 {
-                    Series.Points.AddXY(xN[j], yN[j]);
+                    _ = Series.Points.AddXY(xN[j], yN[j]);
                 }
             }
         }

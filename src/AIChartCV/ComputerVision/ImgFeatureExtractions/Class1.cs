@@ -2,11 +2,7 @@
 using AI.DataStructs.Algebraic;
 using AI.ONNX;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.ComputerVision.ImgFeatureExtractions
 {
@@ -16,9 +12,9 @@ namespace AI.ComputerVision.ImgFeatureExtractions
     [Serializable]
     public class ImgOnnxExtractor : FeaturesExtractor<Bitmap>
     {
-        Tensor2Tensor emb;
-        Vector _mean, _std;
-        int _h, _w;
+        private readonly Tensor2Tensor emb;
+        private readonly Vector _mean, _std;
+        private readonly int _h, _w;
 
         /// <summary>
         /// Извлечение признаков на базе onnx модели
@@ -39,7 +35,7 @@ namespace AI.ComputerVision.ImgFeatureExtractions
         /// <returns></returns>
         public override Vector GetFeatures(Bitmap data)
         {
-            var inpTensor = ImageMatrixConverter.BmpToTensor(new Bitmap(data, _w, _h))/255;
+            var inpTensor = ImageMatrixConverter.BmpToTensor(new Bitmap(data, _w, _h)) / 255;
             var transformTensor = new Tensor(_h, _w, inpTensor.Depth);
 
             for (int i = 0; i < inpTensor.Height; i++)

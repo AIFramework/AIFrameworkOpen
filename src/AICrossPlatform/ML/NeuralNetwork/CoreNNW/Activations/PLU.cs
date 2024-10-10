@@ -39,7 +39,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Activations
 
         private float Forward(float x)
         {
-            return (x >= -_max && x <= _max)? x : _slope*x;
+            return (x >= -_max && x <= _max) ? x : _slope * x;
         }
 
         private float Backward(float x)

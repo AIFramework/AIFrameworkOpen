@@ -47,12 +47,12 @@ namespace AI.NLP
             List<char> charsADigit = new List<char>();
 
             string outp = Normalize(input, isLower);
-            outp = isLower? outp.ToLower() : outp;
+            outp = isLower ? outp.ToLower() : outp;
 
             for (int i = 0; i < outp.Length; i++)
                 if (char.IsLetterOrDigit(outp[i]) || outp[i] == ' ')
                     charsADigit.Add(outp[i]);
-                
+
 
             string output = new string(charsADigit.ToArray());
 
@@ -127,8 +127,8 @@ namespace AI.NLP
             for (int i = 0; i < strs.Length; i++)
                 if (strs[i] != oldWord)
                 {
-                    stringBuilder.Append(strs[i]);
-                    stringBuilder.Append(" ");
+                    _ = stringBuilder.Append(strs[i]);
+                    _ = stringBuilder.Append(" ");
                     oldWord = strs[i];
                 }
 
@@ -149,10 +149,10 @@ namespace AI.NLP
             string[] words = preprocessingString(input).Split(' ');
 
             for (int i = 0; i < words.Length; i++)
-                if (!set.Contains(words[i]) && appendWord(words[i])) set.Add(
+                if (!set.Contains(words[i]) && appendWord(words[i])) _ = set.Add(
                     preprocessingWord(words[i])
                     );
-            
+
             return set;
         }
 

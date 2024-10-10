@@ -12,7 +12,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
     /// Слой для создания и обучения векторов встранивания
     /// </summary>
     [Serializable]
-    public class EmbedingLayer : ILearningLayer, IRecurrentLayer,IActivatableLayer
+    public class EmbedingLayer : ILearningLayer, IRecurrentLayer, IActivatableLayer
     {
         private NNValue[] _vectors; // Вектора встраивания (эмбединги)
         private readonly HashSet<int> _usedKeys = new HashSet<int>();
@@ -104,7 +104,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
 
             if (!_usedKeys.Contains(index) && g.IsBackward)
             {
-                _usedKeys.Add(index);
+                _ = _usedKeys.Add(index);
             }
 
             return g.Activate(ActivationFunction, _vectors[index]);

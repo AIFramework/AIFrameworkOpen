@@ -94,7 +94,7 @@ namespace AI.ML.Classifiers
                 outps[i] = Vector.OneHotPol(classes[i], maxInd);
             }
 
-            manager.TrainNet(features, outps);
+            _ = manager.TrainNet(features, outps);
         }
     }
 }

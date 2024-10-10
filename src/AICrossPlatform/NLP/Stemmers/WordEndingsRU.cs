@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AI.NLP.Stemmers
 {
@@ -14,7 +12,7 @@ namespace AI.NLP.Stemmers
         /// Получение окончаний слов
         /// </summary>
         /// <param name="text">Текст входа</param>
-        public static string[] Endings(string text) 
+        public static string[] Endings(string text)
         {
             string std_text = TextStandard.OnlyRusChars(text);
             string[] words = std_text.Split(' '); // слова
@@ -25,7 +23,7 @@ namespace AI.NLP.Stemmers
                 {
                     endings[i] = words[i].Diff(StemmerRus.TransformingWord(words[i]));
                 }
-                catch 
+                catch
                 {
                     endings[i] = "";
                 }

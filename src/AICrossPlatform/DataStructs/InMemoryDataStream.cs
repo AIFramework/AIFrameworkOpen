@@ -208,7 +208,7 @@ namespace AI.DataStructs
                 throw new ArgumentNullException(nameof(str));
             }
 
-            Write(str, Encoding.UTF8);
+            _ = Write(str, Encoding.UTF8);
             return this;
         }
         /// <summary>
@@ -223,7 +223,7 @@ namespace AI.DataStructs
                 throw new ArgumentNullException(nameof(str));
             }
 
-            WriteOnlyContent(str, Encoding.UTF8);
+            _ = WriteOnlyContent(str, Encoding.UTF8);
             return this;
         }
         /// <summary>
@@ -245,7 +245,7 @@ namespace AI.DataStructs
             }
 
             byte[] arr = encoding.GetBytes(str);
-            Write(arr.Length);
+            _ = Write(arr.Length);
             WriteInternal(arr);
             return this;
         }
@@ -286,7 +286,7 @@ namespace AI.DataStructs
                 throw new ArgumentNullException(nameof(arr));
             }
 
-            Write(arr.Length);
+            _ = Write(arr.Length);
             WriteInternal(arr);
             return this;
         }
@@ -302,8 +302,8 @@ namespace AI.DataStructs
                 throw new ArgumentNullException(nameof(arr));
             }
 
-            Write(arr.Length);
-            WriteOnlyContent(arr);
+            _ = Write(arr.Length);
+            _ = WriteOnlyContent(arr);
             return this;
         }
         /// <summary>
@@ -318,8 +318,8 @@ namespace AI.DataStructs
                 throw new ArgumentNullException(nameof(arr));
             }
 
-            Write(arr.Length);
-            WriteOnlyContent(arr);
+            _ = Write(arr.Length);
+            _ = WriteOnlyContent(arr);
             return this;
         }
         /// <summary>
@@ -334,8 +334,8 @@ namespace AI.DataStructs
                 throw new ArgumentNullException(nameof(arr));
             }
 
-            Write(arr.Length);
-            WriteOnlyContent(arr);
+            _ = Write(arr.Length);
+            _ = WriteOnlyContent(arr);
             return this;
         }
         /// <summary>
@@ -350,8 +350,8 @@ namespace AI.DataStructs
                 throw new ArgumentNullException(nameof(arr));
             }
 
-            Write(arr.Length);
-            WriteOnlyContent(arr);
+            _ = Write(arr.Length);
+            _ = WriteOnlyContent(arr);
             return this;
         }
         /// <summary>
@@ -366,8 +366,8 @@ namespace AI.DataStructs
                 throw new ArgumentNullException(nameof(arr));
             }
 
-            Write(arr.Length);
-            WriteOnlyContent(arr);
+            _ = Write(arr.Length);
+            _ = WriteOnlyContent(arr);
             return this;
         }
         /// <summary>
@@ -382,8 +382,8 @@ namespace AI.DataStructs
                 throw new ArgumentNullException(nameof(arr));
             }
 
-            Write(arr.Length);
-            WriteOnlyContent(arr);
+            _ = Write(arr.Length);
+            _ = WriteOnlyContent(arr);
             return this;
         }
         /// <summary>
@@ -1426,7 +1426,7 @@ namespace AI.DataStructs
         /// <returns></returns>
         public InMemoryDataStream Skip()
         {
-            ReadInternal(ReadInt());
+            _ = ReadInternal(ReadInt());
             return this;
         }
         /// <summary>

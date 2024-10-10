@@ -48,7 +48,7 @@ namespace AI.ML.Classifiers
             _lock.EnterWriteLock();
             try
             {
-                base.Remove(item);
+                _ = base.Remove(item);
             }
             finally
             {

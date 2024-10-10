@@ -67,7 +67,7 @@ namespace AI.ML.LinearModelTools
             VectorClass[] vectorClasses = new VectorClass[inp.Length];
             VectorClass[] data = new VectorClass[count];
 
-            Parallel.For(0, inp.Length, i =>
+            _ = Parallel.For(0, inp.Length, i =>
             {
                 VectorClass vectorClass = new VectorClass()
                 {
@@ -114,7 +114,7 @@ namespace AI.ML.LinearModelTools
         //    return new GradientMargin<Vector, double>()
         //    { GradientW = w.DifData, Margin = M };
         //}
-        
+
         /// <summary>
         /// Отступ с градиентами
         /// </summary>

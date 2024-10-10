@@ -1,13 +1,8 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AI.ComputerVision.ComplexImg
 {
@@ -17,8 +12,8 @@ namespace AI.ComputerVision.ComplexImg
     [Serializable]
     public class BaseTransformsColorImg
     {
-        Vector[] _pixels = null;
-        Tensor _colorImg = null;
+        private readonly Vector[] _pixels = null;
+        private readonly Tensor _colorImg = null;
 
         /// <summary>
         /// Базовые преобразования изображений с использованием комплексныхчисел
@@ -32,7 +27,7 @@ namespace AI.ComputerVision.ComplexImg
         /// <param name="h"></param>
         /// <param name="w"></param>
         /// <returns></returns>
-        public Bitmap Transform(Func<Complex, Complex> func, int h, int w) 
+        public Bitmap Transform(Func<Complex, Complex> func, int h, int w)
         {
             var cv = Img2Complex();
             cv = Norm(cv);
@@ -59,7 +54,7 @@ namespace AI.ComputerVision.ComplexImg
         public BaseTransformsColorImg(string path)
         {
             _colorImg = ImageMatrixConverter.LoadAsTensor(path);
-            _pixels = new Vector[_colorImg.Width*_colorImg.Height];
+            _pixels = new Vector[_colorImg.Width * _colorImg.Height];
         }
 
         /// <summary>
@@ -91,7 +86,7 @@ namespace AI.ComputerVision.ComplexImg
 
 
         // Нормализация
-        ComplexVector Norm(ComplexVector complexes, int h = 1, int w = 1)
+        private ComplexVector Norm(ComplexVector complexes, int h = 1, int w = 1)
         {
             Vector hv = h * complexes.ImaginaryVector.Minimax();
             Vector wv = w * complexes.RealVector.Minimax();
@@ -103,8 +98,7 @@ namespace AI.ComputerVision.ComplexImg
             return complexeVect;
         }
 
-
-        ComplexVector Img2Complex()
+        private ComplexVector Img2Complex()
         {
             int len = _colorImg.Width * _colorImg.Height;
 
@@ -122,7 +116,7 @@ namespace AI.ComputerVision.ComplexImg
             return complexes;
         }
 
-        Bitmap Compl2Img(ComplexVector complexes, int h, int w)
+        private Bitmap Compl2Img(ComplexVector complexes, int h, int w)
         {
             Tensor tensor = new Tensor(h, w, 3);
 

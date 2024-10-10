@@ -1,9 +1,5 @@
-﻿using AI.MathUtils.Algebra;
-using AI.DataStructs.Algebraic;
+﻿using AI.DataStructs.Algebraic;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI.ML.MatrixUtils
 {
@@ -16,7 +12,7 @@ namespace AI.ML.MatrixUtils
         /// <summary>
         /// Получение матрицы Q
         /// </summary>
-        public static Matrix GetQ(Matrix a) 
+        public static Matrix GetQ(Matrix a)
         {
             return GramSchmidtProcedure.GetNormalBasis(a);
         }
@@ -27,7 +23,7 @@ namespace AI.ML.MatrixUtils
         /// <param name="a"></param>
         /// <param name="q"></param>
         /// <returns></returns>
-        public static Matrix GetR(Matrix a, Matrix q) 
+        public static Matrix GetR(Matrix a, Matrix q)
         {
             return q.Transpose() * a;
         }

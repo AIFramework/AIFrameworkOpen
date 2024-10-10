@@ -34,7 +34,7 @@ namespace AI.ML.Classifiers
         public CorrelationClassifier(string path)
         {
             Classes = new StructClasses();
-            Load(path);
+            _ = Load(path);
         }
         /// <summary>
         /// Корреляционный классификатор

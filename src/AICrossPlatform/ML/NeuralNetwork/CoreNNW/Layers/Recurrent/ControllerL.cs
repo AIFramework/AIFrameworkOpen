@@ -20,7 +20,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <summary>
         /// Активационная функция
         /// </summary>
-        public IActivation function{ get; set; }
+        public IActivation function { get; set; }
         /// <summary>
         /// Размерность входа
         /// </summary>

@@ -29,11 +29,10 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Loss
         public float Measure(NNValue actualOutput, NNValue targetOutput)
         {
             float sum = 0;
-            float sqr = 0;
             for (int i = 0; i < targetOutput.Shape.Count; i++)
             {
                 float errDelta = actualOutput.Data[i] - targetOutput.Data[i];
-                sqr = errDelta * errDelta;
+                float sqr = errDelta * errDelta;
                 sum += 0.5f * (sqr + (4 * sqr * sqr));
             }
             return sum;

@@ -1,13 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.DSP.Analyse;
+using AI.DSP.DSPCore;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AI.Charts.Control
@@ -57,9 +51,9 @@ namespace AI.Charts.Control
         /// Спектральный анализ сигнала
         /// </summary>
         /// <param name="signal"></param>
-        public (Vector, Vector) Analyze(Vector signal) 
+        public (Vector, Vector) Analyze(Vector signal)
         {
-            Vector fft = Welch.WelchRun(signal, FFTBlock, 0.5, WindowW)/FFTBlock;
+            Vector fft = Welch.WelchRun(signal, FFTBlock, 0.5, WindowW) / FFTBlock;
             WelchData welchData = new WelchData(fft, SR, WelchPSDTypeData);
             chartVisual1.PlotBlack(welchData.HalfFreq + FreqOffset, welchData.HalfPSD);
 

@@ -110,11 +110,11 @@ namespace AI.DataStructs.Shapes
         /// <summary>
         /// Создание 3х мерной из многомерной
         /// </summary>
-        public static Shape3D FromeShape(Shape shape) 
+        public static Shape3D FromeShape(Shape shape)
         {
             if (shape.Rank > 3) throw new Exception("Невозможно создать трехмерную форму, размерность входа больше 3");
 
-            switch (shape.Rank) 
+            switch (shape.Rank)
             {
                 case 1:
                     return new Shape3D(shape[0]);

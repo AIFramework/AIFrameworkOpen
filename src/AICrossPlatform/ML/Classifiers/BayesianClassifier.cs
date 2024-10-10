@@ -22,12 +22,12 @@ namespace AI.ML.Classifiers
         /// </summary>
         public BayesianClassifier(int nInp, int nOutp)
         {
-            w = new Vector(nOutp)+0.5;
+            w = new Vector(nOutp) + 0.5;
 
             for (int i = 0; i < nOutp; i++)
             {
                 var dat = new Dictionary<string, Vector>();
-                dat.Add("std", new Vector(nInp)+1);
+                dat.Add("std", new Vector(nInp) + 1);
                 dat.Add("mean", new Vector(nInp));
                 classifiersParams.Add(dat);
             }

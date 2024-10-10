@@ -15,7 +15,7 @@ namespace AI.ML.LinearModelTools
         /// <summary>
         /// Вектор весов
         /// </summary>
-        public Vector W {  get; set; }
+        public Vector W { get; set; }
 
         /// <summary>
         /// Вес смещения
@@ -27,7 +27,7 @@ namespace AI.ML.LinearModelTools
         /// </summary>
         /// <param name="vectorsCL1">Объекты класса 1</param>
         /// <param name="vectorsCL2">Объекты класса 2</param>
-        public void Train(IEnumerable<Vector> vectorsCL1, IEnumerable<Vector> vectorsCL2) 
+        public void Train(IEnumerable<Vector> vectorsCL1, IEnumerable<Vector> vectorsCL2)
         {
             Vector[] vectorsArr1 = vectorsCL1.ToArray();
             Vector[] vectorsArr2 = vectorsCL2.ToArray();
@@ -49,7 +49,7 @@ namespace AI.ML.LinearModelTools
         public bool Forward(Vector vect)
         {
             var dot = AnalyticGeometryFunctions.Dot(W, vect) + B;
-            return dot>0;
+            return dot > 0;
         }
 
         // Решения квадратного уравнения для поиска значения B
@@ -78,14 +78,14 @@ namespace AI.ML.LinearModelTools
 
 
         // Проекция на вектор весов
-        private Vector ProjW(IEnumerable<Vector> vectors) 
+        private Vector ProjW(IEnumerable<Vector> vectors)
         {
             Vector[] vectorsArr = vectors.ToArray();
             Vector vectProj = new Vector(vectorsArr[0].Count);
 
             for (int i = 0; i < vectorsArr.Length; i++)
                 for (int j = 0; j < vectorsArr[0].Count; j++)
-                        vectProj[i] += vectorsArr[i][j] * W[j];
+                    vectProj[i] += vectorsArr[i][j] * W[j];
 
             return vectProj;
         }

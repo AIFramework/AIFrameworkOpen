@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AI.Dog.Tools
 {
@@ -21,7 +18,7 @@ namespace AI.Dog.Tools
 
             if (indexis == null) return array; // Если подмассив не найден
 
-            T[] returnObj = new T[array.Length-subArrayForRemove.Length]; // Создание нового
+            T[] returnObj = new T[array.Length - subArrayForRemove.Length]; // Создание нового
 
             // Заполнение массива
             for (int i = 0, j = 0; i < array.Length; i++)
@@ -39,14 +36,14 @@ namespace AI.Dog.Tools
         /// </summary>
         /// <param name="array">Массив данных</param>
         /// <param name="subArray">Подмассив</param>
-        public static Tuple<int, int> SearchSubArray(T[] array, T[] subArray) 
+        public static Tuple<int, int> SearchSubArray(T[] array, T[] subArray)
         {
-            if(subArray.Length > array.Length) return null;
+            if (subArray.Length > array.Length) return null;
 
 
             for (int i = 0; i < array.Length; i++)
             {
-                if (array[i].CompareTo(subArray[0]) == 0) 
+                if (array[i].CompareTo(subArray[0]) == 0)
                 {
                     int start = i;
                     int end = i;

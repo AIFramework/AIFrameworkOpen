@@ -34,7 +34,7 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER.SpecialNers
 
             string abbsStr = "";
             foreach (string abb in abbsSet)
-                abbsStr += @$" {abb}|";
+                abbsStr += @$"{abb}|";
 
             abbsStr = abbsStr.Trim('|');
 

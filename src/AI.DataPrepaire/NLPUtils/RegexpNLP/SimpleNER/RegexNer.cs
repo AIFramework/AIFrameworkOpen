@@ -38,7 +38,7 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER
         /// <returns></returns>
         public override string RunProcessor(string text)
         {
-            var matches = Regex.Matches(text, Pattern);
+            var matches = Regex.Matches(text, Pattern, RegexOptions.CultureInvariant);
 
             foreach (Match match in matches)
             {

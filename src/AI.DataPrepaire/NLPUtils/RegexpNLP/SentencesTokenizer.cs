@@ -56,12 +56,27 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
                 var match = Regex.Match(buffer, @"[\.!\?]", RegexOptions.CultureInvariant);
                 if (match.Success)
                 {
-                    var length = withTrim ?
-                        match.Index + 1 :
-                        match.Index + match.Length;
+                    int length;
+                    if (withTrim)
+                    {
+                        length = match.Index + 1;
+                    }
+                    else
+                    {
+                        length = match.Index + match.Length;
+                        for (; length < buffer.Length; length++)
+                        {
+                            if (buffer[length] != '.' &&
+                                buffer[length] != '!' &&
+                                buffer[length] != '?')
+                            {
+                                break;
+                            }
+                        }
+                    }
                     var sentence = buffer.Substring(0, length);
                     sentences.Add(withTrim ? sentence.Trim() : sentence);
-                    buffer = buffer.Substring(match.Index + match.Length);
+                    buffer = buffer.Substring(withTrim ? match.Index + match.Length : length);
                 }
                 else
                 {

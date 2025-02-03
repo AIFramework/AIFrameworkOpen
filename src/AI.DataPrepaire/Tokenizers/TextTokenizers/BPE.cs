@@ -1,7 +1,5 @@
-﻿using AI.DataStructs.Algebraic;
-using AI.DataStructs.Data;
+﻿using AI.DataStructs.Data;
 using AI.Dog.Tools;
-using AI.ML.SeqAnalyze;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -214,7 +212,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         /// Обучение BPE
         /// </summary>
         /// <param name="bytes">Массив байт</param>
-        public void TrainBPE(byte[][] bytes) 
+        public void TrainBPE(byte[][] bytes)
         {
             encoder = new Dictionary<int[], int>(new IntArrayEqualityComparer());
 
@@ -290,7 +288,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public int[] Tokenize(byte[] bytes) 
+        public int[] Tokenize(byte[] bytes)
         {
             int[] data = new int[bytes.Length];
 
@@ -334,7 +332,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public int[] Tokenize(string str) 
+        public int[] Tokenize(string str)
         {
             byte[] bytes = GetBytes(str);
             return Tokenize(bytes);

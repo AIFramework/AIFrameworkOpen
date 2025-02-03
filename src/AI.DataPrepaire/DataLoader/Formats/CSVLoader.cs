@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Net.Security;
 
 
 namespace AI.DataPrepaire.DataLoader.Formats
@@ -55,7 +53,7 @@ namespace AI.DataPrepaire.DataLoader.Formats
         /// <summary>
         /// Чтение CSV
         /// </summary>
-        private static DataItem[] Reader(string pathToCsv, string separator) 
+        private static DataItem[] Reader(string pathToCsv, string separator)
         {
             using (var reader = new StreamReader(pathToCsv))
             {
@@ -69,7 +67,7 @@ namespace AI.DataPrepaire.DataLoader.Formats
         /// </summary>
         /// <param name="dataItems"></param>
         /// <returns></returns>
-        private static DataTable ToTable(DataItem[] dataItems) 
+        private static DataTable ToTable(DataItem[] dataItems)
         {
             DataTable dataFrame = new DataTable();
 
@@ -83,7 +81,7 @@ namespace AI.DataPrepaire.DataLoader.Formats
         }
 
         // Работа с потоком
-        private static DataItem[] Reader(StreamReader csvStream, string separator) 
+        private static DataItem[] Reader(StreamReader csvStream, string separator)
         {
             // Получение заголовков
             var headers = GetValues(csvStream.ReadLine(), separator);
@@ -106,7 +104,7 @@ namespace AI.DataPrepaire.DataLoader.Formats
         }
 
 
-        private static string[] GetValues(string text, string separator) 
+        private static string[] GetValues(string text, string separator)
         {
             return new CSVValuesParser(text, separator).Values.ToArray();
         }

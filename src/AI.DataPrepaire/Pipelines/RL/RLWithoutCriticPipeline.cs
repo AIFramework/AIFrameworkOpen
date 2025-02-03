@@ -91,7 +91,7 @@ namespace AI.DataPrepaire.Pipelines.RL
         /// <summary>
         /// Очистка таблицы наград
         /// </summary>
-        public void ClearData() 
+        public void ClearData()
         {
             RewardData = new ScoreTableClassifier<T>();
         }

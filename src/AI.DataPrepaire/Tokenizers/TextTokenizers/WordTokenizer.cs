@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AI.DataPrepaire.Tokenizers.TextTokenizers
 {
@@ -42,7 +41,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         public WordTokenizer(string path_to_text, bool isLower = true, Func<string, string> transformerStr = null)
         {
             IsLower = isLower;
-            TransformerStr = transformerStr; 
+            TransformerStr = transformerStr;
             TrainFromTextFile(path_to_text);
         }
 
@@ -64,7 +63,7 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
         /// <returns></returns>
         public override int[] Encode(string data)
         {
-            string new_str = TransformerStr == null? NLP.TextStandard.OnlyCharsAndDigit(data, false): TransformerStr(data);
+            string new_str = TransformerStr == null ? NLP.TextStandard.OnlyCharsAndDigit(data, false) : TransformerStr(data);
             string[] words = new_str.Split(' ');
             return Encode(words);
         }

@@ -46,7 +46,7 @@ namespace AI.DataPrepaire.NLPUtils.QA
         /// <summary>
         /// Экстрактивный бот на базе knn
         /// </summary>
-        public KnnBot(Func<string, Vector> textTransform) 
+        public KnnBot(Func<string, Vector> textTransform)
         {
             TextTransform = textTransform;
         }
@@ -135,7 +135,7 @@ namespace AI.DataPrepaire.NLPUtils.QA
             if (Alg == ClAlg.NN)
                 return NNAns(embd);
 
-            else return WithProbAns(embd);   
+            else return WithProbAns(embd);
 
         }
 
@@ -180,7 +180,7 @@ namespace AI.DataPrepaire.NLPUtils.QA
         /// <summary>
         /// Алгоритм классификации
         /// </summary>
-        public enum ClAlg 
+        public enum ClAlg
         {
             /// <summary>
             /// Метод k ближ соседей
@@ -193,5 +193,5 @@ namespace AI.DataPrepaire.NLPUtils.QA
         }
     }
 
-    
+
 }

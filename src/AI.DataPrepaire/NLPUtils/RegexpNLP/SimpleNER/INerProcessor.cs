@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER
 {
@@ -16,7 +14,7 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER
         /// <summary>
         /// Словарь преобразования токена в нер
         /// </summary>
-        Dictionary<string, string> NerTokenToNer { get;}
+        Dictionary<string, string> NerTokenToNer { get; }
 
         /// <summary>
         /// Преобразование нера в токен нера

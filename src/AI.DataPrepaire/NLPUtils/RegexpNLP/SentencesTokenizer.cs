@@ -11,10 +11,10 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
     [Serializable]
     public class SentencesTokenizer
     {
-       /// <summary>
-       /// Обработчик аббревиатур 
-       /// </summary>
-       public AbbreviationsNerProcessor AbbreviationsProcessor { get; set; }
+        /// <summary>
+        /// Обработчик аббревиатур 
+        /// </summary>
+        public AbbreviationsNerProcessor AbbreviationsProcessor { get; set; }
 
         /// <summary>
         /// Конструктор по умолчанию, инициализирующий класс с предопределённым набором сокращений.
@@ -49,7 +49,7 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
 
             var buffer = AbbreviationsProcessor.RunProcessor(text);
             var sentences = new List<string>();
-            
+
 
             while (buffer.Length > 0)
             {

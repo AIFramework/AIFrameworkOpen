@@ -1,7 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AI.DataPrepaire.DataLoader
 {
@@ -67,7 +66,7 @@ namespace AI.DataPrepaire.DataLoader
         /// Перевод данных в вектор
         /// </summary>
         /// <returns></returns>
-        public Vector ToVector() 
+        public Vector ToVector()
         {
             return ToType<double>().ToArray();
         }
@@ -75,14 +74,17 @@ namespace AI.DataPrepaire.DataLoader
         /// <summary>
         /// Определяет тип
         /// </summary>
-        private void TypeDetected() 
+        private void TypeDetected()
         {
-            try {
-                try {
+            try
+            {
+                try
+                {
                     double.Parse((string)Data[0], AISettings.GetProvider());
                     TypeColum = TypeData.DigitP;
                 }
-                catch {
+                catch
+                {
                     double.Parse((string)Data[0], AISettings.GetProviderComa());
                     TypeColum = TypeData.DigitC;
                 }
@@ -98,7 +100,7 @@ namespace AI.DataPrepaire.DataLoader
         /// <summary>
         /// Преобразовывает данные (Служебный метод)
         /// </summary>
-        public void Convert() 
+        public void Convert()
         {
             TypeDetected();
 
@@ -159,7 +161,7 @@ namespace AI.DataPrepaire.DataLoader
     /// <summary>
     /// Тип данных
     /// </summary>
-    public enum TypeData 
+    public enum TypeData
     {
         /// <summary>
         /// Число строка(Разделитель запятая)

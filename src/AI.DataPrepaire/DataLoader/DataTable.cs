@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 
 namespace AI.DataPrepaire.DataLoader
 {
@@ -30,16 +29,16 @@ namespace AI.DataPrepaire.DataLoader
         /// <param name="name"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public DataItem this[string name] 
+        public DataItem this[string name]
         {
-            get 
+            get
             {
                 if (!_frame.ContainsKey(name))
                     throw new Exception("Набора с таким именем не существует");
                 return _frame[name];
             }
 
-            set 
+            set
             {
                 if (_frame.ContainsKey(name))
                     _frame[name] = value;
@@ -57,7 +56,7 @@ namespace AI.DataPrepaire.DataLoader
         /// </summary>
         /// <param name="name">Имя</param>
         /// <param name="data">Данные</param>
-        public void Add(string name, IEnumerable<dynamic> data) 
+        public void Add(string name, IEnumerable<dynamic> data)
         {
             DataItem dataItem = new DataItem(name, data.ToList());
             this[name] = dataItem;
@@ -67,7 +66,7 @@ namespace AI.DataPrepaire.DataLoader
         /// Добавить данные
         /// </summary>
         /// <param name="dataItem"></param>
-        public void Add(DataItem dataItem) 
+        public void Add(DataItem dataItem)
         {
             this[dataItem.Name] = dataItem;
         }
@@ -75,7 +74,7 @@ namespace AI.DataPrepaire.DataLoader
         /// <summary>
         /// Отдает имена столбцов
         /// </summary>
-        public string[] GetColums() 
+        public string[] GetColums()
         {
             List<string> ret = new List<string>(_frame.Count);
 
@@ -88,7 +87,7 @@ namespace AI.DataPrepaire.DataLoader
         /// <summary>
         /// Преобразование участка данных в матрицу
         /// </summary>
-        public Matrix ToMatrix() 
+        public Matrix ToMatrix()
         {
             Vector[] colums = new Vector[_indexis.Count];
 
@@ -103,11 +102,11 @@ namespace AI.DataPrepaire.DataLoader
         /// </summary>
         /// <param name="colums">Список столбцов</param>
         /// <returns></returns>
-        public DataTable GetSubTable(IEnumerable<string> colums) 
+        public DataTable GetSubTable(IEnumerable<string> colums)
         {
             DataTable ret = new DataTable();
             foreach (var colum in colums) ret[colum] = this[colum];
-            
+
             return ret;
         }
 
@@ -137,11 +136,11 @@ namespace AI.DataPrepaire.DataLoader
             T[] ret = new T[_indexis.Count];
             for (int i = 0; i < _indexis.Count; i++)
             {
-                try 
+                try
                 {
                     ret[i] = (T)data[i];
                 }
-                catch 
+                catch
                 {
                     throw new Exception($"Элемент {data[i]}, с индексом {i}, не может быть преобразован в тип {typeof(T)}");
                 }
@@ -185,10 +184,10 @@ namespace AI.DataPrepaire.DataLoader
         /// </summary>
         /// <param name="indStart">Начальный индекс</param>
         /// <param name="len">Конечный индекс</param>
-        public DataTable GetSlice(int indStart, int len) 
+        public DataTable GetSlice(int indStart, int len)
         {
             DataTable dataTable = new DataTable();
-                        
+
             for (int i = 0; i < _indexis.Count; i++)
             {
                 DataItem source = _frame[_indexis[i]];
@@ -226,7 +225,7 @@ namespace AI.DataPrepaire.DataLoader
                 stringBuilder.Append(i);
                 stringBuilder.Append("\t");
 
-                if(i == 9&&len>25) i = len - 10; // Чтобы было не больше 20 строк
+                if (i == 9 && len > 25) i = len - 10; // Чтобы было не больше 20 строк
 
                 for (int j = 0; j < _indexis.Count; j++)
                 {

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AI.DataPrepaire.Tokenizers.TextTokenizers
 {
@@ -102,8 +101,8 @@ namespace AI.DataPrepaire.Tokenizers.TextTokenizers
             words.Add("<e>", EndToken);
 
             int token_index = 0;
-            
-            foreach (string word in data) 
+
+            foreach (string word in data)
             {
                 if (token_index != UnknowToken && token_index != PadToken && token_index != StartToken && token_index != EndToken)
                 {

@@ -46,7 +46,7 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
 
             for (int i = 0; i < AttentionMask.Length; i++)
             {
-                stringBuilder.Append(AttentionMask[i]); 
+                stringBuilder.Append(AttentionMask[i]);
                 stringBuilder.Append("  ");
             }
 

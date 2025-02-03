@@ -39,10 +39,10 @@ namespace AI.DataPrepaire.DataLoader.NNWBlockLoader
             double[] output = new double[Neurons.Length];
             int lenInp = Neurons[0].Length;
 
-            Parallel.For(0, Neurons.Length, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount}, neuronNum =>
+            Parallel.For(0, Neurons.Length, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, neuronNum =>
             {
                 output[neuronNum] = 0;
-                
+
                 for (int inpNum = 0; inpNum < lenInp; inpNum++)
                     output[neuronNum] += Neurons[neuronNum][inpNum] * input[inpNum];
 
@@ -71,11 +71,11 @@ namespace AI.DataPrepaire.DataLoader.NNWBlockLoader
             Random random = new Random();
             FeedForwardLayer linearLayer = new FeedForwardLayer(Neurons[0].Length, Neurons.Length, new LinearUnit(), random);
             var W = new NNValue(height: Neurons.Length, width: Neurons[0].Length);
-           
+
 
             for (int h = 0; h < Neurons.Length; h++)
                 for (int w = 0; w < Neurons[0].Length; w++)
-                    W[h,w] = (float)Neurons[h][w];
+                    W[h, w] = (float)Neurons[h][w];
 
             linearLayer.Bias = new NNValue((Vector)Bias);
             linearLayer.W = W;
@@ -105,7 +105,7 @@ namespace AI.DataPrepaire.DataLoader.NNWBlockLoader
         /// <summary>
         /// Сохранение в бинарный файл
         /// </summary>
-        public void Save(string path) 
+        public void Save(string path)
         {
             BinarySerializer.Save(path, this);
         }

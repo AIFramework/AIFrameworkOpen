@@ -10,7 +10,7 @@ namespace AI.DataPrepaire.DataLoader.Formats
     /// Рекурсивный парсер значений таблицы
     /// </summary>
     [Serializable]
-    public class CSVValuesParser 
+    public class CSVValuesParser
     {
         /// <summary>
         /// Значения
@@ -20,7 +20,7 @@ namespace AI.DataPrepaire.DataLoader.Formats
         /// <summary>
         /// Рекурсивный парсер значений таблицы
         /// </summary>
-        public CSVValuesParser(string text, string separator) 
+        public CSVValuesParser(string text, string separator)
         {
             Values = new List<string>();
             VParser(text, separator);
@@ -55,14 +55,14 @@ namespace AI.DataPrepaire.DataLoader.Formats
             StringBuilder stringBuilder = new StringBuilder();
 
             // Объединение
-            for (int i = 1; i < parts.Length-1; i++)
+            for (int i = 1; i < parts.Length - 1; i++)
             {
                 stringBuilder.Append(parts[i]);
                 stringBuilder.Append(new_sep);
             }
 
-            if(parts.Length > 1)
-                stringBuilder.Append(parts[parts.Length-1]);
+            if (parts.Length > 1)
+                stringBuilder.Append(parts[parts.Length - 1]);
 
             VParser(stringBuilder.ToString(), separator); // Рекурсия
         }

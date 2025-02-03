@@ -25,7 +25,7 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER.SpecialNers
         /// Класс для замены аббревиатур
         /// </summary>
         /// <param name="abbreviations">Аббревиатуры</param>
-        public AbbreviationsNerProcessor(IEnumerable<string> abbreviations) 
+        public AbbreviationsNerProcessor(IEnumerable<string> abbreviations)
         {
             HashSet<string> abbsSet = new HashSet<string>();
 

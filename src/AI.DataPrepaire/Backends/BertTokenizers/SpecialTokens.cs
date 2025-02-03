@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -47,7 +46,7 @@ namespace AI.DataPrepaire.Backends.BertTokenizers
         /// Загрузка токенов из JSON
         /// </summary>
         public static SpecialTokens FromJson(string jsonMapPath)
-        { 
+        {
             string json = File.ReadAllText(jsonMapPath);
             SpecialTokens tokens = JsonSerializer.Deserialize<SpecialTokens>(json);
             return tokens;

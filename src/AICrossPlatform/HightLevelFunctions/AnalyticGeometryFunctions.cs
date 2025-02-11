@@ -1,5 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
+using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace AI.HightLevelFunctions
 {
@@ -126,6 +128,35 @@ namespace AI.HightLevelFunctions
             return rotatedMatrix.LikeVector();
         }
 
+
+        /// <summary>
+        /// Вектор L2 расстояний от точек до центра фигуры 
+        /// (нужен для проверки/построения правильных многомерных фигур,
+        /// рассчета точек опор наибольшей площади, проверки на гиперсферу и многомерный шар)
+        /// </summary>
+        /// <param name="points">Точки</param>
+        /// <param name="centr">Центр</param>
+        public static Vector L2DistancesPoints2Center(IEnumerable<Vector> points, Vector centr)
+        {
+            Vector dists = points.Select(point => DistanceFromAToB(point, centr)).ToArray();
+            return dists;
+        }
+
+        /// <summary>
+        /// Вектор L2 расстояний от точек до центра фигуры 
+        /// (нужен для проверки/построения правильных многомерных фигур,
+        /// рассчета точек опор наибольшей площади, проверки на гиперсферу и многомерный шар)
+        /// </summary>
+        /// <param name="points">Точки</param>
+        public static Vector L2DistancesPoints2Center(IEnumerable<Vector> points)
+        {
+            Vector centr = Vector.Mean(points.ToArray());
+            Vector dists = points.Select(point => DistanceFromAToB(point, centr)).ToArray();
+            return dists;
+        }
+
+
+
         /// <summary>
         /// Создает единичную матрицу заданного размера.
         /// </summary>
@@ -135,9 +166,8 @@ namespace AI.HightLevelFunctions
         {
             Matrix identity = new Matrix(size, size);
             for (int i = 0; i < size; i++)
-            {
                 identity[i, i] = 1.0;
-            }
+
             return identity;
         }
 

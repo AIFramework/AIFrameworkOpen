@@ -12,7 +12,7 @@ namespace AI
         /// <summary>
         /// Глобальный эпсилон(смещение) (по-умолчанию = 1e-80)
         /// </summary>
-        public static double GlobalEps { get; set; } = 1e-80;
+        public static double GlobalEps { get; set; } = 1e-200;
 
         static AISettings()
         {

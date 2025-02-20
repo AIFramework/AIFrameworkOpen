@@ -10,6 +10,11 @@ namespace AI.ML.Clustering
     public interface IClustering
     {
         /// <summary>
+        /// Центроиды
+        /// </summary>
+        Vector[] Centroids { get; }
+
+        /// <summary>
         /// Распознать вектор
         /// </summary>
         int Classify(Vector vector);

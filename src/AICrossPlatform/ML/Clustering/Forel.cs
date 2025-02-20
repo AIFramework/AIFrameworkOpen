@@ -32,6 +32,8 @@ namespace AI.ML.Clustering
         /// </summary>
         public Cluster[] Clusters => clusters.ToArray();
 
+        public Vector[] Centroids => Clusters.Select(cl => cl.Centr).ToArray();
+
         /// <summary>
         /// Функция измерения расстояния
         /// </summary>

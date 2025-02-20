@@ -21,9 +21,6 @@ namespace AI.ML.Clustering
         private Vector[] _dataset;
 
 
-
-
-
         /// <summary>
         /// Набор данных
         /// </summary>

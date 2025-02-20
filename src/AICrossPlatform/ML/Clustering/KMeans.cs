@@ -37,7 +37,7 @@ namespace AI.ML.Clustering
         /// <summary>
         /// Центроиды
         /// </summary>
-        public Vector[] Centroids { get; private set; }
+        public Vector[] Centroids { get; protected set; }
         /// <summary>
         /// Максимальное число циклов
         /// </summary>
@@ -144,10 +144,7 @@ namespace AI.ML.Clustering
                     for (int cluster_index = 0; cluster_index < groupIndex; cluster_index++)
                     {
                         double dist = DistanceFunction(dataset[vectorIndex], Centroids[cluster_index]);
-                        if (dist < dist_min)
-                        {
-                            dist_min = dist;
-                        }
+                        if (dist < dist_min) dist_min = dist;
                     }
 
                     distSum += dist_list[vectorIndex] = dist_min;
@@ -179,9 +176,7 @@ namespace AI.ML.Clustering
                 count++;
 
                 for (int clusterIndex = 0; clusterIndex < Centroids.Length; clusterIndex++)
-                {
                     Centroids[clusterIndex] = new Vector(DimentionOfData);
-                }
 
                 int[] labedCount = new int[Centroids.Length];
 
@@ -250,26 +245,20 @@ namespace AI.ML.Clustering
         private void ValidateData(int vectorDim, Vector[] vectors)
         {
             if (vectorDim < 1)
-            {
                 throw new ArgumentException(nameof(vectorDim));
-            }
+
             if (vectors == null)
-            {
                 throw new ArgumentNullException(nameof(vectors));
-            }
 
             if (vectors.Length < GroupCount)
-            {
                 throw new ArgumentException(nameof(vectors));
-            }
+
             foreach (Vector vector in vectors)
-            {
                 if (vector.Count != vectorDim)
-                {
                     throw new ArgumentException(nameof(vectors));
-                }
-            }
 
         }
     }
+
+
 }

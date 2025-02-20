@@ -19,9 +19,9 @@ namespace AI.ML.Clustering
         public Func<Vector, Vector, double> DistanceFunction { get; set; } = Distances.BaseDist.EuclideanDistance;
 
         /// <summary>
-        /// Веса сети
+        /// Веса сети (центры кластеров)
         /// </summary>
-        public Vector[] w;
+        public Vector[] Centroids { get; set; }
         /// <summary>
         /// Веса смещения
         /// </summary>
@@ -41,14 +41,14 @@ namespace AI.ML.Clustering
         {
             get
             {
-                Cluster[] cls = new Cluster[w.Length];
+                Cluster[] cls = new Cluster[Centroids.Length];
 
-                for (int i = 0; i < w.Length; i++)
+                for (int i = 0; i < Centroids.Length; i++)
                 {
                     cls[i] = new Cluster
                     {
-                        Centr = w[i],
-                        Dataset = new[] { w[i] }
+                        Centr = Centroids[i],
+                        Dataset = new[] { Centroids[i] }
                     };
                 }
 
@@ -61,12 +61,12 @@ namespace AI.ML.Clustering
         /// </summary>
         public KohonenNet(int clusters, int inpDim, int seed = 1)
         {
-            w = new Vector[clusters];
+            Centroids = new Vector[clusters];
             rnd = new Random(seed);
 
-            for (int i = 0; i < w.Length; i++)
+            for (int i = 0; i < Centroids.Length; i++)
             {
-                w[i] = Statistics.Statistic.UniformDistribution(inpDim, rnd);
+                Centroids[i] = Statistics.Statistic.UniformDistribution(inpDim, rnd);
             }
 
             _clusters = clusters;
@@ -81,11 +81,11 @@ namespace AI.ML.Clustering
         /// <returns></returns>
         public int Classify(Vector vector)
         {
-            Vector outp = new Vector(w.Length);
+            Vector outp = new Vector(Centroids.Length);
 
             _ = Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
             {
-                outp[i] = AnalyticGeometryFunctions.Dot(w[i], vector) + bias[i];
+                outp[i] = AnalyticGeometryFunctions.Dot(Centroids[i], vector) + bias[i];
             });
 
             return outp.MaxElementIndex();
@@ -111,12 +111,12 @@ namespace AI.ML.Clustering
 
             _ = Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, j =>
             {
-                k[j] = DistanceFunction(vect, w[j]);
-                w[j] = (old * w[j]) - (0.01 * newP * vect);
+                k[j] = DistanceFunction(vect, Centroids[j]);
+                Centroids[j] = (old * Centroids[j]) - (0.01 * newP * vect);
             });
 
             int ind = k.MinElementIndex();
-            w[ind] += newP * vect;
+            Centroids[ind] += newP * vect;
 
             return Classify(vect);
         }
@@ -141,10 +141,10 @@ namespace AI.ML.Clustering
             RunEpoch(dataset);
 
             // Расчет параметров
-            for (int i = 0; i < w.Length; i++)
+            for (int i = 0; i < Centroids.Length; i++)
             {
-                w[i] /= std;
-                bias[i] = -AnalyticGeometryFunctions.Dot(mean, w[i]);
+                Centroids[i] /= std;
+                bias[i] = -AnalyticGeometryFunctions.Dot(mean, Centroids[i]);
             }
         }
 
@@ -162,12 +162,12 @@ namespace AI.ML.Clustering
             {
                 _ = Parallel.For(0, _clusters, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, j =>
                 {
-                    k[j] = DistanceFunction(dataset[i], w[j]);
-                    w[j] = (old * w[j]) - (0.1 * newP * dataset[i]);
+                    k[j] = DistanceFunction(dataset[i], Centroids[j]);
+                    Centroids[j] = (old * Centroids[j]) - (0.1 * newP * dataset[i]);
                 });
 
                 int ind = k.MinElementIndex();
-                w[ind] += newP * dataset[i];
+                Centroids[ind] += newP * dataset[i];
 
                 if (i % rep == 0)
                 {

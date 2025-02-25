@@ -23,7 +23,8 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER.SpecialNers
                 new SiteAdressProcessor(),
                 new AdressProcessor(),
                 new PhoneNerProcessor(),
-                new NameRusNerProcessor()
+                new NameRusNerProcessor(),
+                new OrderNumberNerProcessor()
             };
         }
 

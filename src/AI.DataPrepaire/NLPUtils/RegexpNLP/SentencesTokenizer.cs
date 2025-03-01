@@ -21,9 +21,16 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP
         /// </summary>
         public SentencesTokenizer()
         {
+            //var abbreviations = new HashSet<string>(StringComparer.Ordinal)
+            //{
+            //    "д.", "кв.", "ул.", "р.", @"т.\s*к.", "тп.", "пр.", "г.", @"н.\s*э.", "гг.", "св.", @"т.\s*ч.",
+            //    "тыс.", "руб.", "коп.", "к.", "в.", "вв.", "пн.", "вт.", "ср.", "чт.", "пт.", "сб.", "вс.", "о.", "т."
+            //};
+
             var abbreviations = new HashSet<string>(StringComparer.Ordinal)
             {
-                "д.", "кв.", "ул.", "р.", @"т.\s*к.", "тп.", "пр.", "г.", @"н.\s*э.",
+                @"\s+[a-zа-яё]\.", "кв.", "ул.", @"т.\s*к.", "тп.", "пр.", @"н.\s*э.", "гг.", "св.", @"т.\s*ч.",
+                "тыс.", "руб.", "коп.", "вв.", "пн.", "вт.", "ср.", "чт.", "пт.", "сб.", "вс."
             };
 
             AbbreviationsProcessor = new AbbreviationsNerProcessor(abbreviations);

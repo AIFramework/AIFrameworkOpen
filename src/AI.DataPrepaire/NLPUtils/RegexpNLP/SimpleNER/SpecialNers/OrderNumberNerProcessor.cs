@@ -9,8 +9,11 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER.SpecialNers
     /// </summary>
     public class OrderNumberNerProcessor : RegexNer
     {
+        //const string orderNumberPatten =
+        //    @"\b\d+\.(?:\d\b|\s.*)?";
+
         const string orderNumberPatten =
-            @"\b\d+\.(?:\d\b|\s.*)?";
+            @"\b(\d+\.)+\d*";
 
         /// <summary>
         /// Процессор обрабатывающий порядковые номера в т.ч. и буквенные

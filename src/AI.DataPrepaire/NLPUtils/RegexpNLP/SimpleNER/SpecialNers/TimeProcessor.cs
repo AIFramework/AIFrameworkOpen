@@ -10,7 +10,7 @@ namespace AI.DataPrepaire.NLPUtils.RegexpNLP.SimpleNER.SpecialNers
     {
 
         const string timePatten =
-            @"\b([01]?\d|2[0-3]):([0-5]\d)\b|\b([01]?\d|2[0-3])[-.]([0-5]\d)\b";
+            @"\b([01]?\d|2[0-3]):([0-5]\d)\b";
 
         /// <summary>
         /// Экстрактор адресов

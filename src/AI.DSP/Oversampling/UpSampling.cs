@@ -59,5 +59,40 @@ namespace AI.DSP.Oversampling
         }
 
 
+        /// <summary>
+        /// Увеличение частоты дискретизации квадратичными сплайнами
+        /// </summary>
+        /// <param name="signal">Исходный сигнал</param>
+        /// <param name="kUpSemp">Во сколько раз увеличить</param>
+        /// <returns>Сигнал с увеличенной частотой дискретизации</returns>
+        public static Vector UpSamplingQudratic(Vector signal, int kUpSemp)
+        {
+            int origCount = signal.Count;
+            int newCount = (origCount - 1) * kUpSemp + 1;
+            Vector newSignal = new Vector(newCount);
+
+            for (int n = 0; n < origCount - 1; n++)
+            {
+                double prev = (n == 0) ? signal[0] : signal[n - 1];
+                double cur = signal[n];
+                double next = signal[n + 1];
+
+                for (int i = 0; i < kUpSemp; i++)
+                {
+                    double a = i / (double)kUpSemp; // нормированная позиция в сегменте
+                                                    // Вычисление по квадратичной интерполяции
+                    double interp = cur
+                        + 0.5 * (next - prev) * a
+                        + 0.5 * (next + prev - 2 * cur) * a * a;
+                    newSignal[n * kUpSemp + i] = interp;
+                }
+            }
+
+            newSignal[newCount - 1] = signal[origCount - 1];
+
+            return newSignal;
+        }
+
+
     }
 }

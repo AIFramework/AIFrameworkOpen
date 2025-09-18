@@ -19,30 +19,30 @@ namespace AI.MathUtils.Algebra
 
             int Count = B.Count;
             Vector x = new Vector(Count);
-            double сoef;
+            double coef;
             try
             {
                 // Прямой ход
                 for (int index = 0; index < Count; index++)
                 {
-                    сoef = 1 / A[index, index];
+                    coef = 1 / A[index, index];
                     A[index, index] = 1;
                     for (int j = index + 1; j < Count; j++)
                     {
-                        A[index, j] *= сoef;
+                        A[index, j] *= coef;
                     }
 
-                    B[index] *= сoef;
+                    B[index] *= coef;
                     for (int k = index + 1; k < Count; k++)
                     {
-                        сoef = A[k, index];
+                        coef = A[k, index];
                         A[k, index] = 0;
                         for (int j = index + 1; j < Count; j++)
                         {
-                            A[k, j] = A[k, j] - A[index, j] * сoef;
+                            A[k, j] = A[k, j] - A[index, j] * coef;
                         }
 
-                        B[k] = B[k] - B[index] * сoef;
+                        B[k] = B[k] - B[index] * coef;
                     }
                 }
             }
@@ -53,13 +53,13 @@ namespace AI.MathUtils.Algebra
             // Обратный ход
             for (int index = Count - 1; index >= 0; index--)
             {
-                сoef = B[index];
+                coef = B[index];
                 for (int j = index + 1; j < Count; j++)
                 {
-                    сoef -= A[index, j] * x[j];
+                    coef -= A[index, j] * x[j];
                 }
 
-                x[index] = сoef;
+                x[index] = coef;
             }
             return x;
         }

@@ -11,7 +11,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
     /// Нейросетевой контроллер
     /// </summary>
     [Serializable]
-    public class NeuralСontroller : ILearningLayer, IRecurrentLayer
+    public class NeuralController : ILearningLayer, IRecurrentLayer
     {
         /// <summary>
         /// Добавление значения в знаменатель под корень при инициализации весов
@@ -64,7 +64,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <param name="outputDimension">Размерность выхода</param>
         /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
-        public NeuralСontroller(int inputDimension, int outputDimension, double initParamsStdDev, Random rnd)
+        public NeuralController(int inputDimension, int outputDimension, double initParamsStdDev, Random rnd)
         {
             InputShape = new Shape3D(inputDimension);
             OutputShape = new Shape3D(outputDimension);
@@ -78,7 +78,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// <param name="outputDimension">Размерность выхода</param>
         /// <param name="initParamsStdDev">Среднеквадратичное отклонение</param>
         /// <param name="rnd">Генератор псевдо-случайных чисел</param>
-        public NeuralСontroller(Shape3D inputShape, int outputDimension, double initParamsStdDev, Random rnd)
+        public NeuralController(Shape3D inputShape, int outputDimension, double initParamsStdDev, Random rnd)
         {
             Init(inputShape, outputDimension, initParamsStdDev, rnd);
             ResetState(); // Запуск НС
@@ -87,7 +87,7 @@ namespace AI.ML.NeuralNetwork.CoreNNW.Layers
         /// Нейросетевой контроллер
         /// </summary>
         /// <param name="outputDimension">Размерность выхода</param>
-        public NeuralСontroller(int outputDimension)
+        public NeuralController(int outputDimension)
         {
             OutputShape = new Shape3D(outputDimension);
         }

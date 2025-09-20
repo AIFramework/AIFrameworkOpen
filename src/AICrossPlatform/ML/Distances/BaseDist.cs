@@ -1,7 +1,9 @@
 ﻿using AI.DataStructs.Algebraic;
+using AI.DataStructs.WithComplexElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace AI.ML.Distances
 {
@@ -41,6 +43,16 @@ namespace AI.ML.Distances
         {
             return Math.Sqrt(SquareEucl(A, B));
         }
+
+        /// <summary>
+        /// Евклидово расстояние
+        /// </summary>
+        public static double EuclideanDistanceC(ComplexVector A, ComplexVector B)
+        {
+            return Math.Sqrt(Complex.Abs(SquareEucl(A, B)));
+        }
+
+
         /// <summary>
         /// Расстояние L-infinity
         /// </summary>
@@ -89,6 +101,55 @@ namespace AI.ML.Distances
 
             return sum;
         }
+
+
+        /// <summary>
+        /// Квадрат эвклидова расстояния
+        /// </summary>
+        public static Complex SquareEucl(ComplexVector a, ComplexVector b)
+        {
+            Complex sum = 0;
+
+            for (int i = 0; i < a.Shape.Count; i++)
+            {
+                Complex dif = a[i] - b[i];
+                sum += dif * dif;
+            }
+
+
+            return sum;
+        }
+
+        /// <summary>
+        /// L2
+        /// </summary>
+        /// <param name="cv"></param>
+        /// <returns></returns>
+        public static double L2(ComplexVector cv)
+        {
+            Complex sum = 0;
+
+            for (int i = 0; i < cv.Count; i++)
+                sum += cv[i] * cv[i];
+
+            return Math.Sqrt(Complex.Abs(sum));
+        }
+
+        /// <summary>
+        /// L2
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static double L2(IAlgebraicStructure<double> a)
+        {
+            double sum = 0;
+
+            for (int i = 0; i < a.Shape.Count; i++)
+                sum += a.Data[i] * a.Data[i];
+            
+            return sum;
+        }
+
         /// <summary>
         /// Манхетонское расстояние
         /// </summary>

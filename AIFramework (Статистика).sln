@@ -46,6 +46,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Regression", "Regression", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoRegr", "Tests\Regression\AutoRegr\AutoRegr.csproj", "{84FF9009-ED56-47C1-8122-CB749D359088}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "Tests\Calculator\Calculator.csproj", "{2B676FF6-77EA-48D4-BEC6-419F901A5203}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{84FF9009-ED56-47C1-8122-CB749D359088}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84FF9009-ED56-47C1-8122-CB749D359088}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84FF9009-ED56-47C1-8122-CB749D359088}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B676FF6-77EA-48D4-BEC6-419F901A5203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B676FF6-77EA-48D4-BEC6-419F901A5203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B676FF6-77EA-48D4-BEC6-419F901A5203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B676FF6-77EA-48D4-BEC6-419F901A5203}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{5A59EABC-54F8-4F3A-890B-F187D320500A} = {7FCA39FE-2C02-4DCC-9BBE-7A53718683F9}
 		{710CA7BA-5903-463C-8748-7F8F99391B65} = {4FB793E6-5E89-46E1-A966-DA32DFDFBF11}
 		{84FF9009-ED56-47C1-8122-CB749D359088} = {710CA7BA-5903-463C-8748-7F8F99391B65}
+		{2B676FF6-77EA-48D4-BEC6-419F901A5203} = {4FB793E6-5E89-46E1-A966-DA32DFDFBF11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {195084AE-6B2F-490D-AB30-834665F7A953}

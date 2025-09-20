@@ -2,6 +2,8 @@
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using AI.DataStructs.WithComplexElements;
+using System.Numerics;
 
 namespace AI.HightLevelFunctions
 {
@@ -45,6 +47,20 @@ namespace AI.HightLevelFunctions
             {
                 dot += vector1[i] * vector2[i];
             }
+            return dot;
+        }
+
+        /// <summary>
+        /// Вычисляет скалярное произведение двух векторов.
+        /// </summary>
+        /// <exception cref="ArgumentException">Размерности векторов должны совпадать.</exception>
+        public static Complex Dot(ComplexVector vector1, ComplexVector vector2)
+        {
+            EnsureSameDimensions(vector1, vector2);
+            Complex dot = 0;
+            for (int i = 0; i < vector1.Count; i++)
+                dot += vector1[i] * vector2[i];
+
             return dot;
         }
 
@@ -176,6 +192,26 @@ namespace AI.HightLevelFunctions
         /// </summary>
         /// <exception cref="ArgumentException">Если размерности не совпадают.</exception>
         private static void EnsureSameDimensions(Vector v1, Vector v2)
+        {
+            if (v1.Count != v2.Count)
+                throw new ArgumentException("Размерности векторов не совпадают.");
+        }
+
+        /// <summary>
+        /// Проверяет, что два вектора имеют одинаковую размерность.
+        /// </summary>
+        /// <exception cref="ArgumentException">Если размерности не совпадают.</exception>
+        private static void EnsureSameDimensions(ComplexVector v1, ComplexVector v2)
+        {
+            if (v1.Count != v2.Count)
+                throw new ArgumentException("Размерности векторов не совпадают.");
+        }
+
+        /// <summary>
+        /// Проверяет, что два вектора имеют одинаковую размерность.
+        /// </summary>
+        /// <exception cref="ArgumentException">Если размерности не совпадают.</exception>
+        private static void EnsureSameDimensions(ComplexVector v1, Vector v2)
         {
             if (v1.Count != v2.Count)
                 throw new ArgumentException("Размерности векторов не совпадают.");

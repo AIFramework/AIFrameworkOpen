@@ -20,7 +20,10 @@ if (a > 2^5) {
 }
 else
 {
-    b = 4
+    v1 = [1,2,3]
+    v2 = [0.1,-0.2, 0.3]
+    b = dot(v1, v2)/(mag(v1)*mag(v2)) // косинус
+    b = b * 10
 }
 b // значение b
 
@@ -34,7 +37,8 @@ for (j=1; j<=b; j=j+1) {
 factorial // финальное значение
 
 fact(b) == factorial // проверка
-fact(a) == factorial // проверка
+gamma(b) > factorial // проверка
+gamma(b)
 
 ";
         Processor processor = new Processor();

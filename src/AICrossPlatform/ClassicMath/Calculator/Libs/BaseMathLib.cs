@@ -17,7 +17,17 @@ namespace AI.ClassicMath.Calculator.Libs;
 public class BaseMathLib : IMathLib
 {
     /// <summary>
-    /// 
+    /// Имя библиотеки
+    /// </summary>
+    public string Name { get; set; } = "Библиотека для поддержки базовых операций";
+
+    /// <summary>
+    /// Описание библиотеки
+    /// </summary>
+    public string Description { get; set; } = "Библиотека для поддержки базовых операций, для чисел в т.ч. с комплексным аргументом sin, cos, tan, sqrt, ln и т.п.";
+
+    /// <summary>
+    /// Отдает базовые функции
     /// </summary>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
@@ -25,12 +35,21 @@ public class BaseMathLib : IMathLib
     {
         Dictionary<string, FunctionDefinition> functions = new Dictionary<string, FunctionDefinition>(StringComparer.OrdinalIgnoreCase)
         {
+            { "round", new(1, args => (Complex)Math.Round(CastsVar.CastToDouble(args[0], "round"))) },
 
             { "sin", new(1, args => (Complex)Complex.Sin(CastsVar.CastToComplex(args[0], "sin"))) },
 
-            { "cos", new(1, args => (Complex)Complex.Cos(CastsVar.CastToComplex(args[0], "cos"))) },
+            { "asin", new(1, args => (Complex)Complex.Asin(CastsVar.CastToComplex(args[0], "asin"))) },
+
+            { "cos", new(1, args => (Complex)Complex.Acos(CastsVar.CastToComplex(args[0], "cos"))) },
+
+            { "acos", new(1, args => (Complex)Complex.Cos(CastsVar.CastToComplex(args[0], "acos"))) },
 
             { "tan", new(1, args => (Complex)Complex.Tan(CastsVar.CastToComplex(args[0], "tan"))) },
+
+            { "tanh", new(1, args => (Complex)Complex.Tanh(CastsVar.CastToComplex(args[0], "tanh"))) },
+
+            { "atan", new(1, args => (Complex)Complex.Atan(CastsVar.CastToComplex(args[0], "atan"))) },
 
             { "sqrt", new(1, args => (Complex)Complex.Sqrt(CastsVar.CastToComplex(args[0], "sqrt"))) },
 

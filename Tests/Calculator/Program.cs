@@ -1,4 +1,4 @@
-﻿using AI.ClassicMath.Calculator;
+﻿using AI.ClassicMath.Calculator.ProcessorLogic;
 using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using System.Globalization;
@@ -12,19 +12,53 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-        //Console.WriteLine("Калькулятор с поддержкой комплексных чисел. Используйте 'i' для мнимой единицы.");
-        //Console.WriteLine("Примеры: 3 + 4*i, sqrt(-1), exp(i*pi)");
 
-        var context = new ExecutionContext();
-        while (true)
-        {
-            Console.Write(">> ");
-            var input = Console.ReadLine();
-            if (input?.ToLower() == "exit") break;
-            var result = AdvancedCalculator.Evaluate(input, context);
-            if (result != null) Console.WriteLine($"=> {FormatResult(result)}");
-        }
+        string script = @"
+a = 10
+if (a > 2^5) {
+    b = a * 2
+}
+else
+{
+    b = 4
+}
+b // значение b
+
+// Факториал
+factorial = 1
+
+for (j=1; j<=b; j=j+1) {
+    factorial = factorial * j
+}
+
+factorial // финальное значение
+
+fact(b) == factorial // проверка
+fact(a) == factorial // проверка
+
+";
+        Processor processor = new Processor();
+        var answer = processor.Run(script);
+        Console.WriteLine(string.Join("\n", answer));
+
+
+
+
+
+
+
+        //CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+        //AdvancedCalculator advancedCalculator = new AdvancedCalculator();
+
+        //var context = new ExecutionContext();
+        //while (true)
+        //{
+        //    Console.Write(">> ");
+        //    var input = Console.ReadLine();
+        //    if (input?.ToLower() == "exit") break;
+        //    var result = advancedCalculator.Evaluate(input, context);
+        //    if (result != null) Console.WriteLine($"=> {FormatResult(result)}");
+        //}
     }
 
     /// <summary>

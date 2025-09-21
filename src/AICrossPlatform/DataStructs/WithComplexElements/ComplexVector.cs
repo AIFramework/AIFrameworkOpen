@@ -231,9 +231,7 @@ namespace AI.DataStructs.WithComplexElements
             ComplexVector C = new ComplexVector(vector.Count);
 
             for (int i = 0; i < vector.Count; i++)
-            {
                 C[i] = k + vector[i];
-            }
 
             return C;
         }
@@ -282,10 +280,8 @@ namespace AI.DataStructs.WithComplexElements
             ComplexVector C = new ComplexVector(vector.Count);
 
             for (int i = 0; i < vector.Count; i++)
-            {
                 C[i] = vector[i] - k;
-            }
-
+            
             return C;
         }
         /// <summary>
@@ -319,6 +315,81 @@ namespace AI.DataStructs.WithComplexElements
 
             return C;
         }
+
+
+        /// <summary>
+        /// Поэлементное умножить
+        /// </summary>
+        /// <param name="left">Первый вектор</param>
+        /// <param name="right">Второй</param>
+        /// <returns>Результат</returns>
+        public static ComplexVector operator *(ComplexVector left, ComplexVector right)
+        {
+            if (left.Count != right.Count)
+                throw new InvalidOperationException("Lengths of given vectors mismatch");
+
+
+            ComplexVector C = new ComplexVector(left.Count);
+
+            for (int i = 0; i < left.Count; i++)
+                C[i] = left[i] * right[i];
+
+            return C;
+        }
+
+        /// <summary>
+        /// Деление с остатком
+        /// </summary>
+        /// <param name="left">Первый вектор</param>
+        /// <param name="right">Второй</param>
+        /// <returns>Результат</returns>
+        public static ComplexVector operator %(ComplexVector left, ComplexVector right)
+        {
+            if (left.Count != right.Count)
+                throw new InvalidOperationException("Lengths of given vectors mismatch");
+
+
+            ComplexVector C = new ComplexVector(left.Count);
+
+            for (int i = 0; i < left.Count; i++)
+                C[i] = new Complex(left[i].Real % right[i].Real, left[i].Imaginary % right[i].Imaginary);
+
+            return C;
+        }
+
+        /// <summary>
+        /// Деление с остатком
+        /// </summary>
+        /// <param name="left">Первый вектор</param>
+        /// <param name="right">Второй</param>
+        /// <returns>Результат</returns>
+        public static ComplexVector operator %(ComplexVector left, Complex right)
+        {
+
+            ComplexVector C = new ComplexVector(left.Count);
+
+            for (int i = 0; i < left.Count; i++)
+                C[i] = new Complex(left[i].Real % right.Real, left[i].Imaginary % right.Imaginary);
+
+            return C;
+        }
+
+        /// <summary>
+        /// Деление с остатком
+        /// </summary>
+        /// <param name="left">Первый вектор</param>
+        /// <param name="right">Второй</param>
+        /// <returns>Результат</returns>
+        public static ComplexVector operator %(Complex left, ComplexVector right)
+        {
+            ComplexVector C = new ComplexVector(right.Count);
+
+            for (int i = 0; i < right.Count; i++)
+                C[i] = new Complex(left.Real % right[i].Real, left.Imaginary % right[i].Imaginary);
+
+            return C;
+        }
+
         /// <summary>
         /// Вычитание из числа
         /// </summary>
@@ -471,22 +542,22 @@ namespace AI.DataStructs.WithComplexElements
         /// <param name="left">Первый вектор</param>
         /// <param name="right">Второй</param>
         /// <returns>Результат</returns>
-        public static ComplexVector operator *(ComplexVector left, ComplexVector right)
-        {
-            if (left.Count != right.Count)
-            {
-                throw new InvalidOperationException("Lengths of given vectors mismatch");
-            }
+        //public static ComplexVector operator *(ComplexVector left, ComplexVector right)
+        //{
+        //    if (left.Count != right.Count)
+        //    {
+        //        throw new InvalidOperationException("Lengths of given vectors mismatch");
+        //    }
 
-            ComplexVector C = new ComplexVector(left.Count);
+        //    ComplexVector C = new ComplexVector(left.Count);
 
-            for (int i = 0; i < left.Count; i++)
-            {
-                C[i] = left[i] * right[i];
-            }
+        //    for (int i = 0; i < left.Count; i++)
+        //    {
+        //        C[i] = left[i] * right[i];
+        //    }
 
-            return C;
-        }
+        //    return C;
+        //}
 
         /// <summary>
         /// Деление
@@ -953,6 +1024,39 @@ namespace AI.DataStructs.WithComplexElements
             {
                 Add(new Complex(vectorReal[i], vectorImg[i]));
             }
+        }
+
+        public static ComplexVector Pow(ComplexVector v1, ComplexVector v2)
+        {
+            if (v1.Count != v2.Count)
+                throw new ArgumentException();
+
+            ComplexVector complexes = new ComplexVector(v2.Count);
+
+            for (int i = 0; i < v1.Count; i++)
+                complexes[i] = Complex.Pow(v1[i], v2[i]);
+
+            return complexes;
+        }
+
+        public static ComplexVector Pow(ComplexVector v, Complex c)
+        {
+            ComplexVector complexes = new ComplexVector(v.Count);
+
+            for (int i = 0; i < v.Count; i++)
+                complexes[i] = Complex.Pow(v[i], c);
+
+            return complexes;
+        }
+
+        public static ComplexVector Pow(Complex c, ComplexVector v)
+        {
+            ComplexVector complexes = new ComplexVector(v.Count);
+
+            for (int i = 0; i < v.Count; i++)
+                complexes[i] = Complex.Pow(c, v[i]);
+
+            return complexes;
         }
         #endregion
     }

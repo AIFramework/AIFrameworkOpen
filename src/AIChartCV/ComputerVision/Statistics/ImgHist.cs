@@ -1,112 +1,103 @@
 ﻿using AI.DataStructs.Algebraic;
+using System;
+using System.Diagnostics; // Для Stopwatch, если захотите измерить производительность
 
 namespace AI.ComputerVision.Statistics
 {
     /// <summary>
-    /// Работа с гистограммами изображений
+    /// Предоставляет статические методы для анализа и эквализации (выравнивания) гистограмм изображений.
+    /// Реализация оптимизирована для производительности.
     /// </summary>
-
-    public static class ImgHist
+    public static class ImageHistogram
     {
-        /// <summary>
-        /// Получение вектора частот
-        /// </summary>
-        /// <param name="img"></param>
-        /// <returns></returns>
-        public static Vector Freqs(Matrix img)
-        {
-            Vector fr = new Vector(256);
-
-            for (int i = 0; i < img.Data.Length; i++)
-            {
-                fr[(int)img[i]]++;
-            }
-
-            return fr;
-        }
+        private const int IntensityLevels = 256;
 
         /// <summary>
-        /// Получение интегральной ф-ии
+        /// Выполняет эквализацию (выравнивание) гистограммы изображения.
+        /// Этот процесс увеличивает глобальный контраст изображения, что полезно для изображений,
+        /// которые выглядят "блеклыми" или имеют слишком темные/светлые участки.
         /// </summary>
-        /// <param name="img"></param>
-        /// <returns></returns>
-        public static Vector GetCDF(Matrix img)
+        /// <param name="image">Исходное изображение в виде матрицы. Ожидаются значения в диапазоне [0, 255].</param>
+        /// <returns>Новая матрица с выровненной гистограммой.</returns>
+        /// <exception cref="ArgumentNullException">Если входное изображение равно null.</exception>
+        public static Matrix Equalize(Matrix image)
         {
-            return Functions.Integral(Freqs(img));
-        }
+            if (image == null)
+                throw new ArgumentNullException(nameof(image), "Исходное изображение не может быть null.");
 
-        // Расчет минимальной ненулевой частоты
-        private static double GetMin(Vector freq)
-        {
-            double min = double.MaxValue;
+            int pixelCount = image.Data.Length;
+            if (pixelCount == 0)
+                return new Matrix(image.Height, image.Width); 
 
-            foreach (var item in freq)
+           
+            var histogram = new long[IntensityLevels];
+            foreach (double pixel in image.Data)
             {
-                if (item != 0 && item < min) min = item;
+                // На случай выхода за пределы диапазона [0, 255]
+                int intensity = (int)Math.Max(0, Math.Min(IntensityLevels - 1, pixel));
+                histogram[intensity]++;
             }
 
-            return min;
-        }
-
-        /// <summary>
-        /// Получение частоты из изображения
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="freqs"></param>
-        /// <returns></returns>
-        public static double FreqFromValue(double value, Vector freqs)
-        {
-            return freqs[(int)value];
-        }
-
-
-        /// <summary>
-        /// Выравнивание гистограммы
-        /// </summary>
-        /// <param name="img"></param>
-        /// <returns></returns>
-        public static Matrix EqualizeHist(Matrix img)
-        {
-            Vector freq = GetCDF(img);
-            Matrix normal = new Matrix(img.Height, img.Width);
-            double min = GetMin(freq);
-            double denom = img.Data.Length - 1;
-
-            for (int i = 0; i < freq.Count; i++)
+            // Функция распределения (CDF)
+            var cdf = new long[IntensityLevels];
+            cdf[0] = histogram[0];
+            for (int i = 1; i < IntensityLevels; i++)
             {
-                if (freq[i] == 0) freq[i] = min;
+                cdf[i] = cdf[i - 1] + histogram[i];
             }
 
-            for (int i = 0; i < img.Data.Length; i++)
+            // Минимальное ненулевое значение CDF
+            // Это значение нужно для корректного масштабирования в диапазон [0, 255]
+            long cdfMin = 0;
+            for (int i = 0; i < IntensityLevels; i++)
             {
-                normal[i] = 255 * (FreqFromValue(img[i], freq) - min) / denom;
+                if (cdf[i] > 0)
+                {
+                    cdfMin = cdf[i];
+                    break;
+                }
             }
 
-            return normal;
+            if (pixelCount == cdfMin)
+                return image.Copy(); 
+
+            // Таблица преобразования
+            var lut = new double[IntensityLevels];
+            double denominator = pixelCount - cdfMin;
+
+            for (int i = 0; i < IntensityLevels; i++)
+                lut[i] = Math.Round(255.0 * (cdf[i] - cdfMin) / denominator);
+            
+
+            // Эквализация
+            var equalizedImage = new Matrix(image.Height, image.Width);
+            for (int i = 0; i < pixelCount; i++)
+            {
+                int intensity = (int)Math.Max(0, Math.Min(IntensityLevels - 1, image.Data[i]));
+                equalizedImage.Data[i] = lut[intensity];
+            }
+
+            return equalizedImage;
         }
 
         /// <summary>
-        /// Выравнивание гистограммы
+        /// Вычисляет гистограмму распределения яркостей для изображения.
         /// </summary>
-        /// <param name="img"></param>
-        /// <returns></returns>
-        public static Matrix EqualizeHistMiniMax(Matrix img)
+        /// <param name="image">Исходное изображение.</param>
+        /// <returns>Вектор размерностью 256, где индекс - уровень яркости, а значение - количество пикселей.</returns>
+        public static Vector GetHistogram(Matrix image)
         {
-            Vector freq = GetCDF(img);
-            Matrix normal = new Matrix(img.Height, img.Width);
-            double min = GetMin(freq);
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
 
-            for (int i = 0; i < freq.Count; i++)
+            var histogramVector = new Vector(IntensityLevels);
+            foreach (double pixel in image.Data)
             {
-                if (freq[i] == 0) freq[i] = min;
+                int intensity = (int)Math.Max(0, Math.Min(IntensityLevels - 1, pixel));
+                histogramVector[intensity]++;
             }
-
-            for (int i = 0; i < img.Data.Length; i++)
-            {
-                normal[i] = FreqFromValue(img[i], freq);
-            }
-
-            return normal.Minimax(255);
+            return histogramVector;
         }
+
     }
 }

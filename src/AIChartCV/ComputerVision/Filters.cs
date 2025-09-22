@@ -17,38 +17,67 @@ namespace AI.ComputerVision
         /// </summary>
         /// <param name="img">Image matrix</param>
         /// <param name="filter">Filter matrix</param>
-        public static Matrix SpatialFilter(Matrix img, Matrix filter)
+        public static unsafe Matrix SpatialFilter(Matrix img, Matrix filter)
         {
-            int h = img.Height, w = img.Width;
-            _ = filter.Height * filter.Width;
-            Matrix Ret16Gray = new Matrix(img.Height, img.Width);
+            int imgHeight = img.Height;
+            int imgWidth = img.Width;
+            int filterHeight = filter.Height;
+            int filterWidth = filter.Width;
 
-            int sX = 1 - filter.Width;
-            int y = 1 - filter.Height;
+            int halfFilterHeight = filterHeight / 2;
+            int halfFilterWidth = filterWidth / 2;
 
-            for (int y1 = 0; y1 < h; y1++, y++)
+            Matrix result = new Matrix(imgHeight, imgWidth);
+
+            // Копируем данные в массивы
+            double[] filterData = new double[filterHeight * filterWidth];
+            double[] imgData = new double[imgHeight * imgWidth];
+            double[] resultData = new double[imgHeight * imgWidth];
+
+            for (int i = 0; i < filterHeight; i++)
+                for (int j = 0; j < filterWidth; j++)
+                    filterData[i * filterWidth + j] = filter[i, j];
+
+            for (int i = 0; i < imgHeight; i++)
+                for (int j = 0; j < imgWidth; j++)
+                    imgData[i * imgWidth + j] = img[i, j];
+
+            // Используем параллелизм БЕЗ unsafe
+            Parallel.For(0, imgHeight, y =>
             {
-                int x = sX;
-                for (int x1 = 0; x1 < w; x1++, x++)
+                for (int x = 0; x < imgWidth; x++)
                 {
-                    for (int dy = 0; dy < filter.Height; dy++)
+                    double sum = 0;
+
+                    for (int fy = 0; fy < filterHeight; fy++)
                     {
-                        int y2 = y + dy;
-                        for (int dx = 0; dx < filter.Width; dx++)
+                        int imgY = y - halfFilterHeight + fy;
+
+                        if (imgY >= 0 && imgY < imgHeight)
                         {
-                            int ox = x + dx;
-                            if (y2 >= 0 && y2 < h && ox >= 0 && ox < w)
+                            for (int fx = 0; fx < filterWidth; fx++)
                             {
-                                Ret16Gray[y1, x1] += filter[dy, dx] * img[y2, ox];
+                                int imgX = x - halfFilterWidth + fx;
+
+                                if (imgX >= 0 && imgX < imgWidth)
+                                {
+                                    sum += filterData[fy * filterWidth + fx] *
+                                           imgData[imgY * imgWidth + imgX];
+                                }
                             }
                         }
                     }
 
+                    resultData[y * imgWidth + x] = sum;
                 }
-            }
+            });
 
-            return Ret16Gray;
+            // Копируем результат обратно
+            for (int i = 0; i < imgHeight; i++)
+                for (int j = 0; j < imgWidth; j++)
+                    result[i, j] = resultData[i * imgWidth + j];
 
+            return result;
         }
 
 
@@ -59,7 +88,7 @@ namespace AI.ComputerVision
         /// </summary>
         /// <param name="img">Image matrix</param>
         /// <param name="filter">Filter matrix</param>
-        public static Matrix MedianFilter(Matrix img, Matrix filter)
+        public static Matrix MedianFilterMask(Matrix img, Matrix filter)
         {
             int H = img.Height - filter.Height + 1, W = img.Width - filter.Width + 1;
             Matrix newMatr = new Matrix(H, W);
@@ -74,6 +103,42 @@ namespace AI.ComputerVision
 
             return newMatr;
 
+        }
+
+        /// <summary>
+        /// Median grayscale filter
+        /// </summary>
+        /// <param name="img">Image matrix</param>
+        /// <param name="filter">Filter matrix</param>
+        public static Matrix MedianFilter(Matrix img, int h = 3, int w =3)
+        {
+            int H = img.Height - h + 1, W = img.Width - w;
+            Matrix newMatr = new Matrix(H, W);
+
+            _ = Parallel.For(0, H, i =>
+            {
+                for (int j = 0; j < W; j++)
+                {
+                    newMatr[i, j] = FilterMedian(img, w, h, j, i);
+                }
+            });
+
+            return newMatr;
+
+        }
+
+        private static double FilterMedian(Matrix img, int w, int h, int dx, int dy)
+        {
+
+            List<double> ld = new List<double>();
+
+            for (int i = 0; i < h; i++)
+                for (int j = 0; j < w; j++)
+                    ld.Add(img[dy + i, dx + j]);
+
+            ld.Sort();
+
+            return ld[ld.Count / 2];
         }
 
 
@@ -139,6 +204,8 @@ namespace AI.ComputerVision
 
             return ld[ld.Count / 2];
         }
+
+       
 
 
         // Элемент СКО фильтра

@@ -33,6 +33,18 @@ public static class CastsVar
     }
 
     /// <summary>
+    /// Преобразует переменную в целое число
+    /// </summary>
+    public static int CastToInt32(object obj, string funcName)
+    {
+        var c = CastToDouble(obj, funcName);
+        if (Math.Abs(Math.Round(c) - c) > 1e-12)
+            throw new ArgumentException($"Функция '{funcName}' ожидает целочисленный аргумент, но получила вещественное число {c}.");
+
+        return (int)c;
+    }
+
+    /// <summary>
     /// Преобразует переменную в комплексный вектор
     /// </summary>
     public static ComplexVector CastToComplexVector(object obj, string funcName)

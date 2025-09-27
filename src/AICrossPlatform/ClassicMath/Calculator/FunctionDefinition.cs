@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AI.ClassicMath.Calculator;
 
 [Serializable]
 public class FunctionDefinition
 {
-    public int ArgumentCount { get; }
-    public Func<object[], object> Delegate { get; }
+    public int ArgumentCount { get; set; }
+    public Func<object[], object> Delegate { get; set; }
 
     public string Name { get; set; }
 
     public DescriptionFunction Description { get; set; }
+
+    public FunctionDefinition() { }
 
     public FunctionDefinition(int argumentCount, Func<object[], object> @delegate)
     {
@@ -20,10 +23,11 @@ public class FunctionDefinition
 }
 
 [Serializable]
-public class DescriptionFunction 
+public class DescriptionFunction
 {
     public string Signature { get; set; }
     public string Description { get; set; }
-    public string Area { get; set; }
+    public List<string> AreaList { get; set; }
+    public string Exemple { get; set; }
 }
 

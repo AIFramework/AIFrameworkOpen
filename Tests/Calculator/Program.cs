@@ -1,4 +1,5 @@
-﻿using AI.ClassicMath.Calculator.ProcessorLogic;
+﻿using AI.ClassicMath.Calculator;
+using AI.ClassicMath.Calculator.ProcessorLogic;
 using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using System.Globalization;
@@ -13,7 +14,9 @@ public class Program
     public static void Main(string[] args)
     {
 
-        string script = @"
+        string script =
+
+@"
 a = 10
 if (a > 2^5) {
     b = a * 2
@@ -40,7 +43,9 @@ fact(b) == factorial // проверка
 gamma(b) > factorial // проверка
 gamma(b)
 
-";
+"
+
+;
         Processor processor = new Processor();
         var answer = processor.Run(script);
         Console.WriteLine(string.Join("\n", answer));

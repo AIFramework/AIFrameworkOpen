@@ -1458,6 +1458,65 @@ namespace AI.DataStructs.Algebraic
         #endregion
 
         #region Статические методы
+
+
+        /// <summary>
+        /// Вычисляет векторное произведение для 2D или 3D векторов.
+        /// - Для 3D векторов возвращает стандартный результат векторного произведения (новый 3D вектор).
+        /// - Для 2D векторов v1=(x1,y1) и v2=(x2,y2) возвращает 3D вектор (0, 0, z), 
+        ///   где z = x1*y2 - y1*x2 (псевдоскалярное произведение).
+        /// </summary>
+        /// <param name="v1">Первый вектор (2D или 3D).</param>
+        /// <param name="v2">Второй вектор (2D или 3D).</param>
+        /// <returns>Результирующий вектор. Будет 3D вектором в обоих случаях.</returns>
+        /// <exception cref="ArgumentNullException">Если один из векторов null.</exception>
+        /// <exception cref="ArgumentException">Если векторы имеют разную размерность или их размерность не равна 2 или 3.</exception>
+        public static Vector Cross(Vector v1, Vector v2)
+        {
+            if ((v1 == null) || (v2 == null))
+                throw new ArgumentNullException("Векторы, участвующие в произведении, не могут быть null.");
+
+            if (v1.Count != v2.Count)
+                throw new ArgumentException("Векторы, участвующие в произведении, должны иметь одинаковую размерность.");
+
+            switch (v1.Count)
+            {
+                case 3:
+                    double x3d = v1[1] * v2[2] - v1[2] * v2[1];
+                    double y3d = v1[2] * v2[0] - v1[0] * v2[2];
+                    double z3d = v1[0] * v2[1] - v1[1] * v2[0];
+                    return new Vector([x3d, y3d, z3d]);
+
+                case 2:
+                    double z2d = v1[0] * v2[1] - v1[1] * v2[0];
+                    return new Vector([0, 0, z2d]);
+
+                default:
+                    throw new ArgumentException("Векторное произведение определено только для 2D и 3D векторов.");
+            }
+        }
+
+        /// <summary>
+        /// Скалярное произведение векторов
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        public static double Dot(Vector v1, Vector v2)
+        {
+            if ((v1 == null) || (v2 == null))
+                throw new ArgumentNullException("Векторы участвующие в скалярном произведении не могут быть null");
+
+
+            if (v1.Count != v2.Count)
+                throw new ArgumentNullException("Векторы участвующие в скалярном произведении не могут различаться по размерности");
+
+            if (v1.Count == 0 || v2.Count == 0)
+                return 0;
+
+            return (v1 * v2).Sum();
+        }
+
         private static float[] Vector2SingleArray(Vector vector)
         {
             float[] array = new float[vector.Count];

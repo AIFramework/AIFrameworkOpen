@@ -146,7 +146,7 @@ namespace AI.ML.Distances
 
             for (int i = 0; i < a.Shape.Count; i++)
                 sum += a.Data[i] * a.Data[i];
-            
+
             return sum;
         }
 

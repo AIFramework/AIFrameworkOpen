@@ -1,8 +1,8 @@
 ﻿using AI.DataStructs.Algebraic;
-using System.Linq;
+using AI.DataStructs.WithComplexElements;
 using System;
 using System.Collections.Generic;
-using AI.DataStructs.WithComplexElements;
+using System.Linq;
 using System.Numerics;
 
 namespace AI.HightLevelFunctions

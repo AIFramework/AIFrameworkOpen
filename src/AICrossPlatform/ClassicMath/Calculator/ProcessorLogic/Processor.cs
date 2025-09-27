@@ -146,10 +146,10 @@ public class Processor
     {
         return result switch
         {
-            double d => d.ToString("G6", CultureInfo.InvariantCulture),
-            Complex c => Math.Abs(c.Imaginary) < 1e-12 ? c.Real.ToString("G6", CultureInfo.InvariantCulture) : $"{c.Real.ToString("G4", CultureInfo.InvariantCulture)} + {c.Imaginary.ToString("G4", CultureInfo.InvariantCulture)}i",
+            double d => d.ToString("G9", CultureInfo.InvariantCulture),
+            Complex c => Math.Abs(c.Imaginary) < 1e-12 ? c.Real.ToString("G6", CultureInfo.InvariantCulture) : $"{c.Real.ToString("G9", CultureInfo.InvariantCulture)} + {c.Imaginary.ToString("G9", CultureInfo.InvariantCulture)}i",
             ComplexVector v => $"[{string.Join(", ", v.Select(c => FormatResult(c)))}]",
-            Vector dv => $"[{string.Join(", ", dv.Select(c => c.ToString("G4", CultureInfo.InvariantCulture)))}]",
+            Vector dv => $"[{string.Join(", ", dv.Select(c => c.ToString("G6", CultureInfo.InvariantCulture)))}]",
             _ => result?.ToString() ?? "null"
         };
     }

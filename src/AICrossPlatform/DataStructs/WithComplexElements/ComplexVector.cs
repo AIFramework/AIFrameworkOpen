@@ -281,7 +281,7 @@ namespace AI.DataStructs.WithComplexElements
 
             for (int i = 0; i < vector.Count; i++)
                 C[i] = vector[i] - k;
-            
+
             return C;
         }
         /// <summary>
@@ -831,23 +831,54 @@ namespace AI.DataStructs.WithComplexElements
         {
             TransformSelf(Complex.Conjugate);
         }
+
+        /// <summary>
+        /// Сумма значений вектора
+        /// </summary>
+        /// <returns></returns>
+        public Complex Sum()
+        {
+            Complex av = new Complex(0, 0);
+
+            for (int i = 0; i < Count; i++)
+                av += this[i];
+
+            return av;
+        }
+
         /// <summary>
         /// Arithmetic mean of a complex vector
         /// </summary>
         public Complex Mean()
         {
-            Complex av = new Complex(0, 0);
-
-            for (int i = 0; i < Count; i++)
-            {
-                av += this[i];
-            }
-
-            return av / Count;
+            return Sum() / Count;
         }
         #endregion
 
         #region Статические методы
+
+        /// <summary>
+        /// Скалярное произведение векторов
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        public static Complex Dot(ComplexVector v1, ComplexVector v2)
+        {
+            if ((v1 == null) || (v2 == null))
+                throw new ArgumentNullException("Векторы участвующие в скалярном произведении не могут быть null");
+
+
+            if (v1.Count != v2.Count)
+                throw new ArgumentNullException("Векторы участвующие в скалярном произведении не могут различаться по размерности");
+
+            if (v1.Count == 0 || v2.Count == 0)
+                return 0;
+
+            return (v1 * v2).Sum();
+        }
+
+
         /// <summary>
         /// Converting the vector of phases and amplitudes into a complex vector
         /// </summary>

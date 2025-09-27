@@ -1,13 +1,13 @@
-﻿using System;
+﻿using AI.ClassicMath.Calculator.Libs;
+using AI.ClassicMath.Calculator.Libs.Algebra;
+using AI.DataStructs.Algebraic;
+using AI.DataStructs.WithComplexElements;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
-using AI.ClassicMath.Calculator.Libs;
-using AI.DataStructs.Algebraic;
-using AI.DataStructs.WithComplexElements;
-using AI.NLP;
 
 namespace AI.ClassicMath.Calculator
 {
@@ -33,7 +33,7 @@ namespace AI.ClassicMath.Calculator
         /// Функции (математические)
         /// </summary>
         public Dictionary<string, FunctionDefinition> Functions { get; set; }
-        
+
 
         /// <summary>
         /// Калькулятор с поддержкой библиотек, векторов и комплексных чисел.
@@ -41,11 +41,19 @@ namespace AI.ClassicMath.Calculator
         public AdvancedCalculator()
         {
             var baseMathLib = new BaseMathLib();
+            var eq = new EquationLib();
+
             var baseOperators = new LibOperatorsBase();
 
             Operators = baseOperators.GetOperators();
             OperationsFunctions = baseOperators.GetOperationsFunctions();
+
             Functions = baseMathLib.GetFunctions();
+
+            foreach (var func in eq.GetFunctions())
+            {
+                Functions.Add(func.Key, func.Value);
+            }
         }
 
         #endregion
@@ -139,9 +147,9 @@ namespace AI.ClassicMath.Calculator
                 else if (Operators.ContainsKey(token))
                 {
                     while (operatorStack.Count > 0 && Operators.TryGetValue(operatorStack.Peek(), out
-                        var op2) && (op2.Precedence > Operators[token].Precedence || (op2.Precedence == Operators[token].Precedence && op2.Associativity == "Left"))) 
+                        var op2) && (op2.Precedence > Operators[token].Precedence || (op2.Precedence == Operators[token].Precedence && op2.Associativity == "Left")))
                         outputQueue.Enqueue(operatorStack.Pop());
-                    
+
                     operatorStack.Push(token);
                 }
                 else if ("([".Contains(token))
@@ -220,7 +228,7 @@ namespace AI.ClassicMath.Calculator
                 }
                 else if (token.StartsWith("vector_") || token.Contains('_'))
                 {
-                    var parts = token.Split(new[] {'_'}, 2);
+                    var parts = token.Split(new[] { '_' }, 2);
                     var funcName = parts[0];
                     var argCountStr = parts[1];
                     if (!int.TryParse(argCountStr, out
@@ -297,11 +305,11 @@ namespace AI.ClassicMath.Calculator
             Vector rv => new ComplexVector(rv.Select(c => new Complex(c, 0)).ToArray()),
             _ => obj
         };
-        private bool IsValue(string token, ExecutionContext context) => 
+        private bool IsValue(string token, ExecutionContext context) =>
             token.Equals("i", StringComparison.OrdinalIgnoreCase) || double.TryParse(token, NumberStyles.Any, CultureInfo.InvariantCulture, out _) || context.Memory.ContainsKey(token);
-        private bool IsValidVarName(string name) => 
+        private bool IsValidVarName(string name) =>
             !string.IsNullOrWhiteSpace(name) && !name.Equals("i", StringComparison.OrdinalIgnoreCase) && (char.IsLetter(name[0]) || name[0] == '_') && name.All(c => char.IsLetterOrDigit(c) || c == '_') && !Functions.ContainsKey(name);
-        private bool IsSimpleAssignmentTarget(string expression) => 
+        private bool IsSimpleAssignmentTarget(string expression) =>
             !expression.Split('=')[0].Any(c => "()[]<>!".Contains(c));
 
         #endregion

@@ -1,6 +1,5 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AI.ML.Clustering

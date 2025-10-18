@@ -237,16 +237,19 @@ QuarticEquationSolver(1, -10, 35, -50, 24)"
         {
             // Решение резольвентного кубического уравнения: z^3 + 2pz^2 + (p^2 - 4r)z - q^2 = 0
             Complex[] cubicRoots = CubicEquationSolverHelper.SolveCubic(1, 2 * p, p * p - 4 * r, -q * q);
-            Complex z = cubicRoots.First(root => root != Complex.Zero); // Находим ненулевой корень
+            Complex z = cubicRoots.First(root => root != Complex.Zero);
 
             Complex sqrtZ = Complex.Sqrt(z);
-            Complex term1 = p + z;
-            Complex term2 = q / (2 * sqrtZ);
+            Complex commonTerm = (p + z) / 2; // Вычисляем (p/2 + z/2)
+            Complex qTerm = q / (2 * sqrtZ);   // Вычисляем q / (2*sqrt(z))
 
-            ComplexVector quadRoots1 = QuadraticEquationSolver.Solve(1, sqrtZ, (term1 - term2) / 2);
-            ComplexVector quadRoots2 = QuadraticEquationSolver.Solve(1, -sqrtZ, (term1 + term2) / 2);
+            Complex c1 = commonTerm - qTerm;
+            Complex c2 = commonTerm + qTerm;
 
-            rootsY = new[] { quadRoots1[0], quadRoots1[1], quadRoots2[0], quadRoots2[1] };
+            ComplexVector quadRoots1 = QuadraticEquationSolver.Solve(1, sqrtZ, c1);
+            ComplexVector quadRoots2 = QuadraticEquationSolver.Solve(1, -sqrtZ, c2);
+
+            rootsY = [quadRoots1[0], quadRoots1[1], quadRoots2[0], quadRoots2[1] ];
         }
 
         // Обратная замена x = y - B/4

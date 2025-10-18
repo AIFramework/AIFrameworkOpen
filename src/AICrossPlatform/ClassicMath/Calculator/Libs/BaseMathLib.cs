@@ -44,6 +44,7 @@ namespace AI.ClassicMath.Calculator.Libs
             var functions = new List<FunctionDefinition> {
         // Стандартная математика
         CreateRoundFunction(),
+        CreateFloorFunction(),
         CreateAbsFunction(),
         CreateSqrtFunction(),
         CreateCbrtFunction(),
@@ -107,7 +108,25 @@ namespace AI.ClassicMath.Calculator.Libs
                     AreaList = ["Статистика", "Программирование"],
                     Description = "Округляет вещественное число до ближайшего целого.",
                     Signature = "Вход: 1 число. Выход: 1 округлённое число.",
-                    Exemple = "round(3.14159) // Результат: 3"
+                    Exemple = "round(3.59) // Результат: 4"
+                }
+            };
+        }
+
+        private static FunctionDefinition CreateFloorFunction()
+        {
+            const string name = "floor";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 1,
+                Delegate = args => (Complex)(int)CastsVar.CastToDouble(args[0], name),
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Статистика", "Программирование"],
+                    Description = "Округляет вещественное число вниз до ближайшего целого.",
+                    Signature = "Вход: 1 число. Выход: 1 округлённое число.",
+                    Exemple = "round(3.59) // Результат: 3"
                 }
             };
         }

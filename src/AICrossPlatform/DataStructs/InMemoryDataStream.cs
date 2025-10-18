@@ -62,14 +62,10 @@ namespace AI.DataStructs
         public InMemoryDataStream(string path, bool isEncrypted = false, bool isZipped = false)
         {
             if (path == null)
-            {
                 throw new ArgumentNullException(nameof(path));
-            }
 
             if (!File.Exists(path))
-            {
                 throw new FileNotFoundException("File does not exist", path);
-            }
 
             IsEncrypted = isEncrypted;
             IsZipped = isZipped;
@@ -90,14 +86,10 @@ namespace AI.DataStructs
         public InMemoryDataStream(byte[] data, bool isEncrypted = false, bool isZipped = false)
         {
             if (data == null)
-            {
                 throw new ArgumentNullException(nameof(data));
-            }
 
             if (data.Length == 0)
-            {
                 throw new ArgumentException("Data is empty", nameof(data));
-            }
 
             IsEncrypted = isEncrypted;
             IsZipped = isZipped;
@@ -115,9 +107,7 @@ namespace AI.DataStructs
         public InMemoryDataStream(Stream stream, bool isEncrypted = false, bool isZipped = false)
         {
             if (stream == null)
-            {
                 throw new ArgumentNullException(nameof(stream));
-            }
 
             IsEncrypted = isEncrypted;
             IsZipped = isZipped;
@@ -2123,7 +2113,7 @@ namespace AI.DataStructs
 
             using (MemoryStream memory = new MemoryStream())
             {
-                using (GZipStream tinyStream = new GZipStream(memory, CompressionMode.Compress))
+                using (GZipStream tinyStream = new GZipStream(memory, CompressionLevel.Optimal))
                 {
                     using MemoryStream ms = ToMemoryStream();
                     ms.CopyTo(tinyStream);

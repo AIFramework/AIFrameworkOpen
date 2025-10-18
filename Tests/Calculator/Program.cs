@@ -56,18 +56,18 @@ gamma(b)
 
 
 
-        //CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-        //AdvancedCalculator advancedCalculator = new AdvancedCalculator();
+        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+        AdvancedCalculator advancedCalculator = new AdvancedCalculator();
 
-        //var context = new ExecutionContext();
-        //while (true)
-        //{
-        //    Console.Write(">> ");
-        //    var input = Console.ReadLine();
-        //    if (input?.ToLower() == "exit") break;
-        //    var result = advancedCalculator.Evaluate(input, context);
-        //    if (result != null) Console.WriteLine($"=> {FormatResult(result)}");
-        //}
+        var context = new ExecutionContext();
+        while (true)
+        {
+            Console.Write(">> ");
+            var input = Console.ReadLine();
+            if (input?.ToLower() == "exit") break;
+            var result = advancedCalculator.Evaluate(input, context);
+            if (result != null) Console.WriteLine($"=> {FormatResult(result)}");
+        }
     }
 
     /// <summary>

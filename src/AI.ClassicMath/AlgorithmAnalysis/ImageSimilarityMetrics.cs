@@ -1,7 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
 
-namespace AI.ML.AlgorithmAnalysis
+namespace AI.ClassicMath.AlgorithmAnalysis
 {
     /// <summary>
     /// Метрики схожести изображений
@@ -11,7 +11,7 @@ namespace AI.ML.AlgorithmAnalysis
     {
         // Коэф. для расчета SSIM
         private const double k1_ssim = 0.01, k2_ssim = 0.03;
-        private static readonly double c1_ssim = (k1_ssim * 255) * (k1_ssim * 255), c2_ssim = (k2_ssim * 255) * (k2_ssim * 255);
+        private static readonly double c1_ssim = k1_ssim * 255 * (k1_ssim * 255), c2_ssim = k2_ssim * 255 * (k2_ssim * 255);
 
         // Fausto Milletari, Nassir Navab, Seyed-Ahmad Ahmadi.// V-Net: Fully Convolutional Neural Networks for Volumetric Medical Image Segmentation.// 2016 Fourth International Conference on 3D Vision
         /// <summary>

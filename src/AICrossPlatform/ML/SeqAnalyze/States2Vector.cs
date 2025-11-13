@@ -1,7 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.DataStructs.Data;
-using AI.Dog.Tools;
 using AI.ML.Regression;
+using AI.NeuralSymbolic;
 using System;
 using System.Collections.Generic;
 

@@ -1,7 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
 
-namespace AI.ML.MatrixUtils
+namespace AI.ClassicMath.MatrixUtils
 {
     /// <summary>
     /// Процедура ортагонализации Грама-Шмидта

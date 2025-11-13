@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AI.ML.Distances
+namespace AI.Distances
 {
     /// <summary>
     /// Расстояние между распределениями

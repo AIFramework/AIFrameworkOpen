@@ -3,7 +3,7 @@ using AI.MathUtils.Algebra;
 using System;
 using System.Threading.Tasks;
 
-namespace AI.ML.MatrixUtils
+namespace AI.ClassicMath.MatrixUtils
 {
     /// <summary>
     /// Алгоритм вычисления собственных чисел и векторов

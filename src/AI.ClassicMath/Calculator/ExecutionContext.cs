@@ -1,5 +1,4 @@
-﻿using AI.NLP;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -37,7 +36,7 @@ public class ExecutionContext
     public void AddDoubleConstants(string costants)
     {
         costants = costants.Replace(" ", "");
-        List<string> constsArray = costants.Split("\n").ToList();
+        List<string> constsArray = costants.Split('\n').ToList();
 
         foreach (string constant in constsArray)
         {

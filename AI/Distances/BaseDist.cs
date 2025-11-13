@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace AI.ML.Distances
+namespace AI.Distances
 {
     /// <summary>
     /// Базовые функции измерения расстояний

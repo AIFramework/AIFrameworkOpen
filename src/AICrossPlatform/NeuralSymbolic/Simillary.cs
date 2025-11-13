@@ -3,7 +3,7 @@ using AI.HightLevelFunctions;
 using AI.Statistics;
 using System;
 
-namespace AI.Dog.Tools
+namespace AI.NeuralSymbolic
 {
     /// <summary>
     /// Проверка схожести чисел

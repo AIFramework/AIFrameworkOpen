@@ -4,12 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	  <LangVersion>12.0</LangVersion>
-	  <!-- Nullable оставлен disable для обратной совместимости с существующим кодом -->
-	  <!-- РЕКОМЕНДАЦИЯ: постепенно мигрировать на <Nullable>enable</Nullable> -->
 	  <Nullable>disable</Nullable>
     <IsPublishable>False</IsPublishable>
     <RootNamespace>AI</RootNamespace>
-    <AssemblyName>AI</AssemblyName>
+    <AssemblyName>AI.CP</AssemblyName>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -23,5 +21,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>1701;1702</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AI\AI.csproj" />
+    <ProjectReference Include="..\AI.ClassicMath\AI.ClassicMath.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
-﻿using AI.DataStructs.Algebraic;
-using AI.ML.AlgorithmAnalysis;
+﻿using AI.ClassicMath.AlgorithmAnalysis;
+using AI.DataStructs.Algebraic;
 using AI.ML.NeuralNetwork.CoreNNW.DataStructs;
 using AI.ML.NeuralNetwork.CoreNNW.Models;
 using System;

@@ -11,7 +11,7 @@ using AI.Statistics;
 using System;
 using System.Collections.Generic;
 
-namespace AI.ML.AlgorithmAnalysis
+namespace AI.ClassicMath.AlgorithmAnalysis
 {
     /// <summary>
     /// Проверка схожести двух базисов

@@ -9,7 +9,7 @@
 using AI.DataStructs.Algebraic;
 using System;
 
-namespace AI.ML.AlgorithmAnalysis
+namespace AI.ClassicMath.AlgorithmAnalysis
 {
     /// <summary>
     /// Корреляционный анализ, проверка ортогональности
@@ -38,7 +38,7 @@ namespace AI.ML.AlgorithmAnalysis
         public double MeanOrtog()
         {
             double mean = Statistics.Statistic.ExpectedValueAbsNotCheckNaN(CorMatrNorm);
-            mean = (mean - CorMatrNorm.Height) / ((CorMatrNorm.Height * CorMatrNorm.Height) - CorMatrNorm.Height);
+            mean = (mean - CorMatrNorm.Height) / (CorMatrNorm.Height * CorMatrNorm.Height - CorMatrNorm.Height);
             return 1.0 - mean;
         }
 

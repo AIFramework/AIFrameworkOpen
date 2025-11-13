@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AI.ML.AlgorithmAnalysis
+namespace AI.ClassicMath.AlgorithmAnalysis
 {
 
     /// <summary>

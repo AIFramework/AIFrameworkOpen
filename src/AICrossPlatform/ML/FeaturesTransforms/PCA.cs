@@ -1,5 +1,5 @@
-﻿using AI.DataStructs.Algebraic;
-using AI.ML.MatrixUtils;
+﻿using AI.ClassicMath.MatrixUtils;
+using AI.DataStructs.Algebraic;
 using System;
 using System.Collections.Generic;
 

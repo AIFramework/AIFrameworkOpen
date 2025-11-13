@@ -1,7 +1,7 @@
 ﻿using AI.DataStructs.Algebraic;
 using System;
 
-namespace AI.ML.Distances
+namespace AI.Distances
 {
     /// <summary>
     /// Вероятностные (энтропийные) расстояния
@@ -30,7 +30,7 @@ namespace AI.ML.Distances
 
             return Functions.Summ(
                 Vector.Crosser(v1, v2,
-                (x, y) => (x * Math.Log((x + eps) / (y + eps))) + (y * Math.Log((y + eps) / (x + eps)))
+                (x, y) => x * Math.Log((x + eps) / (y + eps)) + y * Math.Log((y + eps) / (x + eps))
                 )
                 ) / (2 * v2.Count);
         }

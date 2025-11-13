@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<LangVersion>12.0</LangVersion>
+		<Nullable>disable</Nullable>
+		<IsPublishable>False</IsPublishable>
+		<RootNamespace>AI</RootNamespace>
+		<AssemblyName>AI</AssemblyName>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+
+</Project>

@@ -7,7 +7,7 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using AI.DataStructs.Algebraic;
-using AI.ML.Distances;
+using AI.Distances;
 using System;
 using System.Collections.Generic;
 using System.IO;

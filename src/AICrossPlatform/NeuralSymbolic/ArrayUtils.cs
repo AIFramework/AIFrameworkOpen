@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AI.Dog.Tools
+namespace AI.NeuralSymbolic
 {
     /// <summary>
     /// Операции над массивами

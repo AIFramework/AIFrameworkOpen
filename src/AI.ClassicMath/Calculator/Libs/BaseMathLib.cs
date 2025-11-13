@@ -2,9 +2,9 @@
 
 using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
+using AI.Distances;
 using AI.HightLevelFunctions;
 using AI.MathUtils.Combinatorics;
-using AI.ML.Distances;
 using System;
 using System.Collections.Generic;
 using System.Linq;

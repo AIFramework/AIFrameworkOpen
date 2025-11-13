@@ -101,7 +101,7 @@
     <Compile Include="ComputerVision\FiltersEachElements\IFilterEE.cs" />
     <Compile Include="ComputerVision\FiltersEachElements\SigmoidalFilter.cs" />
     <Compile Include="ComputerVision\ImageMatrixConverter.cs" />
-    <Compile Include="ComputerVision\ImgFeatureExtractions\Class1.cs" />
+    <Compile Include="ComputerVision\ImgFeatureExtractions\ImgOnnxExtractor.cs" />
     <Compile Include="ComputerVision\ImgTransforms\HOG.cs" />
     <Compile Include="ComputerVision\ImgTransforms\SobelData.cs" />
     <Compile Include="ComputerVision\ImgTransforms\SobelTransform.cs" />
@@ -131,8 +131,12 @@
       <Name>AI.ONNX</Name>
     </ProjectReference>
     <ProjectReference Include="..\AICrossPlatform\AICrossPlatform.csproj">
-      <Project>{a4203f59-0bbe-4b1a-a3f7-86704d1ecf10}</Project>
+      <Project>{467aef8d-96aa-48ad-b06c-988a980bfb41}</Project>
       <Name>AICrossPlatform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AI\AI.csproj">
+      <Project>{DB3DBBBC-8DD2-4944-91CE-54766292237D}</Project>
+      <Name>AI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

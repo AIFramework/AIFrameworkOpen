@@ -1,5 +1,5 @@
 ﻿using AI.DataStructs.Algebraic;
-using AI.Dog.Tools;
+using AI.NeuralSymbolic;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -89,6 +89,10 @@
       <Project>{467aef8d-96aa-48ad-b06c-988a980bfb41}</Project>
       <Name>AICrossPlatform</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\AI\AI.csproj">
+      <Project>{db3dbbbc-8dd2-4944-91ce-54766292237d}</Project>
+      <Name>AI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,12 +1,7 @@
 ﻿using AI.DataPrepaire.NLPUtils.TextGeneration;
-using AI.DataPrepaire.Tokenizers.TextTokenizers;
-using AI.DataStructs.Algebraic;
-using AI.ML.HMM;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace TextGenTest

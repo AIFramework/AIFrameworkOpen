@@ -1,7 +1,6 @@
 ﻿using AI.DataStructs.Algebraic;
 using AI.Distances;
 using AI.ML.Classifiers;
-using AI.ML.Distances;
 using System;
 using System.Collections.Generic;
 using System.Linq;

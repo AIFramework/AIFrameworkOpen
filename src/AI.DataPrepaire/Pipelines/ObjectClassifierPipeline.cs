@@ -1,9 +1,9 @@
-﻿using AI.DataPrepaire.DataNormalizers;
+﻿using AI.ClassicMath.AlgorithmAnalysis;
+using AI.DataPrepaire.DataNormalizers;
 using AI.DataPrepaire.FeatureExtractors;
 using AI.DataPrepaire.Pipelines.Utils;
 using AI.DataStructs.Algebraic;
 using AI.Extensions;
-using AI.ML.AlgorithmAnalysis;
 using AI.ML.Classifiers;
 using AI.Statistics;
 using System;

@@ -8,6 +8,25 @@ namespace AI.DataStructs
     /// <summary>
     /// Вспомогательный класс для бинарной сериализации
     /// </summary>
+    /// <remarks>
+    /// ⚠️ ВАЖНО: Данный класс использует BinaryFormatter, который является УСТАРЕВШИМ и НЕБЕЗОПАСНЫМ.
+    /// Microsoft официально признал BinaryFormatter deprecated начиная с .NET 5.
+    /// 
+    /// РИСКИ БЕЗОПАСНОСТИ:
+    /// - Десериализация недоверенных данных может привести к выполнению произвольного кода (RCE)
+    /// - Уязвимости к атакам типа deserialization attacks
+    /// 
+    /// РЕКОМЕНДАЦИИ:
+    /// 1. НЕ используйте этот класс для десериализации данных из ненадежных источников
+    /// 2. Рассмотрите миграцию на:
+    ///    - System.Text.Json для простых объектов
+    ///    - protobuf-net или MessagePack для бинарной сериализации
+    ///    - Кастомную сериализацию для сложных структур
+    /// 
+    /// Этот класс сохранён для обратной совместимости с существующими проектами.
+    /// </remarks>
+    [Obsolete("BinaryFormatter is deprecated and insecure. Consider migrating to System.Text.Json or protobuf-net. " +
+              "Only use with trusted data sources.")]
     public static class BinarySerializer
     {
         /// <summary>
@@ -25,6 +44,7 @@ namespace AI.DataStructs
             if (File.Exists(filePath))
             {
                 using FileStream fs = new FileStream(filePath, FileMode.Open);
+#pragma warning disable SYSLIB0011 // BinaryFormatter is obsolete
                 BinaryFormatter formatter = new BinaryFormatter
                 {
                     AssemblyFormat = FormatterAssemblyStyle.Simple
@@ -36,6 +56,7 @@ namespace AI.DataStructs
                 }
 
                 object data = formatter.Deserialize(fs);
+#pragma warning restore SYSLIB0011
 
                 if (data is T t)
                 {
@@ -69,12 +90,14 @@ namespace AI.DataStructs
                 throw new ArgumentException("Stream is empty", nameof(stream));
             }
 
+#pragma warning disable SYSLIB0011 // BinaryFormatter is obsolete
             BinaryFormatter formatter = new BinaryFormatter
             {
                 AssemblyFormat = FormatterAssemblyStyle.Simple
             };
 
             object data = formatter.Deserialize(stream);
+#pragma warning restore SYSLIB0011
 
             if (data is T t)
             {
@@ -121,12 +144,14 @@ namespace AI.DataStructs
         /// <param name="data"></param>
         public static void Save<T>(Stream stream, T data)
         {
+#pragma warning disable SYSLIB0011 // BinaryFormatter is obsolete
             BinaryFormatter formatter = new BinaryFormatter()
             {
                 AssemblyFormat = FormatterAssemblyStyle.Simple
             };
 
             formatter.Serialize(stream, data);
+#pragma warning restore SYSLIB0011
         }
     }
 }

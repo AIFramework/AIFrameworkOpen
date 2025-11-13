@@ -9,12 +9,21 @@ namespace AI.HightLevelFunctions
     public static class ActivationFunctions
     {
         /// <summary>
-        /// Softmax
+        /// Softmax (с численной стабильностью)
         /// </summary>
         public static Vector Softmax(Vector inp)
         {
-            Vector exp = inp.Transform(Math.Exp);
-            return exp / (exp.Sum() + double.Epsilon);
+            // Вычитаем максимум для численной стабильности (предотвращение overflow)
+            double max = inp.Max();
+            Vector shifted = inp - max;
+            Vector exp = shifted.Transform(Math.Exp);
+            double sum = exp.Sum();
+            
+            // Защита от деления на ноль (хотя sum exp всегда > 0)
+            if (sum < double.Epsilon)
+                sum = double.Epsilon;
+                
+            return exp / sum;
         }
 
         /// <summary>

@@ -1116,8 +1116,16 @@ namespace AI.DataStructs.Algebraic
         {
             double max = Max();
             double min = Min();
-            double d = 1.0 / (max - min + double.Epsilon);
-
+            double range = max - min;
+            
+            // Защита от деления на ноль: если все элементы одинаковые
+            if (Math.Abs(range) < double.Epsilon)
+            {
+                // Возвращаем вектор из 0.5 (середина диапазона [0,1])
+                return new Vector(Count) + 0.5;
+            }
+            
+            double d = 1.0 / range;
             return Transform(x => (x - min) * d);
         }
         /// <summary>
@@ -1255,7 +1263,17 @@ namespace AI.DataStructs.Algebraic
         /// <returns></returns>
         public Vector ZNormalise()
         {
-            return (Clone() - Mean()) / (Std() + AISettings.GlobalEps);
+            double mean = Mean();
+            double std = Std();
+            
+            // Защита от деления на ноль: если все элементы одинаковые (std = 0)
+            if (std < double.Epsilon)
+            {
+                // Возвращаем нулевой вектор (все элементы уже равны среднему)
+                return new Vector(Count);
+            }
+            
+            return (Clone() - mean) / std;
         }
         /// <summary>
         /// Нормализация (ско = 1, среднее = 0)

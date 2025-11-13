@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace AI.Statistics
 {
@@ -16,7 +17,16 @@ namespace AI.Statistics
         #region Поля и свойства
         private readonly Vector _vector;
         private readonly int _n;
-        private static readonly Random _rand = new Random();
+        
+        // ThreadLocal для потокобезопасности (каждый поток имеет свой экземпляр Random)
+        [NonSerialized]
+        private static readonly ThreadLocal<Random> _rand = new ThreadLocal<Random>(() => new Random(Guid.NewGuid().GetHashCode()));
+        
+        // Вспомогательный метод для получения потокобезопасного Random
+        private static Random GetThreadSafeRandom()
+        {
+            return _rand.Value;
+        }
 
         /// <summary>
         /// Оценка средне-квадратичного отклонение (СКО)
@@ -90,22 +100,23 @@ namespace AI.Statistics
 
 
         /// <summary>
-        /// Гауссовское распределение
+        /// Гауссовское распределение (Box-Muller метод)
         /// </summary>
         /// <returns>Возвращает норм. распред величину СКО = 1, M = 0</returns>
         public static double Gauss(Random A)
         {
-            double a = (2 * A.NextDouble()) - 1,
-            b = (2 * A.NextDouble()) - 1,
-            s = (a * a) + (b * b);
-
-            if (a == 0 && b == 0)
+            // Box-Muller transform - корректная реализация
+            double u1, u2, s;
+            do
             {
-                a = 0.000001;
-                s = (a * a) + (b * b);
-            }
+                u1 = (2.0 * A.NextDouble()) - 1.0;
+                u2 = (2.0 * A.NextDouble()) - 1.0;
+                s = (u1 * u1) + (u2 * u2);
+            } while (s >= 1.0 || s == 0.0); // Точка должна быть внутри единичного круга
 
-            return b * Math.Sqrt(Math.Abs(-2 * Math.Log(s) / s));
+            // Преобразование Box-Muller (без Math.Abs - это была ошибка!)
+            double multiplier = Math.Sqrt(-2.0 * Math.Log(s) / s);
+            return u1 * multiplier;
         }
 
 
@@ -607,7 +618,7 @@ namespace AI.Statistics
         /// <returns>Возвращает случайные числа</returns>
         public double RandNorm()
         {
-            return Gauss(_rand);
+            return Gauss(GetThreadSafeRandom());
         }
 
 
@@ -808,7 +819,19 @@ namespace AI.Statistics
                 Dy += dy * dy;
             }
 
-            cor /= Math.Sqrt((Dx * Dy) + 1e-8);
+            // Улучшенная защита от деления на ноль
+            double denominator = Math.Sqrt(Dx * Dy);
+            if (denominator < double.Epsilon)
+            {
+                // Если один или оба вектора константные - корреляция неопределена
+                return 0.0;
+            }
+
+            cor /= denominator;
+            
+            // Защита от численных ошибок: корреляция должна быть в [-1, 1]
+            if (cor > 1.0) cor = 1.0;
+            if (cor < -1.0) cor = -1.0;
 
             return cor;
         }

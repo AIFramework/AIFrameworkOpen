@@ -10,9 +10,9 @@ namespace AI
         private static readonly NumberFormatInfo s_provider;
         private static readonly NumberFormatInfo s_providerComa;
         /// <summary>
-        /// Глобальный эпсилон(смещение) (по-умолчанию = 1e-80)
+        /// Глобальный эпсилон(смещение) (по-умолчанию = 1e-10)
         /// </summary>
-        public static double GlobalEps { get; set; } = 1e-200;
+        public static double GlobalEps { get; set; } = 1e-10;
 
         static AISettings()
         {

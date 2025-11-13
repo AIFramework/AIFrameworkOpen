@@ -57,7 +57,15 @@ namespace AI
                 d2 += signal[i] * signal[i];
             }
 
-            return outp / Math.Sqrt(d1 * d2);
+            // Защита от деления на ноль: если один из векторов константный
+            double denominator = Math.Sqrt(d1 * d2);
+            if (Math.Abs(denominator) < double.Epsilon)
+            {
+                // Если знаменатель близок к нулю, возвращаем нулевой вектор
+                return new Vector(nMax);
+            }
+
+            return outp / denominator;
         }
 
 
@@ -88,7 +96,14 @@ namespace AI
             for (int i = 0; i < signal.Count; i++)
                 d2 += signal[i] * signal[i];
 
-            return outp / Complex.Sqrt(d1 * d2);
+            // Защита от деления на ноль
+            Complex denominator = Complex.Sqrt(d1 * d2);
+            if (Complex.Abs(denominator) < double.Epsilon)
+            {
+                return new ComplexVector(nMax);
+            }
+
+            return outp / denominator;
         }
 
         #endregion

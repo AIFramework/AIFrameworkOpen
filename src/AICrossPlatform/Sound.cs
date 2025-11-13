@@ -153,6 +153,13 @@ namespace AI
 
 
             double max = Statistic.MaximalValue(FunctionsForEachElements.Abs(vector));
+            
+            // Защита от деления на ноль: если вектор нулевой
+            if (Math.Abs(max) < double.Epsilon)
+            {
+                max = 1.0; // Избегаем деления на ноль, результат будет 0
+            }
+            
             vector /= max;
 
             for (int i = 0; i < vector.Count; i++)

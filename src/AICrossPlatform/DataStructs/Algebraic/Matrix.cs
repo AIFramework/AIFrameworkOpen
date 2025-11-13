@@ -612,9 +612,19 @@ namespace AI.DataStructs.Algebraic
                 Matrix output = new Matrix(Height, Height);
                 double det = Determinant;
 
-                if (!((det > 1e-104) || (det < -1e-104)))
+                // Улучшенная проверка определителя
+                const double DET_EPSILON = 1e-10;
+                if (Math.Abs(det) < DET_EPSILON)
                 {
-                    throw new InvalidOperationException("Determinant is close to zero");
+                    throw new InvalidOperationException(
+                        $"Определитель близок к нулю (det = {det}). Матрица вырожденная или плохо обусловленная.");
+                }
+                
+                // Проверка на NaN/Infinity
+                if (double.IsNaN(det) || double.IsInfinity(det))
+                {
+                    throw new InvalidOperationException(
+                        $"Определитель имеет недопустимое значение (det = {det}).");
                 }
 
 
@@ -803,9 +813,18 @@ namespace AI.DataStructs.Algebraic
         {
             double min = Min();
             double max = Max();
-            double denom = (max - min) / maxValue;
+            double range = max - min;
+            
+            // Защита от деления на ноль: если все элементы одинаковые
+            if (Math.Abs(range) < double.Epsilon)
+            {
+                // Возвращаем матрицу, заполненную средним значением диапазона
+                double midValue = (maxValue + minValue) / 2.0;
+                return new Matrix(Height, Width) + midValue;
+            }
+            
+            double denom = range / maxValue;
             min += minValue * denom;
-
 
             return (this - min) / denom;
         }

@@ -10,64 +10,62 @@ using AI.DataStructs.Algebraic;
 using System;
 using System.Collections.Generic;
 
-namespace AI
+namespace AI;
+
+/// <summary>
+/// Данные интервалов
+/// </summary>
+[Serializable]
+public class IntervalData
 {
+    private readonly List<int> bIntervals = new List<int>();
+    private readonly List<int> endIntervals = new List<int>();
+
+
     /// <summary>
     /// Данные интервалов
     /// </summary>
-    [Serializable]
-    public class IntervalData
+    public IntervalData() { }
+
+    /// <summary>
+    /// Добавление интервала
+    /// </summary>
+    /// <param name="bI">Начало</param>
+    /// <param name="eI">Конец</param>
+    public void Add(int bI, int eI)
     {
-        private readonly List<int> bIntervals = new List<int>();
-        private readonly List<int> endIntervals = new List<int>();
+        bIntervals.Add(bI);
+        endIntervals.Add(eI);
+    }
 
 
-        /// <summary>
-        /// Данные интервалов
-        /// </summary>
-        public IntervalData() { }
+    /// <summary>
+    /// Нарезка вектора по интервалам
+    /// </summary>
+    /// <param name="inputVector">Вектор входных данных</param>
+    public Vector[] GetVects(Vector inputVector)
+    {
+        Vector[] outps = new Vector[bIntervals.Count];
 
-        /// <summary>
-        /// Добавление интервала
-        /// </summary>
-        /// <param name="bI">Начало</param>
-        /// <param name="eI">Конец</param>
-        public void Add(int bI, int eI)
-        {
-            bIntervals.Add(bI);
-            endIntervals.Add(eI);
-        }
+        for (int i = 0; i < outps.Length; i++)
+            outps[i] = inputVector.GetInterval(bIntervals[i], endIntervals[i]);
 
+        return outps;
+    }
 
-        /// <summary>
-        /// Нарезка вектора по интервалам
-        /// </summary>
-        /// <param name="inputVector">Вектор входных данных</param>
-        public Vector[] GetVects(Vector inputVector)
-        {
-            Vector[] outps = new Vector[bIntervals.Count];
+    /// <summary>
+    /// Нарезка вектора по интервалам + преобразование
+    /// </summary>
+    /// <param name="vect2doub">Функция для преобразования вектора в число</param>
+    /// <param name="input">Вектор входных данных</param>
+    public Vector GetVect(Func<Vector, double> vect2doub, Vector input)
+    {
+        Vector outps = new Vector(bIntervals.Count);
 
-            for (int i = 0; i < outps.Length; i++)
-                outps[i] = inputVector.GetInterval(bIntervals[i], endIntervals[i]);
+        for (int i = 0; i < outps.Count; i++)
+            outps[i] = vect2doub(input.GetInterval(bIntervals[i], endIntervals[i]));
 
-            return outps;
-        }
-
-        /// <summary>
-        /// Нарезка вектора по интервалам + преобразование
-        /// </summary>
-        /// <param name="vect2doub">Функция для преобразования вектора в число</param>
-        /// <param name="input">Вектор входных данных</param>
-        public Vector GetVect(Func<Vector, double> vect2doub, Vector input)
-        {
-            Vector outps = new Vector(bIntervals.Count);
-
-            for (int i = 0; i < outps.Count; i++)
-                outps[i] = vect2doub(input.GetInterval(bIntervals[i], endIntervals[i]));
-
-            return outps;
-        }
-
+        return outps;
     }
 
 }

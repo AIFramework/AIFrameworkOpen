@@ -11,127 +11,126 @@ using System;
 using System.Numerics;
 using Vector = AI.DataStructs.Algebraic.Vector;
 
-namespace AI
+namespace AI;
+
+/// <summary>
+/// Класс реализует авто- и взаимо- кореляционные функции
+/// Для действительных и комплексных векторов
+/// </summary>
+[Serializable]
+public static class Correlation
 {
+    #region Взаимокорелляция
     /// <summary>
-    /// Класс реализует авто- и взаимо- кореляционные функции
-    /// Для действительных и комплексных векторов
+    /// ВКФ для двух векторов из действительных чисел
     /// </summary>
-    [Serializable]
-    public static class Correlation
+    /// <param name="A">Первый вектор</param>
+    /// <param name="B">Второй вектор</param>
+    public static Vector CrossCorrelation(Vector A, Vector B)
     {
-        #region Взаимокорелляция
-        /// <summary>
-        /// ВКФ для двух векторов из действительных чисел
-        /// </summary>
-        /// <param name="A">Первый вектор</param>
-        /// <param name="B">Второй вектор</param>
-        public static Vector CrossCorrelation(Vector A, Vector B)
+
+        Vector ht = B - B.Mean();
+        Vector signal = A - A.Mean();
+        int nMax = signal.Count + ht.Count - 1;
+        Vector st = Convolution.StWithHt(signal, ht.Count);
+        Vector outp = new Vector(nMax);
+
+
+        for (int i = 0; i < nMax; i++)
         {
-
-            Vector ht = B - B.Mean();
-            Vector signal = A - A.Mean();
-            int nMax = signal.Count + ht.Count - 1;
-            Vector st = Convolution.StWithHt(signal, ht.Count);
-            Vector outp = new Vector(nMax);
-
-
-            for (int i = 0; i < nMax; i++)
+            for (int j = 0; j < ht.Count; j++)
             {
-                for (int j = 0; j < ht.Count; j++)
-                {
-                    outp[i] += st[i + j] * ht[j];
-                }
+                outp[i] += st[i + j] * ht[j];
             }
-
-
-            double d1 = 0, d2 = 0;
-
-            for (int i = 0; i < ht.Count; i++)
-            {
-                d1 += ht[i] * ht[i];
-            }
-
-            for (int i = 0; i < signal.Count; i++)
-            {
-                d2 += signal[i] * signal[i];
-            }
-
-            // Защита от деления на ноль: если один из векторов константный
-            double denominator = Math.Sqrt(d1 * d2);
-            if (Math.Abs(denominator) < double.Epsilon)
-            {
-                // Если знаменатель близок к нулю, возвращаем нулевой вектор
-                return new Vector(nMax);
-            }
-
-            return outp / denominator;
         }
 
 
-        /// <summary>
-        /// ВКФ для двух векторов из комплексных чисел
-        /// </summary>
-        /// <param name="A">Первый вектор</param>
-        /// <param name="B">Второй вектор</param>
-        public static ComplexVector CrossCorrelation(ComplexVector A, ComplexVector B)
+        double d1 = 0, d2 = 0;
+
+        for (int i = 0; i < ht.Count; i++)
         {
-            ComplexVector ht = B - B.Mean();
-            ComplexVector signal = A - A.Mean();
-            int nMax = signal.Count + ht.Count - 1;
-            ComplexVector st = Convolution.StWithHt(signal, ht.Count);
-            ComplexVector outp = new ComplexVector(nMax);
-
-
-            for (int i = 0; i < nMax; i++)
-                for (int j = 0; j < ht.Count; j++)
-                    outp[i] += st[i + j] * ht[j];
-
-
-            Complex d1 = 0, d2 = 0;
-
-            for (int i = 0; i < ht.Count; i++)
-                d1 += ht[i] * ht[i];
-
-            for (int i = 0; i < signal.Count; i++)
-                d2 += signal[i] * signal[i];
-
-            // Защита от деления на ноль
-            Complex denominator = Complex.Sqrt(d1 * d2);
-            if (Complex.Abs(denominator) < double.Epsilon)
-            {
-                return new ComplexVector(nMax);
-            }
-
-            return outp / denominator;
+            d1 += ht[i] * ht[i];
         }
 
-        #endregion
-
-        #region Авто-корреляция
-        /// <summary>
-        /// Автокорелляция действительного векторов
-        /// </summary>
-        /// <param name="A">Вектор</param>
-        /// <returns>Возвращает осчеты АКФ</returns>
-        public static Vector AutoCorrelation(Vector A)
+        for (int i = 0; i < signal.Count; i++)
         {
-            return CrossCorrelation(A, A);
+            d2 += signal[i] * signal[i];
         }
 
-
-
-        /// <summary>
-        /// Автокорелляция комплексного векторов
-        /// </summary>
-        /// <param name="A">Вектор</param>
-        /// <returns>Возвращает осчеты АКФ</returns>	
-        public static ComplexVector AutoCorrelation(ComplexVector A)
+        // Защита от деления на ноль: если один из векторов константный
+        double denominator = Math.Sqrt(d1 * d2);
+        if (Math.Abs(denominator) < double.Epsilon)
         {
-            return CrossCorrelation(A, A);
+            // Если знаменатель близок к нулю, возвращаем нулевой вектор
+            return new Vector(nMax);
         }
 
-
-        #endregion
+        return outp / denominator;
     }
+
+
+    /// <summary>
+    /// ВКФ для двух векторов из комплексных чисел
+    /// </summary>
+    /// <param name="A">Первый вектор</param>
+    /// <param name="B">Второй вектор</param>
+    public static ComplexVector CrossCorrelation(ComplexVector A, ComplexVector B)
+    {
+        ComplexVector ht = B - B.Mean();
+        ComplexVector signal = A - A.Mean();
+        int nMax = signal.Count + ht.Count - 1;
+        ComplexVector st = Convolution.StWithHt(signal, ht.Count);
+        ComplexVector outp = new ComplexVector(nMax);
+
+
+        for (int i = 0; i < nMax; i++)
+            for (int j = 0; j < ht.Count; j++)
+                outp[i] += st[i + j] * ht[j];
+
+
+        Complex d1 = 0, d2 = 0;
+
+        for (int i = 0; i < ht.Count; i++)
+            d1 += ht[i] * ht[i];
+
+        for (int i = 0; i < signal.Count; i++)
+            d2 += signal[i] * signal[i];
+
+        // Защита от деления на ноль
+        Complex denominator = Complex.Sqrt(d1 * d2);
+        if (Complex.Abs(denominator) < double.Epsilon)
+        {
+            return new ComplexVector(nMax);
+        }
+
+        return outp / denominator;
+    }
+
+    #endregion
+
+    #region Авто-корреляция
+    /// <summary>
+    /// Автокорелляция действительного векторов
+    /// </summary>
+    /// <param name="A">Вектор</param>
+    /// <returns>Возвращает осчеты АКФ</returns>
+    public static Vector AutoCorrelation(Vector A)
+    {
+        return CrossCorrelation(A, A);
+    }
+
+
+
+    /// <summary>
+    /// Автокорелляция комплексного векторов
+    /// </summary>
+    /// <param name="A">Вектор</param>
+    /// <returns>Возвращает осчеты АКФ</returns>	
+    public static ComplexVector AutoCorrelation(ComplexVector A)
+    {
+        return CrossCorrelation(A, A);
+    }
+
+
+    #endregion
 }

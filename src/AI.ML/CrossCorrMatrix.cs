@@ -25,7 +25,6 @@ namespace AI.ML
                 }
             }
 
-            return matrix;
-        }
+            return matrix;       }
     }
 }

@@ -1,47 +1,46 @@
 ﻿using System.Globalization;
 
-namespace AI
+namespace AI;
+
+/// <summary>
+/// Глобальные настройки
+/// </summary>
+public static class AISettings
 {
+    private static readonly NumberFormatInfo s_provider;
+    private static readonly NumberFormatInfo s_providerComa;
     /// <summary>
-    /// Глобальные настройки
+    /// Глобальный эпсилон(смещение) (по-умолчанию = 1e-10)
     /// </summary>
-    public static class AISettings
+    public static double GlobalEps { get; set; } = 1e-10;
+
+    static AISettings()
     {
-        private static readonly NumberFormatInfo s_provider;
-        private static readonly NumberFormatInfo s_providerComa;
-        /// <summary>
-        /// Глобальный эпсилон(смещение) (по-умолчанию = 1e-10)
-        /// </summary>
-        public static double GlobalEps { get; set; } = 1e-10;
-
-        static AISettings()
+        s_provider = new NumberFormatInfo
         {
-            s_provider = new NumberFormatInfo
-            {
-                NumberDecimalSeparator = ".",
-                NumberGroupSeparator = string.Empty,
-            };
+            NumberDecimalSeparator = ".",
+            NumberGroupSeparator = string.Empty,
+        };
 
-            s_providerComa = new NumberFormatInfo
-            {
-                NumberDecimalSeparator = ",",
-                NumberGroupSeparator = string.Empty,
-            };
-        }
+        s_providerComa = new NumberFormatInfo
+        {
+            NumberDecimalSeparator = ",",
+            NumberGroupSeparator = string.Empty,
+        };
+    }
 
-        /// <summary>
-        /// Получить провайдер для конвертирования чисел в строку и наоборот с точкой в кач. разделителя
-        /// </summary>
-        public static NumberFormatInfo GetProvider()
-        {
-            return s_provider;
-        }
-        /// <summary>
-        ///  Получить провайдер для конвертирования чисел в строку и наоборот с запятой в кач. разделителя
-        /// </summary>
-        public static NumberFormatInfo GetProviderComa()
-        {
-            return s_providerComa;
-        }
+    /// <summary>
+    /// Получить провайдер для конвертирования чисел в строку и наоборот с точкой в кач. разделителя
+    /// </summary>
+    public static NumberFormatInfo GetProvider()
+    {
+        return s_provider;
+    }
+    /// <summary>
+    ///  Получить провайдер для конвертирования чисел в строку и наоборот с запятой в кач. разделителя
+    /// </summary>
+    public static NumberFormatInfo GetProviderComa()
+    {
+        return s_providerComa;
     }
 }

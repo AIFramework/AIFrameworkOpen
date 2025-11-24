@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace AI.Statistics.MixtureModeling
+namespace AI.Statistics.MixtureModeling;
+
+[Serializable]
+internal class EM
 {
-    [Serializable]
-    internal class EM
-    {
-    }
 }

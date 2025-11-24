@@ -1,53 +1,52 @@
 ﻿using System;
 
-namespace AI.Statistics.MonteCarlo
+namespace AI.Statistics.MonteCarlo;
+
+/// <summary>
+/// Метод имитации отжига
+/// </summary>
+[Serializable]
+public class SimulatedAnnealing
 {
+    private readonly Random rnd;
+
+    /// <summary>
+    /// Предыдущая ошибка
+    /// </summary>
+    public double LastLoss { get; set; }
+
+    /// <summary>
+    /// Температура
+    /// </summary>
+    public double T { get; set; } = 50;
+
+    /// <summary>
+    /// Коэффициент уменьшения температуры
+    /// </summary>
+    public double Kt { get; set; } = 1.7;
+
     /// <summary>
     /// Метод имитации отжига
     /// </summary>
-    [Serializable]
-    public class SimulatedAnnealing
+    public SimulatedAnnealing(double startLoss, int seed = -1)
     {
-        private readonly Random rnd;
+        LastLoss = startLoss;
+        rnd = seed == -1 ? new Random() : new Random(seed);
+    }
 
-        /// <summary>
-        /// Предыдущая ошибка
-        /// </summary>
-        public double LastLoss { get; set; }
+    /// <summary>
+    /// Принимаем ли новое решение
+    /// </summary>
+    public bool IsAccept(double newLoss)
+    {
+        double dif = LastLoss - newLoss;
+        double p = Math.Exp(dif / T);
+        double treshold = rnd.NextDouble();
+        bool isAccept = p > treshold;
 
-        /// <summary>
-        /// Температура
-        /// </summary>
-        public double T { get; set; } = 50;
+        if (isAccept) LastLoss = newLoss;
 
-        /// <summary>
-        /// Коэффициент уменьшения температуры
-        /// </summary>
-        public double Kt { get; set; } = 1.7;
-
-        /// <summary>
-        /// Метод имитации отжига
-        /// </summary>
-        public SimulatedAnnealing(double startLoss, int seed = -1)
-        {
-            LastLoss = startLoss;
-            rnd = seed == -1 ? new Random() : new Random(seed);
-        }
-
-        /// <summary>
-        /// Принимаем ли новое решение
-        /// </summary>
-        public bool IsAccept(double newLoss)
-        {
-            double dif = LastLoss - newLoss;
-            double p = Math.Exp(dif / T);
-            double treshold = rnd.NextDouble();
-            bool isAccept = p > treshold;
-
-            if (isAccept) LastLoss = newLoss;
-
-            T /= Kt;
-            return isAccept;
-        }
+        T /= Kt;
+        return isAccept;
     }
 }

@@ -74,6 +74,10 @@ namespace AI.ClassicMath.Calculator.Libs
         CreateGammaFunction(),
         CreateCombFunction(),
         CreateCombPFunction(),
+        
+        // Теория чисел
+        CreateGCDFunction(),
+        CreateLCMFunction(),
 
         // Векторные операции
         CreateMagFunction(),
@@ -383,6 +387,82 @@ namespace AI.ClassicMath.Calculator.Libs
                     Description = "Вычисляет число размещений из n по k (A n k).",
                     Signature = "Вход: 2 целых числа (n, k). Выход: 1 число.",
                     Exemple = "CombP(5, 2) // Результат: 20"
+                }
+            };
+        }
+
+        //================== Теория чисел ==================
+
+        private static FunctionDefinition CreateGCDFunction()
+        {
+            const string name = "gcd";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 2,
+                Delegate = args =>
+                {
+                    var a = CastsVar.CastToDouble(args[0], name);
+                    var b = CastsVar.CastToDouble(args[1], name);
+                    
+                    // Проверяем, являются ли числа целыми
+                    bool isAInteger = Math.Abs(a - Math.Round(a)) < 1e-10;
+                    bool isBInteger = Math.Abs(b - Math.Round(b)) < 1e-10;
+                    
+                    if (isAInteger && isBInteger)
+                    {
+                        // Для целых чисел используем быстрый алгоритм
+                        return (Complex)ProcessorLogic.Processor.GCDLong((long)a, (long)b);
+                    }
+                    else
+                    {
+                        // Для дробных чисел используем алгоритм с преобразованием в дроби
+                        return (Complex)ProcessorLogic.Processor.GCDDouble(a, b);
+                    }
+                },
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Теория чисел", "Алгебра"],
+                    Description = "Вычисляет наибольший общий делитель (НОД) двух чисел. Работает как с целыми, так и с дробными числами.",
+                    Signature = "Вход: 2 числа. Выход: 1 число (НОД).",
+                    Exemple = "gcd(48, 18) // Результат: 6\ngcd(2.5, 1.5) // Результат: 0.5"
+                }
+            };
+        }
+
+        private static FunctionDefinition CreateLCMFunction()
+        {
+            const string name = "lcm";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 2,
+                Delegate = args =>
+                {
+                    var a = CastsVar.CastToDouble(args[0], name);
+                    var b = CastsVar.CastToDouble(args[1], name);
+                    
+                    // Проверяем, являются ли числа целыми
+                    bool isAInteger = Math.Abs(a - Math.Round(a)) < 1e-10;
+                    bool isBInteger = Math.Abs(b - Math.Round(b)) < 1e-10;
+                    
+                    if (isAInteger && isBInteger)
+                    {
+                        // Для целых чисел используем быстрый алгоритм
+                        return (Complex)ProcessorLogic.Processor.LCM((long)a, (long)b);
+                    }
+                    else
+                    {
+                        // Для дробных чисел используем алгоритм с преобразованием в дроби
+                        return (Complex)ProcessorLogic.Processor.LCMDouble(a, b);
+                    }
+                },
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Теория чисел", "Алгебра"],
+                    Description = "Вычисляет наименьшее общее кратное (НОК) двух чисел. Работает как с целыми, так и с дробными числами.",
+                    Signature = "Вход: 2 числа. Выход: 1 число (НОК).",
+                    Exemple = "lcm(12, 18) // Результат: 36\nlcm(2.5, 1.5) // Результат: 7.5"
                 }
             };
         }

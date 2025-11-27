@@ -250,7 +250,7 @@ public class Processor
     }
     
     /// <summary>
-    /// Наибольший общий делитель
+    /// Наибольший общий делитель (внутренний метод для дробей)
     /// </summary>
     private static int GCD(int a, int b)
     {
@@ -261,6 +261,113 @@ public class Processor
             a = temp;
         }
         return a;
+    }
+    
+    /// <summary>
+    /// Наибольший общий делитель (НОД) для long чисел - публичный метод
+    /// </summary>
+    public static long GCDLong(long a, long b)
+    {
+        a = Math.Abs(a);
+        b = Math.Abs(b);
+        
+        while (b != 0)
+        {
+            long temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+    
+    /// <summary>
+    /// Наименьшее общее кратное (НОК) для long чисел
+    /// </summary>
+    public static long LCM(long a, long b)
+    {
+        if (a == 0 || b == 0)
+            return 0;
+            
+        a = Math.Abs(a);
+        b = Math.Abs(b);
+        
+        return (a / GCDLong(a, b)) * b;
+    }
+    
+    /// <summary>
+    /// Преобразует вещественное число в дробь (числитель/знаменатель)
+    /// </summary>
+    private static (long numerator, long denominator) ToFraction(double value, int maxDenominator = 10000)
+    {
+        if (double.IsNaN(value) || double.IsInfinity(value))
+            throw new ArgumentException("Невозможно преобразовать NaN или бесконечность в дробь");
+        
+        // Сохраняем знак
+        int sign = value < 0 ? -1 : 1;
+        value = Math.Abs(value);
+        
+        // Если число целое
+        if (Math.Abs(value - Math.Round(value)) < 1e-10)
+        {
+            return ((long)(sign * Math.Round(value)), 1);
+        }
+        
+        // Алгоритм непрерывных дробей (метод Евклида)
+        long h1 = 1, h2 = 0;
+        long k1 = 0, k2 = 1;
+        double b = value;
+        
+        do
+        {
+            long a = (long)b;
+            long aux = h1;
+            h1 = a * h1 + h2;
+            h2 = aux;
+            aux = k1;
+            k1 = a * k1 + k2;
+            k2 = aux;
+            b = 1 / (b - a);
+        } while (Math.Abs(value - (double)h1 / k1) > 1e-10 && k1 <= maxDenominator && !double.IsInfinity(b));
+        
+        return (sign * h1, k1);
+    }
+    
+    /// <summary>
+    /// Наибольший общий делитель (НОД) для дробных чисел
+    /// </summary>
+    public static double GCDDouble(double a, double b)
+    {
+        if (a == 0) return Math.Abs(b);
+        if (b == 0) return Math.Abs(a);
+        
+        // Преобразуем числа в дроби
+        var (num1, den1) = ToFraction(a);
+        var (num2, den2) = ToFraction(b);
+        
+        // НОД(a/b, c/d) = НОД(a, c) / НОК(b, d)
+        long gcdNumerators = GCDLong(num1, num2);
+        long lcmDenominators = LCM(den1, den2);
+        
+        return (double)gcdNumerators / lcmDenominators;
+    }
+    
+    /// <summary>
+    /// Наименьшее общее кратное (НОК) для дробных чисел
+    /// </summary>
+    public static double LCMDouble(double a, double b)
+    {
+        if (a == 0 || b == 0)
+            return 0;
+        
+        // Преобразуем числа в дроби
+        var (num1, den1) = ToFraction(a);
+        var (num2, den2) = ToFraction(b);
+        
+        // НОК(a/b, c/d) = НОК(a, c) / НОД(b, d)
+        long lcmNumerators = LCM(num1, num2);
+        long gcdDenominators = GCDLong(den1, den2);
+        
+        return (double)lcmNumerators / gcdDenominators;
     }
     #endregion
 }

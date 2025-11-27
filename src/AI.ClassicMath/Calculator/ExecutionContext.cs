@@ -12,8 +12,9 @@ public class ExecutionContext
 {
     /// <summary>
     /// Словарь для хранения переменных.
+    /// Теперь регистрозависимый - M и m это разные переменные!
     /// </summary>
-    public Dictionary<string, object> Memory { get; } = new(StringComparer.OrdinalIgnoreCase);
+    public Dictionary<string, object> Memory { get; } = new(StringComparer.Ordinal);
 
     public ExecutionContext()
     {

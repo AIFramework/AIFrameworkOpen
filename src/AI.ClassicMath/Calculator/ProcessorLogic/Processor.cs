@@ -138,7 +138,7 @@ public class Processor
     }
 
     /// <summary>
-    /// Форматирование ответа
+    /// Форматирование ответа с поддержкой символьных выражений
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
@@ -146,12 +146,121 @@ public class Processor
     {
         return result switch
         {
-            double d => d.ToString("G9", CultureInfo.InvariantCulture),
-            Complex c => Math.Abs(c.Imaginary) < 1e-12 ? c.Real.ToString("G6", CultureInfo.InvariantCulture) : $"{c.Real.ToString("G9", CultureInfo.InvariantCulture)} + {c.Imaginary.ToString("G9", CultureInfo.InvariantCulture)}i",
+            double d => FormatDouble(d),
+            Complex c => FormatComplex(c),
             ComplexVector v => $"[{string.Join(", ", v.Select(c => FormatResult(c)))}]",
-            Vector dv => $"[{string.Join(", ", dv.Select(c => c.ToString("G6", CultureInfo.InvariantCulture)))}]",
+            Vector dv => $"[{string.Join(", ", dv.Select(c => FormatDouble(c)))}]",
             _ => result?.ToString() ?? "null"
         };
+    }
+    
+    /// <summary>
+    /// Форматирование вещественного числа с попыткой преобразования в дробь или символьную форму
+    /// </summary>
+    private static string FormatDouble(double d)
+    {
+        // Проверяем на специальные значения
+        if (double.IsNaN(d)) return "NaN";
+        if (double.IsPositiveInfinity(d)) return "∞";
+        if (double.IsNegativeInfinity(d)) return "-∞";
+        
+        // Если число целое
+        if (Math.Abs(d - Math.Round(d)) < 1e-10)
+        {
+            return ((long)Math.Round(d)).ToString(CultureInfo.InvariantCulture);
+        }
+        
+        // Сначала проверяем простые дроби (приоритет!)
+        string fraction = TryConvertToFraction(d);
+        if (fraction != null)
+        {
+            return $"{d.ToString("G9", CultureInfo.InvariantCulture)}  [{fraction}]";
+        }
+        
+        // Затем проверяем известные математические константы (корни и т.д.)
+        string symbolic = KnownConstants.TryGetSymbolicForm(d);
+        if (symbolic != null)
+        {
+            return $"{d.ToString("G9", CultureInfo.InvariantCulture)}  [{symbolic}]";
+        }
+        
+        return d.ToString("G9", CultureInfo.InvariantCulture);
+    }
+    
+    /// <summary>
+    /// Форматирование комплексного числа
+    /// </summary>
+    private static string FormatComplex(Complex c)
+    {
+        if (Math.Abs(c.Imaginary) < 1e-12)
+        {
+            // Только действительная часть
+            return FormatDouble(c.Real);
+        }
+        
+        return $"{c.Real.ToString("G9", CultureInfo.InvariantCulture)} + {c.Imaginary.ToString("G9", CultureInfo.InvariantCulture)}i";
+    }
+    
+    /// <summary>
+    /// Попытка преобразовать число в дробь (оптимизированная версия)
+    /// </summary>
+    private static string TryConvertToFraction(double value, int maxDenominator = 100)
+    {
+        if (double.IsNaN(value) || double.IsInfinity(value))
+            return null;
+        
+        // Сохраняем знак
+        int sign = value < 0 ? -1 : 1;
+        value = Math.Abs(value);
+        
+        // Быстрая проверка на простые дроби (оптимизация!)
+        double bestError = 1e-9;
+        int bestNum = 0, bestDen = 1;
+        
+        for (int denominator = 2; denominator <= maxDenominator; denominator++)
+        {
+            int numerator = (int)Math.Round(value * denominator);
+            double error = Math.Abs((double)numerator / denominator - value);
+            
+            if (error < bestError)
+            {
+                bestError = error;
+                bestNum = numerator;
+                bestDen = denominator;
+                
+                // Если нашли точное совпадение, сразу возвращаем
+                if (error < 1e-12)
+                    break;
+            }
+        }
+        
+        if (bestError < 1e-9)
+        {
+            bestNum *= sign;
+            
+            // Упрощаем дробь
+            int gcd = GCD(Math.Abs(bestNum), bestDen);
+            bestNum /= gcd;
+            bestDen /= gcd;
+            
+            return $"{bestNum}/{bestDen}";
+        }
+        
+        return null;
+    }
+    
+    /// <summary>
+    /// Наибольший общий делитель
+    /// </summary>
+    private static int GCD(int a, int b)
+    {
+        while (b != 0)
+        {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
     }
     #endregion
 }

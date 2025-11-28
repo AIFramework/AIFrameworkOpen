@@ -1,4 +1,5 @@
-﻿using AI.DataStructs.Algebraic;
+﻿using AI.ClassicMath.MatrixUtils.FindFraction;
+using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using System;
 using System.Collections.Generic;
@@ -171,18 +172,16 @@ public class Processor
         }
         
         // Сначала проверяем простые дроби (приоритет!)
-        string fraction = TryConvertToFraction(d);
-        if (fraction != null)
-        {
+        string fraction = TryConvertToSymbolyc(d);
+        if (!string.IsNullOrEmpty(fraction))
             return $"{d.ToString("G9", CultureInfo.InvariantCulture)}  [{fraction}]";
-        }
         
-        // Затем проверяем известные математические константы (корни и т.д.)
-        string symbolic = KnownConstants.TryGetSymbolicForm(d);
-        if (symbolic != null)
-        {
-            return $"{d.ToString("G9", CultureInfo.InvariantCulture)}  [{symbolic}]";
-        }
+        //// Затем проверяем известные математические константы (корни и т.д.)
+        //string symbolic = KnownConstants.TryGetSymbolicForm(d);
+        //if (symbolic != null)
+        //{
+        //    return $"{d.ToString("G9", CultureInfo.InvariantCulture)}  [{symbolic}]";
+        //}
         
         return d.ToString("G9", CultureInfo.InvariantCulture);
     }
@@ -200,7 +199,7 @@ public class Processor
         
         return $"{c.Real.ToString("G9", CultureInfo.InvariantCulture)} + {c.Imaginary.ToString("G9", CultureInfo.InvariantCulture)}i";
     }
-    
+
     /// <summary>
     /// Попытка преобразовать число в дробь (оптимизированная версия)
     /// </summary>
@@ -208,47 +207,57 @@ public class Processor
     {
         if (double.IsNaN(value) || double.IsInfinity(value))
             return null;
-        
+
         // Сохраняем знак
         int sign = value < 0 ? -1 : 1;
         value = Math.Abs(value);
-        
+
         // Быстрая проверка на простые дроби (оптимизация!)
         double bestError = 1e-9;
         int bestNum = 0, bestDen = 1;
-        
+
         for (int denominator = 2; denominator <= maxDenominator; denominator++)
         {
             int numerator = (int)Math.Round(value * denominator);
             double error = Math.Abs((double)numerator / denominator - value);
-            
+
             if (error < bestError)
             {
                 bestError = error;
                 bestNum = numerator;
                 bestDen = denominator;
-                
+
                 // Если нашли точное совпадение, сразу возвращаем
                 if (error < 1e-12)
                     break;
             }
         }
-        
+
         if (bestError < 1e-9)
         {
             bestNum *= sign;
-            
+
             // Упрощаем дробь
             int gcd = GCD(Math.Abs(bestNum), bestDen);
             bestNum /= gcd;
             bestDen /= gcd;
-            
+
             return $"{bestNum}/{bestDen}";
         }
-        
+
         return null;
     }
-    
+
+
+    /// <summary>
+    /// Попытка преобразовать число в дробь (оптимизированная версия)
+    /// </summary>
+    private static string TryConvertToSymbolyc(double value)
+    {
+        var analyzeResult = NumberConverter.Analyze(value);
+        return analyzeResult.Fraction;
+    }
+
     /// <summary>
     /// Наибольший общий делитель (внутренний метод для дробей)
     /// </summary>

@@ -49,8 +49,8 @@ public static class KnownConstants
             }
         }
 
-        // Предвычисляем корни для эффективности (до 20 для простых корней)
-        double[] sqrts = new double[21];
+        // Предвычисляем корни для эффективности (до 40 для простых корней)
+        double[] sqrts = new double[41]; // Массив должен быть на 41 элемент для индексов 0-40
         for (int i = 2; i <= 40; i++)
         {
             sqrts[i] = Math.Sqrt(i);

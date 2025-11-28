@@ -51,15 +51,15 @@ public static class KnownConstants
 
         // Предвычисляем корни для эффективности (до 20 для простых корней)
         double[] sqrts = new double[21];
-        for (int i = 2; i <= 20; i++)
+        for (int i = 2; i <= 40; i++)
         {
             sqrts[i] = Math.Sqrt(i);
         }
 
         // СНАЧАЛА проверяем a√b (где a = 2..5, b = 2..20) - приоритет упрощениям!
-        for (int a = 2; a <= 5; a++)
+        for (int a = 2; a <= 10; a++)
         {
-            for (int b = 2; b <= 20; b++)
+            for (int b = 2; b <= 40; b++)
             {
                 if (Math.Abs(value - a * sqrts[b]) < tolerance)
                 {
@@ -69,7 +69,7 @@ public static class KnownConstants
         }
 
         // Затем проверяем простые корни √i
-        for (int i = 2; i <= 20; i++)
+        for (int i = 2; i <= 40; i++)
         {
             if (Math.Abs(value - sqrts[i]) < tolerance)
             {
@@ -78,13 +78,13 @@ public static class KnownConstants
         }
 
         // Проверяем a√b/c (рационализация и обычные дроби)
-        for (int b = 2; b <= 10; b++)
+        for (int b = 2; b <= 25; b++)
         {
             double sqrtB = sqrts[b];
             
-            for (int a = 1; a <= 10; a++)
+            for (int a = 1; a <= 25; a++)
             {
-                for (int c = 2; c <= 10; c++)
+                for (int c = 2; c <= 25; c++)
                 {
                     double result = a * sqrtB / c;
                     if (Math.Abs(value - result) < tolerance)

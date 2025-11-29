@@ -46,7 +46,7 @@ public class Program
 //"
 
 @"
-a = 10
+a = sqrt(111/112) 
 if (a > 2^5) {
     b = a * 2
 }

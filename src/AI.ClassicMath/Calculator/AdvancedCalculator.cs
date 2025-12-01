@@ -204,7 +204,7 @@ namespace AI.ClassicMath.Calculator
                 {
                     evalStack.Push(new Complex(num, 0));
                 }
-                else if (token == "i" || token == "I")
+                else if (token == "i")
                 {
                     evalStack.Push(Complex.ImaginaryOne);
                 }
@@ -306,9 +306,9 @@ namespace AI.ClassicMath.Calculator
             _ => obj
         };
         private bool IsValue(string token, ExecutionContext context) =>
-            token == "i" || token == "I" || double.TryParse(token, NumberStyles.Any, CultureInfo.InvariantCulture, out _) || context.Memory.ContainsKey(token);
+            token == "i" || double.TryParse(token, NumberStyles.Any, CultureInfo.InvariantCulture, out _) || context.Memory.ContainsKey(token);
         private bool IsValidVarName(string name) =>
-            !string.IsNullOrWhiteSpace(name) && name != "i" && name != "I" && (char.IsLetter(name[0]) || name[0] == '_') && name.All(c => char.IsLetterOrDigit(c) || c == '_') && !Functions.ContainsKey(name);
+            !string.IsNullOrWhiteSpace(name) && name != "i" && (char.IsLetter(name[0]) || name[0] == '_') && name.All(c => char.IsLetterOrDigit(c) || c == '_') && !Functions.ContainsKey(name);
         private bool IsSimpleAssignmentTarget(string expression) =>
             !expression.Split('=')[0].Any(c => "()[]<>!".Contains(c));
 

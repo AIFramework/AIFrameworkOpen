@@ -46,31 +46,7 @@ public class Program
 //"
 
 @"
-a = sqrt(111/112) 
-if (a > 2^5) {
-    b = a * 2
-}
-else
-{
-    v1 = [1,2,3]
-    v2 = [0.1,-0.2, 0.3]
-    b = dot(v1, v2)/(mag(v1)*mag(v2)) // косинус
-    b = b * 10
-}
-b // значение b
-
-// Факториал
-factorial = 1
-
-for (j=1; j<=b; j=j+1) {
-    factorial = factorial * j
-}
-
-factorial // финальное значение
-
-fact(b) == factorial // проверка
-gamma(b) > factorial // проверка
-gamma(b)
+a = max(1, 2, 3)
 
 "
 

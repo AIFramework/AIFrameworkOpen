@@ -42,44 +42,44 @@ public static class NumberConverter
         if (nthRoot != null) return nthRoot;
 
         // Представление как √(p/q)
-        var rootResult = CheckRoot(number);
-        bool hasLongDenominator = false;
+        //var rootResult = CheckRoot(number);
+        //bool hasLongDenominator = false;
 
-        if (rootResult != null)
-        {
-            // Проверка длину знаменателя
-            if (rootResult.Denominator != 0)
-            {
-                string denomStr = BigInteger.Abs(rootResult.Denominator).ToString();
-                if (denomStr.Length < 5) // Меньше 5 символов
-                    return rootResult;
-                // Знаменатель >= 5 символов поиск (далее)
-                hasLongDenominator = true;
-            }
-            else
-            {
-                return rootResult; // Не дробь под корнем (целое число)
-            }
-        }
+        //if (rootResult != null)
+        //{
+        //    // Проверка длину знаменателя
+        //    if (rootResult.Denominator != 0)
+        //    {
+        //        string denomStr = BigInteger.Abs(rootResult.Denominator).ToString();
+        //        if (denomStr.Length < 5) // Меньше 5 символов
+        //            return rootResult;
+        //        // Знаменатель >= 5 символов поиск (далее)
+        //        hasLongDenominator = true;
+        //    }
+        //    else
+        //    {
+        //        return rootResult; // Не дробь под корнем (целое число)
+        //    }
+        //}
 
-        // Если знаменатель длинный, поиск полинома
-        if (hasLongDenominator)
-        {
-            // биквадратное
-            var biquadratic = TryAlgebraicDegree(number, 4, tolerance);
-            if (biquadratic != null) return biquadratic;
+        //// Если знаменатель длинный, поиск полинома
+        //if (hasLongDenominator)
+        //{
+        //    // биквадратное
+        //    var biquadratic = TryAlgebraicDegree(number, 4, tolerance);
+        //    if (biquadratic != null) return biquadratic;
 
-            // квадратное
-            var quadratic = TryAlgebraicQuadratic(number, tolerance);
-            if (quadratic != null) return quadratic;
+        //    // квадратное
+        //    var quadratic = TryAlgebraicQuadratic(number, tolerance);
+        //    if (quadratic != null) return quadratic;
 
-            if (rootResult != null) return rootResult;
-        }
+        //    if (rootResult != null) return rootResult;
+        //}
 
         var algebraic = TryAlgebraicQuadratic(number, tolerance);
         if (algebraic != null) return algebraic;
 
-        if (rootResult != null) return rootResult;
+        //if (rootResult != null) return rootResult;
 
         var cfResult = TryContinuedFraction(number);
         if (cfResult != null) return cfResult;
@@ -1007,6 +1007,20 @@ public static class NumberConverter
     private static ConversionResult CheckNthRoot(double number)
     {
         double tolerance = 1e-10;
+
+
+        if (RadicalHelper.IsNthRoot(number, 2, tolerance, out int qRadicand))
+        {
+            string simplified = RadicalHelper.SimplifyNthRoot(qRadicand, 3);
+            return new ConversionResult
+            {
+                Type = "Root",
+                Fraction = simplified,
+                Description = $"Кубический корень из {qRadicand}",
+                Numerator = 0,
+                Denominator = 0
+            };
+        }
 
         if (RadicalHelper.IsNthRoot(number, 3, tolerance, out int cubeRadicand))
         {

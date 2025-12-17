@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace AI.ClassicMath.Calculator.ProcessorLogic;
 
@@ -17,7 +18,7 @@ public class Processor
 {
     public readonly AdvancedCalculator AdvancedCalculator = new AdvancedCalculator();
 
-    public List<string> Run(string script)
+    public List<string> Run(string script, CancellationToken cancellationToken = default)
     {
         var context = new ExecutionContext();
         var output = new List<string>();
@@ -25,8 +26,16 @@ public class Processor
         {
             var lines = script.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
             var lineQueue = new Queue<string>(lines);
-            var statements = ParseStatements(lineQueue, isSilentContext: false);
-            foreach (var statement in statements) statement.Execute(this, context, output);
+            var statements = ParseStatements(lineQueue, isSilentContext: false, cancellationToken);
+            foreach (var statement in statements)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                statement.Execute(this, context, output, cancellationToken);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            output.Add("ВЫПОЛНЕНИЕ ПРЕРВАНО: Операция была отменена");
         }
         catch (Exception ex)
         {
@@ -37,11 +46,13 @@ public class Processor
 
     #region Парсер скрипта
 
-    private List<Statement> ParseStatements(Queue<string> lines, bool isSilentContext)
+    private List<Statement> ParseStatements(Queue<string> lines, bool isSilentContext, CancellationToken cancellationToken = default)
     {
         var statements = new List<Statement>();
         while (lines.Count > 0)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            
             var rawLine = lines.Dequeue();
 
             // Находим комментарий.
@@ -61,19 +72,19 @@ public class Processor
             if (ifMatch.Success)
             {
                 var condition = ifMatch.Groups[1].Value;
-                var trueBody = ParseBlock(lines);
+                var trueBody = ParseBlock(lines, cancellationToken);
                 List<Statement> falseBody = null;
                 if (lines.Count > 0 && lines.Peek().Trim().StartsWith("else"))
                 {
                     lines.Dequeue();
-                    falseBody = ParseBlock(lines);
+                    falseBody = ParseBlock(lines, cancellationToken);
                 }
                 statements.Add(new IfStatement(condition, trueBody, falseBody));
             }
             else if (whileMatch.Success)
             {
                 var condition = whileMatch.Groups[1].Value;
-                var body = ParseBlock(lines);
+                var body = ParseBlock(lines, cancellationToken);
                 statements.Add(new WhileStatement(condition, body));
             }
             else if (forMatch.Success)
@@ -81,7 +92,7 @@ public class Processor
                 var initializer = forMatch.Groups[1].Value;
                 var condition = forMatch.Groups[2].Value;
                 var increment = forMatch.Groups[3].Value;
-                var body = ParseBlock(lines);
+                var body = ParseBlock(lines, cancellationToken);
                 statements.Add(new ForStatement(initializer, condition, increment, body));
             }
             else if (line == "{" || line.StartsWith("else")) { throw new ArgumentException($"Неожиданный токен: '{line}'"); }
@@ -90,13 +101,15 @@ public class Processor
         return statements;
     }
 
-    private List<Statement> ParseBlock(Queue<string> lines)
+    private List<Statement> ParseBlock(Queue<string> lines, CancellationToken cancellationToken = default)
     {
         var blockLines = new Queue<string>();
         int braceLevel = 1;
         if (lines.Count > 0 && lines.Peek().Trim() == "{") lines.Dequeue();
         while (lines.Count > 0)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            
             var line = lines.Dequeue();
 
             // Игнорируем скобки внутри комментариев
@@ -114,7 +127,7 @@ public class Processor
             blockLines.Enqueue(line);
         }
         if (braceLevel != 0) throw new ArgumentException("Нарушен баланс скобок '{}' в блоке кода.");
-        return ParseStatements(blockLines, isSilentContext: true);
+        return ParseStatements(blockLines, isSilentContext: true, cancellationToken);
     }
     #endregion
 

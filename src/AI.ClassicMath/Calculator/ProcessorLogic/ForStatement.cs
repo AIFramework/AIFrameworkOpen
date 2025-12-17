@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 
 namespace AI.ClassicMath.Calculator.ProcessorLogic;
 
@@ -20,13 +21,14 @@ internal class ForStatement : Statement
         Body = body;
     }
 
-    public override void Execute(Processor processor, ExecutionContext context, List<string> output)
+    public override void Execute(Processor processor, ExecutionContext context, List<string> output, CancellationToken cancellationToken = default)
     {
-        if (!string.IsNullOrWhiteSpace(Initializer)) processor.AdvancedCalculator.Evaluate(Initializer, context);
-        while (processor.IsTruthy(processor.AdvancedCalculator.Evaluate(Condition, context)))
+        if (!string.IsNullOrWhiteSpace(Initializer)) processor.AdvancedCalculator.Evaluate(Initializer, context, cancellationToken);
+        while (processor.IsTruthy(processor.AdvancedCalculator.Evaluate(Condition, context, cancellationToken)))
         {
-            foreach (var statement in Body) statement.Execute(processor, context, output);
-            if (!string.IsNullOrWhiteSpace(Increment)) processor.AdvancedCalculator.Evaluate(Increment, context);
+            cancellationToken.ThrowIfCancellationRequested();
+            foreach (var statement in Body) statement.Execute(processor, context, output, cancellationToken);
+            if (!string.IsNullOrWhiteSpace(Increment)) processor.AdvancedCalculator.Evaluate(Increment, context, cancellationToken);
         }
     }
 }

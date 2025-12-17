@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace AI.ClassicMath.Calculator
 {
@@ -59,10 +60,12 @@ namespace AI.ClassicMath.Calculator
         #endregion
 
 
-        public object Evaluate(string expression, ExecutionContext context)
+        public object Evaluate(string expression, ExecutionContext context, CancellationToken cancellationToken = default)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+                
                 expression = expression.Trim();
                 if (string.IsNullOrEmpty(expression)) return null;
 
@@ -73,11 +76,11 @@ namespace AI.ClassicMath.Calculator
                     if (!IsValidVarName(varName)) throw new ArgumentException($"Недопустимое имя переменной: '{varName}'.");
 
                     var exprToEvaluate = parts[1];
-                    var result = EvaluateExpression(exprToEvaluate, context);
+                    var result = EvaluateExpression(exprToEvaluate, context, cancellationToken);
                     context.Memory[varName] = result;
                     return result;
                 }
-                return EvaluateExpression(expression, context);
+                return EvaluateExpression(expression, context, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -85,18 +88,22 @@ namespace AI.ClassicMath.Calculator
             }
         }
 
-        private object EvaluateExpression(string expression, ExecutionContext context)
+        private object EvaluateExpression(string expression, ExecutionContext context, CancellationToken cancellationToken = default)
         {
-            var tokens = Tokenize(expression);
-            var rpn = ConvertToRpn(tokens, context);
-            return EvaluateRpn(rpn, context);
+            cancellationToken.ThrowIfCancellationRequested();
+            
+            var tokens = Tokenize(expression, cancellationToken);
+            var rpn = ConvertToRpn(tokens, context, cancellationToken);
+            return EvaluateRpn(rpn, context, cancellationToken);
         }
 
 
         #region Токенизация -> ОПН -> Вычисление
 
-        private List<string> Tokenize(string expression)
+        private List<string> Tokenize(string expression, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            
             var pattern = @"([0-9]+\.?[0-9]*|[0-9]*\.?[0-9]+)|([a-zA-Z_][a-zA-Z0-9_]*)|(>=|<=|==|!=)|(.)";
             var tokens = Regex.Matches(expression, pattern).Cast<Match>()
                 .Where(m => !string.IsNullOrWhiteSpace(m.Value))
@@ -104,6 +111,8 @@ namespace AI.ClassicMath.Calculator
 
             for (int i = 0; i < tokens.Count; i++)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+                
                 if (tokens[i] == "-")
                 {
                     bool isUnary = (i == 0) || Operators.ContainsKey(tokens[i - 1]) || "([,".Contains(tokens[i - 1]);
@@ -113,13 +122,15 @@ namespace AI.ClassicMath.Calculator
             return tokens;
         }
 
-        private Queue<string> ConvertToRpn(List<string> tokens, ExecutionContext context)
+        private Queue<string> ConvertToRpn(List<string> tokens, ExecutionContext context, CancellationToken cancellationToken = default)
         {
             var outputQueue = new Queue<string>();
             var operatorStack = new Stack<string>();
             var argCountStack = new Stack<int>();
             for (int i = 0; i < tokens.Count; i++)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+                
                 var token = tokens[i];
                 if (IsValue(token, context))
                 {
@@ -133,7 +144,10 @@ namespace AI.ClassicMath.Calculator
                 else if (token == ",")
                 {
                     while (operatorStack.Count > 0 && !"([".Contains(operatorStack.Peek()))
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
                         outputQueue.Enqueue(operatorStack.Pop());
+                    }
                     if (operatorStack.Count > 0 && "([".Contains(operatorStack.Peek()))
                     {
                         if (argCountStack.Count > 0) argCountStack.Push(argCountStack.Pop() + 1);
@@ -148,7 +162,10 @@ namespace AI.ClassicMath.Calculator
                 {
                     while (operatorStack.Count > 0 && Operators.TryGetValue(operatorStack.Peek(), out
                         var op2) && (op2.Precedence > Operators[token].Precedence || (op2.Precedence == Operators[token].Precedence && op2.Associativity == "Left")))
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
                         outputQueue.Enqueue(operatorStack.Pop());
+                    }
 
                     operatorStack.Push(token);
                 }
@@ -163,7 +180,10 @@ namespace AI.ClassicMath.Calculator
                 {
                     string openBracket = token == ")" ? "(" : "[";
                     while (operatorStack.Count > 0 && operatorStack.Peek() != openBracket)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
                         outputQueue.Enqueue(operatorStack.Pop());
+                    }
 
                     if (operatorStack.Count == 0)
                         throw new ArgumentException($"Отсутствует парная открывающая скобка '{openBracket}'.");
@@ -187,6 +207,8 @@ namespace AI.ClassicMath.Calculator
             }
             while (operatorStack.Count > 0)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+                
                 var op = operatorStack.Pop();
                 if ("([".Contains(op)) throw new ArgumentException($"Отсутствует парная закрывающая скобка.");
                 outputQueue.Enqueue(op);
@@ -194,11 +216,13 @@ namespace AI.ClassicMath.Calculator
             return outputQueue;
         }
 
-        private object EvaluateRpn(Queue<string> rpnTokens, ExecutionContext context)
+        private object EvaluateRpn(Queue<string> rpnTokens, ExecutionContext context, CancellationToken cancellationToken = default)
         {
             var evalStack = new Stack<object>();
             foreach (var token in rpnTokens)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+                
                 if (double.TryParse(token, NumberStyles.Any, CultureInfo.InvariantCulture, out
                     var num))
                 {
@@ -240,7 +264,11 @@ namespace AI.ClassicMath.Calculator
                     }
                     if (evalStack.Count < argCount) throw new InvalidOperationException($"Недостаточно операндов в стеке для '{funcName}' (нужно {argCount}, найдено {evalStack.Count}).");
                     var args = new object[argCount];
-                    for (int i = argCount - 1; i >= 0; i--) args[i] = evalStack.Pop();
+                    for (int i = argCount - 1; i >= 0; i--)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+                        args[i] = evalStack.Pop();
+                    }
                     if (funcName == "vector")
                     {
                         evalStack.Push(new ComplexVector(args.Select(a => CastsVar.CastToComplex(a, "vector component"))));

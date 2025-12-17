@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 
 namespace AI.ClassicMath.Calculator.ProcessorLogic;
 
@@ -18,16 +19,16 @@ internal class IfStatement : Statement
         FalseBranch = falseBranch;
     }
 
-    public override void Execute(Processor processor, ExecutionContext context, List<string> output)
+    public override void Execute(Processor processor, ExecutionContext context, List<string> output, CancellationToken cancellationToken = default)
     {
-        var result = processor.AdvancedCalculator.Evaluate(Condition, context);
+        var result = processor.AdvancedCalculator.Evaluate(Condition, context, cancellationToken);
         if (processor.IsTruthy(result))
         {
-            foreach (var statement in TrueBranch) statement.Execute(processor, context, output);
+            foreach (var statement in TrueBranch) statement.Execute(processor, context, output, cancellationToken);
         }
         else if (FalseBranch != null)
         {
-            foreach (var statement in FalseBranch) statement.Execute(processor, context, output);
+            foreach (var statement in FalseBranch) statement.Execute(processor, context, output, cancellationToken);
         }
     }
 }

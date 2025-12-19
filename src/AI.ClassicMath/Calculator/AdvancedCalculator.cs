@@ -104,7 +104,8 @@ namespace AI.ClassicMath.Calculator
         {
             cancellationToken.ThrowIfCancellationRequested();
             
-            var pattern = @"([0-9]+\.?[0-9]*|[0-9]*\.?[0-9]+)|([a-zA-Z_][a-zA-Z0-9_]*)|(>=|<=|==|!=)|(.)";
+            // Сначала извлекаем строковые литералы (в двойных кавычках)
+            var pattern = @"(""[^""]*"")|([0-9]+\.?[0-9]*|[0-9]*\.?[0-9]+)|([a-zA-Z_][a-zA-Z0-9_]*)|(>=|<=|==|!=)|(.)";
             var tokens = Regex.Matches(expression, pattern).Cast<Match>()
                 .Where(m => !string.IsNullOrWhiteSpace(m.Value))
                 .Select(m => m.Value).ToList();
@@ -232,6 +233,11 @@ namespace AI.ClassicMath.Calculator
                 {
                     evalStack.Push(Complex.ImaginaryOne);
                 }
+                else if (token.StartsWith("\"") && token.EndsWith("\""))
+                {
+                    // Строковый литерал - убираем кавычки и пушим как строку
+                    evalStack.Push(token.Substring(1, token.Length - 2));
+                }
                 else if (context.Memory.TryGetValue(token, out
                     var value))
                 {
@@ -334,7 +340,10 @@ namespace AI.ClassicMath.Calculator
             _ => obj
         };
         private bool IsValue(string token, ExecutionContext context) =>
-            token == "i" || double.TryParse(token, NumberStyles.Any, CultureInfo.InvariantCulture, out _) || context.Memory.ContainsKey(token);
+            token == "i" || 
+            (token.StartsWith("\"") && token.EndsWith("\"")) ||  // Строковый литерал
+            double.TryParse(token, NumberStyles.Any, CultureInfo.InvariantCulture, out _) || 
+            context.Memory.ContainsKey(token);
         private bool IsValidVarName(string name) =>
             !string.IsNullOrWhiteSpace(name) && name != "i" && (char.IsLetter(name[0]) || name[0] == '_') && name.All(c => char.IsLetterOrDigit(c) || c == '_') && !Functions.ContainsKey(name);
         private bool IsSimpleAssignmentTarget(string expression) =>

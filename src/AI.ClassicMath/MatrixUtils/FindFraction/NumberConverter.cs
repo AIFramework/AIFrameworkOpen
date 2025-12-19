@@ -25,17 +25,31 @@ public static class NumberConverter
             };
         }
 
-        // Трансцедентные числа
+        // Трансцедентные числа (π, e) - ПРИОРИТЕТ!
         var transcendental = TranscendentalNumbers.CheckKnownConstant(number, tolerance);
         if (transcendental != null) return transcendental;
 
-        // Произведение рационального на трансцендентное
+        // Произведение рационального на трансцендентное (2π, π/2)
         var rationalMultiple = TranscendentalNumbers.CheckRationalMultiple(number, tolerance);
         if (rationalMultiple != null) return rationalMultiple;
 
-        // Преобразование к рациональному (если возможно)
+        // Рациональные числа (1/2, 2/3, и т.д.)
         var rational = RationalAnalyzer.Analyze(number, tolerance);
         if (rational != null && rational.Type != "Irrational") return rational;
+
+        // Алгебраические константы (√2, √3, √2/2) - только для иррациональных!
+        var symbolicForm = Calculator.KnownConstants.TryGetSymbolicForm(number, tolerance);
+        if (symbolicForm != null)
+        {
+            return new ConversionResult
+            {
+                Type = "Algebraic",
+                Fraction = symbolicForm,
+                Description = $"Известная константа: {symbolicForm}",
+                Numerator = 0,
+                Denominator = 0
+            };
+        }
 
         // Проверка на высокие корни
         var nthRoot = CheckNthRoot(number);
@@ -1011,12 +1025,12 @@ public static class NumberConverter
 
         if (RadicalHelper.IsNthRoot(number, 2, tolerance, out int qRadicand))
         {
-            string simplified = RadicalHelper.SimplifyNthRoot(qRadicand, 3);
+            string simplified = RadicalHelper.SimplifyNthRoot(qRadicand, 2);
             return new ConversionResult
             {
                 Type = "Root",
                 Fraction = simplified,
-                Description = $"Кубический корень из {qRadicand}",
+                Description = $"Квадратный корень из {qRadicand}",
                 Numerator = 0,
                 Denominator = 0
             };

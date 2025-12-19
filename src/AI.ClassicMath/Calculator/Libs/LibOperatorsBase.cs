@@ -68,7 +68,21 @@ public class LibOperatorsBase
             [(typeof(Complex), typeof(Complex), ">=")] = (o1, o2) => ((Complex)o1).Real >= ((Complex)o2).Real ? 1.0 : 0.0,
             [(typeof(Complex), typeof(Complex), "<=")] = (o1, o2) => ((Complex)o1).Real <= ((Complex)o2).Real ? 1.0 : 0.0,
             [(typeof(Complex), typeof(Complex), "==")] = (o1, o2) => (Complex)o1 == (Complex)o2 ? 1.0 : 0.0,
-            [(typeof(Complex), typeof(Complex), "!=")] = (o1, o2) => (Complex)o1 != (Complex)o2 ? 1.0 : 0.0
+            [(typeof(Complex), typeof(Complex), "!=")] = (o1, o2) => (Complex)o1 != (Complex)o2 ? 1.0 : 0.0,
+            
+            // --- Операции с датами ---
+            // Сравнение дат
+            [(typeof(DateTime), typeof(DateTime), ">")] = (o1, o2) => (DateTime)o1 > (DateTime)o2 ? 1.0 : 0.0,
+            [(typeof(DateTime), typeof(DateTime), "<")] = (o1, o2) => (DateTime)o1 < (DateTime)o2 ? 1.0 : 0.0,
+            [(typeof(DateTime), typeof(DateTime), ">=")] = (o1, o2) => (DateTime)o1 >= (DateTime)o2 ? 1.0 : 0.0,
+            [(typeof(DateTime), typeof(DateTime), "<=")] = (o1, o2) => (DateTime)o1 <= (DateTime)o2 ? 1.0 : 0.0,
+            [(typeof(DateTime), typeof(DateTime), "==")] = (o1, o2) => (DateTime)o1 == (DateTime)o2 ? 1.0 : 0.0,
+            [(typeof(DateTime), typeof(DateTime), "!=")] = (o1, o2) => (DateTime)o1 != (DateTime)o2 ? 1.0 : 0.0,
+            
+            // Добавление/вычитание дней к дате
+            [(typeof(DateTime), typeof(Complex), "+")] = (o1, o2) => ((DateTime)o1).AddDays(((Complex)o2).Real),
+            [(typeof(DateTime), typeof(Complex), "-")] = (o1, o2) => ((DateTime)o1).AddDays(-((Complex)o2).Real),
+            [(typeof(Complex), typeof(DateTime), "+")] = (o1, o2) => ((DateTime)o2).AddDays(((Complex)o1).Real)
         };
 
         return _operations;

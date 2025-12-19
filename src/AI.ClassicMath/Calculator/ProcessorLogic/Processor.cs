@@ -164,6 +164,7 @@ public class Processor
             Complex c => FormatComplex(c),
             ComplexVector v => $"[{string.Join(", ", v.Select(c => FormatResult(c)))}]",
             Vector dv => $"[{string.Join(", ", dv.Select(c => FormatDouble(c)))}]",
+            DateTime dt => dt.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
             _ => result?.ToString() ?? "null"
         };
     }

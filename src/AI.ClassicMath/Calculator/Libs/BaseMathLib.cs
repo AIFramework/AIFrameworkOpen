@@ -49,6 +49,10 @@ namespace AI.ClassicMath.Calculator.Libs
         CreateSqrtFunction(),
         CreateCbrtFunction(),
         CreatePowFunction(),
+        
+        // Работа с датами
+        CreateDateTimeFunction(),
+        CreateDateDiffFunction(),
 
         // Тригонометрия
         CreateSinFunction(),
@@ -179,6 +183,90 @@ namespace AI.ClassicMath.Calculator.Libs
               Signature = "Вход: 2 числа (основание, степень). Выход: 1 число.",
               Exemple = "pow(2, 10) // Результат: 1024"
           });
+
+        //================== Работа с датами ==================
+
+        private static FunctionDefinition CreateDateTimeFunction()
+        {
+            const string name = "DateTime";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 1,
+                Delegate = args =>
+                {
+                    var dateString = args[0]?.ToString() ?? throw new ArgumentException($"Функция '{name}' требует строку с датой.");
+                    
+                    if (!System.DateTime.TryParse(dateString, System.Globalization.CultureInfo.InvariantCulture, 
+                        System.Globalization.DateTimeStyles.None, out var result))
+                    {
+                        throw new ArgumentException($"Не удалось распарсить дату: '{dateString}'. Используйте формат: yyyy-MM-dd или yyyy-MM-dd HH:mm:ss");
+                    }
+                    
+                    return result;
+                },
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Программирование", "Календарь"],
+                    Description = "Парсит строку и возвращает объект DateTime. Поддерживает форматы: yyyy-MM-dd, yyyy-MM-dd HH:mm:ss",
+                    Signature = "Вход: 1 строка (дата). Выход: DateTime объект.",
+                    Exemple = "DateTime(\"2025-12-19\") // Парсит дату"
+                }
+            };
+        }
+
+        private static FunctionDefinition CreateDateDiffFunction()
+        {
+            const string name = "DateDiff";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 2,
+                Delegate = args =>
+                {
+                    if (args[0] is not System.DateTime date1)
+                        throw new ArgumentException($"Функция '{name}': первый аргумент должен быть DateTime");
+                    if (args[1] is not System.DateTime date2)
+                        throw new ArgumentException($"Функция '{name}': второй аргумент должен быть DateTime");
+                    
+                    var isNegative = date1 < date2;
+                    var span = date1 - date2;
+                    
+                    // Работаем с абсолютными значениями для упрощения логики
+                    var start = isNegative ? date1 : date2;
+                    var end = isNegative ? date2 : date1;
+                    
+                    // Вычисляем компоненты разницы
+                    int years = end.Year - start.Year;
+                    int months = end.Month - start.Month;
+                    int days = end.Day - start.Day;
+                    int hours = end.Hour - start.Hour;
+                    int minutes = end.Minute - start.Minute;
+                    int seconds = end.Second - start.Second;
+                    
+                    // Корректируем отрицательные значения снизу вверх
+                    if (seconds < 0) { seconds += 60; minutes--; }
+                    if (minutes < 0) { minutes += 60; hours--; }
+                    if (hours < 0) { hours += 24; days--; }
+                    if (days < 0)
+                    {
+                        months--;
+                        days += System.DateTime.DaysInMonth(start.Year, start.Month);
+                    }
+                    if (months < 0) { months += 12; years--; }
+                    
+                    var sign = isNegative ? "-" : "";
+                    return $"{sign}{years}y {months}m {days}d {hours}h {minutes}min {seconds}s (total: {span.TotalDays:F2} days)";
+                },
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Программирование", "Календарь"],
+                    Description = "Вычисляет точную календарную разницу между двумя датами в годах, месяцах, днях, часах, минутах и секундах",
+                    Signature = "Вход: 2 DateTime объекта. Выход: строка с детальной разницей.",
+                    Exemple = "DateDiff(DateTime(\"2025-12-19\"), DateTime(\"2024-01-01\")) // Детальная разница"
+                }
+            };
+        }
 
         //================== Тригонометрия ==================
 

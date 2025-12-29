@@ -24,11 +24,32 @@ internal class ForStatement : Statement
     public override void Execute(Processor processor, ExecutionContext context, List<string> output, CancellationToken cancellationToken = default)
     {
         if (!string.IsNullOrWhiteSpace(Initializer)) processor.AdvancedCalculator.Evaluate(Initializer, context, cancellationToken);
-        while (processor.IsTruthy(processor.AdvancedCalculator.Evaluate(Condition, context, cancellationToken)))
+        
+        try
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            foreach (var statement in Body) statement.Execute(processor, context, output, cancellationToken);
-            if (!string.IsNullOrWhiteSpace(Increment)) processor.AdvancedCalculator.Evaluate(Increment, context, cancellationToken);
+            while (processor.IsTruthy(processor.AdvancedCalculator.Evaluate(Condition, context, cancellationToken)))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                
+                try
+                {
+                    foreach (var statement in Body)
+                    {
+                        statement.Execute(processor, context, output, cancellationToken);
+                    }
+                }
+                catch (ContinueException)
+                {
+                    // Continue - переходим к инкременту и следующей итерации
+                }
+                
+                if (!string.IsNullOrWhiteSpace(Increment)) 
+                    processor.AdvancedCalculator.Evaluate(Increment, context, cancellationToken);
+            }
+        }
+        catch (BreakException)
+        {
+            // Break - выходим из цикла
         }
     }
 }

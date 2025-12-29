@@ -45,6 +45,7 @@ namespace AI.ClassicMath.Calculator.Libs
         // Стандартная математика
         CreateRoundFunction(),
         CreateFloorFunction(),
+        CreateCeilFunction(),
         CreateAbsFunction(),
         CreateSqrtFunction(),
         CreateCbrtFunction(),
@@ -93,7 +94,16 @@ namespace AI.ClassicMath.Calculator.Libs
         // Статистика
         CreateMeanFunction(),
         CreateMinFunction(),
-        CreateMaxFunction()
+        CreateMaxFunction(),
+        
+        // Bitwise операции
+        CreateXorFunction(),
+        CreateBitNotFunction(),
+        
+        // Строковые операции
+        CreateLenFunction(),
+        CreateConcatFunction(),
+        CreateSubstrFunction()
       };
 
             return functions.ToDictionary(f => f.Name, f => f, StringComparer.OrdinalIgnoreCase);
@@ -134,7 +144,25 @@ namespace AI.ClassicMath.Calculator.Libs
                     AreaList = ["Статистика", "Программирование"],
                     Description = "Округляет вещественное число вниз до ближайшего целого.",
                     Signature = "Вход: 1 число. Выход: 1 округлённое число.",
-                    Exemple = "round(3.59) // Результат: 3"
+                    Exemple = "floor(3.59) // Результат: 3"
+                }
+            };
+        }
+
+        private static FunctionDefinition CreateCeilFunction()
+        {
+            const string name = "ceil";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 1,
+                Delegate = args => (Complex)Math.Ceiling(CastsVar.CastToDouble(args[0], name)),
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Статистика", "Программирование"],
+                    Description = "Округляет вещественное число вверх до ближайшего целого.",
+                    Signature = "Вход: 1 число. Выход: 1 округлённое число.",
+                    Exemple = "ceil(3.2) // Результат: 4"
                 }
             };
         }
@@ -350,14 +378,30 @@ namespace AI.ClassicMath.Calculator.Libs
             return new FunctionDefinition
             {
                 Name = name,
-                ArgumentCount = 2,
-                Delegate = args => Complex.Log(CastsVar.CastToComplex(args[0], name)) / Complex.Log(CastsVar.CastToComplex(args[1], name)),
+                ArgumentCount = -1, // ИСПРАВЛЕНИЕ: Поддержка 1 или 2 аргументов
+                Delegate = args =>
+                {
+                    if (args.Length == 1)
+                    {
+                        // log(x) = ln(x) - натуральный логарифм
+                        return Complex.Log(CastsVar.CastToComplex(args[0], name));
+                    }
+                    else if (args.Length == 2)
+                    {
+                        // log(x, base) - логарифм по основанию
+                        return Complex.Log(CastsVar.CastToComplex(args[0], name)) / Complex.Log(CastsVar.CastToComplex(args[1], name));
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Функция '{name}' ожидает 1 или 2 аргумента, получила {args.Length}.");
+                    }
+                },
                 Description = new DescriptionFunction
                 {
                     AreaList = ["Алгебра", "Информатика", "Физика"],
-                    Description = "Вычисляет логарифм числа по заданному основанию.",
-                    Signature = "Вход: 2 числа (значение, основание). Выход: 1 число.",
-                    Exemple = "log(8, 2) // Результат: 3"
+                    Description = "Вычисляет логарифм числа. log(x) = ln(x), log(x, base) = логарифм по основанию.",
+                    Signature = "Вход: 1 число (ln) или 2 числа (значение, основание). Выход: 1 число.",
+                    Exemple = "log(e) // Результат: 1; log(8, 2) // Результат: 3"
                 }
             };
         }
@@ -664,15 +708,26 @@ namespace AI.ClassicMath.Calculator.Libs
                 Delegate = args =>
                 {
                     if (!args.Any()) return Complex.Zero;
-                    var complexArgs = args.Select(a => CastsVar.CastToComplex(a, name)).ToArray();
+                    
+                    // ИСПРАВЛЕНИЕ: Поддержка массивов - если передан ComplexVector, используем его элементы
+                    Complex[] complexArgs;
+                    if (args.Length == 1 && args[0] is ComplexVector vector)
+                    {
+                        complexArgs = vector.ToArray();
+                    }
+                    else
+                    {
+                        complexArgs = args.Select(a => CastsVar.CastToComplex(a, name)).ToArray();
+                    }
+                    
                     return new Complex(complexArgs.Average(c => c.Real), complexArgs.Average(c => c.Imaginary));
                 },
                 Description = new DescriptionFunction
                 {
                     AreaList = ["Статистика", "Анализ данных"],
-                    Description = "Вычисляет среднее арифметическое для набора чисел.",
-                    Signature = "Вход: N чисел. Выход: 1 число.",
-                    Exemple = "mean(2, 4, 9) // Результат: 5"
+                    Description = "Вычисляет среднее арифметическое для набора чисел или массива.",
+                    Signature = "Вход: N чисел или 1 массив. Выход: 1 число.",
+                    Exemple = "mean(2, 4, 9) // Результат: 5; mean([1, 2, 3, 4, 5]) // Результат: 3"
                 }
             };
         }
@@ -687,14 +742,26 @@ namespace AI.ClassicMath.Calculator.Libs
                 Delegate = args =>
                 {
                     if (!args.Any()) throw new ArgumentException("Функция 'min' требует хотя бы один аргумент.");
-                    return new Complex(args.Select(a => CastsVar.CastToDouble(a, name)).Min(), 0);
+                    
+                    // Поддержка массивов - если передан ComplexVector, используем его элементы
+                    double[] values;
+                    if (args.Length == 1 && args[0] is ComplexVector vector)
+                    {
+                        values = vector.ToArray().Select(c => c.Real).ToArray();
+                    }
+                    else
+                    {
+                        values = args.Select(a => CastsVar.CastToDouble(a, name)).ToArray();
+                    }
+                    
+                    return new Complex(values.Min(), 0);
                 },
                 Description = new DescriptionFunction
                 {
                     AreaList = ["Статистика", "Анализ данных"],
-                    Description = "Находит минимальное значение среди набора чисел.",
-                    Signature = "Вход: N чисел. Выход: 1 число.",
-                    Exemple = "min(2, -1, 5) // Результат: -1"
+                    Description = "Находит минимальное значение среди набора чисел или массива.",
+                    Signature = "Вход: N чисел или 1 массив. Выход: 1 число.",
+                    Exemple = "min(2, -1, 5) // Результат: -1; min([5, 2, 8, 1]) // Результат: 1"
                 }
             };
         }
@@ -709,14 +776,158 @@ namespace AI.ClassicMath.Calculator.Libs
                 Delegate = args =>
                 {
                     if (!args.Any()) throw new ArgumentException("Функция 'max' требует хотя бы один аргумент.");
-                    return new Complex(args.Select(a => CastsVar.CastToDouble(a, name)).Max(), 0);
+                    
+                    // Поддержка массивов - если передан ComplexVector, используем его элементы
+                    double[] values;
+                    if (args.Length == 1 && args[0] is ComplexVector vector)
+                    {
+                        values = vector.ToArray().Select(c => c.Real).ToArray();
+                    }
+                    else
+                    {
+                        values = args.Select(a => CastsVar.CastToDouble(a, name)).ToArray();
+                    }
+                    
+                    return new Complex(values.Max(), 0);
                 },
                 Description = new DescriptionFunction
                 {
                     AreaList = ["Статистика", "Анализ данных"],
-                    Description = "Находит максимальное значение среди набора чисел.",
-                    Signature = "Вход: N чисел. Выход: 1 число.",
-                    Exemple = "max(2, -1, 5) // Результат: 5"
+                    Description = "Находит максимальное значение среди набора чисел или массива.",
+                    Signature = "Вход: N чисел или 1 массив. Выход: 1 число.",
+                    Exemple = "max(2, -1, 5) // Результат: 5; max([5, 2, 8, 1]) // Результат: 8"
+                }
+            };
+        }
+
+        //================== Bitwise операции ==================
+
+        private static FunctionDefinition CreateXorFunction()
+        {
+            const string name = "xor";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 2,
+                Delegate = args =>
+                {
+                    int a = (int)CastsVar.CastToDouble(args[0], name);
+                    int b = (int)CastsVar.CastToDouble(args[1], name);
+                    return new Complex(a ^ b, 0);
+                },
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Программирование", "Битовые операции"],
+                    Description = "Выполняет битовую операцию XOR (исключающее ИЛИ) над двумя целыми числами.",
+                    Signature = "Вход: 2 целых числа. Выход: 1 число.",
+                    Exemple = "xor(5, 3) // Результат: 6 (101 XOR 011 = 110)"
+                }
+            };
+        }
+
+        private static FunctionDefinition CreateBitNotFunction()
+        {
+            const string name = "bitnot";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 1,
+                Delegate = args =>
+                {
+                    int a = (int)CastsVar.CastToDouble(args[0], name);
+                    return new Complex(~a, 0);
+                },
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Программирование", "Битовые операции"],
+                    Description = "Выполняет битовую операцию NOT (инверсия всех битов) над целым числом.",
+                    Signature = "Вход: 1 целое число. Выход: 1 число.",
+                    Exemple = "bitnot(5) // Результат: -6 (инверсия битов 101)"
+                }
+            };
+        }
+
+        //================== Строковые операции ==================
+
+        private static FunctionDefinition CreateLenFunction()
+        {
+            const string name = "len";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 1,
+                Delegate = args =>
+                {
+                    if (args[0] is string str)
+                        return new Complex(str.Length, 0);
+                    if (args[0] is ComplexVector vec)
+                        return new Complex(vec.Count, 0);
+                    throw new ArgumentException($"Функция '{name}' ожидает строку или вектор.");
+                },
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Программирование", "Строковые операции"],
+                    Description = "Возвращает длину строки или вектора.",
+                    Signature = "Вход: 1 строка или вектор. Выход: 1 число.",
+                    Exemple = "len(\"Hello\") // Результат: 5"
+                }
+            };
+        }
+
+        private static FunctionDefinition CreateConcatFunction()
+        {
+            const string name = "concat";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = -1, // Переменное количество аргументов
+                Delegate = args =>
+                {
+                    if (!args.Any()) throw new ArgumentException("Функция 'concat' требует хотя бы один аргумент.");
+                    return args.Select(arg => arg?.ToString() ?? "").Aggregate((a, b) => a + b);
+                },
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Программирование", "Строковые операции"],
+                    Description = "Объединяет несколько строк в одну.",
+                    Signature = "Вход: N строк. Выход: 1 строка.",
+                    Exemple = "concat(\"Hello\", \" \", \"World\") // Результат: \"Hello World\""
+                }
+            };
+        }
+
+        private static FunctionDefinition CreateSubstrFunction()
+        {
+            const string name = "substr";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 3,
+                Delegate = args =>
+                {
+                    if (!(args[0] is string str))
+                        throw new ArgumentException($"Функция '{name}' ожидает строку в качестве первого аргумента.");
+                    
+                    int start = CastsVar.CastToInt32(args[1], name);
+                    int length = CastsVar.CastToInt32(args[2], name);
+                    
+                    if (start < 0 || start >= str.Length)
+                        throw new ArgumentException($"Индекс начала ({start}) выходит за пределы строки.");
+                    if (length < 0)
+                        throw new ArgumentException($"Длина подстроки ({length}) не может быть отрицательной.");
+                    
+                    // ИСПРАВЛЕНИЕ: Обрезаем длину если она выходит за пределы
+                    if (start + length > str.Length)
+                        length = str.Length - start;
+                    
+                    return str.Substring(start, length);
+                },
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Программирование", "Строковые операции"],
+                    Description = "Извлекает подстроку из строки, начиная с указанного индекса и заданной длины.",
+                    Signature = "Вход: 1 строка, 2 целых числа (индекс, длина). Выход: 1 строка.",
+                    Exemple = "substr(\"Hello World\", 0, 5) // Результат: \"Hello\""
                 }
             };
         }

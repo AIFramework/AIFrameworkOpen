@@ -13,15 +13,23 @@ public class LibOperatorsBase
 {
     public Dictionary<string, (int Precedence, string Associativity)> GetOperators()
     {
+        // ИСПРАВЛЕНИЕ: Правильные приоритеты битовых операторов (как в C/C++)
+        // От низкого к высокому: || < && < | < & < сравнения < сдвиги < +- < */ < ^ < унарные
         return new Dictionary<string, (int Precedence, string Associativity)>(StringComparer.OrdinalIgnoreCase)
             {
-                { "==", (0, "Left") }, { "!=", (0, "Left") },
-                { ">",  (0, "Left") }, { "<",  (0, "Left") },
-                { ">=", (0, "Left") }, { "<=", (0, "Left") },
-                { "+",  (1, "Left") }, { "-",  (1, "Left") },
-                { "*",  (2, "Left") }, { "/",  (2, "Left") }, { "%", (2, "Left") },
-                { "^",  (3, "Right") },
-                { "~",  (4, "Right") } // <--- ДОБАВЬТЕ ЭТУ СТРОКУ (унарный минус)
+                { "||", (0, "Left") },  // Логическое ИЛИ (самый низкий)
+                { "&&", (1, "Left") },  // Логическое И
+                { "|", (2, "Left") },   // Bitwise OR
+                { "&", (3, "Left") },   // Bitwise AND (выше чем |)
+                { "==", (4, "Left") }, { "!=", (4, "Left") },
+                { ">",  (4, "Left") }, { "<",  (4, "Left") },
+                { ">=", (4, "Left") }, { "<=", (4, "Left") },
+                { "<<", (5, "Left") }, { ">>", (5, "Left") }, // Bit shifts
+                { "+",  (6, "Left") }, { "-",  (6, "Left") },
+                { "*",  (7, "Left") }, { "/",  (7, "Left") }, { "%", (7, "Left") },
+                { "^",  (8, "Right") }, // Возведение в степень
+                { "~",  (9, "Right") }, // Унарный минус / битовое НЕ
+                { "!",  (9, "Right") }  // Логическое НЕ (унарное)
             };
     }
 
@@ -69,6 +77,22 @@ public class LibOperatorsBase
             [(typeof(Complex), typeof(Complex), "<=")] = (o1, o2) => ((Complex)o1).Real <= ((Complex)o2).Real ? 1.0 : 0.0,
             [(typeof(Complex), typeof(Complex), "==")] = (o1, o2) => (Complex)o1 == (Complex)o2 ? 1.0 : 0.0,
             [(typeof(Complex), typeof(Complex), "!=")] = (o1, o2) => (Complex)o1 != (Complex)o2 ? 1.0 : 0.0,
+            
+            // --- Логические операции ---
+            [(typeof(Complex), typeof(Complex), "&&")] = (o1, o2) => 
+                (((Complex)o1).Real != 0 && ((Complex)o2).Real != 0) ? 1.0 : 0.0,
+            [(typeof(Complex), typeof(Complex), "||")] = (o1, o2) => 
+                (((Complex)o1).Real != 0 || ((Complex)o2).Real != 0) ? 1.0 : 0.0,
+            
+            // --- Bitwise операции (работают только с целыми числами) ---
+            [(typeof(Complex), typeof(Complex), "&")] = (o1, o2) => 
+                new Complex((int)((Complex)o1).Real & (int)((Complex)o2).Real, 0),
+            [(typeof(Complex), typeof(Complex), "|")] = (o1, o2) => 
+                new Complex((int)((Complex)o1).Real | (int)((Complex)o2).Real, 0),
+            [(typeof(Complex), typeof(Complex), "<<")] = (o1, o2) => 
+                new Complex((int)((Complex)o1).Real << (int)((Complex)o2).Real, 0),
+            [(typeof(Complex), typeof(Complex), ">>")] = (o1, o2) => 
+                new Complex((int)((Complex)o1).Real >> (int)((Complex)o2).Real, 0),
             
             // --- Операции с датами ---
             // Сравнение дат

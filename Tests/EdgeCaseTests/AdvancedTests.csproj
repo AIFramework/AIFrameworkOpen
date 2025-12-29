@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <StartupObject>EdgeCaseTests.AdvancedTests</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="EdgeCaseTests.cs" />
+    <Compile Remove="ExtremeCases.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AI.ClassicMath\AI.ClassicMath.csproj" />
+  </ItemGroup>
+</Project>
+

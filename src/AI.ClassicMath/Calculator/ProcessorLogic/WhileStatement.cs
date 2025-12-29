@@ -19,10 +19,28 @@ internal class WhileStatement : Statement
 
     public override void Execute(Processor processor, ExecutionContext context, List<string> output, CancellationToken cancellationToken = default)
     {
-        while (processor.IsTruthy(processor.AdvancedCalculator.Evaluate(Condition, context, cancellationToken)))
+        try
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            foreach (var statement in Body) statement.Execute(processor, context, output, cancellationToken);
+            while (processor.IsTruthy(processor.AdvancedCalculator.Evaluate(Condition, context, cancellationToken)))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                
+                try
+                {
+                    foreach (var statement in Body)
+                    {
+                        statement.Execute(processor, context, output, cancellationToken);
+                    }
+                }
+                catch (ContinueException)
+                {
+                    // Continue - переходим к следующей итерации
+                }
+            }
+        }
+        catch (BreakException)
+        {
+            // Break - выходим из цикла
         }
     }
 }

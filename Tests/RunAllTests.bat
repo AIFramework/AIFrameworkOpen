@@ -7,7 +7,7 @@ echo ╚════════════════════════
 echo.
 
 set passed=0
-set total=10
+set total=11
 
 echo ═══════════════════════════════════════════════════════════════
 echo   ТЕСТ 1/8: Основной набор (125 тестов)
@@ -140,6 +140,19 @@ echo   ТЕСТ 10/10: Токенизация (60 тестов)
 echo ═══════════════════════════════════════════════════════════════
 cd EdgeCaseTests
 dotnet run --project TokenizationTests.csproj >nul 2>&1
+if %errorlevel%==0 (
+    echo ✅ УСПЕШНО
+    set /a passed+=1
+) else (
+    echo ❌ ПРОВАЛЕН
+)
+cd ..
+
+echo ══════════════════════════════════════════════════════════════
+echo ТЕСТ 11/11: Complex Comment Tests (30 tests)
+echo ══════════════════════════════════════════════════════════════
+cd EdgeCaseTests
+dotnet run --project ComplexCommentTests.csproj >nul 2>&1
 if %errorlevel%==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1

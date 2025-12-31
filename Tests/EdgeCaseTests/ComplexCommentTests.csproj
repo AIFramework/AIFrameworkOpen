@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="EdgeCaseTests.cs" />
+    <Compile Remove="AdvancedTests.cs" />
+    <Compile Remove="ExtremeCases.cs" />
+    <Compile Remove="TestComments.cs" />
+    <Compile Remove="HonestCommentTests.cs" />
+    <Compile Remove="StringArrayTests.cs" />
+    <Compile Remove="TokenizationTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AI.ClassicMath\AI.ClassicMath.csproj" />
+  </ItemGroup>
+
+</Project>
+

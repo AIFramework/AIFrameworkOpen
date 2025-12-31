@@ -3,7 +3,7 @@ Write-Host "`n================================================" -ForegroundColor
 Write-Host "  ALL TESTS FOR MATHCALCULATORTOOL" -ForegroundColor Cyan
 Write-Host "================================================`n" -ForegroundColor Cyan
 
-$totalTests = 10
+$totalTests = 11
 $passedTests = 0
 $testResults = @()
 
@@ -113,6 +113,12 @@ $testResults += Run-Test -Name "Tokenization Tests (60 tests)" `
                          -Path "$testsPath\EdgeCaseTests" `
                          -Num 10 `
                          -ProjectFile "TokenizationTests.csproj"
+
+# TEST 11: Complex Comments - сложные граничные случаи комментариев
+$testResults += Run-Test -Name "Complex Comment Tests (30 tests)" `
+                         -Path "$testsPath\EdgeCaseTests" `
+                         -Num 11 `
+                         -ProjectFile "ComplexCommentTests.csproj"
 
 # SUMMARY
 Write-Host "`n`n================================================" -ForegroundColor Cyan

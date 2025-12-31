@@ -103,7 +103,8 @@ namespace AI.ClassicMath.Calculator.Libs
         // Строковые операции
         CreateLenFunction(),
         CreateConcatFunction(),
-        CreateSubstrFunction()
+        CreateSubstrFunction(),
+        CreateJoinFunction()
       };
 
             return functions.ToDictionary(f => f.Name, f => f, StringComparer.OrdinalIgnoreCase);
@@ -685,7 +686,25 @@ namespace AI.ClassicMath.Calculator.Libs
             {
                 Name = name,
                 ArgumentCount = 2,
-                Delegate = args => CastsVar.CastToComplexVector(args[0], name)[CastsVar.CastToInt32(args[1], name)],
+                Delegate = args =>
+                {
+                    var array = args[0];
+                    var indexArg = CastsVar.CastToInt32(args[1], name);
+                    
+                    // Поддержка массивов строк
+                    if (array is string[] stringArray)
+                    {
+                        if (indexArg < 0 || indexArg >= stringArray.Length)
+                            throw new IndexOutOfRangeException($"Индекс {indexArg} выходит за границы массива (длина: {stringArray.Length}).");
+                        return stringArray[indexArg];
+                    }
+                    
+                    // Поддержка числовых массивов (ComplexVector)
+                    var vector = CastsVar.CastToComplexVector(array, name);
+                    if (indexArg < 0 || indexArg >= vector.Count)
+                        throw new IndexOutOfRangeException($"Индекс {indexArg} выходит за границы массива (длина: {vector.Count}).");
+                    return vector[indexArg];
+                },
                 Description = new DescriptionFunction
                 {
                     AreaList = ["Программирование", "Линейная алгебра"],
@@ -860,9 +879,11 @@ namespace AI.ClassicMath.Calculator.Libs
                 {
                     if (args[0] is string str)
                         return new Complex(str.Length, 0);
+                    if (args[0] is string[] strArray)
+                        return new Complex(strArray.Length, 0);
                     if (args[0] is ComplexVector vec)
                         return new Complex(vec.Count, 0);
-                    throw new ArgumentException($"Функция '{name}' ожидает строку или вектор.");
+                    throw new ArgumentException($"Функция '{name}' ожидает строку, массив или вектор.");
                 },
                 Description = new DescriptionFunction
                 {
@@ -928,6 +949,34 @@ namespace AI.ClassicMath.Calculator.Libs
                     Description = "Извлекает подстроку из строки, начиная с указанного индекса и заданной длины.",
                     Signature = "Вход: 1 строка, 2 целых числа (индекс, длина). Выход: 1 строка.",
                     Exemple = "substr(\"Hello World\", 0, 5) // Результат: \"Hello\""
+                }
+            };
+        }
+
+        private static FunctionDefinition CreateJoinFunction()
+        {
+            const string name = "join";
+            return new FunctionDefinition
+            {
+                Name = name,
+                ArgumentCount = 2,
+                Delegate = args =>
+                {
+                    // Первый аргумент - массив строк
+                    if (!(args[0] is string[] strArray))
+                        throw new ArgumentException($"Функция '{name}' ожидает массив строк в качестве первого аргумента.");
+                    
+                    // Второй аргумент - разделитель
+                    var separator = args[1]?.ToString() ?? "";
+                    
+                    return string.Join(separator, strArray);
+                },
+                Description = new DescriptionFunction
+                {
+                    AreaList = ["Программирование", "Строковые операции"],
+                    Description = "Объединяет элементы массива строк в одну строку с указанным разделителем.",
+                    Signature = "Вход: 1 массив строк, 1 строка (разделитель). Выход: 1 строка.",
+                    Exemple = "join([\"Hello\", \"World\", \"!\"], \" \") // Результат: \"Hello World !\""
                 }
             };
         }

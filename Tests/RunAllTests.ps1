@@ -3,7 +3,7 @@ Write-Host "`n================================================" -ForegroundColor
 Write-Host "  ALL TESTS FOR MATHCALCULATORTOOL" -ForegroundColor Cyan
 Write-Host "================================================`n" -ForegroundColor Cyan
 
-$totalTests = 6
+$totalTests = 10
 $passedTests = 0
 $testResults = @()
 
@@ -89,6 +89,30 @@ $testResults += Run-Test -Name "Extreme Cases (71 tests)" `
                          -Path "$testsPath\EdgeCaseTests" `
                          -Num 6 `
                          -ProjectFile "ExtremeCases.csproj"
+
+# TEST 7: Comments Support (Python # style) - Basic tests
+$testResults += Run-Test -Name "Comments Support (38 tests)" `
+                         -Path "$testsPath\EdgeCaseTests" `
+                         -Num 7 `
+                         -ProjectFile "TestComments.csproj"
+
+# TEST 8: Comments Support - HONEST validation tests
+$testResults += Run-Test -Name "HONEST Comment Tests (29 tests)" `
+                         -Path "$testsPath\EdgeCaseTests" `
+                         -Num 8 `
+                         -ProjectFile "HonestCommentTests.csproj"
+
+# TEST 9: String Arrays - join, concat, и все операции
+$testResults += Run-Test -Name "String Array Tests (32 tests)" `
+                         -Path "$testsPath\EdgeCaseTests" `
+                         -Num 9 `
+                         -ProjectFile "StringArrayTests.csproj"
+
+# TEST 10: Tokenization - зарезервированные слова, операторы в строках
+$testResults += Run-Test -Name "Tokenization Tests (60 tests)" `
+                         -Path "$testsPath\EdgeCaseTests" `
+                         -Num 10 `
+                         -ProjectFile "TokenizationTests.csproj"
 
 # SUMMARY
 Write-Host "`n`n================================================" -ForegroundColor Cyan

@@ -490,6 +490,10 @@ namespace AI.ClassicMath.Calculator
         {
             cancellationToken.ThrowIfCancellationRequested();
             
+            // Примечание: Комментарии (#) удаляются в Processor.PreprocessScript
+            // перед токенизацией с правильной обработкой строковых литералов.
+            // Здесь их удалять НЕ нужно, так как это может повредить # внутри строк.
+            
             // Заменяем логические операторы на символы перед токенизацией
             expression = Regex.Replace(expression, @"\band\b", "&&", RegexOptions.IgnoreCase);
             expression = Regex.Replace(expression, @"\bor\b", "||", RegexOptions.IgnoreCase);
@@ -826,7 +830,20 @@ namespace AI.ClassicMath.Calculator
                     }
                     if (funcName == "vector")
                     {
-                        evalStack.Push(new ComplexVector(args.Select(a => CastsVar.CastToComplex(a, "vector component"))));
+                        // Проверяем: это массив чисел или строк?
+                        // Если хотя бы один элемент - строка, создаем массив строк
+                        bool hasStrings = args.Any(a => a is string);
+                        
+                        if (hasStrings)
+                        {
+                            // Массив строк (все элементы преобразуем в string)
+                            evalStack.Push(args.Select(a => a?.ToString() ?? "").ToArray());
+                        }
+                        else
+                        {
+                            // Массив чисел (ComplexVector)
+                            evalStack.Push(new ComplexVector(args.Select(a => CastsVar.CastToComplex(a, "vector component"))));
+                        }
                     }
                     else
                     {

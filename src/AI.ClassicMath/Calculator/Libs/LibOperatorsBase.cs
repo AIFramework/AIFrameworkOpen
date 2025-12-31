@@ -78,6 +78,10 @@ public class LibOperatorsBase
             [(typeof(Complex), typeof(Complex), "==")] = (o1, o2) => (Complex)o1 == (Complex)o2 ? 1.0 : 0.0,
             [(typeof(Complex), typeof(Complex), "!=")] = (o1, o2) => (Complex)o1 != (Complex)o2 ? 1.0 : 0.0,
             
+            // --- Операции сравнения строк ---
+            [(typeof(string), typeof(string), "==")] = (o1, o2) => (string)o1 == (string)o2 ? 1.0 : 0.0,
+            [(typeof(string), typeof(string), "!=")] = (o1, o2) => (string)o1 != (string)o2 ? 1.0 : 0.0,
+            
             // --- Логические операции ---
             [(typeof(Complex), typeof(Complex), "&&")] = (o1, o2) => 
                 (((Complex)o1).Real != 0 && ((Complex)o2).Real != 0) ? 1.0 : 0.0,

@@ -53,7 +53,49 @@ public class Processor
     /// </summary>
     private string PreprocessScript(string script)
     {
-        // Защищаем строковые литералы от изменения
+        // Шаг 1: Удаляем комментарии в стиле Python (#)
+        // ВАЖНО: Посимвольная обработка С отслеживанием строковых литералов!
+        // Это защищает # внутри строк от удаления (например: "Test#123")
+        var lines = script.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+        for (int i = 0; i < lines.Length; i++)
+        {
+            var line = lines[i];
+            bool inString = false;
+            
+            // Идем по строке посимвольно, отслеживая вход/выход из строковых литералов
+            for (int j = 0; j < line.Length; j++)
+            {
+                // Проверяем кавычки (учитываем escaped символы)
+                if (line[j] == '"')
+                {
+                    // Подсчитываем количество backslash'ей ПЕРЕД кавычкой
+                    int backslashCount = 0;
+                    int k = j - 1;
+                    while (k >= 0 && line[k] == '\\')
+                    {
+                        backslashCount++;
+                        k--;
+                    }
+                    
+                    // Если четное количество backslash'ей (включая 0), то кавычка НЕ escaped
+                    // Нечетное количество - кавычка escaped
+                    if (backslashCount % 2 == 0)
+                    {
+                        inString = !inString;  // Переключаем флаг "внутри строки"
+                    }
+                    // Если нечетное - это escaped кавычка, не меняем флаг
+                }
+                // Удаляем # ТОЛЬКО если он НЕ внутри строки
+                else if (line[j] == '#' && !inString)
+                {
+                    lines[i] = line.Substring(0, j);  // Обрезаем от # до конца строки
+                    break;
+                }
+            }
+        }
+        script = string.Join("\n", lines);
+        
+        // Шаг 2: Защищаем строковые литералы от изменения
         var strings = new List<string>();
         var stringPattern = @"""(?:[^""\\]|\\.)*""";
         script = Regex.Replace(script, stringPattern, m =>

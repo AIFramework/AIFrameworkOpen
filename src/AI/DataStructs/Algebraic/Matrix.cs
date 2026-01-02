@@ -1583,12 +1583,12 @@ namespace AI.DataStructs.Algebraic
 
             for (int i = 0; i < Height; i++)
             {
-                _ = sb.Append("[");
+                _ = sb.Append("[ ");
 
                 for (int j = 0; j < Width; j++)
                 {
-                    _ = sb.Append(this[i, j].ToString(provider));
-                    _ = sb.Append(" ");
+                    _ = sb.AppendFormat(provider, "{0,8:F4} ", this[i, j]);
+                    _ = sb.Append("  ");
                 }
 
                 sb.Length--;

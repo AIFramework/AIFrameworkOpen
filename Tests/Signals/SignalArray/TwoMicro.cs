@@ -12,7 +12,7 @@ namespace SignalArray;
 
 public class TwoMicro
 {
-    public static Tuple<double, double> GetR1R2FFT(Vector sig1, Vector sig2, double sr, double v)
+    public static Tuple<double, double, double> GetR1R2DtFFT(Vector sig1, Vector sig2, double sr, double v)
     {
         ComplexVector Sp1 = FFT.CalcFFT(sig1);
         ComplexVector Sp2 = FFT.CalcFFT(sig2);
@@ -48,11 +48,11 @@ public class TwoMicro
             r1 = r2 * Math.Sqrt(ratioR_sq);
         }
 
-        return Tuple.Create(r1, r2);
+        return Tuple.Create(r1, r2, dt);
     }
 
 
-    public static Tuple<double, double> GetR1R2Correlation(Vector sig1, Vector sig2, double sr, double v)
+    public static Tuple<double, double, double> GetR1R2DtCorrelation(Vector sig1, Vector sig2, double sr, double v)
     {
         var corr = Correlation.CrossCorrelation(sig1, sig2);
         int centerIndex = sig2.Count - 1;
@@ -76,6 +76,6 @@ public class TwoMicro
             r1 = r2 * Math.Sqrt(ratioR_sq);
         }
 
-        return Tuple.Create(r1, r2);
+        return Tuple.Create(r1, r2, dt);
     }
 }

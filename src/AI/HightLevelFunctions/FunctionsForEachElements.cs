@@ -266,8 +266,13 @@ namespace AI.HightLevelFunctions
         /// <returns>Возвращает последовательность</returns>
         public static Vector GenerateTheSequence(double began, double step, double end)
         {
-            double n = end - began;
-            int Count = (n % step == 0) ? (int)(n / step) : (int)(n / step) + 1;
+            // Исправлено: явно вычисляем количество точек для избежания проблем с floating point
+            int Count = (int)Math.Round((end - began) / step);
+            
+            // Если began + Count * step превышает end, это нормально для последовательности [began, end]
+            // Но если не включает end, добавляем точку
+            if (Math.Abs(began + Count * step - end) > step * 0.1)
+                Count++;
 
             Vector sequen = new Vector(Count);
 

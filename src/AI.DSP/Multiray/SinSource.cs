@@ -21,7 +21,9 @@ namespace AI.DSP.Multiray
         {
             Vector t = Vector.Time0(SR, T);
 
-            double attenuation = 1.0; // (dist * dist);
+            // Затухание по модели 1/r (цилиндрическая волна или дальнее поле сферической волны)
+            // Это соответствует формуле расчета r1, r2 в TwoMicro
+            double attenuation = 1.0 / dist;
             double phase_shift = 2 * Math.PI * F0 * dist / speed;
 
             return attenuation * t.Transform(x =>

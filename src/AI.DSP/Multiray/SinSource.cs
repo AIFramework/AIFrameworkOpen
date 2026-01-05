@@ -21,14 +21,11 @@ namespace AI.DSP.Multiray
         {
             Vector t = Vector.Time0(SR, T);
 
-            // Ослабление (1/r^2)
-            double attenuation = 1.0 / (dist * dist + 0.01);  // +0.01 чтобы не было бесконечности
-
-            // Фаза с задержкой распространения
-            double propagation_time = dist / speed;
+            double attenuation = 1.0; // (dist * dist);
+            double phase_shift = 2 * Math.PI * F0 * dist / speed;
 
             return attenuation * t.Transform(x =>
-                Math.Sin(2 * Math.PI * F0 * (x - propagation_time))
+                Math.Sin(2 * Math.PI * F0 * x - phase_shift)
             );
         }
     }

@@ -89,4 +89,42 @@ foreach (double sr in testSampleRates)
     Console.WriteLine();
 }
 
+// Тест 3: Синус с белым гауссовым шумом (SNR=5)
+Console.WriteLine("\n═══════════════════════════════════════════════════════════════════");
+Console.WriteLine("  ТИП СИГНАЛА: СИНУС С БЕЛЫМ ГАУССОВЫМ ШУМОМ");
+Console.WriteLine("  SNR (отношение сигнал/шум) = 5");
+Console.WriteLine("  ПРИМЕЧАНИЕ: Шум усложняет определение фазы и амплитуды");
+Console.WriteLine("═══════════════════════════════════════════════════════════════════\n");
+
+foreach (double sr in testSampleRates)
+{
+    Console.WriteLine($"────────────────────────────────────────────────────");
+    Console.WriteLine($"Частота дискретизации: {sr} Гц\n");
+    
+    Detector detector1 = new Detector(coordD1);
+    Detector detector2 = new Detector(coordD2);
+    Source source = new NoisySinSource(sr, 5.0, coordS1); // SNR = 5
+
+    Environment env = new Environment();
+    env.Detectors.Add(detector1);
+    env.Detectors.Add(detector2);
+    env.Sources.Add(source);
+
+    var signals = env.GetSignals();
+    
+    // Используем FFT-фазовый метод - устойчив к шуму для узкополосных сигналов
+    var r1r2Universal = TwoMicro.GetR1R2DtFFT(signals[0], signals[1], sr, env.WaveSpeed);
+
+    var r1Real = Environment.GetDist(detector1, source);
+    var r2Real = Environment.GetDist(detector2, source);
+    var dtReal = Environment.GetDeltaT(detector1, detector2, source, env.WaveSpeed);
+
+    Console.WriteLine($"Реальные: r1={r1Real:F6}, r2={r2Real:F6}, dt={dtReal:F9}");
+    Console.WriteLine($"Результат: r1={r1r2Universal.Item1:F6}, r2={r1r2Universal.Item2:F6}, dt={r1r2Universal.Item3:F9}");
+    Console.WriteLine($"Ошибка r1: {(r1r2Universal.Item1 - r1Real) / r1Real * 100:F3}%");
+    Console.WriteLine($"Ошибка r2: {(r1r2Universal.Item2 - r2Real) / r2Real * 100:F3}%");
+    Console.WriteLine($"Ошибка dt: {(r1r2Universal.Item3 - dtReal) / dtReal * 100:F3}% ⭐ ГЛАВНАЯ МЕТРИКА");
+    Console.WriteLine();
+}
+
 Console.WriteLine("═══════════════════════════════════════════════════════════════════");

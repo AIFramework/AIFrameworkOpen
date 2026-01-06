@@ -1,15 +1,16 @@
 using AI.DataStructs.Algebraic;
 using AI.Statistics;
 using System;
+using System.Collections.Generic;
 
-namespace AI.DSP.Multiray
+namespace AI.DSP.Multiray.Sources
 {
     /// <summary>
     /// Источник синусоидального сигнала с белым гауссовым шумом
     /// </summary>
     public class NoisySinSource : Source
     {
-        public double F0 = 300;
+        public double F0 = 1200;
         /// <summary>
         /// Отношение сигнал/шум (SNR) в разах (не в дБ)
         /// </summary>
@@ -26,7 +27,7 @@ namespace AI.DSP.Multiray
             SNR = snr;
         }
 
-        public override Vector GetSignal(double dist, double speed)
+        public override Vector GetSignal(double dist, double speed, IEnumerable<Source> sources = null)
         {
             Vector t = Vector.Time0(SR, T);
 

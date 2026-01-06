@@ -1,7 +1,8 @@
 using AI.DataStructs.Algebraic;
 using System;
+using System.Collections.Generic;
 
-namespace AI.DSP.Multiray
+namespace AI.DSP.Multiray.Sources
 {
     /// <summary>
     /// Источник синусоидального сигнала с линейной модуляцией амплитуды: sin(2πft) * t
@@ -17,7 +18,7 @@ namespace AI.DSP.Multiray
         public ModulatedSinSource(double sr, params double[] coords) : base(sr, coords)
         { }
 
-        public override Vector GetSignal(double dist, double speed)
+        public override Vector GetSignal(double dist, double speed, IEnumerable<Source> sources = null)
         {
             Vector t = Vector.Time0(SR, T);
 

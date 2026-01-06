@@ -1,42 +1,36 @@
-﻿using AI;
-using AI.DataStructs.Algebraic;
+﻿using AI.DataStructs.Algebraic;
 using AI.DataStructs.WithComplexElements;
 using AI.DSP.DSPCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SignalArray;
 
 public class TwoMicro
 {
-    ///// <summary>
-    ///// Вычисляет среднеквадратичное значение (RMS) сигнала
-    ///// RMS более устойчив к модуляции амплитуды, чем пиковое значение
-    ///// </summary>
-    //private static double CalculateRMS(Vector signal)
-    //{
-    //    double sumSquares = 0;
-    //    for (int i = 0; i < signal.Count; i++)
-    //    {
-    //        sumSquares += signal[i] * signal[i];
-    //    }
-    //    return Math.Sqrt(sumSquares / signal.Count);
-    //}
-    
-    ///// <summary>
-    ///// Вычисляет отношение расстояний из амплитуд сигналов
-    ///// Использует RMS для устойчивости к модуляции
-    ///// </summary>
-    //private static double CalculateDistanceRatio(Vector sig1, Vector sig2)
-    //{
-    //    double rms1 = CalculateRMS(sig1);
-    //    double rms2 = CalculateRMS(sig2);
-    //    return (rms1 * rms1) / (rms2 * rms2);
-    //}
-    
+    /// <summary>
+    /// Вычисляет среднеквадратичное значение (RMS) сигнала
+    /// RMS более устойчив к модуляции амплитуды, чем пиковое значение
+    /// </summary>
+    private static double CalculateRMS(Vector signal)
+    {
+        double sumSquares = 0;
+        for (int i = 0; i < signal.Count; i++)
+        {
+            sumSquares += signal[i] * signal[i];
+        }
+        return Math.Sqrt(sumSquares / signal.Count);
+    }
+
+    /// <summary>
+    /// Вычисляет отношение расстояний из амплитуд сигналов
+    /// Использует RMS для устойчивости к модуляции
+    /// </summary>
+    private static double CalculateDistanceRatio(Vector sig1, Vector sig2)
+    {
+        double rms1 = CalculateRMS(sig1);
+        double rms2 = CalculateRMS(sig2);
+        return (rms1 * rms1) / (rms2 * rms2);
+    }
+
     public static Tuple<double, double, double> GetR1R2DtFFT(Vector sig1, Vector sig2, double sr, double v)
     {
         ComplexVector Sp1 = FFT.CalcFFT(sig1);
@@ -71,7 +65,7 @@ public class TwoMicro
         double dt = -Sp1.Count * df / (sr * idx * 2 * Math.PI);
         double dr = Math.Abs(dt * v);
 
-        double ratioR_sq = (sig1.Max() * sig1.Max()) / (sig2.Max() * sig2.Max());
+        double ratioR_sq = CalculateDistanceRatio(sig1, sig2);
 
         double r1, r2;
 

@@ -93,7 +93,61 @@ public class Processor
                 }
             }
         }
-        script = string.Join("\n", lines);
+        // Шаг 1.5: Склеиваем строки с незакрытыми скобками
+        // Если строка содержит больше '(' чем ')', значит вызов функции продолжается
+        // на следующей строке — склеиваем до баланса скобок.
+        // Учитываем строковые литералы, чтобы скобки внутри "" не считались.
+        var joinedLines = new List<string>();
+        string accumulator = "";
+        int parenDepth = 0;
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            string ln = lines[i];
+
+            if (parenDepth > 0)
+            {
+                // Продолжаем склейку — добавляем через пробел (вместо \n)
+                accumulator += " " + ln.Trim();
+            }
+            else
+            {
+                accumulator = ln;
+            }
+
+            // Считаем скобки вне строковых литералов и вне // комментариев
+            // (#-комментарии уже удалены в Шаге 1, но //-комментарии ещё нет)
+            int commentStart = FindCommentIndex(ln);
+            int scanEnd = commentStart >= 0 ? commentStart : ln.Length;
+            bool inStr = false;
+            for (int c = 0; c < scanEnd; c++)
+            {
+                if (ln[c] == '"')
+                {
+                    int bs = 0;
+                    int k2 = c - 1;
+                    while (k2 >= 0 && ln[k2] == '\\') { bs++; k2--; }
+                    if (bs % 2 == 0) inStr = !inStr;
+                }
+                else if (!inStr)
+                {
+                    if (ln[c] == '(') parenDepth++;
+                    else if (ln[c] == ')') parenDepth--;
+                }
+            }
+
+            if (parenDepth <= 0)
+            {
+                joinedLines.Add(accumulator);
+                parenDepth = 0;
+                accumulator = "";
+            }
+        }
+        // Если осталась незавершённая строка — добавляем как есть
+        if (!string.IsNullOrEmpty(accumulator))
+            joinedLines.Add(accumulator);
+
+        script = string.Join("\n", joinedLines);
         
         // Шаг 2: Защищаем строковые литералы от изменения
         var strings = new List<string>();
@@ -148,8 +202,8 @@ public class Processor
             
             var rawLine = lines.Dequeue();
 
-            // Находим комментарий.
-            int commentIndex = rawLine.IndexOf("//");
+            // Находим комментарий (с учётом строковых литералов, чтобы "//" внутри строк не обрезалось).
+            int commentIndex = FindCommentIndex(rawLine);
             // Обрезаем строку, если комментарий найден, иначе берем ее целиком.
             string line = commentIndex >= 0 ? rawLine.Substring(0, commentIndex) : rawLine;
             // Убираем пробелы.
@@ -281,8 +335,8 @@ public class Processor
             
             var line = lines.Dequeue();
 
-            // Игнорируем скобки внутри комментариев
-            int commentIndex = line.IndexOf("//");
+            // Игнорируем скобки внутри комментариев (с учётом строковых литералов)
+            int commentIndex = FindCommentIndex(line);
             string codePart = commentIndex >= 0 ? line.Substring(0, commentIndex) : line;
 
             if (codePart.Contains("{")) braceLevel++;
@@ -334,8 +388,8 @@ public class Processor
             
             var line = lines.Peek();
             
-            // Убираем комментарии для проверки отступов
-            int commentIndex = line.IndexOf("//");
+            // Убираем комментарии для проверки отступов (с учётом строковых литералов)
+            int commentIndex = FindCommentIndex(line);
             string lineWithoutComment = commentIndex >= 0 ? line.Substring(0, commentIndex) : line;
             
             // Если строка пустая или только комментарий - пропускаем
@@ -461,16 +515,16 @@ public class Processor
         // Сначала проверяем простые дроби (приоритет!)
         string fraction = TryConvertToSymbolyc(d);
         if (!string.IsNullOrEmpty(fraction))
-            return $"{d.ToString("G9", CultureInfo.InvariantCulture)}  [{fraction}]";
+            return $"{d.ToString("G15", CultureInfo.InvariantCulture)}  [{fraction}]";
         
         //// Затем проверяем известные математические константы (корни и т.д.)
         //string symbolic = KnownConstants.TryGetSymbolicForm(d);
         //if (symbolic != null)
         //{
-        //    return $"{d.ToString("G9", CultureInfo.InvariantCulture)}  [{symbolic}]";
+        //    return $"{d.ToString("G15", CultureInfo.InvariantCulture)}  [{symbolic}]";
         //}
         
-        return d.ToString("G9", CultureInfo.InvariantCulture);
+        return d.ToString("G15", CultureInfo.InvariantCulture);
     }
     
     /// <summary>
@@ -484,7 +538,7 @@ public class Processor
             return FormatDouble(c.Real);
         }
         
-        return $"{c.Real.ToString("G9", CultureInfo.InvariantCulture)} + {c.Imaginary.ToString("G9", CultureInfo.InvariantCulture)}i";
+        return $"{c.Real.ToString("G15", CultureInfo.InvariantCulture)} + {c.Imaginary.ToString("G15", CultureInfo.InvariantCulture)}i";
     }
 
     /// <summary>
@@ -665,5 +719,45 @@ public class Processor
         
         return (double)lcmNumerators / gcdDenominators;
     }
+    #endregion
+
+    #region Утилиты для комментариев
+
+    /// <summary>
+    /// Находит индекс начала комментария "//" в строке, пропуская "//" внутри строковых литералов.
+    /// Возвращает -1, если комментарий не найден.
+    /// </summary>
+    private static int FindCommentIndex(string line)
+    {
+        bool inString = false;
+
+        for (int i = 0; i < line.Length; i++)
+        {
+            if (line[i] == '"')
+            {
+                // Подсчитываем количество backslash'ей ПЕРЕД кавычкой
+                int backslashCount = 0;
+                int k = i - 1;
+                while (k >= 0 && line[k] == '\\')
+                {
+                    backslashCount++;
+                    k--;
+                }
+
+                // Если четное количество backslash'ей (включая 0), то кавычка НЕ escaped
+                if (backslashCount % 2 == 0)
+                {
+                    inString = !inString;
+                }
+            }
+            else if (!inString && line[i] == '/' && i + 1 < line.Length && line[i + 1] == '/')
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     #endregion
 }

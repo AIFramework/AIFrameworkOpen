@@ -8,6 +8,7 @@ using AI.MathUtils.Combinatorics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 using System.Numerics;
 
 namespace AI.ClassicMath.Calculator.Libs
@@ -905,16 +906,52 @@ namespace AI.ClassicMath.Calculator.Libs
                 Delegate = args =>
                 {
                     if (!args.Any()) throw new ArgumentException("Функция 'concat' требует хотя бы один аргумент.");
-                    return args.Select(arg => arg?.ToString() ?? "").Aggregate((a, b) => a + b);
+                    return args.Select(ArgToString).Aggregate((a, b) => a + b);
                 },
                 Description = new DescriptionFunction
                 {
                     AreaList = ["Программирование", "Строковые операции"],
-                    Description = "Объединяет несколько строк в одну.",
-                    Signature = "Вход: N строк. Выход: 1 строка.",
-                    Exemple = "concat(\"Hello\", \" \", \"World\") // Результат: \"Hello World\""
+                    Description = "Объединяет строки и/или числа в одну строку. Числа автоматически конвертируются в строки.",
+                    Signature = "Вход: N строк или чисел (смешанно). Выход: 1 строка.",
+                    Exemple = "concat(\"Результат: \", 42, \"/\", 100) // Результат: \"Результат: 42/100\""
                 }
             };
+        }
+
+        /// <summary>
+        /// Конвертирует аргумент (число, строку, вектор и т.д.) в строковое представление для concat/join.
+        /// Для Complex-чисел возвращает чистое число без формата (12, 0).
+        /// </summary>
+        private static string ArgToString(object arg)
+        {
+            if (arg is string s)
+                return s;
+
+            if (arg is Complex c)
+            {
+                if (Math.Abs(c.Imaginary) < 1e-12)
+                {
+                    // Чистое вещественное число
+                    double d = c.Real;
+                    if (Math.Abs(d - Math.Round(d)) < 1e-10)
+                        return ((long)Math.Round(d)).ToString(CultureInfo.InvariantCulture);
+                    return d.ToString("G15", CultureInfo.InvariantCulture);
+                }
+                // Комплексное число
+                string sign = c.Imaginary >= 0 ? "+" : "";
+                return $"{c.Real.ToString("G15", CultureInfo.InvariantCulture)}{sign}{c.Imaginary.ToString("G15", CultureInfo.InvariantCulture)}i";
+            }
+
+            if (arg is ComplexVector vec)
+                return $"[{string.Join(", ", vec.Select(v => ArgToString(v)))}]";
+
+            if (arg is Vector dv)
+                return $"[{string.Join(", ", dv.Select(v => ArgToString((Complex)v)))}]";
+
+            if (arg is DateTime dt)
+                return dt.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+            return arg?.ToString() ?? "";
         }
 
         private static FunctionDefinition CreateSubstrFunction()

@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 chcp 65001 >nul
 echo.
 echo ╔═══════════════════════════════════════════════════════════════╗
@@ -10,166 +11,156 @@ set passed=0
 set total=11
 
 echo ═══════════════════════════════════════════════════════════════
-echo   ТЕСТ 1/8: Основной набор (125 тестов)
+echo   ТЕСТ 1/11: Основной набор (141 тест)
 echo ═══════════════════════════════════════════════════════════════
-cd ScientificNotationTest
-dotnet run >nul 2>&1
-if %errorlevel%==0 (
+dotnet run --project ScientificNotationTest\TestNewFeatures.csproj >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
 echo.
 echo ═══════════════════════════════════════════════════════════════
-echo   ТЕСТ 2/8: Метод Ньютона
+echo   ТЕСТ 2/11: Метод Ньютона
 echo ═══════════════════════════════════════════════════════════════
-cd OriginalScriptTest
-dotnet run >nul 2>&1
-if %errorlevel%==0 (
+dotnet run --project OriginalScriptTest >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
 echo.
 echo ═══════════════════════════════════════════════════════════════
-echo   ТЕСТ 3/7: Тестирование ограничений
+echo   ТЕСТ 3/11: Тестирование ограничений
 echo ═══════════════════════════════════════════════════════════════
-cd LimitationsTest
-dotnet run >nul 2>&1
-if %errorlevel%==0 (
+dotnet run --project LimitationsTest >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
 echo.
 echo ═══════════════════════════════════════════════════════════════
-echo   ТЕСТ 4/7: Комплексный набор (37 тестов)
+echo   ТЕСТ 4/11: Комплексный набор (37 тестов)
 echo ═══════════════════════════════════════════════════════════════
-cd ComprehensiveTest
-dotnet run >nul 2>&1
-if %errorlevel%==0 (
+dotnet run --project ComprehensiveTest >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
 echo.
 echo ═══════════════════════════════════════════════════════════════
-echo   ТЕСТ 5/7: Каверзные тесты (Edge Cases)
+echo   ТЕСТ 5/11: Каверзные тесты (Edge Cases)
 echo ═══════════════════════════════════════════════════════════════
-cd EdgeCaseTests
-dotnet run --project EdgeCaseTests.csproj >nul 2>&1
-if %errorlevel%==0 (
+dotnet run --project EdgeCaseTests\EdgeCaseTests.csproj >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
 echo.
 echo ═══════════════════════════════════════════════════════════════
-echo   ТЕСТ 6/7: Экстремальные тесты (71 тестов)
+echo   ТЕСТ 6/11: Экстремальные тесты (71 тест)
 echo ═══════════════════════════════════════════════════════════════
-cd EdgeCaseTests
-dotnet run --project ExtremeCases.csproj >nul 2>&1
-if %errorlevel%==0 (
+dotnet run --project EdgeCaseTests\ExtremeCases.csproj >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
 echo.
 echo ═══════════════════════════════════════════════════════════════
-echo   ТЕСТ 7/9: Поддержка комментариев (38 тестов)
+echo   ТЕСТ 7/11: Поддержка комментариев (38 тестов)
 echo ═══════════════════════════════════════════════════════════════
-cd EdgeCaseTests
-dotnet run --project TestComments.csproj >nul 2>&1
-if %errorlevel%==0 (
+dotnet run --project EdgeCaseTests\TestComments.csproj >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
 echo.
 echo ═══════════════════════════════════════════════════════════════
-echo   ТЕСТ 8/9: ЧЕСТНЫЕ тесты комментариев (29 тестов)
+echo   ТЕСТ 8/11: ЧЕСТНЫЕ тесты комментариев (29 тестов)
 echo ═══════════════════════════════════════════════════════════════
-cd EdgeCaseTests
-dotnet run --project HonestCommentTests.csproj >nul 2>&1
-if %errorlevel%==0 (
+dotnet run --project EdgeCaseTests\HonestCommentTests.csproj >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
 echo.
 echo ═══════════════════════════════════════════════════════════════
-echo   ТЕСТ 9/10: Массивы строк (32 тестов)
+echo   ТЕСТ 9/11: Массивы строк (43 теста)
 echo ═══════════════════════════════════════════════════════════════
-cd EdgeCaseTests
-dotnet run --project StringArrayTests.csproj >nul 2>&1
-if %errorlevel%==0 (
+dotnet run --project EdgeCaseTests\StringArrayTests.csproj >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
 echo.
 echo ═══════════════════════════════════════════════════════════════
-echo   ТЕСТ 10/10: Токенизация (60 тестов)
+echo   ТЕСТ 10/11: Токенизация (56 тестов)
 echo ═══════════════════════════════════════════════════════════════
-cd EdgeCaseTests
-dotnet run --project TokenizationTests.csproj >nul 2>&1
-if %errorlevel%==0 (
+dotnet run --project EdgeCaseTests\TokenizationTests.csproj >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
-echo ══════════════════════════════════════════════════════════════
-echo ТЕСТ 11/11: Complex Comment Tests (30 tests)
-echo ══════════════════════════════════════════════════════════════
-cd EdgeCaseTests
-dotnet run --project ComplexCommentTests.csproj >nul 2>&1
-if %errorlevel%==0 (
+echo.
+echo ═══════════════════════════════════════════════════════════════
+echo   ТЕСТ 11/11: Complex Comment Tests (24 теста)
+echo ═══════════════════════════════════════════════════════════════
+dotnet run --project EdgeCaseTests\ComplexCommentTests.csproj >nul 2>&1
+set ec=!errorlevel!
+if !ec!==0 (
     echo ✅ УСПЕШНО
     set /a passed+=1
 ) else (
-    echo ❌ ПРОВАЛЕН
+    echo ❌ ПРОВАЛЕН (exit code: !ec!^)
 )
-cd ..
 
 echo.
 echo ╔═══════════════════════════════════════════════════════════════╗
-if %passed%==%total% (
-    echo ║  🎉 ВСЕ ТЕСТЫ ПРОЙДЕНЫ! %passed%/%total% (100%%^)
+if !passed!==!total! (
+    echo ║  🎉 ВСЕ ТЕСТЫ ПРОЙДЕНЫ! !passed!/!total!
 ) else (
-    echo ║  ⚠️  ПРОЙДЕНО: %passed%/%total%
+    echo ║  ⚠️  ПРОЙДЕНО: !passed!/!total!
 )
 echo ╚═══════════════════════════════════════════════════════════════╝
 echo.
 
+endlocal
 pause
-

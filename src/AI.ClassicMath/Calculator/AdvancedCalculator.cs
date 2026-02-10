@@ -106,16 +106,19 @@ namespace AI.ClassicMath.Calculator
                 expression = $"{varName} = {varName} {op} ({rightExpr})";
             }
 
-            if (expression.Count(c => c == '=') == 1 && IsSimpleAssignmentTarget(expression))
+            // Ищем оператор присваивания '=' ВНЕ строковых литералов
+            // (пропускаем ==, !=, <=, >=, +=, -=, *=, /=, %=, ^= — они обработаны выше)
+            var assignIdx = FindAssignmentEqualsIndex(expression);
+            if (assignIdx > 0)
             {
-                var parts = expression.Split('=');
-                var varName = parts[0].Trim();
-                if (!IsValidVarName(varName)) throw new ArgumentException($"Недопустимое имя переменной: '{varName}'.");
-
-                var exprToEvaluate = parts[1];
-                var result = EvaluateExpression(exprToEvaluate, context, cancellationToken);
-                context.Memory[varName] = result;
-                return result;
+                var varName = expression.Substring(0, assignIdx).Trim();
+                if (IsValidVarName(varName) && IsSimpleAssignmentTarget(expression.Substring(0, assignIdx)))
+                {
+                    var exprToEvaluate = expression.Substring(assignIdx + 1);
+                    var result = EvaluateExpression(exprToEvaluate, context, cancellationToken);
+                    context.Memory[varName] = result;
+                    return result;
+                }
             }
             return EvaluateExpression(expression, context, cancellationToken);
         }
@@ -494,14 +497,28 @@ namespace AI.ClassicMath.Calculator
             // перед токенизацией с правильной обработкой строковых литералов.
             // Здесь их удалять НЕ нужно, так как это может повредить # внутри строк.
             
-            // Заменяем логические операторы на символы перед токенизацией
+            // Сначала защищаем строковые литералы от замены ключевых слов
+            // Паттерн поддерживает escaped кавычки: "say \"hello\""
+            var stringLiterals = new List<string>();
+            var strProtectPattern = @"""(?:[^""\\]|\\.)*""";
+            expression = Regex.Replace(expression, strProtectPattern, m =>
+            {
+                stringLiterals.Add(m.Value);
+                return $"__TKSTR_{stringLiterals.Count - 1}__";
+            });
+
+            // Заменяем логические операторы на символы (строки уже защищены)
             expression = Regex.Replace(expression, @"\band\b", "&&", RegexOptions.IgnoreCase);
             expression = Regex.Replace(expression, @"\bor\b", "||", RegexOptions.IgnoreCase);
             expression = Regex.Replace(expression, @"\bnot\b", "!", RegexOptions.IgnoreCase);
             
-            // Сначала извлекаем строковые литералы (в двойных кавычках)
-            // Поддержка научной нотации: 1e-10, 2.5e+3, 3E10
-            var pattern = @"(""[^""]*"")|([0-9]+\.?[0-9]*(?:[eE][+-]?[0-9]+)?|[0-9]*\.?[0-9]+(?:[eE][+-]?[0-9]+)?)|([a-zA-Z_][a-zA-Z0-9_]*)|(<<|>>|>=|<=|==|!=|&&|\|\|)|(.)";
+            // Восстанавливаем строковые литералы
+            for (int si = 0; si < stringLiterals.Count; si++)
+                expression = expression.Replace($"__TKSTR_{si}__", stringLiterals[si]);
+            
+            // Токенизация: извлекаем строковые литералы (с поддержкой escaped кавычек),
+            // числа (включая научную нотацию), идентификаторы, операторы
+            var pattern = @"(""(?:[^""\\]|\\.)*"")|([0-9]+\.?[0-9]*(?:[eE][+-]?[0-9]+)?|[0-9]*\.?[0-9]+(?:[eE][+-]?[0-9]+)?)|([a-zA-Z_][a-zA-Z0-9_]*)|(<<|>>|>=|<=|==|!=|&&|\|\|)|(.)";
             var tokens = Regex.Matches(expression, pattern).Cast<Match>()
                 .Where(m => !string.IsNullOrWhiteSpace(m.Value))
                 .Select(m => m.Value).ToList();
@@ -754,8 +771,12 @@ namespace AI.ClassicMath.Calculator
                 }
                 else if (token.StartsWith("\"") && token.EndsWith("\""))
                 {
-                    // Строковый литерал - убираем кавычки и пушим как строку
-                    evalStack.Push(token.Substring(1, token.Length - 2));
+                    // Строковый литерал - убираем кавычки
+                    // Обрабатываем только escaped кавычки (\"), остальные escape-последовательности
+                    // сохраняются как есть (калькулятор не интерпретирует \\ \t \n и т.п.)
+                    var strContent = token.Substring(1, token.Length - 2);
+                    strContent = strContent.Replace("\\\"", "\"");  // \" → "
+                    evalStack.Push(strContent);
                 }
                 else if (context.Memory.TryGetValue(token, out
                     var value))
@@ -912,8 +933,40 @@ namespace AI.ClassicMath.Calculator
             context.Memory.ContainsKey(token);
         private bool IsValidVarName(string name) =>
             !string.IsNullOrWhiteSpace(name) && (char.IsLetter(name[0]) || name[0] == '_') && name.All(c => char.IsLetterOrDigit(c) || c == '_') && !Functions.ContainsKey(name);
+        /// <summary>
+        /// Находит индекс оператора присваивания '=' вне строковых литералов,
+        /// пропуская ==, !=, <=, >=. Возвращает -1 если не найден.
+        /// </summary>
+        private int FindAssignmentEqualsIndex(string expression)
+        {
+            bool inString = false;
+            for (int i = 0; i < expression.Length; i++)
+            {
+                char c = expression[i];
+                if (c == '"')
+                {
+                    // Проверяем escaped кавычки
+                    int bs = 0;
+                    int k = i - 1;
+                    while (k >= 0 && expression[k] == '\\') { bs++; k--; }
+                    if (bs % 2 == 0) inString = !inString;
+                }
+                else if (c == '=' && !inString)
+                {
+                    // Пропускаем ==
+                    if (i + 1 < expression.Length && expression[i + 1] == '=') { i++; continue; }
+                    // Пропускаем !=, <=, >=
+                    if (i > 0 && (expression[i - 1] == '!' || expression[i - 1] == '<' || expression[i - 1] == '>')) continue;
+                    // Пропускаем +=, -=, *=, /=, %=, ^= (уже обработаны compoundMatch выше)
+                    if (i > 0 && "+-*/%^".Contains(expression[i - 1])) continue;
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         private bool IsSimpleAssignmentTarget(string expression) =>
-            !expression.Split('=')[0].Any(c => "()[]<>!".Contains(c));
+            !expression.Any(c => "()[]<>!".Contains(c));
 
         #endregion
     }

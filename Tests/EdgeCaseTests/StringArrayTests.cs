@@ -324,7 +324,7 @@ join(arr, "","") ",
 
         TestString("Очень длинные строки",
             @"arr = [""This is a very long string for testing"", ""Another long string here""]
-len(join(arr, "" - ""))",
+join(arr, "" - "")",
             "This is a very long string for testing - Another long string here");
 
         TestNumber("Массив из одной строки с #",
@@ -372,7 +372,7 @@ for i = 0 to 2:
         if check == ""#456"":
             found = s
 len(found)",
-            10.0);  // "value#456" = 10
+            9.0);  // "value#456" = 9 символов
 
         Console.WriteLine("\n═══ ГРУППА 8: КОММЕНТАРИИ + МАССИВЫ СТРОК ═══\n");
 
@@ -394,6 +394,89 @@ last = index(arr, 2)  # Должен быть 'test#123'
 # Соединяем
 concat(first, "" + "", last)  # Результат",
             "#hashtag + test#123");
+
+        // ═══════════════════════════════════════════════════════════════
+        Console.WriteLine("\n═══ ГРУППА 9: CONCAT С ЧИСЛАМИ И СМЕШАННЫМИ АРГУМЕНТАМИ ═══\n");
+        // ═══════════════════════════════════════════════════════════════
+
+        TestString("CONCAT число + строка + число",
+            @"a = 12
+b = 95
+concat(a, ""/"", b)",
+            "12/95");
+
+        TestString("CONCAT только числа",
+            @"x = 3
+y = 14
+concat(x, y)",
+            "314");
+
+        TestString("CONCAT результат вычислений",
+            @"a_num = 2
+a_den = 3
+b_num = 3
+b_den = 5
+m_ratio_num = b_num * a_den
+m_ratio_den = b_den * a_num
+married_num = 2 * b_num
+married_den = b_den
+total_num = m_ratio_num + m_ratio_den
+total_den = m_ratio_den
+final_num = married_num * total_den
+final_den = married_den * total_num
+common_divisor = gcd(final_num, final_den)
+reduced_num = final_num / common_divisor
+reduced_den = final_den / common_divisor
+concat(reduced_num, ""/"", reduced_den)",
+            "12/19");
+
+        TestString("CONCAT вещественное число + строка",
+            @"pi_approx = 3.14159
+concat(""pi = "", pi_approx)",
+            "pi = 3.14159");
+
+        TestString("CONCAT отрицательное число",
+            @"x = -42
+concat(""Ответ: "", x)",
+            "Ответ: -42");
+
+        TestString("CONCAT ноль",
+            @"z = 0
+concat(""Баланс: "", z, "" руб."")",
+            "Баланс: 0 руб.");
+
+        TestString("CONCAT дробный результат",
+            @"a = 1
+b = 3
+result = a / b
+concat(""1/3 = "", result)",
+            "1/3 = 0.333333333333333");
+
+        TestString("CONCAT строка + число + строка + число",
+            @"name = ""Score""
+val1 = 95
+val2 = 100
+concat(name, "": "", val1, ""/"", val2)",
+            "Score: 95/100");
+
+        TestString("CONCAT целые из вычислений (GCD пример)",
+            @"a = 60
+b = 95
+d = gcd(a, b)
+num = a / d
+den = b / d
+concat(num, ""/"", den)",
+            "12/19");
+
+        TestString("CONCAT с вложенными функциями",
+            @"x = 16
+concat(""sqrt("", x, "") = "", sqrt(x))",
+            "sqrt(16) = 4");
+
+        TestString("CONCAT большое целое число",
+            @"n = fact(10)
+concat(""10! = "", n)",
+            "10! = 3628800");
 
         // Финальная статистика
         Console.WriteLine("\n╔═══════════════════════════════════════════════════════════════╗");

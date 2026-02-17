@@ -69,5 +69,29 @@ namespace AI.DSP.Multiray.Sources
             return cleanSignal + scaledNoise;
         }
     }
+
+
+    /// <summary>
+    /// Источник синусоидального сигнала с белым гауссовым шумом
+    /// </summary>
+    public class NoiseSource : Source
+    {
+        public double F0 = 200;
+
+
+        public NoiseSource()
+        { }
+
+        public NoiseSource(double sr, params double[] coords) : base(sr, coords)
+        { }
+
+
+        public override Vector GetSignal(double dist, double speed, IEnumerable<Source> sources = null)
+        {
+            Vector t = Vector.Time0(SR, T);
+            Vector noise = Statistic.RandNorm(t.Count);
+            return noise;
+        }
+    }
 }
 

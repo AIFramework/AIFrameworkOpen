@@ -98,7 +98,7 @@ namespace AI.Charts.Control
 
         #endregion
 
-
+      
 
         /// <summary>
         /// Графики
@@ -215,9 +215,6 @@ namespace AI.Charts.Control
             _ = chart1.BeginInvoke((MethodInvoker)(() =>
             {
                 Vector x = Vector.SeqBeginsWithZero(1, y.Count);
-                //chart1.Titles[0].Text = string.Empty;
-                //chart1.ChartAreas[0].AxisX.Title = string.Empty;
-                //chart1.ChartAreas[0].AxisY.Title = string.Empty;
                 AddPlot(x, y, name, Color.Black, width, isSpline);
             }));
         }
@@ -1093,6 +1090,43 @@ namespace AI.Charts.Control
         {
             chart1.ChartAreas[0].AxisX.LabelStyle.Format = "{0.000000}";
             chart1.ChartAreas[0].AxisY.LabelStyle.Format = "{0.000000}";
+        }
+
+
+
+        public void SetDefaultColor() 
+        {
+            chart1.ChartAreas[0].BackColor = BackColor;
+            chart1.BackColor = BackColor;
+            chart1.Legends[0].BackColor = BackColor;
+
+            chart1.ForeColor = ForeColor;
+            chart1.Legends[0].ForeColor = ForeColor;
+            chart1.ChartAreas[0].AxisX.TitleForeColor = ForeColor;
+            chart1.ChartAreas[0].AxisY.TitleForeColor = ForeColor;
+            chart1.Titles[0].ForeColor = ForeColor;
+
+            // Оси и цифры
+            chart1.ChartAreas[0].AxisY.LabelStyle.ForeColor = ForeColor;
+            chart1.ChartAreas[0].AxisX.LabelStyle.ForeColor = ForeColor;
+            chart1.ChartAreas[0].AxisX.LineColor = ForeColor;
+            chart1.ChartAreas[0].AxisY.LineColor = ForeColor;
+
+        }
+
+        /// <summary>
+        /// Изменение цветов 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void chart1_BackColorChanged(object sender, EventArgs e)
+        {
+            SetDefaultColor();
+        }
+
+        private void chart1_ForeColorChanged(object sender, EventArgs e)
+        {
+            SetDefaultColor();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

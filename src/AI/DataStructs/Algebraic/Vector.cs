@@ -2206,6 +2206,22 @@ namespace AI.DataStructs.Algebraic
 
             return dataStream.SkipIfEqual(KeyWords.Vector).ReadDoubles();
         }
+
+
+        /// <summary>
+        /// Скалярное произведение
+        /// </summary>
+        /// <param name="features"></param>
+        /// <returns></returns>
+        public double Dot(Vector features)
+        {
+            double dot = 0;
+
+            for (int i = 0; i < features.Count; i++)
+                dot += features[i] * this[i];
+
+            return dot;
+        }
         #endregion
 
         #endregion

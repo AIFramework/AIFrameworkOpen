@@ -104,6 +104,8 @@
             title1.Name = "Title1";
             title1.Text = "График";
             this.chart1.Titles.Add(title1);
+            this.chart1.BackColorChanged += new System.EventHandler(this.chart1_BackColorChanged);
+            this.chart1.ForeColorChanged += new System.EventHandler(this.chart1_ForeColorChanged);
             this.chart1.Paint += new System.Windows.Forms.PaintEventHandler(this.chart1_Paint);
             this.chart1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseMove);
             this.chart1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseUp);
